@@ -294,7 +294,7 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
 
     // write the header to file
     const std::string header_ = "TYPE::Eigen::Matrix";
-    os.write(header_.c_str(), header_.length());
+    os.write(header_.c_str(), static_cast<std::ptrdiff_t>(header_.length()));
 
     idx rows = static_cast<idx>(rA.rows());
     idx cols = static_cast<idx>(rA.cols());
@@ -335,7 +335,7 @@ dyn_mat<typename Derived::Scalar> load(std::istream& is) {
     std::unique_ptr<char[]> fheader_{new char[header_.length()]};
 
     // read the header from file
-    is.read(fheader_.get(), header_.length());
+    is.read(fheader_.get(), static_cast<std::ptrdiff_t>(header_.length()));
     if (std::string(fheader_.get(), header_.length()) != header_) {
         throw std::runtime_error(
             "qpp::obsolete::load(): Input stream is corrupted!");

@@ -1,5 +1,35 @@
-Pre-release
-    -
+Pre-release:
+    - EIGEN3_INSTALL_DIR can now be set as an OS environment variable (in
+      addition to a CMake variable). If both are set, then the CMake variable
+      trumps. If none are set, the system tries to detect the location of the
+      Eigen3 library automatically.
+    - Added the random qpp::QCircuit free function generators in
+      ["classes/circuits/circuits.hpp"]:
+          qpp::random_circuit_count() - Random QCircuit w.r.t. gate count
+          qpp::random_circuit_depth() - Random QCircuit w.r.t. gate depth
+    - Changed the API for
+          qpp::QCircuit::get_gate_count()
+          qpp::QCircuit::get_gate_depth()
+          qpp::QCircuit::get_measurement_count()
+          qpp::QCircuit::get_measurement_depth()
+      so now the old std::string overloads take instead a qpp::cmat as argument
+    - Marked high performance functions with the "custom" attribute
+      [[qpp::critical]] and functions that use parallelization with the "custom"
+      attribute [[qpp::parallel]]. Since C++17, unknown attributes are supposed
+      to be ignored by the compiler (and one can use this technique to define
+      custom attributes). Warnings are explicitly disabled for
+      clang/gcc/MSVC/icc. If your compiler emits a warning, please disable it
+      with the corresponding #pragma directive at the beginning of ["qpp.h"]
+    - Added from-string constructor for qpp::Bit_circuit and qpp::Dynamic_bitset
+    - When building with CMake, the new QPP_VERSION_NUM (numeric) and
+      QPP_VERSION_STR (string) preprocessor definitions are automatically
+      injected in the code
+    - Added initializer lists overloads for qpp::prod() and qpp::sum()
+      in ["functions.h"]:
+          qpp::prod(const std::initializer_list<T>&)
+          qpp::sum(const std::initializer_list<T>&)
+    - Modified qpp::prod() and qpp::sum() to allow list of matrices
+    - Bugfixes
 
 Version 3.1 - 11 January 2022
     - Added pyqpp, a Python wrapper around Quantum++. See

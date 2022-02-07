@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
-project(qpp VERSION 3.1 LANGUAGES CXX)
+set(QPP_VERSION_NUM 3.1)
+set(QPP_VERSION_STR "${QPP_VERSION_NUM}")
+project(qpp VERSION ${QPP_VERSION_NUM} LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
+
+#### Quantum++ version
+add_compile_definitions(QPP_VERSION_NUM=${QPP_VERSION_NUM})
+add_compile_definitions(QPP_VERSION_STR="${QPP_VERSION_STR}")
 
 #### Quantum++ root directory
 add_compile_definitions(PROJECT_ROOT_DIR="${PROJECT_SOURCE_DIR}")
@@ -16,6 +22,9 @@ add_library(libqpp INTERFACE)
 target_include_directories(libqpp INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
         $<INSTALL_INTERFACE:include/>)
+target_compile_definitions(libqpp INTERFACE -DQPP_VERSION_NUM=${QPP_VERSION_NUM})
+target_compile_definitions(libqpp INTERFACE -DQPP_VERSION_STR="${QPP_VERSION_STR}")
+
 #### qasmtools library
 target_include_directories(libqpp INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/qasmtools/include/>
@@ -25,14 +34,6 @@ target_include_directories(libqpp INTERFACE
 option(WITH_EXAMPLES "Enable example compilation" OFF)
 option(WITH_UNIT_TESTS "Enable unit testing" OFF)
 option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)
-option(USE_OPENQASM2_SPECS "Use OpenQASM 2.0 standard instead of Qiskit gate specifications" OFF)
-
-#### Enable OpenQASM 2.0 specs, see DISCREPANCIES.md for a comparison with Qiskit
-if (${USE_OPENQASM2_SPECS})
-    target_compile_definitions(libqpp INTERFACE -DUSE_OPENQASM2_SPECS=true)
-else ()
-    target_compile_definitions(libqpp INTERFACE -DUSE_OPENQASM2_SPECS=false)
-endif ()
 
 #### Dependencies, do not modify unless you know what you're doing
 if (${WITH_EXAMPLES} OR ${WITH_UNIT_TESTS})

@@ -32,12 +32,12 @@
 #ifndef EXPERIMENTAL_EXPERIMENTAL_HPP_
 #define EXPERIMENTAL_EXPERIMENTAL_HPP_
 
-namespace qpp {
 /**
  * \namespace qpp::experimental
  * \brief Experimental/test functions/classes, do not use or modify
  */
-namespace experimental {} /* namespace experimental */
-} /* namespace qpp */
+namespace qpp::experimental {
+//
+} /* namespace qpp::experimental */
 
 #endif /* EXPERIMENTAL_EXPERIMENTAL_HPP_ */

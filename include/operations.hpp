@@ -53,7 +53,7 @@ namespace qpp {
  * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
-dyn_mat<typename Derived1::Scalar>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived1::Scalar>
 applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
           const std::vector<idx>& target, const std::vector<idx>& dims,
@@ -586,7 +586,8 @@ apply(const Eigen::MatrixBase<Derived1>& state,
  * \return Output density matrix after the action of the channel
  */
 template <typename Derived>
-cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
+[[qpp::parallel]] cmat apply(const Eigen::MatrixBase<Derived>& A,
+                             const std::vector<cmat>& Ks) {
     const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -611,11 +612,11 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 // NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // HAS_OPENMP
-    for (idx i = 0; i < Ks.size(); ++i) {
+    for (const auto& K : Ks) {
 #ifdef HAS_OPENMP
 #pragma omp critical
 #endif // HAS_OPENMP
-        { result += Ks[i] * rA * adjoint(Ks[i]); }
+        { result += K * rA * adjoint(K); }
     }
 
     return result;
@@ -632,8 +633,9 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
  * \return Output density matrix after the action of the channel
  */
 template <typename Derived>
-cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
-           const std::vector<idx>& target, const std::vector<idx>& dims) {
+[[qpp::parallel]] cmat
+apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
+      const std::vector<idx>& target, const std::vector<idx>& dims) {
     const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -686,8 +688,16 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 
     cmat result = cmat::Zero(rA.rows(), rA.cols());
 
-    for (idx i = 0; i < Ks.size(); ++i)
-        result += apply(rA, Ks[i], target, dims);
+#ifdef HAS_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // HAS_OPENMP
+    for (const auto& K : Ks) {
+#ifdef HAS_OPENMP
+#pragma omp critical
+#endif // HAS_OPENMP
+        { result += apply(rA, K, target, dims); }
+    }
 
     return result;
 }
@@ -740,7 +750,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  * \param Ks Set of Kraus operators
  * \return Choi matrix
  */
-inline cmat kraus2choi(const std::vector<cmat>& Ks) {
+[[qpp::parallel]] inline cmat kraus2choi(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
 
     if (Ks.empty())
@@ -774,13 +784,13 @@ inline cmat kraus2choi(const std::vector<cmat>& Ks) {
 // NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // HAS_OPENMP
-    for (idx i = 0; i < Ks.size(); ++i) {
+    for (const auto& K : Ks) {
 #ifdef HAS_OPENMP
 #pragma omp critical
 #endif // HAS_OPENMP
         {
-            result += kron(cmat::Identity(Din, Din), Ks[i]) * Omega *
-                      adjoint(kron(cmat::Identity(Din, Din), Ks[i]));
+            result += kron(cmat::Identity(Din, Din), K) * Omega *
+                      adjoint(kron(cmat::Identity(Din, Din), K));
         }
     }
 
@@ -870,7 +880,7 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
  * \param Dout Dimension of the Kraus output Hilbert space
  * \return Superoperator matrix
  */
-inline cmat choi2super(const cmat& A, idx Din, idx Dout) {
+[[qpp::parallel]] inline cmat choi2super(const cmat& A, idx Din, idx Dout) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(A))
@@ -934,7 +944,7 @@ inline cmat choi2super(const cmat& A) {
  * \param A Superoperator matrix
  * \return Choi matrix
  */
-inline cmat super2choi(const cmat& A) {
+[[qpp::parallel]] inline cmat super2choi(const cmat& A) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(A))
@@ -979,7 +989,7 @@ inline cmat super2choi(const cmat& A) {
  * \param Ks Set of Kraus operators
  * \return Superoperator matrix
  */
-inline cmat kraus2super(const std::vector<cmat>& Ks) {
+[[qpp::parallel]] inline cmat kraus2super(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
 
     if (Ks.empty())
@@ -1012,8 +1022,8 @@ inline cmat kraus2super(const std::vector<cmat>& Ks) {
             { // DO NOT ERASE THIS CURLY BRACKET!!!! OMP CRITICAL CODE
                 // compute E(|m><n|)
                 MN(m, n) = 1;
-                for (idx i = 0; i < Ks.size(); ++i)
-                    EMN += Ks[i] * MN * adjoint(Ks[i]);
+                for (const auto& K : Ks)
+                    EMN += K * MN * adjoint(K);
                 MN(m, n) = 0;
 
                 for (idx a = 0; a < Dout; ++a) {
@@ -1080,8 +1090,8 @@ inline std::vector<cmat> super2kraus(const cmat& A) {
  * scalar field as \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
-                                          const std::vector<idx>& dims) {
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+ptrace1(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1208,8 +1218,8 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
  * scalar field as \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
-                                          const std::vector<idx>& dims) {
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+ptrace2(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1329,9 +1339,9 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  * \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
-                                         const std::vector<idx>& target,
-                                         const std::vector<idx>& dims) {
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+       const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1563,9 +1573,9 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
  * field as \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar>
-ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
-           const std::vector<idx>& dims) {
+dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
+    const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+    const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1741,7 +1751,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
 syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
            const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
@@ -1907,6 +1917,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 /**
  * \brief Applies the qudit quantum Fourier transform to the part \a target of
  * the multi-partite state vector or density matrix \a A
+ * \see qpp::QFT()
  *
  * \param A Eigen expression
  * \param target Subsystem indexes where the QFT is applied
@@ -1915,9 +1926,9 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * \return Qudit Quantum Fourier transform applied to the part \a target of \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
-                                           const std::vector<idx>& target,
-                                           idx d = 2, bool swap = true) {
+[[qpp::critical]] dyn_mat<typename Derived::Scalar>
+applyQFT(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+         idx d = 2, bool swap = true) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1988,7 +1999,8 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
                 // construct Rj
                 cmat Rj = cmat::Zero(d, d);
                 for (idx m = 0; m < d; ++m) {
-                    Rj(m, m) = std::exp(2.0 * pi * m * 1_i / std::pow(d, j));
+                    Rj(m, m) = std::exp(2.0 * pi * static_cast<double>(m) *
+                                        1_i / std::pow(d, j));
                 }
                 result =
                     applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]}, d);
@@ -2011,6 +2023,7 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Applies the inverse (adjoint) qudit quantum Fourier transform to the
  * part \a target of the multi-partite state vector or density matrix \a A
+ * \see qpp::TFQ()
  *
  * \param A Eigen expression
  * \param target Subsystem indexes where the TFQ is applied
@@ -2020,9 +2033,9 @@ dyn_mat<typename Derived::Scalar> applyQFT(const Eigen::MatrixBase<Derived>& A,
  * \a target of \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
-                                           const std::vector<idx>& target,
-                                           idx d = 2, bool swap = true) {
+[[qpp::critical]] dyn_mat<typename Derived::Scalar>
+applyTFQ(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+         idx d = 2, bool swap = true) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -2097,7 +2110,8 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
                 // construct Rj
                 cmat Rj = cmat::Zero(d, d);
                 for (idx m = 0; m < d; ++m) {
-                    Rj(m, m) = std::exp(-2.0 * pi * m * 1_i / std::pow(d, j));
+                    Rj(m, m) = std::exp(-2.0 * pi * static_cast<double>(m) *
+                                        1_i / std::pow(d, j));
                 }
                 result =
                     applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]}, d);
@@ -2115,6 +2129,7 @@ dyn_mat<typename Derived::Scalar> applyTFQ(const Eigen::MatrixBase<Derived>& A,
 // as in https://arxiv.org/abs/1707.08834
 /**
  * \brief Qudit quantum Fourier transform
+ * \see qpp::applyQFT()
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
@@ -2162,6 +2177,7 @@ dyn_col_vect<typename Derived::Scalar> QFT(const Eigen::MatrixBase<Derived>& A,
 // as in https://arxiv.org/abs/1707.08834
 /**
  * \brief Inverse (adjoint) qudit quantum Fourier transform
+ * \see qpp::applyTFQ()
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
@@ -2222,7 +2238,7 @@ dyn_col_vect<typename Derived::Scalar> TFQ(const Eigen::MatrixBase<Derived>& A,
  * \return Superposition over the qRAM values
  */
 template <typename Derived>
-dyn_col_vect<typename Derived::Scalar>
+[[qpp::parallel]] dyn_col_vect<typename Derived::Scalar>
 qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM) {
     const dyn_mat<typename Derived::Scalar>& rpsi = psi.derived();
 

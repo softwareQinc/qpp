@@ -32,8 +32,7 @@
 #ifndef INTERNAL_CLASSES_IOMANIP_HPP_
 #define INTERNAL_CLASSES_IOMANIP_HPP_
 
-namespace qpp {
-namespace internal {
+namespace qpp::internal {
 // ostream manipulators for nice formatting of
 // Eigen matrices and STL/C-style containers/vectors
 
@@ -109,12 +108,14 @@ class IOManipPointer : public IDisplay {
 // silence g++4.8.x bogus warning -Wnon-virtual-dtor for
 // qpp::internal::Display_impl_ when class qpp::internal::IOManipEigen
 // privately inherits from it
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
 class IOManipEigen : public IDisplay, private Display_Impl_ {
-#if ((__GNUC__ == 4) && (__GNUC_MINOR__ == 8) && !__clang__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
+    (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic pop
 #endif
     cmat A_;
@@ -141,7 +142,6 @@ class IOManipEigen : public IDisplay, private Display_Impl_ {
     }
 }; /* class IOManipEigen */
 
-} /* namespace internal */
-} /* namespace qpp */
+} /* namespace qpp::internal */
 
 #endif /* INTERNAL_CLASSES_IOMANIP_HPP_ */

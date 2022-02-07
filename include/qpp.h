@@ -33,17 +33,32 @@
 
 /**
  * \file qpp.h
- * \brief Quantum++ main header file, includes all other necessary headers
+ * \brief Quantum++ main header file, includes all other required headers
  */
 
 #ifndef QPP_H_
 #define QPP_H_
 
-// silence bogus warning -Wunused-variable for singletons
-#if (__GNUC__ || __clang__)
-#define QPP_UNUSED_ __attribute__((unused))
-#else
-#define QPP_UNUSED_
+// ignore warnings for unknown C++17 attributes (we use such "custom" attributes
+// internally, the compiler is supposed to ignore them according to the C++17
+// standard)
+
+// Intel icc
+#if defined(__INTEL_COMPILER)
+#pragma warning(disable : 3924)
+
+// clang
+#elif defined(__clang__)
+#pragma clang diagnostic ignored "-Wunknown-attributes"
+
+// gcc
+#elif defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
+#pragma GCC diagnostic ignored "-Wattributes"
+
+// MSVC
+#elif defined(_MSC_VER) && !defined(__INTEL_COMPILER)
+#pragma warning(disable : 5030)
+
 #endif
 
 // standard C++ library headers
@@ -84,7 +99,7 @@
 
 // Quantum++ headers
 
-// do not change the order in this group, inter-dependencies
+// do not change the order in this group, interdependencies
 #include "types.hpp"
 #include "classes/exception.hpp"
 #include "constants.hpp"
@@ -94,26 +109,26 @@
 #include "internal/classes/iomanip.hpp"
 #include "input_output.hpp"
 
-// do not change the order in this group, inter-dependencies
+// do not change the order in this group, interdependencies
 #include "internal/classes/singleton.hpp"
 #include "classes/random_devices.hpp"
 #include "random.hpp"
 #include "number_theory.hpp"
 
-// do not change the order in this group, inter-dependencies
+// do not change the order in this group, interdependencies
 #include "functions.hpp"
 #include "classes/init.hpp"
 #include "classes/codes.hpp"
 #include "classes/gates.hpp"
 #include "classes/states.hpp"
 
-// do not change the order in this group, inter-dependencies
+// do not change the order in this group, interdependencies
 #include "statistics.hpp"
 #include "operations.hpp"
 #include "entropies.hpp"
 #include "entanglement.hpp"
 
-// the ones below can be in any order, no inter-dependencies
+// the ones below can be in any order, no interdependencies
 #include "instruments.hpp"
 #include "classes/layouts.hpp"
 #include "classes/noise.hpp"
@@ -122,7 +137,7 @@
 #include "classes/circuits/circuits.hpp"
 #include "classes/circuits/engines.hpp"
 
-// do not change the order in this group, inter-dependencies
+// do not change the order in this group, interdependencies
 #include "qasmtools/parser/parser.hpp"
 #include "qasm/qasm.hpp"
 
@@ -136,28 +151,30 @@ namespace qpp {
  *
  * Additional initializations/cleanups, see the class qpp::Init
  */
-static const Init& init QPP_UNUSED_ = Init::get_no_thread_local_instance();
+static const Init& init [[maybe_unused]] = Init::get_no_thread_local_instance();
 
 /**
  * \brief qpp::Codes const Singleton
  *
  * Initializes the codes, see the class qpp::Codes
  */
-static const Codes& codes QPP_UNUSED_ = Codes::get_no_thread_local_instance();
+static const Codes& codes [[maybe_unused]] =
+    Codes::get_no_thread_local_instance();
 
 /**
  * \brief qpp::Gates const Singleton
  *
  * Initializes the gates, see the class qpp::Gates
  */
-static const Gates& gt QPP_UNUSED_ = Gates::get_no_thread_local_instance();
+static const Gates& gt [[maybe_unused]] = Gates::get_no_thread_local_instance();
 
 /**
  * \brief qpp::States const Singleton
  *
  * Initializes the states, see the class qpp::States
  */
-static const States& st QPP_UNUSED_ = States::get_no_thread_local_instance();
+static const States& st [[maybe_unused]] =
+    States::get_no_thread_local_instance();
 
 /**
  * \brief qpp::RandomDevices Singleton
@@ -172,7 +189,8 @@ static const States& st QPP_UNUSED_ = States::get_no_thread_local_instance();
 #ifndef NO_THREAD_LOCAL_
 thread_local
 #endif
-    static RandomDevices& rdevs QPP_UNUSED_ = RandomDevices::get_instance();
+    static RandomDevices& rdevs [[maybe_unused]] =
+        RandomDevices::get_instance();
 
 /**
  * \namespace qpp::obsolete

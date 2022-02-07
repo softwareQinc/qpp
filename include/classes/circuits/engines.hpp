@@ -880,8 +880,8 @@ class QNoisyEngine : public QEngine {
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
-     * \param clear_stats Resets the collected measurement statistics hash
-     * table before the run
+     * \param clear_stats Resets the collected measurement statistics hash table
+     * before the run
      * \return Reference to the current instance
      */
     QNoisyEngine& execute(idx reps = 1, bool clear_stats = true) override {
@@ -912,8 +912,7 @@ class QNoisyEngine : public QEngine {
 
     // getters
     /**
-     * \brief Vector of noise results obtained before every step in the
-     * circuit
+     * \brief Vector of noise results obtained before every step in the circuit
      *
      * \note The first vector contains the noise measurement results
      * obtained before applying the first step in the circuit, and so on,

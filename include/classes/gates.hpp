@@ -187,7 +187,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param D Dimension of the Hilbert space
      * \return SWAP gate for qudits
      */
-    cmat SWAPd(idx D = 2) const {
+    [[qpp::parallel]] cmat SWAPd(idx D = 2) const {
         // EXCEPTION CHECKS
 
         // check valid dimension
@@ -222,13 +222,16 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param D Dimension of the Hilbert space
      * \return Fourier transform gate for qudits
      */
-    cmat Fd(idx D = 2) const {
+    [[qpp::parallel]] cmat Fd(idx D = 2) const {
         // EXCEPTION CHECKS
 
         // check valid dimension
         if (D == 0)
             throw exception::DimsInvalid("qpp::Gates::Fd()");
         // END EXCEPTION CHECKS
+
+        if (D == 2)
+            return H;
 
         cmat result(D, D);
 
@@ -260,7 +263,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param n Number of qubits required for implementing the gate
      * \return Modular multiplication gate
      */
-    cmat MODMUL(idx a, idx N, idx n) const {
+    [[qpp::parallel]] cmat MODMUL(idx a, idx N, idx n) const {
         // check co-primality (unitarity) only in DEBUG version
         assert(gcd(a, N) == 1);
         // EXCEPTION CHECKS
@@ -288,7 +291,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
        // column major order for speed
         for (idx j = 0; j < N; ++j)
             for (idx i = 0; i < N; ++i)
-                if (static_cast<idx>(modmul(j, a, N)) == i)
+                if (static_cast<idx>(modmul(static_cast<bigint>(j),
+                                            static_cast<bigint>(a),
+                                            static_cast<bigint>(N))) == i)
                     result(i, j) = 1;
 
 #ifdef HAS_OPENMP
@@ -356,7 +361,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      *
      * \param A Eigen expression
      * \param ctrl Control subsystem indexes
-     * \param target Subsystem indexes where the gate \a A is applied
+     * \param target Target subsystem indexes where the gate \a A is applied
      * \param n Total number of subsystems
      * \param d Subsystem dimensions
      * \param shift Performs the control as if the \a ctrl qudit states were
@@ -564,7 +569,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // END EXCEPTION CHECKS
 
         idx D = std::accumulate(std::begin(dims), std::end(dims),
-                                static_cast<idx>(1), std::multiplies<idx>());
+                                static_cast<idx>(1), std::multiplies<>());
         dyn_mat<typename Derived::Scalar> result =
             dyn_mat<typename Derived::Scalar>::Identity(D, D);
 
@@ -695,7 +700,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         const idx D = static_cast<idx>(U.rows());
 
         switch (D) {
-            // 1 qubit gates
+                // 1 qubit gates
             case 2:
                 if (U == Id2)
                     return "Id2";
@@ -709,11 +714,15 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                     return "Z";
                 else if (U == S)
                     return "S";
+                else if (U == adjoint(S))
+                    return "S+";
                 else if (U == T)
                     return "T";
+                else if (U == adjoint(T))
+                    return "T+";
                 else
                     return "";
-            // 2 qubit gates
+                // 2 qubit gates
             case 4:
                 if (U == CNOT)
                     return "CNOT";
@@ -725,7 +734,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                     return "SWAP";
                 else
                     return "";
-            // 3 qubit gates
+                // 3 qubit gates
             case 8:
                 if (U == TOF)
                     return "TOF";

@@ -128,12 +128,12 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
  * \param cols Number of columns of the randomly generated matrix
  * \param a Beginning of the interval, belongs to it
  * \param b End of the interval, does not belong to it
- * \return Random real (qpp::dmat spacialization) or complex
+ * \return Random real (qpp::dmat specialization) or complex
  * (qpp::cmat specialization) matrix
  */
 template <typename Derived>
-Derived rand(QPP_UNUSED_ idx rows, QPP_UNUSED_ idx cols,
-             QPP_UNUSED_ double a = 0, QPP_UNUSED_ double b = 1) {
+Derived rand([[maybe_unused]] idx rows, [[maybe_unused]] idx cols,
+             [[maybe_unused]] double a = 0, [[maybe_unused]] double b = 1) {
     throw exception::UndefinedType("qpp::rand()");
 }
 
@@ -194,12 +194,13 @@ inline cmat rand(idx rows, idx cols, double a, double b) {
  * \param cols Number of columns of the randomly generated matrix
  * \param mean Mean
  * \param sigma Standard deviation
- * \return Random real (qpp::dmat spacialization) or complex
+ * \return Random real (qpp::dmat specialization) or complex
  * (qpp::cmat specialization) matrix
  */
 template <typename Derived>
-Derived randn(QPP_UNUSED_ idx rows, QPP_UNUSED_ idx cols,
-              QPP_UNUSED_ double mean = 0, QPP_UNUSED_ double sigma = 1) {
+Derived randn([[maybe_unused]] idx rows, [[maybe_unused]] idx cols,
+              [[maybe_unused]] double mean = 0,
+              [[maybe_unused]] double sigma = 1) {
     throw exception::UndefinedType("qpp::randn()");
 }
 
@@ -312,7 +313,7 @@ inline cmat randV(idx Din, idx Dout) {
  * \param Dout Dimension of the output Hilbert space
  * \return Set of \a N Kraus operators satisfying the closure condition
  */
-inline std::vector<cmat> randkraus(idx N, idx Din, idx Dout) {
+[[qpp::parallel]] inline std::vector<cmat> randkraus(idx N, idx Din, idx Dout) {
     // EXCEPTION CHECKS
 
     if (N == 0)

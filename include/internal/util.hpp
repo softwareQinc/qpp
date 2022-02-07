@@ -40,8 +40,8 @@ namespace qpp {
 namespace internal {
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g., 00, 01, 10, 11
-inline void n2multiidx(idx n, idx numdims, const idx* const dims,
-                       idx* result) noexcept {
+[[qpp::critical]] inline void
+n2multiidx(idx n, idx numdims, const idx* const dims, idx* result) noexcept {
     // error checks only in DEBUG version
 #ifndef NDEBUG
     if (numdims > 0) // numdims equal zero is a no-op
@@ -61,15 +61,15 @@ inline void n2multiidx(idx n, idx numdims, const idx* const dims,
 
 // silence g++4.9 bogus warning -Warray-bounds and -Wmaybe-uninitialized
 // in qpp::internal::multiidx2n()
-#if (__GNUC__ && !__clang__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Warray-bounds"
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g., 00->0, 01->1, 10->2, 11->3
-inline idx multiidx2n(const idx* const midx, idx numdims,
-                      const idx* const dims) noexcept {
+[[qpp::critical]] inline idx multiidx2n(const idx* const midx, idx numdims,
+                                        const idx* const dims) noexcept {
     // error checks only in DEBUG version
     assert(numdims > 0);
     assert(numdims < internal::maxn);
@@ -92,7 +92,7 @@ inline idx multiidx2n(const idx* const midx, idx numdims,
 
     return result + midx[numdims - 1];
 }
-#if (__GNUC__ && !__clang__)
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma GCC diagnostic pop
 #endif
 
@@ -156,7 +156,7 @@ bool check_dims_match_mat(const std::vector<idx>& dims,
     assert(A.rows() == A.cols());
 
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-                                  static_cast<idx>(1), std::multiplies<idx>());
+                                  static_cast<idx>(1), std::multiplies<>());
 
     return proddim == static_cast<idx>(A.cols());
 }
@@ -171,7 +171,7 @@ bool check_dims_match_cvect(const std::vector<idx>& dims,
     assert(A.cols() == 1);
 
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-                                  static_cast<idx>(1), std::multiplies<idx>());
+                                  static_cast<idx>(1), std::multiplies<>());
 
     return proddim == static_cast<idx>(A.rows());
 }
@@ -186,7 +186,7 @@ bool check_dims_match_rvect(const std::vector<idx>& dims,
     assert(A.rows() == 1);
 
     idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-                                  static_cast<idx>(1), std::multiplies<idx>());
+                                  static_cast<idx>(1), std::multiplies<>());
 
     return proddim == static_cast<idx>(A.cols());
 }
@@ -268,8 +268,9 @@ inline bool check_perm(const std::vector<idx>& perm) {
 // Kronecker product of 2 matrices, preserve return type
 // internal function for the variadic template function wrapper qpp::kron()
 template <typename Derived1, typename Derived2>
-dyn_mat<typename Derived1::Scalar> kron2(const Eigen::MatrixBase<Derived1>& A,
-                                         const Eigen::MatrixBase<Derived2>& B) {
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived1::Scalar>
+kron2(const Eigen::MatrixBase<Derived1>& A,
+      const Eigen::MatrixBase<Derived2>& B) {
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
     const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
 
@@ -381,7 +382,8 @@ inline idx get_dim_subsys(idx sz, idx N) {
     if (N == 2)
         return static_cast<idx>(std::llround(std::sqrt(sz)));
 
-    return static_cast<idx>(std::llround(std::pow(sz, 1. / N)));
+    return static_cast<idx>(
+        std::llround(std::pow(sz, 1. / static_cast<double>(N))));
 }
 
 // chops a floating point or complex number to zero
@@ -399,7 +401,7 @@ T abs_chop(const T& x, double chop = qpp::chop) {
 template <typename T,
           typename std::enable_if<!(std::numeric_limits<T>::is_iec559 ||
                                     is_complex<T>::value)>::type* = nullptr>
-T abs_chop(const T& x, QPP_UNUSED_ double chop = qpp::chop) {
+T abs_chop(const T& x, [[maybe_unused]] double chop = qpp::chop) {
     return x;
 }
 
@@ -427,7 +429,7 @@ struct Display_Impl_ {
 
                 // zero
                 if (std::abs(re) < chop && std::abs(im) < chop) {
-                    ostr << "0"; // otherwise segfault on destruction
+                    ostr << "0"; // otherwise, segfault on destruction
                     // if using only vstr.emplace_back("0 ");
                     // bug in MATLAB libmx
                     vstr.emplace_back(ostr.str());
@@ -466,7 +468,7 @@ struct Display_Impl_ {
                 if (vstr[i * A.cols() + j].size() > maxlengthcols[j])
                     maxlengthcols[j] = vstr[i * A.cols() + j].size();
 
-        // finally display it!
+        // finally, display it!
         for (idx i = 0; i < static_cast<idx>(A.rows()); ++i) {
             os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
                << vstr[i * A.cols()]; // display first column

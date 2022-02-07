@@ -44,7 +44,7 @@ namespace qpp {
  * column vector over the remaining Hilbert space
  */
 template <typename Derived>
-dyn_col_vect<typename Derived::Scalar>
+[[qpp::critical, qpp::parallel]] dyn_col_vect<typename Derived::Scalar>
 ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
    const std::vector<idx>& subsys, const std::vector<idx>& dims) {
     const dyn_col_vect<typename Derived::Scalar>& rphi = phi.derived();
@@ -206,7 +206,8 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
+[[qpp::critical]] std::tuple<idx, std::vector<double>,
+                             std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     const expr_t<Derived>& rA = A.derived();
 
@@ -345,7 +346,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
+[[qpp::critical]] std::tuple<idx, std::vector<double>,
+                             std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         const std::vector<idx>& target, const std::vector<idx>& dims,
         bool destructive = true) {
@@ -566,7 +568,8 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
-std::tuple<idx, std::vector<double>, std::vector<expr_t<Derived>>>
+[[qpp::critical, qpp::parallel]] std::tuple<idx, std::vector<double>,
+                                            std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         const std::vector<idx>& target, const std::vector<idx>& dims,
         bool destructive = true) {
@@ -722,7 +725,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * index), 2. Outcome probability, and 3. Post-measurement normalized state
  */
 template <typename Derived>
-std::tuple<std::vector<idx>, double, expr_t<Derived>>
+[[qpp::critical]] std::tuple<std::vector<idx>, double, expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             std::vector<idx> dims, bool destructive = true) {
     //    typename std::remove_const<
@@ -776,7 +779,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 
         if (destructive) {
             // remove the subsystem
-            dims.erase(std::next(std::begin(dims), target[0]));
+            dims.erase(std::next(std::begin(dims),
+                                 static_cast<std::ptrdiff_t>(target[0])));
         }
         target.erase(std::begin(target));
     }
@@ -838,9 +842,9 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * \return Reset quantum state
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
-                                        const std::vector<idx>& target,
-                                        const std::vector<idx>& dims) {
+[[qpp::critical]] dyn_mat<typename Derived::Scalar>
+reset(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+      const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS

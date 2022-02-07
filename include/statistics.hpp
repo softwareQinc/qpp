@@ -46,7 +46,7 @@ inline std::vector<double> uniform(idx N) {
         throw exception::ZeroSize("qpp::uniform()");
     // END EXCEPTION CHECKS
 
-    return std::vector<double>(N, 1. / N);
+    return std::vector<double>(N, 1. / static_cast<double>(N));
 }
 
 /**

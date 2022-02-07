@@ -55,25 +55,25 @@ class QCircuit : public IDisplay, public IJSON {
     std::vector<bool>
         clean_dits_; ///< keeps track of clean (unused) classical dits
     std::vector<bool> measurement_dits_; ///< keeps track of classical dits used
-                                         ///< in measurements
+    ///< in measurements
 
     std::unordered_map<std::size_t, cmat>
         cmat_hash_tbl_{}; ///< hash table with the matrices used in the circuit,
-                          ///< with [Key = std::size_t, Value = cmat]
-    std::unordered_map<std::string, idx> gate_count_{}; ///< gate counts
-    std::unordered_map<std::string, idx>
+    ///< with [Key = std::size_t, Value = cmat]
+    std::unordered_map<std::size_t, idx> gate_count_{}; ///< gate counts
+    std::unordered_map<std::size_t, idx>
         measurement_count_{}; ///< measurement counts
 
     /**
      * \brief Adds matrix to the hash table
      *
-     * \note Throws if a hash collision is detected., i.e., if two different
-     * matrices have the same hash
+     * \note Throws if a hash collision is detected, i.e., if two different
+     * matrices have the same hash value
      *
-     * \param U Complex matrix
      * \param hashU Hash value of U
+     * \param U Complex matrix
      */
-    void add_hash_(const cmat& U, std::size_t hashU) {
+    void add_hash_(std::size_t hashU, const cmat& U) {
         // EXCEPTION CHECKS
 
         auto search = cmat_hash_tbl_.find(hashU);
@@ -106,35 +106,35 @@ class QCircuit : public IDisplay, public IJSON {
         FAN, ///< same unitary gate on multiple qudits
 
         SINGLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                   ///< one control and one target
+        ///< one control and one target
 
         SINGLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                     ///< one control and multiple targets
+        ///< one control and multiple targets
 
         MULTIPLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                     ///< multiple controls and single target
+        ///< multiple controls and single target
 
         MULTIPLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                       ///< multiple controls and multiple
-                                       ///< targets
+        ///< multiple controls and multiple
+        ///< targets
 
         JOINT_CTRL, ///< controlled gate with multiple controls and joint
-                    ///< targets
+        ///< targets
 
         SINGLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                    ///< one classical control and one target
+        ///< one classical control and one target
 
         SINGLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                      ///< one classical control and multiple
-                                      ///< targets
+        ///< one classical control and multiple
+        ///< targets
 
         MULTIPLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-                                      ///< multiple classical controls and
-                                      ///< single target
+        ///< multiple classical controls and
+        ///< single target
 
         MULTIPLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate
-                                        ///< with multiple classical controls
-                                        ///< and multiple targets
+        ///< with multiple classical controls
+        ///< and multiple targets
 
         JOINT_cCTRL, ///< controlled gate with multiple classical controls and
                      ///< joint targets
@@ -286,25 +286,25 @@ class QCircuit : public IDisplay, public IJSON {
         MEASURE_Z_MANY, ///< Z measurement of joint qudits
 
         MEASURE_V, ///< measurement of single qudit in the orthonormal basis
-                   ///< or rank-1 projectors specified by the columns of matrix
-                   ///< \a V
+        ///< or rank-1 projectors specified by the columns of matrix
+        ///< \a V
 
         MEASURE_V_MANY, ///< joint measurement of multiple qudits in the
-                        ///< orthonormal basis or rank-1 projectors specified
-                        ///< by the columns of the matrix \a V
+        ///< orthonormal basis or rank-1 projectors specified
+        ///< by the columns of the matrix \a V
 
         MEASURE_Z_ND, ///< Z measurement of single qudit, non-destructive
 
         MEASURE_Z_MANY_ND, ///< Z measurement of multiple qudit, non-destructive
 
         MEASURE_V_ND, ///< measurement of single qudit in the orthonormal basis
-                      ///< or rank-1 projectors specified by the columns of
-                      ///< matrix \a V, non-destructive
+        ///< or rank-1 projectors specified by the columns of
+        ///< matrix \a V, non-destructive
 
         MEASURE_V_MANY_ND, ///< joint measurement of multiple qudits in the
-                           ///< orthonormal basis or rank-1 projectors specified
-                           ///< by the columns of the matrix \a V,
-                           ///< non-destructive
+        ///< orthonormal basis or rank-1 projectors specified
+        ///< by the columns of the matrix \a V,
+        ///< non-destructive
 
         RESET, ///< resets single qudit
 
@@ -376,10 +376,10 @@ class QCircuit : public IDisplay, public IJSON {
     struct MeasureStep : IDisplay {
         MeasureType measurement_type_ = MeasureType::NONE; ///< measurement type
         std::vector<std::size_t> mats_hash_{}; ///< hashes of measurement
-                                               ///< matrix/matrices
+        ///< matrix/matrices
         std::vector<idx> target_{}; ///< target where the measurement is applied
         idx c_reg_{}; ///< index of the classical register where the measurement
-                      ///< result is being stored
+        ///< result is being stored
         std::string name_{}; ///< custom name of the measurement(s)
 
         /**
@@ -567,7 +567,7 @@ class QCircuit : public IDisplay, public IJSON {
   public:
     /**
      * \class qpp::QCircuit::iterator
-     * \brief Quantum circuit description bound-checking (safe) iterator
+     * \brief Quantum circuit description bound-checking (safe) forward iterator
      *
      * \note The iterator is a const_iterator by default
      */
@@ -631,7 +631,7 @@ class QCircuit : public IDisplay, public IJSON {
                     std::to_string(value_type_qc_->get_step_count()).size();
 
                 os << std::left;
-                os << std::setw(text_width) << ip_ << ": ";
+                os << std::setw(static_cast<int>(text_width)) << ip_ << ": ";
                 os << std::right;
 
                 // gate step
@@ -722,14 +722,15 @@ class QCircuit : public IDisplay, public IJSON {
                     "qpp::QCircuit::iterator::operator++()");
             }
 
+            auto num_steps = qc_->get_step_count();
             // protects against incrementing an empty circuit iterator
-            if (qc_->get_step_count() == 0) {
+            if (num_steps == 0) {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator++()");
             }
 
             // protects against incrementing past the end
-            if (elem_.ip_ == qc_->get_step_count()) {
+            if (elem_.ip_ == num_steps) {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator++()");
             }
@@ -809,7 +810,8 @@ class QCircuit : public IDisplay, public IJSON {
 
             // protects against de-referencing past the last element or against
             // de-referencing invalid iterators
-            if (qc_ == nullptr || elem_.ip_ == qc_->get_step_count())
+            auto num_steps = qc_->get_step_count();
+            if (qc_ == nullptr || num_steps == 0 || elem_.ip_ == num_steps)
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator*()");
             // END EXCEPTION CHECKS
@@ -856,7 +858,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // iterator traits
-        using difference_type = ptrdiff_t;                   ///< iterator trait
+        using difference_type = std::ptrdiff_t;              ///< iterator trait
         using value_type = value_type_;                      ///< iterator trait
         using pointer = const value_type*;                   ///< iterator trait
         using reference = const value_type&;                 ///< iterator trait
@@ -870,7 +872,7 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \return Iterator to the first element
      */
-    iterator begin() {
+    iterator begin() noexcept {
         iterator it;
         it.set_begin_(this);
 
@@ -906,7 +908,7 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \return Iterator to the next to the last element
      */
-    iterator end() {
+    iterator end() noexcept {
         iterator it;
         it.set_end_(this);
 
@@ -1135,15 +1137,22 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit description gate count
      *
-     * \param name Gate name
+     * \param U Gate
      * \return Gate count
      */
-    idx get_gate_count(const std::string& name) const {
-        idx result = 0;
+    idx get_gate_count(const cmat& U) const {
+        // EXCEPTION CHECKS
 
-        // name not found in the hash table
+        // square matrix
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare("qpp::get_gate_count()");
+        // END EXCEPTION CHECKS
+
+        idx result = 0;
+        std::size_t hashU = hash_eigen(U);
+        // gate hash not found in the hash table
         try {
-            result = gate_count_.at(name);
+            result = gate_count_.at(hashU);
         } catch (...) {
             return 0;
         }
@@ -1168,21 +1177,35 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit description gate depth
      *
-     * \param name Gate name
+     * \param U Gate
      * \return Gate depth
      */
-    idx get_gate_depth(const std::string& name) const {
+    idx get_gate_depth(const cmat& U) const {
+        // EXCEPTION CHECKS
+
+        // square matrix
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare("qpp::get_gate_depth()");
+        // END EXCEPTION CHECKS
+
         bool found = false;
         std::vector<idx> heights(nc_ + nq_, 0);
 
+        cmat all_gates(1, 1);
+        all_gates << static_cast<double>(std::hash<std::string>{}("all gates"));
+        bool compute_total_depth = false;
+        if (U.rows() == 1 && U.cols() == 1)
+            if (U == all_gates)
+                compute_total_depth = true;
+
+        std::size_t hashU = hash_eigen(U);
         // iterate over all steps in the circuit
         for (auto&& step : *this) {
             // gates
             if (step.type_ == StepType::GATE) {
                 GateStep gate_step = *step.gates_ip_;
 
-                if (name != __FILE__ "__total_gate_depth__" &&
-                    gate_step.name_ != name)
+                if (gate_step.gate_hash_ != hashU && !compute_total_depth)
                     continue; // we skip this gate step
 
                 found = true; // gate was found in the circuit
@@ -1233,26 +1256,38 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Total gate depth
      */
     idx get_gate_depth() const {
-        return get_gate_depth(__FILE__ "__total_gate_depth__");
+        cmat all_gates(1, 1);
+        all_gates << static_cast<double>(std::hash<std::string>{}("all gates"));
+        return get_gate_depth(all_gates);
     }
 
     /**
      * \brief Quantum circuit description measurement depth
      *
-     * \param name Measurement name
+     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * columns of matrix \a V
      * \return Measurement depth
      */
-    idx get_measurement_depth(const std::string& name) const {
+    idx get_measurement_depth(const cmat& V) const {
         bool found = false;
         std::vector<idx> heights(nc_ + nq_, 0);
+
+        cmat all_gates(1, 1);
+        all_gates << static_cast<double>(std::hash<std::string>{}("all gates"));
+        bool compute_total_depth = false;
+        if (V.rows() == 1 && V.cols() == 1)
+            if (V == all_gates)
+                compute_total_depth = true;
+
+        std::size_t hashV = hash_eigen(V);
 
         // iterate over all steps in the circuit
         for (auto&& step : *this) {
             // measurements
             if (step.type_ == StepType::MEASUREMENT) {
                 MeasureStep measure_step = *step.measurements_ip_;
-                if (name != __FILE__ "__total_measurement_depth__" &&
-                    measure_step.name_ != name)
+
+                if (measure_step.mats_hash_[0] != hashV && !compute_total_depth)
                     continue; // we skip this measurement step
 
                 found = true; // measurement was found in the circuit
@@ -1307,7 +1342,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Total measurement depth
      */
     idx get_measurement_depth() const {
-        return get_measurement_depth(__FILE__ "__total_measurement_depth__");
+        cmat all_gates(1, 1);
+        all_gates << static_cast<double>(std::hash<std::string>{}("all gates"));
+        return get_measurement_depth(all_gates);
     }
 
     // computes the depth greedily, measuring the "height" (depth) of the
@@ -1322,15 +1359,18 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit description measurement count
      *
-     * \param name Measurement name
+     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * columns of matrix \a V
      * \return Measurement count
      */
-    idx get_measurement_count(const std::string& name) const {
-        idx result = 0;
+    idx get_measurement_count(const cmat& V) const {
+        // EXCEPTION CHECKS
 
-        // name not found in the hash table
+        idx result = 0;
+        std::size_t hashV = hash_eigen(V);
+        // basis matrix hash not found in the hash table
         try {
-            result = measurement_count_.at(name);
+            result = measurement_count_.at(hashV);
         } catch (...) {
             return 0;
         }
@@ -1452,14 +1492,19 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // update the destructively measured qudits
-        measured_.insert(std::next(std::begin(measured_), pos), n, false);
+        measured_.insert(
+            std::next(std::begin(measured_), static_cast<std::ptrdiff_t>(pos)),
+            n, false);
 
         // update the non-destructively measured qudits
-        measured_nd_.insert(std::next(std::begin(measured_nd_), pos), n, false);
+        measured_nd_.insert(std::next(std::begin(measured_nd_),
+                                      static_cast<std::ptrdiff_t>(pos)),
+                            n, false);
 
         // update (enlarge) the clean qudits vector
-        clean_qudits_.insert(std::next(std::begin(clean_qudits_), pos), n,
-                             true);
+        clean_qudits_.insert(std::next(std::begin(clean_qudits_),
+                                       static_cast<std::ptrdiff_t>(pos)),
+                             n, true);
 
         return *this;
     }
@@ -1509,10 +1554,13 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // update (enlarge) the clean dits vector
-        clean_dits_.insert(std::next(std::begin(clean_dits_), pos), n, true);
+        clean_dits_.insert(std::next(std::begin(clean_dits_),
+                                     static_cast<std::ptrdiff_t>(pos)),
+                           n, true);
 
         // update (enlarge) the measurement dits vector
-        measurement_dits_.insert(std::next(std::begin(measurement_dits_), pos),
+        measurement_dits_.insert(std::next(std::begin(measurement_dits_),
+                                           static_cast<std::ptrdiff_t>(pos)),
                                  n, false);
 
         return *this;
@@ -1532,6 +1580,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param U Single qudit quantum gate
      * \param i Qudit index
      * \param name Optional gate name
+     * \return Reference to the current instance
      * \return Reference to the current instance
      */
     QCircuit& gate(const cmat& U, idx i, std::string name = {}) {
@@ -1559,11 +1608,11 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::SINGLE, hashU, std::vector<idx>{},
                             std::vector<idx>{i}, std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         clean_qudits_[i] = false;
 
@@ -1603,11 +1652,11 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::TWO, hashU, std::vector<idx>{},
                             std::vector<idx>{i, j}, std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         clean_qudits_[i] = clean_qudits_[j] = false;
 
@@ -1650,12 +1699,12 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::THREE, hashU, std::vector<idx>{},
                             std::vector<idx>{i, j, k}, std::vector<idx>{},
                             name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         clean_qudits_[i] = clean_qudits_[j] = clean_qudits_[k] = false;
 
@@ -1667,8 +1716,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \a target
      *
      * \param U Single qudit quantum gate
-     * \param target Target qudit indexes; the gate \a U is applied on every
-     * one of them
+     * \param target Target qudit indexes; the gate \a U is applied on every one
+     * of them
      * \param name Optional gate name
      * \return Reference to the current instance
      */
@@ -1707,11 +1756,11 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{}, target,
                             std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
-        gate_count_[name] += target.size();
+        gate_count_[hashU] += target.size();
 
         for (auto&& elem : target) {
             clean_qudits_[elem] = false;
@@ -1764,11 +1813,11 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{},
                             get_non_measured(), std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
-        gate_count_[name] += get_non_measured().size();
+        gate_count_[hashU] += get_non_measured().size();
 
         for (auto&& elem : get_non_measured()) {
             clean_qudits_[elem] = false;
@@ -1824,11 +1873,11 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::JOINT, hashU, std::vector<idx>{}, target,
                             std::vector<idx>{}, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         for (auto&& elem : target) {
             clean_qudits_[elem] = false;
@@ -1900,8 +1949,8 @@ class QCircuit : public IDisplay, public IJSON {
                     // construct Rj
                     cmat Rj = cmat::Zero(d_, d_);
                     for (idx m = 0; m < d_; ++m) {
-                        Rj(m, m) =
-                            std::exp(2.0 * pi * m * 1_i / std::pow(d_, j));
+                        Rj(m, m) = std::exp(2.0 * pi * static_cast<double>(m) *
+                                            1_i / std::pow(d_, j));
                     }
                     CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "d");
@@ -1952,7 +2001,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& TFQ(const std::vector<idx>& target,
-                  QPP_UNUSED_ bool swap = true) {
+                  [[maybe_unused]] bool swap = true) {
         // EXCEPTION CHECKS
 
         std::string context{"Step " + std::to_string(get_step_count())};
@@ -2009,8 +2058,8 @@ class QCircuit : public IDisplay, public IJSON {
                     // construct Rj
                     cmat Rj = cmat::Zero(d_, d_);
                     for (idx m = 0; m < d_; ++m) {
-                        Rj(m, m) =
-                            std::exp(-2.0 * pi * m * 1_i / std::pow(d_, j));
+                        Rj(m, m) = std::exp(-2.0 * pi * static_cast<double>(m) *
+                                            1_i / std::pow(d_, j));
                     }
                     CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "d+");
@@ -2092,12 +2141,12 @@ class QCircuit : public IDisplay, public IJSON {
             name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl}, std::vector<idx>{target},
                             std::vector<idx>{shift}, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         clean_qudits_[ctrl] = false;
         clean_qudits_[target] = false;
@@ -2171,12 +2220,12 @@ class QCircuit : public IDisplay, public IJSON {
             name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, hashU,
                             std::vector<idx>{ctrl}, target,
                             std::vector<idx>{shift}, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         clean_qudits_[ctrl] = false;
         for (auto&& elem : target) {
@@ -2257,11 +2306,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, hashU, ctrl,
                             std::vector<idx>{target}, shift, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         for (auto&& elem : ctrl) {
             clean_qudits_[elem] = false;
@@ -2355,11 +2404,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, hashU,
                             ctrl, target, shift, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         for (auto&& elem : ctrl) {
             clean_qudits_[elem] = false;
@@ -2458,11 +2507,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::JOINT_CTRL, hashU, ctrl, target, shift,
                             name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         for (auto&& elem : ctrl) {
             clean_qudits_[elem] = false;
@@ -2520,13 +2569,13 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, hashU,
                             std::vector<idx>{ctrl_dit},
                             std::vector<idx>{target}, std::vector<idx>{shift},
                             name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         clean_dits_[ctrl_dit] = false;
         clean_qudits_[target] = false;
@@ -2593,12 +2642,12 @@ class QCircuit : public IDisplay, public IJSON {
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, hashU,
                             std::vector<idx>{ctrl_dit}, target,
                             std::vector<idx>{shift}, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         clean_dits_[ctrl_dit] = false;
         for (auto&& elem : target) {
@@ -2672,11 +2721,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, hashU,
                             ctrl_dits, std::vector<idx>{target}, shift, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         for (auto&& elem : ctrl_dits) {
             clean_dits_[elem] = false;
@@ -2758,11 +2807,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, hashU,
                             ctrl_dits, std::vector<idx>{target}, shift, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         for (auto&& elem : ctrl_dits) {
             clean_dits_[elem] = false;
@@ -2853,11 +2902,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
-        add_hash_(U, hashU);
+        add_hash_(hashU, U);
         gates_.emplace_back(GateType::JOINT_cCTRL, hashU, ctrl_dits, target,
                             shift, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[name];
+        ++gate_count_[hashU];
 
         for (auto&& elem : ctrl_dits) {
             clean_dits_[elem] = false;
@@ -2901,19 +2950,22 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name.empty())
             name = "mZ";
+
+        std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
+
         if (destructive) {
             measured_[target] = true;
             measurements_.emplace_back(MeasureType::MEASURE_Z,
-                                       std::vector<std::size_t>{},
+                                       std::vector<std::size_t>{m_hash},
                                        std::vector<idx>{target}, c_reg, name);
         } else {
             measured_nd_[target] = true;
             measurements_.emplace_back(MeasureType::MEASURE_Z_ND,
-                                       std::vector<std::size_t>{},
+                                       std::vector<std::size_t>{m_hash},
                                        std::vector<idx>{target}, c_reg, name);
         }
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[name];
+        ++measurement_count_[m_hash];
 
         clean_qudits_[target] = false;
 
@@ -2965,23 +3017,25 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = "mZ";
 
+        std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
+
         if (destructive) {
             for (auto&& elem : target) {
                 measured_[elem] = true;
             }
             measurements_.emplace_back(MeasureType::MEASURE_Z_MANY,
-                                       std::vector<std::size_t>{}, target,
+                                       std::vector<std::size_t>{m_hash}, target,
                                        c_reg, name);
         } else {
             for (auto&& elem : target) {
                 measured_nd_[elem] = true;
             }
             measurements_.emplace_back(MeasureType::MEASURE_Z_MANY_ND,
-                                       std::vector<std::size_t>{}, target,
+                                       std::vector<std::size_t>{m_hash}, target,
                                        c_reg, name);
         }
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[name];
+        ++measurement_count_[m_hash];
 
         for (auto&& elem : target) {
             clean_qudits_[elem] = false;
@@ -3000,7 +3054,7 @@ class QCircuit : public IDisplay, public IJSON {
      * projectors specified by the columns of matrix \a V
      *
      * \param V Orthonormal basis or rank-1 projectors specified by the
-     * columns of matrix V
+     * columns of matrix \a V
      * \param target Target qudit index that is measured
      * \param c_reg Classical register where the value of the measurement is
      * stored
@@ -3030,7 +3084,7 @@ class QCircuit : public IDisplay, public IJSON {
             name = "m" + qpp::Gates::get_no_thread_local_instance().get_name(V);
 
         std::size_t hashV = hash_eigen(V);
-        add_hash_(V, hashV);
+        add_hash_(hashV, V);
 
         if (destructive) {
             measured_[target] = true;
@@ -3044,7 +3098,7 @@ class QCircuit : public IDisplay, public IJSON {
                                        std::vector<idx>{target}, c_reg, name);
         }
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[name];
+        ++measurement_count_[hashV];
 
         clean_qudits_[target] = false;
 
@@ -3061,7 +3115,7 @@ class QCircuit : public IDisplay, public IJSON {
      * rank-1 projectors specified by the columns of matrix \a V
      *
      * \param V Orthonormal basis or rank-1 projectors specified by the columns
-     * of matrix V
+     * of matrix \a V
      * \param target Target qudit indexes that are jointly measured
      * \param c_reg Classical register where the value of the measurement is
      * stored
@@ -3106,7 +3160,7 @@ class QCircuit : public IDisplay, public IJSON {
             name = "m" + qpp::Gates::get_no_thread_local_instance().get_name(V);
 
         std::size_t hashV = hash_eigen(V);
-        add_hash_(V, hashV);
+        add_hash_(hashV, V);
 
         if (destructive) {
             for (auto&& elem : target) {
@@ -3124,7 +3178,7 @@ class QCircuit : public IDisplay, public IJSON {
                                        c_reg, name);
         }
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[name];
+        ++measurement_count_[hashV];
 
         for (auto&& elem : target) {
             clean_qudits_[elem] = false;
@@ -3161,13 +3215,15 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = "discard";
 
+        std::size_t m_hash = hash_eigen(cmat::Zero(d_, d_));
+
         measured_[target] = true;
         measurements_.emplace_back(MeasureType::DISCARD,
-                                   std::vector<std::size_t>{},
+                                   std::vector<std::size_t>{m_hash},
                                    std::vector<idx>{target}, -1, name);
 
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[name];
+        ++measurement_count_[m_hash];
 
         clean_qudits_[target] = false;
 
@@ -3205,14 +3261,16 @@ class QCircuit : public IDisplay, public IJSON {
         if (name.empty())
             name = "discard";
 
+        std::size_t m_hash = hash_eigen(cmat::Zero(d_, d_));
+
         for (auto&& elem : target) {
             measured_[elem] = true;
         }
         measurements_.emplace_back(MeasureType::DISCARD_MANY,
-                                   std::vector<std::size_t>{}, target, -1,
+                                   std::vector<std::size_t>{m_hash}, target, -1,
                                    name);
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[name];
+        ++measurement_count_[m_hash];
 
         for (auto&& elem : target) {
             clean_qudits_[elem] = false;
@@ -3261,11 +3319,14 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name.empty())
             name = "reset";
+
+        std::size_t m_hash = hash_eigen(mprj({0}, d_));
+
         measurements_.emplace_back(MeasureType::RESET,
-                                   std::vector<std::size_t>{},
+                                   std::vector<std::size_t>{m_hash},
                                    std::vector<idx>{target}, -1, name);
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[name];
+        ++measurement_count_[m_hash];
 
         return *this;
     }
@@ -3302,19 +3363,22 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (name.empty())
             name = "reset";
+
+        std::size_t m_hash = hash_eigen(mprj({0}, d_));
+
         measurements_.emplace_back(MeasureType::RESET_MANY,
-                                   std::vector<std::size_t>{}, target, -1,
+                                   std::vector<std::size_t>{m_hash}, target, -1,
                                    name);
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[name];
+        ++measurement_count_[m_hash];
 
         return *this;
     }
 
     /**
      * \brief Replicates the circuit, in place
-     * \note The circuit should not contain any measurements when invoking
-     * this member function
+     * \note The circuit should not contain any measurements when invoking this
+     * member function
      *
      * \param n Number of repetitions. If \a n == 1, returns the original
      * circuit.
@@ -3342,10 +3406,12 @@ class QCircuit : public IDisplay, public IJSON {
 
         for (idx i = 0; i < n - 1; ++i) {
             std::copy(std::begin(gates_copy), std::end(gates_copy),
-                      std::next(std::begin(gates_), (i + 1) * gates_size));
-            std::copy(
-                std::begin(step_types_copy), std::end(step_types_copy),
-                std::next(std::begin(step_types_), (i + 1) * step_types_size));
+                      std::next(std::begin(gates_), static_cast<std::ptrdiff_t>(
+                                                        (i + 1) * gates_size)));
+            std::copy(std::begin(step_types_copy), std::end(step_types_copy),
+                      std::next(std::begin(step_types_),
+                                static_cast<std::ptrdiff_t>((i + 1) *
+                                                            step_types_size)));
         }
 
         for (auto& elem : gate_count_)
@@ -3780,10 +3846,12 @@ class QCircuit : public IDisplay, public IJSON {
         // replace the corresponding elements of clean_dits_ and
         // measurement_dits_ with the ones of other
         std::copy(std::begin(other.clean_dits_), std::end(other.clean_dits_),
-                  std::next(std::begin(clean_dits_), pos_dit));
+                  std::next(std::begin(clean_dits_),
+                            static_cast<std::ptrdiff_t>(pos_dit)));
         std::copy(std::begin(other.measurement_dits_),
                   std::end(other.measurement_dits_),
-                  std::next(std::begin(measurement_dits_), pos_dit));
+                  std::next(std::begin(measurement_dits_),
+                            static_cast<std::ptrdiff_t>(pos_dit)));
 
         // STEP 4: append the copy of other to the current instance
         // append gate steps vector
@@ -3821,7 +3889,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& kron(QCircuit qc) {
-        add_circuit(std::move(qc), nq_);
+        add_circuit(std::move(qc), static_cast<bigint>(nq_));
 
         return *this;
     }
@@ -3835,7 +3903,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         if (!get_measured().empty())
-            throw exception::QuditAlreadyMeasured("qpp::QCircuit()::adjoint()");
+            throw exception::QuditAlreadyMeasured("qpp::QCircuit::adjoint()");
         // END EXCEPTION CHECKS
 
         auto htbl = cmat_hash_tbl_; // copy the gate hash table of other
@@ -3857,7 +3925,7 @@ class QCircuit : public IDisplay, public IJSON {
             elem.gate_hash_ = hashUdagger;
             if (!elem.name_.empty())
                 elem.name_ += "+";
-            add_hash_(Udagger, hashUdagger);
+            add_hash_(hashUdagger, Udagger);
         }
 
         return *this;
@@ -4009,7 +4077,8 @@ class QCircuit : public IDisplay, public IJSON {
             }
         }
 
-        clean_qudits_.erase(std::next(std::begin(clean_qudits_), target));
+        clean_qudits_.erase(std::next(std::begin(clean_qudits_),
+                                      static_cast<std::ptrdiff_t>(target)));
 
         --nq_;
 
@@ -4047,7 +4116,8 @@ class QCircuit : public IDisplay, public IJSON {
             }
         }
 
-        clean_dits_.erase(std::next(std::begin(clean_dits_), target));
+        clean_dits_.erase(std::next(std::begin(clean_dits_),
+                                    static_cast<std::ptrdiff_t>(target)));
 
         --nc_;
 
@@ -4184,7 +4254,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (enclosed_in_curly_brackets)
             result += "{";
 
-        result += "\"name\": \"" + name_ + "\", ";
+        result += R"("name": ")" + name_ + "\", ";
 
         std::string sep;
         std::ostringstream ss;
@@ -4289,152 +4359,6 @@ class QCircuit : public IDisplay, public IJSON {
         return result;
     } /* to_JSON() */
 
-    /**
-     * \brief Adjoint quantum circuit description
-     *
-     * \param qc Quantum circuit description
-     * \return Adjoint quantum circuit description
-     */
-    friend QCircuit adjoint(QCircuit qc) {
-        // EXCEPTION CHECKS
-
-        if (!qc.get_measured().empty())
-            throw exception::QuditAlreadyMeasured("qpp::adjoint()");
-        // END EXCEPTION CHECKS
-
-        return qc.adjoint();
-    }
-
-    /**
-     * \brief Kronecker product between two quantum circuit descriptions
-     *
-     * \param qc1 Quantum circuit description
-     * \param qc2 Quantum circuit description
-     * \return Quantum circuit description of the Kronecker product of \a qc1
-     * with \a qc2
-     */
-    friend QCircuit kron(QCircuit qc1, const QCircuit& qc2) {
-
-        return qc1.kron(qc2);
-    }
-
-    /**
-     * \brief Replicates the quantum circuit description
-     * \note The circuit should not contain any measurements when invoking
-     * this function
-     *
-     * \param qc Quantum circuit description
-     * \param n Number of repetitions. If \a n == 1, returns the original
-     * circuit.
-     * \return Reference to the current instance
-     */
-    friend QCircuit replicate(QCircuit qc, idx n) {
-        // EXCEPTION CHECKS
-
-        if (n == 0)
-            throw exception::OutOfRange("qpp::replicate()");
-        if (!qc.get_measured().empty())
-            throw exception::QuditAlreadyMeasured("qpp::replicate()");
-        if (n == 1)
-            return qc;
-        // END EXCEPTION CHECKS
-
-        return qc.replicate(n);
-    }
-
-    /**
-     * \brief Appends (glues) a quantum circuit description to another one
-     * \see qpp::match_circuit_left() and qpp::match_circuit_right()
-     *
-     * \note If qudit indexes of the second quantum circuit description do
-     * not totally overlap with the indexes of the first quantum circuit
-     * description, then the required number of additional qudits are
-     * automatically added to the output quantum circuit description
-     *
-     * \param qc1 Quantum circuit description
-     * \param qc2 Quantum circuit description
-     * \param pos_qudit The index of the first/top qudit of \a qc2 quantum
-     * circuit description relative to the index of the first/top qudit of the
-     * \a qc1 quantum circuit description, with the rest following in order.
-     * If negative or greater than the total number of qudits of \a qc1,
-     * then the required number of additional qudits are automatically added
-     * to the output quantum circuit description.
-     * \param pos_dit The first classical dit of \a qc2 quantum circuit
-     * description is inserted before the \a pos_dit classical dit index of
-     * \a qc1 quantum circuit description (in the classical dits array), the
-     * rest following in order. By default, insertion is performed at the end.
-     * \return Combined quantum circuit description, with \a qc2 added at the
-     * end of \a qc1
-     */
-    friend QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2,
-                                bigint pos_qudit, idx pos_dit = -1) {
-        return qc1.add_circuit(qc2, pos_qudit, pos_dit);
-    }
-
-    /**
-     * \brief Matches a quantum circuit description to the current quantum
-     * circuit description, with the to-be-matched quantum circuit description
-     * placed at the left (beginning) of the current quantum circuit description
-     * \see qpp::match_circuit_right() and qpp::add_circuit()
-     *
-     * \note The matched quantum circuit description cannot be larger than the
-     * current quantum circuit description, i.e., all qudit indexes of the added
-     * quantum circuit description must match with qudits from the current
-     * quantum circuit description (and those matched of the latter must contain
-     * no measurements)
-     *
-     * \note The classical dits are not relabeled
-     *
-     * \param qc1 Quantum circuit description
-     * \param qc2 Quantum circuit description
-     * \param target Qudit indexes of the current circuit description where the
-     * qudits of \a other are being matched, i.e., the first/top qudit of
-     * \a other quantum circuit description is matched with the target[0] qudit
-     * of the current circuit description, and so on
-     * \param pos_dit The first classical dit of \a other is inserted before
-     * the \a pos_dit classical dit index of the current quantum circuit
-     * description (in the classical dits array), the rest following in order.
-     * By default, insertion is performed at the end.
-     * \return Combined quantum circuit description
-     */
-    friend QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
-                                       const std::vector<idx>& target,
-                                       idx pos_dit = -1) {
-        return qc1.match_circuit_left(qc2, target, pos_dit);
-    }
-
-    /**
-     * \brief Matches a quantum circuit description to the current quantum
-     * circuit description, with the to-be-matched quantum circuit description
-     * placed at the right (end) of the current quantum circuit description
-     * \see qpp::match_circuit_left() and qpp::add_circuit()
-     *
-     * \note The matched quantum circuit description cannot be larger than the
-     * current quantum circuit description, i.e., all qudit indexes of the added
-     * quantum circuit description must match with qudits from the current
-     * quantum circuit description (and those matched of the latter must contain
-     * no measurements)
-     *
-     * \note The classical dits are not relabeled
-     *
-     * \param qc1 Quantum circuit description
-     * \param qc2 Quantum circuit description
-     * \param target Qudit indexes of the current circuit description where the
-     * qudits of \a other are being matched, i.e., the first/top qudit of
-     * \a other quantum circuit description is matched with the target[0] qudit
-     * of the current circuit description, and so on
-     * \param pos_dit The first classical dit of \a other is inserted before
-     * the \a pos_dit classical dit index of the current quantum circuit
-     * description (in the classical dits array), the rest following in order.
-     * By default, insertion is performed at the end.
-     * \return Combined quantum circuit description
-     */
-    friend QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
-                                        const std::vector<idx>& target,
-                                        idx pos_dit = -1) {
-        return qc1.match_circuit_right(qc2, target, pos_dit);
-    }
-
   private:
     /**
      * \brief qpp::IDisplay::display() override
@@ -4459,14 +4383,391 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         /* os << "\n$";
-        os << "\nmeasured/discarded (destructive): "
-           << disp(get_measured(), ", ");
-        os << "\nmeasured (non-destructive): " << disp(get_measured_nd(), ", ");
-        os << "\nmeasurement dits: " << disp(get_measurement_dits(), ", "); */
+          os << "\nmeasured/discarded (destructive): "
+             << disp(get_measured(), ", ");
+          os << "\nmeasured (non-destructive): " << disp(get_measured_nd(), ",
+          "); os << "\nmeasurement dits: " << disp(get_measurement_dits(), ",
+          "); */
 
         return os;
     }
 }; /* class QCircuit */
+
+// free functions
+
+/**
+ * \brief Appends (glues) a quantum circuit description to another one
+ * \see qpp::match_circuit_left() and qpp::match_circuit_right()
+ *
+ * \note If qudit indexes of the second quantum circuit description do
+ * not totally overlap with the indexes of the first quantum circuit
+ * description, then the required number of additional qudits are
+ * automatically added to the output quantum circuit description
+ *
+ * \param qc1 Quantum circuit description
+ * \param qc2 Quantum circuit description
+ * \param pos_qudit The index of the first/top qudit of \a qc2 quantum
+ * circuit description relative to the index of the first/top qudit of the
+ * \a qc1 quantum circuit description, with the rest following in order.
+ * If negative or greater than the total number of qudits of \a qc1,
+ * then the required number of additional qudits are automatically added
+ * to the output quantum circuit description.
+ * \param pos_dit The first classical dit of \a qc2 quantum circuit
+ * description is inserted before the \a pos_dit classical dit index of
+ * \a qc1 quantum circuit description (in the classical dits array), the
+ * rest following in order. By default, insertion is performed at the end.
+ * \return Combined quantum circuit description, with \a qc2 added at the
+ * end of \a qc1
+ */
+inline QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2, bigint pos_qudit,
+                            idx pos_dit = -1) {
+    return qc1.add_circuit(qc2, pos_qudit, pos_dit);
+}
+
+/**
+ * \brief Adjoint quantum circuit description
+ *
+ * \param qc Quantum circuit description
+ * \return Adjoint quantum circuit description
+ */
+inline QCircuit adjoint(QCircuit qc) {
+    // EXCEPTION CHECKS
+
+    if (!qc.get_measured().empty())
+        throw exception::QuditAlreadyMeasured("qpp::adjoint()");
+    // END EXCEPTION CHECKS
+
+    return qc.adjoint();
+}
+
+/**
+ * \brief Kronecker product between two quantum circuit descriptions
+ *
+ * \param qc1 Quantum circuit description
+ * \param qc2 Quantum circuit description
+ * \return Quantum circuit description of the Kronecker product of \a qc1 with
+ * \a qc2
+ */
+inline QCircuit kron(QCircuit qc1, const QCircuit& qc2) {
+    return qc1.kron(qc2);
+}
+
+/**
+ * \brief Matches a quantum circuit description \a qc2 to another quantum
+ * circuit description \a qc1, with the \a qc2 quantum circuit description
+ * placed at the left (beginning) of the first quantum circuit description
+ * \see qpp::match_circuit_right() and qpp::add_circuit()
+ *
+ * \note The matched quantum circuit description \a qc2 cannot be larger than
+ * the \a qc1 quantum circuit description, i.e., all qudit indexes of the added
+ * quantum circuit description must match with qudits from the \a qc1 quantum
+ * circuit description (and those matched of the latter must contain no
+ * measurements)
+ *
+ * \note The classical dits are not relabeled
+ *
+ * \param qc1 Quantum circuit description
+ * \param qc2 Quantum circuit description
+ * \param target Qudit indexes of the \a qc1 circuit description where the
+ * qudits of \a qc2 are being matched, i.e., the first/top qudit of
+ * \a qc2 quantum circuit description is matched with the target[0] qudit
+ * of the \a qc1 circuit description, and so on
+ * \param pos_dit The first classical dit of \a qc2 is inserted before
+ * the \a pos_dit classical dit index of the \a qc1 quantum circuit
+ * description (in the classical dits array), the rest following in order.
+ * By default, insertion is performed at the end.
+ * \return Combined quantum circuit description
+ */
+inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
+                                   const std::vector<idx>& target,
+                                   idx pos_dit = -1) {
+    return qc1.match_circuit_left(qc2, target, pos_dit);
+}
+
+/**
+ * \brief Matches a quantum circuit description \a qc2 to another quantum
+ * circuit description \a qc1, with the \a qc2 quantum circuit description
+ * placed at the right (end) of the first quantum circuit description
+ * \see qpp::match_circuit_right() and qpp::add_circuit()
+ * \see qpp::match_circuit_left() and qpp::add_circuit()
+ *
+ * \note The matched quantum circuit description \a qc 2cannot be larger than
+ * the \a qc1 quantum circuit description, i.e., all qudit indexes of the added
+ * quantum circuit description must match with qudits from the \a qc1 quantum
+ * circuit description (and those matched of the latter must contain no
+ * measurements)
+ *
+ * \note The classical dits are not relabeled
+ *
+ * \param qc1 Quantum circuit description
+ * \param qc2 Quantum circuit description
+ * \param target Qudit indexes of the \a qc1 circuit description where the
+ * qudits of \a qc2 are being matched, i.e., the first/top qudit of
+ * \a qc2 quantum circuit description is matched with the target[0] qudit
+ * of the \a qc1 circuit description, and so on
+ * \param pos_dit The first classical dit of \a qc2 is inserted before
+ * the \a pos_dit classical dit index of the \a qc1 quantum circuit
+ * description (in the classical dits array), the rest following in order.
+ * By default, insertion is performed at the end.
+ * \return Combined quantum circuit description
+ */
+inline QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
+                                    const std::vector<idx>& target,
+                                    idx pos_dit = -1) {
+    return qc1.match_circuit_right(qc2, target, pos_dit);
+}
+
+/**
+ * \brief Replicates a quantum circuit description
+ * \note The circuit should not contain any measurements when invoking this
+ * function
+ *
+ * \param qc Quantum circuit description
+ * \param n Number of repetitions. If \a n == 1, returns the original circuit.
+ * \return Replicated quantum circuit description
+ */
+inline QCircuit replicate(QCircuit qc, idx n) {
+    // EXCEPTION CHECKS
+
+    if (n == 0)
+        throw exception::OutOfRange("qpp::replicate()");
+    if (!qc.get_measured().empty())
+        throw exception::QuditAlreadyMeasured("qpp::replicate()");
+    if (n == 1)
+        return qc;
+    // END EXCEPTION CHECKS
+
+    return qc.replicate(n);
+}
+
+/**
+ * \brief Random quantum circuit description generator for fixed gate count
+ *
+ * \param nq Number of qudits
+ * \param num_steps Number of gates (steps) in the circuit
+ * \param p_two Probability of applying a two qudit gate. If the two qudit
+ * gate set has more than one element, then the gate is chosen at random
+ * from the set.
+ * \param one_qudit_gate_set Set of one qudit gates (optional, must be
+ * specified for \a d > 2)
+ * \param two_qudit_gate_set Set of two qudit gates (optional, must be
+ * specified for \a d > 2);
+ * \param d Subsystem dimensions (optional, default is qubit, i.e.,
+ * \a d = 2)
+ * \param one_qudit_gate_names One qudit gate names (optional)
+ * \param two_qudit_gate_names Two qudit gate names (optional)
+ * \return Instance of random qpp::QCircuit for fixed gate count
+ */
+inline QCircuit random_circuit_count(
+    idx nq, idx num_steps, double p_two,
+    std::vector<cmat> one_qudit_gate_set = {},
+    std::vector<cmat> two_qudit_gate_set = {}, idx d = 2,
+    const std::vector<std::string>& one_qudit_gate_names = {},
+    const std::vector<std::string>& two_qudit_gate_names = {}) {
+    // EXCEPTION CHECKS
+
+    // check valid dimension
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::random_circuit()", "d");
+    // check valid probabilities
+    if (p_two < 0 || p_two > 1)
+        throw exception::OutOfRange("qpp::random_circuit()", "p_two");
+    if (nq < 1 || ((p_two > 0) && (nq == 1)))
+        throw exception::OutOfRange("qpp::random_circuit()", "nq");
+    // check gate sets are not empty for d > 2
+    if (d > 2) {
+        if (one_qudit_gate_set.empty())
+            throw exception::ZeroSize("qpp::random_circuit()",
+                                      "one_qudit_gate_set");
+        if (p_two > 0 && one_qudit_gate_set.empty())
+            throw exception::ZeroSize("qpp::random_circuit()",
+                                      "two_qudit_gate_set");
+    }
+    // check gate name sizes
+    if (!one_qudit_gate_names.empty() &&
+        (one_qudit_gate_names.size() != one_qudit_gate_set.size()))
+        throw exception::SizeMismatch("qpp::random_circuit()",
+                                      "one_qudit_gate_names");
+    if (!two_qudit_gate_names.empty() &&
+        (two_qudit_gate_names.size() != two_qudit_gate_set.size()))
+        throw exception::SizeMismatch("qpp::random_circuit()",
+                                      "two_qudit_gate_names");
+    // check one qudit gate sizes
+    for (auto&& gate : one_qudit_gate_set) {
+        if (!internal::check_square_mat(gate))
+            throw exception::MatrixNotSquare("qpp::random_circuit()",
+                                             "one_qudit_gate_set");
+        if (static_cast<idx>(gate.rows()) != d)
+            throw exception::MatrixMismatchSubsys("qpp::random_circuit()",
+                                                  "one_qudit_gate_set");
+    }
+    // check two qudit gate sizes
+    for (auto&& gate : two_qudit_gate_set) {
+        if (!internal::check_square_mat(gate))
+            throw exception::MatrixNotSquare("qpp::random_circuit()",
+                                             "two_qudit_gate_set");
+        if (static_cast<idx>(gate.rows()) != d * d)
+            throw exception::MatrixMismatchSubsys("qpp::random_circuit()",
+                                                  "two_qudit_gate_set");
+    }
+    // END EXCEPTION CHECKS
+
+    if (d == 2 && one_qudit_gate_set.empty())
+        one_qudit_gate_set = std::vector{
+            Gates::get_instance().X, Gates::get_instance().Y,
+            Gates::get_instance().Z, Gates::get_instance().H,
+            Gates::get_instance().S, adjoint(Gates::get_instance().S),
+            Gates::get_instance().T, adjoint(Gates::get_instance().T)};
+
+    if (d == 2 && two_qudit_gate_set.empty())
+        two_qudit_gate_set = std::vector{Gates::get_instance().CNOT};
+
+    double p_one = 1 - p_two;
+    QCircuit qc{nq, 0, d};
+    for (idx i = 0; i < num_steps; ++i) {
+        bool is_one_qudit_gate = bernoulli(p_one);
+        if (is_one_qudit_gate) {
+            idx q = randidx(0, nq - 1);
+            idx gate = randidx(0, one_qudit_gate_set.size() - 1);
+            if (one_qudit_gate_names.empty())
+                qc.gate(one_qudit_gate_set[gate], q);
+            else
+                qc.gate(one_qudit_gate_set[gate], q,
+                        one_qudit_gate_names[gate]);
+        } else {
+            idx ctrl = randidx(0, nq - 1);
+            idx target = randidx(0, nq - 1);
+            while (ctrl == target)
+                target = randidx(0, nq - 1);
+            idx gate = randidx(0, two_qudit_gate_set.size() - 1);
+            if (two_qudit_gate_names.empty())
+                qc.gate(two_qudit_gate_set[gate], ctrl, target);
+            else
+                qc.gate(two_qudit_gate_set[gate], ctrl, target,
+                        two_qudit_gate_names[gate]);
+        }
+    }
+
+    return qc;
+}
+
+/**
+ * \brief Random quantum circuit description generator for fixed gate depth
+ *
+ * \param nq Number of qudits
+ * \param depth Circuit depth
+ * \param p_two Probability of applying a two qudit gate. If the two qudit
+ * gate set has more than one element, then the gate is chosen at random
+ * from the set.
+ * \param gate_depth If non-empty, depth is calculated with respect to this
+ * particular gate (optional, empty by default, so by default depth is
+ * calculated with respect to all gates in the circuit)
+ * \param one_qudit_gate_set Set of one qudit gates (optional, must be
+ * specified for \a d > 2)
+ * \param two_qudit_gate_set Set of two qudit gates (optional, must be
+ * specified for \a d > 2);
+ * \param d Subsystem dimensions (optional, default is qubit, i.e.,
+ * \a d = 2)
+ * \param one_qudit_gate_names One qudit gate names (optional)
+ * \param two_qudit_gate_names Two qudit gate names (optional)
+ * \return Instance of random qpp::QCircuit for fixed circuit gate depth
+ */
+inline QCircuit random_circuit_depth(
+    idx nq, idx depth, double p_two, const cmat& gate_depth = {},
+    std::vector<cmat> one_qudit_gate_set = {},
+    std::vector<cmat> two_qudit_gate_set = {}, idx d = 2,
+    const std::vector<std::string>& one_qudit_gate_names = {},
+    const std::vector<std::string>& two_qudit_gate_names = {}) {
+    // EXCEPTION CHECKS
+
+    // check valid dimension
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::random_circuit()", "d");
+    // check valid probabilities
+    if (p_two < 0 || p_two > 1)
+        throw exception::OutOfRange("qpp::random_circuit()", "p_two");
+    if (nq < 1 || ((p_two > 0) && (nq == 1)))
+        throw exception::OutOfRange("qpp::random_circuit()", "nq");
+    // check gate sets are not empty for d > 2
+    if (d > 2) {
+        if (one_qudit_gate_set.empty())
+            throw exception::ZeroSize("qpp::random_circuit()",
+                                      "one_qudit_gate_set");
+        if (p_two > 0 && one_qudit_gate_set.empty())
+            throw exception::ZeroSize("qpp::random_circuit()",
+                                      "two_qudit_gate_set");
+    }
+    // check gate name sizes
+    if (!one_qudit_gate_names.empty() &&
+        (one_qudit_gate_names.size() != one_qudit_gate_set.size()))
+        throw exception::SizeMismatch("qpp::random_circuit()",
+                                      "one_qudit_gate_names");
+    if (!two_qudit_gate_names.empty() &&
+        (two_qudit_gate_names.size() != two_qudit_gate_set.size()))
+        throw exception::SizeMismatch("qpp::random_circuit()",
+                                      "two_qudit_gate_names");
+    // check one qudit gate sizes
+    for (auto&& gate : one_qudit_gate_set) {
+        if (!internal::check_square_mat(gate))
+            throw exception::MatrixNotSquare("qpp::random_circuit()",
+                                             "one_qudit_gate_set");
+        if (static_cast<idx>(gate.rows()) != d)
+            throw exception::MatrixMismatchSubsys("qpp::random_circuit()",
+                                                  "one_qudit_gate_set");
+    }
+    // check two qudit gate sizes
+    for (auto&& gate : two_qudit_gate_set) {
+        if (!internal::check_square_mat(gate))
+            throw exception::MatrixNotSquare("qpp::random_circuit()",
+                                             "two_qudit_gate_set");
+        if (static_cast<idx>(gate.rows()) != d * d)
+            throw exception::MatrixMismatchSubsys("qpp::random_circuit()",
+                                                  "two_qudit_gate_set");
+    }
+    // END EXCEPTION CHECKS
+
+    if (d == 2 && one_qudit_gate_set.empty())
+        one_qudit_gate_set = std::vector{
+            Gates::get_instance().X, Gates::get_instance().Y,
+            Gates::get_instance().Z, Gates::get_instance().H,
+            Gates::get_instance().S, adjoint(Gates::get_instance().S),
+            Gates::get_instance().T, adjoint(Gates::get_instance().T)};
+
+    if (d == 2 && two_qudit_gate_set.empty())
+        two_qudit_gate_set = std::vector{Gates::get_instance().CNOT};
+
+    double p_one = 1 - p_two;
+    QCircuit qc{nq, 0, d};
+    idx current_depth = 0;
+    bool gate_has_value = gate_depth.size() != 0;
+    while (current_depth < depth) {
+        bool is_one_qudit_gate = bernoulli(p_one);
+        if (is_one_qudit_gate) {
+            idx q = randidx(0, nq - 1);
+            idx gate = randidx(0, one_qudit_gate_set.size() - 1);
+            if (one_qudit_gate_names.empty())
+                qc.gate(one_qudit_gate_set[gate], q);
+            else
+                qc.gate(one_qudit_gate_set[gate], q,
+                        one_qudit_gate_names[gate]);
+        } else {
+            idx ctrl = randidx(0, nq - 1);
+            idx target = randidx(0, nq - 1);
+            while (ctrl == target)
+                target = randidx(0, nq - 1);
+            idx gate = randidx(0, two_qudit_gate_set.size() - 1);
+            if (two_qudit_gate_names.empty())
+                qc.gate(two_qudit_gate_set[gate], ctrl, target);
+            else
+                qc.gate(two_qudit_gate_set[gate], ctrl, target,
+                        two_qudit_gate_names[gate]);
+        }
+        current_depth = gate_has_value ? qc.get_gate_depth(gate_depth)
+                                       : qc.get_gate_depth();
+    }
+
+    return qc;
+}
 
 } /* namespace qpp */
 

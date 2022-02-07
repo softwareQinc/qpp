@@ -50,8 +50,9 @@ int main() {
     QEngine engine{qc};
     engine.execute();
     // decimal representation of the measurement result
-    auto decimal = engine.get_dit(0);
-    double theta_e = decimal / std::pow(2, counting_qubits.size());
+    idx decimal = engine.get_dit(0);
+    auto theta_e =
+        static_cast<double>(decimal) / std::pow(2, counting_qubits.size());
 
     std::cout << ">> Input theta = " << theta << '\n';
     std::cout << ">> Estimated theta = " << theta_e << '\n';

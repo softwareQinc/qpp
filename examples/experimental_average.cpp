@@ -28,7 +28,8 @@ int main() {
     std::cout << disp(X) << '\n';
     std::cout << "on the state psi\n";
     std::cout << disp(psi) << '\n';
-    std::cout << "is: " << res / static_cast<double>(N) << '\n';
+    std::cout << "is: " << static_cast<double>(res) / static_cast<double>(N)
+              << '\n';
     std::cout << ">> Theoretical average <psi | X | psi> = ";
     std::cout << disp((adjoint(psi) * X * psi).value()) << '\n';
 }

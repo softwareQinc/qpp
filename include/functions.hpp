@@ -230,11 +230,11 @@ typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A) {
 }
 
 /**
- * \brief Element-wise product of \a A
+ * \brief Element-wise product of elements of \a A
  *
  * \param A Eigen expression
- * \return Element-wise product of \a A, as a scalar over the same scalar field
- * as \a A
+ * \return Element-wise product of elements of \a A, as a scalar over the same
+ * scalar field as \a A
  */
 template <typename Derived>
 typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A) {
@@ -318,7 +318,8 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
  * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
  */
 template <typename Derived>
-std::pair<dyn_col_vect<cplx>, cmat> eig(const Eigen::MatrixBase<Derived>& A) {
+[[qpp::critical]] std::pair<dyn_col_vect<cplx>, cmat>
+eig(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -398,7 +399,7 @@ cmat evects(const Eigen::MatrixBase<Derived>& A) {
  * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
  */
 template <typename Derived>
-std::pair<dyn_col_vect<double>, cmat>
+[[qpp::critical]] std::pair<dyn_col_vect<double>, cmat>
 heig(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -478,7 +479,7 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A) {
  * as columns of a complex dynamic matrix
  */
 template <typename Derived>
-std::tuple<cmat, dyn_col_vect<double>, cmat>
+[[qpp::critical]] std::tuple<cmat, dyn_col_vect<double>, cmat>
 svd(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -523,7 +524,7 @@ dyn_col_vect<double> svals(const Eigen::MatrixBase<Derived>& A) {
  * of \a A
  */
 template <typename Derived>
-cmat svdU(const Eigen::MatrixBase<Derived>& A) {
+[[qpp::critical]] cmat svdU(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -544,7 +545,7 @@ cmat svdU(const Eigen::MatrixBase<Derived>& A) {
  * of \a A
  */
 template <typename Derived>
-cmat svdV(const Eigen::MatrixBase<Derived>& A) {
+[[qpp::critical]] cmat svdV(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -569,7 +570,8 @@ cmat svdV(const Eigen::MatrixBase<Derived>& A) {
  * \return \a \f$f(A)\f$
  */
 template <typename Derived>
-cmat funm(const Eigen::MatrixBase<Derived>& A, cplx (*f)(const cplx&)) {
+[[qpp::critical]] cmat funm(const Eigen::MatrixBase<Derived>& A,
+                            cplx (*f)(const cplx&)) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -769,7 +771,7 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z) {
         return cmat::Identity(rA.rows(), rA.cols());
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
-    cmat evects = es.eigenvectors();
+    const cmat& evects = es.eigenvectors();
     cmat evals = es.eigenvalues();
     for (idx i = 0; i < static_cast<idx>(evals.rows()); ++i)
         evals(i) = std::pow(evals(i), z);
@@ -871,8 +873,9 @@ double schatten(const Eigen::MatrixBase<Derived>& A, double p) {
  * \a OutputScalar scalar field
  */
 template <typename OutputScalar, typename Derived>
-dyn_mat<OutputScalar> cwise(const Eigen::MatrixBase<Derived>& A,
-                            OutputScalar (*f)(typename Derived::Scalar)) {
+[[qpp::parallel]] dyn_mat<OutputScalar>
+cwise(const Eigen::MatrixBase<Derived>& A,
+      OutputScalar (*f)(typename Derived::Scalar)) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -922,7 +925,8 @@ dyn_mat<typename T::Scalar> kron(const T& head) {
  * right, as a dynamic matrix over the same scalar field as its arguments
  */
 template <typename T, typename... Args>
-dyn_mat<typename T::Scalar> kron(const T& head, const Args&... tail) {
+[[qpp::critical]] dyn_mat<typename T::Scalar> kron(const T& head,
+                                                   const Args&... tail) {
     return internal::kron2(head, kron(tail...));
 }
 
@@ -935,7 +939,8 @@ dyn_mat<typename T::Scalar> kron(const T& head, const Args&... tail) {
  * right, as a dynamic matrix over the same scalar field as its arguments
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar> kron(const std::vector<Derived>& As) {
+[[qpp::critical]] dyn_mat<typename Derived::Scalar>
+kron(const std::vector<Derived>& As) {
     // EXCEPTION CHECKS
 
     if (As.empty())
@@ -1369,6 +1374,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
     return grams<dyn_mat<typename Derived::Scalar>>(input);
 }
 
+// TODO check why 2 * internal::maxn
 /**
  * \brief Non-negative integer index to multi-index
  * \see qpp::multiidx2n()
@@ -1379,7 +1385,8 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
  * \param dims Dimensions of the multi-partite system
  * \return Multi-index of the same size as \a dims
  */
-inline std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims) {
+[[qpp::critical]] inline std::vector<idx>
+n2multiidx(idx n, const std::vector<idx>& dims) {
     // EXCEPTION CHECKS
 
     if (dims.size() > internal::maxn)
@@ -1390,7 +1397,7 @@ inline std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims) {
     }
 
     if (n >= std::accumulate(std::begin(dims), std::end(dims),
-                             static_cast<idx>(1), std::multiplies<idx>())) {
+                             static_cast<idx>(1), std::multiplies<>())) {
         throw exception::OutOfRange("qpp::n2multiidx()");
     }
     // END EXCEPTION CHECKS
@@ -1412,8 +1419,8 @@ inline std::vector<idx> n2multiidx(idx n, const std::vector<idx>& dims) {
  * \param dims Dimensions of the multi-partite system
  * \return Non-negative integer index
  */
-inline idx multiidx2n(const std::vector<idx>& midx,
-                      const std::vector<idx>& dims) {
+[[qpp::critical]] inline idx multiidx2n(const std::vector<idx>& midx,
+                                        const std::vector<idx>& dims) {
     // EXCEPTION CHECKS
     if (midx.size() != dims.size())
         throw exception::SizeMismatch("qpp::multiidx2n()");
@@ -1449,7 +1456,7 @@ inline ket mket(const std::vector<idx>& mask, const std::vector<idx>& dims) {
     idx n = mask.size();
 
     idx D = std::accumulate(std::begin(dims), std::end(dims),
-                            static_cast<idx>(1), std::multiplies<idx>());
+                            static_cast<idx>(1), std::multiplies<>());
 
     // EXCEPTION CHECKS
 
@@ -1534,7 +1541,7 @@ inline cmat mprj(const std::vector<idx>& mask, const std::vector<idx>& dims) {
     idx n = mask.size();
 
     idx D = std::accumulate(std::begin(dims), std::end(dims),
-                            static_cast<idx>(1), std::multiplies<idx>());
+                            static_cast<idx>(1), std::multiplies<>());
 
     // EXCEPTION CHECKS
 
@@ -1660,27 +1667,32 @@ std::vector<double> abssq(const Eigen::MatrixBase<Derived>& A) {
 }
 
 /**
- * \brief Element-wise sum of an STL-like range
+ * \brief Sum of the elements of an STL-like range
+ *
+ * \note If the range is empty, returns the zero-initialized value_type
  *
  * \param first Iterator to the first element of the range
- * \param last  Iterator to the last element of the range
- * \return Element-wise sum of the range, as a scalar over the same scalar
- * field as the range
+ * \param last Iterator to the last element of the range
+ * \return Sum of the elements of the range
  */
-template <typename InputIterator>
-typename std::iterator_traits<InputIterator>::value_type
-sum(InputIterator first, InputIterator last) {
-    using value_type = typename std::iterator_traits<InputIterator>::value_type;
+template <typename InputIterator, typename value_type = std::decay_t<
+                                      decltype(*std::declval<InputIterator>())>>
+value_type sum(InputIterator first, InputIterator last) {
+    if (first == last)
+        return {};
 
-    return std::accumulate(first, last, static_cast<value_type>(0));
+    value_type result = *first;
+    while (++first != last)
+        result += *first;
+
+    return result;
 }
 
 /**
- * \brief Element-wise sum of the elements of an STL-like container
+ * \brief Sum of the elements of an STL-like container
  *
  * \param c STL-like container
- * \return Element-wise sum of the elements of the container,
- * as a scalar over the same scalar field as the container
+ * \return Sum of the elements of the container
  */
 template <typename Container>
 typename Container::value_type
@@ -1690,34 +1702,60 @@ sum(const Container& c,
 }
 
 /**
- * \brief Element-wise product of an STL-like range
+ * \brief Sum of the elements of an initializer list
  *
- * \param first Iterator to the first element of the range
- * \param last  Iterator to the last element of the range
- * \return Element-wise product of the range, as a scalar over the same scalar
- * field as the range
+ * \param Ts Initializer list
+ * \return Sum of the elements of the list
  */
-template <typename InputIterator>
-typename std::iterator_traits<InputIterator>::value_type
-prod(InputIterator first, InputIterator last) {
-    using value_type = typename std::iterator_traits<InputIterator>::value_type;
-
-    return std::accumulate(first, last, static_cast<value_type>(1),
-                           std::multiplies<value_type>());
+template <typename T>
+T sum(const std::initializer_list<T>& Ts) {
+    return sum(std::vector<T>(Ts));
 }
 
 /**
- * \brief Element-wise product of the elements of an STL-like container
+ * \brief Product of the elements of an STL-like range
+ *
+ * \note If the range is empty, returns the zero-initialized value_type
+ *
+ * \param first Iterator to the first element of the range
+ * \param last Iterator to the last element of the range
+ * \return Product of the elements of the range
+ */
+template <typename InputIterator, typename value_type = std::decay_t<
+                                      decltype(*std::declval<InputIterator>())>>
+value_type prod(InputIterator first, InputIterator last) {
+    if (first == last)
+        return {};
+
+    value_type result = *first;
+    while (++first != last)
+        result *= *first;
+
+    return result;
+}
+
+/**
+ * \brief Product of the elements of an STL-like container
  *
  * \param c STL-like container
- * \return Element-wise product of the elements of the container, as a scalar
- * over the same scalar field as the container
+ * \return Product of the elements of the container
  */
 template <typename Container>
 typename Container::value_type
 prod(const Container& c,
      typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     return prod(std::begin(c), std::end(c));
+}
+
+/**
+ * \brief Product of the elements of an initializer list
+ *
+ * \param Ts Initializer list
+ * \return Product of the elements of the list
+ */
+template <typename T>
+T prod(const std::initializer_list<T>& Ts) {
+    return prod(std::vector<T>(Ts));
 }
 
 /**
@@ -1958,7 +1996,6 @@ ket operator"" _ket() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
     qpp::ket q = qpp::ket::Zero(static_cast<idx>(std::llround(std::pow(2, n))));
-    idx pos = 0;
 
     // EXCEPTION CHECKS
 
@@ -1969,7 +2006,7 @@ ket operator"" _ket() {
     }
     // END EXCEPTION CHECKS
 
-    pos = std::stoi(bits, nullptr, 2);
+    idx pos = std::stoi(bits, nullptr, 2);
     q(pos) = 1;
 
     return q;
@@ -1989,7 +2026,6 @@ bra operator"" _bra() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
     qpp::bra q = qpp::ket::Zero(static_cast<idx>(std::llround(std::pow(2, n))));
-    idx pos = 0;
 
     // EXCEPTION CHECKS
 
@@ -2000,7 +2036,7 @@ bra operator"" _bra() {
     }
     // END EXCEPTION CHECKS
 
-    pos = std::stoi(bits, nullptr, 2);
+    idx pos = std::stoi(bits, nullptr, 2);
     q(pos) = 1;
 
     return q;

@@ -58,10 +58,8 @@ template <class T>
 class NoiseBase {
   public:
     using noise_type = T;
-    static_assert(
-        std::is_same<NoiseType::StateDependent, noise_type>::value ||
-            std::is_same<NoiseType::StateIndependent, noise_type>::value,
-        "");
+    static_assert(std::is_same<NoiseType::StateDependent, noise_type>::value ||
+                  std::is_same<NoiseType::StateIndependent, noise_type>::value);
 
   protected:
     const std::vector<cmat> Ks_;        ///< Kraus operators
@@ -500,7 +498,7 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \param D Qudit dimension
      * \return Vector of Kraus operators representing the depolarizing noise
      */
-    std::vector<cmat> fill_Ks_(idx D) const {
+    static std::vector<cmat> fill_Ks_(idx D) {
         std::vector<cmat> Ks(D * D);
         idx tmp = 0;
         for (idx i = 0; i < D; ++i)
@@ -519,11 +517,12 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \param D Qudit dimension
      * \return Probability vector
      */
-    std::vector<double> fill_probs_(double p, idx D) const {
+    static std::vector<double> fill_probs_(double p, idx D) {
         std::vector<double> probs(D * D);
         probs[0] = 1 - p;
         for (idx i = 1; i < D * D; ++i)
-            probs[i] = p / (D - 1) * (D - 1);
+            probs[i] =
+                p / static_cast<double>(D - 1) * static_cast<double>(D - 1);
 
         return probs;
     }

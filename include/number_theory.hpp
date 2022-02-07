@@ -64,7 +64,7 @@ inline std::vector<bigint> x2contfrac(double x, idx N, idx cut = 100000) {
                 static_cast<bigint>(std::llround(std::ceil(x))));
             x = 1 / (x - std::ceil(x));
         }
-        if (!std::isfinite(x) || std::abs(x) > cut)
+        if (!std::isfinite(x) || std::abs(x) > static_cast<double>(cut))
             return result;
     }
 
@@ -98,12 +98,12 @@ inline double contfrac2x(const std::vector<bigint>& cf, idx N = idx(-1)) {
     if (N == 1) // degenerate case, integer
         return static_cast<double>(cf[0]);
 
-    double tmp = 1. / cf[N - 1];
+    double tmp = 1. / static_cast<double>(cf[N - 1]);
     for (idx i = N - 2; i != 0; --i) {
-        tmp = 1. / (tmp + cf[i]);
+        tmp = 1. / (tmp + static_cast<double>(cf[i]));
     }
 
-    return cf[0] + tmp;
+    return static_cast<double>(cf[0]) + tmp;
 }
 
 /**
@@ -315,12 +315,12 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
     if (a == 0 || b == 0)
         return 0;
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
 #pragma warning(disable : 4146) // disable warning C4146
 #endif
     ubigint ua = a < 0 ? -static_cast<ubigint>(a) : a;
     ubigint ub = b < 0 ? -static_cast<ubigint>(b) : b;
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && !defined(__INTEL_COMPILER)
 #pragma warning(default : 4146) // enable warning C4146 back
 #endif
 
@@ -512,7 +512,7 @@ inline bool isprime(bigint p, idx k = 80) {
 
     // repeat k times
     for (idx i = 0; i < k; ++i) {
-        // pick a random integer a in the range [2, p - 2]
+        // pick a random integer 'a' in the range [2, p - 2]
         bigint a = rand(2, p - 2);
 
         // set z = a^r mod p
@@ -599,7 +599,7 @@ inline std::vector<std::pair<bigint, bigint>>
 convergents(const std::vector<bigint>& cf) {
 
     idx N = cf.size();
-    // EXCEPTIONS CHECKS
+    // EXCEPTION CHECKS
 
     if (N == 0)
         throw exception::OutOfRange("qpp::convergents()");
@@ -609,8 +609,7 @@ convergents(const std::vector<bigint>& cf) {
     bigint b_minus_one = 0;
     bigint a_0 = cf[0];
     bigint b_0 = 1;
-
-    // END EXCEPTIONS CHECKS
+    // END EXCEPTION CHECKS
 
     result[0] = std::make_pair(a_0, b_0);
     if (N == 1)
@@ -644,10 +643,11 @@ convergents(const std::vector<bigint>& cf) {
  */
 inline std::vector<std::pair<bigint, bigint>> convergents(double x, idx N) {
 
-    // EXCEPTIONS CHECKS
+    // EXCEPTION CHECKS
 
     if (N == 0)
         throw exception::OutOfRange("qpp::convergents()");
+    // END EXCEPTION CHECKS
 
     auto cf = x2contfrac(x, N);
     if (cf.size() < N)
