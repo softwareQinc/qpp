@@ -270,8 +270,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 }
 
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
-// http://stackoverflow.com
-// /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
+// https://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
  * \brief Measures the state vector or density matrix \a A using the set of
  * Kraus operators \a Ks
@@ -449,8 +448,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 }
 
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
-// http://stackoverflow.com
-// /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
+// https://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
  * \brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
@@ -517,8 +515,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 }
 
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
-// http://stackoverflow.com
-// /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
+// https://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
  * \brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks

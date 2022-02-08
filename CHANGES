@@ -355,7 +355,7 @@ Version 1.2 - 10 February 2019
     - Added new functions in "number_theory.h":
           qpp::convergents() - overloads that compute the convergents from a
                                continued fraction or a real number, see
-                               http://mathworld.wolfram.com/Convergent.html
+                               https://mathworld.wolfram.com/Convergent.html
     - Added new functions in "operations.h":
           qpp::TFQ()      - inverse qudit quantum Fourier transform (includes
                             qubit QFT as a special case) on an entire quantum
@@ -474,7 +474,7 @@ Version 1.0.0-beta4 - 2 November 2016
           qpp::States::plus()  - plus state of n qubits
           qpp::States::minus() - minus state of n qubits
     - Corrected qpp::is_matrix_expression<> type trait so now it works fine
-          Thanks to @davidhigh http://stackoverflow.com/a/40293333/3093378
+          Thanks to @davidhigh https://stackoverflow.com/a/40293333/3093378
     - Fixed bug in qpp::cor()
     - Renamed qpp::loadMATLABmatrix() and saveMATLABmatrix() to
       qpp::loadMATLAB() and qpp::saveMATLAB(), respectively. Slightly changed

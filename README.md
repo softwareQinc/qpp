@@ -14,8 +14,8 @@
 Quantum++ is a modern C++ general purpose quantum computing library, composed
 solely of template header files. Quantum++ is written in standard C++17 and has
 very low external dependencies, using only
-the [Eigen 3](http://eigen.tuxfamily.org) linear algebra header-only template
-library and, if available, the [OpenMP](http://openmp.org/) multi-processing
+the [Eigen 3](https://eigen.tuxfamily.org) linear algebra header-only template
+library and, if available, the [OpenMP](https://www.openmp.org/) multi-processing
 library.
 
 Quantum++ is not restricted to qubit systems or specific quantum information
@@ -38,12 +38,12 @@ latter will eventually be merged into a future release version. To contribute,
 it is preferable to have a solid knowledge of modern C++ (preferably C++17 or
 later), including templates and the standard library, a basic knowledge of
 quantum computing and linear algebra, and working experience
-with [Eigen 3](http://eigen.tuxfamily.org).
+with [Eigen 3](https://eigen.tuxfamily.org).
 
-For additional [Eigen 3](http://eigen.tuxfamily.org) documentation
-see <http://eigen.tuxfamily.org/dox/>. For a simple
-[Eigen 3](http://eigen.tuxfamily.org) quick ASCII reference see
-<http://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
+For additional [Eigen 3](https://eigen.tuxfamily.org) documentation
+see <https://eigen.tuxfamily.org/dox/>. For a simple
+[Eigen 3](https://eigen.tuxfamily.org) quick ASCII reference see
+<https://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
 Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
 
@@ -67,7 +67,7 @@ documentation and detailed examples.
 
 To generate the full official API documentation in both LaTeX and HTML formats
 run
-[`doxygen`](http://www.doxygen.nl) on
+[`doxygen`](https://www.doxygen.nl) on
 the [`Doxyfile`](https://github.com/softwareQinc/qpp/blob/main/Doxyfile) file.
 The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be
 installed (`sudo apt-get install graphviz` on Ubuntu/Debian Linux,

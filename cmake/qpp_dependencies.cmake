@@ -204,8 +204,7 @@ if (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
     #    ## use the "no-weak" debugging flag only when debugging under OS X,
     #    ## as gdb cannot step in template functions when debugging code
     #    ## produced by g++
-    #    ## see http://stackoverflow.com/questions/
-    #    ## 23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
+    #    ## see https://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
     #    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-weak")
     #endif ()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -D_GLIBCXX_DEBUG")

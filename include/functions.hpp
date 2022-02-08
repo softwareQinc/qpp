@@ -1989,7 +1989,7 @@ std::vector<idx> zket2dits(const Eigen::MatrixBase<Derived>& psi, idx d = 2,
 }
 
 inline namespace literals {
-// Idea taken from http://techblog.altplus.co.jp/entry/2017/11/08/130921
+// Idea borrowed from https://techblog.altplus.co.jp/entry/2017/11/08/130921
 /**
  * \brief Multi-partite qubit ket user-defined literal
  * \see qpp::mket()
@@ -2083,10 +2083,10 @@ cmat operator"" _prj() {
 } /* namespace literals */
 
 namespace internal {
-// hash combine, code taken from boost::hash_combine(), see
-// https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
 /**
  * \brief Hash combine
+ * \note Code borrowed from boost::hash_combine(), see
+ * https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
  *
  * \tparam T Type
  * \param seed Initial seed, will be updated by the function
@@ -2102,8 +2102,6 @@ void hash_combine(std::size_t& seed, const T& v) {
 
 /**
  * \brief Computes the hash of en Eigen matrix/vector/expression
- * \note Code taken from boost::hash_combine(), see
- * https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
  *
  * \param A Eigen expression
  * \param seed Seed, 0 by default

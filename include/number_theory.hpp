@@ -336,7 +336,7 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
         is_positive = true;
 
     // the code below is taken from
-    // http://stackoverflow.com/a/18680280/3093378
+    // https://stackoverflow.com/a/18680280/3093378
     ubigint res = 0;
     ubigint temp_b;
 
@@ -585,7 +585,7 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000) {
     return 0; // so we don't get a warning
 }
 
-// see http://mathworld.wolfram.com/Convergent.html
+// see https://mathworld.wolfram.com/Convergent.html
 /**
  * \brief Convergents
  * \see qpp::contfrac2x() and qpp::x2contfrac()
@@ -626,7 +626,7 @@ convergents(const std::vector<bigint>& cf) {
     return result;
 }
 
-// see http://mathworld.wolfram.com/Convergent.html
+// see https://mathworld.wolfram.com/Convergent.html
 /**
  * \brief Convergents
  * \see qpp::contfrac2x() and qpp::x2contfrac()

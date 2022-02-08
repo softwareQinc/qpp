@@ -81,7 +81,7 @@ struct is_iterable<T, std::void_t<decltype(std::declval<T>().begin()),
  * is an Eigen matrix expression of type \a Eigen::MatrixBase<Derived>.
  * Otherwise, \a value is equal to \a false.
  */
-// thanks to @davidhigh http://stackoverflow.com/a/40293333/3093378
+// thanks to @davidhigh https://stackoverflow.com/a/40293333/3093378
 // silence g++4.8.x warning about non-virtual destructor in inherited class
 #if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
     (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)

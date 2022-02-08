@@ -1,6 +1,6 @@
 # Installation instructions
 
-Quantum++ is a header-only library that uses [CMake](https://www.cmake.org/) as
+Quantum++ is a header-only library that uses [CMake](https://cmake.org/) as
 its build/install system. Quantum++ is platform-independent,
 supporting [UNIX](https://www.opengroup.org/membership/forums/platform/unix)
 (including
@@ -10,7 +10,7 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 
 ## Pre-requisites
 
-- [CMake](https://www.cmake.org/) version 3.12 or later
+- [CMake](https://cmake.org/) version 3.12 or later
 - [Eigen 3](https://eigen.tuxfamily.org) linear algebra library
     - Preferably install Eigen3 with via CMake or with a package manager,
       e.g. `sudo apt install libeigen3-dev` to install on Ubuntu/Debian Linux,
@@ -27,7 +27,7 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 ## Optional
 
 - [Python 3](https://www.python.org/) for running the `pyqpp` Python 3 wrapper
-- [MATLAB](http://www.mathworks.com/products/matlab/) compiler shared libraries
+- [MATLAB](https://www.mathworks.com/products/matlab/) compiler shared libraries
   and include header files, in case you want to enable interoperability with
   MATLAB. If enabled, allows applications build with Quantum++ to save/load
   Quantum++ matrices and vectors to/from MATLAB. The locations of the MATLAB
@@ -197,7 +197,7 @@ c++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
 If you intend to go this route, we assume that you are familiar with how
 compilers work, so we won't add any more explanations to what the line above
 does. We still highly recommend compiling and building your applications using a
-modern build system such as [CMake](https://www.cmake.org/).
+modern build system such as [CMake](https://cmake.org/).
 
 ## Building and running examples
 
@@ -287,7 +287,7 @@ ctest # or .\unit_tests\Debug\unit_tests.exe
 #### Eigen 3 installation under Windows
 
 - We **strongly** recommend installing [Eigen3](https://eigen.tuxfamily.org)
-  using the [CMake](https://www.cmake.org) system, according to the installation
+  using the [CMake](https://cmake.org) system, according to the installation
   instructions file INSTALL from the [Eigen3](https://eigen.tuxfamily.org) root
   directory (which you obtain after un-zipping the Eigen distribution archive).
   For MSVC, this translates into downloading the Eigen3 archive
@@ -308,7 +308,7 @@ with `make install`.
 
 #### macOS/OS X specific instructions
 
-- We highly recommend installing [clang](http://clang.llvm.org/) version 3.8 or
+- We highly recommend installing [clang](https://clang.llvm.org/) version 3.8 or
   later via [Homebrew](https://brew.sh/)
   or [MacPorts](https://www.macports.org/), as the native AppleClang does not
   offer OpenMP support.
@@ -322,7 +322,7 @@ brew install libomp
 #### MATLAB support under Windows
 
 If building under Windows
-with [MATLAB](http://www.mathworks.com/products/matlab/) support, please add the
+with [MATLAB](https://www.mathworks.com/products/matlab/) support, please add the
 location of
 `libmx.dll` and `libmat.dll` (the `.dll` **and not** the `.lib` files) to
 your `PATH` environment variable. In our case they are located

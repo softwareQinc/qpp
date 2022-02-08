@@ -1791,8 +1791,8 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     // std::initializer_list overload, avoids ambiguity for 2-element lists,
-    // see http://stackoverflow.com
-    // /questions/26750039/ambiguity-when-using-initializer-list-as-parameter
+    // see
+    // https://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
     /**
      * \brief Applies the single qudit gate \a U on every qudit listed in
      * \a target
