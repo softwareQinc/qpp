@@ -101,7 +101,7 @@ constexpr double infty = std::numeric_limits<double>::infinity();
  */
 inline cplx omega(idx D) {
     if (D == 0)
-        throw exception::OutOfRange("qpp::omega()");
+        throw exception::OutOfRange("qpp::omega()", "D");
     return std::exp(2.0 * pi * 1_i / static_cast<double>(D));
 }
 

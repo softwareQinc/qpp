@@ -1,4 +1,6 @@
 Pre-release:
+    - Added "context" to exception throwing, so now it is obvious which argument
+      triggers an exception
     - EIGEN3_INSTALL_DIR can now be set as an OS environment variable (in
       addition to a CMake variable). If both are set, then the CMake variable
       trumps. If none are set, the system tries to detect the location of the

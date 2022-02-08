@@ -279,15 +279,14 @@ kron2(const Eigen::MatrixBase<Derived1>& A,
     // check types
     if (!std::is_same<typename Derived1::Scalar,
                       typename Derived2::Scalar>::value)
-        throw exception::TypeMismatch("qpp::kron()");
+        throw exception::TypeMismatch("qpp::kron()", "A/B");
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::kron()");
-
+        throw exception::ZeroSize("qpp::kron()", "A");
     // check zero-size
     if (!internal::check_nonzero_size(rB))
-        throw exception::ZeroSize("qpp::kron()");
+        throw exception::ZeroSize("qpp::kron()", "B");
     // END EXCEPTION CHECKS
 
     idx Acols = static_cast<idx>(rA.cols());
@@ -324,15 +323,14 @@ dirsum2(const Eigen::MatrixBase<Derived1>& A,
     // check types
     if (!std::is_same<typename Derived1::Scalar,
                       typename Derived2::Scalar>::value)
-        throw exception::TypeMismatch("qpp::dirsum()");
+        throw exception::TypeMismatch("qpp::dirsum()", "A/B");
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::dirsum()");
-
+        throw exception::ZeroSize("qpp::dirsum()", "A");
     // check zero-size
     if (!internal::check_nonzero_size(rB))
-        throw exception::ZeroSize("qpp::dirsum()");
+        throw exception::ZeroSize("qpp::dirsum()", "B");
     // END EXCEPTION CHECKS
 
     idx Acols = static_cast<idx>(rA.cols());

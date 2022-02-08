@@ -43,7 +43,7 @@ inline std::vector<double> uniform(idx N) {
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw exception::ZeroSize("qpp::uniform()");
+        throw exception::ZeroSize("qpp::uniform()", "N");
     // END EXCEPTION CHECKS
 
     return std::vector<double>(N, 1. / static_cast<double>(N));
@@ -61,7 +61,7 @@ inline std::vector<double> marginalX(const dmat& probXY) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(probXY))
-        throw exception::ZeroSize("qpp::marginalX()");
+        throw exception::ZeroSize("qpp::marginalX()", "probXY");
     // END EXCEPTION CHECKS
 
     std::vector<double> result(probXY.rows(), 0);
@@ -86,7 +86,7 @@ inline std::vector<double> marginalY(const dmat& probXY) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(probXY))
-        throw exception::ZeroSize("qpp::marginalY()");
+        throw exception::ZeroSize("qpp::marginalY()", "probXY");
     // END EXCEPTION CHECKS
 
     return marginalX(probXY.transpose());
@@ -108,9 +108,9 @@ avg(const std::vector<double>& prob, const Container& X,
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob))
-        throw exception::ZeroSize("qpp::avg()");
+        throw exception::ZeroSize("qpp::avg()", "prob");
     if (!internal::check_matching_sizes(prob, X))
-        throw exception::SizeMismatch("qpp::avg()");
+        throw exception::SizeMismatch("qpp::avg()", "prob/X");
     // END EXCEPTION CHECKS
 
     double result = 0;
@@ -136,11 +136,14 @@ cov(const dmat& probXY, const Container& X, const Container& Y,
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(X) || !internal::check_nonzero_size(Y))
-        throw exception::ZeroSize("qpp::cov()");
-    if (static_cast<idx>(probXY.rows()) != X.size() ||
-        static_cast<idx>(probXY.cols()) != Y.size())
-        throw exception::SizeMismatch("qpp::cov()");
+    if (!internal::check_nonzero_size(X))
+        throw exception::ZeroSize("qpp::cov()", "X");
+    if (!internal::check_nonzero_size(Y))
+        throw exception::ZeroSize("qpp::cov()", "Y");
+    if (static_cast<idx>(probXY.rows()) != X.size())
+        throw exception::SizeMismatch("qpp::cov()", "probXY/X");
+    if (static_cast<idx>(probXY.cols()) != Y.size())
+        throw exception::SizeMismatch("qpp::cov()", "probXY/Y");
     // END EXCEPTION CHECKS
 
     std::vector<double> probX = marginalX(probXY); // marginals
@@ -171,9 +174,9 @@ var(const std::vector<double>& prob, const Container& X,
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob))
-        throw exception::ZeroSize("qpp::var()");
+        throw exception::ZeroSize("qpp::var()", "prob");
     if (!internal::check_matching_sizes(prob, X))
-        throw exception::SizeMismatch("qpp::var()");
+        throw exception::SizeMismatch("qpp::var()", "prob/X");
     // END EXCEPTION CHECKS
 
     Eigen::VectorXd diag(prob.size());
@@ -199,9 +202,9 @@ sigma(const std::vector<double>& prob, const Container& X,
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob))
-        throw exception::ZeroSize("qpp::sigma()");
+        throw exception::ZeroSize("qpp::sigma()", "prob");
     if (!internal::check_matching_sizes(prob, X))
-        throw exception::SizeMismatch("qpp::sigma()");
+        throw exception::SizeMismatch("qpp::sigma()", "prob/X");
     // END EXCEPTION CHECKS
 
     return std::sqrt(var(prob, X));
@@ -223,11 +226,14 @@ cor(const dmat& probXY, const Container& X, const Container& Y,
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(X) || !internal::check_nonzero_size(Y))
-        throw exception::ZeroSize("qpp::cor()");
-    if (static_cast<idx>(probXY.rows()) != X.size() ||
-        static_cast<idx>(probXY.cols()) != Y.size())
-        throw exception::SizeMismatch("qpp::cor()");
+    if (!internal::check_nonzero_size(X))
+        throw exception::ZeroSize("qpp::cor()", "X");
+    if (!internal::check_nonzero_size(Y))
+        throw exception::ZeroSize("qpp::cor()", "Y");
+    if (static_cast<idx>(probXY.rows()) != X.size())
+        throw exception::SizeMismatch("qpp::cor()", "probXY/X");
+    if (static_cast<idx>(probXY.cols()) != Y.size())
+        throw exception::SizeMismatch("qpp::cor()", "probXY/Y");
     // END EXCEPTION CHECKS
 
     return cov(probXY, X, Y) /

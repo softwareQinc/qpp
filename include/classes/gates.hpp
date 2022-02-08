@@ -168,7 +168,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check valid dimension
         if (D == 0)
-            throw exception::DimsInvalid("qpp::Gates::Zd()");
+            throw exception::DimsInvalid("qpp::Gates::Zd()", "D");
         // END EXCEPTION CHECKS
 
         if (D == 2)
@@ -192,7 +192,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check valid dimension
         if (D == 0)
-            throw exception::DimsInvalid("qpp::Gates::SWAPd()");
+            throw exception::DimsInvalid("qpp::Gates::SWAPd()", "D");
         // END EXCEPTION CHECKS
 
         if (D == 2)
@@ -227,7 +227,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check valid dimension
         if (D == 0)
-            throw exception::DimsInvalid("qpp::Gates::Fd()");
+            throw exception::DimsInvalid("qpp::Gates::Fd()", "D");
         // END EXCEPTION CHECKS
 
         if (D == 2)
@@ -270,12 +270,12 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check valid arguments
         if (N < 3 || a >= N) {
-            throw exception::OutOfRange("qpp::Gates::MODMUL()");
+            throw exception::OutOfRange("qpp::Gates::MODMUL()", "a/N");
         }
 
         // check enough qubits
         if (n < static_cast<idx>(std::ceil(std::log2(N)))) {
-            throw exception::OutOfRange("qpp::Gates::MODMUL()");
+            throw exception::OutOfRange("qpp::Gates::MODMUL()", "n/N");
         }
         // END EXCEPTION CHECKS
 
@@ -321,7 +321,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check valid dimension
         if (D == 0)
-            throw exception::DimsInvalid("qpp::Gates::Xd()");
+            throw exception::DimsInvalid("qpp::Gates::Xd()", "D");
         // END EXCEPTION CHECKS
 
         if (D == 2)
@@ -345,7 +345,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check valid dimension
         if (D == 0)
-            throw exception::DimsInvalid("qpp::Gates::Id()");
+            throw exception::DimsInvalid("qpp::Gates::Id()", "D");
         // END EXCEPTION CHECKS
 
         return Derived::Identity(D, D);
@@ -356,8 +356,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * matrix form
      * \see qpp::applyCTRL()
      *
-     * \note The dimension of the gate \a A must match
-     * the dimension of \a target
+     * \note The dimension of the gate \a A must match the dimension of
+     * \a target
      *
      * \param A Eigen expression
      * \param ctrl Control subsystem indexes
@@ -380,25 +380,25 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check matrix zero-size
         if (!internal::check_nonzero_size(rA))
-            throw exception::ZeroSize("qpp::Gates::CTRL()");
+            throw exception::ZeroSize("qpp::Gates::CTRL()", "A");
 
         // check square matrix
         if (!internal::check_square_mat(rA))
-            throw exception::MatrixNotSquare("qpp::Gates::CTRL()");
+            throw exception::MatrixNotSquare("qpp::Gates::CTRL()", "A");
 
         // check lists zero-size
         if (ctrl.empty())
-            throw exception::ZeroSize("qpp::Gates::CTRL()");
+            throw exception::ZeroSize("qpp::Gates::CTRL()", "ctrl");
         if (target.empty())
-            throw exception::ZeroSize("qpp::Gates::CTRL()");
+            throw exception::ZeroSize("qpp::Gates::CTRL()", "target");
 
         // check out of range
         if (n == 0)
-            throw exception::OutOfRange("qpp::Gates::CTRL()");
+            throw exception::OutOfRange("qpp::Gates::CTRL()", "n");
 
         // check valid local dimension
         if (d == 0)
-            throw exception::DimsInvalid("qpp::Gates::CTRL()");
+            throw exception::DimsInvalid("qpp::Gates::CTRL()", "d");
 
         // ctrl + gate subsystem vector
         std::vector<idx> ctrlgate = ctrl;
@@ -411,21 +411,23 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
         if (!internal::check_subsys_match_dims(ctrlgate, dims))
-            throw exception::SubsysMismatchDims("qpp::Gates::CTRL()");
+            throw exception::SubsysMismatchDims("qpp::Gates::CTRL()",
+                                                "ctrl/dims");
 
         // check that target list match the dimension of the matrix
         using Index = typename dyn_mat<typename Derived::Scalar>::Index;
         if (rA.rows() !=
             static_cast<Index>(std::llround(std::pow(d, target.size()))))
-            throw exception::DimsMismatchMatrix("qpp::Gates::CTRL()");
+            throw exception::MatrixMismatchSubsys("qpp::Gates::CTRL()",
+                                                  "A/d/target");
 
         // check shift
         if (!shift.empty() && (shift.size() != ctrl.size()))
-            throw exception::SizeMismatch("qpp::Gates::CTRL()");
+            throw exception::SizeMismatch("qpp::Gates::CTRL()", "ctrl/shift");
         if (!shift.empty())
             for (auto&& elem : shift)
                 if (elem >= d)
-                    throw exception::OutOfRange("qpp::Gates::CTRL()");
+                    throw exception::OutOfRange("qpp::Gates::CTRL()", "shift");
         // END EXCEPTION CHECKS
 
         if (shift.empty())
@@ -549,23 +551,24 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check zero-size
         if (!internal::check_nonzero_size(rA))
-            throw exception::ZeroSize("qpp::Gates::expandout()");
+            throw exception::ZeroSize("qpp::Gates::expandout()", "A");
 
         // check that dims is a valid dimension vector
         if (!internal::check_dims(dims))
-            throw exception::DimsInvalid("qpp::Gates::expandout()");
+            throw exception::DimsInvalid("qpp::Gates::expandout()", "dims");
 
         // check square matrix
         if (!internal::check_square_mat(rA))
-            throw exception::MatrixNotSquare("qpp::Gates::expandout()");
+            throw exception::MatrixNotSquare("qpp::Gates::expandout()", "A");
 
         // check that position is valid
         if (pos + 1 > dims.size())
-            throw exception::OutOfRange("qpp::Gates::expandout()");
+            throw exception::OutOfRange("qpp::Gates::expandout()", "dims/pos");
 
         // check that dims[pos] match the dimension of A
         if (static_cast<idx>(rA.rows()) != dims[pos])
-            throw exception::DimsMismatchMatrix("qpp::Gates::expandout()");
+            throw exception::DimsMismatchMatrix("qpp::Gates::expandout()",
+                                                "A/dims");
         // END EXCEPTION CHECKS
 
         idx D = std::accumulate(std::begin(dims), std::end(dims),
@@ -661,11 +664,11 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check zero size
         if (!internal::check_nonzero_size(A))
-            throw exception::ZeroSize("qpp::Gates::expandout()");
+            throw exception::ZeroSize("qpp::Gates::expandout()", "A");
 
         // check valid dims
         if (d == 0)
-            throw exception::DimsInvalid("qpp::Gates::expandout()");
+            throw exception::DimsInvalid("qpp::Gates::expandout()", "d");
         // END EXCEPTION CHECKS
 
         std::vector<idx> dims(n, d); // local dimensions vector
@@ -689,7 +692,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check zero size
         if (!internal::check_nonzero_size(U))
-            throw exception::ZeroSize("qpp::Gates::get_name()");
+            throw exception::ZeroSize("qpp::Gates::get_name()", "U");
 
         // check square matrix
         if (!internal::check_square_mat(U))
