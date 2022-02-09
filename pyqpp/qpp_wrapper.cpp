@@ -438,6 +438,12 @@ PYBIND11_MODULE(pyqpp, m) {
              std::ostringstream oss;
              oss << qc;
              return oss.str();
+        })
+        .def("__copy__",  [](const QCircuit &self) {
+          return QCircuit(self);
+        })
+        .def("__deepcopy__", [](const QCircuit &self, py::dict) {
+          return QCircuit(self);
         });
 
     /* qpp::QCircuit related free functions */
