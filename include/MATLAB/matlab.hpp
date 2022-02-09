@@ -206,7 +206,7 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::save_MATLAB()");
+        throw exception::ZeroSize("qpp::save_MATLAB()", "A");
 
     MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
     if (!pmat)
@@ -273,7 +273,7 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::save_MATLAB()");
+        throw exception::ZeroSize("qpp::save_MATLAB()", "A");
 
     MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
     if (!pmat)

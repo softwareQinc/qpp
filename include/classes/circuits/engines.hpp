@@ -71,7 +71,8 @@ class QEngine : public IDisplay, public IJSON {
             // EXECEPTION CHECKS
 
             if (qc->get_nq() == 0)
-                throw exception::ZeroSize("qpp::QEngine::state_::reset()");
+                throw exception::ZeroSize("qpp::QEngine::state_::reset()",
+                                          "nq");
             // END EXCEPTION CHECKS
             reset();
         }
@@ -115,7 +116,7 @@ class QEngine : public IDisplay, public IJSON {
 
         if (get_measured(i))
             throw exception::QuditAlreadyMeasured(
-                "qpp::QEngine::set_measured_()");
+                "qpp::QEngine::set_measured_()", "i");
         // END EXCEPTION CHECKS
         st_.subsys_[i] = static_cast<idx>(-1); // set qudit i to measured state
         for (idx m = i; m < qc_->get_nq(); ++m) {
@@ -138,9 +139,10 @@ class QEngine : public IDisplay, public IJSON {
         idx vsize = v.size();
         for (idx i = 0; i < vsize; ++i) {
             // EXCEPTION CHECKS
+
             if (get_measured(v[i]))
                 throw exception::QuditAlreadyMeasured(
-                    "qpp::QEngine::get_relative_pos_()");
+                    "qpp::QEngine::get_relative_pos_()", "v[i]");
             // END EXCEPTION CHECKS
             v[i] = st_.subsys_[v[i]];
         }
@@ -221,7 +223,7 @@ class QEngine : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         if (i >= qc_->get_nc())
-            throw exception::OutOfRange("qpp::QEngine::get_dit()");
+            throw exception::OutOfRange("qpp::QEngine::get_dit()", "i");
         // END EXCEPTION CHECKS
 
         return st_.dits_[i];
@@ -344,7 +346,7 @@ class QEngine : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         if (i >= qc_->get_nc())
-            throw exception::OutOfRange("qpp::QEngine::set_dit()");
+            throw exception::OutOfRange("qpp::QEngine::set_dit()", "i");
         // END EXCEPTION CHECKS
         st_.dits_[i] = value;
 
@@ -367,7 +369,7 @@ class QEngine : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         if (dits.size() != st_.dits_.size())
-            throw exception::SizeMismatch("qpp::QEngine::set_dits()");
+            throw exception::SizeMismatch("qpp::QEngine::set_dits()", "dits");
         // END EXCEPTION CHECKS
         st_.dits_ = std::move(dits);
 
@@ -389,7 +391,7 @@ class QEngine : public IDisplay, public IJSON {
         idx n = get_non_measured().size();
         idx D = static_cast<idx>(std::llround(std::pow(qc_->get_d(), n)));
         if (static_cast<idx>(psi.rows()) != D)
-            throw exception::DimsNotEqual("qpp::QEngine::set_psi()");
+            throw exception::DimsNotEqual("qpp::QEngine::set_psi()", "psi");
         // END EXCEPTION CHECKS
 
         st_.psi_ = psi;
@@ -442,7 +444,9 @@ class QEngine : public IDisplay, public IJSON {
 
         // iterator must point to the same quantum circuit description
         if (elem.value_type_qc_ != qc_)
-            throw exception::InvalidIterator("qpp::QEngine::execute()");
+            throw exception::InvalidIterator(
+                "qpp::QEngine::execute()",
+                "Iterator does not point to the same circuit description");
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
@@ -848,7 +852,8 @@ class QNoisyEngine : public QEngine {
 
         // check noise has the correct dimensionality
         if (qc.get_d() != noise.get_d())
-            throw exception::DimsNotEqual("qpp::QNoisyEngine::QNoisyEngine()");
+            throw exception::DimsNotEqual("qpp::QNoisyEngine::QNoisyEngine()",
+                                          "noise");
         // END EXCEPTION CHECKS
     }
 

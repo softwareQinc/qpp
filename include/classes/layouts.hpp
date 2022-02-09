@@ -93,7 +93,7 @@ class Lattice : public ILayout {
         // EXCEPTION CHECKS
 
         if (dims.empty())
-            throw exception::ZeroSize("qpp::Lattice::Lattice()");
+            throw exception::ZeroSize("qpp::Lattice::Lattice()", "dims");
         // END EXCEPTION CHECKS
     }
 
@@ -119,10 +119,10 @@ class Lattice : public ILayout {
         // EXCEPTION CHECKS
 
         if (xs.size() != dims_.size())
-            throw exception::DimsNotEqual("qpp::Lattice::operator()");
+            throw exception::SizeMismatch("qpp::Lattice::operator()", "xs");
         for (idx i = 0; i < dims_.size(); ++i)
             if (xs[i] >= dims_[i])
-                throw exception::OutOfRange("qpp::Lattice::operator()");
+                throw exception::OutOfRange("qpp::Lattice::operator()", "xs");
         // END EXCEPTION CHECKS
 
         return internal::multiidx2n(xs.data(), dims_.size(), dims_.data());
@@ -152,7 +152,7 @@ class Lattice : public ILayout {
         // EXCEPTION CHECKS
 
         if (i >= prod(dims_))
-            throw exception::OutOfRange("qpp::Lattice::to_coordinates()");
+            throw exception::OutOfRange("qpp::Lattice::to_coordinates()", "i");
         // END EXCEPTION CHECKS
 
         std::vector<idx> result(dims_.size());
@@ -192,7 +192,7 @@ class PeriodicBoundaryLattice : public Lattice {
         // EXCEPTION CHECKS
 
         if (xs.size() != dims_.size())
-            throw exception::DimsNotEqual("qpp::Lattice::operator()");
+            throw exception::SizeMismatch("qpp::Lattice::operator()", "xs");
         // END EXCEPTION CHECKS
 
         std::vector<idx> xs_copy = xs;

@@ -142,7 +142,7 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::save()");
+        throw exception::ZeroSize("qpp::save()", "A");
 
     if (!os.good()) {
         throw std::runtime_error("qpp::save(): Error writing output stream!");
@@ -284,7 +284,7 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::obsolete::save()");
+        throw exception::ZeroSize("qpp::obsolete::save()", "A");
 
     if (!os.good()) {
         throw std::runtime_error(

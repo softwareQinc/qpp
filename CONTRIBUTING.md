@@ -6,4 +6,4 @@ latter will eventually be merged into a future release version. To contribute,
 it is preferable to have a solid knowledge of modern C++ (preferably C++17 or
 later), including templates and the standard library, a basic knowledge of
 quantum computing and linear algebra, and working experience
-with [Eigen 3](http://eigen.tuxfamily.org).
+with [Eigen 3](https://eigen.tuxfamily.org).

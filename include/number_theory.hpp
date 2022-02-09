@@ -48,7 +48,7 @@ inline std::vector<bigint> x2contfrac(double x, idx N, idx cut = 100000) {
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw exception::OutOfRange("qpp::x2contfrac()");
+        throw exception::OutOfRange("qpp::x2contfrac()", "N");
     // END EXCEPTION CHECKS
 
     std::vector<bigint> result;
@@ -86,10 +86,10 @@ inline std::vector<bigint> x2contfrac(double x, idx N, idx cut = 100000) {
 inline double contfrac2x(const std::vector<bigint>& cf, idx N = idx(-1)) {
     // EXCEPTION CHECKS
     if (cf.empty())
-        throw exception::ZeroSize("qpp::contfrac2x()");
+        throw exception::ZeroSize("qpp::contfrac2x()", "cf");
 
     if (N == 0)
-        throw exception::OutOfRange("qpp::contfrac2x()");
+        throw exception::OutOfRange("qpp::contfrac2x()", "N");
     // END EXCEPTION CHECKS
 
     if (N > cf.size())
@@ -118,7 +118,7 @@ inline bigint gcd(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
     if (a == 0 && b == 0)
-        throw exception::OutOfRange("qpp::gcd()");
+        throw exception::OutOfRange("qpp::gcd()", "a/b");
     // END EXCEPTION CHECKS
 
     if (a == 0 || b == 0)
@@ -145,7 +145,7 @@ inline bigint gcd(const std::vector<bigint>& as) {
     // EXCEPTION CHECKS
 
     if (as.empty())
-        throw exception::ZeroSize("qpp::gcd()");
+        throw exception::ZeroSize("qpp::gcd()", "as");
     // END EXCEPTION CHECKS
 
     bigint result = as[0]; // convention: gcd({a}) = a
@@ -168,7 +168,7 @@ inline bigint lcm(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
     if (a == 0 && b == 0)
-        throw exception::OutOfRange("qpp::lcm()");
+        throw exception::OutOfRange("qpp::lcm()", "a/b");
     // END EXCEPTION CHECKS
 
     bigint result = a * b / gcd(a, b);
@@ -187,13 +187,13 @@ inline bigint lcm(const std::vector<bigint>& as) {
     // EXCEPTION CHECKS
 
     if (as.empty())
-        throw exception::ZeroSize("qpp::lcm()");
+        throw exception::ZeroSize("qpp::lcm()", "as");
 
     if (as.size() == 1) // convention: lcm({a}) = a
         return as[0];
 
-    if (std::find(std::begin(as), std::end(as), 0) != std::end(as))
-        throw exception::OutOfRange("qpp::lcm()");
+    if (as == std::vector<bigint>(as.size(), 0))
+        throw exception::OutOfRange("qpp::lcm()", "as");
     // END EXCEPTION CHECKS
 
     bigint result = as[0]; // convention: lcm({n}) = a
@@ -215,7 +215,7 @@ inline std::vector<idx> invperm(const std::vector<idx>& perm) {
     // EXCEPTION CHECKS
 
     if (!internal::check_perm(perm))
-        throw exception::PermInvalid("qpp::invperm()");
+        throw exception::PermInvalid("qpp::invperm()", "perm");
     // END EXCEPTION CHECKS
 
     // construct the inverse
@@ -239,11 +239,11 @@ inline std::vector<idx> compperm(const std::vector<idx>& perm,
     // EXCEPTION CHECKS
 
     if (!internal::check_perm(perm))
-        throw exception::PermInvalid("qpp::compperm()");
+        throw exception::PermInvalid("qpp::compperm()", "perm");
     if (!internal::check_perm(sigma))
-        throw exception::PermInvalid("qpp::compperm()");
+        throw exception::PermInvalid("qpp::compperm()", "sigma");
     if (perm.size() != sigma.size())
-        throw exception::PermInvalid("qpp::compperm()");
+        throw exception::SizeMismatch("qpp::compperm()", "perm/sigma");
     // END EXCEPTION CHECKS
 
     // construct the composition perm(sigma)
@@ -269,7 +269,7 @@ inline std::vector<bigint> factors(bigint a) {
     // EXCEPTION CHECKS
 
     if (a == 0 || a == 1)
-        throw exception::OutOfRange("qpp::factors()");
+        throw exception::OutOfRange("qpp::factors()", "a");
     // END EXCEPTION CHECKS
 
     std::vector<bigint> result;
@@ -309,7 +309,7 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
     // EXCEPTION CHECKS
 
     if (p < 1)
-        throw exception::OutOfRange("qpp::modmul()");
+        throw exception::OutOfRange("qpp::modmul()", "p");
     // END EXCEPTION CHECKS
 
     if (a == 0 || b == 0)
@@ -336,7 +336,7 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
         is_positive = true;
 
     // the code below is taken from
-    // http://stackoverflow.com/a/18680280/3093378
+    // https://stackoverflow.com/a/18680280/3093378
     ubigint res = 0;
     ubigint temp_b;
 
@@ -389,10 +389,10 @@ inline bigint modpow(bigint a, bigint n, bigint p) {
     // EXCEPTION CHECKS
 
     if (a < 0 || n < 0 || p < 1)
-        throw exception::OutOfRange("qpp::modpow()");
+        throw exception::OutOfRange("qpp::modpow()", "a/n/p");
 
     if (a == 0 && n == 0)
-        throw exception::OutOfRange("qpp::modpow()");
+        throw exception::OutOfRange("qpp::modpow()", "a/n");
     // END EXCEPTION CHECKS
 
     if (a == 0 && n > 0)
@@ -426,7 +426,7 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
     if (a == 0 && b == 0)
-        throw exception::OutOfRange("qpp::egcd()");
+        throw exception::OutOfRange("qpp::egcd()", "a/b");
     // END EXCEPTION CHECKS
 
     bigint m, n, c, q, r;
@@ -464,14 +464,14 @@ inline bigint modinv(bigint a, bigint p) {
     // EXCEPTION CHECKS
 
     if (a <= 0 || p <= 0)
-        throw exception::OutOfRange("qpp::modinv()");
+        throw exception::OutOfRange("qpp::modinv()", "a/p");
 
     bigint x, y;
     bigint gcd_ap;
     std::tie(x, y, gcd_ap) = egcd(p, a);
 
     if (gcd_ap != 1)
-        throw exception::OutOfRange("qpp::modinv()");
+        throw exception::OutOfRange("qpp::modinv()", "gcd(a,p) != 1");
     // END EXCEPTION CHECKS
 
     return (y > 0) ? y : y + p;
@@ -491,7 +491,7 @@ inline bool isprime(bigint p, idx k = 80) {
     // EXCEPTION CHECKS
 
     if (p < 2)
-        throw exception::OutOfRange("qpp::isprime()");
+        throw exception::OutOfRange("qpp::isprime()", "p");
     // END EXCEPTION CHECKS
 
     if (p == 2 || p == 3)
@@ -549,7 +549,7 @@ inline bool isprime(bigint p, idx k = 80) {
  *
  * \param a Beginning of the interval, belongs to it
  * \param b End of the interval, belongs to it
- * \param N Maximum number of candidates
+ * \param N Maximum number of trials
  * \return Random big integer uniformly distributed in the interval [a, b]
  */
 // A std::optional<bigint> return type would have been awesome here!
@@ -557,7 +557,7 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000) {
     // EXCEPTION CHECKS
 
     if (a > b)
-        throw exception::OutOfRange("qpp::randprime()");
+        throw exception::OutOfRange("qpp::randprime()", "a/b");
     // END EXCEPTION CHECKS
 
     idx i = 0;
@@ -580,13 +580,12 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000) {
     }
 
     if (i == N)
-        throw exception::CustomException("qpp::randprime()",
-                                         "Prime not found!");
+        throw exception::CustomException("qpp::randprime()", "Prime not found");
 
     return 0; // so we don't get a warning
 }
 
-// see http://mathworld.wolfram.com/Convergent.html
+// see https://mathworld.wolfram.com/Convergent.html
 /**
  * \brief Convergents
  * \see qpp::contfrac2x() and qpp::x2contfrac()
@@ -602,7 +601,7 @@ convergents(const std::vector<bigint>& cf) {
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw exception::OutOfRange("qpp::convergents()");
+        throw exception::ZeroSize("qpp::convergents()", "cf");
 
     std::vector<std::pair<bigint, bigint>> result(N);
     bigint a_minus_one = 1;
@@ -627,7 +626,7 @@ convergents(const std::vector<bigint>& cf) {
     return result;
 }
 
-// see http://mathworld.wolfram.com/Convergent.html
+// see https://mathworld.wolfram.com/Convergent.html
 /**
  * \brief Convergents
  * \see qpp::contfrac2x() and qpp::x2contfrac()
@@ -646,8 +645,7 @@ inline std::vector<std::pair<bigint, bigint>> convergents(double x, idx N) {
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw exception::OutOfRange("qpp::convergents()");
-    // END EXCEPTION CHECKS
+        throw exception::OutOfRange("qpp::convergents()", "N");
 
     auto cf = x2contfrac(x, N);
     if (cf.size() < N)

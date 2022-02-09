@@ -53,16 +53,16 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::schmidtcoeffs()");
+        throw exception::ZeroSize("qpp::schmidtcoeffs()", "A");
     // check bi-partite
     if (dims.size() != 2)
-        throw exception::NotBipartite("qpp::schmidtcoeffs()");
+        throw exception::NotBipartite("qpp::schmidtcoeffs()", "dims");
     // check column vector
     if (!internal::check_cvector(rA))
-        throw exception::MatrixNotCvector("qpp::schmidtcoeffs()");
+        throw exception::MatrixNotCvector("qpp::schmidtcoeffs()", "A");
     // check matching dimensions
     if (!internal::check_dims_match_cvect(dims, rA))
-        throw exception::DimsMismatchCvector("qpp::schmidtcoeffs()");
+        throw exception::DimsMismatchCvector("qpp::schmidtcoeffs()", "A/dims");
     // END EXCEPTION CHECKS
 
     return svals(transpose(reshape(rA, dims[1], dims[0])));
@@ -88,11 +88,11 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
 
     // check zero size
     if (!internal::check_nonzero_size(A))
-        throw exception::ZeroSize("qpp::schmidtcoeffs()");
+        throw exception::ZeroSize("qpp::schmidtcoeffs()", "A");
 
     // check valid dims
     if (d < 2)
-        throw exception::DimsInvalid("qpp::schmidtcoeffs()");
+        throw exception::DimsInvalid("qpp::schmidtcoeffs()", "d");
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -118,16 +118,16 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::schmidtA()");
+        throw exception::ZeroSize("qpp::schmidtA()", "A");
     // check bi-partite
     if (dims.size() != 2)
-        throw exception::NotBipartite("qpp::schmidtA()");
+        throw exception::NotBipartite("qpp::schmidtA()", "dims");
     // check column vector
     if (!internal::check_cvector(rA))
-        throw exception::MatrixNotCvector("qpp::schmidtA()");
+        throw exception::MatrixNotCvector("qpp::schmidtA()", "A");
     // check matching dimensions
     if (!internal::check_dims_match_cvect(dims, rA))
-        throw exception::DimsMismatchCvector("qpp::schmidtA()");
+        throw exception::DimsMismatchCvector("qpp::schmidtA()", "A/dims");
     // END EXCEPTION CHECKS
 
     return svdU(transpose(reshape(rA, dims[1], dims[0])));
@@ -149,11 +149,11 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 
     // check zero size
     if (!internal::check_nonzero_size(A))
-        throw exception::ZeroSize("qpp::schmidtA()");
+        throw exception::ZeroSize("qpp::schmidtA()", "A");
 
     // check valid dims
     if (d < 2)
-        throw exception::DimsInvalid("qpp::schmidtA()");
+        throw exception::DimsInvalid("qpp::schmidtA()", "d");
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -179,16 +179,16 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::schmidtB()");
+        throw exception::ZeroSize("qpp::schmidtB()", "A");
     // check bi-partite
     if (dims.size() != 2)
-        throw exception::NotBipartite("qpp::schmidtB()");
+        throw exception::NotBipartite("qpp::schmidtB()", "dims");
     // check column vector
     if (!internal::check_cvector(rA))
-        throw exception::MatrixNotCvector("qpp::schmidtB()");
+        throw exception::MatrixNotCvector("qpp::schmidtB()", "A");
     // check matching dimensions
     if (!internal::check_dims_match_cvect(dims, rA))
-        throw exception::DimsMismatchCvector("qpp::schmidtB()");
+        throw exception::DimsMismatchCvector("qpp::schmidtB()", "A/dims");
     // END EXCEPTION CHECKS
 
     // by default returns U_B^*, we need U_B, i.e., the complex conjugate,
@@ -212,11 +212,11 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 
     // check zero size
     if (!internal::check_nonzero_size(A))
-        throw exception::ZeroSize("qpp::schmidtB()");
+        throw exception::ZeroSize("qpp::schmidtB()", "A");
 
     // check valid dims
     if (d < 2)
-        throw exception::DimsInvalid("qpp::schmidtB()");
+        throw exception::DimsInvalid("qpp::schmidtB()", "d");
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -246,16 +246,16 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::schmidtprobs()");
+        throw exception::ZeroSize("qpp::schmidtprobs()", "A");
     // check bi-partite
     if (dims.size() != 2)
-        throw exception::NotBipartite("qpp::schmidtprobs()");
+        throw exception::NotBipartite("qpp::schmidtprobs()", "dims");
     // check column vector
     if (!internal::check_cvector(rA))
-        throw exception::MatrixNotCvector("qpp::schmidtprobs()");
+        throw exception::MatrixNotCvector("qpp::schmidtprobs()", "A");
     // check matching dimensions
     if (!internal::check_dims_match_cvect(dims, rA))
-        throw exception::DimsMismatchCvector("qpp::schmidtprobs()");
+        throw exception::DimsMismatchCvector("qpp::schmidtprobs()", "A/dims");
     // END EXCEPTION CHECKS
 
     std::vector<double> result;
@@ -287,11 +287,11 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
 
     // check zero size
     if (!internal::check_nonzero_size(A))
-        throw exception::ZeroSize("qpp::schmidtprobs()");
+        throw exception::ZeroSize("qpp::schmidtprobs()", "A");
 
     // check valid dims
     if (d < 2)
-        throw exception::DimsInvalid("qpp::schmidtprobs()");
+        throw exception::DimsInvalid("qpp::schmidtprobs()", "d");
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -327,16 +327,16 @@ schmidt(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::schmidt()");
+        throw exception::ZeroSize("qpp::schmidt()", "A");
     // check bi-partite
     if (dims.size() != 2)
-        throw exception::NotBipartite("qpp::schmidt()");
+        throw exception::NotBipartite("qpp::schmidt()", "dims");
     // check column vector
     if (!internal::check_cvector(rA))
-        throw exception::MatrixNotCvector("qpp::schmidt()");
+        throw exception::MatrixNotCvector("qpp::schmidt()", "A");
     // check matching dimensions
     if (!internal::check_dims_match_cvect(dims, rA))
-        throw exception::DimsMismatchCvector("qpp::schmidt()");
+        throw exception::DimsMismatchCvector("qpp::schmidt()", "A");
     // END EXCEPTION CHECKS
 
     auto const sv = svd(transpose(reshape(rA, dims[1], dims[0])));
@@ -370,11 +370,11 @@ schmidt(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 
     // check zero size
     if (!internal::check_nonzero_size(A))
-        throw exception::ZeroSize("qpp::schmidt()");
+        throw exception::ZeroSize("qpp::schmidt()", "A");
 
     // check valid dims
     if (d < 2)
-        throw exception::DimsInvalid("qpp::schmidt()");
+        throw exception::DimsInvalid("qpp::schmidt()", "d");
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(A.rows()), d);
@@ -403,16 +403,16 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::entanglement()");
+        throw exception::ZeroSize("qpp::entanglement()", "A");
     // check bi-partite
     if (dims.size() != 2)
-        throw exception::NotBipartite("qpp::entanglement()");
+        throw exception::NotBipartite("qpp::entanglement()", "dims");
     // check column vector
     if (!internal::check_cvector(rA))
-        throw exception::MatrixNotCvector("qpp::entanglement()");
+        throw exception::MatrixNotCvector("qpp::entanglement()", "A");
     // check matching dimensions
     if (!internal::check_dims_match_cvect(dims, rA))
-        throw exception::DimsMismatchCvector("qpp::entanglement()");
+        throw exception::DimsMismatchCvector("qpp::entanglement()", "A/dims");
     // END EXCEPTION CHECKS
 
     return entropy(schmidtprobs(rA, dims));
@@ -437,11 +437,11 @@ double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 
     // check zero size
     if (!internal::check_nonzero_size(A))
-        throw exception::ZeroSize("qpp::entanglement()");
+        throw exception::ZeroSize("qpp::entanglement()", "A");
 
     // check valid dims
     if (d < 2)
-        throw exception::DimsInvalid("qpp::entanglement()");
+        throw exception::DimsInvalid("qpp::entanglement()", "d");
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -470,16 +470,16 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A) {
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::gconcurrence()");
+        throw exception::ZeroSize("qpp::gconcurrence()", "A");
     // check column vector
     if (!internal::check_cvector(rA))
-        throw exception::MatrixNotCvector("qpp::gconcurrence()");
+        throw exception::MatrixNotCvector("qpp::gconcurrence()", "A");
 
     idx d = internal::get_dim_subsys(static_cast<idx>(rA.rows()), 2);
 
     // check equal local dimensions
     if (d * d != static_cast<idx>(rA.rows()))
-        throw exception::DimsNotEqual("qpp::gconcurrence()");
+        throw exception::DimsNotEqual("qpp::gconcurrence()", "A");
     // END EXCEPTION CHECKS
 
     // we compute exp(logdet()) to avoid underflow
@@ -503,16 +503,16 @@ double negativity(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::negativity()");
+        throw exception::ZeroSize("qpp::negativity()", "A");
     // check bi-partite
     if (dims.size() != 2)
-        throw exception::NotBipartite("qpp::negativity()");
+        throw exception::NotBipartite("qpp::negativity()", "dims");
     // check square matrix vector
     if (!internal::check_square_mat(rA))
-        throw exception::MatrixNotSquare("qpp::negativity()");
+        throw exception::MatrixNotSquare("qpp::negativity()", "A");
     // check matching dimensions
     if (!internal::check_dims_match_mat(dims, rA))
-        throw exception::DimsMismatchMatrix("qpp::negativity()");
+        throw exception::DimsMismatchMatrix("qpp::negativity()", "A/dims");
     // END EXCEPTION CHECKS
 
     return (schatten(ptranspose(rA, {0}, dims), 1) - 1.) / 2.;
@@ -533,11 +533,11 @@ double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 
     // check zero size
     if (!internal::check_nonzero_size(A))
-        throw exception::ZeroSize("qpp::negativity()");
+        throw exception::ZeroSize("qpp::negativity()", "A");
 
     // check valid dims
     if (d < 2)
-        throw exception::DimsInvalid("qpp::negativity()");
+        throw exception::DimsInvalid("qpp::negativity()", "d");
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -562,16 +562,16 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A,
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::lognegativity()");
+        throw exception::ZeroSize("qpp::lognegativity()", "A");
     // check bi-partite
     if (dims.size() != 2)
-        throw exception::NotBipartite("qpp::lognegativity()");
+        throw exception::NotBipartite("qpp::lognegativity()", "dims");
     // check square matrix vector
     if (!internal::check_square_mat(rA))
-        throw exception::MatrixNotSquare("qpp::lognegativity()");
+        throw exception::MatrixNotSquare("qpp::lognegativity()", "A");
     // check matching dimensions
     if (!internal::check_dims_match_mat(dims, rA))
-        throw exception::DimsMismatchMatrix("qpp::lognegativity()");
+        throw exception::DimsMismatchMatrix("qpp::lognegativity()", "A/dims");
     // END EXCEPTION CHECKS
 
     return std::log2(2 * negativity(rA, dims) + 1);
@@ -592,11 +592,11 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
 
     // check zero size
     if (!internal::check_nonzero_size(A))
-        throw exception::ZeroSize("qpp::lognegativity()");
+        throw exception::ZeroSize("qpp::lognegativity()", "A");
 
     // check valid dims
     if (d < 2)
-        throw exception::DimsInvalid("qpp::lognegativity()");
+        throw exception::DimsInvalid("qpp::lognegativity()", "d");
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
@@ -619,13 +619,13 @@ double concurrence(const Eigen::MatrixBase<Derived>& A) {
 
     // check zero-size
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::concurrence()");
+        throw exception::ZeroSize("qpp::concurrence()", "A");
     // check square matrix vector
     if (!internal::check_square_mat(rA))
-        throw exception::MatrixNotSquare("qpp::concurrence()");
+        throw exception::MatrixNotSquare("qpp::concurrence()", "A");
     // check that the state is a 2-qubit state
     if (rA.rows() != 4)
-        throw exception::NotQubitSubsys("qpp::concurrence()");
+        throw exception::NotQubitSubsys("qpp::concurrence()", "A");
     // END EXCEPTION CHECKS
 
     cmat sigmaY = Gates::get_no_thread_local_instance().Y;

@@ -46,7 +46,7 @@ inline double rand(double a, double b) {
     // EXCEPTION CHECKS
 
     if (a >= b)
-        throw exception::OutOfRange("qpp::rand()");
+        throw exception::OutOfRange("qpp::rand()", "a/b");
     // END EXCEPTION CHECKS
 
     std::uniform_real_distribution<> ud(a, b);
@@ -70,7 +70,7 @@ inline bigint rand(bigint a, bigint b) {
     // EXCEPTION CHECKS
 
     if (a > b)
-        throw exception::OutOfRange("qpp::rand()");
+        throw exception::OutOfRange("qpp::rand()", "a/b");
     // END EXCEPTION CHECKS
 
     std::uniform_int_distribution<bigint> uid(a, b);
@@ -93,7 +93,7 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
     // EXCEPTION CHECKS
 
     if (a > b)
-        throw exception::OutOfRange("qpp::randidx()");
+        throw exception::OutOfRange("qpp::randidx()", "a/b");
     // END EXCEPTION CHECKS
 
     std::uniform_int_distribution<idx> uid(a, b);
@@ -143,9 +143,9 @@ inline dmat rand(idx rows, idx cols, double a, double b) {
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
-        throw exception::ZeroSize("qpp::rand()");
+        throw exception::ZeroSize("qpp::rand()", "rows/cols");
     if (a >= b)
-        throw exception::OutOfRange("qpp::rand()");
+        throw exception::OutOfRange("qpp::rand()", "a/b");
     // END EXCEPTION CHECKS
 
     return dmat::Zero(rows, cols).unaryExpr([a, b](double) {
@@ -158,9 +158,9 @@ inline cmat rand(idx rows, idx cols, double a, double b) {
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
-        throw exception::ZeroSize("qpp::rand()");
+        throw exception::ZeroSize("qpp::rand()", "rows/cols");
     if (a >= b)
-        throw exception::OutOfRange("qpp::rand()");
+        throw exception::OutOfRange("qpp::rand()", "a/b");
     // END EXCEPTION CHECKS
 
     return rand<dmat>(rows, cols, a, b).cast<cplx>() +
@@ -210,7 +210,7 @@ inline dmat randn(idx rows, idx cols, double mean, double sigma) {
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
-        throw exception::ZeroSize("qpp::randn()");
+        throw exception::ZeroSize("qpp::randn()", "rows/cols");
     // END EXCEPTION CHECKS
 
     std::normal_distribution<> nd(mean, sigma);
@@ -226,7 +226,7 @@ inline cmat randn(idx rows, idx cols, double mean, double sigma) {
     // EXCEPTION CHECKS
 
     if (rows == 0 || cols == 0)
-        throw exception::ZeroSize("qpp::randn()");
+        throw exception::ZeroSize("qpp::randn()", "rows/cols");
     // END EXCEPTION CHECKS
 
     return randn<dmat>(rows, cols, mean, sigma).cast<cplx>() +
@@ -262,7 +262,7 @@ inline cmat randU(idx D = 2)
     // EXCEPTION CHECKS
 
     if (D == 0)
-        throw exception::DimsInvalid("qpp::randU()");
+        throw exception::DimsInvalid("qpp::randU()", "D");
     // END EXCEPTION CHECKS
 
     cmat X = 1 / std::sqrt(2.) * randn<cmat>(D, D);
@@ -292,7 +292,7 @@ inline cmat randV(idx Din, idx Dout) {
     // EXCEPTION CHECKS
 
     if (Din == 0 || Dout == 0 || Din > Dout)
-        throw exception::DimsInvalid("qpp::randV()");
+        throw exception::DimsInvalid("qpp::randV()", "Din/Dout");
     // END EXCEPTION CHECKS
 
     return randU(Dout).block(0, 0, Dout, Din);
@@ -317,12 +317,12 @@ inline cmat randV(idx Din, idx Dout) {
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw exception::OutOfRange("qpp::randkraus()");
+        throw exception::OutOfRange("qpp::randkraus()", "N");
     if (Din == 0 || Dout == 0)
-        throw exception::DimsInvalid("qpp::randkraus()");
+        throw exception::DimsInvalid("qpp::randkraus()", "Din/Dout");
     idx Din_env = (N * Dout) / Din; // dimension of the input environment
     if (Din_env * Din != Dout * N)
-        throw exception::DimsInvalid("qpp::randkraus()");
+        throw exception::DimsInvalid("qpp::randkraus()", "Din/Dout");
     // END EXCEPTION CHECKS
 
     std::vector<cmat> result(N);
@@ -370,7 +370,7 @@ inline cmat randH(idx D = 2) {
     // EXCEPTION CHECKS
 
     if (D == 0)
-        throw exception::DimsInvalid("qpp::randH()");
+        throw exception::DimsInvalid("qpp::randH()", "D");
     // END EXCEPTION CHECKS
 
     cmat H = 2 * rand<cmat>(D, D) - (1. + 1_i) * cmat::Ones(D, D);
@@ -388,7 +388,7 @@ inline ket randket(idx D = 2) {
     // EXCEPTION CHECKS
 
     if (D == 0)
-        throw exception::DimsInvalid("qpp::randket()");
+        throw exception::DimsInvalid("qpp::randket()", "D");
     // END EXCEPTION CHECKS
 
     /* slow
@@ -413,7 +413,7 @@ inline cmat randrho(idx D = 2) {
     // EXCEPTION CHECKS
 
     if (D == 0)
-        throw exception::DimsInvalid("qpp::randrho()");
+        throw exception::DimsInvalid("qpp::randrho()", "D");
     // END EXCEPTION CHECKS
 
     cmat result = 10 * randH(D);
@@ -435,7 +435,7 @@ inline std::vector<idx> randperm(idx N) {
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw exception::PermInvalid("qpp::randperm()");
+        throw exception::ZeroSize("qpp::randperm()", "N");
     // END EXCEPTION CHECKS
 
     std::vector<idx> result(N);
@@ -461,7 +461,7 @@ inline std::vector<double> randprob(idx N) {
     // EXCEPTION CHECKS
 
     if (N == 0)
-        throw exception::OutOfRange("qpp::randprob()");
+        throw exception::ZeroSize("qpp::randprob()");
     // END EXCEPTION CHECKS
 
     std::vector<double> result(N);

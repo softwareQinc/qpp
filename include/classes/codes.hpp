@@ -103,7 +103,8 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
                             4.;
                         break;
                     default:
-                        throw exception::NoCodeword("qpp::Codes::codeword()");
+                        throw exception::NoCodeword("qpp::Codes::codeword()",
+                                                    "FIVE_QUBIT");
                 }
                 break;
             // [[7,1,3]] Steane code, as described in Nielsen and Chuang
@@ -133,7 +134,8 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
                                  std::sqrt(8.);
                         break;
                     default:
-                        throw exception::NoCodeword("qpp::Codes::codeword()");
+                        throw exception::NoCodeword("qpp::Codes::codeword()",
+                                                    "STEANE_SEVEN_QUBIT");
                 }
                 break;
             // [[9,1,3]] Shor code
@@ -150,7 +152,8 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
                             kron(shorb, kron(shorb, shorb)) / std::sqrt(8.);
                         break;
                     default:
-                        throw exception::NoCodeword("qpp::Codes::codeword()");
+                        throw exception::NoCodeword("qpp::Codes::codeword()",
+                                                    "SHOR_NINE_QUBIT");
                 }
         }
 

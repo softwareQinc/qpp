@@ -100,7 +100,7 @@ class States final : public internal::Singleton<const States> // const Singleton
 
         // check valid dims
         if (d == 0)
-            throw exception::DimsInvalid("qpp::States::mes()");
+            throw exception::DimsInvalid("qpp::States::mes()", "d");
         // END EXCEPTION CHECKS
 
         ket psi = mket({0, 0}, {d, d});
@@ -124,10 +124,10 @@ class States final : public internal::Singleton<const States> // const Singleton
 
         // check out of range
         if (n == 0)
-            throw exception::OutOfRange("qpp::States::zero()");
+            throw exception::OutOfRange("qpp::States::zero()", "n");
         // check valid dims
         if (d == 0)
-            throw exception::DimsInvalid("qpp::States::zero()");
+            throw exception::DimsInvalid("qpp::States::zero()", "d");
         // END EXCEPTION CHECKS
 
         idx D = static_cast<idx>(std::llround(std::pow(d, n)));
@@ -150,10 +150,10 @@ class States final : public internal::Singleton<const States> // const Singleton
 
         // check out of range
         if (n == 0)
-            throw exception::OutOfRange("qpp::States::one()");
+            throw exception::OutOfRange("qpp::States::one()", "n");
         // check valid dims
         if (d == 0)
-            throw exception::DimsInvalid("qpp::States::one()");
+            throw exception::DimsInvalid("qpp::States::one()", "d");
         // END EXCEPTION CHECKS
 
         ket result = ket::Zero(static_cast<ket::Index>(std::pow(d, n)));
@@ -176,14 +176,13 @@ class States final : public internal::Singleton<const States> // const Singleton
 
         // check out of range
         if (n == 0)
-            throw exception::OutOfRange("qpp::States::jn()");
+            throw exception::OutOfRange("qpp::States::jn()", "n");
         // check valid subsystem
         if (j >= d)
-            throw exception::SubsysMismatchDims("qpp::States::jn()");
-
+            throw exception::SubsysMismatchDims("qpp::States::jn()", "d/j");
         // check valid dims
         if (d == 0)
-            throw exception::DimsInvalid("qpp::States::jn()");
+            throw exception::DimsInvalid("qpp::States::jn()", "d");
         // END EXCEPTION CHECKS
 
         ket result = ket::Zero(static_cast<ket::Index>(std::pow(d, n)));
@@ -205,11 +204,10 @@ class States final : public internal::Singleton<const States> // const Singleton
 
         // check valid subsystem
         if (j >= D)
-            throw exception::SubsysMismatchDims("qpp::States::j()");
-
+            throw exception::SubsysMismatchDims("qpp::States::j()", "D/j");
         // check valid dims
         if (D == 0)
-            throw exception::DimsInvalid("qpp::States::j()");
+            throw exception::DimsInvalid("qpp::States::j()", "D");
         // END EXCEPTION CHECKS
 
         ket result = ket::Zero(D);
@@ -230,7 +228,7 @@ class States final : public internal::Singleton<const States> // const Singleton
 
         // check out of range
         if (n == 0)
-            throw exception::OutOfRange("qpp::States::plus()");
+            throw exception::OutOfRange("qpp::States::plus()", "n");
         // END EXCEPTION CHECKS
 
         idx D = static_cast<idx>(std::llround(std::pow(2, n)));
@@ -251,7 +249,7 @@ class States final : public internal::Singleton<const States> // const Singleton
 
         // check out of range
         if (n == 0)
-            throw exception::OutOfRange("qpp::States::minus()");
+            throw exception::OutOfRange("qpp::States::minus()", "n");
         // END EXCEPTION CHECKS
 
         return kronpow(x1, n);
