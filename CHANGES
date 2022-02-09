@@ -1,4 +1,6 @@
 Pre-release:
+    - Added copy/deepcopy support for all pyqpp classes:
+          QCircuit, QEngine, QNoisyEngine<>, Dynamic_Bitset, Bit_circuit
     - Added "context" to exception throwing, so now it is obvious which argument
       triggers an exception
     - EIGEN3_INSTALL_DIR can now be set as an OS environment variable (in
