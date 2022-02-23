@@ -4656,12 +4656,11 @@ inline QCircuit replicate(QCircuit qc, idx n) {
  * \param p_two Probability of applying a two qudit gate. If the two qudit
  * gate set has more than one element, then the gate is chosen at random
  * from the set.
- * \param one_qudit_gate_set Set of one qudit gates (optional, must be
- * specified for \a d > 2)
- * \param two_qudit_gate_set Set of two qudit gates (optional, must be
- * specified for \a d > 2);
- * \param d Subsystem dimensions (optional, default is qubit, i.e.,
- * \a d = 2)
+ * \param one_qudit_gate_set Set of one qudit gates (optional, must be specified
+ * for \a d > 2)
+ * \param two_qudit_gate_set Set of two qudit gates (optional, must be specified
+ * for \a d > 2);
+ * \param d Subsystem dimensions (optional, default is qubit, i.e., \a d = 2)
  * \param one_qudit_gate_names One qudit gate names (optional)
  * \param two_qudit_gate_names Two qudit gate names (optional)
  * \return Instance of random qpp::QCircuit for fixed gate count
@@ -4770,12 +4769,11 @@ inline QCircuit random_circuit_count(
  * \param gate_depth If non-empty, depth is calculated with respect to this
  * particular gate (optional, empty by default, so by default depth is
  * calculated with respect to all gates in the circuit)
- * \param one_qudit_gate_set Set of one qudit gates (optional, must be
- * specified for \a d > 2)
- * \param two_qudit_gate_set Set of two qudit gates (optional, must be
- * specified for \a d > 2);
- * \param d Subsystem dimensions (optional, default is qubit, i.e.,
- * \a d = 2)
+ * \param one_qudit_gate_set Set of one qudit gates (optional, must be specified
+ * for \a d > 2)
+ * \param two_qudit_gate_set Set of two qudit gates (optional, must be specified
+ * for \a d > 2);
+ * \param d Subsystem dimensions (optional, default is qubit, i.e., \a d = 2)
  * \param one_qudit_gate_names One qudit gate names (optional)
  * \param two_qudit_gate_names Two qudit gate names (optional)
  * \return Instance of random qpp::QCircuit for fixed circuit gate depth
