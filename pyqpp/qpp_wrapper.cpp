@@ -28,7 +28,6 @@
 #include <pybind11/eigen.h>
 #include <pybind11/operators.h>
 #include <pybind11/stl.h>
-#include <sstream>
 
 #include "qpp.h"
 
@@ -630,8 +629,19 @@ PYBIND11_MODULE(pyqpp, m) {
         .def(
             "get_circuit", [](const QEngine& qe) { return qe.get_circuit(); },
             "Underlying quantum circuit description")
-        .def("get_stats", &QEngine::get_stats,
-             "Measurement statistics for multiple runs")
+        .def(
+            "get_stats",
+            [](const QEngine& qe) {
+                std::map<std::string, idx> result;
+                const auto& stats = qe.get_stats();
+                for (auto&& elem : stats) {
+                    std::stringstream ss;
+                    ss << qpp::disp(elem.first, "", "", "");
+                    result[ss.str()] = elem.second;
+                }
+                return result;
+            },
+            "Measurement statistics for multiple runs")
         .def("is_noisy", &QEngine::is_noisy, "Whether the engine is noisy")
         .def("set_dit", &QEngine::set_dit,
              "Sets the classical dit at position i", py::arg("i"),
@@ -644,15 +654,36 @@ PYBIND11_MODULE(pyqpp, m) {
              "Resets the collected measurement statistics hash table")
         .def("reset", &QEngine::reset, "Resets the engine",
              py::arg("reset_stats") = true)
-        .def("sample",
-             py::overload_cast<const std::vector<idx>&, idx>(&QEngine::sample),
-             "Sample repeatedly from the output quantum state in the "
-             "computational basis (Z-basis)",
-             py::arg("target"), py::arg("num_samples") = 1)
-        .def("sample", py::overload_cast<idx>(&QEngine::sample),
-             "Sample repeatedly from the output quantum state in the "
-             "computational basis (Z-basis)",
-             py::arg("num_samples") = 1)
+        .def(
+            "execute_sample",
+            [](QEngine& qe, const std::vector<idx>& target, idx num_samples) {
+                std::map<std::string, idx> result;
+                auto samples = qe.execute_sample(target, num_samples);
+                for (auto&& elem : samples) {
+                    std::stringstream ss;
+                    ss << qpp::disp(elem.first, "", "", "");
+                    result[ss.str()] = elem.second;
+                }
+                return result;
+            },
+            "Sample repeatedly from the output quantum state in the "
+            "computational basis (Z-basis)",
+            py::arg("target"), py::arg("num_samples") = 1)
+        .def(
+            "execute_sample",
+            [](QEngine& qe, idx num_samples) {
+                std::map<std::string, idx> result;
+                auto samples = qe.execute_sample(num_samples);
+                for (auto&& elem : samples) {
+                    std::stringstream ss;
+                    ss << qpp::disp(elem.first, "", "", "");
+                    result[ss.str()] = elem.second;
+                }
+                return result;
+            },
+            "Sample repeatedly from the output quantum state in the "
+            "computational basis (Z-basis)",
+            py::arg("num_samples") = 1)
         .def("execute", py::overload_cast<idx, bool>(&QEngine::execute),
              "Executes the entire quantum circuit description",
              py::arg("reps") = 1, py::arg("clear_stats") = true)
@@ -787,11 +818,12 @@ PYBIND11_MODULE(pyqpp, m) {
     m.attr("pi") = qpp::pi;
     m.attr("ee") = qpp::ee;
 
-    /* Some free functions (non-exhaustive list */
+    /* Some free functions (non-exhaustive list) */
     m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
     m.def("randU", &qpp::randU, "Generates a random unitary matrix",
           py::arg("D") = 2);
-    /* template methods must be explicitly instantiated, some examples below */
+
+    /* Template methods must be explicitly instantiated, some examples below */
     m.def(
         "transpose", [](const cmat& A) { return qpp::transpose(A); },
         "Transpose", py::arg("A"));

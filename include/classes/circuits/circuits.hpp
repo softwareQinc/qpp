@@ -3376,7 +3376,7 @@ class QCircuit : public IDisplay, public IJSON {
      * followed by shifting it back to the \f$|0\rangle\f$ state
      *
      * \param target Target qudit index that is reset
-     * \param name Optional name, default is "reset"
+     * \param name Optional reset operation name, default is "reset"
      * \return Reference to the current instance
      */
     QCircuit& reset(idx target, std::string name = {}) {

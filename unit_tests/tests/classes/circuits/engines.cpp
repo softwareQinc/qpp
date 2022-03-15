@@ -14,8 +14,16 @@ TEST(qpp_QEngine_execute, Iterator) {}
 ///       const QCircuit::iterator::value_type& elem)
 TEST(qpp_QEngine_execute, ValueType) {}
 /******************************************************************************/
-/// BEGIN QEngine& QEngine::execute(idx reps = 1, bool clear_stats = true)
+/// BEGIN QEngine& QEngine::execute(idx reps = 1, bool reset_stats = true)
 TEST(qpp_QEngine_execute, AllCircuitWithRepetitions) {}
+/******************************************************************************/
+/// BEGIN virtual std::map<std::vector<idx>, idx> QEngine::execute_sample(
+///       const std::vector<idx>& target, idx num_samples = 1)
+TEST(qpp_QEngine_execute_sample, SpecificTarget) {}
+/******************************************************************************/
+/// BEGIN std::map<std::vector<idx>, idx> QEngine::execute_sample(
+///       idx num_samples = 1)
+TEST(qpp_QEngine_execute_sample, AllQudits) {}
 /******************************************************************************/
 /// BEGIN const QEngine& QEngine::get_circuit() const& noexcept
 TEST(qpp_QEngine_get_circuit, Lvalue) {}
@@ -83,8 +91,12 @@ TEST(qpp_QEngine_to_JSON, AllTests) {}
 ///       const QCircuit::iterator::value_type& elem) override
 TEST(qpp_QNoisyEngine_execute, ValueType) {}
 /******************************************************************************/
-/// BEGIN QEngine& QNoisyEngine::execute(idx reps = 1, bool clear_stats = true)
+/// BEGIN QEngine& QNoisyEngine::execute(idx reps = 1, bool reset_stats = true)
 TEST(qpp_QNoisyEngine_execute, AllCircuitWithRepetitions) {}
+/******************************************************************************/
+/// BEGIN std::map<std::vector<idx>, idx> QNoisyEngine::execute_sample(
+///       const std::vector<idx>& target, idx num_samples = 1) override
+TEST(qpp_QNoisyEngine_execute_sample, AllTests) {}
 /******************************************************************************/
 /// BEGIN std::vector<std::vector<idx>>
 ///       QNoisyEngine::get_noise_results() const

@@ -1,11 +1,14 @@
 Pre-release:
-    - Implemented qpp::QEngine::sample() for sampling after the execution of a
-      qpp::QCircuit. Use this member function whenever you are not interested in
-      the output quantum state, but interested only in statistics. It is
-      significantly faster than its "qpp::QCircuit::measure()"-type functions.
+    - Implemented qpp::QEngine::execute_sample() and
+      qpp::QNoiseEngine::execute_sample() for sampling after the execution of a
+      qpp::QCircuit, e.g.,
+          auto result = qpp::QEngine{q_circuit}.execute_sample(100);
+      Use this member function whenever you are not interested in the output
+      quantum state, but interested only in statistics; it is significantly
+      faster than its "qpp::QCircuit::measure()"-type functions.
     - Implemented qpp::sample() ["instruments.hpp"] for sampling from a quantum
       state. Use this function whenever you are not interested in the output
-      quantum state, but interested only in statistics. It is significantly
+      quantum state, but interested only in statistics; it is significantly
       faster than its "qpp::measure()"-type functions.
     - Added copy/deepcopy support for all pyqpp classes:
           QCircuit, QEngine, QNoisyEngine<>, Dynamic_Bitset, Bit_circuit

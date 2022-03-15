@@ -318,7 +318,8 @@ class QEngine : public IDisplay, public IJSON {
     std::map<std::vector<idx>, idx> get_stats() const { return stats_; }
 
     /**
-     * \brief Determines if engines derived from \a qpp::QEngine are noisy or
+     * \brief Determines if engines derived from \a qpp
+     * ::QEngine are noisy or
      * not at runtime
      *
      * \return True if the engine is noisy, false otherwise
@@ -652,15 +653,15 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
-     * \param clear_stats Resets the collected measurement statistics hash
+     * \param reset_stats Resets the collected measurement statistics hash
      * table before the run
      * \return Reference to the current instance
      */
-    virtual QEngine& execute(idx reps = 1, bool clear_stats = true) {
+    virtual QEngine& execute(idx reps = 1, bool reset_stats = true) {
         auto initial_engine_state = st_; // saves the engine entry state
 
-        if (clear_stats)
-            reset_stats();
+        if (reset_stats)
+            this->reset_stats();
 
         // find the position of the first measurement step
         auto first_measurement_it = qc_->begin();
@@ -696,71 +697,72 @@ class QEngine : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Sample repeatedly from the output quantum state in the
-     * computational basis (Z-basis)
+     * \brief Executes the underlying quantum circuit description then sample
+     * repeatedly from the output quantum state in the computational basis
+     * (Z-basis)
      *
      * \param target Subsystem indexes that are sampled
      * \param num_samples Number of samples
      * \return Map with vector of outcome results and their corresponding number
      * of appearances
      */
-    std::map<std::vector<idx>, idx> sample(const std::vector<idx>& target,
-                                           idx num_samples = 1) {
+    virtual std::map<std::vector<idx>, idx>
+    execute_sample(const std::vector<idx>& target, idx num_samples = 1) {
         // EXCEPTION CHECKS
 
         if (get_circuit().get_step_count() == 0)
-            throw exception::ZeroSize("qpp::QEngine::sample()", "QCircuit");
+            throw exception::ZeroSize("qpp::QEngine::execute_sample()",
+                                      "QCircuit");
 
         // check valid target
         if (target.empty())
-            throw exception::ZeroSize("qpp::QEngine::sample()", "target");
+            throw exception::ZeroSize("qpp::QEngine::execute_sample()",
+                                      "target");
         idx nq = get_circuit().get_nq();
         for (auto&& elem : target) {
             if (elem >= nq)
-                throw exception::OutOfRange("qpp::QEngine::sample()", "target");
+                throw exception::OutOfRange("qpp::QEngine::execute_sample()",
+                                            "target");
             // check target was not measured before
             if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured("qpp::QEngine::sample()",
-                                                      "target");
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QEngine::execute_sample()", "target");
         }
         // check no duplicates target
         if (!internal::check_no_duplicates(target))
-            throw exception::Duplicates("qpp::QEngine::sample()", "target");
+            throw exception::Duplicates("qpp::QEngine::execute_sample()",
+                                        "target");
         // END EXCEPTION
 
         execute();
-        ket psi = get_psi();
-
-        return qpp::sample(num_samples, psi, get_relative_pos_(target),
+        return qpp::sample(num_samples, get_psi(), get_relative_pos_(target),
                            qc_->get_d());
     }
 
     /**
-     * \brief Sample repeatedly from the output quantum state in the
-     * computational basis (Z-basis)
+     * \brief Executes the underlying quantum circuit description then sample
+     * repeatedly from the output quantum state in the computational basis
+     * (Z-basis)
      *
      * \param num_samples Number of samples
      * \return Map with vector of outcome results and their corresponding number
      * of appearances
      */
-    std::map<std::vector<idx>, idx> sample(idx num_samples = 1) {
+    std::map<std::vector<idx>, idx> execute_sample(idx num_samples = 1) {
         // EXCEPTION CHECKS
 
         if (get_circuit().get_step_count() == 0)
-            throw exception::ZeroSize("qpp::QEngine::sample()", "QCircuit");
+            throw exception::ZeroSize("qpp::QEngine::execute_sample()",
+                                      "QCircuit");
 
         std::vector<idx> target = get_circuit().get_non_measured();
         if (target.empty())
             throw exception::QuditAlreadyMeasured(
-                "qpp::QEngine::sample()",
+                "qpp::QEngine::execute_sample()",
                 "all qudits have been already measured");
         // END EXCEPTION
 
-        execute();
-        ket psi = get_psi();
-
-        return qpp::sample(num_samples, psi, get_relative_pos_(target),
-                           qc_->get_d());
+        return this->execute_sample(target, num_samples);
     }
 
     /**
@@ -923,6 +925,7 @@ class QNoisyEngine : public QEngine {
     }
 
     using QEngine::execute;
+    using QEngine::execute_sample;
 
     /**
      * \brief Executes one step in the quantum circuit description
@@ -950,15 +953,15 @@ class QNoisyEngine : public QEngine {
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
-     * \param clear_stats Resets the collected measurement statistics hash table
+     * \param reset_stats Resets the collected measurement statistics hash table
      * before the run
      * \return Reference to the current instance
      */
-    QNoisyEngine& execute(idx reps = 1, bool clear_stats = true) override {
+    QNoisyEngine& execute(idx reps = 1, bool reset_stats = true) override {
         auto initial_engine_state = st_; // saves the engine entry state
 
-        if (clear_stats)
-            reset_stats();
+        if (reset_stats)
+            this->reset_stats();
 
         for (idx i = 0; i < reps; ++i) {
             // sets the state of the engine to the entry state
@@ -975,6 +978,56 @@ class QNoisyEngine : public QEngine {
         }
 
         return *this;
+    }
+
+    /**
+     * \brief Executes the underlying quantum circuit description then sample
+     * repeatedly from the output quantum state in the computational basis
+     * (Z-basis)
+     *
+     * \param target Subsystem indexes that are sampled
+     * \param num_samples Number of samples
+     * \return Map with vector of outcome results and their corresponding number
+     * of appearances
+     */
+    std::map<std::vector<idx>, idx>
+    execute_sample(const std::vector<idx>& target,
+                   idx num_samples = 1) override {
+        // EXCEPTION CHECKS
+
+        if (get_circuit().get_step_count() == 0)
+            throw exception::ZeroSize("qpp::QNoisyEngine::execute_sample()",
+                                      "QCircuit");
+
+        // check valid target
+        if (target.empty())
+            throw exception::ZeroSize("qpp::QNoisyEngine::execute_sample()",
+                                      "target");
+        idx nq = get_circuit().get_nq();
+        for (auto&& elem : target) {
+            if (elem >= nq)
+                throw exception::OutOfRange(
+                    "qpp::QNoisyEngine::execute_sample()", "target");
+            // check target was not measured before
+            if (get_measured(elem))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QNoisyEngine::execute_sample()", "target");
+        }
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target))
+            throw exception::Duplicates("qpp::QNoisyEngine::execute_sample()",
+                                        "target");
+        // END EXCEPTION
+
+        std::map<std::vector<idx>, idx> result;
+        for (idx i = 0; i < num_samples; ++i) {
+            reset().execute();
+            auto current_sample =
+                qpp::sample(get_psi(), get_relative_pos_(target), qc_->get_d());
+            ++result[current_sample];
+        }
+
+        return result;
     }
 
     /**
