@@ -1821,30 +1821,18 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        // check square matrix for the gate
-        if (!internal::check_square_mat(U))
-            throw exception::MatrixNotSquare("qpp::QCircuit::gate_fan()",
-                                             context + ": U");
-        // check correct dimension
-        if (static_cast<idx>(U.rows()) != d_)
-            throw exception::MatrixMismatchSubsys("qpp::QCircuit::gate_fan()",
-                                                  context + ": i");
+        // check non-empty target
+        std::vector<idx> target = get_non_measured();
+        if (target.empty())
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::gate_fan()",
+                context + ": all qudits have been already measured");
         // END EXCEPTION CHECKS
 
         if (name.empty())
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
-        std::size_t hashU = hash_eigen(U);
-        add_hash_(hashU, U);
-        gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{},
-                            get_non_measured(), std::vector<idx>{}, name);
-        step_types_.emplace_back(StepType::GATE);
-        gate_count_[hashU] += get_non_measured().size();
 
-        for (auto&& elem : get_non_measured()) {
-            clean_qudits_[elem] = false;
-        }
-
-        return *this;
+        return gate_fan(U, target, name);
     }
 
     /**
@@ -4432,7 +4420,6 @@ class QCircuit : public IDisplay, public IJSON {
 
                 result += "\"name\": ";
                 result += '\"' + measurements_[pos].name_ + "\"}";
-
             }
             // no-op
             else if (elem.type_ == StepType::NOP) {

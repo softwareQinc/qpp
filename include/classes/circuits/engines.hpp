@@ -103,7 +103,7 @@ class QEngine : public IDisplay, public IJSON {
             std::iota(std::begin(subsys_), std::end(subsys_), 0);
         }
     } st_; ///< current state of the engine
-    std::map<std::string, idx, internal::EqualSameSizeStringDits>
+    std::map<std::vector<idx>, idx>
         stats_; ///< measurement statistics for multiple runs
 
     /**
@@ -315,10 +315,7 @@ class QEngine : public IDisplay, public IJSON {
      * vector of measurement results), with the most significant bit located at
      * index 0 (i.e., top/left).
      */
-    std::map<std::string, idx, internal::EqualSameSizeStringDits>
-    get_stats() const {
-        return stats_;
-    }
+    std::map<std::vector<idx>, idx> get_stats() const { return stats_; }
 
     /**
      * \brief Determines if engines derived from \a qpp::QEngine are noisy or
@@ -673,8 +670,12 @@ class QEngine : public IDisplay, public IJSON {
                 break;
             ++first_measurement_it;
         }
+
+        // executes everything up to the first measurement
         for (auto it = qc_->begin(); it != first_measurement_it; ++it)
             execute(it);
+
+        // saves the state just before the measurement
         initial_engine_state.psi_ = get_psi();
 
         for (idx i = 0; i < reps; ++i) {
@@ -687,14 +688,79 @@ class QEngine : public IDisplay, public IJSON {
             // we measured at least one qudit
             if (qc_->get_measurement_count() > 0) {
                 std::vector<idx> m_res = get_dits();
-
-                std::stringstream ss;
-                ss << disp(m_res, " ", "", "");
-                ++stats_[ss.str()];
+                ++stats_[m_res];
             }
         }
 
         return *this;
+    }
+
+    /**
+     * \brief Sample repeatedly from the output quantum state in the
+     * computational basis (Z-basis)
+     *
+     * \param target Subsystem indexes that are sampled
+     * \param num_samples Number of samples
+     * \return Map with vector of outcome results and their corresponding number
+     * of appearances
+     */
+    std::map<std::vector<idx>, idx> sample(const std::vector<idx>& target,
+                                           idx num_samples = 1) {
+        // EXCEPTION CHECKS
+
+        if (get_circuit().get_step_count() == 0)
+            throw exception::ZeroSize("qpp::QEngine::sample()", "QCircuit");
+
+        // check valid target
+        if (target.empty())
+            throw exception::ZeroSize("qpp::QEngine::sample()", "target");
+        idx nq = get_circuit().get_nq();
+        for (auto&& elem : target) {
+            if (elem >= nq)
+                throw exception::OutOfRange("qpp::QEngine::sample()", "target");
+            // check target was not measured before
+            if (get_measured(elem))
+                throw exception::QuditAlreadyMeasured("qpp::QEngine::sample()",
+                                                      "target");
+        }
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target))
+            throw exception::Duplicates("qpp::QEngine::sample()", "target");
+        // END EXCEPTION
+
+        execute();
+        ket psi = get_psi();
+
+        return qpp::sample(num_samples, psi, get_relative_pos_(target),
+                           qc_->get_d());
+    }
+
+    /**
+     * \brief Sample repeatedly from the output quantum state in the
+     * computational basis (Z-basis)
+     *
+     * \param num_samples Number of samples
+     * \return Map with vector of outcome results and their corresponding number
+     * of appearances
+     */
+    std::map<std::vector<idx>, idx> sample(idx num_samples = 1) {
+        // EXCEPTION CHECKS
+
+        if (get_circuit().get_step_count() == 0)
+            throw exception::ZeroSize("qpp::QEngine::sample()", "QCircuit");
+
+        std::vector<idx> target = get_circuit().get_non_measured();
+        if (target.empty())
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QEngine::sample()",
+                "all qudits have been already measured");
+        // END EXCEPTION
+
+        execute();
+        ket psi = get_psi();
+
+        return qpp::sample(num_samples, psi, get_relative_pos_(target),
+                           qc_->get_d());
     }
 
     /**
@@ -755,8 +821,7 @@ class QEngine : public IDisplay, public IJSON {
             std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
             std::string sep;
             for (auto&& elem : get_stats()) {
-                ss << sep << "\""
-                   << "[" << elem.first << "]"
+                ss << sep << "\"" << disp(elem.first, " ")
                    << "\" : " << elem.second;
                 sep = ", ";
             }
@@ -812,8 +877,8 @@ class QEngine : public IDisplay, public IJSON {
             std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
             std::string sep;
             for (auto&& elem : get_stats()) {
-                os << sep << '\t' << "[" << elem.first << "]"
-                   << ": " << elem.second;
+                os << sep << '\t' << disp(elem.first, " ") << ": "
+                   << elem.second;
                 sep = '\n';
             }
         }
@@ -905,10 +970,7 @@ class QNoisyEngine : public QEngine {
             // we measured at least one qudit
             if (qc_->get_measurement_count() > 0) {
                 std::vector<idx> m_res = get_dits();
-
-                std::stringstream ss;
-                ss << disp(m_res, " ", "", "");
-                ++stats_[ss.str()];
+                ++stats_[m_res];
             }
         }
 

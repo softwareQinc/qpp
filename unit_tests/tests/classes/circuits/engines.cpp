@@ -57,6 +57,13 @@ TEST(qpp_QEngine_reset, AllTests) {}
 /// BEGIN QEngine& QEngine::reset_stats()
 TEST(qpp_QEngine_reset_stats, AllTests) {}
 /******************************************************************************/
+/// BEGIN std::map<std::vector<idx>, idx> sample(const std::vector<idx>& target,
+///       idx reps = 1)
+TEST(qpp_QEngine_sample, SpecificQudits) {}
+/******************************************************************************/
+/// BEGIN std::map<std::vector<idx>, idx> sample(idx reps = 1)
+TEST(qpp_QEngine_sample, AllQudits) {}
+/******************************************************************************/
 /// BEGIN QEngine& QEngine::set_dit(idx i, idx value)
 TEST(qpp_QEngine_set_dit, AllTests) {}
 /******************************************************************************/

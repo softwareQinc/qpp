@@ -111,3 +111,23 @@ TEST(qpp_reset, Qudits) {}
 ///       idx d = 2)
 TEST(qpp_reset, Qubits) {}
 /******************************************************************************/
+/// BEGIN template <typename Derived> std::vector<idx>
+///       sample(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& target, const std::vector<idx>& dims)
+TEST(qpp_sample, Qudits) {}
+/******************************************************************************/
+/// BEGIN template <typename Derived> std::vector<idx>
+///       sample(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& target, idx d = 2)
+TEST(qpp_sample, Qubits) {}
+/******************************************************************************/
+/// BEGIN template <typename Derived> std::map<std::vector<idx>, idx>
+///       sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& target, const std::vector<idx>& dims)
+TEST(qpp_sample, MultipleQudits) {}
+/******************************************************************************/
+/// BEGIN template <typename Derived> std::map<std::vector<idx>, idx>
+///       sample(idx num_samples,const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& target, idx d = 2)
+TEST(qpp_sample, MultipleQubits) {}
+/******************************************************************************/

@@ -336,7 +336,7 @@ schmidt(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
         throw exception::MatrixNotCvector("qpp::schmidt()", "A");
     // check matching dimensions
     if (!internal::check_dims_match_cvect(dims, rA))
-        throw exception::DimsMismatchCvector("qpp::schmidt()", "A");
+        throw exception::DimsMismatchCvector("qpp::schmidt()", "A/dims");
     // END EXCEPTION CHECKS
 
     auto const sv = svd(transpose(reshape(rA, dims[1], dims[0])));

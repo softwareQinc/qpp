@@ -644,6 +644,15 @@ PYBIND11_MODULE(pyqpp, m) {
              "Resets the collected measurement statistics hash table")
         .def("reset", &QEngine::reset, "Resets the engine",
              py::arg("reset_stats") = true)
+        .def("sample",
+             py::overload_cast<const std::vector<idx>&, idx>(&QEngine::sample),
+             "Sample repeatedly from the output quantum state in the "
+             "computational basis (Z-basis)",
+             py::arg("target"), py::arg("num_samples") = 1)
+        .def("sample", py::overload_cast<idx>(&QEngine::sample),
+             "Sample repeatedly from the output quantum state in the "
+             "computational basis (Z-basis)",
+             py::arg("num_samples") = 1)
         .def("execute", py::overload_cast<idx, bool>(&QEngine::execute),
              "Executes the entire quantum circuit description",
              py::arg("reps") = 1, py::arg("clear_stats") = true)

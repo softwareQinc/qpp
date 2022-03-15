@@ -1809,7 +1809,7 @@ rho2pure(const Eigen::MatrixBase<Derived>& A) {
 }
 
 /**
- * \brief Constructs the complement of a subsystem vector
+ * \brief Constructs the complement (in sorted order) of a subsystem vector
  *
  * \param subsys Subsystem vector
  * \param n Total number of systems
@@ -2158,41 +2158,6 @@ struct EqualEigen {
             return rA == rB;
         else
             return false;
-    }
-};
-
-/**
- * \class qpp::internal::EqualSameSizeStringDits
- * \brief Functor for comparing strings of numbers of equal sizes in
- * lexicographical order. Establishes a strict weak ordering relation.
- * \note Used as a hash table comparator in qpp::QEngine
- */
-struct EqualSameSizeStringDits {
-    bool operator()(const std::string& s1, const std::string& s2) const {
-        std::vector<std::string> tk1, tk2;
-        std::string w1, w2;
-        std::stringstream ss1{s1}, ss2{s2};
-
-        // tokenize the string into words (assumes words are separated by space)
-        while (ss1 >> w1)
-            tk1.emplace_back(w1);
-        while (ss2 >> w2)
-            tk2.emplace_back(w2);
-
-        // compare lexicographically
-        auto it1 = std::begin(tk1);
-        auto it2 = std::begin(tk2);
-        while (it1 != std::end(tk1) && it2 != std::end(tk2)) {
-            auto n1 = std::stoll(*it1++);
-            auto n2 = std::stoll(*it2++);
-            if (n1 < n2)
-                return true;
-            else if (n1 == n2)
-                continue;
-            else if (n1 > n2)
-                return false;
-        }
-        return false;
     }
 };
 

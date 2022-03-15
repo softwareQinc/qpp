@@ -716,10 +716,10 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * \param target Subsystem indexes that are measured
  * \param dims Dimensions of the multi-partite system
  * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Vector of outcome results of the
- * measurement (ordered in increasing order with respect to \a target, i.e.
- * first measurement result corresponds to the subsystem with the smallest
- * index), 2. Outcome probability, and 3. Post-measurement normalized state
+ * \return Tuple of: 1. Vector of outcome results of the measurement (ordered in
+ * increasing order with respect to \a target, i.e. first measurement result
+ * corresponds to the subsystem with the smallest index), 2. Outcome
+ * probability, and 3. Post-measurement normalized state
  */
 template <typename Derived>
 [[qpp::critical]] std::tuple<std::vector<idx>, double, expr_t<Derived>>
@@ -745,7 +745,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     // check valid state and matching dimensions
     if (internal::check_cvector(rA)) {
         if (!internal::check_dims_match_cvect(dims, rA))
-            throw exception::DimsMismatchCvector("qpp::measure_seq()", "A");
+            throw exception::DimsMismatchCvector("qpp::measure_seq()",
+                                                 "A/dims");
     } else if (internal::check_square_mat(rA)) {
         if (!internal::check_dims_match_mat(dims, rA))
             throw exception::DimsMismatchMatrix("qpp::measure_seq()", "A/dims");
@@ -765,7 +766,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     // the order of measurements does not matter
     std::sort(std::begin(target), std::end(target), std::greater<idx>{});
 
-    //************ density matrix or column vector ************//
+    //************ ket or density matrix ************//
     while (!target.empty()) {
         auto tmp = measure(
             rA, Gates::get_no_thread_local_instance().Id(dims[target[0]]),
@@ -800,10 +801,10 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  * \param target Subsystem indexes that are measured
  * \param d Subsystem dimensions
  * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Vector of outcome results of the
- * measurement (ordered in increasing order with respect to \a target, i.e.
- * first measurement result corresponds to the subsystem with the smallest
- * index), 2. Outcome probability, and 3. Post-measurement normalized state
+ * \return Tuple of: 1. Vector of outcome results of the measurement (ordered in
+ * increasing order with respect to \a target, i.e. first measurement result
+ * corresponds to the subsystem with the smallest index), 2. Outcome
+ * probability, and 3. Post-measurement normalized state
  */
 template <typename Derived>
 std::tuple<std::vector<idx>, double, expr_t<Derived>>
@@ -826,6 +827,221 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure_seq(rA, target, dims, destructive);
+}
+
+/**
+ * \brief Samples from a quantum state in the computational basis (Z-basis)
+ * \see qpp::measure()
+ *
+ * \param A Eigen expression
+ * \param target Subsystem indexes that are sampled
+ * \param dims Subsystem dimensions
+ * \return Vector of outcome results
+ */
+template <typename Derived>
+[[qpp::critical]] std::vector<idx> sample(const Eigen::MatrixBase<Derived>& A,
+                                          const std::vector<idx>& target,
+                                          const std::vector<idx>& dims) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::sample()", "A");
+
+    // check that dimension is valid
+    if (!internal::check_dims(dims))
+        throw exception::DimsInvalid("qpp::sample()", "dims");
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::sample()", "A/dims");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::sample()", "A/dims");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::sample()", "A");
+
+    // check that target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
+        throw exception::SubsysMismatchDims("qpp::sample()", "dims/target");
+    // END EXCEPTION CHECKS
+
+    idx D = prod(dims); // total dimension
+    // std::sort(target.begin(), target.end());
+
+    bool is_ket = internal::check_cvector(rA);
+    std::vector<double> pbs;
+    if (is_ket) {
+        pbs = qpp::abssq(rA);
+    } else {
+        pbs.resize(D);
+        for (idx i = 0; i < D; ++i)
+            pbs[i] = std::real(rA(i, i));
+    }
+
+    // sample
+    std::discrete_distribution dd(pbs.begin(), pbs.end());
+    auto& gen = RandomDevices::get_instance().get_prng();
+    idx sample_dec = dd(gen);
+    auto sample_midx = n2multiidx(sample_dec, dims);
+
+    // measurement result as a vector of dits
+    std::vector<idx> measurement_midx(target.size(), 0);
+    std::transform(target.begin(), target.end(), measurement_midx.begin(),
+                   [&sample_midx = std::as_const(sample_midx)](idx pos) {
+                       return sample_midx[pos];
+                   });
+
+    return measurement_midx;
+}
+
+/**
+ * \brief Samples from a quantum state in the computational basis (Z-basis)
+ * \see qpp::measure()
+ *
+ * \param A Eigen expression
+ * \param target Subsystem indexes that are sampled
+ * \param d Subsystem dimensions
+ * \return Vector of outcome results
+ */
+template <typename Derived>
+std::vector<idx> sample(const Eigen::MatrixBase<Derived>& A,
+                        const std::vector<idx>& target, idx d = 2) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::sample()", "A");
+
+    // check valid dims
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::sample()", "d");
+    // END EXCEPTION CHECKS
+
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
+
+    return sample(rA, target, dims);
+}
+
+/**
+ * \brief Samples repeatedly from a quantum state in the computational basis
+ * (Z-basis)
+ * \see qpp::measure()
+ *
+ * \param num_samples Number of samples
+ * \param A Eigen expression
+ * \param target Subsystem indexes that are sampled
+ * \param dims Subsystem dimensions
+ * \return Map with vector of outcome results and their corresponding number of
+ * appearances
+ */
+template <typename Derived>
+[[qpp::critical]] std::map<std::vector<idx>, idx>
+sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
+       const std::vector<idx>& target, const std::vector<idx>& dims) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::sample()", "A");
+
+    // check that dimension is valid
+    if (!internal::check_dims(dims))
+        throw exception::DimsInvalid("qpp::sample()", "dims");
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
+        if (!internal::check_dims_match_cvect(dims, rA))
+            throw exception::DimsMismatchCvector("qpp::sample()", "A/dims");
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA))
+            throw exception::DimsMismatchMatrix("qpp::sample()", "A/dims");
+    } else
+        throw exception::MatrixNotSquareNorCvector("qpp::sample()", "A");
+
+    // check that target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims))
+        throw exception::SubsysMismatchDims("qpp::sample()", "dims/target");
+
+    // check non-zero number of samples
+    if (num_samples == 0)
+        throw exception::OutOfRange("qpp::sample()", "num_samples");
+    // END EXCEPTION CHECKS
+
+    idx D = prod(dims); // total dimension
+    // std::sort(target.begin(), target.end());
+
+    bool is_ket = internal::check_cvector(rA);
+    std::vector<double> pbs;
+    if (is_ket) {
+        pbs = qpp::abssq(rA);
+    } else {
+        pbs.resize(D);
+        for (idx i = 0; i < D; ++i)
+            pbs[i] = std::real(rA(i, i));
+    }
+
+    // sample
+    std::discrete_distribution dd(pbs.begin(), pbs.end());
+    auto& gen = RandomDevices::get_instance().get_prng();
+
+    std::map<std::vector<idx>, idx> result;
+    for (idx i = 0; i < num_samples; ++i) {
+        idx sample_dec = dd(gen);
+        auto sample_midx = n2multiidx(sample_dec, dims);
+
+        // measurement result as a vector of dits
+        std::vector<idx> measurement_midx(target.size(), 0);
+        std::transform(target.begin(), target.end(), measurement_midx.begin(),
+                       [&sample_midx = std::as_const(sample_midx)](idx pos) {
+                           return sample_midx[pos];
+                       });
+        ++result[measurement_midx];
+    }
+
+    return result;
+}
+
+/**
+ * \brief Samples repeatedly from a quantum state (in the computational basis)
+ * \see qpp::measure()
+ *
+ * \param num_samples Number of samples
+ * \param A Eigen expression
+ * \param target Subsystem indexes that are sampled
+ * \param d Subsystem dimensions
+ * \return Map with vector of outcome results and their corresponding number of
+ * appearances
+ */
+template <typename Derived>
+std::map<std::vector<idx>, idx>
+sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
+       const std::vector<idx>& target, idx d = 2) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::sample()", "A");
+
+    // check valid dims
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::sample()", "d");
+    // END EXCEPTION CHECKS
+
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
+
+    return sample(num_samples, rA, target, dims);
 }
 
 /**
