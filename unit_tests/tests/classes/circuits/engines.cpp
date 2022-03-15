@@ -93,3 +93,6 @@ TEST(qpp_QNoisyEngine_get_noise_results, AllTests) {}
 /// BEGIN virtual bool QNoisyEngine::is_noisy() const
 TEST(qpp_QNoisyEngine_is_noisy, AllTests) {}
 /******************************************************************************/
+/// BEGIN QEngine& QNoisyEngine::reset(bool reset_stats = true)
+TEST(qpp_NoisyQEngine_reset, AllTests) {}
+/******************************************************************************/

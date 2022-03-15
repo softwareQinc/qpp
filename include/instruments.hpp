@@ -290,6 +290,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Measures the state vector or density matrix \a A in the orthonormal
  * basis specified by the unitary matrix \a U
+ * \see qpp::sample()
  *
  * \note This measurement is equivalent to measuring \a A in the
  * \f$U^\dagger\f$ basis
@@ -330,7 +331,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
 /**
  * \brief  Measures the part \a subsys of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
- * \see qpp::measure_seq()
  *
  * \note The dimension of all \a Ks must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
@@ -452,7 +452,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 /**
  * \brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
- * \see qpp::measure_seq()
  *
  * \note The dimension of all \a Ks must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
@@ -477,7 +476,6 @@ measure(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
- * \see qpp::measure_seq()
  *
  * \note The dimension of all \a Ks must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
@@ -519,7 +517,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 /**
  * \brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
- * \see qpp::measure_seq()
  *
  * \note The dimension of all \a Ks must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
@@ -545,7 +542,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * \brief Measures the part \a target of the multi-partite state vector or
  * density matrix \a A in the orthonormal basis or rank-1 projectors specified
  * by the columns of the matrix \a V
- * \see qpp::measure_seq()
+ * \see qpp::measure_seq(), qpp::sample()
  *
  * \note The dimension of \a V must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
@@ -662,7 +659,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * \brief Measures the part \a target of the multi-partite state vector or
  * density matrix \a A in the orthonormal basis or rank-1 projectors specified
  * by the columns of the matrix \a V
- * \see qpp::measure_seq()
+ * \see qpp::measure_seq(), qpp::sample()
  *
  * \note The dimension of \a V must match the dimension of \a target. If
  * \a destructive is set to true (by default), the measurement is destructive,
@@ -707,7 +704,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 /**
  * \brief Sequentially measures the part \a target of the multi-partite state
  * vector or density matrix \a A in the computational basis
- * \see qpp::measure()
+ * \see qpp::measure(), qpp::sample()
  *
  * \note If \a destructive is set to true (by default), the measurement is
  * destructive, i.e., the measured subsystems are traced away.
@@ -792,7 +789,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 /**
  * \brief Sequentially measures the part \a target of the multi-partite state
  * vector or density matrix \a A in the computational basis
- * \see qpp::measure()
+ * \see qpp::measure(), qpp::sample()
  *
  * \note If \a destructive is set to true (by default), the measurement is
  * destructive, i.e., the measured subsystems are traced away.

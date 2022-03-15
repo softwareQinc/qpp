@@ -419,7 +419,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Reference to the current instance
      */
-    QEngine& reset(bool reset_stats = true) {
+    virtual QEngine& reset(bool reset_stats = true) {
         st_.reset();
         if (reset_stats)
             this->reset_stats();
@@ -977,16 +977,33 @@ class QNoisyEngine : public QEngine {
         return *this;
     }
 
+    /**
+     * \brief Resets the engine
+     *
+     * Re-initializes everything to zero and sets the initial state to
+     * \f$|0\rangle^{\otimes n}\f$
+     *
+     * \param reset_stats Optional (true by default), resets the collected
+     * measurement statistics hash table
+     *
+     * \return Reference to the current instance
+     */
+    QNoisyEngine& reset(bool reset_stats = true) override {
+        QEngine::reset(reset_stats);
+        noise_results_ = {};
+
+        return *this;
+    }
+
     // getters
     /**
      * \brief Vector of noise results obtained before every step in the circuit
      *
-     * \note The first vector contains the noise measurement results
-     * obtained before applying the first step in the circuit, and so on,
-     * ordered by non-measured qudits. That is, the first element in the
-     * vector corresponding to noise obtained before a given step in the
-     * circuit represents the noise result obtained on the first
-     * non-measured qudit etc.
+     * \note The first vector contains the noise measurement results obtained
+     * before applying the first step in the circuit, and so on, ordered by
+     * non-measured qudits. That is, the first element in the vector
+     * corresponding to noise obtained before a given step in the circuit
+     * represents the noise result obtained on the first non-measured qudit etc.
      *
      * \return Vector of noise results
      */
