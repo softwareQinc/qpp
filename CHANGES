@@ -10,6 +10,10 @@ Pre-release:
       state. Use this function whenever you are not interested in the output
       quantum state, but interested only in statistics; it is significantly
       faster than its "qpp::measure()"-type functions.
+    - Added ["examples/qasm/qpp_qasm_sample.cpp"] for sampling from the output
+      of OpenQASM programs; use this program whenever you are not interested in
+      the output quantum state, but interested only in statistics; it is
+      significantly faster than ["examples/qasm/qpp_qasm.cpp"]
     - Added copy/deepcopy support for all pyqpp classes:
           QCircuit, QEngine, QNoisyEngine<>, Dynamic_Bitset, Bit_circuit
     - Added "context" to exception throwing, so now it is obvious which argument

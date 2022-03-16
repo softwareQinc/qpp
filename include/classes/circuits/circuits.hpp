@@ -684,7 +684,7 @@ class QCircuit : public IDisplay, public IJSON {
 
                 return os;
             }
-        }; /* class value_type_ */
+        }; /* class QCircuit::value_type_ */
 
         value_type_ elem_{nullptr};
 
@@ -875,7 +875,7 @@ class QCircuit : public IDisplay, public IJSON {
         using pointer = const value_type*;                   ///< iterator trait
         using reference = const value_type&;                 ///< iterator trait
         using iterator_category = std::forward_iterator_tag; ///< iterator trait
-    };
+    }; /* class QCircuit::iterator */
 
     using const_iterator = iterator; ///< both iterators are const_iterators
 

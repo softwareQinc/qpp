@@ -633,7 +633,7 @@ PYBIND11_MODULE(pyqpp, m) {
             "get_stats",
             [](const QEngine& qe) {
                 std::map<std::string, idx> result;
-                const auto& stats = qe.get_stats();
+                const auto& stats = qe.get_stats().data();
                 for (auto&& elem : stats) {
                     std::stringstream ss;
                     ss << qpp::disp(elem.first, "", "", "");
@@ -658,8 +658,8 @@ PYBIND11_MODULE(pyqpp, m) {
             "execute_sample",
             [](QEngine& qe, const std::vector<idx>& target, idx num_samples) {
                 std::map<std::string, idx> result;
-                auto samples = qe.execute_sample(target, num_samples);
-                for (auto&& elem : samples) {
+                auto stats = qe.execute_sample(target, num_samples);
+                for (auto&& elem : stats.data()) {
                     std::stringstream ss;
                     ss << qpp::disp(elem.first, "", "", "");
                     result[ss.str()] = elem.second;
@@ -673,8 +673,8 @@ PYBIND11_MODULE(pyqpp, m) {
             "execute_sample",
             [](QEngine& qe, idx num_samples) {
                 std::map<std::string, idx> result;
-                auto samples = qe.execute_sample(num_samples);
-                for (auto&& elem : samples) {
+                auto stats = qe.execute_sample(num_samples);
+                for (auto&& elem : stats.data()) {
                     std::stringstream ss;
                     ss << qpp::disp(elem.first, "", "", "");
                     result[ss.str()] = elem.second;
@@ -865,4 +865,53 @@ PYBIND11_MODULE(pyqpp, m) {
     m.def(
         "prod", [](const std::vector<cmat>& As) { return qpp::prod(As); },
         "Products of the elements of the list", py::arg("As"));
+    m.def(
+        "sample",
+        [](const cmat& A, const std::vector<idx>& target,
+           const std::vector<idx>& dims) {
+            return qpp::sample(A, target, dims);
+        },
+        "Samples from a quantum state in the computational basis (Z-basis)",
+        py::arg("A"), py::arg("target"), py::arg("dims"));
+    m.def(
+        "sample",
+        [](const cmat& A, const std::vector<idx>& target, idx d = 2) {
+            return qpp::sample(A, target, d);
+        },
+        "Samples from a quantum state in the computational basis (Z-basis)",
+        py::arg("A"), py::arg("target"), py::arg("d") = 2);
+    m.def(
+        "sample",
+        [](idx num_samples, const cmat& A, const std::vector<idx>& target,
+           const std::vector<idx>& dims) {
+            std::map<std::string, idx> result;
+            auto stats = qpp::sample(num_samples, A, target, dims);
+            for (auto&& elem : stats) {
+                std::stringstream ss;
+                ss << qpp::disp(elem.first, "", "", "");
+                result[ss.str()] = elem.second;
+            }
+            return result;
+        },
+        "Samples repeatedly from a quantum state in the computational basis "
+        "(Z-basis)",
+        py::arg("num_samples"), py::arg("A"), py::arg("target"),
+        py::arg("dims"));
+    m.def(
+        "sample",
+        [](idx num_samples, const cmat& A, const std::vector<idx>& target,
+           idx d = 2) {
+            std::map<std::string, idx> result;
+            auto stats = qpp::sample(num_samples, A, target, d);
+            for (auto&& elem : stats) {
+                std::stringstream ss;
+                ss << qpp::disp(elem.first, "", "", "");
+                result[ss.str()] = elem.second;
+            }
+            return result;
+        },
+        "Samples repeatedly from a quantum state in the computational basis "
+        "(Z-basis)",
+        py::arg("num_samples"), py::arg("A"), py::arg("target"),
+        py::arg("d") = 2);
 }

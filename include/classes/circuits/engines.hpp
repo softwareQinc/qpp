@@ -44,6 +44,124 @@ namespace qpp {
  * See https://github.com/softwareQinc/qpp/issues/75 for more details.
  */
 class QEngine : public IDisplay, public IJSON {
+  public:
+    /**
+     * \brief Sampling/measurement statistics
+     */
+    class Statistics : public IDisplay, public IJSON {
+        /**
+         * \brief Measurement/sampling statistics
+         */
+        using stats_t_ = std::map<std::vector<idx>, idx>;
+        mutable stats_t_ stats_{};
+
+      public:
+        /**
+         * \brief Default constructor
+         */
+        Statistics() = default;
+
+        /**
+         * \brief Constructor
+         *
+         * \param stats Instance of qpp::QEngine::Statistics
+         */
+        explicit Statistics(stats_t_ stats) : stats_{std::move(stats)} {}
+
+        /**
+         * \brief Number of samples
+         *
+         * \return Number of samples
+         */
+        idx get_num_reps() const {
+            idx result = 0;
+            for (auto&& [_, val] : stats_)
+                result += val;
+            return result;
+        }
+
+        /**
+         * \brief Number of distinct outcomes
+         *
+         * \return Number of distinct outcomes
+         */
+        idx get_num_outcomes() const { return stats_.size(); }
+
+        /**
+         * \brief Raw data structure representing the statistics
+         *
+         * \return Raw data structure representing the statistics
+         */
+        stats_t_& data() const& { return stats_; }
+
+        /**
+         * \brief qpp::IJSON::to_JSON() override
+         *
+         * Displays the statistics in JSON format
+         *
+         * \param enclosed_in_curly_brackets If true, encloses the result in
+         * curly brackets
+         * \return String containing the JSON representation of the statistics
+         */
+        std::string
+        to_JSON(bool enclosed_in_curly_brackets = true) const override {
+            std::string result;
+
+            if (enclosed_in_curly_brackets)
+                result += "{";
+
+            std::ostringstream ss;
+            ss << "\"num_reps\": " << get_num_reps() << ", ";
+            ss << "\"num_outcomes\": " << get_num_outcomes() << ", ";
+
+            bool is_first = true;
+            std::string sep{};
+            ss << "\"outcomes\": ";
+            ss << "{";
+            for (auto&& [key, val] : stats_) {
+                ss << sep << "\"" << disp(key, ", ") << "\": " << val;
+                if (is_first) {
+                    is_first = false;
+                    sep = ", ";
+                }
+            }
+            ss << "}";
+            result += ss.str();
+
+            if (enclosed_in_curly_brackets)
+                result += "}";
+
+            return result;
+        }
+
+      private:
+        /**
+         * \brief qpp::IDisplay::display() override
+         *
+         * Writes to the output stream a textual representation of the
+         * statistics
+         *
+         * \param os Output stream passed by reference
+         * \return Reference to the output stream
+         */
+        std::ostream& display(std::ostream& os) const override {
+            os << "[Statistics]\n";
+            os << "\tnum_reps: " << get_num_reps() << '\n';
+            os << "\tnum_outcomes: " << get_num_outcomes() << '\n';
+            bool is_first = true;
+            std::string sep{};
+            for (auto&& [key, val] : stats_) {
+                os << sep << '\t' << disp(key, " ") << ": " << val;
+                if (is_first) {
+                    is_first = false;
+                    sep = '\n';
+                }
+            }
+
+            return os;
+        };
+    }; /* class QEngine::Statistics */
+
   protected:
     const QCircuit* qc_; ///< pointer to constant quantum circuit description
 
@@ -102,9 +220,8 @@ class QEngine : public IDisplay, public IJSON {
             subsys_ = std::vector<idx>(qc_->get_nq(), 0);
             std::iota(std::begin(subsys_), std::end(subsys_), 0);
         }
-    } st_; ///< current state of the engine
-    std::map<std::vector<idx>, idx>
-        stats_; ///< measurement statistics for multiple runs
+    } st_;               ///< current state of the engine
+    Statistics stats_{}; ///< measurement statistics for multiple runs
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -151,7 +268,8 @@ class QEngine : public IDisplay, public IJSON {
 
   public:
     /**
-     * \brief Constructs a quantum engine out of a quantum circuit description
+     * \brief Constructs a quantum engine out of a quantum circuit
+     * description
      *
      * \note The quantum circuit description must be an lvalue
      * \see qpp::QEngine(QCircuit&&)
@@ -200,9 +318,10 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Vector with the values of the underlying classical dits
      * \see qpp::QEngine::set_dits()
      *
-     * \note When interfacing with OpenQASM, the classical dits/registers are
-     * evaluated in little-endian order, with  the least significant bit being
-     * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
+     * \note When interfacing with OpenQASM, the classical dits/registers
+     * are evaluated in little-endian order, with  the least significant bit
+     * being stored first. For example, [1,0,0] is interpreted as 1 (and not
+     * 4).
      *
      * \return Vector of underlying classical dits
      */
@@ -212,9 +331,10 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Value of the classical dit at position \a i
      * \see qpp::QEngine::set_dit()
      *
-     * \note When interfacing with OpenQASM, the classical dits/registers are
-     * evaluated in little-endian order, with  the least significant bit being
-     * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
+     * \note When interfacing with OpenQASM, the classical dits/registers
+     * are evaluated in little-endian order, with  the least significant bit
+     * being stored first. For example, [1,0,0] is interpreted as 1 (and not
+     * 4).
      *
      * \param i Classical dit index
      * \return Value of the classical dit at position \a i
@@ -232,15 +352,15 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief Vector of underlying measurement outcome probabilities
      *
-     * \note Those should be interpreted as conditional probabilities based on
-     * the temporal order of the measurements, i.e., if we measure qubit 0,
-     * then measure qubit 1, and finally qubit 2, the resulting vector of
-     * outcome probabilities probs[2] should be interpreted as the conditional
-     * probability of qubit 2 having the outcome it had given that qubit 1 and
-     * qubit 0 had their given outcomes, respectively. As an example, if we
-     * measure the qubit 0 followed by the qubit 1 of a maximally entangled
-     * state \f$(|00\rangle + |11\rangle)/\sqrt{2}\f$, then the vector of
-     * outcome probabilities will be [0.5, 1].
+     * \note Those should be interpreted as conditional probabilities based
+     * on the temporal order of the measurements, i.e., if we measure qubit
+     * 0, then measure qubit 1, and finally qubit 2, the resulting vector of
+     * outcome probabilities probs[2] should be interpreted as the
+     * conditional probability of qubit 2 having the outcome it had given
+     * that qubit 1 and qubit 0 had their given outcomes, respectively. As
+     * an example, if we measure the qubit 0 followed by the qubit 1 of a
+     * maximally entangled state \f$(|00\rangle + |11\rangle)/\sqrt{2}\f$,
+     * then the vector of outcome probabilities will be [0.5, 1].
      *
      * \note The probability vector has the same length as the vector of
      * classical dits. If the measurement result is stored at the index
@@ -252,8 +372,8 @@ class QEngine : public IDisplay, public IJSON {
     std::vector<double> get_probs() const { return st_.probs_; }
 
     /**
-     * \brief Check whether qudit \a i was already measured (destructively) at
-     * the current engine state
+     * \brief Check whether qudit \a i was already measured (destructively)
+     * at the current engine state
      *
      * \param i Qudit index
      * \return True if qudit \a i was already measured, false otherwise
@@ -263,11 +383,11 @@ class QEngine : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Vector of already measured (destructively) qudit indexes at the
-     * current engine state
+     * \brief Vector of already measured (destructively) qudit indexes at
+     * the current engine state
      *
-     * \return Vector of already measured qudit (destructively) indexes at the
-     * current engine state
+     * \return Vector of already measured qudit (destructively) indexes at
+     * the current engine state
      */
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
@@ -312,10 +432,10 @@ class QEngine : public IDisplay, public IJSON {
      * \return Hash table with collected measurement statistics for multiple
      * runs, with hash key being the string representation of the vector of
      * measurement results and value being the number of occurrences (of the
-     * vector of measurement results), with the most significant bit located at
-     * index 0 (i.e., top/left).
+     * vector of measurement results), with the most significant bit located
+     * at index 0 (i.e., top/left).
      */
-    std::map<std::vector<idx>, idx> get_stats() const { return stats_; }
+    QEngine::Statistics get_stats() const { return stats_; }
 
     /**
      * \brief Determines if engines derived from \a qpp
@@ -332,9 +452,10 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Sets the classical dit at position \a i
      * \see qpp::QEngine::get_dit()
      *
-     * \note When interfacing with OpenQASM, the classical dits/registers are
-     * evaluated in little-endian order, with  the least significant bit being
-     * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
+     * \note When interfacing with OpenQASM, the classical dits/registers
+     * are evaluated in little-endian order, with  the least significant bit
+     * being stored first. For example, [1,0,0] is interpreted as 1 (and not
+     * 4).
      *
      * \param i Classical dit index
      * \param value Classical dit value
@@ -355,13 +476,14 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Set the classical dits to \a dits
      * \see qpp::QEngine::get_dits()
      *
-     * \note When interfacing with OpenQASM, the classical dits/registers are
-     * evaluated in little-endian order, with  the least significant bit being
-     * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
+     * \note When interfacing with OpenQASM, the classical dits/registers
+     * are evaluated in little-endian order, with  the least significant bit
+     * being stored first. For example, [1,0,0] is interpreted as 1 (and not
+     * 4).
      *
      * \param dits Vector of classical dits, must have the same size as the
-     * internal vector of classical dits returned by qpp::QEngine::get_dits()
-     * \return Reference to the current instance
+     * internal vector of classical dits returned by
+     * qpp::QEngine::get_dits() \return Reference to the current instance
      */
     QEngine& set_dits(std::vector<idx> dits) {
         // EXCEPTION CHECKS
@@ -630,7 +752,8 @@ class QEngine : public IDisplay, public IJSON {
         }     // end else if measurement step
         // no-op
         else if (elem.type_ == QCircuit::StepType::NOP) {
-            (void) 0; // nop, to trick "duplicate code" warning in clang-tidy
+            (void) 0; // nop, to trick "duplicate code" warning in
+                      // clang-tidy
         }
         // otherwise
         else {
@@ -689,25 +812,25 @@ class QEngine : public IDisplay, public IJSON {
             // we measured at least one qudit
             if (qc_->get_measurement_count() > 0) {
                 std::vector<idx> m_res = get_dits();
-                ++stats_[m_res];
+                ++stats_.data()[m_res];
             }
         }
 
         return *this;
     }
-
+    // TODO reset stats?
     /**
-     * \brief Executes the underlying quantum circuit description then sample
-     * repeatedly from the output quantum state in the computational basis
-     * (Z-basis)
+     * \brief Executes the underlying quantum circuit description then
+     * sample repeatedly from the output quantum state in the computational
+     * basis (Z-basis)
      *
      * \param target Subsystem indexes that are sampled
-     * \param num_samples Number of samples
-     * \return Map with vector of outcome results and their corresponding number
-     * of appearances
+     * \param num_reps Number of samples/measurements
+     * \return Map with vector of outcome results and their corresponding
+     * number of appearances
      */
-    virtual std::map<std::vector<idx>, idx>
-    execute_sample(const std::vector<idx>& target, idx num_samples = 1) {
+    virtual Statistics execute_sample(const std::vector<idx>& target,
+                                      idx num_reps = 1) {
         // EXCEPTION CHECKS
 
         if (get_circuit().get_step_count() == 0)
@@ -735,20 +858,20 @@ class QEngine : public IDisplay, public IJSON {
         // END EXCEPTION
 
         execute();
-        return qpp::sample(num_samples, get_psi(), get_relative_pos_(target),
-                           qc_->get_d());
+        return Statistics{qpp::sample(num_reps, get_psi(),
+                                      get_relative_pos_(target), qc_->get_d())};
     }
 
     /**
-     * \brief Executes the underlying quantum circuit description then sample
-     * repeatedly from the output quantum state in the computational basis
-     * (Z-basis)
+     * \brief Executes the underlying quantum circuit description then
+     * sample repeatedly from the output quantum state in the computational
+     * basis (Z-basis)
      *
-     * \param num_samples Number of samples
-     * \return Map with vector of outcome results and their corresponding number
-     * of appearances
+     * \param num_reps Number of samples/measurements
+     * \return Map with vector of outcome results and their corresponding
+     * number of appearances
      */
-    std::map<std::vector<idx>, idx> execute_sample(idx num_samples = 1) {
+    Statistics execute_sample(idx num_reps = 1) {
         // EXCEPTION CHECKS
 
         if (get_circuit().get_step_count() == 0)
@@ -762,7 +885,7 @@ class QEngine : public IDisplay, public IJSON {
                 "all qudits have been already measured");
         // END EXCEPTION
 
-        return this->execute_sample(target, num_samples);
+        return this->execute_sample(target, num_reps);
     }
 
     /**
@@ -812,23 +935,9 @@ class QEngine : public IDisplay, public IJSON {
         ss.clear();
 
         // compute the statistics
-        if (!stats_.empty()) {
-            result += ", \"stats\": {";
-            idx reps = 0;
-            for (auto&& elem : get_stats())
-                reps += elem.second;
-            result += "\"reps\": " + std::to_string(reps) + ", ";
-            result += "\"outcomes\": " + std::to_string(stats_.size()) + ", ";
-
-            std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
-            std::string sep;
-            for (auto&& elem : get_stats()) {
-                ss << sep << "\"" << disp(elem.first, " ")
-                   << "\" : " << elem.second;
-                sep = ", ";
-            }
-            ss << '}';
-            result += ss.str();
+        if (!stats_.data().empty()) {
+            result += ", \"stats\": ";
+            result += stats_.to_JSON();
         }
 
         if (enclosed_in_curly_brackets)
@@ -849,9 +958,11 @@ class QEngine : public IDisplay, public IJSON {
      */
     std::ostream& display(std::ostream& os) const override {
         /*
-        os << "measured/discarded (destructive): " << disp(get_measured(), ", ")
+        os << "measured/discarded (destructive): " << disp(get_measured(),
+        ", ")
            << '\n';
-        os << "non-measured/non-discarded: " << disp(get_non_measured(), ", ")
+        os << "non-measured/non-discarded: " << disp(get_non_measured(), ",
+        ")
            << '\n';
         */
 
@@ -866,23 +977,11 @@ class QEngine : public IDisplay, public IJSON {
         os << ">\n";
 
         os << "last probs: " << disp(get_probs(), ", ") << '\n';
-        os << "last dits: " << disp(get_dits(), ", ");
+        os << "last dits: " << disp(get_dits(), ", ") << '\n';
 
         // compute the statistics
-        if (!stats_.empty()) {
-            idx reps = 0;
-            for (auto&& elem : get_stats())
-                reps += elem.second;
-            os << "\nstats:\n";
-            os << '\t' << "reps: " << reps << '\n';
-            os << '\t' << "outcomes: " << stats_.size() << '\n';
-            std::vector<idx> dits_dims(qc_->get_nc(), qc_->get_d());
-            std::string sep;
-            for (auto&& elem : get_stats()) {
-                os << sep << '\t' << disp(elem.first, " ") << ": "
-                   << elem.second;
-                sep = '\n';
-            }
+        if (!stats_.data().empty()) {
+            os << stats_ << '\n';
         }
 
         return os;
@@ -953,9 +1052,8 @@ class QNoisyEngine : public QEngine {
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
-     * \param reset_stats Resets the collected measurement statistics hash table
-     * before the run
-     * \return Reference to the current instance
+     * \param reset_stats Resets the collected measurement statistics hash
+     * table before the run \return Reference to the current instance
      */
     QNoisyEngine& execute(idx reps = 1, bool reset_stats = true) override {
         auto initial_engine_state = st_; // saves the engine entry state
@@ -973,7 +1071,7 @@ class QNoisyEngine : public QEngine {
             // we measured at least one qudit
             if (qc_->get_measurement_count() > 0) {
                 std::vector<idx> m_res = get_dits();
-                ++stats_[m_res];
+                ++stats_.data()[m_res];
             }
         }
 
@@ -981,18 +1079,17 @@ class QNoisyEngine : public QEngine {
     }
 
     /**
-     * \brief Executes the underlying quantum circuit description then sample
-     * repeatedly from the output quantum state in the computational basis
-     * (Z-basis)
+     * \brief Executes the underlying quantum circuit description then
+     * sample repeatedly from the output quantum state in the computational
+     * basis (Z-basis)
      *
      * \param target Subsystem indexes that are sampled
-     * \param num_samples Number of samples
-     * \return Map with vector of outcome results and their corresponding number
-     * of appearances
+     * \param num_reps Number of samples/measurements
+     * \return Map with vector of outcome results and their corresponding
+     * number of appearances
      */
-    std::map<std::vector<idx>, idx>
-    execute_sample(const std::vector<idx>& target,
-                   idx num_samples = 1) override {
+    Statistics execute_sample(const std::vector<idx>& target,
+                              idx num_reps = 1) override {
         // EXCEPTION CHECKS
 
         if (get_circuit().get_step_count() == 0)
@@ -1019,12 +1116,12 @@ class QNoisyEngine : public QEngine {
                                         "target");
         // END EXCEPTION
 
-        std::map<std::vector<idx>, idx> result;
-        for (idx i = 0; i < num_samples; ++i) {
+        Statistics result;
+        for (idx i = 0; i < num_reps; ++i) {
             reset().execute();
             auto current_sample =
                 qpp::sample(get_psi(), get_relative_pos_(target), qc_->get_d());
-            ++result[current_sample];
+            ++result.data()[current_sample];
         }
 
         return result;
@@ -1050,13 +1147,15 @@ class QNoisyEngine : public QEngine {
 
     // getters
     /**
-     * \brief Vector of noise results obtained before every step in the circuit
+     * \brief Vector of noise results obtained before every step in the
+     * circuit
      *
-     * \note The first vector contains the noise measurement results obtained
-     * before applying the first step in the circuit, and so on, ordered by
-     * non-measured qudits. That is, the first element in the vector
-     * corresponding to noise obtained before a given step in the circuit
-     * represents the noise result obtained on the first non-measured qudit etc.
+     * \note The first vector contains the noise measurement results
+     * obtained before applying the first step in the circuit, and so on,
+     * ordered by non-measured qudits. That is, the first element in the
+     * vector corresponding to noise obtained before a given step in the
+     * circuit represents the noise result obtained on the first
+     * non-measured qudit etc.
      *
      * \return Vector of noise results
      */

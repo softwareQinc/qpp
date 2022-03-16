@@ -1,4 +1,4 @@
-// Executes an OpenQASM circuit read from the input stream, repeatedly if the
+// Executes an OpenQASM program read from the input stream, repeatedly if the
 // number of repetitions is passed as the first argument. If there is a second
 // argument (i.e., argc > 2), then the final quantum state is displayed.
 // Source: ./examples/qasm/qpp_qasm.cpp
