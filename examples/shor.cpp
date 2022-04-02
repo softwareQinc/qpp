@@ -61,7 +61,7 @@ int main() {
     // FIRST MEASUREMENT STAGE
     auto measured1 = measure_seq(psi, first_subsys); // measure first n qubits
     std::vector<idx> vect_results1 = std::get<RES>(measured1); // results
-    double prob1 = std::get<PROB>(measured1); // probability of the result
+    double prob1 = prod(std::get<PROB>(measured1)); // probability of the result
     idx n1 = multiidx2n(vect_results1, std::vector<idx>(n, 2)); // binary to int
     auto x1 =
         static_cast<double>(n1) / static_cast<double>(D); // multiple of 1/r
@@ -89,7 +89,7 @@ int main() {
     // SECOND MEASUREMENT STAGE
     auto measured2 = measure_seq(psi, first_subsys); // measure first n qubits
     std::vector<idx> vect_results2 = std::get<RES>(measured2); // results
-    double prob2 = std::get<PROB>(measured2); // probability of the result
+    double prob2 = prod(std::get<PROB>(measured2)); // probability of the result
     idx n2 = multiidx2n(vect_results2, std::vector<idx>(n, 2)); // binary to int
     auto x2 = static_cast<double>(n2) / D; // multiple of 1/r
 

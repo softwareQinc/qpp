@@ -14,7 +14,6 @@ int main() {
     idx nq_c = 4;         // number of counting qubits
     idx nq_a = 2;         // number of ancilla qubits
     idx nq = nq_c + nq_a; // total number of qubits
-    idx nc = 1;           // nc stores a 'dit', increase nq_c for more precision
 
     std::cout << ">> Quantum phase estimation quantum circuit simulation\n";
     std::cout << ">> nq_c = " << nq_c << " counting qubits, nq_a = " << nq_a
@@ -27,7 +26,7 @@ int main() {
     // (4-th) eigenvalue; we expect estimated theta = 1/4 (0.25).
     U = kron(U, U); // OK, size will re-adjust since U is a dynamic Eigen matrix
 
-    QCircuit qc{nq, nc};
+    QCircuit qc{nq, nq_c};
     std::vector<idx> counting_qubits(nq_c);
     std::iota(counting_qubits.begin(), counting_qubits.end(), 0);
     std::vector<idx> ancilla(nq_a);
@@ -40,8 +39,8 @@ int main() {
         U = powm(U, 2);
     }
     qc.TFQ(counting_qubits); // inverse Fourier transform
-    // measure many qubits at once, result is a dit
-    qc.measureZ(counting_qubits, 0);
+    // measure many qubits at once, store starting with the 0 classical dit
+    qc.measure(counting_qubits);
 
     // display the quantum circuit and its corresponding resources
     std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
@@ -50,9 +49,8 @@ int main() {
     QEngine engine{qc};
     engine.execute();
     // decimal representation of the measurement result
-    idx decimal = engine.get_dit(0);
-    auto theta_e =
-        static_cast<double>(decimal) / std::pow(2, counting_qubits.size());
+    idx decimal = multiidx2n(engine.get_dits(), std::vector<idx>(nq_c, 2));
+    auto theta_e = static_cast<double>(decimal) / std::pow(2, nq_c);
 
     std::cout << ">> Input theta = " << theta << '\n';
     std::cout << ">> Estimated theta = " << theta_e << '\n';

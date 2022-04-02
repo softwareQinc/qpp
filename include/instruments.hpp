@@ -716,10 +716,11 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * \return Tuple of: 1. Vector of outcome results of the measurement (ordered in
  * increasing order with respect to \a target, i.e. first measurement result
  * corresponds to the subsystem with the smallest index), 2. Outcome
- * probability, and 3. Post-measurement normalized state
+ * probabilities, and 3. Post-measurement normalized state
  */
 template <typename Derived>
-[[qpp::critical]] std::tuple<std::vector<idx>, double, expr_t<Derived>>
+[[qpp::critical]] std::tuple<std::vector<idx>, std::vector<double>,
+                             expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             std::vector<idx> dims, bool destructive = true) {
     //    typename std::remove_const<
@@ -757,7 +758,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     // END EXCEPTION CHECKS
 
     std::vector<idx> result;
-    double prob = 1;
+    std::vector<double> probs;
 
     // sort target in decreasing order,
     // the order of measurements does not matter
@@ -770,7 +771,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             {target[0]}, dims, destructive);
         idx m = std::get<0>(tmp);
         result.emplace_back(m);
-        prob *= std::get<1>(tmp)[m];
+        probs.emplace_back(std::get<1>(tmp)[m]);
         rA = std::get<2>(tmp)[m];
 
         if (destructive) {
@@ -783,7 +784,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     // order result in increasing order with respect to target
     std::reverse(std::begin(result), std::end(result));
 
-    return std::make_tuple(result, prob, rA);
+    return std::make_tuple(result, probs, rA);
 }
 
 /**
@@ -801,10 +802,10 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  * \return Tuple of: 1. Vector of outcome results of the measurement (ordered in
  * increasing order with respect to \a target, i.e. first measurement result
  * corresponds to the subsystem with the smallest index), 2. Outcome
- * probability, and 3. Post-measurement normalized state
+ * probabilities, and 3. Post-measurement normalized state
  */
 template <typename Derived>
-std::tuple<std::vector<idx>, double, expr_t<Derived>>
+std::tuple<std::vector<idx>, std::vector<double>, expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             idx d = 2, bool destructive = true) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();

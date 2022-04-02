@@ -1,4 +1,10 @@
 Pre-release:
+    - Renamed qpp::QCircuit::measureZ() to qpp::QCircuit::measure()
+    - API changes in qpp::QCircuit::measure() for multiple qudits, now the
+      results are stored sequentially (instead as a decimal representation of
+      the multi-index)
+    - API changes in qpp::measure_seq(), now, as part of its return tuple,
+      returns the full list of outcome probabilities
     - Implemented qpp::QEngine::execute_sample() and
       qpp::QNoiseEngine::execute_sample() for sampling after the execution of a
       qpp::QCircuit, e.g.,

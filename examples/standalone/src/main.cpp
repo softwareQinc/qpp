@@ -7,7 +7,7 @@ int main() {
 
     QCircuit qc{1, 1, 2, "coin flip"};
     qc.gate(gt.H, 0);
-    qc.measureZ(0, 0);
+    qc.measure_all();
 
     std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
     std::cout << QEngine{qc}.execute(100) << "\n";

@@ -421,15 +421,15 @@ PYBIND11_MODULE(pyqpp, m) {
                  "classical control dits",
                  py::arg("U"), py::arg("ctrl_dits"), py::arg("target"),
                  py::arg("shift") = std::vector<idx>(), py::arg("name") = "")
-            .def("measureZ",
+            .def("measure",
                  py::overload_cast<idx, idx, bool, std::string>(
-                     &QCircuit::measureZ),
+                     &QCircuit::measure),
                  "Z measurement of single qudit", py::arg("target"),
                  py::arg("c_reg"), py::arg("destructive") = true,
                  py::arg("name") = "")
-            .def("measureZ",
+            .def("measure",
                  py::overload_cast<const std::vector<idx>&, idx, bool,
-                                   std::string>(&QCircuit::measureZ),
+                                   std::string>(&QCircuit::measure),
                  "Z measurement of multiple qudits", py::arg("target"),
                  py::arg("c_reg"), py::arg("destructive") = true,
                  py::arg("name") = "")

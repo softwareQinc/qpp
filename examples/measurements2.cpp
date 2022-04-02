@@ -90,7 +90,8 @@ int main() {
     std::cout << disp(subsys_ket, " ") << '\n';
     std::cout << ">> Outcome(s): " << disp(std::get<RES>(measured_ket), " ")
               << '\n';
-    std::cout << ">> Probability:  " << std::get<PROB>(measured_ket) << '\n';
+    std::cout << ">> Probability:  " << prod(std::get<PROB>(measured_ket))
+              << '\n';
     std::cout << ">> Resulting state:\n";
     std::cout << disp(std::get<ST>(measured_ket)) << '\n';
 
@@ -99,7 +100,8 @@ int main() {
     std::cout << disp(subsys_rho, " ") << '\n';
     std::cout << ">> Outcome(s): " << disp(std::get<RES>(measured_rho), " ")
               << '\n';
-    std::cout << ">> Probability:  " << std::get<PROB>(measured_rho) << '\n';
+    std::cout << ">> Probability:  " << prod(std::get<PROB>(measured_rho))
+              << '\n';
     std::cout << ">> Resulting state:\n";
     std::cout << disp(std::get<ST>(measured_rho)) << '\n';
 }

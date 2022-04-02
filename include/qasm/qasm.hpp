@@ -511,7 +511,7 @@ class QCircuitBuilder final : public ast::Visitor {
 
         // apply measurements non-destructively
         for (idx i = 0; i < q_args.size(); i++) {
-            circuit->measureZ(q_args[i], c_args[i], false);
+            circuit->measure(q_args[i], c_args[i], false);
         }
     }
 

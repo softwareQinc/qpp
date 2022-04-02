@@ -666,29 +666,30 @@ class QEngine : public IDisplay, public IJSON {
             std::vector<idx> target_rel_pos =
                 get_relative_pos_(measurements[m_ip].target_);
 
-            std::vector<idx> resZ;
-            double probZ;
-
             idx mres = 0;
+            std::vector<idx> results;
             std::vector<double> probs;
             std::vector<ket> states;
 
             switch (measurements[m_ip].measurement_type_) {
                 case QCircuit::MeasureType::NONE:
                     break;
-                case QCircuit::MeasureType::MEASURE_Z:
-                    std::tie(resZ, probZ, st_.psi_) =
+                case QCircuit::MeasureType::MEASURE:
+                    std::tie(results, probs, st_.psi_) =
                         measure_seq(st_.psi_, target_rel_pos, d);
-                    st_.dits_[measurements[m_ip].c_reg_] = resZ[0];
-                    st_.probs_[measurements[m_ip].c_reg_] = probZ;
+                    st_.dits_[measurements[m_ip].c_reg_] = results[0];
+                    st_.probs_[measurements[m_ip].c_reg_] = probs[0];
                     set_measured_(measurements[m_ip].target_[0]);
                     break;
-                case QCircuit::MeasureType::MEASURE_Z_MANY:
-                    std::tie(resZ, probZ, st_.psi_) =
+                case QCircuit::MeasureType::MEASURE_MANY:
+                    std::tie(results, probs, st_.psi_) =
                         measure_seq(st_.psi_, target_rel_pos, d);
-                    st_.dits_[measurements[m_ip].c_reg_] = multiidx2n(
-                        resZ, std::vector<idx>(target_rel_pos.size(), d));
-                    st_.probs_[measurements[m_ip].c_reg_] = probZ;
+                    std::copy(results.begin(), results.end(),
+                              std::next(st_.dits_.begin(),
+                                        measurements[m_ip].c_reg_));
+                    std::copy(probs.begin(), probs.end(),
+                              std::next(st_.probs_.begin(),
+                                        measurements[m_ip].c_reg_));
                     for (auto&& target : measurements[m_ip].target_)
                         set_measured_(target);
                     break;
@@ -711,18 +712,21 @@ class QEngine : public IDisplay, public IJSON {
                     for (auto&& target : measurements[m_ip].target_)
                         set_measured_(target);
                     break;
-                case QCircuit::MeasureType::MEASURE_Z_ND:
-                    std::tie(resZ, probZ, st_.psi_) =
+                case QCircuit::MeasureType::MEASURE_ND:
+                    std::tie(results, probs, st_.psi_) =
                         measure_seq(st_.psi_, target_rel_pos, d, false);
-                    st_.dits_[measurements[m_ip].c_reg_] = resZ[0];
-                    st_.probs_[measurements[m_ip].c_reg_] = probZ;
+                    st_.dits_[measurements[m_ip].c_reg_] = results[0];
+                    st_.probs_[measurements[m_ip].c_reg_] = probs[0];
                     break;
-                case QCircuit::MeasureType::MEASURE_Z_MANY_ND:
-                    std::tie(resZ, probZ, st_.psi_) =
+                case QCircuit::MeasureType::MEASURE_MANY_ND:
+                    std::tie(results, probs, st_.psi_) =
                         measure_seq(st_.psi_, target_rel_pos, d, false);
-                    st_.dits_[measurements[m_ip].c_reg_] = multiidx2n(
-                        resZ, std::vector<idx>(target_rel_pos.size(), d));
-                    st_.probs_[measurements[m_ip].c_reg_] = probZ;
+                    std::copy(results.begin(), results.end(),
+                              std::next(st_.dits_.begin(),
+                                        measurements[m_ip].c_reg_));
+                    std::copy(probs.begin(), probs.end(),
+                              std::next(st_.probs_.begin(),
+                                        measurements[m_ip].c_reg_));
                     break;
                 case QCircuit::MeasureType::MEASURE_V_ND:
                 case QCircuit::MeasureType::MEASURE_V_MANY_ND:
@@ -820,14 +824,14 @@ class QEngine : public IDisplay, public IJSON {
     }
     // TODO reset stats?
     /**
-     * \brief Executes the underlying quantum circuit description then
+     * \brief Executes the underlying quantum circuit description once then
      * sample repeatedly from the output quantum state in the computational
      * basis (Z-basis)
      *
      * \param target Subsystem indexes that are sampled
-     * \param num_reps Number of samples/measurements
-     * \return Map with vector of outcome results and their corresponding
-     * number of appearances
+     * \param num_reps Number of samples
+     * \return Map with vector of outcome results and their corresponding number
+     * of appearances
      */
     virtual Statistics execute_sample(const std::vector<idx>& target,
                                       idx num_reps = 1) {
@@ -863,13 +867,13 @@ class QEngine : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Executes the underlying quantum circuit description then
+     * \brief Executes the underlying quantum circuit description once then
      * sample repeatedly from the output quantum state in the computational
      * basis (Z-basis)
      *
-     * \param num_reps Number of samples/measurements
-     * \return Map with vector of outcome results and their corresponding
-     * number of appearances
+     * \param num_reps Number of samples
+     * \return Map with vector of outcome results and their corresponding number
+     * of appearances
      */
     Statistics execute_sample(idx num_reps = 1) {
         // EXCEPTION CHECKS
@@ -981,7 +985,7 @@ class QEngine : public IDisplay, public IJSON {
 
         // compute the statistics
         if (!stats_.data().empty()) {
-            os << stats_ << '\n';
+            os << stats_;
         }
 
         return os;
@@ -1079,12 +1083,12 @@ class QNoisyEngine : public QEngine {
     }
 
     /**
-     * \brief Executes the underlying quantum circuit description then
+     * \brief Executes the underlying quantum circuit description once then
      * sample repeatedly from the output quantum state in the computational
      * basis (Z-basis)
      *
      * \param target Subsystem indexes that are sampled
-     * \param num_reps Number of samples/measurements
+     * \param num_reps Number of samples
      * \return Map with vector of outcome results and their corresponding
      * number of appearances
      */

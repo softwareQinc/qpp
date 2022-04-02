@@ -230,23 +230,21 @@ TEST(qpp_QCircuit_match_circuit_right, AllTests) {}
 ///       std::string name = {})
 TEST(qpp_QCircuit_measureV, JointMultipleTargets) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::measureV(const cmat&
-/// V, idx target,
-///       idx c_reg, bool destructive = true,
-///       std::string name = {})
+/// BEGIN QCircuit& QCircuit::measureV(const cmat& V, idx target, idx c_reg,
+///       bool destructive = true, std::string name = {})
 TEST(qpp_QCircuit_measureV, SingleTarget) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::measureZ(const
-/// std::vector<idx>& target,
-///       idx c_reg, bool destructive = true,
-///       std::string name = {})
-TEST(qpp_QCircuit_measureZ, MultipleTargets) {}
+/// BEGIN QCircuit& QCircuit::measure(const std::vector<idx>& target, idx c_reg,
+///       bool destructive = true, std::string name = {})
+TEST(qpp_QCircuit_measure, MultipleTargets) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::measureZ(idx target,
-/// idx c_reg,
-///       bool destructive = true, std::string name
-///       = {})
-TEST(qpp_QCircuit_measureZ, SingleTarget) {}
+///       idx c_reg, bool destructive = true, std::string name = {})
+TEST(qpp_QCircuit_measure, SingleTarget) {}
+/******************************************************************************/
+/// BEGIN QCircuit& QCircuit::measure_all(idx c_reg = 0,
+///       bool destructive = true, std::string name = {})
+TEST(qpp_QCircuit_measure_all, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::nop()
 TEST(qpp_QCircuit_nop, AllTests) {}
@@ -260,50 +258,39 @@ TEST(qpp_QCircuit_operator_eq, AllTests) {}
 /// BEGIN QCircuit& QCircuit::QFT(bool swap = true)
 TEST(qpp_QCircuit_QFT, AllQudits) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::QFT(const
-/// std::vector<idx>& target,
+/// BEGIN QCircuit& QCircuit::QFT(const std::vector<idx>& target,
 ///       bool swap = true)
 TEST(qpp_QCircuit_QFT, SpecificQudits) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::remove_clean_dit(idx
-/// target)
+/// BEGIN QCircuit& QCircuit::remove_clean_dit(idx target)
 TEST(qpp_QCircuit_remove_clean_dit, AllTests) {}
 /******************************************************************************/
-/// BEGIN QCircuit&
-/// QCircuit::remove_clean_dits(std::vector<idx>
-/// target)
+/// BEGIN QCircuit& QCircuit::remove_clean_dits(std::vector<idx> target)
 TEST(qpp_QCircuit_remove_clean_dits, AllTests) {}
 /******************************************************************************/
-/// BEGIN QCircuit&
-/// QCircuit::remove_clean_qudit(idx target)
+/// BEGIN QCircuit& QCircuit::remove_clean_qudit(idx target)
 TEST(qpp_QCircuit_remove_clean_qudit, AllTests) {}
 /******************************************************************************/
-/// BEGIN QCircuit&
-/// QCircuit::remove_clean_qudits(std::vector<idx>
-/// target)
+/// BEGIN QCircuit& QCircuit::remove_clean_qudits(std::vector<idx> target)
 TEST(qpp_QCircuit_remove_clean_qudits, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::replicate(idx n)
 TEST(qpp_QCircuit_replicate, AllTests) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::reset(const
-/// std::vector<idx>& target,
+/// BEGIN QCircuit& QCircuit::reset(const std::vector<idx>& target,
 ///       std::string name = {})
 TEST(qpp_QCircuit_reset, MultipleTargets) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::reset(idx target,
-/// std::string name = {}
+/// BEGIN QCircuit& QCircuit::reset(idx target, std::string name = {}
 TEST(qpp_QCircuit_reset, SingleTarget) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::set_name(const
-/// std::string& name)
+/// BEGIN QCircuit& QCircuit::set_name(const std::string& name)
 TEST(qpp_QCircuit_set_name, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::TFQ(bool swap = true)
 TEST(qpp_QCircuit_TFQ, AllQudits) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::TFQ(const
-/// std::vector<idx>& target,
+/// BEGIN QCircuit& QCircuit::TFQ(const std::vector<idx>& target,
 ///       bool swap = true)
 TEST(qpp_QCircuit_TFQ, SpecificQudits) {}
 /******************************************************************************/
@@ -343,11 +330,11 @@ TEST(qpp_replicate, AllTests) {}
 ///       const std::vector<std::string>& two_qudit_gate_names = {})
 TEST(qpp_random_circuit_count, AllTests) {}
 /******************************************************************************/
-/// BEEGIN inline QCircuit random_circuit_depth(idx nq, idx depth, double p_two,
-///        const cmat& gate_depth = {},
-///        std::vector<cmat> one_qudit_gate_set = {},
-///        std::vector<cmat> two_qudit_gate_set = {}, idx d = 2,
-///        const std::vector<std::string>& one_qudit_gate_names = {},
-///        const std::vector<std::string>& two_qudit_gate_names = {})
+/// BEGIN inline QCircuit random_circuit_depth(idx nq, idx depth, double p_two,
+///       const cmat& gate_depth = {},
+///       std::vector<cmat> one_qudit_gate_set = {},
+///       std::vector<cmat> two_qudit_gate_set = {}, idx d = 2,
+///       const std::vector<std::string>& one_qudit_gate_names = {},
+///       const std::vector<std::string>& two_qudit_gate_names = {})
 TEST(qpp_random_circuit_depth, AllTests) {}
 /******************************************************************************/
