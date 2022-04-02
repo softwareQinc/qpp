@@ -433,6 +433,9 @@ PYBIND11_MODULE(pyqpp, m) {
                  "Z measurement of multiple qudits", py::arg("target"),
                  py::arg("c_reg"), py::arg("destructive") = true,
                  py::arg("name") = "")
+            .def("measure_all", &QCircuit::measure_all,
+                 "Z measurement of all qudits", py::arg("c_reg") = 0,
+                 py::arg("destructive") = true, py::arg("name") = "")
             .def("measureV",
                  py::overload_cast<const cmat&, idx, idx, bool, std::string>(
                      &QCircuit::measureV),
