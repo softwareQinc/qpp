@@ -822,83 +822,14 @@ class QEngine : public IDisplay, public IJSON {
 
         return *this;
     }
-    // TODO reset stats?
-    /**
-     * \brief Executes the underlying quantum circuit description once then
-     * sample repeatedly from the output quantum state in the computational
-     * basis (Z-basis)
-     *
-     * \param target Subsystem indexes that are sampled
-     * \param num_reps Number of samples
-     * \return Map with vector of outcome results and their corresponding number
-     * of appearances
-     */
-    virtual Statistics execute_sample(const std::vector<idx>& target,
-                                      idx num_reps = 1) {
-        // EXCEPTION CHECKS
-
-        if (get_circuit().get_step_count() == 0)
-            throw exception::ZeroSize("qpp::QEngine::execute_sample()",
-                                      "QCircuit");
-
-        // check valid target
-        if (target.empty())
-            throw exception::ZeroSize("qpp::QEngine::execute_sample()",
-                                      "target");
-        idx nq = get_circuit().get_nq();
-        for (auto&& elem : target) {
-            if (elem >= nq)
-                throw exception::OutOfRange("qpp::QEngine::execute_sample()",
-                                            "target");
-            // check target was not measured before
-            if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QEngine::execute_sample()", "target");
-        }
-        // check no duplicates target
-        if (!internal::check_no_duplicates(target))
-            throw exception::Duplicates("qpp::QEngine::execute_sample()",
-                                        "target");
-        // END EXCEPTION
-
-        execute();
-        return Statistics{qpp::sample(num_reps, get_psi(),
-                                      get_relative_pos_(target), qc_->get_d())};
-    }
-
-    /**
-     * \brief Executes the underlying quantum circuit description once then
-     * sample repeatedly from the output quantum state in the computational
-     * basis (Z-basis)
-     *
-     * \param num_reps Number of samples
-     * \return Map with vector of outcome results and their corresponding number
-     * of appearances
-     */
-    Statistics execute_sample(idx num_reps = 1) {
-        // EXCEPTION CHECKS
-
-        if (get_circuit().get_step_count() == 0)
-            throw exception::ZeroSize("qpp::QEngine::execute_sample()",
-                                      "QCircuit");
-
-        std::vector<idx> target = get_circuit().get_non_measured();
-        if (target.empty())
-            throw exception::QuditAlreadyMeasured(
-                "qpp::QEngine::execute_sample()",
-                "all qudits have been already measured");
-        // END EXCEPTION
-
-        return this->execute_sample(target, num_reps);
-    }
 
     /**
      * \brief qpp::IJSON::to_JSON() override
      *
      * Displays the state of the engine in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in
-     * curly brackets
+     * \param enclosed_in_curly_brackets If true, encloses the result in curly
+     * brackets
      * \return String containing the JSON representation of the state of the
      * engine
      */
@@ -954,8 +885,8 @@ class QEngine : public IDisplay, public IJSON {
     /**
      * \brief qpp::IDisplay::display() override
      *
-     * Writes to the output stream a textual representation of the state of
-     * the engine
+     * Writes to the output stream a textual representation of the state of the
+     * engine
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
@@ -1028,7 +959,6 @@ class QNoisyEngine : public QEngine {
     }
 
     using QEngine::execute;
-    using QEngine::execute_sample;
 
     /**
      * \brief Executes one step in the quantum circuit description
@@ -1080,55 +1010,6 @@ class QNoisyEngine : public QEngine {
         }
 
         return *this;
-    }
-
-    /**
-     * \brief Executes the underlying quantum circuit description once then
-     * sample repeatedly from the output quantum state in the computational
-     * basis (Z-basis)
-     *
-     * \param target Subsystem indexes that are sampled
-     * \param num_reps Number of samples
-     * \return Map with vector of outcome results and their corresponding
-     * number of appearances
-     */
-    Statistics execute_sample(const std::vector<idx>& target,
-                              idx num_reps = 1) override {
-        // EXCEPTION CHECKS
-
-        if (get_circuit().get_step_count() == 0)
-            throw exception::ZeroSize("qpp::QNoisyEngine::execute_sample()",
-                                      "QCircuit");
-
-        // check valid target
-        if (target.empty())
-            throw exception::ZeroSize("qpp::QNoisyEngine::execute_sample()",
-                                      "target");
-        idx nq = get_circuit().get_nq();
-        for (auto&& elem : target) {
-            if (elem >= nq)
-                throw exception::OutOfRange(
-                    "qpp::QNoisyEngine::execute_sample()", "target");
-            // check target was not measured before
-            if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QNoisyEngine::execute_sample()", "target");
-        }
-        // check no duplicates target
-        if (!internal::check_no_duplicates(target))
-            throw exception::Duplicates("qpp::QNoisyEngine::execute_sample()",
-                                        "target");
-        // END EXCEPTION
-
-        Statistics result;
-        for (idx i = 0; i < num_reps; ++i) {
-            reset().execute();
-            auto current_sample =
-                qpp::sample(get_psi(), get_relative_pos_(target), qc_->get_d());
-            ++result.data()[current_sample];
-        }
-
-        return result;
     }
 
     /**

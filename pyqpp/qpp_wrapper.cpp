@@ -657,36 +657,6 @@ PYBIND11_MODULE(pyqpp, m) {
              "Resets the collected measurement statistics hash table")
         .def("reset", &QEngine::reset, "Resets the engine",
              py::arg("reset_stats") = true)
-        .def(
-            "execute_sample",
-            [](QEngine& qe, const std::vector<idx>& target, idx num_samples) {
-                std::map<std::string, idx> result;
-                auto stats = qe.execute_sample(target, num_samples);
-                for (auto&& elem : stats.data()) {
-                    std::stringstream ss;
-                    ss << qpp::disp(elem.first, "", "", "");
-                    result[ss.str()] = elem.second;
-                }
-                return result;
-            },
-            "Sample repeatedly from the output quantum state in the "
-            "computational basis (Z-basis)",
-            py::arg("target"), py::arg("num_samples") = 1)
-        .def(
-            "execute_sample",
-            [](QEngine& qe, idx num_samples) {
-                std::map<std::string, idx> result;
-                auto stats = qe.execute_sample(num_samples);
-                for (auto&& elem : stats.data()) {
-                    std::stringstream ss;
-                    ss << qpp::disp(elem.first, "", "", "");
-                    result[ss.str()] = elem.second;
-                }
-                return result;
-            },
-            "Sample repeatedly from the output quantum state in the "
-            "computational basis (Z-basis)",
-            py::arg("num_samples") = 1)
         .def("execute", py::overload_cast<idx, bool>(&QEngine::execute),
              "Executes the entire quantum circuit description",
              py::arg("reps") = 1, py::arg("clear_stats") = true)
