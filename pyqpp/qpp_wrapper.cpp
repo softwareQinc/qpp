@@ -44,29 +44,6 @@ using Dynamic_bitset = qpp::Dynamic_bitset;
 using QCircuit = qpp::QCircuit;
 using QEngine = qpp::QEngine;
 
-/* qpp::QEngine trampoline class for virtual methods */
-class PyQEngine : public QEngine {
-  public:
-    using QEngine::QEngine;
-
-    bool is_noisy() const override {
-        PYBIND11_OVERRIDE(
-            bool,    /* Return type */
-            QEngine, /* Parent class */
-            is_noisy /* Name of function in C++ (must match Python name) */
-        );
-    }
-
-    QEngine& execute(idx reps = 1, bool clear_stats = true) override {
-        PYBIND11_OVERRIDE(
-            QEngine&, /* Return type */
-            QEngine,  /* Parent class */
-            execute,  /* Name of function in C++ (must match Python name) */
-            reps,     /* Argument(s) */
-            clear_stats);
-    }
-};
-
 /* qpp::QNoisyEngine instantiator */
 template <typename NoiseModel, typename... CtorTypeList>
 void declare_noisy_engine(py::module& m, const std::string& type) {
@@ -610,7 +587,7 @@ PYBIND11_MODULE(pyqpp, m) {
         });
 
     /* qpp::QEngine */
-    py::class_<QEngine, PyQEngine>(m, "QEngine")
+    py::class_<QEngine>(m, "QEngine")
         .def(py::init<const QCircuit&>(), py::keep_alive<1, 2>())
         .def("get_psi", &QEngine::get_psi, "Underlying quantum state")
         .def("get_dits", &QEngine::get_dits, "Underlying classical dits")
@@ -654,6 +631,9 @@ PYBIND11_MODULE(pyqpp, m) {
              "Resets the collected measurement statistics hash table")
         .def("reset", &QEngine::reset, "Resets the engine",
              py::arg("reset_stats") = true)
+        .def("execute", py::overload_cast<idx, bool>(&QEngine::execute),
+             "Executes the entire quantum circuit description",
+             py::arg("reps") = 1, py::arg("clear_stats") = true)
         .def(
             "execute_sample",
             [](QEngine& qe, const std::vector<idx>& target, idx num_samples) {
@@ -684,9 +664,6 @@ PYBIND11_MODULE(pyqpp, m) {
             "Sample repeatedly from the output quantum state in the "
             "computational basis (Z-basis)",
             py::arg("num_samples") = 1)
-        .def("execute", py::overload_cast<idx, bool>(&QEngine::execute),
-             "Executes the entire quantum circuit description",
-             py::arg("reps") = 1, py::arg("clear_stats") = true)
         .def("to_JSON", &QEngine::to_JSON, "State of the engine in JSON format",
              py::arg("enclosed_in_curly_brackets") = true)
         .def("__repr__",
