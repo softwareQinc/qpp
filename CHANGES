@@ -44,6 +44,8 @@ Pre-release (future 4.0):
           qpp::sum(const std::initializer_list<T>&)
     - Modified qpp::prod() and qpp::sum() to allow list of matrices
     - Bugfixes
+    - Bumped GoogleTest version to 1.12.1
+          https://github.com/google/googletest/commit/58d77fa8070e8cec2dc1ed015d66b454c8d78850
 
 Version 3.1 - 11 January 2022
     - Added pyqpp, a Python wrapper around Quantum++. See
