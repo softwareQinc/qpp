@@ -29,8 +29,8 @@
  * \brief Input/output manipulators
  */
 
-#ifndef INTERNAL_CLASSES_IOMANIP_HPP_
-#define INTERNAL_CLASSES_IOMANIP_HPP_
+#ifndef QPP_INTERNAL_CLASSES_IOMANIP_HPP_
+#define QPP_INTERNAL_CLASSES_IOMANIP_HPP_
 
 namespace qpp::internal {
 // ostream manipulators for nice formatting of
@@ -144,4 +144,4 @@ class IOManipEigen : public IDisplay, private Display_Impl_ {
 
 } /* namespace qpp::internal */
 
-#endif /* INTERNAL_CLASSES_IOMANIP_HPP_ */
+#endif /* QPP_INTERNAL_CLASSES_IOMANIP_HPP_ */

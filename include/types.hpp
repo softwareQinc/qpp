@@ -29,8 +29,8 @@
  * \brief Type aliases
  */
 
-#ifndef TYPES_HPP_
-#define TYPES_HPP_
+#ifndef QPP_TYPES_HPP_
+#define QPP_TYPES_HPP_
 
 namespace qpp {
 /**
@@ -118,4 +118,4 @@ using qram = std::vector<idx>;
 
 } /* namespace qpp */
 
-#endif /* TYPES_HPP_ */
+#endif /* QPP_TYPES_HPP_ */

@@ -29,8 +29,8 @@
  * \brief Input/output functions
  */
 
-#ifndef INPUT_OUTPUT_HPP_
-#define INPUT_OUTPUT_HPP_
+#ifndef QPP_INPUT_OUTPUT_HPP_
+#define QPP_INPUT_OUTPUT_HPP_
 
 namespace qpp {
 /**
@@ -357,4 +357,4 @@ dyn_mat<typename Derived::Scalar> load(std::istream& is) {
 
 } /* namespace qpp */
 
-#endif /* INPUT_OUTPUT_HPP_ */
+#endif /* QPP_INPUT_OUTPUT_HPP_ */

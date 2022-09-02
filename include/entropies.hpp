@@ -29,8 +29,8 @@
  * \brief Entropy functions
  */
 
-#ifndef ENTROPY_HPP_
-#define ENTROPY_HPP_
+#ifndef QPP_ENTROPY_HPP_
+#define QPP_ENTROPY_HPP_
 
 namespace qpp {
 /**
@@ -358,4 +358,4 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 
 } /* namespace qpp */
 
-#endif /* ENTROPY_HPP_ */
+#endif /* QPP_ENTROPY_HPP_ */

@@ -30,8 +30,8 @@
  * interface
  */
 
-#ifndef CLASSES_IDISPLAY_HPP_
-#define CLASSES_IDISPLAY_HPP_
+#ifndef QPP_CLASSES_IDISPLAY_HPP_
+#define QPP_CLASSES_IDISPLAY_HPP_
 
 namespace qpp {
 /**
@@ -97,4 +97,4 @@ class IJSON {
 
 } /* namespace qpp */
 
-#endif /* CLASSES_IDISPLAY_HPP_ */
+#endif /* QPP_CLASSES_IDISPLAY_HPP_ */

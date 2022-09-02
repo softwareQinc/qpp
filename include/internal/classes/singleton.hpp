@@ -29,8 +29,8 @@
  * \brief Singleton pattern via CRTP
  */
 
-#ifndef INTERNAL_CLASSES_SINGLETON_HPP_
-#define INTERNAL_CLASSES_SINGLETON_HPP_
+#ifndef QPP_INTERNAL_CLASSES_SINGLETON_HPP_
+#define QPP_INTERNAL_CLASSES_SINGLETON_HPP_
 
 namespace qpp::internal // internal class, do not modify
 {
@@ -121,4 +121,4 @@ class Singleton {
 
 } /* namespace qpp::internal */
 
-#endif /* INTERNAL_CLASSES_SINGLETON_HPP_ */
+#endif /* QPP_INTERNAL_CLASSES_SINGLETON_HPP_ */

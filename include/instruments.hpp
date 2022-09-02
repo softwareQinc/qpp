@@ -29,8 +29,8 @@
  * \brief Measurement functions
  */
 
-#ifndef INSTRUMENTS_HPP_
-#define INSTRUMENTS_HPP_
+#ifndef QPP_INSTRUMENTS_HPP_
+#define QPP_INSTRUMENTS_HPP_
 
 namespace qpp {
 /**
@@ -1214,4 +1214,4 @@ dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
 
 } /* namespace qpp */
 
-#endif /* INSTRUMENTS_HPP_ */
+#endif /* QPP_INSTRUMENTS_HPP_ */

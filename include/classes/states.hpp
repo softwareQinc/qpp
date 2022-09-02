@@ -29,8 +29,8 @@
  * \brief Quantum states
  */
 
-#ifndef CLASSES_STATES_HPP_
-#define CLASSES_STATES_HPP_
+#ifndef QPP_CLASSES_STATES_HPP_
+#define QPP_CLASSES_STATES_HPP_
 
 namespace qpp {
 /**
@@ -308,4 +308,4 @@ class States final : public internal::Singleton<const States> // const Singleton
 
 } /* namespace qpp */
 
-#endif /* CLASSES_STATES_HPP_ */
+#endif /* QPP_CLASSES_STATES_HPP_ */

@@ -29,8 +29,8 @@
  * \brief Initialization
  */
 
-#ifndef CLASSES_INIT_HPP_
-#define CLASSES_INIT_HPP_
+#ifndef QPP_CLASSES_INIT_HPP_
+#define QPP_CLASSES_INIT_HPP_
 
 namespace qpp {
 /**
@@ -63,4 +63,4 @@ class Init final : public internal::Singleton<const Init> // const Singleton
 
 } /* namespace qpp */
 
-#endif /* CLASSES_INIT_HPP_ */
+#endif /* QPP_CLASSES_INIT_HPP_ */

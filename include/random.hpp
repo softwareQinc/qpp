@@ -29,8 +29,8 @@
  * \brief Randomness-related functions
  */
 
-#ifndef RANDOM_HPP_
-#define RANDOM_HPP_
+#ifndef QPP_RANDOM_HPP_
+#define QPP_RANDOM_HPP_
 
 namespace qpp {
 /**
@@ -496,4 +496,4 @@ inline bool bernoulli(double p = 0.5) {
 
 } /* namespace qpp */
 
-#endif /* RANDOM_HPP_ */
+#endif /* QPP_RANDOM_HPP_ */

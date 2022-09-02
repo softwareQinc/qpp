@@ -29,8 +29,8 @@
  * \brief Internal utility functions
  */
 
-#ifndef INTERNAL_UTIL_HPP_
-#define INTERNAL_UTIL_HPP_
+#ifndef QPP_INTERNAL_UTIL_HPP_
+#define QPP_INTERNAL_UTIL_HPP_
 
 namespace qpp {
 /**
@@ -503,4 +503,4 @@ T text2real(const std::string& str) {
 } /* namespace internal */
 } /* namespace qpp */
 
-#endif /* INTERNAL_UTIL_HPP_ */
+#endif /* QPP_INTERNAL_UTIL_HPP_ */

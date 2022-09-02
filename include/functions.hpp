@@ -29,8 +29,8 @@
  * \brief Generic quantum computing functions
  */
 
-#ifndef FUNCTIONS_HPP_
-#define FUNCTIONS_HPP_
+#ifndef QPP_FUNCTIONS_HPP_
+#define QPP_FUNCTIONS_HPP_
 
 namespace qpp {
 // Eigen function wrappers
@@ -2164,4 +2164,4 @@ struct EqualEigen {
 } /* namespace internal */
 } /* namespace qpp */
 
-#endif /* FUNCTIONS_HPP_ */
+#endif /* QPP_FUNCTIONS_HPP_ */

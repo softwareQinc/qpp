@@ -36,8 +36,8 @@
  * \brief Quantum++ main header file, includes all other required headers
  */
 
-#ifndef QPP_H_
-#define QPP_H_
+#ifndef QPP_QPP_H_
+#define QPP_QPP_H_
 
 // ignore warnings for unknown C++17 attributes (we use such "custom" attributes
 // internally, the compiler is supposed to ignore them according to the C++17
@@ -201,4 +201,4 @@ namespace obsolete {} /* namespace obsolete */
 
 } /* namespace qpp */
 
-#endif /* QPP_H_ */
+#endif /* QPP_QPP_H_ */

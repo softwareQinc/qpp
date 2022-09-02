@@ -29,8 +29,8 @@
  * \brief Type traits
  */
 
-#ifndef TRAITS_HPP_
-#define TRAITS_HPP_
+#ifndef QPP_TRAITS_HPP_
+#define QPP_TRAITS_HPP_
 
 namespace qpp {
 /**
@@ -135,4 +135,4 @@ struct is_complex<std::complex<T>> : std::true_type {};
 
 } /* namespace qpp */
 
-#endif /* TRAITS_HPP_ */
+#endif /* QPP_TRAITS_HPP_ */

@@ -29,8 +29,8 @@
  * \brief Input/output interfacing with MATLAB
  */
 
-#ifndef MATLAB_MATLAB_HPP_
-#define MATLAB_MATLAB_HPP_
+#ifndef QPP_MATLAB_MATLAB_HPP_
+#define QPP_MATLAB_MATLAB_HPP_
 
 #include "mat.h"
 #include "mex.h"
@@ -307,4 +307,4 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
 }
 
 } /* namespace qpp */
-#endif /* MATLAB_MATLAB_HPP_ */
+#endif /* QPP_MATLAB_MATLAB_HPP_ */

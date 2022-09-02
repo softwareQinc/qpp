@@ -29,8 +29,8 @@
  * \brief Timing
  */
 
-#ifndef CLASSES_TIMER_HPP_
-#define CLASSES_TIMER_HPP_
+#ifndef QPP_CLASSES_TIMER_HPP_
+#define QPP_CLASSES_TIMER_HPP_
 
 namespace qpp {
 /**
@@ -128,4 +128,4 @@ class Timer : public IDisplay {
 
 } /* namespace qpp */
 
-#endif /* CLASSES_TIMER_HPP_ */
+#endif /* QPP_CLASSES_TIMER_HPP_ */

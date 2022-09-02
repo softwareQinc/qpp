@@ -31,8 +31,8 @@
  * \a qpp::ILayout
  */
 
-#ifndef CLASSES_LAYOUTS_HPP_
-#define CLASSES_LAYOUTS_HPP_
+#ifndef QPP_CLASSES_LAYOUTS_HPP_
+#define QPP_CLASSES_LAYOUTS_HPP_
 
 namespace qpp {
 
@@ -204,4 +204,4 @@ class PeriodicBoundaryLattice : public Lattice {
 
 } /* namespace qpp */
 
-#endif /* CLASSES_LAYOUTS_HPP_ */
+#endif /* QPP_CLASSES_LAYOUTS_HPP_ */

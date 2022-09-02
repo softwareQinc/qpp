@@ -29,8 +29,8 @@
  * \brief Constants
  */
 
-#ifndef CONSTANTS_HPP_
-#define CONSTANTS_HPP_
+#ifndef QPP_CONSTANTS_HPP_
+#define QPP_CONSTANTS_HPP_
 
 namespace qpp {
 inline namespace literals {
@@ -126,4 +126,4 @@ constexpr idx maxn = 64;
 
 } /* namespace qpp */
 
-#endif /* CONSTANTS_HPP_ */
+#endif /* QPP_CONSTANTS_HPP_ */

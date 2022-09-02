@@ -29,8 +29,8 @@
  * \brief Support for classical reversible circuits
  */
 
-#ifndef CLASSES_REVERSIBLE_HPP_
-#define CLASSES_REVERSIBLE_HPP_
+#ifndef QPP_CLASSES_REVERSIBLE_HPP_
+#define QPP_CLASSES_REVERSIBLE_HPP_
 
 namespace qpp {
 /**
@@ -920,4 +920,4 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
 
 } /* namespace qpp */
 
-#endif /* CLASSES_REVERSIBLE_HPP_ */
+#endif /* QPP_CLASSES_REVERSIBLE_HPP_ */

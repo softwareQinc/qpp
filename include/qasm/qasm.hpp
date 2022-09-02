@@ -29,8 +29,8 @@
  * \brief OpenQASM to QCircuit interface
  */
 
-#ifndef QASM_QASM_HPP_
-#define QASM_QASM_HPP_
+#ifndef QPP_QASM_QASM_HPP_
+#define QPP_QASM_QASM_HPP_
 
 #ifndef USE_OPENQASM2_SPECS
 #define USE_OPENQASM2_SPECS false
@@ -833,4 +833,4 @@ inline QCircuit read_from_file(const std::string& fname) {
 
 } /* namespace qpp::qasm */
 
-#endif /* QASM_QASM_HPP_ */
+#endif /* QPP_QASM_QASM_HPP_ */
