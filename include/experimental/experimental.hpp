@@ -29,8 +29,8 @@
  * \brief Experimental/test functions/classes
  */
 
-#ifndef EXPERIMENTAL_EXPERIMENTAL_HPP_
-#define EXPERIMENTAL_EXPERIMENTAL_HPP_
+#ifndef QPP_EXPERIMENTAL_EXPERIMENTAL_HPP_
+#define QPP_EXPERIMENTAL_EXPERIMENTAL_HPP_
 
 /**
  * \namespace qpp::experimental
@@ -55,7 +55,8 @@ namespace qpp::experimental {
  * probability, and 3. Post-measurement normalized state
  */
 template <typename Derived>
-[[qpp::critical]] std::tuple<std::vector<idx>, double, expr_t<Derived>>
+[[qpp::critical,
+  qpp::parallel]] std::tuple<std::vector<idx>, double, expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             const std::vector<idx>& dims, bool destructive = true) {
     // typename Eigen::MatrixBase<Derived>::EvalReturnType cA = A.derived();
@@ -273,4 +274,4 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 }
 } /* namespace qpp::experimental */
 
-#endif /* EXPERIMENTAL_EXPERIMENTAL_HPP_ */
+#endif /* QPP_EXPERIMENTAL_EXPERIMENTAL_HPP_ */

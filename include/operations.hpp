@@ -29,8 +29,8 @@
  * \brief Quantum operation functions
  */
 
-#ifndef OPERATIONS_HPP_
-#define OPERATIONS_HPP_
+#ifndef QPP_OPERATIONS_HPP_
+#define QPP_OPERATIONS_HPP_
 
 namespace qpp {
 /**
@@ -130,109 +130,107 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     // worker, computes the coefficient and the index for the ket case, used in
     // #pragma omp parallel for collapse
     auto coeff_idx_ket =
-        [&](idx m_, idx r_) noexcept
-        -> std::pair<typename Derived1::Scalar, idx> {
-            idx indx = 0;
-            typename Derived1::Scalar coeff = 0;
+        [&](idx m_,
+            idx r_) noexcept -> std::pair<typename Derived1::Scalar, idx> {
+        idx indx = 0;
+        typename Derived1::Scalar coeff = 0;
 
-            idx Cmidx[internal::maxn];      // the total multi-index
-            idx CmidxA[internal::maxn];     // the gate multi-index
-            idx CmidxA_bar[internal::maxn]; // the complement multi-index
+        idx Cmidx[internal::maxn];      // the total multi-index
+        idx CmidxA[internal::maxn];     // the gate multi-index
+        idx CmidxA_bar[internal::maxn]; // the complement multi-index
 
-            // compute the index
+        // compute the index
 
-            // set the complement multi-index
-            internal::n2multiidx(r_, gate_bar_size, CdimsA_bar, CmidxA_bar);
-            for (idx k = 0; k < gate_bar_size; ++k) {
-                Cmidx[gate_bar[k]] = CmidxA_bar[k];
-            }
+        // set the complement multi-index
+        internal::n2multiidx(r_, gate_bar_size, CdimsA_bar, CmidxA_bar);
+        for (idx k = 0; k < gate_bar_size; ++k) {
+            Cmidx[gate_bar[k]] = CmidxA_bar[k];
+        }
 
-            // set the gate multi-index
-            internal::n2multiidx(m_, gate_size, CdimsA, CmidxA);
+        // set the gate multi-index
+        internal::n2multiidx(m_, gate_size, CdimsA, CmidxA);
+        for (idx k = 0; k < gate_size; ++k) {
+            Cmidx[target[k]] = CmidxA[k];
+        }
+
+        // we now got the total index
+        indx = internal::multiidx2n(Cmidx, n, Cdims);
+
+        // compute the coefficient
+        for (idx n_ = 0; n_ < DA; ++n_) {
+            internal::n2multiidx(n_, gate_size, CdimsA, CmidxA);
             for (idx k = 0; k < gate_size; ++k) {
                 Cmidx[target[k]] = CmidxA[k];
             }
+            coeff += rA(m_, n_) * rstate(internal::multiidx2n(Cmidx, n, Cdims));
+        }
 
-            // we now got the total index
-            indx = internal::multiidx2n(Cmidx, n, Cdims);
-
-            // compute the coefficient
-            for (idx n_ = 0; n_ < DA; ++n_) {
-                internal::n2multiidx(n_, gate_size, CdimsA, CmidxA);
-                for (idx k = 0; k < gate_size; ++k) {
-                    Cmidx[target[k]] = CmidxA[k];
-                }
-                coeff +=
-                    rA(m_, n_) * rstate(internal::multiidx2n(Cmidx, n, Cdims));
-            }
-
-            return std::make_pair(coeff, indx);
-        }; /* end coeff_idx_ket */
+        return std::make_pair(coeff, indx);
+    }; /* end coeff_idx_ket */
 
     // worker, computes the coefficient and the index for the density matrix
     // case, used in #pragma omp parallel for collapse
-    auto coeff_idx_rho =
-        [&](idx m1_, idx r1_, idx m2_, idx r2_) noexcept
+    auto coeff_idx_rho = [&](idx m1_, idx r1_, idx m2_, idx r2_) noexcept
         -> std::tuple<typename Derived1::Scalar, idx, idx> {
-            idx idxrow = 0;
-            idx idxcol = 0;
-            typename Derived1::Scalar coeff = 0, lhs = 1, rhs = 1;
+        idx idxrow = 0;
+        idx idxcol = 0;
+        typename Derived1::Scalar coeff = 0, lhs = 1, rhs = 1;
 
-            idx Cmidxrow[internal::maxn];      // the total row multi-index
-            idx Cmidxcol[internal::maxn];      // the total col multi-index
-            idx CmidxArow[internal::maxn];     // the gate row multi-index
-            idx CmidxAcol[internal::maxn];     // the gate col multi-index
-            idx CmidxA_barrow[internal::maxn]; // the complement row multi-index
-            idx CmidxA_barcol[internal::maxn]; // the complement col multi-index
+        idx Cmidxrow[internal::maxn];      // the total row multi-index
+        idx Cmidxcol[internal::maxn];      // the total col multi-index
+        idx CmidxArow[internal::maxn];     // the gate row multi-index
+        idx CmidxAcol[internal::maxn];     // the gate col multi-index
+        idx CmidxA_barrow[internal::maxn]; // the complement row multi-index
+        idx CmidxA_barcol[internal::maxn]; // the complement col multi-index
 
-            // compute the ket/bra indexes
+        // compute the ket/bra indexes
 
-            // set the complement multi-index
-            internal::n2multiidx(r1_, gate_bar_size, CdimsA_bar, CmidxA_barrow);
-            internal::n2multiidx(r2_, gate_bar_size, CdimsA_bar, CmidxA_barcol);
-            for (idx k = 0; k < gate_bar_size; ++k) {
-                Cmidxrow[gate_bar[k]] = CmidxA_barrow[k];
-                Cmidxcol[gate_bar[k]] = CmidxA_barcol[k];
-            }
+        // set the complement multi-index
+        internal::n2multiidx(r1_, gate_bar_size, CdimsA_bar, CmidxA_barrow);
+        internal::n2multiidx(r2_, gate_bar_size, CdimsA_bar, CmidxA_barcol);
+        for (idx k = 0; k < gate_bar_size; ++k) {
+            Cmidxrow[gate_bar[k]] = CmidxA_barrow[k];
+            Cmidxcol[gate_bar[k]] = CmidxA_barcol[k];
+        }
 
-            // set the gate multi-index
-            internal::n2multiidx(m1_, gate_size, CdimsA, CmidxArow);
-            internal::n2multiidx(m2_, gate_size, CdimsA, CmidxAcol);
+        // set the gate multi-index
+        internal::n2multiidx(m1_, gate_size, CdimsA, CmidxArow);
+        internal::n2multiidx(m2_, gate_size, CdimsA, CmidxAcol);
+        for (idx k = 0; k < gate_size; ++k) {
+            Cmidxrow[target[k]] = CmidxArow[k];
+            Cmidxcol[target[k]] = CmidxAcol[k];
+        }
+
+        // we now got the total row/col indexes
+        idxrow = internal::multiidx2n(Cmidxrow, n, Cdims);
+        idxcol = internal::multiidx2n(Cmidxcol, n, Cdims);
+
+        // compute the coefficient
+        for (idx n1_ = 0; n1_ < DA; ++n1_) {
+            internal::n2multiidx(n1_, gate_size, CdimsA, CmidxArow);
             for (idx k = 0; k < gate_size; ++k) {
                 Cmidxrow[target[k]] = CmidxArow[k];
-                Cmidxcol[target[k]] = CmidxAcol[k];
             }
+            idx idxrowtmp = internal::multiidx2n(Cmidxrow, n, Cdims);
 
-            // we now got the total row/col indexes
-            idxrow = internal::multiidx2n(Cmidxrow, n, Cdims);
-            idxcol = internal::multiidx2n(Cmidxcol, n, Cdims);
+            lhs = rA(m1_, n1_);
 
-            // compute the coefficient
-            for (idx n1_ = 0; n1_ < DA; ++n1_) {
-                internal::n2multiidx(n1_, gate_size, CdimsA, CmidxArow);
+            for (idx n2_ = 0; n2_ < DA; ++n2_) {
+                internal::n2multiidx(n2_, gate_size, CdimsA, CmidxAcol);
                 for (idx k = 0; k < gate_size; ++k) {
-                    Cmidxrow[target[k]] = CmidxArow[k];
+                    Cmidxcol[target[k]] = CmidxAcol[k];
                 }
-                idx idxrowtmp = internal::multiidx2n(Cmidxrow, n, Cdims);
 
-                lhs = rA(m1_, n1_);
+                rhs = adjoint(rA)(n2_, m2_);
 
-                for (idx n2_ = 0; n2_ < DA; ++n2_) {
-                    internal::n2multiidx(n2_, gate_size, CdimsA, CmidxAcol);
-                    for (idx k = 0; k < gate_size; ++k) {
-                        Cmidxcol[target[k]] = CmidxAcol[k];
-                    }
+                idx idxcoltmp = internal::multiidx2n(Cmidxcol, n, Cdims);
 
-                    rhs = adjoint(rA)(n2_, m2_);
-
-                    idx idxcoltmp = internal::multiidx2n(Cmidxcol, n, Cdims);
-
-                    coeff += lhs * rstate(idxrowtmp, idxcoltmp) * rhs;
-                }
+                coeff += lhs * rstate(idxrowtmp, idxcoltmp) * rhs;
             }
+        }
 
-            return std::make_tuple(coeff, idxrow, idxcol);
-        }; /* end coeff_idx_rho */
+        return std::make_tuple(coeff, idxrow, idxcol);
+    }; /* end coeff_idx_rho */
 
     //************ ket ************//
     if (internal::check_cvector(rstate)) // we have a ket
@@ -2396,4 +2394,4 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data) {
 }
 } /* namespace qpp */
 
-#endif /* OPERATIONS_HPP_ */
+#endif /* QPP_OPERATIONS_HPP_ */
