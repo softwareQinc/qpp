@@ -399,12 +399,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     // probabilities
     std::vector<double> probs(Ks.size());
     // resulting states
-    std::vector<expr_t<Derived>> outstates;
-
-    if (destructive)
-        outstates.resize(Ks.size(), cmat::Zero(Dsubsys_bar, Dsubsys_bar));
-    else
-        outstates.resize(Ks.size(), cmat::Zero(D, D));
+    std::vector<expr_t<Derived>> outstates(Ks.size());
 
     //************ ket ************//
     if (internal::check_cvector(rA)) // column vector
