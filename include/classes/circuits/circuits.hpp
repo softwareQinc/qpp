@@ -2136,7 +2136,7 @@ class QCircuit : public IDisplay, public IJSON {
         gates_.emplace_back(GateType::CTRL_FAN, hashU, std::vector<idx>{ctrl},
                             target, std::vector<idx>{shift}, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[hashU];
+        gate_count_[hashU] += target.size();
 
         clean_qudits_[ctrl] = false;
         for (auto&& elem : target) {
@@ -2245,7 +2245,7 @@ class QCircuit : public IDisplay, public IJSON {
         gates_.emplace_back(GateType::CTRL_FAN, hashU, ctrl, target, shift,
                             name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[hashU];
+        gate_count_[hashU] += target.size();
 
         for (auto&& elem : ctrl) {
             clean_qudits_[elem] = false;
@@ -2677,7 +2677,7 @@ class QCircuit : public IDisplay, public IJSON {
                             std::vector<idx>{ctrl_dit}, target,
                             std::vector<idx>{shift}, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[hashU];
+        gate_count_[hashU] += target.size();
 
         clean_dits_[ctrl_dit] = false;
         for (auto&& elem : target) {
@@ -2774,7 +2774,7 @@ class QCircuit : public IDisplay, public IJSON {
         gates_.emplace_back(GateType::cCTRL_FAN, hashU, ctrl_dits,
                             std::vector<idx>{target}, shift, name);
         step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[hashU];
+        gate_count_[hashU] += target.size();
 
         for (auto&& elem : ctrl_dits) {
             clean_dits_[elem] = false;
