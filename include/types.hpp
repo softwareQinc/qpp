@@ -132,7 +132,7 @@ auto constexpr is_ket() {
 /**
  * \brief Eigen type (ket/density matrix) deduced from the expression Derived
  */
- // thanks @antoine-bussy for the suggestion
+// thanks @antoine-bussy for the suggestion
 // https://github.com/softwareQinc/qpp/issues/132#issuecomment-1258360069
 template <typename Derived>
 using expr_t = Eigen::Matrix<typename internal::eval_t<Derived>::Scalar,

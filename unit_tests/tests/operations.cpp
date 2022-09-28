@@ -167,11 +167,11 @@ TEST(qpp_applyCTRL, Qudits) {
 TEST(qpp_applyCTRL, Qubits) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
-///       applyCTRLn(const Eigen::MatrixBase<Derived1>& state,
+///       applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
 ///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
 ///       const std::vector<idx>& target, const std::vector<idx>& dims,
 ///       std::vector<idx> shift = {})
-TEST(qpp_applyCTRLn, Qudits) {
+TEST(qpp_applyCTRL_FAN, Qudits) {
     idx d = 3;
     idx n = 4;
     std::vector<idx> dims(n, d); // 4 qutrits

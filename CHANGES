@@ -1,24 +1,36 @@
 Pre-release (future 4.0):
-     CTRL_FAN, gate_joint->gate, CTRL_joint->CTRL, CTRL->CTRL_FAN
-    - Implemented ["classes/gates.hpp"]
-        qpp::Gates::GATE() - constructs the matrix representation of a
-                             multi-partite gate
-    - Implemented ["operations.hpp"]
-        qpp::applyCTRLn() - applies CTRL-CTRL-...-CTRL-U-U-...-U
-    - Fixed minor bug in qpp::measure() [https://github.com/softwareQinc/qpp/issues/132]
-    - Fixed bug in QCircuit::CTRL [https://github.com/softwareQinc/qpp/issues/130]
-    - Added qpp::Gates::GATE() function for expanding out a single gate acting
-      on a subsystem in terms of a matrix
-    - Renamed qpp::QCircuit::measureZ() to qpp::QCircuit::measure()
+    - API changes in ["classes/circuits/circuits.hpp"], renamed:
+        qpp::QCircuit::CTRL()        -> qpp::QCircuit::CTRL_FAN()
+        qpp::QCircuit::cCTRL()       -> qpp::QCircuit::cCTRL_FAN()
+        qpp::QCircuit::CTRL_joint()  -> qpp::QCircuit::CTRL()
+        qpp::QCircuit::cCTRL_joint() -> qpp::QCircuit::cCTRL()
+        qpp::QCircuit::measureZ()    -> qpp::QCircuit::measure()
     - API changes in qpp::QCircuit::measure() for multiple qudits, now the
-      results are stored sequentially (instead as a decimal representation of
-      the multi-index)
+          results are stored sequentially (instead as a decimal representation of
+          the multi-index)
     - API changes in qpp::measure_seq(), now, as part of its return tuple,
-      returns the full list of outcome probabilities
-    - Implemented qpp::sample() ["instruments.hpp"] for sampling from a quantum
-      state. Use this function whenever you are not interested in the output
-      quantum state, but interested only in statistics; it is significantly
-      faster than its "qpp::measure()"-type functions.
+          returns the full list of outcome probabilities
+    - API changes for
+          qpp::QCircuit::get_gate_count()
+          qpp::QCircuit::get_gate_depth()
+          qpp::QCircuit::get_measurement_count()
+          qpp::QCircuit::get_measurement_depth()
+      so now the old std::string overloads take instead a qpp::cmat as argument
+    - Implemented the random qpp::QCircuit free function generators in
+      ["classes/circuits/circuits.hpp"]:
+          qpp::random_circuit_count() - Random QCircuit w.r.t. gate count
+          qpp::random_circuit_depth() - Random QCircuit w.r.t. gate depth
+    - Implemented ["classes/gates.hpp"]:
+          qpp::Gates::GATE() - constructs the matrix representation of a
+                               multi-partite gate that acts on a subsystem
+    - Implemented ["operations.hpp"]:
+          qpp::applyCTRL_FAN() - applies CTRL-CTRL-...-CTRL-U-U-...-U
+    - Implemented ["instruments.hpp"]:
+          qpp::sample() - samples from a quantum state. Use this function
+                          whenever you are not interested in the output quantum
+                          state, but interested only in statistics; it is
+                          significantly faster than its "qpp::measure()"-type
+                          functions.
     - Added copy/deepcopy support for all pyqpp classes:
           QCircuit, QEngine, QNoisyEngine<>, Dynamic_Bitset, Bit_circuit
     - Added "context" to exception throwing, so now it is obvious which argument
@@ -27,16 +39,6 @@ Pre-release (future 4.0):
       addition to a CMake variable). If both are set, then the CMake variable
       trumps. If none are set, the system tries to detect the location of the
       Eigen3 library automatically.
-    - Added the random qpp::QCircuit free function generators in
-      ["classes/circuits/circuits.hpp"]:
-          qpp::random_circuit_count() - Random QCircuit w.r.t. gate count
-          qpp::random_circuit_depth() - Random QCircuit w.r.t. gate depth
-    - Changed the API for
-          qpp::QCircuit::get_gate_count()
-          qpp::QCircuit::get_gate_depth()
-          qpp::QCircuit::get_measurement_count()
-          qpp::QCircuit::get_measurement_depth()
-      so now the old std::string overloads take instead a qpp::cmat as argument
     - Marked high performance functions with the "custom" attribute
       [[qpp::critical]] and functions that use parallelization with the "custom"
       attribute [[qpp::parallel]]. Since C++17, unknown attributes are supposed
@@ -52,7 +54,9 @@ Pre-release (future 4.0):
       in ["functions.h"]:
           qpp::prod(const std::initializer_list<T>&)
           qpp::sum(const std::initializer_list<T>&)
-    - Modified qpp::prod() and qpp::sum() to allow list of matrices
+    - Enhanced qpp::prod() and qpp::sum() to allow list of matrices
+    - Fixed bug in qpp::measure() [https://github.com/softwareQinc/qpp/issues/132]
+    - Fixed bug in QCircuit::CTRL [https://github.com/softwareQinc/qpp/issues/130]
     - Bumped GoogleTest version to 1.12.1
           https://github.com/google/googletest/commit/58d77fa8070e8cec2dc1ed015d66b454c8d78850
 
