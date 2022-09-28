@@ -104,12 +104,43 @@ using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 template <typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
 using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
 
+namespace internal {
 /**
  * \brief Eigen type (ket/density matrix) deduced from the expression Derived
  */
 template <typename Derived>
-using expr_t =
-    typename std::decay<decltype(std::declval<Derived>().eval())>::type;
+using eval_t =
+    std::decay_t<typename Eigen::MatrixBase<Derived>::EvalReturnType>;
+
+/**
+ * \brief Detect if the expression Derived is a bra at compile time
+ */
+template <typename Derived>
+auto constexpr is_bra() {
+    return (eval_t<Derived>::RowsAtCompileTime == 1);
+}
+
+/**
+ * \brief Detect if the expression Derived is a ket at compile time
+ */
+template <typename Derived>
+auto constexpr is_ket() {
+    return (eval_t<Derived>::ColsAtCompileTime == 1);
+}
+} /* namespace internal */
+
+/**
+ * \brief Eigen type (ket/density matrix) deduced from the expression Derived
+ */
+ // thanks @antoine-bussy for the suggestion
+// https://github.com/softwareQinc/qpp/issues/132#issuecomment-1258360069
+template <typename Derived>
+using expr_t = Eigen::Matrix<typename internal::eval_t<Derived>::Scalar,
+                             internal::is_bra<Derived>() ? 1 : Eigen::Dynamic,
+                             internal::is_ket<Derived>() ? 1 : Eigen::Dynamic,
+                             internal::eval_t<Derived>::Options,
+                             internal::is_bra<Derived>() ? 1 : Eigen::Dynamic,
+                             internal::is_ket<Derived>() ? 1 : Eigen::Dynamic>;
 
 /**
  * \brief Quantumly-accessible Random Access Memory (qRAM)

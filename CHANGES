@@ -1,4 +1,14 @@
 Pre-release (future 4.0):
+     CTRL_FAN, gate_joint->gate, CTRL_joint->CTRL, CTRL->CTRL_FAN
+    - Implemented ["classes/gates.hpp"]
+        qpp::Gates::GATE() - constructs the matrix representation of a
+                             multi-partite gate
+    - Implemented ["operations.hpp"]
+        qpp::applyCTRLn() - applies CTRL-CTRL-...-CTRL-U-U-...-U
+    - Fixed minor bug in qpp::measure() [https://github.com/softwareQinc/qpp/issues/132]
+    - Fixed bug in QCircuit::CTRL [https://github.com/softwareQinc/qpp/issues/130]
+    - Added qpp::Gates::GATE() function for expanding out a single gate acting
+      on a subsystem in terms of a matrix
     - Renamed qpp::QCircuit::measureZ() to qpp::QCircuit::measure()
     - API changes in qpp::QCircuit::measure() for multiple qudits, now the
       results are stored sequentially (instead as a decimal representation of
@@ -43,7 +53,6 @@ Pre-release (future 4.0):
           qpp::prod(const std::initializer_list<T>&)
           qpp::sum(const std::initializer_list<T>&)
     - Modified qpp::prod() and qpp::sum() to allow list of matrices
-    - Bugfixes
     - Bumped GoogleTest version to 1.12.1
           https://github.com/google/googletest/commit/58d77fa8070e8cec2dc1ed015d66b454c8d78850
 

@@ -29,8 +29,8 @@
  * \brief Quantum gates
  */
 
-#ifndef CLASSES_GATES_HPP_
-#define CLASSES_GATES_HPP_
+#ifndef QPP_CLASSES_GATES_HPP_
+#define QPP_CLASSES_GATES_HPP_
 
 namespace qpp {
 /**
@@ -352,12 +352,179 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
+     * \brief Generates the multi-partite \a A gate in matrix form
+     * \see qpp::apply()
+     *
+     * \note The dimension of the gate \a A must match the dimension of
+     * \a target
+     *
+     * \param A Eigen expression
+     * \param target Target subsystem indexes where the gate \a A is applied
+     * \param dims Dimensions of the multi-partite system
+     * \return \a A gate, as a matrix over the same scalar field as \a A
+     */
+    template <typename Derived>
+    dyn_mat<typename Derived::Scalar> GATE(const Eigen::MatrixBase<Derived>& A,
+                                           const std::vector<idx>& target,
+                                           const std::vector<idx>& dims) const {
+        const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+        // EXCEPTION CHECKS
+
+        // check matrix zero-size
+        if (!internal::check_nonzero_size(rA))
+            throw exception::ZeroSize("qpp::Gates::GATE()", "A");
+
+        // check square matrix
+        if (!internal::check_square_mat(rA))
+            throw exception::MatrixNotSquare("qpp::Gates::GATE()", "A");
+
+        // check zero-size
+        if (target.empty())
+            throw exception::ZeroSize("qpp::Gates::GATE()", "target");
+
+        // check that dims is a valid dimension vector
+        if (!internal::check_dims(dims))
+            throw exception::DimsInvalid("qpp::Gates::GATE()", "dims");
+
+        // check that target is valid w.r.t. dims
+        if (!internal::check_subsys_match_dims(target, dims))
+            throw exception::SubsysMismatchDims("qpp::Gates::GATE()",
+                                                "dims/target");
+
+        // check that target list match the dimension of the matrix
+        using Index = typename dyn_mat<typename Derived::Scalar>::Index;
+
+        idx DA = 1;
+        for (auto&& elem : target)
+            DA *= dims[elem];
+
+        if (rA.rows() != static_cast<Index>(DA))
+            throw exception::MatrixMismatchSubsys("qpp::Gates::GATE()",
+                                                  "A/dims/target");
+
+        // END EXCEPTION CHECKS
+
+        // Use static allocation for speed!
+        idx Cdims[internal::maxn];
+        idx midx_row[internal::maxn];
+        idx midx_col[internal::maxn];
+
+        idx CdimsA[internal::maxn];
+        idx midxA_row[internal::maxn];
+        idx midxA_col[internal::maxn];
+
+        idx CdimsA_bar[internal::maxn];
+        idx Csubsys_bar[internal::maxn];
+        idx midx_bar[internal::maxn];
+
+        idx n = dims.size();
+        idx n_gate = target.size();
+        idx n_subsys_bar = n - target.size();
+
+        // compute the complementary subsystem of ctrlgate w.r.t. dims
+        std::vector<idx> subsys_bar = complement(target, n);
+
+        idx D = prod(dims);
+        idx Dsubsys_bar = 1;
+        for (auto&& elem : subsys_bar)
+            Dsubsys_bar *= dims[elem];
+
+        std::copy(std::begin(subsys_bar), std::end(subsys_bar),
+                  std::begin(Csubsys_bar));
+
+        for (idx k = 0; k < n; ++k) {
+            midx_row[k] = midx_col[k] = 0;
+            Cdims[k] = dims[k];
+        }
+
+        for (idx k = 0; k < n_subsys_bar; ++k) {
+            CdimsA_bar[k] = dims[subsys_bar[k]];
+            midx_bar[k] = 0;
+        }
+
+        for (idx k = 0; k < n_gate; ++k) {
+            midxA_row[k] = midxA_col[k] = 0;
+            CdimsA[k] = dims[target[k]];
+        }
+
+        dyn_mat<typename Derived::Scalar> result =
+            dyn_mat<typename Derived::Scalar>::Identity(D, D);
+
+        // run over the complement indexes
+        for (idx i = 0; i < Dsubsys_bar; ++i) {
+            // get the complement row multi-index
+            internal::n2multiidx(i, n_subsys_bar, CdimsA_bar, midx_bar);
+
+            // run over the target row multi-index
+            for (idx a = 0; a < DA; ++a) {
+                // get the target row multi-index
+                internal::n2multiidx(a, n_gate, CdimsA, midxA_row);
+
+                // construct the result row multi-index
+
+                // first the target part
+                for (idx k = 0; k < n_gate; ++k)
+                    midx_row[target[k]] = midxA_row[k];
+
+                // then the complement part (equal for column)
+                for (idx k = 0; k < n_subsys_bar; ++k)
+                    midx_row[Csubsys_bar[k]] = midx_col[Csubsys_bar[k]] =
+                        midx_bar[k];
+
+                // run over the target column multi-index
+                for (idx b = 0; b < DA; ++b) {
+                    // get the target column multi-index
+                    internal::n2multiidx(b, n_gate, CdimsA, midxA_col);
+
+                    // construct the result column multi-index
+                    for (idx k = 0; k < n_gate; ++k)
+                        midx_col[target[k]] = midxA_col[k];
+
+                    // finally write the values
+                    result(internal::multiidx2n(midx_row, n, Cdims),
+                           internal::multiidx2n(midx_col, n, Cdims)) = rA(a, b);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * \brief Generates the multi-partite \a A gate in matrix form
+     * \see qpp::apply()
+     *
+     * \note The dimension of the gate \a A must match the dimension of
+     * \a target
+     *
+     * \param A Eigen expression
+     * \param target Target subsystem indexes where the gate \a A is applied
+     * \param n Total number of subsystems
+     * \param d Subsystem dimensions
+     * \return \a A gate, as a matrix over the same scalar field as \a A
+     */
+    template <typename Derived>
+    dyn_mat<typename Derived::Scalar> GATE(const Eigen::MatrixBase<Derived>& A,
+                                           const std::vector<idx>& target,
+                                           idx n, idx d = 2) const {
+        // EXCEPTION CHECKS
+
+        // check valid local dimension
+        if (d == 0)
+            throw exception::DimsInvalid("qpp::Gates::GATE()", "d");
+        // END EXCEPTION CHECKS
+
+        return GATE(A, target, std::vector<idx>(n, d));
+    }
+
+    /**
      * \brief Generates the multi-partite multiple-controlled-\a A gate in
      * matrix form
      * \see qpp::applyCTRL()
      *
      * \note The dimension of the gate \a A must match the dimension of
-     * \a target
+     * \a target. All subsystems must have the same dimension.
      *
      * \param A Eigen expression
      * \param ctrl Control subsystem indexes
@@ -371,9 +538,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
-    CTRL(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& ctrl,
-         const std::vector<idx>& target, idx n, idx d = 2,
-         std::vector<idx> shift = {}) const {
+    CTRL_old(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& ctrl,
+             const std::vector<idx>& target, idx n, idx d = 2,
+             std::vector<idx> shift = {}) const {
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
@@ -402,12 +569,20 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // ctrl + gate subsystem vector
         std::vector<idx> ctrlgate = ctrl;
+        std::sort(std::begin(ctrlgate), std::end(ctrlgate));
         ctrlgate.insert(std::end(ctrlgate), std::begin(target),
                         std::end(target));
-        std::sort(std::begin(ctrlgate), std::end(ctrlgate));
+        // TODO: fixme
+        // std::sort(std::begin(ctrlgate), std::end(ctrlgate));
+
+        // check ctrl and target don't share common elements
+        for (auto&& elem_ctrl : ctrl)
+            for (auto&& elem_target : target)
+                if (elem_ctrl == elem_target)
+                    throw exception::OutOfRange("qpp::Gates::CTRL()",
+                                                "ctrl/target");
 
         std::vector<idx> dims(n, d); // local dimensions vector
-
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
         if (!internal::check_subsys_match_dims(ctrlgate, dims))
@@ -527,6 +702,149 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
+     * \brief Generates the multi-partite multiple-controlled-\a A gate in
+     * matrix form
+     * \see qpp::applyCTRL()
+     *
+     * \note The dimension of the gate \a A must match the dimension of
+     * \a target. All subsystems must have the same dimension.
+     *
+     * \param A Eigen expression
+     * \param ctrl Control subsystem indexes
+     * \param target Target subsystem indexes where the gate \a A is applied
+     * \param n Total number of subsystems
+     * \param d Subsystem dimensions
+     * \param shift Performs the control as if the \a ctrl qudit states were
+     * \f$X\f$-incremented component-wise by \a shift. If non-empty (default),
+     * the size of \a shift must be the same as the size of \a ctrl.
+     * \return CTRL-A gate, as a matrix over the same scalar field as \a A
+     */
+    template <typename Derived>
+    dyn_mat<typename Derived::Scalar>
+    CTRL(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& ctrl,
+         const std::vector<idx>& target, idx n, idx d = 2,
+         std::vector<idx> shift = {}) const {
+        const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+        // EXCEPTION CHECKS
+
+        // check matrix zero-size
+        if (!internal::check_nonzero_size(rA))
+            throw exception::ZeroSize("qpp::Gates::CTRL()", "A");
+
+        // check square matrix
+        if (!internal::check_square_mat(rA))
+            throw exception::MatrixNotSquare("qpp::Gates::CTRL()", "A");
+
+        // check lists zero-size
+        if (ctrl.empty())
+            throw exception::ZeroSize("qpp::Gates::CTRL()", "ctrl");
+        if (target.empty())
+            throw exception::ZeroSize("qpp::Gates::CTRL()", "target");
+
+        // check out of range
+        if (n == 0)
+            throw exception::OutOfRange("qpp::Gates::CTRL()", "n");
+
+        // check valid local dimension
+        if (d == 0)
+            throw exception::DimsInvalid("qpp::Gates::CTRL()", "d");
+
+        // ctrl + gate subsystem vector
+        std::vector<idx> ctrlgate = ctrl;
+        std::sort(std::begin(ctrlgate), std::end(ctrlgate));
+        ctrlgate.insert(std::end(ctrlgate), std::begin(target),
+                        std::end(target));
+        // TODO: fixme
+        // std::sort(std::begin(ctrlgate), std::end(ctrlgate));
+
+        // check ctrl and target don't share common elements
+        for (auto&& elem_ctrl : ctrl)
+            for (auto&& elem_target : target)
+                if (elem_ctrl == elem_target)
+                    throw exception::OutOfRange("qpp::Gates::CTRL()",
+                                                "ctrl/target");
+
+        std::vector<idx> dims(n, d); // local dimensions vector
+        // check that ctrl + gate subsystem is valid
+        // with respect to local dimensions
+        if (!internal::check_subsys_match_dims(ctrlgate, dims))
+            throw exception::SubsysMismatchDims("qpp::Gates::CTRL()",
+                                                "ctrl/dims");
+
+        // check that target list match the dimension of the matrix
+        idx DA = rA.rows();
+        if (DA != static_cast<idx>(std::llround(std::pow(d, target.size()))))
+            throw exception::MatrixMismatchSubsys("qpp::Gates::CTRL()",
+                                                  "A/d/target");
+
+        // check shift
+        if (!shift.empty() && (shift.size() != ctrl.size()))
+            throw exception::SizeMismatch("qpp::Gates::CTRL()", "ctrl/shift");
+        if (!shift.empty())
+            for (auto& elem : shift) {
+                if (elem >= d)
+                    throw exception::OutOfRange("qpp::Gates::CTRL()", "shift");
+                elem = d - elem;
+            }
+        // END EXCEPTION CHECKS
+
+        if (shift.empty())
+            shift = std::vector<idx>(ctrl.size(), 0);
+
+        idx D = prod(dims);
+        idx Dctrl = static_cast<idx>(std::llround(std::pow(d, ctrl.size())));
+        idx ctrl_size = ctrl.size();
+
+        dyn_mat<typename Derived::Scalar> result =
+            dyn_mat<typename Derived::Scalar>::Zero(D, D);
+
+        std::vector<idx> ctrl_bar = complement(ctrlgate, n);
+        std::vector<idx> ctrlgate_bar = complement(ctrlgate, n);
+        idx Dctrlgate_bar = 1;
+        for (auto&& elem : ctrlgate_bar)
+            Dctrlgate_bar *= dims[elem];
+
+        dyn_mat<typename Derived::Scalar> Id_ctrlgate_bar =
+            dyn_mat<typename Derived::Scalar>::Identity(Dctrlgate_bar,
+                                                        Dctrlgate_bar);
+
+        dyn_mat<typename Derived::Scalar> prj_bar =
+            dyn_mat<typename Derived::Scalar>::Identity(Dctrl, Dctrl);
+        for (idx k = 0; k < d; ++k) {
+            // copy shift
+            std::vector<idx> ctrl_shift = shift;
+            // increment ctrl_shift by k (mod d)
+            std::transform(ctrl_shift.begin(), ctrl_shift.end(),
+                           ctrl_shift.begin(),
+                           [k, d](idx elem) { return (elem + k) % d; });
+            // compute the projector multi-index
+            idx pos = multiidx2n(ctrl_shift, std::vector<idx>(ctrl_size, d));
+
+            // compute the projection matrix
+            dyn_mat<typename Derived::Scalar> prj_mat =
+                dyn_mat<typename Derived::Scalar>::Zero(Dctrl, Dctrl);
+            prj_mat(pos, pos) = 1;
+
+            // subtract from identity on the ctrl side
+            prj_bar -= prj_mat;
+
+            // now compute [prj] x Ak and add to result
+            dyn_mat<typename Derived::Scalar> Ak = powm(rA, k);
+            dyn_mat<typename Derived::Scalar> gate = kron(prj_mat, Ak);
+
+            result += GATE(gate, ctrlgate, n, d);
+        }
+
+        // finally, add projector's complement
+        result += GATE(
+            kron(prj_bar, dyn_mat<typename Derived::Scalar>::Identity(DA, DA)),
+            ctrlgate, n, d);
+
+        return result;
+    }
+
+    /**
      * \brief Expands out
      * \see qpp::kron()
      *
@@ -571,45 +889,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                                                 "A/dims");
         // END EXCEPTION CHECKS
 
-        idx D = std::accumulate(std::begin(dims), std::end(dims),
-                                static_cast<idx>(1), std::multiplies<>());
-        dyn_mat<typename Derived::Scalar> result =
-            dyn_mat<typename Derived::Scalar>::Identity(D, D);
-
-        idx Cdims[internal::maxn];
-        idx midx_row[internal::maxn];
-        idx midx_col[internal::maxn];
-
-        for (idx k = 0; k < dims.size(); ++k) {
-            midx_row[k] = midx_col[k] = 0;
-            Cdims[k] = dims[k];
-        }
-
-        // run over the main diagonal multi-indexes
-        for (idx i = 0; i < D; ++i) {
-            // get row multi_index
-            internal::n2multiidx(i, dims.size(), Cdims, midx_row);
-            // get column multi_index (same as row)
-            internal::n2multiidx(i, dims.size(), Cdims, midx_col);
-            // run over the gate row multi-index
-            for (idx a = 0; a < static_cast<idx>(rA.rows()); ++a) {
-                // construct the total row multi-index
-                midx_row[pos] = a;
-
-                // run over the gate column multi-index
-                for (idx b = 0; b < static_cast<idx>(rA.cols()); ++b) {
-                    // construct the total column multi-index
-                    midx_col[pos] = b;
-
-                    // finally write the values
-                    result(internal::multiidx2n(midx_row, dims.size(), Cdims),
-                           internal::multiidx2n(midx_col, dims.size(), Cdims)) =
-                        rA(a, b);
-                }
-            }
-        }
-
-        return result;
+        return GATE(A, {pos}, dims);
     }
 
     /**
@@ -671,9 +951,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             throw exception::DimsInvalid("qpp::Gates::expandout()", "d");
         // END EXCEPTION CHECKS
 
-        std::vector<idx> dims(n, d); // local dimensions vector
-
-        return expandout(A, pos, dims);
+        return expandout(A, pos, std::vector<idx>(n, d));
     }
 
     // getters
@@ -755,4 +1033,4 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
 } /* namespace qpp */
 
-#endif /* CLASSES_GATES_HPP_ */
+#endif /* QPP_CLASSES_GATES_HPP_ */

@@ -55,7 +55,7 @@ TEST(qpp_apply, Qudits) {
 
     // 2 qudits
     psi = mket({0, 0}, d) + mket({1, 0}, d) / std::sqrt(2);
-    ket result = apply(psi, gt.Xd(d), {0}, 3);
+    ket result = apply(psi, gt.Xd(d), {0}, d);
     ket expected = mket({1, 0}, d) + mket({2, 0}, d) / std::sqrt(2);
     EXPECT_NEAR(0, norm(result - expected), 1e-7);
 
@@ -98,8 +98,10 @@ TEST(qpp_apply, SubsysChannelQubits) {}
 ///       const std::vector<idx>& target, const std::vector<idx>& dims,
 ///       std::vector<idx> shift = {})
 TEST(qpp_applyCTRL, Qudits) {
-    std::vector<idx> dims{3, 3, 3, 3}; // 4 qutrits
-    idx D = prod(dims);                // total dimension
+    idx d = 3;
+    idx n = 4;
+    std::vector<idx> dims(n, d); // 4 qutrits
+    idx D = prod(dims);          // total dimension
 
     std::vector<idx> ctrl{0, 2};   // control
     std::vector<idx> target{1, 3}; // target
@@ -109,31 +111,31 @@ TEST(qpp_applyCTRL, Qudits) {
         Dtarget *= dims[i]; // compute it here
 
     // ket
-    ket psi = mket({2, 1, 2, 1}, 3);
+    ket psi = mket({2, 1, 2, 1}, d);
     psi = applyCTRL(psi, kron(gt.Xd(3), gt.Xd(3)), ctrl, target, dims);
-    ket expected = mket({2, 0, 2, 0}, 3);
+    ket expected = mket({2, 0, 2, 0}, d);
     EXPECT_NEAR(0, norm(psi - expected), 1e-7);
 
     // ket, with shift
     std::vector<idx> shift{1, 2};
-    psi = mket({2, 1, 1, 1}, 3); // will behave as if |0101>
+    psi = mket({2, 1, 1, 1}, d); // will behave as if |0101>
     psi = applyCTRL(psi, kron(gt.Xd(3), gt.Xd(3)), ctrl, target, dims, shift);
-    expected = mket({2, 1, 1, 1}, 3);
+    expected = mket({2, 1, 1, 1}, d);
     EXPECT_NEAR(0, norm(psi - expected), 1e-7);
 
     // density matrix
-    psi = mket({2, 0, 2, 0}, 3);
+    psi = mket({2, 0, 2, 0}, d);
     cmat rho =
         applyCTRL(prj(psi), kron(gt.Xd(3), gt.Xd(3)), ctrl, target, dims);
-    cmat expected_rho = mprj({2, 2, 2, 2}, 3);
+    cmat expected_rho = mprj({2, 2, 2, 2}, d);
     EXPECT_NEAR(0, norm(rho - expected_rho), 1e-7);
 
     // density matrix, with shift
     shift = {1, 2};
-    psi = mket({1, 0, 0, 0}, 3); // will behave as if |2020>
+    psi = mket({1, 0, 0, 0}, d); // will behave as if |2020>
     rho = applyCTRL(prj(psi), kron(gt.Xd(3), gt.Xd(3)), ctrl, target, dims,
                     shift);
-    expected_rho = mprj({1, 2, 0, 2}, 3);
+    expected_rho = mprj({1, 2, 0, 2}, d);
     EXPECT_NEAR(0, norm(rho - expected_rho), 1e-7);
 
     // some random n qudit pure state
@@ -163,6 +165,74 @@ TEST(qpp_applyCTRL, Qudits) {
 ///       const std::vector<idx>& target, idx d = 2,
 ///       std::vector<idx> shift = {})
 TEST(qpp_applyCTRL, Qubits) {}
+/******************************************************************************/
+/// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
+///       applyCTRLn(const Eigen::MatrixBase<Derived1>& state,
+///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
+///       const std::vector<idx>& target, const std::vector<idx>& dims,
+///       std::vector<idx> shift = {})
+TEST(qpp_applyCTRLn, Qudits) {
+    idx d = 3;
+    idx n = 4;
+    std::vector<idx> dims(n, d); // 4 qutrits
+    idx D = prod(dims);          // total dimension
+
+    std::vector<idx> ctrl{0, 2};   // control
+    std::vector<idx> target{1, 3}; // target
+
+    // ket
+    ket psi = mket({2, 1, 2, 1}, d);
+    psi = applyCTRL_FAN(psi, gt.Xd(3), ctrl, target, dims);
+    ket expected = mket({2, 0, 2, 0}, d);
+    EXPECT_NEAR(0, norm(psi - expected), 1e-7);
+
+    // ket, with shift
+    std::vector<idx> shift{1, 2};
+    psi = mket({2, 1, 1, 1}, d); // will behave as if |0101>
+    psi = applyCTRL_FAN(psi, gt.Xd(3), ctrl, target, dims, shift);
+    expected = mket({2, 1, 1, 1}, d);
+    EXPECT_NEAR(0, norm(psi - expected), 1e-7);
+
+    // density matrix
+    psi = mket({2, 0, 2, 0}, d);
+    cmat rho = applyCTRL_FAN(prj(psi), gt.Xd(3), ctrl, target, dims);
+    cmat expected_rho = mprj({2, 2, 2, 2}, d);
+    EXPECT_NEAR(0, norm(rho - expected_rho), 1e-7);
+
+    // density matrix, with shift
+    shift = {1, 2};
+    psi = mket({1, 0, 0, 0}, d); // will behave as if |2020>
+    rho = applyCTRL_FAN(prj(psi), gt.Xd(3), ctrl, target, dims, shift);
+    expected_rho = mprj({1, 2, 0, 2}, d);
+    EXPECT_NEAR(0, norm(rho - expected_rho), 1e-7);
+
+    // some random n qudit pure state
+    psi = randket(D);
+
+    rho = psi * adjoint(psi); // the corresponding density matrix
+    cmat U = randU(d);        // some random unitary
+
+    // applyCTRL on pure state
+    ket A = applyCTRL_FAN(psi, U, ctrl, target, dims);
+
+    // applyCTRL on density matrix
+    cmat B = applyCTRL_FAN(rho, U, ctrl, target, dims);
+
+    // result when using CTRL-U|psi><psi|CTRL-U^\dagger
+    cmat result_psi = A * adjoint(A);
+    // result when using CTRL-U(rho)CTRL-U^\dagger
+    const cmat& result_rho = B;
+
+    double res = norm(result_psi - result_rho);
+    EXPECT_NEAR(0, res, 1e-7);
+}
+/******************************************************************************/
+/// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
+///       applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
+///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
+///       const std::vector<idx>& target, idx d = 2,
+///       std::vector<idx> shift = {})
+TEST(qpp_applyCTRL_FAN, Qubits) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> expr_t<Derived>
 ///       applyQFT(const Eigen::MatrixBase<Derived>& A,

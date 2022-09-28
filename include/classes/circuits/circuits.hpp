@@ -31,8 +31,8 @@
  * \brief Qudit quantum circuits
  */
 
-#ifndef CLASSES_CIRCUITS_CIRCUITS_HPP_
-#define CLASSES_CIRCUITS_CIRCUITS_HPP_
+#ifndef QPP_CLASSES_CIRCUITS_CIRCUITS_HPP_
+#define QPP_CLASSES_CIRCUITS_CIRCUITS_HPP_
 
 namespace qpp {
 /**
@@ -61,7 +61,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     std::unordered_map<std::size_t, cmat>
         cmat_hash_tbl_{}; ///< hash table with the matrices used in the circuit,
-    ///< with [Key = std::size_t, Value = cmat]
+                          ///< with [Key = std::size_t, Value = cmat]
     std::unordered_map<std::size_t, idx> gate_count_{}; ///< gate counts
     std::unordered_map<std::size_t, idx>
         measurement_count_{}; ///< measurement counts
@@ -105,41 +105,16 @@ class QCircuit : public IDisplay, public IJSON {
 
         JOINT, ///< joint gate on multiple qudits
 
-        FAN, ///< same unitary gate on multiple qudits
+        FAN, ///< the same unitary gate on multiple qudits
 
-        SINGLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one control and one target
+        CTRL, ///< controlled unitary gate with joint target
 
-        SINGLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one control and multiple targets
+        CTRL_FAN, ///< controlled unitary gate with multiple targets
 
-        MULTIPLE_CTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< multiple controls and single target
+        cCTRL, ///< classically controlled unitary gate with joint target
 
-        MULTIPLE_CTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< multiple controls and multiple
-        ///< targets
-
-        JOINT_CTRL, ///< controlled gate with multiple controls and joint
-        ///< targets
-
-        SINGLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one classical control and one target
-
-        SINGLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< one classical control and multiple
-        ///< targets
-
-        MULTIPLE_cCTRL_SINGLE_TARGET, ///< controlled 1 qudit unitary gate with
-        ///< multiple classical controls and
-        ///< single target
-
-        MULTIPLE_cCTRL_MULTIPLE_TARGET, ///< controlled 1 qudit unitary gate
-        ///< with multiple classical controls
-        ///< and multiple targets
-
-        JOINT_cCTRL, ///< controlled gate with multiple classical controls and
-                     ///< joint targets
+        cCTRL_FAN, ///< classically controlled unitary gate with multiple
+                   ///< targets
     };
 
     /**
@@ -171,35 +146,17 @@ class QCircuit : public IDisplay, public IJSON {
             case GateType::JOINT:
                 os << "JOINT";
                 break;
-            case GateType::SINGLE_CTRL_SINGLE_TARGET:
-                os << "SINGLE_CTRL_SINGLE_TARGET";
+            case GateType::CTRL:
+                os << "CTRL";
                 break;
-            case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-                os << "SINGLE_CTRL_MULTIPLE_TARGET";
+            case GateType::CTRL_FAN:
+                os << "CTRL_FAN";
                 break;
-            case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-                os << "MULTIPLE_CTRL_SINGLE_TARGET";
+            case GateType::cCTRL:
+                os << "cCTRL";
                 break;
-            case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-                os << "MULTIPLE_CTRL_MULTIPLE_TARGET";
-                break;
-            case GateType::JOINT_CTRL:
-                os << "JOINT_CTRL";
-                break;
-            case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-                os << "SINGLE_cCTRL_SINGLE_TARGET";
-                break;
-            case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-                os << "SINGLE_cCTRL_MULTIPLE_TARGET";
-                break;
-            case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-                os << "MULTIPLE_cCTRL_SINGLE_TARGET";
-                break;
-            case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-                os << "MULTIPLE_cCTRL_MULTIPLE_TARGET";
-                break;
-            case GateType::JOINT_cCTRL:
-                os << "JOINT_cCTRL";
+            case GateType::cCTRL_FAN:
+                os << "cCTRL_FAN";
                 break;
         }
 
@@ -264,10 +221,12 @@ class QCircuit : public IDisplay, public IJSON {
          */
         std::ostream& display(std::ostream& os) const override {
             os << gate_type_ << ", ";
-            if (gate_type_ >= GateType::SINGLE_cCTRL_SINGLE_TARGET)
-                os << "c_ctrl = " << disp(ctrl_, ", ") << ", ";
-            else if (gate_type_ >= GateType::SINGLE_CTRL_SINGLE_TARGET)
+            if (gate_type_ == GateType::CTRL ||
+                gate_type_ == GateType::CTRL_FAN)
                 os << "ctrl = " << disp(ctrl_, ", ") << ", ";
+            else if (gate_type_ == GateType::cCTRL ||
+                     gate_type_ == GateType::cCTRL_FAN)
+                os << "c_ctrl = " << disp(ctrl_, ", ") << ", ";
             os << "target = " << disp(target_, ", ") << ", ";
             if (!shift_.empty())
                 os << "shift = " << disp(shift_, ", ") << ", ";
@@ -285,11 +244,10 @@ class QCircuit : public IDisplay, public IJSON {
 
         MEASURE, ///< Z measurement of single qudit
 
-        MEASURE_MANY, ///< Z measurement of joint qudits
+        MEASURE_MANY, ///< Z measurement of multiple qudits
 
         MEASURE_V, ///< measurement of single qudit in the orthonormal basis
-        ///< or rank-1 projectors specified by the columns of matrix
-        ///< \a V
+        ///< or rank-1 projectors specified by the columns of matrix \a V
 
         MEASURE_V_MANY, ///< joint measurement of multiple qudits in the
         ///< orthonormal basis or rank-1 projectors specified by the columns of
@@ -297,7 +255,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         MEASURE_ND, ///< Z measurement of single qudit, non-destructive
 
-        MEASURE_MANY_ND, ///< Z measurement of multiple qudit, non-destructive
+        MEASURE_MANY_ND, ///< Z measurement of multiple qudits, non-destructive
 
         MEASURE_V_ND, ///< measurement of single qudit in the orthonormal basis
         ///< or rank-1 projectors specified by the columns of matrix \a V,
@@ -637,18 +595,11 @@ class QCircuit : public IDisplay, public IJSON {
 
                 // gate step
                 if (type_ == StepType::GATE) {
-                    idx pos = std::distance(std::begin(value_type_qc_->gates_),
-                                            gates_ip_);
-                    os << value_type_qc_->get_gates_()[pos];
+                    os << *gates_ip_;
                 }
                 // measurement step
                 else if (type_ == StepType::MEASUREMENT) {
-                    idx pos =
-                        std::distance(std::begin(value_type_qc_->measurements_),
-                                      measurements_ip_);
-
-                    switch (
-                        value_type_qc_->measurements_[pos].measurement_type_) {
+                    switch (measurements_ip_->measurement_type_) {
                         case MeasureType::NONE:
                             break;
                         case MeasureType::MEASURE:
@@ -673,7 +624,7 @@ class QCircuit : public IDisplay, public IJSON {
                             break;
                     } /* end switch */
 
-                    os << value_type_qc_->get_measurements_()[pos];
+                    os << *measurements_ip_;
                 }
                 // no-op
                 else if (type_ == StepType::NOP) {
@@ -990,11 +941,8 @@ class QCircuit : public IDisplay, public IJSON {
      */
     inline static bool is_CTRL(const GateStep& gate_step) {
         switch (gate_step.gate_type_) {
-            case GateType::SINGLE_CTRL_SINGLE_TARGET:
-            case GateType::SINGLE_CTRL_MULTIPLE_TARGET:
-            case GateType::MULTIPLE_CTRL_SINGLE_TARGET:
-            case GateType::MULTIPLE_CTRL_MULTIPLE_TARGET:
-            case GateType::JOINT_CTRL:
+            case GateType::CTRL:
+            case GateType::CTRL_FAN:
                 return true;
             default:
                 return false;
@@ -1009,11 +957,8 @@ class QCircuit : public IDisplay, public IJSON {
      */
     inline static bool is_cCTRL(const GateStep& gate_step) {
         switch (gate_step.gate_type_) {
-            case GateType::SINGLE_cCTRL_SINGLE_TARGET:
-            case GateType::SINGLE_cCTRL_MULTIPLE_TARGET:
-            case GateType::MULTIPLE_cCTRL_SINGLE_TARGET:
-            case GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET:
-            case GateType::JOINT_cCTRL:
+            case GateType::cCTRL:
+            case GateType::cCTRL_FAN:
                 return true;
             default:
                 return false;
@@ -1845,8 +1790,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& gate_joint(const cmat& U, const std::vector<idx>& target,
-                         std::string name = {}) {
+    QCircuit& gate(const cmat& U, const std::vector<idx>& target,
+                   std::string name = {}) {
         // EXCEPTION CHECKS
 
         idx n = static_cast<idx>(target.size());
@@ -1856,29 +1801,29 @@ class QCircuit : public IDisplay, public IJSON {
 
         // check valid target
         if (target.empty())
-            throw exception::ZeroSize("qpp::QCircuit::gate_joint()",
+            throw exception::ZeroSize("qpp::QCircuit::gate()",
                                       context + ": target");
         for (auto&& elem : target) {
             if (elem >= nq_)
-                throw exception::OutOfRange("qpp::QCircuit::gate_joint()",
+                throw exception::OutOfRange("qpp::QCircuit::gate()",
                                             context + ": target");
             // check target was not measured before
             if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::gate_joint()", context + ": target");
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()",
+                                                      context + ": target");
         }
         // check no duplicates target
         if (!internal::check_no_duplicates(target))
-            throw exception::Duplicates("qpp::QCircuit::gate_joint()",
+            throw exception::Duplicates("qpp::QCircuit::gate()",
                                         context + ": target");
 
         // check square matrix for the gate
         if (!internal::check_square_mat(U))
-            throw exception::MatrixNotSquare("qpp::QCircuit::gate_joint()",
+            throw exception::MatrixNotSquare("qpp::QCircuit::gate()",
                                              context + ": U");
         // check correct dimension
         if (static_cast<idx>(U.rows()) != D)
-            throw exception::MatrixMismatchSubsys("qpp::QCircuit::gate_joint()",
+            throw exception::MatrixMismatchSubsys("qpp::QCircuit::gate()",
                                                   context + ": U");
         // END EXCEPTION CHECKS
 
@@ -2114,10 +2059,496 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& TFQ(bool swap = true) { return TFQ(get_non_measured(), swap); }
 
+    // single ctrl multiple targets
+    /**
+     * \brief Applies the single qudit controlled gate \a U with control qudit
+     * \a ctrl on every qudit listed in \a target, i.e., CTRL-U-U-...-U.
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl Control qudit index
+     * \param target Target qudit indexes; the gate \a U is applied on every
+     * one of them depending on the values of the control qudits
+     * \param shift Performs the control as if the \a ctrl qudit state was
+     * \f$X\f$-incremented by \a shift
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
+    QCircuit& CTRL_FAN(const cmat& U, idx ctrl, const std::vector<idx>& target,
+                       idx shift = 0, std::string name = {}) {
+        // EXCEPTION CHECKS
+
+        std::string context{"Step " + std::to_string(get_step_count())};
+
+        // check valid ctrl
+        if (ctrl >= nq_)
+            throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
+                                        context + ": ctrl");
+        if (get_measured(ctrl))
+            throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL_FAN()",
+                                                  context + ": ctrl");
+
+        // check valid target
+        if (target.empty())
+            throw exception::ZeroSize("qpp::QCircuit::CTRL_FAN()",
+                                      context + ": target");
+        for (auto&& elem : target) {
+            if (elem >= nq_)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
+                                            context + ": target");
+            // check target was not measured before
+            if (get_measured(elem))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::CTRL_FAN()", context + ": target");
+        }
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target))
+            throw exception::Duplicates("qpp::QCircuit::CTRL_FAN()",
+                                        context + ": target");
+
+        // check that ctrl and target don't share common elements
+        for (auto&& elem : target)
+            if (elem == ctrl)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
+                                            context + ": ctrl/target");
+
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare("qpp::QCircuit::CTRL_FAN()",
+                                             context + ": U");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::MatrixMismatchSubsys("qpp::QCircuit::CTRL_FAN()",
+                                                  context + ": U");
+
+        // check shift
+        if (shift >= d_)
+            throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
+                                        context + ": shift");
+        // END EXCEPTION CHECKS
+
+        if (name.empty()) {
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
+            name = gate_name.empty() ? "CTRL_FAN" : "CTRL_FAN-" + gate_name;
+        }
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(hashU, U);
+        gates_.emplace_back(GateType::CTRL_FAN, hashU, std::vector<idx>{ctrl},
+                            target, std::vector<idx>{shift}, name);
+        step_types_.emplace_back(StepType::GATE);
+        ++gate_count_[hashU];
+
+        clean_qudits_[ctrl] = false;
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
+        return *this;
+    }
+
+    // multiple ctrl multiple targets
+    /**
+     * \brief Applies the single qudit controlled gate \a U with multiple
+     * control qudits listed in \a ctrl on every qudit listed in \a target,
+     * i.e., CTRL-CTRL-...-CTRL-U-U-...-U.
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl Control qudit indexes
+     * \param target Target qudit indexes; the gate \a U is applied on every
+     * one of them depending on the values of the control qudits
+     * \param shift Performs the control as if the \a ctrl qudit states were
+     * \f$X\f$-incremented component-wise by \a shift. If non-empty
+     * (default), the size of \a shift must be the same as the size of \a
+     * ctrl.
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
+    QCircuit& CTRL_FAN(const cmat& U, const std::vector<idx>& ctrl,
+                       const std::vector<idx>& target,
+                       const std::vector<idx>& shift = {},
+                       std::string name = {}) {
+        // EXCEPTION CHECKS
+
+        std::string context{"Step " + std::to_string(get_step_count())};
+
+        // check valid ctrl
+        if (ctrl.empty())
+            throw exception::ZeroSize("qpp::QCircuit::CTRL_FAN()",
+                                      context + ": ctrl");
+        for (auto&& elem : ctrl) {
+            if (elem >= nq_)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
+                                            context + ": ctrl");
+            // check ctrl was not measured before
+            if (get_measured(elem))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::CTRL_FAN()", context + ": ctrl");
+        }
+        // check no duplicates ctrl
+        if (!internal::check_no_duplicates(ctrl))
+            throw exception::Duplicates("qpp::QCircuit::CTRL_FAN()",
+                                        context + ": ctrl");
+
+        // check valid target
+        if (target.empty())
+            throw exception::ZeroSize("qpp::QCircuit::CTRL_FAN()",
+                                      context + ": target");
+        for (auto&& elem : target) {
+            if (elem >= nq_)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
+                                            context + ": target");
+            // check target was not measured before
+            if (get_measured(elem))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::CTRL_FAN()", context + ": target");
+        }
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target))
+            throw exception::Duplicates("qpp::QCircuit::CTRL_FAN()",
+                                        context + ": target");
+
+        // check that ctrl and target don't share common elements
+        for (auto&& elem_ctrl : ctrl)
+            for (auto&& elem_target : target)
+                if (elem_ctrl == elem_target)
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
+                                                context + ": ctrl/target");
+
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare("qpp::QCircuit::CTRL_FAN()",
+                                             context + ": U");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::MatrixMismatchSubsys("qpp::QCircuit::CTRL_FAN()",
+                                                  context + ": U");
+
+        // check shift
+        if (!shift.empty() && (shift.size() != ctrl.size()))
+            throw exception::SizeMismatch("qpp::QCircuit::CTRL_FAN()",
+                                          context + ": ctrl/shift");
+        if (!shift.empty())
+            for (auto&& elem : shift)
+                if (elem >= d_)
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
+                                                context + ": shift");
+
+        // END EXCEPTION CHECKS
+
+        if (name.empty()) {
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
+            name = gate_name.empty() ? "CTRL_FAN" : "CTRL_FAN-" + gate_name;
+        }
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(hashU, U);
+        gates_.emplace_back(GateType::CTRL_FAN, hashU, ctrl, target, shift,
+                            name);
+        step_types_.emplace_back(StepType::GATE);
+        ++gate_count_[hashU];
+
+        for (auto&& elem : ctrl) {
+            clean_qudits_[elem] = false;
+        }
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
+        return *this;
+    }
+
+    // multiple ctrl joint target
+    /**
+     * \brief Jointly applies the multiple-qudit controlled gate \a U with
+     * multiple control qudits listed in \a ctrl on the qudit indexes specified
+     * by \a target, i.e., CTRL-CTRL-...-CTRL-U_{joint}.
+     *
+     * \param U Multiple-qudit quantum gate
+     * \param ctrl Control qudit indexes
+     * \param target Target qudit indexes where the gate \a U is applied
+     * depending on the values of the control qudits
+     * \param shift Performs the control as if the \a ctrl qudit states were
+     * \f$X\f$-incremented component-wise by \a shift. If non-empty
+     * (default), the size of \a shift must be the same as the size of \a
+     * ctrl.
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
+    QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl,
+                   const std::vector<idx>& target,
+                   const std::vector<idx>& shift = {}, std::string name = {}) {
+        // EXCEPTION CHECKS
+
+        std::string context{"Step " + std::to_string(get_step_count())};
+
+        idx D_target =
+            static_cast<idx>(std::llround(std::pow(d_, target.size())));
+
+        // check valid ctrl
+        if (ctrl.empty())
+            throw exception::ZeroSize("qpp::QCircuit::CTRL()",
+                                      context + ": ctrl");
+        for (auto&& elem : ctrl) {
+            if (elem >= nq_)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                            context + ": ctrl");
+            // check ctrl was not measured before
+            if (get_measured(elem))
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
+                                                      context + ": ctrl");
+        }
+        // check no duplicates ctrl
+        if (!internal::check_no_duplicates(ctrl))
+            throw exception::Duplicates("qpp::QCircuit::CTRL()",
+                                        context + ": ctrl");
+
+        // check valid target
+        if (target.empty())
+            throw exception::ZeroSize("qpp::QCircuit::CTRL()",
+                                      context + ": target");
+        for (auto&& elem : target) {
+            if (elem >= nq_)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                            context + ": target");
+            // check target was not measured before
+            if (get_measured(elem))
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
+                                                      context + ": target");
+        }
+
+        // check that ctrl and target don't share common elements
+        for (auto&& elem_ctrl : ctrl)
+            for (auto&& elem_target : target)
+                if (elem_ctrl == elem_target)
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                                context + ": ctrl/target");
+
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()",
+                                             context + ": U");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != D_target)
+            throw exception::MatrixMismatchSubsys("qpp::QCircuit::CTRL()",
+                                                  context + ": U");
+
+        // check shift
+        if (!shift.empty() && (shift.size() != ctrl.size()))
+            throw exception::SizeMismatch("qpp::QCircuit::CTRL()",
+                                          context + ": ctrl/shift");
+        if (!shift.empty())
+            for (auto&& elem : shift)
+                if (elem >= d_)
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                                context + ": shift");
+        // END EXCEPTION CHECKS
+
+        if (name.empty()) {
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
+            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
+        }
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(hashU, U);
+        gates_.emplace_back(GateType::CTRL, hashU, ctrl, target, shift, name);
+        step_types_.emplace_back(StepType::GATE);
+        ++gate_count_[hashU];
+
+        for (auto&& elem : ctrl) {
+            clean_qudits_[elem] = false;
+        }
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
+        return *this;
+    }
+
+    // multiple ctrl single target
+    /**
+     * \brief Applies the multiple-qudit controlled gate \a U with
+     * multiple control qudits listed in \a ctrl on the target qudit specified
+     * by \a target, i.e., CTRL-CTRL-...-CTRL-U_{joint}.
+     *
+     * \param U Single qudit quantum gate
+     * \param ctrl Control qudit indexes
+     * \param target Target qudit index
+     * \param shift Performs the control as if the \a ctrl qudit states were
+     * \f$X\f$-incremented component-wise by \a shift. If non-empty (default),
+     * the size of \a shift must be the same as the size of \a ctrl.
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
+    QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
+                   const std::vector<idx>& shift = {}, std::string name = {}) {
+        // EXCEPTION CHECKS
+
+        std::string context{"Step " + std::to_string(get_step_count())};
+
+        // check valid ctrl
+        if (ctrl.empty())
+            throw exception::ZeroSize("qpp::QCircuit::CTRL()",
+                                      context + ": ctrl");
+        for (auto&& elem : ctrl) {
+            if (elem >= nq_)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                            context + ": ctrl");
+            // check ctrl was not measured before
+            if (get_measured(elem))
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
+                                                      context + ": ctrl");
+        }
+        // check no duplicates ctrl
+        if (!internal::check_no_duplicates(ctrl))
+            throw exception::Duplicates("qpp::QCircuit::CTRL()",
+                                        context + ": ctrl");
+
+        // check valid target
+        if (target >= nq_)
+            throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                        context + ": target");
+        if (get_measured(target))
+            throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
+                                                  context + ": target");
+
+        // check that ctrl and target don't share common elements
+        for (auto&& elem : ctrl)
+            if (elem == target)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                            context + ": ctrl/target");
+
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()",
+                                             context + ": U");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::MatrixMismatchSubsys("qpp::QCircuit::CTRL()",
+                                                  context + ": U");
+
+        // check shift
+        if (!shift.empty() && (shift.size() != ctrl.size()))
+            throw exception::SizeMismatch("qpp::QCircuit::CTRL()",
+                                          context + ": ctrl/shift");
+        if (!shift.empty())
+            for (auto&& elem : shift)
+                if (elem >= d_)
+                    throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                                context + ": shift");
+        // END EXCEPTION CHECKS
+
+        if (name.empty()) {
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
+            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
+        }
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(hashU, U);
+        gates_.emplace_back(GateType::CTRL, hashU, ctrl,
+                            std::vector<idx>{target}, shift, name);
+        step_types_.emplace_back(StepType::GATE);
+        ++gate_count_[hashU];
+
+        for (auto&& elem : ctrl) {
+            clean_qudits_[elem] = false;
+        }
+        clean_qudits_[target] = false;
+
+        return *this;
+    }
+
+    // single ctrl joint target
+    /**
+     * \brief Jointly applies the single qudit controlled gate \a U with control
+     * qudit \a ctrl on the qudit indexes specified by \a target, i.e.,
+     * CTRL-U_{joint}.
+     *
+     * \param U Multiple-qudit quantum gate
+     * \param ctrl Control qudit index
+     * \param target Target qudit indexes; the gate \a U is applied on every
+     * one of them depending on the values of the control qudits
+     * \param shift Performs the control as if the \a ctrl qudit state was
+     * \f$X\f$-incremented by \a shift
+     * \param name Optional gate name
+     * \return Reference to the current instance
+     */
+    QCircuit& CTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
+                   idx shift = 0, std::string name = {}) {
+        // EXCEPTION CHECKS
+
+        std::string context{"Step " + std::to_string(get_step_count())};
+
+        // check valid ctrl
+        if (ctrl >= nq_)
+            throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                        context + ": ctrl");
+        if (get_measured(ctrl))
+            throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
+                                                  context + ": ctrl");
+
+        // check valid target
+        if (target.empty())
+            throw exception::ZeroSize("qpp::QCircuit::CTRL()",
+                                      context + ": target");
+        for (auto&& elem : target) {
+            if (elem >= nq_)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                            context + ": target");
+            // check target was not measured before
+            if (get_measured(elem))
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
+                                                      context + ": target");
+        }
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target))
+            throw exception::Duplicates("qpp::QCircuit::CTRL()",
+                                        context + ": target");
+
+        // check that ctrl and target don't share common elements
+        for (auto&& elem : target)
+            if (elem == ctrl)
+                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                            context + ": ctrl/target");
+
+        // check square matrix for the gate
+        if (!internal::check_square_mat(U))
+            throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()",
+                                             context + ": U");
+        // check correct dimension
+        if (static_cast<idx>(U.rows()) != d_)
+            throw exception::MatrixMismatchSubsys("qpp::QCircuit::CTRL()",
+                                                  context + ": U");
+
+        // check shift
+        if (shift >= d_)
+            throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                                        context + ": shift");
+        // END EXCEPTION CHECKS
+
+        if (name.empty()) {
+            std::string gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(U);
+            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
+        }
+        std::size_t hashU = hash_eigen(U);
+        add_hash_(hashU, U);
+        gates_.emplace_back(GateType::CTRL, hashU, std::vector<idx>{ctrl},
+                            target, std::vector<idx>{shift}, name);
+        step_types_.emplace_back(StepType::GATE);
+        ++gate_count_[hashU];
+
+        clean_qudits_[ctrl] = false;
+        for (auto&& elem : target) {
+            clean_qudits_[elem] = false;
+        }
+
+        return *this;
+    }
+
     // single ctrl single target
     /**
-     * \brief Applies the single qudit controlled gate \a U with control
-     * qudit \a ctrl and target qudit \a target, i.e., CTRL-U.
+     * \brief Applies the single qudit controlled gate \a U with control qudit
+     * \a ctrl and target qudit \a target, i.e., CTRL-U.
      *
      * \param U Single qudit quantum gate
      * \param ctrl Control qudit index
@@ -2163,9 +2594,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::SINGLE_CTRL_SINGLE_TARGET, hashU,
-                            std::vector<idx>{ctrl}, std::vector<idx>{target},
-                            std::vector<idx>{shift}, name);
+        gates_.emplace_back(GateType::CTRL, hashU, std::vector<idx>{ctrl},
+                            std::vector<idx>{target}, std::vector<idx>{shift},
+                            name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
@@ -2175,87 +2606,80 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    // single ctrl multiple target
+    // single cctrl multiple targets
     /**
-     * \brief Applies the single qudit controlled gate \a U with control
-     * qudit \a ctrl on every qudit listed in \a target, i.e., CTRL-U-U-...-U.
+     * \brief Applies the single qudit controlled gate \a U with classical
+     * control dit \a ctrl on every qudit listed in \a target, i.e.,
+     * cCTRL-U-U-...-U.
      *
      * \param U Single qudit quantum gate
-     * \param ctrl Control qudit index
+     * \param ctrl_dit Classical control dit index
      * \param target Target qudit indexes; the gate \a U is applied on every
-     * one of them depending on the values of the control qudits
-     * \param shift Performs the control as if the \a ctrl qudit state was
-     * \f$X\f$-incremented by \a shift
+     * one of them depending on the values of the classical control dits
+     * \param shift Performs the control as if the \a ctrl_dit classical dit
+     * was incremented by \a shift
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& CTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
-                   idx shift = 0, std::string name = {}) {
+    QCircuit& cCTRL_FAN(const cmat& U, idx ctrl_dit,
+                        const std::vector<idx>& target, idx shift = 0,
+                        std::string name = {}) {
         // EXCEPTION CHECKS
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        // check valid ctrl
-        if (ctrl >= nq_)
-            throw exception::OutOfRange("qpp::QCircuit::CTRL()",
-                                        context + ": ctrl");
-        if (get_measured(ctrl))
-            throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
-                                                  context + ": ctrl");
+        // check valid ctrl_dit
+        if (ctrl_dit >= nc_)
+            throw exception::OutOfRange("qpp::QCircuit::cCTRL_FAN()",
+                                        context + ": ctrl_dit");
 
         // check valid target
         if (target.empty())
-            throw exception::ZeroSize("qpp::QCircuit::CTRL()",
+            throw exception::ZeroSize("qpp::QCircuit::cCTRL_FAN()",
                                       context + ": target");
         for (auto&& elem : target) {
             if (elem >= nq_)
-                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL_FAN()",
                                             context + ": target");
             // check target was not measured before
             if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
-                                                      context + ": target");
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::cCTRL_FAN()", context + ": target");
         }
         // check no duplicates target
         if (!internal::check_no_duplicates(target))
-            throw exception::Duplicates("qpp::QCircuit::CTRL()",
+            throw exception::Duplicates("qpp::QCircuit::cCTRL_FAN()",
                                         context + ": target");
-
-        // check ctrl and target don't share common elements
-        for (auto&& elem : target)
-            if (elem == ctrl)
-                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
-                                            context + ": ctrl/target");
 
         // check square matrix for the gate
         if (!internal::check_square_mat(U))
-            throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()",
+            throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL_FAN()",
                                              context + ": U");
         // check correct dimension
         if (static_cast<idx>(U.rows()) != d_)
-            throw exception::MatrixMismatchSubsys("qpp::QCircuit::CTRL()",
+            throw exception::MatrixMismatchSubsys("qpp::QCircuit::cCTRL_FAN()",
                                                   context + ": U");
 
         // check shift
         if (shift >= d_)
-            throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+            throw exception::OutOfRange("qpp::QCircuit::cCTRL_FAN()",
                                         context + ": shift");
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
             std::string gate_name =
                 qpp::Gates::get_no_thread_local_instance().get_name(U);
-            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name.empty() ? "cCTRL_FAN" : "cCTRL_FAN-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::SINGLE_CTRL_MULTIPLE_TARGET, hashU,
-                            std::vector<idx>{ctrl}, target,
+        gates_.emplace_back(GateType::cCTRL_FAN, hashU,
+                            std::vector<idx>{ctrl_dit}, target,
                             std::vector<idx>{shift}, name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
-        clean_qudits_[ctrl] = false;
+        clean_dits_[ctrl_dit] = false;
         for (auto&& elem : target) {
             clean_qudits_[elem] = false;
         }
@@ -2263,196 +2687,97 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    // multiple ctrl single target
+    // multiple cctrl multiple targets
     /**
      * \brief Applies the single qudit controlled gate \a U with multiple
-     * control qudits listed in \a ctrl on the target qudit \a target, i.e.,
-     * CTRL-CTRL-...-CTRL-U.
+     * classical control dits listed in \a ctrl on every qudit listed in
+     * \a target, i.e., cCTRL-cCTRL-...-cCTRL-U-U-...-U.
      *
      * \param U Single qudit quantum gate
-     * \param ctrl Control qudit indexes
-     * \param target Target qudit index
-     * \param shift Performs the control as if the \a ctrl qudit states were
-     * \f$X\f$-incremented component-wise by \a shift. If non-empty
+     * \param ctrl_dits Classical control dits indexes
+     * \param target Target qudit indexes; the gate \a U is applied on every
+     * one of them depending on the values of the classical control dits
+     * \param shift Performs the control as if the \a ctrl_dits classical
+     * dits were incremented component-wise by \a shift. If non-empty
      * (default), the size of \a shift must be the same as the size of \a
-     * ctrl.
+     * ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
-                   const std::vector<idx>& shift = {}, std::string name = {}) {
+    QCircuit& cCTRL_FAN(const cmat& U, const std::vector<idx>& ctrl_dits,
+                        const std::vector<idx>& target,
+                        const std::vector<idx>& shift = {},
+                        std::string name = {}) {
         // EXCEPTION CHECKS
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        // check valid ctrl
-        for (auto&& elem : ctrl) {
-            if (elem >= nq_)
-                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
-                                            context + ": ctrl");
-            // check ctrl was not measured before
-            if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
-                                                      context + ": ctrl");
+        // check valid ctrl_dits
+        if (ctrl_dits.empty())
+            throw exception::ZeroSize("qpp::QCircuit::cCTRL_FAN()",
+                                      context + ": ctrl_dits");
+        for (auto&& elem : ctrl_dits) {
+            if (elem >= nc_)
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL_FAN()",
+                                            context + ": ctrl_dits");
         }
-        // check no duplicates ctrl
-        if (!internal::check_no_duplicates(ctrl))
-            throw exception::Duplicates("qpp::QCircuit::CTRL()",
-                                        context + ": ctrl");
+        // check no duplicates ctrl_dits
+        if (!internal::check_no_duplicates(ctrl_dits))
+            throw exception::Duplicates("qpp::QCircuit::cCTRL_FAN()",
+                                        context + ": ctrl_dits");
 
         // check valid target
-        if (target >= nq_)
-            throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+        if (target.empty())
+            throw exception::ZeroSize("qpp::QCircuit::cCTRL_FAN()",
+                                      context + ": target");
+        for (auto&& elem : target) {
+            if (elem >= nq_)
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL_FAN()",
+                                            context + ": target");
+            // check target was not measured before
+            if (get_measured(elem))
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::cCTRL_FAN()", context + ": target");
+        }
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target))
+            throw exception::Duplicates("qpp::QCircuit::cCTRL_FAN()",
                                         context + ": target");
-        if (get_measured(target))
-            throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
-                                                  context + ": target");
-
-        // check ctrl and target don't share common elements
-        for (auto&& elem : ctrl)
-            if (elem == target)
-                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
-                                            context + ": ctrl/target");
 
         // check square matrix for the gate
         if (!internal::check_square_mat(U))
-            throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()",
+            throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL_FAN()",
                                              context + ": U");
         // check correct dimension
         if (static_cast<idx>(U.rows()) != d_)
-            throw exception::MatrixMismatchSubsys("qpp::QCircuit::CTRL()",
+            throw exception::MatrixMismatchSubsys("qpp::QCircuit::cCTRL_FAN()",
                                                   context + ": U");
 
         // check shift
-        if (!shift.empty() && (shift.size() != ctrl.size()))
-            throw exception::SizeMismatch("qpp::QCircuit::CTRL()",
-                                          context + ": ctrl/shift");
+        if (!shift.empty() && (shift.size() != ctrl_dits.size()))
+            throw exception::SizeMismatch("qpp::QCircuit::cCTRL_FAN()",
+                                          context + ": ctrl_dits/shift");
         if (!shift.empty())
             for (auto&& elem : shift)
                 if (elem >= d_)
-                    throw exception::OutOfRange("qpp::QCircuit::CTRL()",
+                    throw exception::OutOfRange("qpp::QCircuit::cCTRL_FAN()",
                                                 context + ": shift");
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
             std::string gate_name =
                 qpp::Gates::get_no_thread_local_instance().get_name(U);
-            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name.empty() ? "cCTRL_FAN" : "cCTRL_FAN-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::MULTIPLE_CTRL_SINGLE_TARGET, hashU, ctrl,
+        gates_.emplace_back(GateType::cCTRL_FAN, hashU, ctrl_dits,
                             std::vector<idx>{target}, shift, name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
-        for (auto&& elem : ctrl) {
-            clean_qudits_[elem] = false;
-        }
-        clean_qudits_[target] = false;
-
-        return *this;
-    }
-
-    // multiple ctrl multiple target
-    /**
-     * \brief Applies the single qudit controlled gate \a U with multiple
-     * control qudits listed in \a ctrl on every qudit listed in \a target,
-     * i.e., CTRL-CTRL-...-CTRL-U-U-...-U.
-     *
-     * \param U Single qudit quantum gate
-     * \param ctrl Control qudit indexes
-     * \param target Target qudit indexes; the gate \a U is applied on every
-     * one of them depending on the values of the control qudits
-     * \param shift Performs the control as if the \a ctrl qudit states were
-     * \f$X\f$-incremented component-wise by \a shift. If non-empty
-     * (default), the size of \a shift must be the same as the size of \a
-     * ctrl.
-     * \param name Optional gate name
-     * \return Reference to the current instance
-     */
-    QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl,
-                   const std::vector<idx>& target,
-                   const std::vector<idx>& shift = {}, std::string name = {}) {
-        // EXCEPTION CHECKS
-
-        std::string context{"Step " + std::to_string(get_step_count())};
-
-        // check valid ctrl
-        for (auto&& elem : ctrl) {
-            if (elem >= nq_)
-                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
-                                            context + ": ctrl");
-            // check ctrl was not measured before
-            if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
-                                                      context + ": ctrl");
-        }
-        // check no duplicates ctrl
-        if (!internal::check_no_duplicates(ctrl))
-            throw exception::Duplicates("qpp::QCircuit::CTRL()",
-                                        context + ": ctrl");
-
-        // check valid target
-        if (target.empty())
-            throw exception::ZeroSize("qpp::QCircuit::CTRL()",
-                                      context + ": target");
-        for (auto&& elem : target) {
-            if (elem >= nq_)
-                throw exception::OutOfRange("qpp::QCircuit::CTRL()",
-                                            context + ": target");
-            // check target was not measured before
-            if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
-                                                      context + ": target");
-        }
-        // check no duplicates target
-        if (!internal::check_no_duplicates(target))
-            throw exception::Duplicates("qpp::QCircuit::CTRL()",
-                                        context + ": target");
-
-        // check ctrl and target don't share common elements
-        for (auto&& elem_ctrl : ctrl)
-            for (auto&& elem_target : target)
-                if (elem_ctrl == elem_target)
-                    throw exception::OutOfRange("qpp::QCircuit::CTRL()",
-                                                context + ": ctrl/target");
-
-        // check square matrix for the gate
-        if (!internal::check_square_mat(U))
-            throw exception::MatrixNotSquare("qpp::QCircuit::CTRL()",
-                                             context + ": U");
-        // check correct dimension
-        if (static_cast<idx>(U.rows()) != d_)
-            throw exception::MatrixMismatchSubsys("qpp::QCircuit::CTRL()",
-                                                  context + ": U");
-
-        // check shift
-        if (!shift.empty() && (shift.size() != ctrl.size()))
-            throw exception::SizeMismatch("qpp::QCircuit::CTRL()",
-                                          context + ": ctrl/shift");
-        if (!shift.empty())
-            for (auto&& elem : shift)
-                if (elem >= d_)
-                    throw exception::OutOfRange("qpp::QCircuit::CTRL()",
-                                                context + ": shift");
-
-        // END EXCEPTION CHECKS
-
-        if (name.empty()) {
-            std::string gate_name =
-                qpp::Gates::get_no_thread_local_instance().get_name(U);
-            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
-        }
-        std::size_t hashU = hash_eigen(U);
-        add_hash_(hashU, U);
-        gates_.emplace_back(GateType::MULTIPLE_CTRL_MULTIPLE_TARGET, hashU,
-                            ctrl, target, shift, name);
-        step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[hashU];
-
-        for (auto&& elem : ctrl) {
-            clean_qudits_[elem] = false;
+        for (auto&& elem : ctrl_dits) {
+            clean_dits_[elem] = false;
         }
         for (auto&& elem : target) {
             clean_qudits_[elem] = false;
@@ -2461,103 +2786,98 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    // multiple control composed target
+    // multiple cctrl joint target
     /**
      * \brief Jointly applies the multiple-qudit controlled gate \a U with
-     * multiple control qudits listed in \a ctrl on the qudit indexes specified
-     * by \a target, i.e., CTRL-CTRL-...-CTRL-U_{joint}.
+     * multiple classical control dits listed in \a ctrl on the qudit indexes
+     * specified by \a target, i.e., cCTRL-cCTRL-...-cCTRL-U_{joint}.
      *
      * \param U Multiple-qudit quantum gate
-     * \param ctrl Control qudit indexes
+     * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit indexes where the gate \a U is applied
-     * depending on the values of the control qudits
-     * \param shift Performs the control as if the \a ctrl qudit states were
-     * \f$X\f$-incremented component-wise by \a shift. If non-empty
-     * (default), the size of \a shift must be the same as the size of \a
-     * ctrl.
+     * depending on the values of the classical control dits
+     * \param shift Performs the control as if the \a ctrl_dits classical
+     * dits were incremented component-wise by \a shift. If non-empty (default),
+     * the size of \a shift must be the same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& CTRL_joint(const cmat& U, const std::vector<idx>& ctrl,
-                         const std::vector<idx>& target,
-                         const std::vector<idx>& shift = {},
-                         std::string name = {}) {
+    QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
+                    const std::vector<idx>& target,
+                    const std::vector<idx>& shift = {}, std::string name = {}) {
         // EXCEPTION CHECKS
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
         idx D_target =
             static_cast<idx>(std::llround(std::pow(d_, target.size())));
-        // check valid ctrl
-        for (auto&& elem : ctrl) {
-            if (elem >= nq_)
-                throw exception::OutOfRange("qpp::QCircuit::CTRL_joint()",
-                                            context + ": ctrl");
-            // check ctrl was not measured before
-            if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::CTRL_joint()", context + ": ctrl");
+
+        // check valid ctrl_dits
+        if (ctrl_dits.empty())
+            throw exception::ZeroSize("qpp::QCircuit::cCTRL()",
+                                      context + ": ctrl_dits");
+        for (auto&& elem : ctrl_dits) {
+            if (elem >= nc_)
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
+                                            context + ": ctrl_dits");
         }
-        // check no duplicates ctrl
-        if (!internal::check_no_duplicates(ctrl))
-            throw exception::Duplicates("qpp::QCircuit::CTRL_joint()",
-                                        context + ": ctrl");
+        // check no duplicates ctrl_dits
+        if (!internal::check_no_duplicates(ctrl_dits))
+            throw exception::Duplicates("qpp::QCircuit::cCTRL()",
+                                        context + ": ctrl_dits");
 
         // check valid target
         if (target.empty())
-            throw exception::ZeroSize("qpp::QCircuit::CTRL_joint()",
+            throw exception::ZeroSize("qpp::QCircuit::cCTRL()",
                                       context + ": target");
         for (auto&& elem : target) {
             if (elem >= nq_)
-                throw exception::OutOfRange("qpp::QCircuit::CTRL_joint()",
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                             context + ": target");
             // check target was not measured before
             if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::CTRL_joint()", context + ": target");
+                throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
+                                                      context + ": target");
         }
-
-        // check ctrl and target don't share common elements
-        for (auto&& elem_ctrl : ctrl)
-            for (auto&& elem_target : target)
-                if (elem_ctrl == elem_target)
-                    throw exception::OutOfRange("qpp::QCircuit::CTRL_joint()",
-                                                context + ": ctrl/target");
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target))
+            throw exception::Duplicates("qpp::QCircuit::cCTRL()",
+                                        context + ": target");
 
         // check square matrix for the gate
         if (!internal::check_square_mat(U))
-            throw exception::MatrixNotSquare("qpp::QCircuit::CTRL_joint()",
+            throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL()",
                                              context + ": U");
         // check correct dimension
         if (static_cast<idx>(U.rows()) != D_target)
-            throw exception::MatrixMismatchSubsys("qpp::QCircuit::CTRL_joint()",
+            throw exception::MatrixMismatchSubsys("qpp::QCircuit::cCTRL()",
                                                   context + ": U");
 
         // check shift
-        if (!shift.empty() && (shift.size() != ctrl.size()))
-            throw exception::SizeMismatch("qpp::QCircuit::CTRL_joint()",
-                                          context + ": ctrl/shift");
+        if (!shift.empty() && (shift.size() != ctrl_dits.size()))
+            throw exception::SizeMismatch("qpp::QCircuit::cCTRL()",
+                                          context + ": ctrl_dits/shift");
         if (!shift.empty())
             for (auto&& elem : shift)
                 if (elem >= d_)
-                    throw exception::OutOfRange("qpp::QCircuit::CTRL_joint()",
+                    throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                                 context + ": shift");
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
             std::string gate_name =
                 qpp::Gates::get_no_thread_local_instance().get_name(U);
-            name = gate_name.empty() ? "CTRL" : "CTRL-" + gate_name;
+            name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::JOINT_CTRL, hashU, ctrl, target, shift,
+        gates_.emplace_back(GateType::cCTRL, hashU, ctrl_dits, target, shift,
                             name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
-        for (auto&& elem : ctrl) {
-            clean_qudits_[elem] = false;
+        for (auto&& elem : ctrl_dits) {
+            clean_dits_[elem] = false;
         }
         for (auto&& elem : target) {
             clean_qudits_[elem] = false;
@@ -2566,29 +2886,47 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    // single ctrl single target
+    // multiple cctrl single target
     /**
-     * \brief Applies the single qubit controlled gate \a U with classical
-     * control dit \a ctrl and target qudit \a target, i.e., cCTRL-U.
+     * \brief Applies the single qudit controlled gate \a U with multiple
+     * classical control dits listed in \a ctrl on the target qudit \a
+     * target, i.e., cCTRL-cCTRL-...-CTRL-U.
      *
      * \param U Single qudit quantum gate
-     * \param ctrl_dit Classical control dit index
+     * \param ctrl_dits Classical control dits indexes
      * \param target Target qudit index
-     * \param shift Performs the control as if the \a ctrl_dit classical dit
-     * was incremented by \a shift
+     * \param shift Performs the control as if the \a ctrl_dits classical dits
+     * were incremented component-wise by \a shift. If non-empty (default), the
+     * size of \a shift must be the same as the size of \a ctrl_dits.
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& cCTRL(const cmat& U, idx ctrl_dit, idx target, idx shift = 0,
+    QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
+                    idx target, const std::vector<idx>& shift = {},
                     std::string name = {}) {
         // EXCEPTION CHECKS
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        // check valid ctrl_dit and target
-        if (ctrl_dit >= nc_ || target >= nq_)
+        // check valid ctrl_dits
+        if (ctrl_dits.empty())
+            throw exception::ZeroSize("qpp::QCircuit::cCTRL()",
+                                      context + ": ctrl_dits");
+        for (auto&& elem : ctrl_dits) {
+            if (elem >= nc_)
+                throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
+                                            context + ": ctrl_dits");
+        }
+        // check no duplicates ctrl_dits
+        if (!internal::check_no_duplicates(ctrl_dits))
+            throw exception::Duplicates("qpp::QCircuit::cCTRL()",
+                                        context + ": ctrl_dits");
+
+        // check valid target
+        if (target >= nq_)
             throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
-                                        context + ": ctrl/target");
+                                        context + ": target");
+        // check target was not measured before
         if (get_measured(target))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
                                                   context + ": target");
@@ -2603,9 +2941,14 @@ class QCircuit : public IDisplay, public IJSON {
                                                   context + ": U");
 
         // check shift
-        if (shift >= d_)
-            throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
-                                        context + ": shift");
+        if (!shift.empty() && (shift.size() != ctrl_dits.size()))
+            throw exception::SizeMismatch("qpp::QCircuit::cCTRL()",
+                                          context + ": ctrl_dits/shift");
+        if (!shift.empty())
+            for (auto&& elem : shift)
+                if (elem >= d_)
+                    throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
+                                                context + ": shift");
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
@@ -2613,29 +2956,28 @@ class QCircuit : public IDisplay, public IJSON {
                 qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
-
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::SINGLE_cCTRL_SINGLE_TARGET, hashU,
-                            std::vector<idx>{ctrl_dit},
-                            std::vector<idx>{target}, std::vector<idx>{shift},
-                            name);
+        gates_.emplace_back(GateType::cCTRL, hashU, ctrl_dits,
+                            std::vector<idx>{target}, shift, name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
-        clean_dits_[ctrl_dit] = false;
+        for (auto&& elem : ctrl_dits) {
+            clean_dits_[elem] = false;
+        }
         clean_qudits_[target] = false;
 
         return *this;
     }
 
-    // single ctrl multiple targets
+    // single cctrl joint target
     /**
-     * \brief Applies the single qudit controlled gate \a U with classical
-     * control dit \a ctrl on every qudit listed in \a target, i.e.,
-     * cCTRL-U-U-...-U.
+     * \brief Jointly applies the single qudit controlled gate \a U with
+     * classical control dit \a ctrl on the qudit indexes specified by \a
+     * target, i.e., cCTRL-U_{joint}.
      *
-     * \param U Single qudit quantum gate
+     * \param U Multiple-qudit quantum gate
      * \param ctrl_dit Classical control dit index
      * \param target Target qudit indexes; the gate \a U is applied on every
      * one of them depending on the values of the classical control dits
@@ -2695,9 +3037,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::SINGLE_cCTRL_MULTIPLE_TARGET, hashU,
-                            std::vector<idx>{ctrl_dit}, target,
-                            std::vector<idx>{shift}, name);
+        gates_.emplace_back(GateType::cCTRL, hashU, std::vector<idx>{ctrl_dit},
+                            target, std::vector<idx>{shift}, name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
@@ -2709,45 +3050,29 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    // multiple ctrl single target
+    // single cctrl single target
     /**
-     * \brief Applies the single qudit controlled gate \a U with multiple
-     * classical control dits listed in \a ctrl on the target qudit \a
-     * target, i.e., cCTRL-cCTRL-...-CTRL-U.
+     * \brief Applies the single qubit controlled gate \a U with classical
+     * control dit \a ctrl and target qudit \a target, i.e., cCTRL-U.
      *
      * \param U Single qudit quantum gate
-     * \param ctrl_dits Classical control dits indexes
+     * \param ctrl_dit Classical control dit index
      * \param target Target qudit index
-     * \param shift Performs the control as if the \a ctrl_dits classical
-     * dits were incremented component-wise by \a shift. If non-empty
-     * (default), the size of \a shift must be the same as the size of \a
-     * ctrl_dits.
+     * \param shift Performs the control as if the \a ctrl_dit classical dit
+     * was incremented by \a shift
      * \param name Optional gate name
      * \return Reference to the current instance
      */
-    QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
-                    idx target, const std::vector<idx>& shift = {},
+    QCircuit& cCTRL(const cmat& U, idx ctrl_dit, idx target, idx shift = 0,
                     std::string name = {}) {
         // EXCEPTION CHECKS
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        // check valid ctrl_dits
-        for (auto&& elem : ctrl_dits) {
-            if (elem >= nc_)
-                throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
-                                            context + ": ctrl_dits");
-        }
-        // check no duplicates ctrl_dits
-        if (!internal::check_no_duplicates(ctrl_dits))
-            throw exception::Duplicates("qpp::QCircuit::cCTRL()",
-                                        context + ": ctrl_dits");
-
-        // check valid target
-        if (target >= nq_)
+        // check valid ctrl_dit and target
+        if (ctrl_dit >= nc_ || target >= nq_)
             throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
-                                        context + ": target");
-        // check target was not measured before
+                                        context + ": ctrl/target");
         if (get_measured(target))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
                                                   context + ": target");
@@ -2762,14 +3087,9 @@ class QCircuit : public IDisplay, public IJSON {
                                                   context + ": U");
 
         // check shift
-        if (!shift.empty() && (shift.size() != ctrl_dits.size()))
-            throw exception::SizeMismatch("qpp::QCircuit::cCTRL()",
-                                          context + ": ctrl_dits/shift");
-        if (!shift.empty())
-            for (auto&& elem : shift)
-                if (elem >= d_)
-                    throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
-                                                context + ": shift");
+        if (shift >= d_)
+            throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
+                                        context + ": shift");
         // END EXCEPTION CHECKS
 
         if (name.empty()) {
@@ -2777,209 +3097,17 @@ class QCircuit : public IDisplay, public IJSON {
                 qpp::Gates::get_no_thread_local_instance().get_name(U);
             name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
         }
+
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::MULTIPLE_cCTRL_SINGLE_TARGET, hashU,
-                            ctrl_dits, std::vector<idx>{target}, shift, name);
+        gates_.emplace_back(GateType::cCTRL, hashU, std::vector<idx>{ctrl_dit},
+                            std::vector<idx>{target}, std::vector<idx>{shift},
+                            name);
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
-        for (auto&& elem : ctrl_dits) {
-            clean_dits_[elem] = false;
-        }
+        clean_dits_[ctrl_dit] = false;
         clean_qudits_[target] = false;
-
-        return *this;
-    }
-
-    // multiple ctrl multiple targets
-    /**
-     * \brief Applies the single qudit controlled gate \a U with multiple
-     * classical control dits listed in \a ctrl on every qudit listed in
-     * \a target, i.e., cCTRL-cCTRL-...-cCTRL-U-U-...-U.
-     *
-     * \param U Single qudit quantum gate
-     * \param ctrl_dits Classical control dits indexes
-     * \param target Target qudit indexes; the gate \a U is applied on every
-     * one of them depending on the values of the classical control dits
-     * \param shift Performs the control as if the \a ctrl_dits classical
-     * dits were incremented component-wise by \a shift. If non-empty
-     * (default), the size of \a shift must be the same as the size of \a
-     * ctrl_dits.
-     * \param name Optional gate name
-     * \return Reference to the current instance
-     */
-    QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
-                    const std::vector<idx>& target,
-                    const std::vector<idx>& shift = {}, std::string name = {}) {
-        // EXCEPTION CHECKS
-
-        std::string context{"Step " + std::to_string(get_step_count())};
-
-        // check valid ctrl_dits
-        for (auto&& elem : ctrl_dits) {
-            if (elem >= nc_)
-                throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
-                                            context + ": ctrl_dits");
-        }
-        // check no duplicates ctrl_dits
-        if (!internal::check_no_duplicates(ctrl_dits))
-            throw exception::Duplicates("qpp::QCircuit::cCTRL()",
-                                        context + ": ctrl_dits");
-
-        // check valid target
-        if (target.empty())
-            throw exception::ZeroSize("qpp::QCircuit::cCTRL()",
-                                      context + ": target");
-        for (auto&& elem : target) {
-            if (elem >= nq_)
-                throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
-                                            context + ": target");
-            // check target was not measured before
-            if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
-                                                      context + ": target");
-        }
-        // check no duplicates target
-        if (!internal::check_no_duplicates(target))
-            throw exception::Duplicates("qpp::QCircuit::cCTRL()",
-                                        context + ": target");
-
-        // check square matrix for the gate
-        if (!internal::check_square_mat(U))
-            throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL()",
-                                             context + ": U");
-        // check correct dimension
-        if (static_cast<idx>(U.rows()) != d_)
-            throw exception::MatrixMismatchSubsys("qpp::QCircuit::cCTRL()",
-                                                  context + ": U");
-
-        // check shift
-        if (!shift.empty() && (shift.size() != ctrl_dits.size()))
-            throw exception::SizeMismatch("qpp::QCircuit::cCTRL()",
-                                          context + ": ctrl_dits/shift");
-        if (!shift.empty())
-            for (auto&& elem : shift)
-                if (elem >= d_)
-                    throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
-                                                context + ": shift");
-        // END EXCEPTION CHECKS
-
-        if (name.empty()) {
-            std::string gate_name =
-                qpp::Gates::get_no_thread_local_instance().get_name(U);
-            name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
-        }
-        std::size_t hashU = hash_eigen(U);
-        add_hash_(hashU, U);
-        gates_.emplace_back(GateType::MULTIPLE_cCTRL_MULTIPLE_TARGET, hashU,
-                            ctrl_dits, std::vector<idx>{target}, shift, name);
-        step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[hashU];
-
-        for (auto&& elem : ctrl_dits) {
-            clean_dits_[elem] = false;
-        }
-        for (auto&& elem : target) {
-            clean_qudits_[elem] = false;
-        }
-
-        return *this;
-    }
-
-    // multiple classical control composed target
-    /**
-     * \brief Jointly applies the multiple-qudit controlled gate \a U with
-     * multiple classical control dits listed in \a ctrl on the qudit indexes
-     * specified by \a target, i.e., cCTRL-cCTRL-...-cCTRL-U_{joint}.
-     *
-     * \param U Multiple-qudit quantum gate
-     * \param ctrl_dits Classical control dits indexes
-     * \param target Target qudit indexes where the gate \a U is applied
-     * depending on the values of the classical control dits
-     * \param shift Performs the control as if the \a ctrl_dits classical
-     * dits were incremented component-wise by \a shift. If non-empty (default),
-     * the size of \a shift must be the same as the size of \a ctrl_dits.
-     * \param name Optional gate name
-     * \return Reference to the current instance
-     */
-    QCircuit& cCTRL_joint(const cmat& U, const std::vector<idx>& ctrl_dits,
-                          const std::vector<idx>& target,
-                          const std::vector<idx>& shift = {},
-                          std::string name = {}) {
-        // EXCEPTION CHECKS
-
-        std::string context{"Step " + std::to_string(get_step_count())};
-
-        idx D_target =
-            static_cast<idx>(std::llround(std::pow(d_, target.size())));
-        // check valid ctrl_dits
-        for (auto&& elem : ctrl_dits) {
-            if (elem >= nc_)
-                throw exception::OutOfRange("qpp::QCircuit::cCTRL_joint()",
-                                            context + ": ctrl_dits");
-        }
-        // check no duplicates ctrl_dits
-        if (!internal::check_no_duplicates(ctrl_dits))
-            throw exception::Duplicates("qpp::QCircuit::cCTRL_joint()",
-                                        context + ": ctrl_dits");
-
-        // check valid target
-        if (target.empty())
-            throw exception::ZeroSize("qpp::QCircuit::cCTRL_joint()",
-                                      context + ": target");
-        for (auto&& elem : target) {
-            if (elem >= nq_)
-                throw exception::OutOfRange("qpp::QCircuit::cCTRL_joint()",
-                                            context + ": target");
-            // check target was not measured before
-            if (get_measured(elem))
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::cCTRL_joint()", context + ": target");
-        }
-        // check no duplicates target
-        if (!internal::check_no_duplicates(target))
-            throw exception::Duplicates("qpp::QCircuit::cCTRL_joint()",
-                                        context + ": target");
-
-        // check square matrix for the gate
-        if (!internal::check_square_mat(U))
-            throw exception::MatrixNotSquare("qpp::QCircuit::cCTRL_joint()",
-                                             context + ": U");
-        // check correct dimension
-        if (static_cast<idx>(U.rows()) != D_target)
-            throw exception::MatrixMismatchSubsys(
-                "qpp::QCircuit::cCTRL_joint()", context + ": U");
-
-        // check shift
-        if (!shift.empty() && (shift.size() != ctrl_dits.size()))
-            throw exception::SizeMismatch("qpp::QCircuit::cCTRL()",
-                                          context + ": ctrl_dits/shift");
-        if (!shift.empty())
-            for (auto&& elem : shift)
-                if (elem >= d_)
-                    throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
-                                                context + ": shift");
-        // END EXCEPTION CHECKS
-
-        if (name.empty()) {
-            std::string gate_name =
-                qpp::Gates::get_no_thread_local_instance().get_name(U);
-            name = gate_name.empty() ? "cCTRL" : "cCTRL-" + gate_name;
-        }
-        std::size_t hashU = hash_eigen(U);
-        add_hash_(hashU, U);
-        gates_.emplace_back(GateType::JOINT_cCTRL, hashU, ctrl_dits, target,
-                            shift, name);
-        step_types_.emplace_back(StepType::GATE);
-        ++gate_count_[hashU];
-
-        for (auto&& elem : ctrl_dits) {
-            clean_dits_[elem] = false;
-        }
-        for (auto&& elem : target) {
-            clean_qudits_[elem] = false;
-        }
 
         return *this;
     }
@@ -3456,10 +3584,9 @@ class QCircuit : public IDisplay, public IJSON {
 
     // reset multiple qudits
     /**
-     * \brief Resets multiple qudits by first measuring them
-     * non-destructively in the computational basis and discarding the
-     * measurement results, followed by shifting them back to the
-     * \f$|0\cdots 0\rangle\f$ state
+     * \brief Resets multiple qudits by first measuring them non-destructively
+     * in the computational basis and discarding the measurement results,
+     * followed by shifting them back to the \f$|0\cdots 0\rangle\f$ state
      *
      * \param target Target qudit indexes that are reset
      * \param name Optional measurement name, default is "reset"
@@ -3596,15 +3723,15 @@ class QCircuit : public IDisplay, public IJSON {
         if (!internal::check_no_duplicates(target))
             throw exception::Duplicates("qpp::QCircuit::match_circuit_right()",
                                         "target");
-        for (auto&& qudit : target) {
-            if (qudit >= nq_)
+        for (auto&& elem : target) {
+            if (elem >= nq_)
                 throw exception::OutOfRange(
                     "qpp::QCircuit::match_circuit_right()", "target");
         }
         // check matching qudits (in the current instance) were not already
         // measured destructively
-        for (auto&& qudit : target) {
-            if (get_measured(qudit)) {
+        for (auto&& elem : target) {
+            if (get_measured(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::match_circuit_right()", "target");
             }
@@ -3678,7 +3805,7 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.insert(std::end(step_types_), std::begin(other.step_types_),
                            std::end(other.step_types_));
 
-        // STEP 3: modify gate counts, hash tables etc accordingly
+        // STEP 3: modify gate counts, hash tables etc. accordingly
         // update matrix hash table
         for (auto& elem : other.cmat_hash_tbl_)
             cmat_hash_tbl_[elem.first] = elem.second;
@@ -3745,15 +3872,15 @@ class QCircuit : public IDisplay, public IJSON {
         if (!internal::check_no_duplicates(target))
             throw exception::Duplicates("qpp::QCircuit::match_circuit_left()",
                                         "target");
-        for (auto&& qudit : target) {
-            if (qudit >= nq_)
+        for (auto&& elem : target) {
+            if (elem >= nq_)
                 throw exception::OutOfRange(
                     "qpp::QCircuit::match_circuit_left()", "target");
         }
         // check matching qudits (in the current instance) were not already
         // measured destructively
-        for (auto&& qudit : target) {
-            if (get_measured(qudit)) {
+        for (auto&& elem : target) {
+            if (get_measured(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::match_circuit_left()", "target");
             }
@@ -3828,7 +3955,7 @@ class QCircuit : public IDisplay, public IJSON {
                            std::begin(other.step_types_),
                            std::end(other.step_types_));
 
-        // STEP 3: modify gate counts, hash tables etc accordingly
+        // STEP 3: modify gate counts, hash tables etc. accordingly
         // update matrix hash table
         for (auto& elem : other.cmat_hash_tbl_)
             cmat_hash_tbl_[elem.first] = elem.second;
@@ -4005,7 +4132,7 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.insert(std::end(step_types_), std::begin(other.step_types_),
                            std::end(other.step_types_));
 
-        // STEP 5: modify gate counts, hash tables etc accordingly
+        // STEP 5: modify gate counts, hash tables etc. accordingly
         // update matrix hash table
         for (auto& elem : other.cmat_hash_tbl_)
             cmat_hash_tbl_[elem.first] = elem.second;
@@ -4278,9 +4405,9 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         // check valid target
-        for (auto&& pos : target) {
+        for (auto&& elem : target) {
             // removing non-existing or non-clean qudit
-            if (pos >= nq_ || !is_clean_qudit(pos))
+            if (elem >= nq_ || !is_clean_qudit(elem))
                 throw exception::OutOfRange(
                     "qpp::QCircuit::remove_clean_qudits()", "target");
         }
@@ -4290,8 +4417,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::sort(std::begin(target), std::end(target));
         idx dirty = 0;
 
-        for (auto&& pos : target) {
-            remove_clean_qudit(pos - dirty++);
+        for (auto&& elem : target) {
+            remove_clean_qudit(elem - dirty++);
         }
 
         return *this;
@@ -4309,9 +4436,9 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         // check valid target
-        for (auto&& pos : target) {
+        for (auto&& elem : target) {
             // removing non-existing or non-clean dit
-            if (pos >= nc_ || !is_clean_dit(pos))
+            if (elem >= nc_ || !is_clean_dit(elem))
                 throw exception::OutOfRange(
                     "qpp::QCircuit::remove_clean_dits()", "target");
         }
@@ -4321,8 +4448,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::sort(std::begin(target), std::end(target));
         idx dirty = 0;
 
-        for (auto&& pos : target) {
-            remove_clean_dit(pos - dirty++);
+        for (auto&& elem : target) {
+            remove_clean_dit(elem - dirty++);
         }
 
         return *this;
@@ -4408,64 +4535,67 @@ class QCircuit : public IDisplay, public IJSON {
             result += "\"type\": ";
             // gate step
             if (elem.type_ == StepType::GATE) {
-                idx pos = std::distance(std::begin(elem.value_type_qc_->gates_),
-                                        elem.gates_ip_);
                 ss.str("");
                 ss.clear();
-                ss << gates_[pos].gate_type_;
+                ss << elem.gates_ip_->gate_type_;
                 result += '\"' + ss.str() + "\", ";
-                if (!gates_[pos].ctrl_.empty()) {
+                if (!elem.gates_ip_->ctrl_.empty()) {
                     ss.str("");
                     ss.clear();
-                    ss << disp(gates_[pos].ctrl_, ", ");
-                    if (gates_[pos].gate_type_ >=
-                        GateType::SINGLE_cCTRL_SINGLE_TARGET)
-                        result += "\"c_ctrl\": " + ss.str() + ", ";
-                    else
-                        result += "\"ctrl\": " + ss.str() + ", ";
+                    ss << disp(elem.gates_ip_->ctrl_, ", ");
+                    switch (elem.gates_ip_->gate_type_) {
+                        case GateType::CTRL:
+                        case GateType::CTRL_FAN:
+                            result += "\"ctrl\": " + ss.str() + ", ";
+                            break;
+                        case GateType::cCTRL:
+                        case GateType::cCTRL_FAN:
+                            result += "\"c_ctrl\": " + ss.str() + ", ";
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 ss.str("");
                 ss.clear();
-                ss << disp(gates_[pos].target_, ", ");
+                ss << disp(elem.gates_ip_->target_, ", ");
                 result += "\"target\": " + ss.str() + ", ";
 
-                if (!gates_[pos].shift_.empty()) {
+                if (!elem.gates_ip_->shift_.empty()) {
                     ss.str("");
                     ss.clear();
-                    ss << disp(gates_[pos].shift_, ", ");
+                    ss << disp(elem.gates_ip_->shift_, ", ");
                     result += "\"shift\": " + ss.str() + ", ";
                 }
 
                 result += "\"name\": ";
-                result += '\"' + gates_[pos].name_ + "\"}";
+                result += '\"' + elem.gates_ip_->name_ + "\"}";
             }
             // measurement step
             else if (elem.type_ == StepType::MEASUREMENT) {
-                idx pos = std::distance(
-                    std::begin(elem.value_type_qc_->measurements_),
-                    elem.measurements_ip_);
                 ss.str("");
                 ss.clear();
-                ss << measurements_[pos].measurement_type_;
+                ss << elem.measurements_ip_->measurement_type_;
                 result += '\"' + ss.str() + "\", ";
                 ss.str("");
                 ss.clear();
-                ss << disp(measurements_[pos].target_, ", ");
+                ss << disp(elem.measurements_ip_->target_, ", ");
                 result += "\"target\": " + ss.str() + ", ";
 
-                if (measurements_[pos].measurement_type_ !=
+                if (elem.measurements_ip_->measurement_type_ !=
                         MeasureType::RESET &&
-                    measurements_[pos].measurement_type_ !=
+                    elem.measurements_ip_->measurement_type_ !=
                         MeasureType::RESET_MANY &&
-                    measurements_[pos].measurement_type_ !=
+                    elem.measurements_ip_->measurement_type_ !=
                         MeasureType::DISCARD &&
-                    measurements_[pos].measurement_type_ !=
+                    elem.measurements_ip_->measurement_type_ !=
                         MeasureType::DISCARD_MANY)
                     result += "\"c_reg\": " +
-                              std::to_string(measurements_[pos].c_reg_) + ", ";
+                              std::to_string(elem.measurements_ip_->c_reg_) +
+                              ", ";
 
                 result += "\"name\": ";
-                result += '\"' + measurements_[pos].name_ + "\"}";
+                result += '\"' + elem.measurements_ip_->name_ + "\"}";
             }
             // no-op
             else if (elem.type_ == StepType::NOP) {
@@ -4910,4 +5040,4 @@ inline QCircuit random_circuit_depth(
 
 } /* namespace qpp */
 
-#endif /* CLASSES_CIRCUITS_CIRCUITS_HPP_ */
+#endif /* QPP_CLASSES_CIRCUITS_CIRCUITS_HPP_ */

@@ -592,9 +592,8 @@ class QCircuitBuilder final : public ast::Visitor {
         if (ctrls.size() == 1 && tgts.size() == 1) {
             if (ctx.ccontrolled()) {
                 std::vector<idx> tmp{ctrls[0], tgts[0]};
-                circuit->cCTRL_joint(Gates::get_no_thread_local_instance().CNOT,
-                                     ctx.get_cctrls(), tmp, ctx.get_shift(),
-                                     "CX");
+                circuit->cCTRL(Gates::get_no_thread_local_instance().CNOT,
+                               ctx.get_cctrls(), tmp, ctx.get_shift(), "CX");
             } else {
                 circuit->gate(Gates::get_no_thread_local_instance().CNOT,
                               ctrls[0], tgts[0], "CX");
@@ -603,9 +602,9 @@ class QCircuitBuilder final : public ast::Visitor {
             for (idx ctrl : ctrls) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrl, tgts[0]};
-                    circuit->cCTRL_joint(
-                        Gates::get_no_thread_local_instance().CNOT,
-                        ctx.get_cctrls(), tmp, ctx.get_shift(), "CX");
+                    circuit->cCTRL(Gates::get_no_thread_local_instance().CNOT,
+                                   ctx.get_cctrls(), tmp, ctx.get_shift(),
+                                   "CX");
                 } else {
                     circuit->gate(Gates::get_no_thread_local_instance().CNOT,
                                   ctrl, tgts[0], "CX");
@@ -615,9 +614,9 @@ class QCircuitBuilder final : public ast::Visitor {
             for (idx tgt : tgts) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrls[0], tgt};
-                    circuit->cCTRL_joint(
-                        Gates::get_no_thread_local_instance().CNOT,
-                        ctx.get_cctrls(), tmp, ctx.get_shift(), "CX");
+                    circuit->cCTRL(Gates::get_no_thread_local_instance().CNOT,
+                                   ctx.get_cctrls(), tmp, ctx.get_shift(),
+                                   "CX");
                 } else {
                     circuit->gate(Gates::get_no_thread_local_instance().CNOT,
                                   ctrls[0], tgt, "CX");
@@ -627,9 +626,9 @@ class QCircuitBuilder final : public ast::Visitor {
             for (idx i = 0; i < ctrls.size(); i++) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrls[i], tgts[i]};
-                    circuit->cCTRL_joint(
-                        Gates::get_no_thread_local_instance().CNOT,
-                        ctx.get_cctrls(), tmp, ctx.get_shift(), "CX");
+                    circuit->cCTRL(Gates::get_no_thread_local_instance().CNOT,
+                                   ctx.get_cctrls(), tmp, ctx.get_shift(),
+                                   "CX");
                 } else {
                     circuit->gate(Gates::get_no_thread_local_instance().CNOT,
                                   ctrls[i], tgts[i], "CX");
@@ -681,10 +680,10 @@ class QCircuitBuilder final : public ast::Visitor {
 
                 // apply (possibly classical controlled) gate
                 if (ctx.ccontrolled()) {
-                    circuit->cCTRL_joint(mat, ctx.get_cctrls(), mapped_args,
-                                         ctx.get_shift(), dgate.name());
+                    circuit->cCTRL(mat, ctx.get_cctrls(), mapped_args,
+                                   ctx.get_shift(), dgate.name());
                 } else {
-                    circuit->gate_joint(mat, mapped_args, dgate.name());
+                    circuit->gate(mat, mapped_args, dgate.name());
                 }
             }
         } else {

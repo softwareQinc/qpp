@@ -380,9 +380,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     for (idx i = 0; i < target.size(); ++i)
         subsys_dims[i] = dims[target[i]];
 
-    idx D = prod(std::begin(dims), std::end(dims));
     idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
-    idx Dsubsys_bar = D / Dsubsys;
 
     // check the Kraus operators
     if (Ks.empty())
@@ -405,7 +403,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (internal::check_cvector(rA)) // column vector
     {
         for (idx i = 0; i < Ks.size(); ++i) {
-            ket tmp = apply(rA, Ks[i], target, dims);
+            expr_t<Derived> tmp = apply(rA, Ks[i], target, dims);
             probs[i] = std::pow(norm(tmp), 2);
             if (probs[i] > 0) {
                 // normalized output state
@@ -422,7 +420,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     else // square matrix
     {
         for (idx i = 0; i < Ks.size(); ++i) {
-            cmat tmp = apply(rA, Ks[i], target, dims);
+            expr_t<Derived> tmp = apply(rA, Ks[i], target, dims);
             if (destructive)
                 tmp = ptrace(tmp, target, dims);
             probs[i] = std::abs(trace(tmp)); // probability

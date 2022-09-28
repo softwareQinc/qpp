@@ -8,6 +8,66 @@ using namespace qpp;
 // Unit testing "classes/gates.hpp"
 
 /******************************************************************************/
+TEST(qpp_Gates_CTRL, Qudits) {
+    idx d = 3; // qutrits
+
+    // CNOT control-target on 2 qutrits
+    cmat CTRL1 = gt.CTRL(gt.Xd(d), {0}, {1}, 2, d);
+    EXPECT_NEAR(0, norm(CTRL1 * mket({0, 0}, {d, d}) - mket({0, 0}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL1 * mket({0, 1}, {d, d}) - mket({0, 1}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL1 * mket({0, 2}, {d, d}) - mket({0, 2}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL1 * mket({1, 0}, {d, d}) - mket({1, 1}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL1 * mket({1, 1}, {d, d}) - mket({1, 2}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL1 * mket({1, 2}, {d, d}) - mket({1, 0}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL1 * mket({2, 0}, {d, d}) - mket({2, 2}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL1 * mket({2, 1}, {d, d}) - mket({2, 0}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL1 * mket({2, 2}, {d, d}) - mket({2, 1}, {d, d})),
+                1e-7);
+
+    // CNOT target-control on 2 qutrits
+    cmat CTRL2 = gt.CTRL(gt.Xd(d), {1}, {0}, 2, d);
+    EXPECT_NEAR(0, norm(CTRL2 * mket({0, 0}, {d, d}) - mket({0, 0}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL2 * mket({0, 1}, {d, d}) - mket({1, 1}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL2 * mket({0, 2}, {d, d}) - mket({2, 2}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL2 * mket({1, 0}, {d, d}) - mket({1, 0}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL2 * mket({1, 1}, {d, d}) - mket({2, 1}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL2 * mket({1, 2}, {d, d}) - mket({0, 2}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL2 * mket({2, 0}, {d, d}) - mket({2, 0}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL2 * mket({2, 1}, {d, d}) - mket({0, 1}, {d, d})),
+                1e-7);
+    EXPECT_NEAR(0, norm(CTRL2 * mket({2, 2}, {d, d}) - mket({1, 2}, {d, d})),
+                1e-7);
+
+    // multiple Control-X-X, partial testing
+    cmat CTRL3 = gt.CTRL(kron(gt.Xd(d), gt.Xd(3)), {1, 4}, {2, 3}, 6, d);
+    ket psi1 = mket({0, 1, 2, 2, 1, 1}, {d, d, d, d, d, d});
+    ket res1 = mket({0, 1, 0, 0, 1, 1}, {d, d, d, d, d, d});
+    EXPECT_NEAR(0, norm(CTRL3 * psi1 - res1), 1e-7);
+
+    ket psi2 = mket({0, 1, 2, 2, 2, 1}, {d, d, d, d, d, d});
+    ket res2 = mket({0, 1, 2, 2, 2, 1}, {d, d, d, d, d, d});
+    EXPECT_NEAR(0, norm(CTRL3 * psi2 - res2), 1e-7);
+
+    ket psi3 = mket({1, 2, 1, 0, 2, 2}, {d, d, d, d, d, d});
+    ket res3 = mket({1, 2, 0, 2, 2, 2}, {d, d, d, d, d, d});
+    EXPECT_NEAR(0, norm(CTRL3 * psi3 - res3), 1e-7);
+}
+/******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       Gates::CTRL(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& ctrl, const std::vector<idx>& target, idx N,
@@ -22,14 +82,15 @@ TEST(qpp_Gates_CTRL, Qubits) {
     cmat CTRL2 = gt.CTRL(gt.X, {1}, {0}, 2);
     EXPECT_EQ(CTRL2, gt.CNOTba);
 
-    // TOFOLI
+    // TOFFOLI
     cmat CTRL3 = gt.CTRL(gt.X, {0, 1}, {2}, 3);
     EXPECT_EQ(CTRL3, gt.TOF);
     CTRL3 = gt.CTRL(gt.X, {0, 1}, {2}, 3, 2); // test non-default args
     EXPECT_EQ(CTRL3, gt.TOF);
 
     // random gate as multiple control on 2 qubits
-    cmat U = randU();
+    // cmat U = randU();
+    cmat U = gt.X;
     cmat CTRL4 = gt.CTRL(U, {0, 2}, {1}, 3);
     ket psi1 = mket({0, 0, 1});
     ket res1 = mket({0, 0, 1});
@@ -38,66 +99,6 @@ TEST(qpp_Gates_CTRL, Qubits) {
     ket psi2 = mket({1, 1, 1});
     ket res2 = kron(st.z1, U * st.z1, st.z1);
     EXPECT_NEAR(0, norm(CTRL4 * psi2 - res2), 1e-7);
-}
-/******************************************************************************/
-TEST(qpp_Gates_CTRL, Qudits) {
-    idx D = 3; // qutrits
-
-    // CNOT control-target on 2 qutrits
-    cmat CTRL1 = gt.CTRL(gt.Xd(3), {0}, {1}, 2, D);
-    EXPECT_NEAR(0, norm(CTRL1 * mket({0, 0}, {D, D}) - mket({0, 0}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL1 * mket({0, 1}, {D, D}) - mket({0, 1}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL1 * mket({0, 2}, {D, D}) - mket({0, 2}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL1 * mket({1, 0}, {D, D}) - mket({1, 1}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL1 * mket({1, 1}, {D, D}) - mket({1, 2}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL1 * mket({1, 2}, {D, D}) - mket({1, 0}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL1 * mket({2, 0}, {D, D}) - mket({2, 2}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL1 * mket({2, 1}, {D, D}) - mket({2, 0}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL1 * mket({2, 2}, {D, D}) - mket({2, 1}, {D, D})),
-                1e-7);
-
-    // CNOT target-control on 2 qutrits
-    cmat CTRL2 = gt.CTRL(gt.Xd(3), {1}, {0}, 2, D);
-    EXPECT_NEAR(0, norm(CTRL2 * mket({0, 0}, {D, D}) - mket({0, 0}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL2 * mket({0, 1}, {D, D}) - mket({1, 1}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL2 * mket({0, 2}, {D, D}) - mket({2, 2}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL2 * mket({1, 0}, {D, D}) - mket({1, 0}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL2 * mket({1, 1}, {D, D}) - mket({2, 1}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL2 * mket({1, 2}, {D, D}) - mket({0, 2}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL2 * mket({2, 0}, {D, D}) - mket({2, 0}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL2 * mket({2, 1}, {D, D}) - mket({0, 1}, {D, D})),
-                1e-7);
-    EXPECT_NEAR(0, norm(CTRL2 * mket({2, 2}, {D, D}) - mket({1, 2}, {D, D})),
-                1e-7);
-
-    // multiple Control-X-X, partial testing
-    cmat CTRL3 = gt.CTRL(kron(gt.Xd(3), gt.Xd(3)), {1, 4}, {2, 3}, 6, 3);
-    ket psi1 = mket({0, 1, 2, 2, 1, 1}, {D, D, D, D, D, D});
-    ket res1 = mket({0, 1, 0, 0, 1, 1}, {D, D, D, D, D, D});
-    EXPECT_NEAR(0, norm(CTRL3 * psi1 - res1), 1e-7);
-
-    ket psi2 = mket({0, 1, 2, 2, 2, 1}, {D, D, D, D, D, D});
-    ket res2 = mket({0, 1, 2, 2, 2, 1}, {D, D, D, D, D, D});
-    EXPECT_NEAR(0, norm(CTRL3 * psi2 - res2), 1e-7);
-
-    ket psi3 = mket({1, 2, 1, 0, 2, 2}, {D, D, D, D, D, D});
-    ket res3 = mket({1, 2, 0, 2, 2, 2}, {D, D, D, D, D, D});
-    EXPECT_NEAR(0, norm(CTRL3 * psi3 - res3), 1e-7);
 }
 /******************************************************************************/
 /// BEGIN template <typename Derived>
@@ -159,6 +160,51 @@ TEST(qpp_Gates_Fd, AllTests) {
         o4 * o4 * o4, o4 * o4, o4;
     F4 /= std::sqrt(4);
     EXPECT_NEAR(0, norm(gt.Fd(4) - F4), 1e-7);
+}
+/******************************************************************************/
+/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
+///       Gates::GATE(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& target, idx n,
+///       const std::vector<idx>& dims) const
+TEST(qpp_Gates_GATE, Qudits) {
+    idx d = 3;
+    idx n = 4; // 4 qutrits
+    std::vector<idx> dims(n, d);
+
+    ket psi = mket({1, 1, 1, 1}, d);
+    cmat U = kron(gt.Xd(d), gt.Xd(d) * gt.Xd(d));
+    cmat res = gt.GATE(U, {1, 3}, dims);
+    EXPECT_NEAR(0, norm(res * psi - mket({1, 2, 1, 0}, d)), 1e-7);
+    res = gt.GATE(U, {3, 1}, dims);
+    EXPECT_NEAR(0, norm(res * psi - mket({1, 0, 1, 2}, d)), 1e-7);
+
+    // random matrix on 2 qutrits
+    U = randU(d * d);
+    res = gt.GATE(U, {1, 3}, dims);
+    EXPECT_NEAR(0, norm(res * psi - apply(psi, U, {1, 3}, dims)), 1e-7);
+    res = gt.GATE(U, {3, 1}, dims);
+    EXPECT_NE(0, norm(res * psi - apply(psi, U, {1, 3}, dims)));
+}
+/******************************************************************************/
+/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
+///       Gates::GATE(const Eigen::MatrixBase<Derived>& A,
+///       const std::vector<idx>& target, idx n, idx d = 2) const
+TEST(qpp_Gates_GATE, Qubits) {
+    idx n = 4; // 4 qubits
+
+    ket psi = mket({1, 1, 1, 1});
+    cmat U = gt.CNOT;
+    cmat res = gt.GATE(U, {1, 3}, 4);
+    EXPECT_NEAR(0, norm(res * psi - mket({1, 1, 1, 0})), 1e-7);
+    res = gt.GATE(U, {3, 1}, 4);
+    EXPECT_NEAR(0, norm(res * psi - mket({1, 0, 1, 1})), 1e-7);
+
+    // random matrix on 2 qubits
+    U = randU(4);
+    res = gt.GATE(U, {1, 3}, 4);
+    EXPECT_NEAR(0, norm(res * psi - apply(psi, U, {1, 3})), 1e-7);
+    res = gt.GATE(U, {3, 1}, 4);
+    EXPECT_NE(0, norm(res * psi - apply(psi, U, {1, 3})));
 }
 /******************************************************************************/
 /// BEGIN std::string Gates::get_name(const cmat& U) const

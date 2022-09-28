@@ -75,7 +75,7 @@ class Timer : public IDisplay {
     /**
      * \brief Stops the chronometer
      *
-     * Set the current time as the ending point
+     * Sets the current time as the ending point
      *
      * \return Reference to the current instance
      */
