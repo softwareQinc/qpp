@@ -164,7 +164,8 @@ class QEngine : public IDisplay, public IJSON {
     }; /* class QEngine::Statistics */
 
   protected:
-    const QCircuit* qc_; ///< pointer to constant quantum circuit description
+    const QCircuit*
+        qc_ptr_; ///< pointer to constant quantum circuit description
 
     /**
      * \class qpp::QEngine::state_
@@ -237,7 +238,7 @@ class QEngine : public IDisplay, public IJSON {
                 "qpp::QEngine::set_measured_()", "i");
         // END EXCEPTION CHECKS
         st_.subsys_[i] = static_cast<idx>(-1); // set qudit i to measured state
-        for (idx m = i; m < qc_->get_nq(); ++m) {
+        for (idx m = i; m < qc_ptr_->get_nq(); ++m) {
             if (!get_measured(m)) {
                 --st_.subsys_[m];
             }
@@ -269,8 +270,7 @@ class QEngine : public IDisplay, public IJSON {
 
   public:
     /**
-     * \brief Constructs a quantum engine out of a quantum circuit
-     * description
+     * \brief Constructs a quantum engine out of a quantum circuit description
      *
      * \note The quantum circuit description must be an lvalue
      * \see qpp::QEngine(QCircuit&&)
@@ -281,7 +281,7 @@ class QEngine : public IDisplay, public IJSON {
      * \param qc Quantum circuit description
      */
     explicit QEngine(const QCircuit& qc)
-        : qc_{std::addressof(qc)}, st_{qc_}, stats_{} {}
+        : qc_ptr_{std::addressof(qc)}, st_{qc_ptr_}, stats_{} {}
 
     // silence -Weffc++ class has pointer data members
     /**
@@ -343,7 +343,7 @@ class QEngine : public IDisplay, public IJSON {
     idx get_dit(idx i) const {
         // EXCEPTION CHECKS
 
-        if (i >= qc_->get_nc())
+        if (i >= qc_ptr_->get_nc())
             throw exception::OutOfRange("qpp::QEngine::get_dit()", "i");
         // END EXCEPTION CHECKS
 
@@ -392,7 +392,7 @@ class QEngine : public IDisplay, public IJSON {
      */
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
-        for (idx i = 0; i < qc_->get_nq(); ++i) {
+        for (idx i = 0; i < qc_ptr_->get_nq(); ++i) {
             if (get_measured(i))
                 result.emplace_back(i);
         }
@@ -407,7 +407,7 @@ class QEngine : public IDisplay, public IJSON {
      */
     std::vector<idx> get_non_measured() const {
         std::vector<idx> result;
-        for (idx i = 0; i < qc_->get_nq(); ++i) {
+        for (idx i = 0; i < qc_ptr_->get_nq(); ++i) {
             if (!get_measured(i))
                 result.emplace_back(i);
         }
@@ -420,14 +420,14 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Const reference to the underlying quantum circuit description
      */
-    const QCircuit& get_circuit() const& noexcept { return *qc_; }
+    const QCircuit& get_circuit() const& noexcept { return *qc_ptr_; }
 
     /**
      * \brief Quantum circuit description, rvalue ref qualifier
      *
      * \return Copy of the underlying quantum circuit description
      */
-    QCircuit get_circuit() const&& noexcept { return *qc_; }
+    QCircuit get_circuit() const&& noexcept { return *qc_ptr_; }
 
     /**
      * \brief Measurement statistics for multiple runs
@@ -467,7 +467,7 @@ class QEngine : public IDisplay, public IJSON {
     QEngine& set_dit(idx i, idx value) {
         // EXCEPTION CHECKS
 
-        if (i >= qc_->get_nc())
+        if (i >= qc_ptr_->get_nc())
             throw exception::OutOfRange("qpp::QEngine::set_dit()", "i");
         // END EXCEPTION CHECKS
         st_.dits_[i] = value;
@@ -512,7 +512,7 @@ class QEngine : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         idx n = get_non_measured().size();
-        idx D = static_cast<idx>(std::llround(std::pow(qc_->get_d(), n)));
+        idx D = static_cast<idx>(std::llround(std::pow(qc_ptr_->get_d(), n)));
         if (static_cast<idx>(psi.rows()) != D)
             throw exception::DimsNotEqual("qpp::QEngine::set_psi()", "psi");
         // END EXCEPTION CHECKS
@@ -566,15 +566,15 @@ class QEngine : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         // iterator must point to the same quantum circuit description
-        if (elem.value_type_qc_ != qc_)
+        if (elem.value_type_qc_ != qc_ptr_)
             throw exception::InvalidIterator(
                 "qpp::QEngine::execute()",
                 "Iterator does not point to the same circuit description");
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
-        auto h_tbl = qc_->get_cmat_hash_tbl_();
-        idx d = qc_->get_d();
+        auto h_tbl = qc_ptr_->get_cmat_hash_tbl_();
+        idx d = qc_ptr_->get_d();
 
         // gate step
         if (elem.type_ == QCircuit::StepType::GATE) {
@@ -754,7 +754,7 @@ class QEngine : public IDisplay, public IJSON {
                         probs[mres];
                     set_measured_(current_measurement_step_it->target_[0]);
                     break;
-                case QCircuit::MeasureType::MEASURE_V_MANY:
+                case QCircuit::MeasureType::MEASURE_V_JOINT:
                     std::tie(mres, probs, states) = measure(
                         st_.psi_,
                         h_tbl[current_measurement_step_it->mats_hash_[0]],
@@ -784,7 +784,7 @@ class QEngine : public IDisplay, public IJSON {
                                         current_measurement_step_it->c_reg_));
                     break;
                 case QCircuit::MeasureType::MEASURE_V_ND:
-                case QCircuit::MeasureType::MEASURE_V_MANY_ND:
+                case QCircuit::MeasureType::MEASURE_V_JOINT_ND:
                     std::tie(mres, probs, states) = measure(
                         st_.psi_,
                         h_tbl[current_measurement_step_it->mats_hash_[0]],
@@ -848,63 +848,32 @@ class QEngine : public IDisplay, public IJSON {
         if (reset_stats)
             this->reset_stats();
 
-        // find the position of the first measurement step
-        auto first_measurement_it = qc_->begin();
-        while (first_measurement_it != qc_->end()) {
-            if ((*first_measurement_it).type_ ==
-                QCircuit::StepType::MEASUREMENT)
-                break;
-            ++first_measurement_it;
+        auto first_measurement_it = internal::find_first_measurement_it(
+            qc_ptr_->begin(), qc_ptr_->end());
+
+        std::vector<QCircuit::iterator> steps =
+            internal::canonical_form(*qc_ptr_); // circuit steps (as iterators)
+
+        // now display
+        for (auto& elem : steps) {
+            std::cout << *elem << "\n";
         }
 
         // executes everything up to the first measurement
-        for (auto it = qc_->begin(); it != first_measurement_it; ++it) {
+        for (auto it = qc_ptr_->begin(); it != first_measurement_it; ++it) {
             execute(it);
         }
 
         // saves the state just before the measurement
         initial_engine_state.psi_ = get_psi();
 
-        // check if we can sample at the end
-        bool can_sample = true;
-        for (auto it = first_measurement_it; it != qc_->end(); ++it) {
-            // if we find any cCTRL gate, then we cannot sample at the end
-            if ((*it).type_ == QCircuit::StepType::GATE) {
-                auto current_gate_step_it = (*it).gates_ip_;
-                if (QCircuit::is_cCTRL(*current_gate_step_it)) {
-                    can_sample = false;
-                    break;
-                }
-            }
-            // if we find any measureV, discard or reset, then we cannot sample
-            // at the end
-            // TODO: what about non-destructive measurements?
-            if ((*it).type_ == QCircuit::StepType::MEASUREMENT) {
-                auto current_measurement_step_it = (*it).measurements_ip_;
-                switch (current_measurement_step_it->measurement_type_) {
-                    case QCircuit::MeasureType::MEASURE_V:
-                    case QCircuit::MeasureType::MEASURE_V_MANY:
-                    case QCircuit::MeasureType::MEASURE_V_ND:
-                    case QCircuit::MeasureType::MEASURE_V_MANY_ND:
-                    case QCircuit::MeasureType::DISCARD:
-                    case QCircuit::MeasureType::DISCARD_MANY:
-                    case QCircuit::MeasureType::RESET:
-                    case QCircuit::MeasureType::RESET_MANY:
-                        can_sample = false;
-                    default:
-                        break;
-                }
-                if (!can_sample)
-                    break;
-            }
-        } // end for
-
+        bool can_sample = false;
         // can sample
         if (can_sample) {
             // std::unordered_map
             //  execute all the gates and record the measurements, then
             //  sample at the end
-            for (auto it = first_measurement_it; it != qc_->end(); ++it) {
+            for (auto it = first_measurement_it; it != qc_ptr_->end(); ++it) {
                 if ((*it).type_ == QCircuit::StepType::MEASUREMENT) {
                     // record the measurement(s)
                 } else {
@@ -919,12 +888,13 @@ class QEngine : public IDisplay, public IJSON {
                 // sets the state of the engine to the entry state
                 st_ = initial_engine_state;
 
-                for (auto it = first_measurement_it; it != qc_->end(); ++it) {
+                for (auto it = first_measurement_it; it != qc_ptr_->end();
+                     ++it) {
                     execute(it);
                 }
 
                 // we measured at least one qudit
-                if (qc_->get_measurement_count() > 0) {
+                if (qc_ptr_->get_measurement_count() > 0) {
                     std::vector<idx> m_res = get_dits();
                     ++stats_.data()[m_res];
                 }
@@ -1110,12 +1080,12 @@ class QNoisyEngine : public QEngine {
             // sets the state of the engine to the entry state
             st_ = initial_engine_state;
 
-            for (auto&& elem : *qc_) {
+            for (auto&& elem : *qc_ptr_) {
                 (void) execute(elem);
             }
 
             // we measured at least one qudit
-            if (qc_->get_measurement_count() > 0) {
+            if (qc_ptr_->get_measurement_count() > 0) {
                 std::vector<idx> m_res = get_dits();
                 ++stats_.data()[m_res];
             }
