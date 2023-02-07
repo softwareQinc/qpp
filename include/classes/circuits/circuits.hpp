@@ -5081,7 +5081,7 @@ namespace internal {
 // true if the circuit step is a measurement step, false otherwise
 inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
     return elem.type_ == QCircuit::StepType::MEASUREMENT;
-};
+}
 
 // true if the circuit iterator points to a measurement step, false
 // otherwise
@@ -5093,7 +5093,7 @@ inline bool is_measurement(const QCircuit::iterator& it) {
 inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
     return (elem.type_ == QCircuit::StepType::GATE &&
             QCircuit::is_cCTRL(*(elem).gates_ip_));
-};
+}
 
 // true if the iterator points to a cCTRL step
 inline bool is_cCTRL(const QCircuit::iterator& it) { return is_cCTRL(*it); };
@@ -5106,7 +5106,7 @@ find_first_measurement_it(QCircuit::iterator start,
         ++start;
     }
     return start;
-};
+}
 
 // extracts ctrl/target/c_reg vectors (in this order) from a circuit step,
 // as a tuple
