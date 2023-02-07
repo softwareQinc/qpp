@@ -1,13 +1,13 @@
 Pre-release (future 4.0):
     - API changes in ["classes/circuits/circuits.hpp"], renamed:
-        qpp::QCircuit::CTRL()        -> qpp::QCircuit::CTRL_FAN()
-        qpp::QCircuit::cCTRL()       -> qpp::QCircuit::cCTRL_FAN()
-        qpp::QCircuit::CTRL_joint()  -> qpp::QCircuit::CTRL()
-        qpp::QCircuit::cCTRL_joint() -> qpp::QCircuit::cCTRL()
-        qpp::QCircuit::measureZ()    -> qpp::QCircuit::measure()
+          qpp::QCircuit::CTRL()        -> qpp::QCircuit::CTRL_FAN()
+          qpp::QCircuit::cCTRL()       -> qpp::QCircuit::cCTRL_FAN()
+          qpp::QCircuit::CTRL_joint()  -> qpp::QCircuit::CTRL()
+          qpp::QCircuit::cCTRL_joint() -> qpp::QCircuit::cCTRL()
+          qpp::QCircuit::measureZ()    -> qpp::QCircuit::measure()
     - API changes in qpp::QCircuit::measure() for multiple qudits, now the
-          results are stored sequentially (instead as a decimal representation of
-          the multi-index)
+          results are stored sequentially (instead as a decimal representation
+          of the multi-index)
     - API changes in qpp::measure_seq(), now, as part of its return tuple,
           returns the full list of outcome probabilities
     - API changes for
@@ -16,10 +16,12 @@ Pre-release (future 4.0):
           qpp::QCircuit::get_measurement_count()
           qpp::QCircuit::get_measurement_depth()
       so now the old std::string overloads take instead a qpp::cmat as argument
+    - Implemented ["classes/circuits/circuits.hpp"]:
+          qpp::QCircuit::measure_all() - measures all remaining available qudits
     - Implemented the random qpp::QCircuit free function generators in
       ["classes/circuits/circuits.hpp"]:
-          qpp::random_circuit_count() - Random QCircuit w.r.t. gate count
-          qpp::random_circuit_depth() - Random QCircuit w.r.t. gate depth
+          qpp::random_circuit_count() - random QCircuit w.r.t. gate count
+          qpp::random_circuit_depth() - random QCircuit w.r.t. gate depth
     - Implemented ["classes/gates.hpp"]:
           qpp::Gates::GATE() - constructs the matrix representation of a
                                multi-partite gate that acts on a subsystem

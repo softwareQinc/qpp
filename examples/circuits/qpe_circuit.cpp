@@ -35,7 +35,7 @@ int main() {
     qc.gate_fan(gt.H, counting_qubits);
     qc.gate_fan(gt.X, ancilla); // prepare |11>, the fourth eigenvector of U
     for (idx i = nq_c; i-- > 0;) {
-        qc.CTRL_joint(U, {i}, ancilla);
+        qc.CTRL(U, i, ancilla);
         U = powm(U, 2);
     }
     qc.TFQ(counting_qubits); // inverse Fourier transform
