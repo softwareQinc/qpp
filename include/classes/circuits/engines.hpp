@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -176,7 +176,8 @@ class QEngine : public IDisplay, public IJSON {
                                       ///< const quantum circuit description
         ket psi_{};                   ///< state vector
         std::vector<double> probs_{}; ///< measurement probabilities
-        std::vector<idx> dits_{};     ///< classical dits
+        std::vector<idx> dits_{};     ///< classical dits (where measurement
+                                      ///< results are usually stored)
         std::vector<idx> subsys_{};   ///< keeps track of the measured
                                       ///< subsystems, re-label them after
                                       ///< measurements
@@ -1008,8 +1009,7 @@ class QEngine : public IDisplay, public IJSON {
  * qubit before every non-measurement step in the logical circuit. To add
  * noise before a measurement, insert a no-op via qpp::QCircuit::nop().
  *
- * \tparam NoiseModel Quantum noise model, should be derived from
- * qpp::NoiseBase
+ * \tparam NoiseModel Quantum noise model, should be derived from qpp::NoiseBase
  */
 template <typename NoiseModel>
 class QNoisyEngine : public QEngine {
@@ -1044,14 +1044,14 @@ class QNoisyEngine : public QEngine {
     QNoisyEngine& execute(const QCircuit::iterator::value_type& elem) override {
         // get the relative position of the target
         std::vector<idx> target_rel_pos = get_relative_pos_(get_non_measured());
-        if (elem.type_ != QCircuit::StepType::MEASUREMENT) {
-            // apply the noise
-            for (auto&& i : target_rel_pos) {
-                st_.psi_ = noise_(st_.psi_, i);
-                // record the Kraus operator that occurred
-                noise_results_[elem.ip_].emplace_back(noise_.get_last_idx());
-            }
+        // if (elem.type_ != QCircuit::StepType::MEASUREMENT) {
+        // apply the noise
+        for (auto&& i : target_rel_pos) {
+            st_.psi_ = noise_(st_.psi_, i);
+            // record the Kraus operator that occurred
+            noise_results_[elem.ip_].emplace_back(noise_.get_last_idx());
         }
+        // }
         // execute the circuit step
         (void) QEngine::execute(elem);
 

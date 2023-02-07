@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -2098,7 +2098,7 @@ void hash_combine(std::size_t& seed, const T& v) {
     seed ^= hasher(v) + 0x9e3779b9 + (seed << static_cast<std::size_t>(6)) +
             (seed >> static_cast<std::size_t>(2));
 }
-} /* namespace internal */
+} /* namespace qpp::internal */
 
 /**
  * \brief Computes the hash of en Eigen matrix/vector/expression
@@ -2161,7 +2161,7 @@ struct EqualEigen {
     }
 };
 
-} /* namespace internal */
+} /* namespace qpp::internal */
 } /* namespace qpp */
 
 #endif /* QPP_FUNCTIONS_HPP_ */

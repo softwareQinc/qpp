@@ -16,6 +16,8 @@ Pre-release (future 4.0):
           qpp::QCircuit::get_measurement_count()
           qpp::QCircuit::get_measurement_depth()
       so now the old std::string overloads take instead a qpp::cmat as argument
+    - Noise is now added before measurements as well when running with a
+          qpp::QNoisyEngine<>
     - Implemented ["classes/circuits/circuits.hpp"]:
           qpp::QCircuit::measure_all() - measures all remaining available qudits
     - Implemented the random qpp::QCircuit free function generators in

@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -122,7 +122,7 @@ namespace internal {
  * Used internally to allocate arrays on the stack (for performance reasons)
  */
 constexpr idx maxn = 64;
-} /* namespace internal */
+} /* namespace qpp::internal */
 
 } /* namespace qpp */
 

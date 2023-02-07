@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -540,7 +540,7 @@ dyn_col_vect<Derived> project_ket_on_dits(dyn_col_vect<Derived> psi,
     return psi;
 }
 
-} /* namespace internal */
+} /* namespace qpp::internal */
 } /* namespace qpp */
 
 #endif /* QPP_INTERNAL_UTIL_HPP_ */

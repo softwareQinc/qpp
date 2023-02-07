@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 3.1 - 11 January 2022
+## Version 4.0 - xx February 2023
 
 **Build status:**
 
@@ -45,7 +45,7 @@ see <https://eigen.tuxfamily.org/dox/>. For a simple
 [Eigen 3](https://eigen.tuxfamily.org) quick ASCII reference see
 <https://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
-Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
 
 ---
 

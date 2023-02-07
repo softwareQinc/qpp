@@ -3,7 +3,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -5276,7 +5276,7 @@ inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
     return canonical_form(qc.begin(), qc.end());
 }
 
-} /* namespace internal */
+} /* namespace qpp::internal */
 
 } /* namespace qpp */
 
