@@ -5087,7 +5087,7 @@ inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
 // otherwise
 inline bool is_measurement(const QCircuit::iterator& it) {
     return is_measurement(*it);
-};
+}
 
 // true if the circuit step is a cCTRL step
 inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
