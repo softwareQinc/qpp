@@ -854,11 +854,6 @@ class QEngine : public IDisplay, public IJSON {
         std::vector<QCircuit::iterator> steps =
             internal::canonical_form(*qc_ptr_); // circuit steps (as iterators)
 
-        // now display
-        for (auto& elem : steps) {
-            std::cout << *elem << "\n";
-        }
-
         // executes everything up to the first measurement
         for (auto it = qc_ptr_->begin(); it != first_measurement_it; ++it) {
             execute(it);
