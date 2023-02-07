@@ -5096,7 +5096,7 @@ inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
 }
 
 // true if the iterator points to a cCTRL step
-inline bool is_cCTRL(const QCircuit::iterator& it) { return is_cCTRL(*it); };
+inline bool is_cCTRL(const QCircuit::iterator& it) { return is_cCTRL(*it); }
 
 // find the position of the next measurement iterator
 inline QCircuit::iterator
