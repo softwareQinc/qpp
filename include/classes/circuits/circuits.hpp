@@ -5159,14 +5159,14 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
     }
 
     return {ctrl, target, c_reg};
-};
+}
 
 // extracts ctrl/target/c_reg vectors (in this order) from a circuit
 // iterator, as a tuple
 inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>>
 extract_ctrl_target_c_reg(const QCircuit::iterator& it) {
     return extract_ctrl_target_c_reg(*it);
-};
+}
 
 // true if two circuit steps (assumed added via the QCircuit API) can be
 // swapped
@@ -5192,14 +5192,14 @@ inline bool can_swap(const QCircuit::iterator::value_type& elem1,
         return false;
 
     return true;
-};
+}
 
 // true if two circuit steps (assumed added via the QCircuit API) can be
 // swapped
 inline bool can_swap(const QCircuit::iterator& it1,
                      const QCircuit::iterator& it2) {
     return can_swap(*it1, *it2);
-};
+}
 
 // circuit as a vector of iterators to steps
 inline std::vector<QCircuit::iterator>
