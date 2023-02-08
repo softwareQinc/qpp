@@ -1563,7 +1563,6 @@ class QCircuit : public IDisplay, public IJSON {
      * \param i Qudit index
      * \param name Optional gate name
      * \return Reference to the current instance
-     * \return Reference to the current instance
      */
     QCircuit& gate(const cmat& U, idx i, std::string name = {}) {
         // EXCEPTION CHECKS
@@ -3388,11 +3387,13 @@ class QCircuit : public IDisplay, public IJSON {
      * rank-1 projectors specified by the columns of matrix \a V
      *
      * \param V Orthonormal basis or rank-1 projectors specified by the
-     * columns of matrix \a V \param target Target qudit indexes that are
-     * jointly measured \param c_reg Classical register where the value of
-     * the measurement is stored \param destructive Destructive measurement,
-     * true by default \param name Optional measurement name \return
-     * Reference to the current instance
+     * columns of matrix \a V
+     * \param target Target qudit indexes that are jointly measured
+     * \param c_reg Classical register where the value of the measurement is
+     * stored
+     * \param destructive Destructive measurement, true by default
+     * \param name Optional measurement name
+     * \return Reference to the current instance
      */
     QCircuit& measureV(const cmat& V, const std::vector<idx>& target, idx c_reg,
                        bool destructive = true, std::string name = {}) {
@@ -3729,12 +3730,12 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Qudit indexes of the current circuit description where
      * the qudits of \a other are being matched, i.e., the first/top qudit
      * of \a other quantum circuit description is matched with the target[0]
-     * qudit of the current circuit description, and so on \param pos_dit
-     * The first classical dit of \a other is inserted before the \a pos_dit
-     * classical dit index of the current quantum circuit description (in
-     * the classical dits array), the rest following in order. By default,
-     * insertion is performed at the end. \return Reference to the current
-     * instance
+     * qudit of the current circuit description, and so on
+     * \param pos_dit The first classical dit of \a other is inserted before the
+     * \a pos_dit classical dit index of the current quantum circuit description
+     * (in the classical dits array), the rest following in order. By default,
+     * insertion is performed at the end.
+     * \return Reference to the current instance
      */
     QCircuit& match_circuit_right(QCircuit other,
                                   const std::vector<idx>& target,
@@ -3875,12 +3876,12 @@ class QCircuit : public IDisplay, public IJSON {
      * \param target Qudit indexes of the current circuit description where
      * the qudits of \a other are being matched, i.e., the first/top qudit
      * of \a other quantum circuit description is matched with the target[0]
-     * qudit of the current circuit description, and so on \param pos_dit
-     * The first classical dit of \a other is inserted before the \a pos_dit
-     * classical dit index of the current quantum circuit description (in
-     * the classical dits array), the rest following in order. By default,
-     * insertion is performed at the end. \return Reference to the current
-     * instance
+     * qudit of the current circuit description, and so on
+     * \param pos_dit The first classical dit of \a other is inserted before the
+     * \a pos_dit classical dit index of the current quantum circuit description
+     * (in the classical dits array), the rest following in order. By default,
+     * insertion is performed at the end.
+     * \return Reference to the current instance
      */
     QCircuit& match_circuit_left(QCircuit other, const std::vector<idx>& target,
                                  idx pos_dit = -1) {
@@ -4028,8 +4029,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param pos_dit The first classical dit of \a other is inserted before
      * the \a pos_dit classical dit index of the current quantum circuit
      * description (in the classical dits array), the rest following in
-     * order. By default, insertion is performed at the end. \return
-     * Reference to the current instance
+     * order. By default, insertion is performed at the end.
+     * \return Reference to the current instance
      */
     QCircuit& add_circuit(QCircuit other, bigint pos_qudit, idx pos_dit = -1) {
         // EXCEPTION CHECKS
@@ -4501,8 +4502,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \see qpp::QCircuit::remove_clean_qudits(),
      * qpp::QCircuit::remove_clean_dits()
      *
-     * \param compress_dits If true, removes clean classical dits. Set to
-     * false by default. \return Reference to the current instance
+     * \param compress_dits If true, removes clean classical dits. Set to false
+     * by default.
+     * \return Reference to the current instance
      */
     QCircuit& compress(bool compress_dits = false) {
         remove_clean_qudits(get_clean_qudits());
@@ -4757,8 +4759,8 @@ inline QCircuit adjoint(QCircuit qc) {
  *
  * \param qc1 Quantum circuit description
  * \param qc2 Quantum circuit description
- * \return Quantum circuit description of the Kronecker product of \a qc1
- * with \a qc2
+ * \return Quantum circuit description of the Kronecker product of \a qc1 with
+ * \a qc2
  */
 inline QCircuit kron(QCircuit qc1, const QCircuit& qc2) {
     return qc1.kron(qc2);
@@ -4836,7 +4838,8 @@ inline QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
  *
  * \param qc Quantum circuit description
  * \param n Number of repetitions. If \a n == 1, returns the original
- * circuit. \return Replicated quantum circuit description
+ * circuit.
+ * \return Replicated quantum circuit description
  */
 inline QCircuit replicate(QCircuit qc, idx n) {
     // EXCEPTION CHECKS
@@ -4861,12 +4864,13 @@ inline QCircuit replicate(QCircuit qc, idx n) {
  * gate set has more than one element, then the gate is chosen at random
  * from the set.
  * \param one_qudit_gate_set Set of one qudit gates (optional, must be
- * specified for \a d > 2) \param two_qudit_gate_set Set of two qudit gates
- * (optional, must be specified for \a d > 2); \param d Subsystem dimensions
- * (optional, default is qubit, i.e., \a d = 2) \param one_qudit_gate_names
- * One qudit gate names (optional) \param two_qudit_gate_names Two qudit
- * gate names (optional) \return Instance of random qpp::QCircuit for fixed
- * gate count
+ * specified for \a d > 2)
+ * \param two_qudit_gate_set Set of two qudit gates (optional, must be specified
+ * for \a d > 2);
+ * \param d Subsystem dimensions (optional, default is qubit, i.e., \a d = 2)
+ * \param one_qudit_gate_names One qudit gate names (optional)
+ * \param two_qudit_gate_names Two qudit gate names (optional)
+ * \return Instance of random qpp::QCircuit for fixed gate count
  */
 inline QCircuit random_circuit_count(
     idx nq, idx num_steps, double p_two,
@@ -4973,12 +4977,13 @@ inline QCircuit random_circuit_count(
  * particular gate (optional, empty by default, so by default depth is
  * calculated with respect to all gates in the circuit)
  * \param one_qudit_gate_set Set of one qudit gates (optional, must be
- * specified for \a d > 2) \param two_qudit_gate_set Set of two qudit gates
- * (optional, must be specified for \a d > 2); \param d Subsystem dimensions
- * (optional, default is qubit, i.e., \a d = 2) \param one_qudit_gate_names
- * One qudit gate names (optional) \param two_qudit_gate_names Two qudit
- * gate names (optional) \return Instance of random qpp::QCircuit for fixed
- * circuit gate depth
+ * specified for \a d > 2)
+ * \param two_qudit_gate_set Set of two qudit gates (optional, must be
+ * specified for \a d > 2);
+ * \param d Subsystem dimensions (optional, default is qubit, i.e., \a d = 2)
+ * \param one_qudit_gate_names One qudit gate names (optional)
+ * \param two_qudit_gate_names Two qudit gate names (optional)
+ * \return Instance of random qpp::QCircuit for fixed circuit gate depth
  */
 inline QCircuit random_circuit_depth(
     idx nq, idx depth, double p_two, const cmat& gate_depth = {},
@@ -5276,7 +5281,7 @@ inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
     return canonical_form(qc.begin(), qc.end());
 }
 
-} /* namespace qpp::internal */
+} // namespace internal
 
 } /* namespace qpp */
 

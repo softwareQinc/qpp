@@ -482,12 +482,11 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \note When interfacing with OpenQASM, the classical dits/registers
      * are evaluated in little-endian order, with  the least significant bit
-     * being stored first. For example, [1,0,0] is interpreted as 1 (and not
-     * 4).
+     * being stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
      *
      * \param dits Vector of classical dits, must have the same size as the
-     * internal vector of classical dits returned by
-     * qpp::QEngine::get_dits() \return Reference to the current instance
+     * internal vector of classical dits returned by qpp::QEngine::get_dits()
+     * \return Reference to the current instance
      */
     QEngine& set_dits(std::vector<idx> dits) {
         // EXCEPTION CHECKS
@@ -543,7 +542,6 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \param reset_stats Optional (true by default), resets the collected
      * measurement statistics hash table
-     *
      * \return Reference to the current instance
      */
     virtual QEngine& reset(bool reset_stats = true) {
@@ -682,12 +680,6 @@ class QEngine : public IDisplay, public IJSON {
                                         first_dit),
                                     target_rel_pos, d);
                             }
-
-                            st_.psi_ = apply(
-                                st_.psi_,
-                                powm(h_tbl[current_gate_step_it->gate_hash_],
-                                     first_dit),
-                                target_rel_pos, d);
                         }
                     }
                 }
@@ -852,8 +844,9 @@ class QEngine : public IDisplay, public IJSON {
         auto first_measurement_it = internal::find_first_measurement_it(
             qc_ptr_->begin(), qc_ptr_->end());
 
-        std::vector<QCircuit::iterator> steps =
-            internal::canonical_form(*qc_ptr_); // circuit steps (as iterators)
+        // std::vector<QCircuit::iterator> steps =
+        //     internal::circuit_as_steps(*qc_ptr_); // circuit steps (as
+        //     iterators)
 
         // executes everything up to the first measurement
         for (auto it = qc_ptr_->begin(); it != first_measurement_it; ++it) {
@@ -1062,8 +1055,9 @@ class QNoisyEngine : public QEngine {
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
-     * \param reset_stats Resets the collected measurement statistics hash
-     * table before the run \return Reference to the current instance
+     * \param reset_stats Resets the collected measurement statistics hash table
+     * before the run
+     * \return Reference to the current instance
      */
     QNoisyEngine& execute(idx reps = 1, bool reset_stats = true) override {
         auto initial_engine_state = st_; // saves the engine entry state
@@ -1097,7 +1091,6 @@ class QNoisyEngine : public QEngine {
      *
      * \param reset_stats Optional (true by default), resets the collected
      * measurement statistics hash table
-     *
      * \return Reference to the current instance
      */
     QNoisyEngine& reset(bool reset_stats = true) override {
@@ -1109,15 +1102,14 @@ class QNoisyEngine : public QEngine {
 
     // getters
     /**
-     * \brief Vector of noise results obtained before every step in the
-     * circuit
+     * \brief Vector of noise results obtained before every step in the circuit
      *
      * \note The first vector contains the noise measurement results
      * obtained before applying the first step in the circuit, and so on,
      * ordered by non-measured qudits. That is, the first element in the
      * vector corresponding to noise obtained before a given step in the
-     * circuit represents the noise result obtained on the first
-     * non-measured qudit etc.
+     * circuit represents the noise result obtained on the first non-measured
+     * qudit etc.
      *
      * \return Vector of noise results
      */
