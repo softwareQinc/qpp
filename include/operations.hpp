@@ -1748,8 +1748,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         throw exception::SubsysMismatchDims("qpp::applyCTRL()", "dims/target");
 
     // check that ctrl and target don't share common elements
-    for (auto&& elem_ctrl : ctrl)
-        for (auto&& elem_target : target)
+    for (auto elem_ctrl : ctrl)
+        for (auto elem_target : target)
             if (elem_ctrl == elem_target)
                 throw exception::OutOfRange("qpp::applyCTRL()", "ctrl/target");
 
@@ -1762,7 +1762,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
     ctrlgate.insert(std::end(ctrlgate), std::begin(target), std::end(target));
-    // TODO: fixme
+    // FIXME if needed
     std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
     // check that ctrl + gate subsystem is valid
@@ -2037,8 +2037,8 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
             throw exception::DimsNotEqual("qpp::applyCTRL_FAN()", "target");
 
     // check that ctrl and target don't share common elements
-    for (auto&& elem_ctrl : ctrl)
-        for (auto&& elem_target : target)
+    for (auto elem_ctrl : ctrl)
+        for (auto elem_target : target)
             if (elem_ctrl == elem_target)
                 throw exception::OutOfRange("qpp::applyCTRL_FAN()",
                                             "ctrl/target");
@@ -2050,7 +2050,7 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
     ctrlgate.insert(std::end(ctrlgate), std::begin(target), std::end(target));
-    // TODO: fixme
+    // FIXME if needed
     std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
     // check that ctrl + gate subsystem is valid
@@ -2110,7 +2110,7 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
                 // apply gates on target if non-zero
                 if (chopped_psi !=
                     dyn_col_vect<typename Derived1::Scalar>::Zero(D)) {
-                    for (auto&& elem : target) {
+                    for (auto elem : target) {
                         chopped_psi = apply(chopped_psi, Ak[r], {elem}, dims);
                     }
                 }

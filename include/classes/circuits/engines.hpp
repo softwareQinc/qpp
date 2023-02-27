@@ -53,7 +53,7 @@ class QEngine : public IDisplay, public IJSON {
          * \brief Measurement/sampling statistics
          */
         using stats_t_ = std::map<std::vector<idx>, idx>;
-        mutable stats_t_ stats_{};
+        mutable stats_t_ stats_{}; ///< statistics data
 
       public:
         /**
@@ -669,7 +669,7 @@ class QEngine : public IDisplay, public IJSON {
                                 powm(h_tbl[current_gate_step_it->gate_hash_],
                                      first_dit);
                             if (is_fan) {
-                                for (auto&& qudit : target_rel_pos) {
+                                for (auto qudit : target_rel_pos) {
                                     st_.psi_ = apply(st_.psi_, U, {qudit}, d);
                                 }
                             } else {
@@ -686,7 +686,7 @@ class QEngine : public IDisplay, public IJSON {
                 // TODO check if this can happen (st_.dits_.empty())
                 else {
                     if (is_fan) {
-                        for (auto&& qudit : target_rel_pos) {
+                        for (auto qudit : target_rel_pos) {
                             st_.psi_ =
                                 apply(st_.psi_,
                                       h_tbl[current_gate_step_it->gate_hash_],
@@ -732,7 +732,7 @@ class QEngine : public IDisplay, public IJSON {
                     std::copy(probs.begin(), probs.end(),
                               std::next(st_.probs_.begin(),
                                         current_measurement_step_it->c_reg_));
-                    for (auto&& target : current_measurement_step_it->target_) {
+                    for (auto target : current_measurement_step_it->target_) {
                         set_measured_(target);
                     }
                     break;
@@ -756,7 +756,7 @@ class QEngine : public IDisplay, public IJSON {
                     st_.dits_[current_measurement_step_it->c_reg_] = mres;
                     st_.probs_[current_measurement_step_it->c_reg_] =
                         probs[mres];
-                    for (auto&& target : current_measurement_step_it->target_) {
+                    for (auto target : current_measurement_step_it->target_) {
                         set_measured_(target);
                     }
                     break;
@@ -799,7 +799,7 @@ class QEngine : public IDisplay, public IJSON {
                 case QCircuit::MeasureType::DISCARD_MANY:
                     std::tie(std::ignore, std::ignore, st_.psi_) =
                         measure_seq(st_.psi_, target_rel_pos, d);
-                    for (auto&& target : current_measurement_step_it->target_) {
+                    for (auto target : current_measurement_step_it->target_) {
                         set_measured_(target);
                     }
                     break;
@@ -831,58 +831,90 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
-     * \param reset_stats Resets the collected measurement statistics hash table
-     * before the run
      * \return Reference to the current instance
      */
-    virtual QEngine& execute(idx reps = 1, bool reset_stats = true) {
-        auto initial_engine_state = st_; // saves the engine entry state
+    virtual QEngine& execute(idx reps = 1) {
+        auto steps = reps > 1 ? internal::canonical_form(*qc_ptr_)
+                              : internal::circuit_as_iterators(*qc_ptr_);
 
-        if (reset_stats)
-            this->reset_stats();
+        std::cout << "Canonical form" << std::endl;
+        for (auto it : steps) {
+            std::cout << *it << std::endl;
+        }
+        std::cout << "End canonical form" << std::endl;
 
-        auto first_measurement_it = internal::find_first_measurement_it(
-            qc_ptr_->begin(), qc_ptr_->end());
+        QCircuit::iterator circuit_begin =
+            *steps.begin(); // DO NOT USE *steps.end()!!!
+        QCircuit::iterator circuit_end = qc_ptr_->end();
+        QCircuit::iterator first_measurement_it =
+            internal::find_first_measurement_it(circuit_begin, circuit_end);
 
-        // std::vector<QCircuit::iterator> steps =
-        //     internal::circuit_as_steps(*qc_ptr_); // circuit steps (as
-        //     iterators)
+        idx num_steps = steps.size();
+        idx first_measurement_pos = 0;
+        for (; first_measurement_pos < num_steps &&
+               !internal::is_measurement(steps[first_measurement_pos]);
+             ++first_measurement_pos)
+            ;
 
         // executes everything up to the first measurement
-        for (auto it = qc_ptr_->begin(); it != first_measurement_it; ++it) {
-            execute(it);
+        for (idx i = 0; i < first_measurement_pos; ++i) {
+            execute(steps[i]);
         }
 
         // saves the state just before the measurement
-        initial_engine_state.psi_ = get_psi();
+        auto current_engine_state = st_;
 
-        bool can_sample = false;
+        // decide if we can sample
+        bool can_sample = (reps > 1);
+        for (idx i = first_measurement_pos; i < num_steps; ++i) {
+            auto elem = *steps[i];
+            std::cout << '\t' << elem << std::endl;
+            if (!(internal::is_projective_measurement(elem) ||
+                  internal::is_discard(elem))) {
+                can_sample = false;
+                break;
+            }
+        }
+
         // can sample
+        // TODO figure out where each qubit is going!
         if (can_sample) {
-            // std::unordered_map
-            //  execute all the gates and record the measurements, then
-            //  sample at the end
-            for (auto it = first_measurement_it; it != qc_ptr_->end(); ++it) {
-                if ((*it).type_ == QCircuit::StepType::MEASUREMENT) {
-                    // record the measurement(s)
-                } else {
-                    execute(it);
+            std::cout << "SAMPLING..." << std::endl;
+            auto destructively_measured = qc_ptr_->get_measured();
+            auto non_destructively_measured = qc_ptr_->get_measured_nd();
+            std::vector<idx> measured;
+            measured.reserve(destructively_measured.size() +
+                             non_destructively_measured.size());
+            measured.insert(measured.end(), destructively_measured.begin(),
+                            destructively_measured.end());
+            measured.insert(measured.end(), non_destructively_measured.begin(),
+                            non_destructively_measured.end());
+            std::sort(measured.begin(), measured.end());
+
+            // at least one qudit was measured
+            if (qc_ptr_->get_measurement_count() > 0) {
+                for (idx rep = 0; rep < reps; ++rep) {
+                    std::vector<idx> m_res = sample(current_engine_state.psi_,
+                                                    measured, qc_ptr_->get_d());
+                    ++stats_.data()[m_res];
+                }
+
+                // execute the last repetition, so we can get the state psi
+                for (idx i = first_measurement_pos; i < num_steps; ++i) {
+                    execute(steps[i]);
                 }
             }
-            // now sample
         }
         // cannot sample
         else {
-            for (idx i = 0; i < reps; ++i) {
+            for (idx rep = 0; rep < reps; ++rep) {
                 // sets the state of the engine to the entry state
-                st_ = initial_engine_state;
-
-                for (auto it = first_measurement_it; it != qc_ptr_->end();
-                     ++it) {
-                    execute(it);
+                st_ = current_engine_state;
+                for (idx i = first_measurement_pos; i < num_steps; ++i) {
+                    execute(*steps[i]);
                 }
 
-                // we measured at least one qudit
+                // at least one qudit was measured
                 if (qc_ptr_->get_measurement_count() > 0) {
                     std::vector<idx> m_res = get_dits();
                     ++stats_.data()[m_res];
@@ -1039,7 +1071,7 @@ class QNoisyEngine : public QEngine {
         std::vector<idx> target_rel_pos = get_relative_pos_(get_non_measured());
         // if (elem.type_ != QCircuit::StepType::MEASUREMENT) {
         // apply the noise
-        for (auto&& i : target_rel_pos) {
+        for (auto i : target_rel_pos) {
             st_.psi_ = noise_(st_.psi_, i);
             // record the Kraus operator that occurred
             noise_results_[elem.ip_].emplace_back(noise_.get_last_idx());
@@ -1055,15 +1087,10 @@ class QNoisyEngine : public QEngine {
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
-     * \param reset_stats Resets the collected measurement statistics hash table
-     * before the run
      * \return Reference to the current instance
      */
-    QNoisyEngine& execute(idx reps = 1, bool reset_stats = true) override {
+    QNoisyEngine& execute(idx reps = 1) override {
         auto initial_engine_state = st_; // saves the engine entry state
-
-        if (reset_stats)
-            this->reset_stats();
 
         for (idx i = 0; i < reps; ++i) {
             // sets the state of the engine to the entry state

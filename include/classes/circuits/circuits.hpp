@@ -1181,25 +1181,25 @@ class QCircuit : public IDisplay, public IJSON {
 
                 if (is_cCTRL(gate_step)) {
                     // compute the "height" of the to-be-placed gate
-                    for (auto&& i : ctrl)
+                    for (auto i : ctrl)
                         if (heights[i] > max_height)
                             max_height = heights[i];
-                    for (auto&& i : target)
+                    for (auto i : target)
                         if (heights[nc_ + i] > max_height)
                             max_height = heights[nc_ + i];
                     // apply classical ctrl
-                    for (auto&& i : ctrl)
+                    for (auto i : ctrl)
                         heights[i] = max_height + 1;
                     // apply gate
-                    for (auto&& i : target)
+                    for (auto i : target)
                         heights[nc_ + i] = max_height + 1;
                 } else {
                     // compute the "height" of the to-be-placed gate
-                    for (auto&& i : ctrl_target)
+                    for (auto i : ctrl_target)
                         if (heights[nc_ + i] > max_height)
                             max_height = heights[nc_ + i];
                     // apply (ctrl) gate
-                    for (auto&& i : ctrl_target)
+                    for (auto i : ctrl_target)
                         heights[nc_ + i] = max_height + 1;
                 }
             } // end if (step.type_ == StepType::GATE)
@@ -1266,12 +1266,12 @@ class QCircuit : public IDisplay, public IJSON {
                         // compute the "height" of the to-be-placed measurement
                         if (heights[c_reg] > max_height)
                             max_height = heights[c_reg];
-                        for (auto&& i : target)
+                        for (auto i : target)
                             if (heights[nc_ + i] > max_height)
                                 max_height = heights[nc_ + i];
                         // apply measurement
                         heights[c_reg] = max_height + 1;
-                        for (auto&& i : target)
+                        for (auto i : target)
                             heights[nc_ + i] = max_height + 1;
                         break;
 
@@ -1285,7 +1285,7 @@ class QCircuit : public IDisplay, public IJSON {
                                 max_height = heights[c_reg + i];
                             }
                         }
-                        for (auto&& i : target) {
+                        for (auto i : target) {
                             if (heights[nc_ + i] > max_height) {
                                 max_height = heights[nc_ + i];
                             }
@@ -1295,7 +1295,7 @@ class QCircuit : public IDisplay, public IJSON {
                             heights[c_reg + i] = max_height + 1;
                         }
 
-                        for (auto&& i : target)
+                        for (auto i : target)
                             heights[nc_ + i] = max_height + 1;
                         break;
 
@@ -1303,11 +1303,11 @@ class QCircuit : public IDisplay, public IJSON {
                     case MeasureType::RESET_MANY:
                     case MeasureType::DISCARD:
                     case MeasureType::DISCARD_MANY:
-                        for (auto&& i : target)
+                        for (auto i : target)
                             if (heights[nc_ + i] > max_height)
                                 max_height = heights[nc_ + i];
                         // apply reset/discard
-                        for (auto&& i : target)
+                        for (auto i : target)
                             heights[nc_ + i] = max_height + 1;
                         break;
                 } // end switch
@@ -1718,7 +1718,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::gate_fan()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::gate_fan()",
                                             context + ": target");
@@ -1751,7 +1751,7 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         gate_count_[hashU] += target.size();
 
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -1825,7 +1825,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::gate()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::gate()",
                                             context + ": target");
@@ -1858,7 +1858,7 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -1883,7 +1883,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::QFT()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::QFT()",
                                             context + ": target");
@@ -1992,7 +1992,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::TFQ()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::TFQ()",
                                             context + ": target");
@@ -2113,7 +2113,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::CTRL_FAN()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
                                             context + ": target");
@@ -2128,7 +2128,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": target");
 
         // check that ctrl and target don't share common elements
-        for (auto&& elem : target)
+        for (auto elem : target)
             if (elem == ctrl)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
                                             context + ": ctrl/target");
@@ -2161,7 +2161,7 @@ class QCircuit : public IDisplay, public IJSON {
         gate_count_[hashU] += target.size();
 
         clean_qudits_[ctrl] = false;
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -2197,7 +2197,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (ctrl.empty())
             throw exception::ZeroSize("qpp::QCircuit::CTRL_FAN()",
                                       context + ": ctrl");
-        for (auto&& elem : ctrl) {
+        for (auto elem : ctrl) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
                                             context + ": ctrl");
@@ -2215,7 +2215,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::CTRL_FAN()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
                                             context + ": target");
@@ -2230,8 +2230,8 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": target");
 
         // check that ctrl and target don't share common elements
-        for (auto&& elem_ctrl : ctrl)
-            for (auto&& elem_target : target)
+        for (auto elem_ctrl : ctrl)
+            for (auto elem_target : target)
                 if (elem_ctrl == elem_target)
                     throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
                                                 context + ": ctrl/target");
@@ -2250,7 +2250,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::SizeMismatch("qpp::QCircuit::CTRL_FAN()",
                                           context + ": ctrl/shift");
         if (!shift.empty())
-            for (auto&& elem : shift)
+            for (auto elem : shift)
                 if (elem >= d_)
                     throw exception::OutOfRange("qpp::QCircuit::CTRL_FAN()",
                                                 context + ": shift");
@@ -2269,10 +2269,10 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         gate_count_[hashU] += target.size();
 
-        for (auto&& elem : ctrl) {
+        for (auto elem : ctrl) {
             clean_qudits_[elem] = false;
         }
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -2310,7 +2310,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (ctrl.empty())
             throw exception::ZeroSize("qpp::QCircuit::CTRL()",
                                       context + ": ctrl");
-        for (auto&& elem : ctrl) {
+        for (auto elem : ctrl) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                             context + ": ctrl");
@@ -2328,7 +2328,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::CTRL()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                             context + ": target");
@@ -2339,8 +2339,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // check that ctrl and target don't share common elements
-        for (auto&& elem_ctrl : ctrl)
-            for (auto&& elem_target : target)
+        for (auto elem_ctrl : ctrl)
+            for (auto elem_target : target)
                 if (elem_ctrl == elem_target)
                     throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                                 context + ": ctrl/target");
@@ -2359,7 +2359,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::SizeMismatch("qpp::QCircuit::CTRL()",
                                           context + ": ctrl/shift");
         if (!shift.empty())
-            for (auto&& elem : shift)
+            for (auto elem : shift)
                 if (elem >= d_)
                     throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                                 context + ": shift");
@@ -2376,10 +2376,10 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
-        for (auto&& elem : ctrl) {
+        for (auto elem : ctrl) {
             clean_qudits_[elem] = false;
         }
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -2411,7 +2411,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (ctrl.empty())
             throw exception::ZeroSize("qpp::QCircuit::CTRL()",
                                       context + ": ctrl");
-        for (auto&& elem : ctrl) {
+        for (auto elem : ctrl) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                             context + ": ctrl");
@@ -2434,7 +2434,7 @@ class QCircuit : public IDisplay, public IJSON {
                                                   context + ": target");
 
         // check that ctrl and target don't share common elements
-        for (auto&& elem : ctrl)
+        for (auto elem : ctrl)
             if (elem == target)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                             context + ": ctrl/target");
@@ -2453,7 +2453,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::SizeMismatch("qpp::QCircuit::CTRL()",
                                           context + ": ctrl/shift");
         if (!shift.empty())
-            for (auto&& elem : shift)
+            for (auto elem : shift)
                 if (elem >= d_)
                     throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                                 context + ": shift");
@@ -2471,7 +2471,7 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
-        for (auto&& elem : ctrl) {
+        for (auto elem : ctrl) {
             clean_qudits_[elem] = false;
         }
         clean_qudits_[target] = false;
@@ -2515,7 +2515,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::CTRL()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                             context + ": target");
@@ -2530,7 +2530,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": target");
 
         // check that ctrl and target don't share common elements
-        for (auto&& elem : target)
+        for (auto elem : target)
             if (elem == ctrl)
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                             context + ": ctrl/target");
@@ -2563,7 +2563,7 @@ class QCircuit : public IDisplay, public IJSON {
         ++gate_count_[hashU];
 
         clean_qudits_[ctrl] = false;
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -2662,7 +2662,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::cCTRL_FAN()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL_FAN()",
                                             context + ": target");
@@ -2705,7 +2705,7 @@ class QCircuit : public IDisplay, public IJSON {
         gate_count_[hashU] += target.size();
 
         clean_dits_[ctrl_dit] = false;
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -2741,7 +2741,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (ctrl_dits.empty())
             throw exception::ZeroSize("qpp::QCircuit::cCTRL_FAN()",
                                       context + ": ctrl_dits");
-        for (auto&& elem : ctrl_dits) {
+        for (auto elem : ctrl_dits) {
             if (elem >= nc_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL_FAN()",
                                             context + ": ctrl_dits");
@@ -2755,7 +2755,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::cCTRL_FAN()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL_FAN()",
                                             context + ": target");
@@ -2783,7 +2783,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::SizeMismatch("qpp::QCircuit::cCTRL_FAN()",
                                           context + ": ctrl_dits/shift");
         if (!shift.empty())
-            for (auto&& elem : shift)
+            for (auto elem : shift)
                 if (elem >= d_)
                     throw exception::OutOfRange("qpp::QCircuit::cCTRL_FAN()",
                                                 context + ": shift");
@@ -2801,10 +2801,10 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         gate_count_[hashU] += target.size();
 
-        for (auto&& elem : ctrl_dits) {
+        for (auto elem : ctrl_dits) {
             clean_dits_[elem] = false;
         }
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -2841,7 +2841,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (ctrl_dits.empty())
             throw exception::ZeroSize("qpp::QCircuit::cCTRL()",
                                       context + ": ctrl_dits");
-        for (auto&& elem : ctrl_dits) {
+        for (auto elem : ctrl_dits) {
             if (elem >= nc_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                             context + ": ctrl_dits");
@@ -2855,7 +2855,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::cCTRL()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                             context + ": target");
@@ -2883,7 +2883,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::SizeMismatch("qpp::QCircuit::cCTRL()",
                                           context + ": ctrl_dits/shift");
         if (!shift.empty())
-            for (auto&& elem : shift)
+            for (auto elem : shift)
                 if (elem >= d_)
                     throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                                 context + ": shift");
@@ -2901,10 +2901,10 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
-        for (auto&& elem : ctrl_dits) {
+        for (auto elem : ctrl_dits) {
             clean_dits_[elem] = false;
         }
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -2937,7 +2937,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (ctrl_dits.empty())
             throw exception::ZeroSize("qpp::QCircuit::cCTRL()",
                                       context + ": ctrl_dits");
-        for (auto&& elem : ctrl_dits) {
+        for (auto elem : ctrl_dits) {
             if (elem >= nc_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                             context + ": ctrl_dits");
@@ -2970,7 +2970,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::SizeMismatch("qpp::QCircuit::cCTRL()",
                                           context + ": ctrl_dits/shift");
         if (!shift.empty())
-            for (auto&& elem : shift)
+            for (auto elem : shift)
                 if (elem >= d_)
                     throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                                 context + ": shift");
@@ -2988,7 +2988,7 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::GATE);
         ++gate_count_[hashU];
 
-        for (auto&& elem : ctrl_dits) {
+        for (auto elem : ctrl_dits) {
             clean_dits_[elem] = false;
         }
         clean_qudits_[target] = false;
@@ -3029,7 +3029,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::cCTRL()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                             context + ": target");
@@ -3071,7 +3071,7 @@ class QCircuit : public IDisplay, public IJSON {
         ++gate_count_[hashU];
 
         clean_dits_[ctrl_dit] = false;
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -3221,7 +3221,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::measure()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             // measuring non-existing qudit
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::measure()",
@@ -3247,14 +3247,14 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
 
         if (destructive) {
-            for (auto&& elem : target) {
+            for (auto elem : target) {
                 measured_[elem] = true;
             }
             measurements_.emplace_back(MeasureType::MEASURE_MANY,
                                        std::vector<std::size_t>{m_hash}, target,
                                        c_reg, name);
         } else {
-            for (auto&& elem : target) {
+            for (auto elem : target) {
                 measured_nd_[elem] = true;
             }
             measurements_.emplace_back(MeasureType::MEASURE_MANY_ND,
@@ -3264,7 +3264,7 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[m_hash];
 
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -3405,7 +3405,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::measureV()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::measureV()",
                                             context + ": target");
@@ -3423,7 +3423,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::measureV()",
                                         context + ": c_reg");
         // qudit was measured before
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (get_measured(elem))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::measureV()", context + ": target");
@@ -3447,14 +3447,14 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashV, V);
 
         if (destructive) {
-            for (auto&& elem : target) {
+            for (auto elem : target) {
                 measured_[elem] = true;
             }
             measurements_.emplace_back(MeasureType::MEASURE_V_JOINT,
                                        std::vector<std::size_t>{hashV}, target,
                                        c_reg, name);
         } else {
-            for (auto&& elem : target) {
+            for (auto elem : target) {
                 measured_nd_[elem] = true;
             }
             measurements_.emplace_back(MeasureType::MEASURE_V_JOINT_ND,
@@ -3464,7 +3464,7 @@ class QCircuit : public IDisplay, public IJSON {
         step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[hashV];
 
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -3508,7 +3508,7 @@ class QCircuit : public IDisplay, public IJSON {
                                    std::vector<idx>{target}, -1, name);
 
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[m_hash];
+        //++measurement_count_[m_hash];
 
         clean_qudits_[target] = false;
 
@@ -3533,7 +3533,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::discard()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             // discarding non-existing qudit
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::discard()",
@@ -3550,16 +3550,16 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t m_hash = hash_eigen(cmat::Zero(d_, d_));
 
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             measured_[elem] = true;
         }
         measurements_.emplace_back(MeasureType::DISCARD_MANY,
                                    std::vector<std::size_t>{m_hash}, target, -1,
                                    name);
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[m_hash];
+        //++measurement_count_[m_hash];
 
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             clean_qudits_[elem] = false;
         }
 
@@ -3614,7 +3614,7 @@ class QCircuit : public IDisplay, public IJSON {
                                    std::vector<std::size_t>{m_hash},
                                    std::vector<idx>{target}, -1, name);
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[m_hash];
+        //++measurement_count_[m_hash];
 
         return *this;
     }
@@ -3639,7 +3639,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target.empty())
             throw exception::ZeroSize("qpp::QCircuit::reset()",
                                       context + ": target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             // resetting non-existing qudit
             if (elem >= nq_)
                 throw exception::OutOfRange("qpp::QCircuit::reset()",
@@ -3660,7 +3660,7 @@ class QCircuit : public IDisplay, public IJSON {
                                    std::vector<std::size_t>{m_hash}, target, -1,
                                    name);
         step_types_.emplace_back(StepType::MEASUREMENT);
-        ++measurement_count_[m_hash];
+        //++measurement_count_[m_hash];
 
         return *this;
     }
@@ -3762,14 +3762,14 @@ class QCircuit : public IDisplay, public IJSON {
         if (!internal::check_no_duplicates(target))
             throw exception::Duplicates("qpp::QCircuit::match_circuit_right()",
                                         "target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange(
                     "qpp::QCircuit::match_circuit_right()", "target");
         }
         // check matching qudits (in the current instance) were not already
         // measured destructively
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (get_measured(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::match_circuit_right()", "target");
@@ -3911,14 +3911,14 @@ class QCircuit : public IDisplay, public IJSON {
         if (!internal::check_no_duplicates(target))
             throw exception::Duplicates("qpp::QCircuit::match_circuit_left()",
                                         "target");
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange(
                     "qpp::QCircuit::match_circuit_left()", "target");
         }
         // check matching qudits (in the current instance) were not already
         // measured destructively
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             if (get_measured(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::match_circuit_left()", "target");
@@ -4446,7 +4446,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         // check valid target
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             // removing non-existing or non-clean qudit
             if (elem >= nq_ || !is_clean_qudit(elem))
                 throw exception::OutOfRange(
@@ -4458,7 +4458,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::sort(std::begin(target), std::end(target));
         idx dirty = 0;
 
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             remove_clean_qudit(elem - dirty++);
         }
 
@@ -4477,7 +4477,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         // check valid target
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             // removing non-existing or non-clean dit
             if (elem >= nc_ || !is_clean_dit(elem))
                 throw exception::OutOfRange(
@@ -4489,7 +4489,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::sort(std::begin(target), std::end(target));
         idx dirty = 0;
 
-        for (auto&& elem : target) {
+        for (auto elem : target) {
             remove_clean_dit(elem - dirty++);
         }
 
@@ -5083,16 +5083,68 @@ inline QCircuit random_circuit_depth(
 }
 
 namespace internal {
-// true if the circuit step is a measurement step, false otherwise
-inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
-    return elem.type_ == QCircuit::StepType::MEASUREMENT;
+// true if the circuit step is a projective measurement step, false otherwise
+inline bool
+is_projective_measurement(const QCircuit::iterator::value_type& elem) {
+    if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
+        switch (elem.measurements_ip_->measurement_type_) {
+            case QCircuit::MeasureType::MEASURE:
+            case QCircuit::MeasureType::MEASURE_MANY:
+            case QCircuit::MeasureType::MEASURE_ND:
+            case QCircuit::MeasureType::MEASURE_MANY_ND:
+                return true;
+            default:
+                break;
+        }
+    }
+    return false;
 }
 
 // true if the circuit iterator points to a measurement step, false
 // otherwise
+inline bool is_projective_measurement(const QCircuit::iterator& it) {
+    return is_projective_measurement(*it);
+}
+
+// true if the circuit step is a measurement (projective or not), false
+// otherwise
+inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
+    if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
+        switch (elem.measurements_ip_->measurement_type_) {
+            case QCircuit::MeasureType::MEASURE_V:
+            case QCircuit::MeasureType::MEASURE_V_JOINT:
+            case QCircuit::MeasureType::MEASURE_V_ND:
+            case QCircuit::MeasureType::MEASURE_V_JOINT_ND:
+                return true;
+            default:
+                break;
+        }
+    }
+    return is_projective_measurement(elem);
+}
+
+// true if the circuit iterator points to a measurement step (projective or not)
+// false otherwise
 inline bool is_measurement(const QCircuit::iterator& it) {
     return is_measurement(*it);
 }
+
+// true if the circuit step is a discard step, false otherwise
+inline bool is_discard(const QCircuit::iterator::value_type& elem) {
+    if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
+        switch (elem.measurements_ip_->measurement_type_) {
+            case QCircuit::MeasureType::DISCARD:
+            case QCircuit::MeasureType::DISCARD_MANY:
+                return true;
+            default:
+                break;
+        }
+    }
+    return false;
+}
+
+// true if the circuit iterator points to a discard step, false otherwise
+inline bool is_discard(const QCircuit::iterator& it) { return is_discard(*it); }
 
 // true if the circuit step is a cCTRL step
 inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
@@ -5208,8 +5260,8 @@ inline bool can_swap(const QCircuit::iterator& it1,
 
 // circuit as a vector of iterators to steps
 inline std::vector<QCircuit::iterator>
-circuit_as_steps(const QCircuit::iterator& start,
-                 const QCircuit::iterator& finish) {
+circuit_as_iterators(const QCircuit::iterator& start,
+                     const QCircuit::iterator& finish) {
     std::vector<QCircuit::iterator> steps; // circuit steps (as iterators)
     for (auto it = start; it != finish; ++it) {
         steps.emplace_back(it);
@@ -5219,8 +5271,9 @@ circuit_as_steps(const QCircuit::iterator& start,
 }
 
 // circuit as a vector of iterators to steps
-inline std::vector<QCircuit::iterator> circuit_as_steps(const QCircuit& qc) {
-    return circuit_as_steps(qc.begin(), qc.end());
+inline std::vector<QCircuit::iterator>
+circuit_as_iterators(const QCircuit& qc) {
+    return circuit_as_iterators(qc.begin(), qc.end());
 }
 
 // starting with the first measurement step from the circuit range [start,
@@ -5231,17 +5284,18 @@ canonical_form(const QCircuit::iterator& start,
     auto first_measurement_it = find_first_measurement_it(start, finish);
 
     std::vector<QCircuit::iterator> steps_before_measurement =
-        circuit_as_steps(start, first_measurement_it);
+        circuit_as_iterators(start, first_measurement_it);
 
     std::vector<QCircuit::iterator> steps =
-        circuit_as_steps(first_measurement_it, finish);
+        circuit_as_iterators(first_measurement_it, finish);
 
     // push all cCTRL steps to the end
-    for (auto rit = steps.rbegin(); rit != steps.rend(); ++rit) {
+    for (auto&& rit = steps.rbegin(); rit != steps.rend(); ++rit) {
         // std::cout << **rit << std::endl;
         if (internal::is_cCTRL(*rit)) {
             // try to push it to the end
-            for (auto next_it = rit.base(); next_it != steps.end(); ++next_it) {
+            for (auto&& next_it = rit.base(); next_it != steps.end();
+                 ++next_it) {
                 auto cur_it = std::prev(next_it);
                 // std::cout << "\t cur_it:  " << **cur_it << std::endl;
                 // std::cout << "\t next_it: " << **next_it << std::endl;
@@ -5253,12 +5307,13 @@ canonical_form(const QCircuit::iterator& start,
         }
     }
 
-    // push all measurement steps to the end
-    for (auto rit = steps.rbegin(); rit != steps.rend(); ++rit) {
+    // next push all measurement steps to the end
+    for (auto&& rit = steps.rbegin(); rit != steps.rend(); ++rit) {
         // std::cout << **rit << std::endl;
         if (internal::is_measurement(*rit)) {
             // try to push it to the end
-            for (auto next_it = rit.base(); next_it != steps.end(); ++next_it) {
+            for (auto&& next_it = rit.base(); next_it != steps.end();
+                 ++next_it) {
                 auto cur_it = std::prev(next_it);
                 // std::cout << "\t cur_it:  " << **cur_it << std::endl;
                 // std::cout << "\t next_it: " << **next_it << std::endl;
@@ -5280,6 +5335,37 @@ canonical_form(const QCircuit::iterator& start,
 inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
     return canonical_form(qc.begin(), qc.end());
 }
+
+//// return true if the operation must be executed before sampling, false
+//// otherwise
+// inline bool must_execute_before_sampling(const QCircuit::iterator& step) {
+//     if ((*step).type_ == QCircuit::StepType::GATE) {
+//         auto current_gate_step_it = (*step).gates_ip_;
+//         switch (current_gate_step_it->gate_type_) {
+//             case QCircuit::GateType::cCTRL:
+//             case QCircuit::GateType::cCTRL_FAN:
+//                 return true;
+//             default:
+//                 break;
+//         }
+//     }
+//     if ((*step).type_ == QCircuit::StepType::MEASUREMENT) {
+//         auto current_gate_measurement_it = (*step).measurements_ip_;
+//         switch (current_gate_measurement_it->measurement_type_) {
+//             case QCircuit::MeasureType::MEASURE_V:
+//             case QCircuit::MeasureType::MEASURE_V_JOINT:
+//             case QCircuit::MeasureType::MEASURE_V_ND:
+//             case QCircuit::MeasureType::MEASURE_V_JOINT_ND:
+//             case QCircuit::MeasureType::RESET:
+//             case QCircuit::MeasureType::RESET_MANY:
+//                 return true;
+//             default:
+//                 break;
+//         }
+//     }
+//
+//     return false;
+// };
 
 } // namespace internal
 

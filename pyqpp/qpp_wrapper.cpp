@@ -57,13 +57,12 @@ class PyQEngine : public QEngine {
         );
     }
 
-    QEngine& execute(idx reps = 1, bool clear_stats = true) override {
+    QEngine& execute(idx reps = 1) override {
         PYBIND11_OVERRIDE(
             QEngine&, /* Return type */
             QEngine,  /* Parent class */
             execute,  /* Name of function in C++ (must match Python name) */
-            reps,     /* Argument(s) */
-            clear_stats);
+            reps /* Argument(s) */);
     }
 };
 
@@ -659,7 +658,7 @@ PYBIND11_MODULE(pyqpp, m) {
              py::arg("reset_stats") = true)
         .def("execute", py::overload_cast<idx, bool>(&QEngine::execute),
              "Executes the entire quantum circuit description",
-             py::arg("reps") = 1, py::arg("clear_stats") = true)
+             py::arg("reps") = 1)
         .def("to_JSON", &QEngine::to_JSON, "State of the engine in JSON format",
              py::arg("enclosed_in_curly_brackets") = true)
         .def("__repr__",

@@ -16,6 +16,11 @@ Pre-release (future 4.0):
           qpp::QCircuit::get_measurement_count()
           qpp::QCircuit::get_measurement_depth()
       so now the old std::string overloads take instead a qpp::cmat as argument
+    - API changes for
+          qpp::Q[Noisy]Circuit::execute()
+      removed "reset_stats" parameter as it was confusing, suffices to invoke
+      Q[Noisy]Engine::reset(bool reset_stats = true) for resetting the
+      measurement statistics
     - Noise is now added before measurements as well when running with a
           qpp::QNoisyEngine<>
     - Implemented ["classes/circuits/circuits.hpp"]:

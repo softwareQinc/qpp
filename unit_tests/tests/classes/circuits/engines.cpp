@@ -14,7 +14,7 @@ TEST(qpp_QEngine_execute, Iterator) {}
 ///       const QCircuit::iterator::value_type& elem)
 TEST(qpp_QEngine_execute, ValueType) {}
 /******************************************************************************/
-/// BEGIN QEngine& QEngine::execute(idx reps = 1, bool reset_stats = true)
+/// BEGIN QEngine& QEngine::execute(idx reps = 1)
 TEST(qpp_QEngine_execute, AllCircuitWithRepetitions) {}
 /******************************************************************************/
 /// BEGIN const QEngine& QEngine::get_circuit() const& noexcept
@@ -76,7 +76,7 @@ TEST(qpp_QEngine_to_JSON, AllTests) {}
 ///       const QCircuit::iterator::value_type& elem) override
 TEST(qpp_QNoisyEngine_execute, ValueType) {}
 /******************************************************************************/
-/// BEGIN QEngine& QNoisyEngine::execute(idx reps = 1, bool reset_stats = true)
+/// BEGIN QEngine& QNoisyEngine::execute(idx reps = 1)
 TEST(qpp_QNoisyEngine_execute, AllCircuitWithRepetitions) {}
 /******************************************************************************/
 /// BEGIN std::vector<std::vector<idx>>

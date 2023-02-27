@@ -116,7 +116,7 @@ using eval_t =
  * \brief Detect if the expression Derived is a bra at compile time
  */
 template <typename Derived>
-auto constexpr is_bra() {
+bool constexpr is_bra() {
     return (eval_t<Derived>::RowsAtCompileTime == 1);
 }
 
@@ -124,7 +124,7 @@ auto constexpr is_bra() {
  * \brief Detect if the expression Derived is a ket at compile time
  */
 template <typename Derived>
-auto constexpr is_ket() {
+bool constexpr is_ket() {
     return (eval_t<Derived>::ColsAtCompileTime == 1);
 }
 } /* namespace qpp::internal */
