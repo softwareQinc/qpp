@@ -14,7 +14,7 @@ TEST(qpp_QEngine_execute, Iterator) {}
 ///       const QCircuit::iterator::value_type& elem)
 TEST(qpp_QEngine_execute, ValueType) {}
 /******************************************************************************/
-/// BEGIN QEngine& QEngine::execute(idx reps = 1, bool try_to_sample = true)
+/// BEGIN QEngine& QEngine::execute(idx reps = 1, bool try_sampling = true)
 TEST(qpp_QEngine_execute, AllCircuitWithRepetitions) {}
 /******************************************************************************/
 /// BEGIN const QEngine& QEngine::get_circuit() const& noexcept

@@ -47,14 +47,14 @@ TEST(qpp_QCircuit_cCTRL, SingleCtrlMultipleTargets) {}
 ///       idx target, idx shift = 0, std::string name = {})
 TEST(qpp_QCircuit_cCTRL, SingleCtrlSingleTarget) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::cCTRL_FAN(const cmat& U,
+/// BEGIN QCircuit& QCircuit::cCTRL_fan(const cmat& U,
 ///       const std::vector<idx>& ctrl_dits, const std::vector<idx>& target,
 ///       const std::vector<idx>& shift = {}, std::string name = {})
-TEST(qpp_QCircuit_cCTRL_FAN, MultipleCtrlsMultipleTargets) {}
+TEST(qpp_QCircuit_cCTRL_fan, MultipleCtrlsMultipleTargets) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::cCTRL_FAN(const cmat& U, idx ctrl_dit,
+/// BEGIN QCircuit& QCircuit::cCTRL_fan(const cmat& U, idx ctrl_dit,
 ///       const std::vector<idx>& target, idx shift = 0, std::string name = {})
-TEST(qpp_QCircuit_cCTRL_FAN, SingleCtrlMultipleTargets) {}
+TEST(qpp_QCircuit_cCTRL_fan, SingleCtrlMultipleTargets) {}
 /******************************************************************************/
 /// BEGIN const_iterator QCircuit::cend() const noexcept
 TEST(qpp_QCircuit_cend, AllTests) {}
@@ -80,14 +80,14 @@ TEST(qpp_QCircuit_CTRL, SingleCtrlMultipleTargets) {}
 ///       idx shift = 0, std::string name = {})
 TEST(qpp_QCircuit_CTRL, SingleCtrlSingleTarget) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::CTRL_FAN(const cmat& U,
+/// BEGIN QCircuit& QCircuit::CTRL_fan(const cmat& U,
 ///       const std::vector<idx>& ctrl, const std::vector<idx>& target,
 ///       const std::vector<idx>& shift = {}, std::string name = {})
-TEST(qpp_QCircuit_CTRL_FAN, MultipleCtrlsMultipleTargets) {}
+TEST(qpp_QCircuit_CTRL_fan, MultipleCtrlsMultipleTargets) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::CTRL_FAN(const cmat& U, idx ctrl,
+/// BEGIN QCircuit& QCircuit::CTRL_fan(const cmat& U, idx ctrl,
 ///       const std::vector<idx>& target, idx shift = 0, std::string name = {})
-TEST(qpp_QCircuit_CTRL_FAN, SingleCtrlMultipleTargets) {}
+TEST(qpp_QCircuit_CTRL_fan, SingleCtrlMultipleTargets) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::discard(const std::vector<idx>& target,
 ///       std::string name = {})

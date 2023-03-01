@@ -1,9 +1,14 @@
-Pre-release (future 4.0):
+Version 4.0-rc1 - 1 March 2023
+    - Major performance improvement in qpp::QEngine::execute(), which now takes
+      a second argument 'bool try_sampling = true' (by default), so, if
+      possible, the engine will sample from the output of the circuit instead of
+      executing the measurement steps
     - API changes in ["classes/circuits/circuits.hpp"], renamed:
-          qpp::QCircuit::CTRL()        -> qpp::QCircuit::CTRL_FAN()
-          qpp::QCircuit::cCTRL()       -> qpp::QCircuit::cCTRL_FAN()
+          qpp::QCircuit::gate_joint()  -> qpp::QCircuit::gate()
           qpp::QCircuit::CTRL_joint()  -> qpp::QCircuit::CTRL()
           qpp::QCircuit::cCTRL_joint() -> qpp::QCircuit::cCTRL()
+          qpp::QCircuit::CTRL()        -> qpp::QCircuit::CTRL_fan()
+          qpp::QCircuit::cCTRL()       -> qpp::QCircuit::cCTRL_fan()
           qpp::QCircuit::measureZ()    -> qpp::QCircuit::measure()
     - API changes in qpp::QCircuit::measure() for multiple qudits, now the
           results are stored sequentially (instead as a decimal representation
@@ -18,9 +23,10 @@ Pre-release (future 4.0):
       so now the old std::string overloads take instead a qpp::cmat as argument
     - API changes for
           qpp::Q[Noisy]Circuit::execute()
-      removed "reset_stats" parameter as it was confusing, suffices to invoke
-      Q[Noisy]Engine::reset(bool reset_stats = true) for resetting the
-      measurement statistics
+      removed 'bool reset_stats = true' parameter as it was confusing, suffices
+      to invoke Q[Noisy]Engine::reset(bool reset_stats = true) for resetting the
+      measurement statistics; added 'bool try_sampling = true' argument, see
+      above
     - Noise is now added before measurements as well when running with a
           qpp::QNoisyEngine<>
     - Implemented ["classes/circuits/circuits.hpp"]:
@@ -33,7 +39,7 @@ Pre-release (future 4.0):
           qpp::Gates::GATE() - constructs the matrix representation of a
                                multi-partite gate that acts on a subsystem
     - Implemented ["operations.hpp"]:
-          qpp::applyCTRL_FAN() - applies CTRL-CTRL-...-CTRL-U-U-...-U
+          qpp::applyCTRL_fan() - applies CTRL-CTRL-...-CTRL-U-U-...-U
     - Implemented ["instruments.hpp"]:
           qpp::sample() - samples from a quantum state. Use this function
                           whenever you are not interested in the output quantum

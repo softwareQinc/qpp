@@ -1964,7 +1964,7 @@ expr_t<Derived1> applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
-applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
+applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
               const Eigen::MatrixBase<Derived2>& A,
               const std::vector<idx>& ctrl, const std::vector<idx>& target,
               const std::vector<idx>& dims, std::vector<idx> shift = {}) {
@@ -1976,76 +1976,76 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
     // check types
     if (!std::is_same<typename Derived1::Scalar,
                       typename Derived2::Scalar>::value)
-        throw exception::TypeMismatch("qpp::applyCTRL_FAN()", "A/state");
+        throw exception::TypeMismatch("qpp::applyCTRL_fan()", "A/state");
 
     // check zero sizes
     if (!internal::check_nonzero_size(rA))
-        throw exception::ZeroSize("qpp::applyCTRL_FAN()", "A");
+        throw exception::ZeroSize("qpp::applyCTRL_fan()", "A");
 
     // check zero sizes
     if (!internal::check_nonzero_size(rstate))
-        throw exception::ZeroSize("qpp::applyCTRL_FAN()", "state");
+        throw exception::ZeroSize("qpp::applyCTRL_fan()", "state");
 
     // check zero sizes
     if (!internal::check_nonzero_size(ctrl))
-        throw exception::ZeroSize("qpp::applyCTRL_FAN()", "ctrl");
+        throw exception::ZeroSize("qpp::applyCTRL_fan()", "ctrl");
 
     // check zero sizes
     if (!internal::check_nonzero_size(target))
-        throw exception::ZeroSize("qpp::applyCTRL_FAN()", "target");
+        throw exception::ZeroSize("qpp::applyCTRL_fan()", "target");
 
     // check square matrix for the gate
     if (!internal::check_square_mat(rA))
-        throw exception::MatrixNotSquare("qpp::applyCTRL_FAN()", "A");
+        throw exception::MatrixNotSquare("qpp::applyCTRL_fan()", "A");
 
     // check valid state and matching dimensions
     if (internal::check_cvector(rstate)) {
         if (!internal::check_dims_match_cvect(dims, rstate))
-            throw exception::DimsMismatchCvector("qpp::applyCTRL_FAN()",
+            throw exception::DimsMismatchCvector("qpp::applyCTRL_fan()",
                                                  "dims/state");
     } else if (internal::check_square_mat(rstate)) {
         if (!internal::check_dims_match_mat(dims, rstate))
-            throw exception::DimsMismatchMatrix("qpp::applyCTRL_FAN()",
+            throw exception::DimsMismatchMatrix("qpp::applyCTRL_fan()",
                                                 "dims/state");
     } else
-        throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL_FAN()",
+        throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL_fan()",
                                                    "state");
 
     // check that ctrl subsystem is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(ctrl, dims))
-        throw exception::SubsysMismatchDims("qpp::applyCTRL_FAN()",
+        throw exception::SubsysMismatchDims("qpp::applyCTRL_fan()",
                                             "ctrl/dims");
 
     // check that all control subsystems have the same dimension
     idx d = dims[ctrl[0]];
     for (idx i = 1; i < ctrl.size(); ++i)
         if (dims[ctrl[i]] != d)
-            throw exception::DimsNotEqual("qpp::applyCTRL_FAN()", "ctrl");
+            throw exception::DimsNotEqual("qpp::applyCTRL_fan()", "ctrl");
 
     // check that dimension is valid
     if (!internal::check_dims(dims))
-        throw exception::DimsInvalid("qpp::applyCTRL_FAN()", "dims");
+        throw exception::DimsInvalid("qpp::applyCTRL_fan()", "dims");
 
     // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims))
-        throw exception::SubsysMismatchDims("qpp::applyCTRL_FAN()",
+        throw exception::SubsysMismatchDims("qpp::applyCTRL_fan()",
                                             "dims/target");
 
     // check that all target subsystems have the same dimension
     for (idx i = 1; i < target.size(); ++i)
         if (dims[target[i]] != d)
-            throw exception::DimsNotEqual("qpp::applyCTRL_FAN()", "target");
+            throw exception::DimsNotEqual("qpp::applyCTRL_fan()", "target");
 
     // check that ctrl and target don't share common elements
     for (auto elem_ctrl : ctrl)
         for (auto elem_target : target)
             if (elem_ctrl == elem_target)
-                throw exception::OutOfRange("qpp::applyCTRL_FAN()",
+                throw exception::OutOfRange("qpp::applyCTRL_fan()",
                                             "ctrl/target");
 
     // check that gate matches the dimensions of the target's qudits
     if (rA.rows() != static_cast<Eigen::Index>(d))
-        throw exception::MatrixMismatchSubsys("qpp::applyCTRL_FAN()",
+        throw exception::MatrixMismatchSubsys("qpp::applyCTRL_fan()",
                                               "A/target");
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
@@ -2056,16 +2056,16 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
     // check that ctrl + gate subsystem is valid
     // with respect to local dimensions
     if (!internal::check_subsys_match_dims(ctrlgate, dims))
-        throw exception::SubsysMismatchDims("qpp::applyCTRL_FAN()",
+        throw exception::SubsysMismatchDims("qpp::applyCTRL_fan()",
                                             "dims/ctrl/target");
 
     // check shift
     if (!shift.empty() && (shift.size() != ctrl.size()))
-        throw exception::SizeMismatch("qpp::applyCTRL_FAN()", "ctrl/shift");
+        throw exception::SizeMismatch("qpp::applyCTRL_fan()", "ctrl/shift");
     if (!shift.empty())
         for (auto& elem : shift) {
             if (elem >= d)
-                throw exception::OutOfRange("qpp::applyCTRL_FAN()", "shift");
+                throw exception::OutOfRange("qpp::applyCTRL_fan()", "shift");
             elem = d - elem;
         }
 
@@ -2082,7 +2082,7 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
 
     idx D = static_cast<idx>(rstate.rows()); // total dimension
 
-    auto applyCTRL_FAN_ket =
+    auto applyCTRL_fan_ket =
         [d, D, &Ak = std::as_const(Ak), &ctrl = std::as_const(ctrl),
          &target = std::as_const(target), &dims = std::as_const(dims),
          &shift = std::as_const(shift)](
@@ -2121,7 +2121,7 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
                 { result += (chopped_psi + chopped_psi_bar); }
             }
             return result;
-        }; // end applyCTRL_FAN_ket
+        }; // end applyCTRL_fan_ket
 
     //************ ket ************//
     if (internal::check_cvector(rstate)) // we have a ket
@@ -2133,7 +2133,7 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
         if (D == 1)
             return rstate;
 
-        return applyCTRL_FAN_ket(rstate);
+        return applyCTRL_fan_ket(rstate);
     } // end ket
 
     //************ density matrix ************//
@@ -2154,7 +2154,7 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
 // NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // HAS_OPENMP
-       // decompose rho as \sum |psi_i><phi_i| and applyCTRL_FAN_ket()
+       // decompose rho as \sum |psi_i><phi_i| and applyCTRL_fan_ket()
        // individually
         for (idx i = 0; i < D; ++i) {
             std::vector<idx> midx_i = n2multiidx(i, dims);
@@ -2165,9 +2165,9 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
             dyn_col_vect<typename Derived1::Scalar> phi_i_ket =
                 adjoint(phi_i_bra);
 
-            // compute CTRL_FAN(|psi_i><phi_i|)CTRL_FAN^\dagger
-            psi_i = applyCTRL_FAN_ket(psi_i);
-            phi_i_bra = adjoint(applyCTRL_FAN_ket(phi_i_ket));
+            // compute CTRL_fan(|psi_i><phi_i|)CTRL_fan^\dagger
+            psi_i = applyCTRL_fan_ket(psi_i);
+            phi_i_bra = adjoint(applyCTRL_fan_ket(phi_i_ket));
 // add to result
 #ifdef HAS_OPENMP
 // NOLINTNEXTLINE
@@ -2205,7 +2205,7 @@ applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
  * in \a state
  */
 template <typename Derived1, typename Derived2>
-expr_t<Derived1> applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
+expr_t<Derived1> applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
                                const Eigen::MatrixBase<Derived2>& A,
                                const std::vector<idx>& ctrl,
                                const std::vector<idx>& target, idx d = 2,
@@ -2217,17 +2217,17 @@ expr_t<Derived1> applyCTRL_FAN(const Eigen::MatrixBase<Derived1>& state,
 
     // check zero size
     if (!internal::check_nonzero_size(rstate))
-        throw exception::ZeroSize("qpp::applyCTRL_FAN()", "state");
+        throw exception::ZeroSize("qpp::applyCTRL_fan()", "state");
 
     // check valid dims
     if (d < 2)
-        throw exception::DimsInvalid("qpp::applyCTRL_FAN()", "d");
+        throw exception::DimsInvalid("qpp::applyCTRL_fan()", "d");
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return applyCTRL_FAN(rstate, rA, ctrl, target, dims, shift);
+    return applyCTRL_fan(rstate, rA, ctrl, target, dims, shift);
 }
 
 // as in https://arxiv.org/abs/1707.08834

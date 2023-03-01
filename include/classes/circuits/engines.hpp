@@ -619,7 +619,7 @@ class QEngine : public IDisplay, public IJSON {
                                QCircuit::GateType::CTRL_FAN);
                 st_.psi_ =
                     is_fan
-                        ? applyCTRL_FAN(st_.psi_,
+                        ? applyCTRL_fan(st_.psi_,
                                         h_tbl[current_gate_step_it->gate_hash_],
                                         ctrl_rel_pos, target_rel_pos, d,
                                         current_gate_step_it->shift_)
@@ -838,8 +838,8 @@ class QEngine : public IDisplay, public IJSON {
      * \param reps Number of repetitions
      * \return Reference to the current instance
      */
-    virtual QEngine& execute(idx reps = 1, bool try_to_sample = true) {
-        auto steps = (reps > 1 && try_to_sample)
+    virtual QEngine& execute(idx reps = 1, bool try_sampling = true) {
+        auto steps = (reps > 1 && try_sampling)
                          ? internal::canonical_form(*qc_ptr_)
                          : internal::circuit_as_iterators(*qc_ptr_);
         idx num_steps = steps.size();
@@ -859,7 +859,7 @@ class QEngine : public IDisplay, public IJSON {
         auto current_engine_state = st_;
 
         // decide if we can sample
-        this->can_sample = (reps > 1) && try_to_sample;
+        this->can_sample = (reps > 1) && try_sampling;
         for (idx i = first_measurement_pos; i < num_steps && this->can_sample;
              ++i) {
             auto elem = *steps[i];
