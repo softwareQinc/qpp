@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -29,8 +29,8 @@
  * \brief Measurement functions
  */
 
-#ifndef INSTRUMENTS_HPP_
-#define INSTRUMENTS_HPP_
+#ifndef QPP_INSTRUMENTS_HPP_
+#define QPP_INSTRUMENTS_HPP_
 
 namespace qpp {
 /**
@@ -380,9 +380,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     for (idx i = 0; i < target.size(); ++i)
         subsys_dims[i] = dims[target[i]];
 
-    idx D = prod(std::begin(dims), std::end(dims));
     idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
-    idx Dsubsys_bar = D / Dsubsys;
 
     // check the Kraus operators
     if (Ks.empty())
@@ -399,18 +397,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     // probabilities
     std::vector<double> probs(Ks.size());
     // resulting states
-    std::vector<expr_t<Derived>> outstates;
-
-    if (destructive)
-        outstates.resize(Ks.size(), cmat::Zero(Dsubsys_bar, Dsubsys_bar));
-    else
-        outstates.resize(Ks.size(), cmat::Zero(D, D));
+    std::vector<expr_t<Derived>> outstates(Ks.size());
 
     //************ ket ************//
     if (internal::check_cvector(rA)) // column vector
     {
         for (idx i = 0; i < Ks.size(); ++i) {
-            ket tmp = apply(rA, Ks[i], target, dims);
+            expr_t<Derived> tmp = apply(rA, Ks[i], target, dims);
             probs[i] = std::pow(norm(tmp), 2);
             if (probs[i] > 0) {
                 // normalized output state
@@ -427,7 +420,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     else // square matrix
     {
         for (idx i = 0; i < Ks.size(); ++i) {
-            cmat tmp = apply(rA, Ks[i], target, dims);
+            expr_t<Derived> tmp = apply(rA, Ks[i], target, dims);
             if (destructive)
                 tmp = ptrace(tmp, target, dims);
             probs[i] = std::abs(trace(tmp)); // probability
@@ -716,10 +709,11 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * \return Tuple of: 1. Vector of outcome results of the measurement (ordered in
  * increasing order with respect to \a target, i.e. first measurement result
  * corresponds to the subsystem with the smallest index), 2. Outcome
- * probability, and 3. Post-measurement normalized state
+ * probabilities, and 3. Post-measurement normalized state
  */
 template <typename Derived>
-[[qpp::critical]] std::tuple<std::vector<idx>, double, expr_t<Derived>>
+[[qpp::critical]] std::tuple<std::vector<idx>, std::vector<double>,
+                             expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             std::vector<idx> dims, bool destructive = true) {
     //    typename std::remove_const<
@@ -757,7 +751,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     // END EXCEPTION CHECKS
 
     std::vector<idx> result;
-    double prob = 1;
+    std::vector<double> probs;
 
     // sort target in decreasing order,
     // the order of measurements does not matter
@@ -770,7 +764,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             {target[0]}, dims, destructive);
         idx m = std::get<0>(tmp);
         result.emplace_back(m);
-        prob *= std::get<1>(tmp)[m];
+        probs.emplace_back(std::get<1>(tmp)[m]);
         rA = std::get<2>(tmp)[m];
 
         if (destructive) {
@@ -783,7 +777,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     // order result in increasing order with respect to target
     std::reverse(std::begin(result), std::end(result));
 
-    return std::make_tuple(result, prob, rA);
+    return std::make_tuple(result, probs, rA);
 }
 
 /**
@@ -801,10 +795,10 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  * \return Tuple of: 1. Vector of outcome results of the measurement (ordered in
  * increasing order with respect to \a target, i.e. first measurement result
  * corresponds to the subsystem with the smallest index), 2. Outcome
- * probability, and 3. Post-measurement normalized state
+ * probabilities, and 3. Post-measurement normalized state
  */
 template <typename Derived>
-std::tuple<std::vector<idx>, double, expr_t<Derived>>
+std::tuple<std::vector<idx>, std::vector<double>, expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             idx d = 2, bool destructive = true) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
@@ -831,7 +825,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * \see qpp::measure()
  *
  * \param A Eigen expression
- * \param target Subsystem indexes that are sampled
+ * \param target Subsystem indexes that are can_sample
  * \param dims Subsystem dimensions
  * \return Vector of outcome results
  */
@@ -900,7 +894,7 @@ template <typename Derived>
  * \see qpp::measure()
  *
  * \param A Eigen expression
- * \param target Subsystem indexes that are sampled
+ * \param target Subsystem indexes that are can_sample
  * \param d Subsystem dimensions
  * \return Vector of outcome results
  */
@@ -933,7 +927,7 @@ std::vector<idx> sample(const Eigen::MatrixBase<Derived>& A,
  *
  * \param num_samples Number of samples
  * \param A Eigen expression
- * \param target Subsystem indexes that are sampled
+ * \param target Subsystem indexes that are can_sample
  * \param dims Subsystem dimensions
  * \return Map with vector of outcome results and their corresponding number of
  * appearances
@@ -1013,7 +1007,7 @@ sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
  *
  * \param num_samples Number of samples
  * \param A Eigen expression
- * \param target Subsystem indexes that are sampled
+ * \param target Subsystem indexes that are can_sample
  * \param d Subsystem dimensions
  * \return Map with vector of outcome results and their corresponding number of
  * appearances
@@ -1213,4 +1207,4 @@ dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
 
 } /* namespace qpp */
 
-#endif /* INSTRUMENTS_HPP_ */
+#endif /* QPP_INSTRUMENTS_HPP_ */

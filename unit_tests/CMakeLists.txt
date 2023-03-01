@@ -7,7 +7,7 @@ if (MSVC)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif ()
 
-add_subdirectory(lib/googletest/googletest-release-1.10.0 EXCLUDE_FROM_ALL)
+add_subdirectory(lib/googletest-release-1.12.1 EXCLUDE_FROM_ALL)
 
 aux_source_directory(tests TEST_FILES)
 aux_source_directory(tests/MATLAB TEST_FILES)
@@ -29,7 +29,7 @@ foreach (FILE ${TEST_FILES})
         continue()
     endif ()
     target_sources(${TARGET_NAME} PUBLIC ${FILE})
-    target_link_libraries(${TARGET_NAME} PUBLIC ${QPP_LINK_DEPS} libqpp gmock)
 endforeach ()
 
+target_link_libraries(${TARGET_NAME} PUBLIC ${QPP_LINK_DEPS} libqpp gmock)
 gtest_discover_tests(${TARGET_NAME})

@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -29,8 +29,8 @@
  * \brief Statistics functions
  */
 
-#ifndef STATISTICS_HPP_
-#define STATISTICS_HPP_
+#ifndef QPP_STATISTICS_HPP_
+#define QPP_STATISTICS_HPP_
 
 namespace qpp {
 /**
@@ -242,4 +242,4 @@ cor(const dmat& probXY, const Container& X, const Container& Y,
 
 } /* namespace qpp */
 
-#endif /* STATISTICS_HPP_ */
+#endif /* QPP_STATISTICS_HPP_ */

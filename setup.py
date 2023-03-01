@@ -26,7 +26,7 @@ ext_modules = [
         "pyqpp",
         ["pyqpp/qpp_wrapper.cpp"],
         extra_compile_args=["-Ilibs", "-Iinclude", "-Iqasmtools/include",
-                            "-I" + eigen_path],
+                            "-isystem" + eigen_path],
         cxx_std=17,
         include_pybind11=False,
     ),
@@ -34,7 +34,7 @@ ext_modules = [
 
 setup(
     name='pyqpp',
-    version='3.1',
+    version='4.0rc1',
     description='Python 3 wrapper for Quantum++',
     long_description=open('pyqpp/README.md').read(),
     long_description_content_type='text/markdown',

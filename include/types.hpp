@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -29,8 +29,8 @@
  * \brief Type aliases
  */
 
-#ifndef TYPES_HPP_
-#define TYPES_HPP_
+#ifndef QPP_TYPES_HPP_
+#define QPP_TYPES_HPP_
 
 namespace qpp {
 /**
@@ -104,12 +104,43 @@ using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 template <typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
 using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
 
+namespace internal {
 /**
  * \brief Eigen type (ket/density matrix) deduced from the expression Derived
  */
 template <typename Derived>
-using expr_t =
-    typename std::decay<decltype(std::declval<Derived>().eval())>::type;
+using eval_t =
+    std::decay_t<typename Eigen::MatrixBase<Derived>::EvalReturnType>;
+
+/**
+ * \brief Detect if the expression Derived is a bra at compile time
+ */
+template <typename Derived>
+bool constexpr is_bra() {
+    return (eval_t<Derived>::RowsAtCompileTime == 1);
+}
+
+/**
+ * \brief Detect if the expression Derived is a ket at compile time
+ */
+template <typename Derived>
+bool constexpr is_ket() {
+    return (eval_t<Derived>::ColsAtCompileTime == 1);
+}
+} /* namespace qpp::internal */
+
+/**
+ * \brief Eigen type (ket/density matrix) deduced from the expression Derived
+ */
+// thanks @antoine-bussy for the suggestion
+// https://github.com/softwareQinc/qpp/issues/132#issuecomment-1258360069
+template <typename Derived>
+using expr_t = Eigen::Matrix<typename internal::eval_t<Derived>::Scalar,
+                             internal::is_bra<Derived>() ? 1 : Eigen::Dynamic,
+                             internal::is_ket<Derived>() ? 1 : Eigen::Dynamic,
+                             internal::eval_t<Derived>::Options,
+                             internal::is_bra<Derived>() ? 1 : Eigen::Dynamic,
+                             internal::is_ket<Derived>() ? 1 : Eigen::Dynamic>;
 
 /**
  * \brief Quantumly-accessible Random Access Memory (qRAM)
@@ -118,4 +149,4 @@ using qram = std::vector<idx>;
 
 } /* namespace qpp */
 
-#endif /* TYPES_HPP_ */
+#endif /* QPP_TYPES_HPP_ */

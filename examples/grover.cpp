@@ -47,7 +47,7 @@ int main() {
     // we now measure the state in the computational basis, destructively
     auto measured = measure_seq(psi, subsys, dims);
     std::cout << ">> Probability of the marked state: "
-              << std::get<PROB>(measured) << '\n';
+              << prod(std::get<PROB>(measured)) << '\n';
 
     // sample
     std::cout << ">> Let's sample...\n";

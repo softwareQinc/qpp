@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 project(stress_tests VERSION 2.6 LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #### Guard against in-source builds (snippet from Eigen's CMakeLists.txt)
@@ -11,6 +11,10 @@ endif ()
 add_library(libqpp INTERFACE)
 target_include_directories(libqpp INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include/>)
+
+#### qasmtools library
+target_include_directories(libqpp INTERFACE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../qasmtools/include/>)
 
 #### Dependencies, do not modify unless you know what you're doing
 include(../cmake/qpp_dependencies.cmake)

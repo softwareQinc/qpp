@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -29,8 +29,8 @@
  * \brief Entanglement functions
  */
 
-#ifndef ENTANGLEMENT_HPP_
-#define ENTANGLEMENT_HPP_
+#ifndef QPP_ENTANGLEMENT_HPP_
+#define QPP_ENTANGLEMENT_HPP_
 
 namespace qpp {
 /**
@@ -649,4 +649,4 @@ double concurrence(const Eigen::MatrixBase<Derived>& A) {
 
 } /* namespace qpp */
 
-#endif /* ENTANGLEMENT_HPP_ */
+#endif /* QPP_ENTANGLEMENT_HPP_ */

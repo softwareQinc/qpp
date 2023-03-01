@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -29,8 +29,8 @@
  * \brief Random devices
  */
 
-#ifndef CLASSES_RANDOM_DEVICES_HPP_
-#define CLASSES_RANDOM_DEVICES_HPP_
+#ifndef QPP_CLASSES_RANDOM_DEVICES_HPP_
+#define QPP_CLASSES_RANDOM_DEVICES_HPP_
 
 namespace qpp {
 /**
@@ -86,4 +86,4 @@ class RandomDevices final : public internal::Singleton<RandomDevices> {
 
 } /* namespace qpp */
 
-#endif /* CLASSES_RANDOM_DEVICES_HPP_ */
+#endif /* QPP_CLASSES_RANDOM_DEVICES_HPP_ */

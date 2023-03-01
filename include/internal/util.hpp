@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -29,8 +29,8 @@
  * \brief Internal utility functions
  */
 
-#ifndef INTERNAL_UTIL_HPP_
-#define INTERNAL_UTIL_HPP_
+#ifndef QPP_INTERNAL_UTIL_HPP_
+#define QPP_INTERNAL_UTIL_HPP_
 
 namespace qpp {
 /**
@@ -500,7 +500,47 @@ T text2real(const std::string& str) {
     return std::strtod(str.c_str(), nullptr);
 }
 
-} /* namespace internal */
+// returns true if the index i as a multi-index contains the multi-index
+// dits as a sub-index
+inline bool idx_contains_dits(idx i, const std::vector<idx>& dits,
+                              const std::vector<idx>& subsys,
+                              const std::vector<idx>& dims) {
+
+    idx Cresult[internal::maxn];
+    idx n = dims.size();
+    idx subsys_size = subsys.size();
+
+    /* get the col multi-indexes of the complement */
+    internal::n2multiidx(i, n, dims.data(), Cresult);
+    std::vector<idx> midx_i(Cresult, Cresult + n);
+
+    for (idx m = 0; m < subsys_size; m++) {
+        if (midx_i[subsys[m]] != dits[m]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// computes (|dits><dits| \otimes I)|psi>
+template <typename Derived>
+dyn_col_vect<Derived> project_ket_on_dits(dyn_col_vect<Derived> psi,
+                                          const std::vector<idx>& dits,
+                                          const std::vector<idx>& subsys,
+                                          const std::vector<idx>& dims, idx D) {
+#ifdef HAS_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // HAS_OPENMP
+    for (idx i = 0; i < D; ++i) {
+        if (!idx_contains_dits(i, dits, subsys, dims)) {
+            psi(i) = 0;
+        }
+    }
+    return psi;
+}
+
+} /* namespace qpp::internal */
 } /* namespace qpp */
 
-#endif /* INTERNAL_UTIL_HPP_ */
+#endif /* QPP_INTERNAL_UTIL_HPP_ */

@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -29,8 +29,8 @@
  * \brief Quantum error correcting codes
  */
 
-#ifndef CLASSES_CODES_HPP_
-#define CLASSES_CODES_HPP_
+#ifndef QPP_CLASSES_CODES_HPP_
+#define QPP_CLASSES_CODES_HPP_
 
 namespace qpp {
 /**
@@ -163,4 +163,4 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
 
 } /* namespace qpp */
 
-#endif /* CLASSES_CODES_HPP_ */
+#endif /* QPP_CLASSES_CODES_HPP_ */

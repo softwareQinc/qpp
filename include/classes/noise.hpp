@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -29,8 +29,8 @@
  * \brief Noise models
  */
 
-#ifndef CLASSES_NOISE_HPP_
-#define CLASSES_NOISE_HPP_
+#ifndef QPP_QPP_CLASSES_NOISE_HPP_
+#define QPP_QPP_CLASSES_NOISE_HPP_
 
 namespace qpp {
 /**
@@ -558,4 +558,4 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
 
 } /* namespace qpp */
 
-#endif /* CLASSES_NOISE_HPP_ */
+#endif /* QPP_QPP_CLASSES_NOISE_HPP_ */

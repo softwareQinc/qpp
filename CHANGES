@@ -1,19 +1,51 @@
-Pre-release:
-    - Implemented qpp::QEngine::execute_sample() and
-      qpp::QNoiseEngine::execute_sample() for sampling after the execution of a
-      qpp::QCircuit, e.g.,
-          auto result = qpp::QEngine{q_circuit}.execute_sample(100);
-      Use this member function whenever you are not interested in the output
-      quantum state, but interested only in statistics; it is significantly
-      faster than its "qpp::QCircuit::measure()"-type functions.
-    - Implemented qpp::sample() ["instruments.hpp"] for sampling from a quantum
-      state. Use this function whenever you are not interested in the output
-      quantum state, but interested only in statistics; it is significantly
-      faster than its "qpp::measure()"-type functions.
-    - Added ["examples/qasm/qpp_qasm_sample.cpp"] for sampling from the output
-      of OpenQASM programs; use this program whenever you are not interested in
-      the output quantum state, but interested only in statistics; it is
-      significantly faster than ["examples/qasm/qpp_qasm.cpp"]
+Version 4.0-rc1 - 1 March 2023
+    - Major performance improvement in qpp::QEngine::execute(), which now takes
+      a second argument 'bool try_sampling = true' (by default), so, if
+      possible, the engine will sample from the output of the circuit instead of
+      executing the measurement steps
+    - API changes in ["classes/circuits/circuits.hpp"], renamed:
+          qpp::QCircuit::gate_joint()  -> qpp::QCircuit::gate()
+          qpp::QCircuit::CTRL_joint()  -> qpp::QCircuit::CTRL()
+          qpp::QCircuit::cCTRL_joint() -> qpp::QCircuit::cCTRL()
+          qpp::QCircuit::CTRL()        -> qpp::QCircuit::CTRL_fan()
+          qpp::QCircuit::cCTRL()       -> qpp::QCircuit::cCTRL_fan()
+          qpp::QCircuit::measureZ()    -> qpp::QCircuit::measure()
+    - API changes in qpp::QCircuit::measure() for multiple qudits, now the
+          results are stored sequentially (instead as a decimal representation
+          of the multi-index)
+    - API changes in qpp::measure_seq(), now, as part of its return tuple,
+          returns the full list of outcome probabilities
+    - API changes for
+          qpp::QCircuit::get_gate_count()
+          qpp::QCircuit::get_gate_depth()
+          qpp::QCircuit::get_measurement_count()
+          qpp::QCircuit::get_measurement_depth()
+      so now the old std::string overloads take instead a qpp::cmat as argument
+    - API changes for
+          qpp::Q[Noisy]Circuit::execute()
+      removed 'bool reset_stats = true' parameter as it was confusing, suffices
+      to invoke Q[Noisy]Engine::reset(bool reset_stats = true) for resetting the
+      measurement statistics; added 'bool try_sampling = true' argument, see
+      above
+    - Noise is now added before measurements as well when running with a
+          qpp::QNoisyEngine<>
+    - Implemented ["classes/circuits/circuits.hpp"]:
+          qpp::QCircuit::measure_all() - measures all remaining available qudits
+    - Implemented the random qpp::QCircuit free function generators in
+      ["classes/circuits/circuits.hpp"]:
+          qpp::random_circuit_count() - random QCircuit w.r.t. gate count
+          qpp::random_circuit_depth() - random QCircuit w.r.t. gate depth
+    - Implemented ["classes/gates.hpp"]:
+          qpp::Gates::GATE() - constructs the matrix representation of a
+                               multi-partite gate that acts on a subsystem
+    - Implemented ["operations.hpp"]:
+          qpp::applyCTRL_fan() - applies CTRL-CTRL-...-CTRL-U-U-...-U
+    - Implemented ["instruments.hpp"]:
+          qpp::sample() - samples from a quantum state. Use this function
+                          whenever you are not interested in the output quantum
+                          state, but interested only in statistics; it is
+                          significantly faster than its "qpp::measure()"-type
+                          functions.
     - Added copy/deepcopy support for all pyqpp classes:
           QCircuit, QEngine, QNoisyEngine<>, Dynamic_Bitset, Bit_circuit
     - Added "context" to exception throwing, so now it is obvious which argument
@@ -22,16 +54,6 @@ Pre-release:
       addition to a CMake variable). If both are set, then the CMake variable
       trumps. If none are set, the system tries to detect the location of the
       Eigen3 library automatically.
-    - Added the random qpp::QCircuit free function generators in
-      ["classes/circuits/circuits.hpp"]:
-          qpp::random_circuit_count() - Random QCircuit w.r.t. gate count
-          qpp::random_circuit_depth() - Random QCircuit w.r.t. gate depth
-    - Changed the API for
-          qpp::QCircuit::get_gate_count()
-          qpp::QCircuit::get_gate_depth()
-          qpp::QCircuit::get_measurement_count()
-          qpp::QCircuit::get_measurement_depth()
-      so now the old std::string overloads take instead a qpp::cmat as argument
     - Marked high performance functions with the "custom" attribute
       [[qpp::critical]] and functions that use parallelization with the "custom"
       attribute [[qpp::parallel]]. Since C++17, unknown attributes are supposed
@@ -47,8 +69,11 @@ Pre-release:
       in ["functions.h"]:
           qpp::prod(const std::initializer_list<T>&)
           qpp::sum(const std::initializer_list<T>&)
-    - Modified qpp::prod() and qpp::sum() to allow list of matrices
-    - Bugfixes
+    - Enhanced qpp::prod() and qpp::sum() to allow list of matrices
+    - Fixed bug in qpp::measure() [https://github.com/softwareQinc/qpp/issues/132]
+    - Fixed bug in QCircuit::CTRL [https://github.com/softwareQinc/qpp/issues/130]
+    - Bumped GoogleTest version to 1.12.1
+          https://github.com/google/googletest/commit/58d77fa8070e8cec2dc1ed015d66b454c8d78850
 
 Version 3.1 - 11 January 2022
     - Added pyqpp, a Python wrapper around Quantum++. See
@@ -143,6 +168,9 @@ Version 2.7 - 1 August 2021
           match_circuit_right()
       (and the corresponding free functions), that match circuit qudits in
       arbitrary order
+    - Implemented qpp::zket2dits ["functions.h"] which extracts the dits from a
+      normalized multi-partite pure state in the computational basis.
+      Behaves like the "inverse" of qpp::mket().
     - Removed `cmath_cygwin.patch` as the problem was fixed since 2016.
     - Minor refactorings, code simplifications and bugfixes
     - Removed Travis CI

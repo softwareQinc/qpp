@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -29,8 +29,8 @@
  * \brief Timing
  */
 
-#ifndef CLASSES_TIMER_HPP_
-#define CLASSES_TIMER_HPP_
+#ifndef QPP_CLASSES_TIMER_HPP_
+#define QPP_CLASSES_TIMER_HPP_
 
 namespace qpp {
 /**
@@ -75,7 +75,7 @@ class Timer : public IDisplay {
     /**
      * \brief Stops the chronometer
      *
-     * Set the current time as the ending point
+     * Sets the current time as the ending point
      *
      * \return Reference to the current instance
      */
@@ -128,4 +128,4 @@ class Timer : public IDisplay {
 
 } /* namespace qpp */
 
-#endif /* CLASSES_TIMER_HPP_ */
+#endif /* QPP_CLASSES_TIMER_HPP_ */

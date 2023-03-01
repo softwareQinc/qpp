@@ -26,10 +26,7 @@ int main() {
     // perform the Bell measurement between qudits 0 and 1
     qc.CTRL(adjoint(gt.Xd(d)), 0, 1);
     qc.gate(adjoint(gt.Fd(d)), 0);
-
-    // perform the measurements
-    qc.measureZ(0, 0);
-    qc.measureZ(1, 1);
+    qc.measure({0, 1});
 
     // apply the classical controls
     qc.cCTRL(adjoint(gt.Xd(d)), 1, 2);

@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2013 - 2022 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -29,8 +29,8 @@
  * \brief Number theory functions
  */
 
-#ifndef NUMBER_THEORY_HPP_
-#define NUMBER_THEORY_HPP_
+#ifndef QPP_NUMBER_THEORY_HPP_
+#define QPP_NUMBER_THEORY_HPP_
 
 namespace qpp {
 /**
@@ -656,4 +656,4 @@ inline std::vector<std::pair<bigint, bigint>> convergents(double x, idx N) {
 
 } /* namespace qpp */
 
-#endif /* NUMBER_THEORY_HPP_ */
+#endif /* QPP_NUMBER_THEORY_HPP_ */

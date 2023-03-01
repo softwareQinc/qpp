@@ -35,7 +35,7 @@ int main() {
     std::cout << "x = " << x << " and z = " << z;
 
     // probability of obtaining the measurement results x and z
-    double p = std::get<PROB>(measured);
+    double p = prod(std::get<PROB>(measured));
     std::cout << ", obtained with probability: " << p << '\n';
 
     // the output state (before correction)
