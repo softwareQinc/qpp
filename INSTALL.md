@@ -330,7 +330,7 @@ under `C:\Program Files\MATLAB\R2021a\bin\win64`.
 
 ## Python 3 wrapper
 
-pyqpp is a Python 3 wrapper for Quantum++. pyqpp requires the same dependencies
+[pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3 wrapper for Quantum++. pyqpp requires the same dependencies
 as Quantum++, and can be installed using `pip`:
 
 ```

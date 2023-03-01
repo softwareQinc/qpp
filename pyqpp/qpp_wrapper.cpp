@@ -44,29 +44,6 @@ using Dynamic_bitset = qpp::Dynamic_bitset;
 using QCircuit = qpp::QCircuit;
 using QEngine = qpp::QEngine;
 
-/* qpp::QEngine trampoline class for virtual methods */
-class PyQEngine : public QEngine {
-  public:
-    using QEngine::QEngine;
-
-    bool is_noisy() const override {
-        PYBIND11_OVERRIDE(
-            bool,    /* Return type */
-            QEngine, /* Parent class */
-            is_noisy /* Name of function in C++ (must match Python name) */
-        );
-    }
-
-    QEngine& execute(idx reps = 1, bool try_sampling = true) override {
-        PYBIND11_OVERRIDE(
-            QEngine&, /* Return type */
-            QEngine,  /* Parent class */
-            execute,  /* Name of function in C++ (must match Python name) */
-            reps,     /* Argument(s) */
-            try_sampling);
-    }
-};
-
 /* qpp::QNoisyEngine instantiator */
 template <typename NoiseModel, typename... CtorTypeList>
 void declare_noisy_engine(py::module& m, const std::string& type) {
@@ -653,7 +630,7 @@ PYBIND11_MODULE(pyqpp, m) {
         });
 
     /* qpp::QEngine */
-    py::class_<QEngine, PyQEngine>(m, "QEngine")
+    py::class_<QEngine>(m, "QEngine")
         .def(py::init<const QCircuit&>(), py::keep_alive<1, 2>())
         .def("get_psi", &QEngine::get_psi, "Underlying quantum state")
         .def("get_dits", &QEngine::get_dits, "Underlying classical dits")
