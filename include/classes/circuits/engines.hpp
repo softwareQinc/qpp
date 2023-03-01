@@ -269,6 +269,9 @@ class QEngine : public IDisplay, public IJSON {
         return v;
     }
 
+  private:
+    bool can_sample; ///< could sample when executing with multiple repetitions
+
   public:
     /**
      * \brief Constructs a quantum engine out of a quantum circuit description
@@ -282,7 +285,8 @@ class QEngine : public IDisplay, public IJSON {
      * \param qc Quantum circuit description
      */
     explicit QEngine(const QCircuit& qc)
-        : qc_ptr_{std::addressof(qc)}, st_{qc_ptr_}, stats_{} {}
+        : qc_ptr_{std::addressof(qc)}, st_{qc_ptr_}, stats_{}, can_sample{
+                                                                   false} {}
 
     // silence -Weffc++ class has pointer data members
     /**
@@ -545,6 +549,7 @@ class QEngine : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     virtual QEngine& reset(bool reset_stats = true) {
+        this->can_sample = false;
         st_.reset();
         if (reset_stats)
             this->reset_stats();
@@ -865,23 +870,20 @@ class QEngine : public IDisplay, public IJSON {
         auto current_engine_state = st_;
 
         // decide if we can sample
-        bool can_sample = (reps > 1) && try_to_sample;
-        for (idx i = first_measurement_pos; i < num_steps && can_sample; ++i) {
+        this->can_sample = (reps > 1) && try_to_sample;
+        for (idx i = first_measurement_pos; i < num_steps && this->can_sample;
+             ++i) {
             auto elem = *steps[i];
             std::cout << '\t' << elem << std::endl;
             if (!(internal::is_projective_measurement(elem) ||
                   internal::is_discard(elem))) {
-                can_sample = false;
+                this->can_sample = false;
                 break;
             }
         }
 
         // can sample
-        // TODO figure out where each qubit is going!
-        // can_sample = false;
-        if (can_sample) {
-            std::cout << "SAMPLING..." << std::endl;
-
+        if (this->can_sample) {
             std::map<idx, idx> used_dits; // this records the c <- q map
             for (idx i = first_measurement_pos; i < num_steps; ++i) {
                 auto elem = *steps[i];
@@ -901,17 +903,6 @@ class QEngine : public IDisplay, public IJSON {
                 std::cout << "dit: " << k << " <- " << v << std::endl;
             }
             std::cout << "END MEAS MAP" << std::endl;
-
-            auto destructively_measured = qc_ptr_->get_measured();
-            auto non_destructively_measured = qc_ptr_->get_measured_nd();
-            std::vector<idx> measured;
-            measured.reserve(destructively_measured.size() +
-                             non_destructively_measured.size());
-            measured.insert(measured.end(), destructively_measured.begin(),
-                            destructively_measured.end());
-            measured.insert(measured.end(), non_destructively_measured.begin(),
-                            non_destructively_measured.end());
-            std::sort(measured.begin(), measured.end());
 
             // at least one qudit was measured
             if (qc_ptr_->get_measurement_count() > 0) {
@@ -982,6 +973,9 @@ class QEngine : public IDisplay, public IJSON {
             result += "{";
 
         std::ostringstream ss;
+        if (this->can_sample) {
+            ss << "\"sampling\": " << this->can_sample << ", ";
+        }
         ss << "\"nq\": " << get_circuit().get_nq() << ", ";
         ss << "\"nc\": " << get_circuit().get_nc() << ", ";
         ss << "\"d\": " << get_circuit().get_d() << ", ";
@@ -1044,7 +1038,12 @@ class QEngine : public IDisplay, public IJSON {
         */
 
         std::string engine_type = is_noisy() ? "[QNoisyEngine]" : "[QEngine]";
-        os << engine_type << '\n';
+        os << engine_type;
+        if (this->can_sample) {
+            os << " (Sampling)";
+        }
+        os << '\n';
+
         os << "<QCircuit nq: " << get_circuit().get_nq()
            << ", nc: " << get_circuit().get_nc()
            << ", d: " << get_circuit().get_d();

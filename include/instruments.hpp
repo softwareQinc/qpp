@@ -825,7 +825,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * \see qpp::measure()
  *
  * \param A Eigen expression
- * \param target Subsystem indexes that are sampled
+ * \param target Subsystem indexes that are can_sample
  * \param dims Subsystem dimensions
  * \return Vector of outcome results
  */
@@ -894,7 +894,7 @@ template <typename Derived>
  * \see qpp::measure()
  *
  * \param A Eigen expression
- * \param target Subsystem indexes that are sampled
+ * \param target Subsystem indexes that are can_sample
  * \param d Subsystem dimensions
  * \return Vector of outcome results
  */
@@ -927,7 +927,7 @@ std::vector<idx> sample(const Eigen::MatrixBase<Derived>& A,
  *
  * \param num_samples Number of samples
  * \param A Eigen expression
- * \param target Subsystem indexes that are sampled
+ * \param target Subsystem indexes that are can_sample
  * \param dims Subsystem dimensions
  * \return Map with vector of outcome results and their corresponding number of
  * appearances
@@ -1007,7 +1007,7 @@ sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
  *
  * \param num_samples Number of samples
  * \param A Eigen expression
- * \param target Subsystem indexes that are sampled
+ * \param target Subsystem indexes that are can_sample
  * \param d Subsystem dimensions
  * \return Map with vector of outcome results and their corresponding number of
  * appearances
