@@ -833,7 +833,7 @@ class QEngine : public IDisplay, public IJSON {
      * \param reps Number of repetitions
      * \return Reference to the current instance
      */
-    virtual QEngine& execute(idx reps = 1) {
+    virtual QEngine& execute(idx reps = 1, bool try_to_sample = true) {
         auto steps = reps > 1 ? internal::canonical_form(*qc_ptr_)
                               : internal::circuit_as_iterators(*qc_ptr_);
 
@@ -865,8 +865,8 @@ class QEngine : public IDisplay, public IJSON {
         auto current_engine_state = st_;
 
         // decide if we can sample
-        bool can_sample = (reps > 1);
-        for (idx i = first_measurement_pos; i < num_steps; ++i) {
+        bool can_sample = (reps > 1) && try_to_sample;
+        for (idx i = first_measurement_pos; i < num_steps && can_sample; ++i) {
             auto elem = *steps[i];
             std::cout << '\t' << elem << std::endl;
             if (!(internal::is_projective_measurement(elem) ||
@@ -878,8 +878,30 @@ class QEngine : public IDisplay, public IJSON {
 
         // can sample
         // TODO figure out where each qubit is going!
+        // can_sample = false;
         if (can_sample) {
             std::cout << "SAMPLING..." << std::endl;
+
+            std::map<idx, idx> used_dits; // this records the c <- q map
+            for (idx i = first_measurement_pos; i < num_steps; ++i) {
+                auto elem = *steps[i];
+                if (internal::is_projective_measurement(elem)) {
+                    auto [_, target, c_regs] =
+                        internal::extract_ctrl_target_c_reg(elem);
+                    std::cout << "\t\t" << disp(target, " ") << " - >";
+                    std::cout << "\t" << disp(c_regs, " ") << std::endl;
+                    for (idx q = 0; q < target.size(); ++q) {
+                        used_dits[c_regs[q]] = target[q];
+                    }
+                }
+            }
+
+            std::cout << "MEAS MAP" << std::endl;
+            for (auto [k, v] : used_dits) {
+                std::cout << "dit: " << k << " <- " << v << std::endl;
+            }
+            std::cout << "END MEAS MAP" << std::endl;
+
             auto destructively_measured = qc_ptr_->get_measured();
             auto non_destructively_measured = qc_ptr_->get_measured_nd();
             std::vector<idx> measured;
@@ -893,16 +915,34 @@ class QEngine : public IDisplay, public IJSON {
 
             // at least one qudit was measured
             if (qc_ptr_->get_measurement_count() > 0) {
-                for (idx rep = 0; rep < reps; ++rep) {
-                    std::vector<idx> m_res = sample(current_engine_state.psi_,
-                                                    measured, qc_ptr_->get_d());
-                    ++stats_.data()[m_res];
+                // build the vector of measured qudits that we must sample from
+                std::vector<idx> sample_from;
+                sample_from.reserve(this->get_dits().size());
+                for (auto [dit, qubit] : used_dits) {
+                    sample_from.emplace_back(qubit);
+                }
+                std::cout << "SAMPLE FROM: " << disp(sample_from, " ")
+                          << std::endl
+                          << std::endl;
+                for (idx rep = 0; rep < reps - 1; ++rep) {
+                    std::vector<idx> sample_res_restricted_support =
+                        sample(current_engine_state.psi_, sample_from,
+                               qc_ptr_->get_d());
+                    // extend m_res to full support
+                    std::vector<idx> sample_res = this->get_dits();
+                    idx i = 0;
+                    for (auto [dit, qubit] : used_dits) {
+                        sample_res[dit] = sample_res_restricted_support[i++];
+                    }
+                    ++stats_.data()[sample_res];
                 }
 
                 // execute the last repetition, so we can get the state psi
                 for (idx i = first_measurement_pos; i < num_steps; ++i) {
                     execute(steps[i]);
                 }
+                std::vector<idx> m_res = get_dits();
+                ++stats_.data()[m_res];
             }
         }
         // cannot sample
@@ -1089,7 +1129,7 @@ class QNoisyEngine : public QEngine {
      * \param reps Number of repetitions
      * \return Reference to the current instance
      */
-    QNoisyEngine& execute(idx reps = 1) override {
+    QNoisyEngine& execute(idx reps = 1, bool = true) override {
         auto initial_engine_state = st_; // saves the engine entry state
 
         for (idx i = 0; i < reps; ++i) {
