@@ -842,11 +842,11 @@ class QEngine : public IDisplay, public IJSON {
         auto steps = reps > 1 ? internal::canonical_form(*qc_ptr_)
                               : internal::circuit_as_iterators(*qc_ptr_);
 
-        std::cout << "Canonical form" << std::endl;
-        for (auto it : steps) {
-            std::cout << *it << std::endl;
-        }
-        std::cout << "End canonical form" << std::endl;
+        //        std::cout << "Canonical form" << std::endl;
+        //        for (auto it : steps) {
+        //            std::cout << *it << std::endl;
+        //        }
+        //        std::cout << "End canonical form" << std::endl << std::endl;
 
         QCircuit::iterator circuit_begin =
             *steps.begin(); // DO NOT USE *steps.end()!!!
@@ -874,7 +874,7 @@ class QEngine : public IDisplay, public IJSON {
         for (idx i = first_measurement_pos; i < num_steps && this->can_sample;
              ++i) {
             auto elem = *steps[i];
-            std::cout << '\t' << elem << std::endl;
+            // std::cout << '\t' << elem << std::endl;
             if (!(internal::is_projective_measurement(elem) ||
                   internal::is_discard(elem))) {
                 this->can_sample = false;
@@ -890,19 +890,20 @@ class QEngine : public IDisplay, public IJSON {
                 if (internal::is_projective_measurement(elem)) {
                     auto [_, target, c_regs] =
                         internal::extract_ctrl_target_c_reg(elem);
-                    std::cout << "\t\t" << disp(target, " ") << " - >";
-                    std::cout << "\t" << disp(c_regs, " ") << std::endl;
+                    // std::cout << "\t\t" << disp(target, " ") << " - >";
+                    // std::cout << "\t" << disp(c_regs, " ") << std::endl;
                     for (idx q = 0; q < target.size(); ++q) {
                         used_dits[c_regs[q]] = target[q];
                     }
                 }
             }
 
-            std::cout << "MEAS MAP" << std::endl;
-            for (auto [k, v] : used_dits) {
-                std::cout << "dit: " << k << " <- " << v << std::endl;
-            }
-            std::cout << "END MEAS MAP" << std::endl;
+            //            std::cout << "MEAS MAP" << std::endl;
+            //            for (auto [k, v] : used_dits) {
+            //                std::cout << "dit: " << k << " <- " << v <<
+            //                std::endl;
+            //            }
+            //            std::cout << "END MEAS MAP" << std::endl << std::endl;
 
             // at least one qudit was measured
             if (qc_ptr_->get_measurement_count() > 0) {
@@ -912,9 +913,10 @@ class QEngine : public IDisplay, public IJSON {
                 for (auto [dit, qubit] : used_dits) {
                     sample_from.emplace_back(qubit);
                 }
-                std::cout << "SAMPLE FROM: " << disp(sample_from, " ")
-                          << std::endl
-                          << std::endl;
+                //                std::cout << "SAMPLE FROM: " <<
+                //                disp(sample_from, " ")
+                //                          << std::endl
+                //                          << std::endl;
                 for (idx rep = 0; rep < reps - 1; ++rep) {
                     std::vector<idx> sample_res_restricted_support =
                         sample(current_engine_state.psi_, sample_from,
