@@ -839,27 +839,16 @@ class QEngine : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     virtual QEngine& execute(idx reps = 1, bool try_to_sample = true) {
-        auto steps = reps > 1 ? internal::canonical_form(*qc_ptr_)
-                              : internal::circuit_as_iterators(*qc_ptr_);
-
-        //        std::cout << "Canonical form" << std::endl;
-        //        for (auto it : steps) {
-        //            std::cout << *it << std::endl;
-        //        }
-        //        std::cout << "End canonical form" << std::endl << std::endl;
-
-        QCircuit::iterator circuit_begin =
-            *steps.begin(); // DO NOT USE *steps.end()!!!
-        QCircuit::iterator circuit_end = qc_ptr_->end();
-        QCircuit::iterator first_measurement_it =
-            internal::find_first_measurement_it(circuit_begin, circuit_end);
-
+        auto steps = (reps > 1 && try_to_sample)
+                         ? internal::canonical_form(*qc_ptr_)
+                         : internal::circuit_as_iterators(*qc_ptr_);
         idx num_steps = steps.size();
+
+        // find the position of the first measurement
         idx first_measurement_pos = 0;
-        for (; first_measurement_pos < num_steps &&
-               !internal::is_measurement(steps[first_measurement_pos]);
-             ++first_measurement_pos)
-            ;
+        while (first_measurement_pos < num_steps &&
+               !internal::is_measurement(steps[first_measurement_pos]))
+            ++first_measurement_pos;
 
         // executes everything up to the first measurement
         for (idx i = 0; i < first_measurement_pos; ++i) {
@@ -874,7 +863,6 @@ class QEngine : public IDisplay, public IJSON {
         for (idx i = first_measurement_pos; i < num_steps && this->can_sample;
              ++i) {
             auto elem = *steps[i];
-            // std::cout << '\t' << elem << std::endl;
             if (!(internal::is_projective_measurement(elem) ||
                   internal::is_discard(elem))) {
                 this->can_sample = false;
@@ -890,20 +878,11 @@ class QEngine : public IDisplay, public IJSON {
                 if (internal::is_projective_measurement(elem)) {
                     auto [_, target, c_regs] =
                         internal::extract_ctrl_target_c_reg(elem);
-                    // std::cout << "\t\t" << disp(target, " ") << " - >";
-                    // std::cout << "\t" << disp(c_regs, " ") << std::endl;
                     for (idx q = 0; q < target.size(); ++q) {
                         used_dits[c_regs[q]] = target[q];
                     }
                 }
             }
-
-            //            std::cout << "MEAS MAP" << std::endl;
-            //            for (auto [k, v] : used_dits) {
-            //                std::cout << "dit: " << k << " <- " << v <<
-            //                std::endl;
-            //            }
-            //            std::cout << "END MEAS MAP" << std::endl << std::endl;
 
             // at least one qudit was measured
             if (qc_ptr_->get_measurement_count() > 0) {
@@ -913,15 +892,11 @@ class QEngine : public IDisplay, public IJSON {
                 for (auto [dit, qubit] : used_dits) {
                     sample_from.emplace_back(qubit);
                 }
-                //                std::cout << "SAMPLE FROM: " <<
-                //                disp(sample_from, " ")
-                //                          << std::endl
-                //                          << std::endl;
                 for (idx rep = 0; rep < reps - 1; ++rep) {
                     std::vector<idx> sample_res_restricted_support =
                         sample(current_engine_state.psi_, sample_from,
                                qc_ptr_->get_d());
-                    // extend m_res to full support
+                    // extend sample_res to full support
                     std::vector<idx> sample_res = this->get_dits();
                     idx i = 0;
                     for (auto [dit, qubit] : used_dits) {
@@ -930,7 +905,7 @@ class QEngine : public IDisplay, public IJSON {
                     ++stats_.data()[sample_res];
                 }
 
-                // execute the last repetition, so we can get the state psi
+                // execute the last repetition, so we can compute the state psi
                 for (idx i = first_measurement_pos; i < num_steps; ++i) {
                     execute(steps[i]);
                 }
