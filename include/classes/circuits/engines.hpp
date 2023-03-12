@@ -843,15 +843,23 @@ class QEngine : public IDisplay, public IJSON {
                          ? internal::canonical_form(*qc_ptr_)
                          : internal::circuit_as_iterators(*qc_ptr_);
         idx num_steps = steps.size();
+        if (num_steps == 0)
+            return *this;
 
-        // find the position of the first measurement
-        idx first_measurement_pos = 0;
-        while (first_measurement_pos < num_steps &&
-               !internal::is_measurement(steps[first_measurement_pos]))
-            ++first_measurement_pos;
+        // for (auto elem : steps)
+        //    std::cout << *elem << std::endl;
 
-        // executes everything up to the first measurement
-        for (idx i = 0; i < first_measurement_pos; ++i) {
+        // find the position of the last measurement just before a
+        // non-measurement
+        auto res =
+            std::find_if_not(steps.rbegin(), steps.rend(), [](auto&& elem) {
+                return internal::is_measurement(elem);
+            });
+        idx last_measurement_pos = std::distance(res, steps.rend());
+
+        // executes everything up to the last measurement just before a
+        // non-measurement
+        for (idx i = 0; i < last_measurement_pos; ++i) {
             execute(steps[i]);
         }
 
@@ -860,7 +868,7 @@ class QEngine : public IDisplay, public IJSON {
 
         // decide if we can sample
         this->can_sample = (reps > 1) && try_sampling;
-        for (idx i = first_measurement_pos; i < num_steps && this->can_sample;
+        for (idx i = last_measurement_pos; i < num_steps && this->can_sample;
              ++i) {
             auto elem = *steps[i];
             if (!(internal::is_projective_measurement(elem) ||
@@ -873,7 +881,7 @@ class QEngine : public IDisplay, public IJSON {
         // can sample
         if (this->can_sample) {
             std::map<idx, idx> used_dits; // this records the c <- q map
-            for (idx i = first_measurement_pos; i < num_steps; ++i) {
+            for (idx i = last_measurement_pos; i < num_steps; ++i) {
                 auto elem = *steps[i];
                 if (internal::is_projective_measurement(elem)) {
                     auto [_, target, c_regs] =
@@ -906,7 +914,7 @@ class QEngine : public IDisplay, public IJSON {
                 }
 
                 // execute the last repetition, so we can compute the state psi
-                for (idx i = first_measurement_pos; i < num_steps; ++i) {
+                for (idx i = last_measurement_pos; i < num_steps; ++i) {
                     execute(steps[i]);
                 }
                 std::vector<idx> m_res = get_dits();
@@ -918,7 +926,7 @@ class QEngine : public IDisplay, public IJSON {
             for (idx rep = 0; rep < reps; ++rep) {
                 // sets the state of the engine to the entry state
                 st_ = current_engine_state;
-                for (idx i = first_measurement_pos; i < num_steps; ++i) {
+                for (idx i = last_measurement_pos; i < num_steps; ++i) {
                     execute(*steps[i]);
                 }
 
