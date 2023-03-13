@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 4.0-rc1 - 1 March 2023
+## Version 4.0-rc2 - 14 March 2023
 
 **Build status:**
 
@@ -102,5 +102,4 @@ detect the location of the Eigen3 matrix library, set the environment variable
 (include the `include/eigen3` part of the path).
 
 For more details, please see
-[pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md)
-.
+[pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md).

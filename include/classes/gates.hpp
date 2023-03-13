@@ -396,7 +396,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         using Index = typename dyn_mat<typename Derived::Scalar>::Index;
 
         idx DA = 1;
-        for (auto elem : target)
+        for (idx elem : target)
             DA *= dims[elem];
 
         if (rA.rows() != static_cast<Index>(DA))
@@ -427,7 +427,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         idx D = prod(dims);
         idx Dsubsys_bar = 1;
-        for (auto elem : subsys_bar)
+        for (idx elem : subsys_bar)
             Dsubsys_bar *= dims[elem];
 
         std::copy(std::begin(subsys_bar), std::end(subsys_bar),
@@ -576,8 +576,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
         // check ctrl and target don't share common elements
-        for (auto elem_ctrl : ctrl)
-            for (auto elem_target : target)
+        for (idx elem_ctrl : ctrl)
+            for (idx elem_target : target)
                 if (elem_ctrl == elem_target)
                     throw exception::OutOfRange("qpp::Gates::CTRL()",
                                                 "ctrl/target");
@@ -600,7 +600,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         if (!shift.empty() && (shift.size() != ctrl.size()))
             throw exception::SizeMismatch("qpp::Gates::CTRL()", "ctrl/shift");
         if (!shift.empty())
-            for (auto elem : shift)
+            for (idx elem : shift)
                 if (elem >= d)
                     throw exception::OutOfRange("qpp::Gates::CTRL()", "shift");
         // END EXCEPTION CHECKS
@@ -759,8 +759,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // std::sort(std::begin(ctrlgate), std::end(ctrlgate));
 
         // check ctrl and target don't share common elements
-        for (auto elem_ctrl : ctrl)
-            for (auto elem_target : target)
+        for (idx elem_ctrl : ctrl)
+            for (idx elem_target : target)
                 if (elem_ctrl == elem_target)
                     throw exception::OutOfRange("qpp::Gates::CTRL()",
                                                 "ctrl/target");
@@ -782,7 +782,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         if (!shift.empty() && (shift.size() != ctrl.size()))
             throw exception::SizeMismatch("qpp::Gates::CTRL()", "ctrl/shift");
         if (!shift.empty())
-            for (auto& elem : shift) {
+            for (idx& elem : shift) {
                 if (elem >= d)
                     throw exception::OutOfRange("qpp::Gates::CTRL()", "shift");
                 elem = d - elem;
@@ -802,7 +802,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         std::vector<idx> ctrl_bar = complement(ctrlgate, n);
         std::vector<idx> ctrlgate_bar = complement(ctrlgate, n);
         idx Dctrlgate_bar = 1;
-        for (auto elem : ctrlgate_bar)
+        for (idx elem : ctrlgate_bar)
             Dctrlgate_bar *= dims[elem];
 
         dyn_mat<typename Derived::Scalar> Id_ctrlgate_bar =
