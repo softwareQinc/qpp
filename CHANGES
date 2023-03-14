@@ -83,7 +83,7 @@ Version 3.1 - 11 January 2022
     - Due to phase discrepancies, by default the parser now uses Qiskit
       definitions (which are also the usual ones used in QC textbooks). To
       switch to standard OpenQASM 2.0 gate definitions, configure the project
-      with `cmake -DUSE_OPENQASM2_SPECS=ON`.
+      with 'cmake -DUSE_OPENQASM2_SPECS=ON'.
     - Implemented qpp::QCircuit::
           get_dirty_dits()       - vector of used classical dits in the circuit
                                    (by either cCTRL or measurements)
@@ -106,7 +106,7 @@ Version 3.0 - 5 October 2021
       both staq and Quantum++, and by default uses standard OpenQASM 2.0 gate
       definitions. To switch to Qiskit definitions (which are also the usual
       ones used in QC textbooks), configure the project with
-      `cmake -DUSE_QISKIT_SPECS=ON`.
+      'cmake -DUSE_QISKIT_SPECS=ON'.
     - Refactored qpp::internal::Singleton ["internal/classes/singleton.hpp"]
       so that qpp::internal::Singleton::get_instance() returns a thread local
       instance whenever the compiler supports thread_local. For more
@@ -133,7 +133,7 @@ Version 2.7 - 1 August 2021
       'make test' (after explicitly built with 'make unit_testing'). Use
       'GTEST_COLOR=1 ARGS="-V" make test' or 'GTEST_COLOR=1 ctest -V' for
       coloured verbose testing output.
-    - Fixed minor inadvertence in OpenQASM `crz` implementation, see
+    - Fixed minor inadvertence in OpenQASM 'crz' implementation, see
       https://github.com/softwareQinc/qpp/issues/99
     - Changed the signature of qpp::cwise() ["functions.hpp"] so it takes the
       scalar argument by value (and not constant reference as before). This
@@ -160,7 +160,7 @@ Version 2.7 - 1 August 2021
       "examples/circuits/qpe_circuit.cpp"
     - Added ["examples/qasm/coin_flip.qasm"] coin flipping OpenQASM example
       that can be run, e.g., with 'qasm < coin_flip.qasm [number of reps]'
-    - qpp::measure() deducts the input state type (`qpp::ket` or `qpp::cmat`)
+    - qpp::measure() deducts the input state type ('qpp::ket' or 'qpp::cmat')
       and returns accordingly a set of kets or density matrices in its return
       tuple, thanks @anoine-bussy (https://github.com/antoine-bussy)
     - Implemented qpp::QCircuit::
@@ -171,7 +171,7 @@ Version 2.7 - 1 August 2021
     - Implemented qpp::zket2dits ["functions.h"] which extracts the dits from a
       normalized multi-partite pure state in the computational basis.
       Behaves like the "inverse" of qpp::mket().
-    - Removed `cmath_cygwin.patch` as the problem was fixed since 2016.
+    - Removed 'cmath_cygwin.patch' as the problem was fixed since 2016.
     - Minor refactorings, code simplifications and bugfixes
     - Removed Travis CI
 
@@ -366,7 +366,7 @@ Version 2.0 - 24 August 2019
                                          orthogonal grid with periodic boundary
                                          conditions
     - Removed the documentation directory (doc). To generate the documentation
-      in HTML/LaTeX formats, run `doxygen` from the root of the project.
+      in HTML/LaTeX formats, run 'doxygen' from the root of the project.
 
 Version 1.3 - 25 July 2019
     - Minimum required CMake version is now 3.2
