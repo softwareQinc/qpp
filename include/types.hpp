@@ -127,7 +127,7 @@ template <typename Derived>
 bool constexpr is_ket() {
     return (eval_t<Derived>::ColsAtCompileTime == 1);
 }
-} /* namespace qpp::internal */
+} /* namespace internal */
 
 /**
  * \brief Eigen type (ket/density matrix) deduced from the expression Derived

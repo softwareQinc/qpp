@@ -28,7 +28,8 @@
  * \file qasmtools/ast/ast.hpp
  */
 
-#pragma once
+#ifndef QASMTOOLS_AST_AST_HPP_
+#define QASMTOOLS_AST_AST_HPP_
 
 #include "base.hpp"
 #include "decl.hpp"
@@ -37,3 +38,5 @@
 #include "semantic.hpp"
 #include "stmt.hpp"
 #include "visitor.hpp"
+
+#endif /* QASMTOOLS_AST_AST_HPP_ */

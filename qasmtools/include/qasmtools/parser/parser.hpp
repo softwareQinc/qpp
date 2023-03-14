@@ -31,7 +31,8 @@
  * \brief OpenQASM parsing
  */
 
-#pragma once
+#ifndef QASMTOOLS_PARSER_PARSER_HPP_
+#define QASMTOOLS_PARSER_PARSER_HPP_
 
 #include "../ast/ast.hpp"
 #include "preprocessor.hpp"
@@ -1052,5 +1053,7 @@ inline ast::ptr<ast::Program> parse_string(const std::string& str,
     return parser.parse();
 }
 
-} // namespace parser
-} // namespace qasmtools
+} /* namespace parser */
+} /* namespace qasmtools */
+
+#endif /* QASMTOOLS_PARSER_PARSER_HPP_ */

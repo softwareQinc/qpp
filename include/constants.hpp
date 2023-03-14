@@ -122,7 +122,7 @@ namespace internal {
  * Used internally to allocate arrays on the stack (for performance reasons)
  */
 constexpr idx maxn = 64;
-} /* namespace qpp::internal */
+} /* namespace internal */
 
 } /* namespace qpp */
 

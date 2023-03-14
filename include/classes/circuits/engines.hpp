@@ -270,7 +270,7 @@ class QEngine : public IDisplay, public IJSON {
     }
 
   private:
-    bool can_sample; ///< could sample when executing with multiple repetitions
+    bool can_sample; ///< can sample when executing with multiple repetitions
 
   public:
     /**
@@ -674,7 +674,7 @@ class QEngine : public IDisplay, public IJSON {
                                 powm(h_tbl[current_gate_step_it->gate_hash_],
                                      first_dit);
                             if (is_fan) {
-                                for (auto qudit : target_rel_pos) {
+                                for (idx qudit : target_rel_pos) {
                                     st_.psi_ = apply(st_.psi_, U, {qudit}, d);
                                 }
                             } else {
@@ -691,7 +691,7 @@ class QEngine : public IDisplay, public IJSON {
                 // TODO check if this can happen (st_.dits_.empty())
                 else {
                     if (is_fan) {
-                        for (auto qudit : target_rel_pos) {
+                        for (idx qudit : target_rel_pos) {
                             st_.psi_ =
                                 apply(st_.psi_,
                                       h_tbl[current_gate_step_it->gate_hash_],
@@ -737,7 +737,7 @@ class QEngine : public IDisplay, public IJSON {
                     std::copy(probs.begin(), probs.end(),
                               std::next(st_.probs_.begin(),
                                         current_measurement_step_it->c_reg_));
-                    for (auto target : current_measurement_step_it->target_) {
+                    for (idx target : current_measurement_step_it->target_) {
                         set_measured_(target);
                     }
                     break;
@@ -761,7 +761,7 @@ class QEngine : public IDisplay, public IJSON {
                     st_.dits_[current_measurement_step_it->c_reg_] = mres;
                     st_.probs_[current_measurement_step_it->c_reg_] =
                         probs[mres];
-                    for (auto target : current_measurement_step_it->target_) {
+                    for (idx target : current_measurement_step_it->target_) {
                         set_measured_(target);
                     }
                     break;
@@ -804,7 +804,7 @@ class QEngine : public IDisplay, public IJSON {
                 case QCircuit::MeasureType::DISCARD_MANY:
                     std::tie(std::ignore, std::ignore, st_.psi_) =
                         measure_seq(st_.psi_, target_rel_pos, d);
-                    for (auto target : current_measurement_step_it->target_) {
+                    for (idx target : current_measurement_step_it->target_) {
                         set_measured_(target);
                     }
                     break;
@@ -842,50 +842,66 @@ class QEngine : public IDisplay, public IJSON {
         auto steps = (reps > 1 && try_sampling)
                          ? internal::canonical_form(*qc_ptr_)
                          : internal::circuit_as_iterators(*qc_ptr_);
+        if (steps.empty())
+            return *this;
+
         idx num_steps = steps.size();
 
-        // find the position of the first measurement
-        idx first_measurement_pos = 0;
-        while (first_measurement_pos < num_steps &&
-               !internal::is_measurement(steps[first_measurement_pos]))
-            ++first_measurement_pos;
+        //        for (auto&& elem : steps)
+        //            std::cout << *elem << std::endl;
+        //        std::cout << std::endl;
 
-        // executes everything up to the first measurement
-        for (idx i = 0; i < first_measurement_pos; ++i) {
-            execute(steps[i]);
-        }
+        // in the following, we will partition the circuit as
+        // [0 ... first_measurement_pos ... sampling_pos ... end)
 
-        // saves the state just before the measurement
-        auto current_engine_state = st_;
+        // find the position of the first measurement/reset/discard step
+        auto first_measurement_discard_reset_it =
+            std::find_if(steps.begin(), steps.end(), [](auto&& elem) {
+                return internal::is_measurement(elem) ||
+                       internal::is_discard(elem) || internal::is_reset(elem);
+            });
+        idx first_measurement_discard_reset_pos =
+            std::distance(steps.begin(), first_measurement_discard_reset_it);
 
-        // decide if we can sample
+        // decide if we can sample (every step after first_measurement_pos must
+        // be a projective measurement)
         this->can_sample = (reps > 1) && try_sampling;
-        for (idx i = first_measurement_pos; i < num_steps && this->can_sample;
-             ++i) {
-            auto elem = *steps[i];
-            if (!(internal::is_projective_measurement(elem) ||
-                  internal::is_discard(elem))) {
+        for (idx i = first_measurement_discard_reset_pos;
+             i < num_steps && this->can_sample; ++i) {
+            if (!(internal::is_projective_measurement(steps[i])) ||
+                internal::is_discard(steps[i])) {
                 this->can_sample = false;
                 break;
             }
         }
 
-        // can sample
+        // executes everything ONCE in the interval [0, first_measurement_pos)
+        for (idx i = 0; i < first_measurement_discard_reset_pos; ++i) {
+            execute(steps[i]);
+        }
+        // saves the state just before the first measurement
+        auto current_engine_state = st_;
+
+        // executes repeatedly everything in the remaining interval
+        // [sampling_pos, num_steps)
+
+        // can sample (every step must be a projective measurement)
         if (this->can_sample) {
-            std::map<idx, idx> used_dits; // this records the c <- q map
-            for (idx i = first_measurement_pos; i < num_steps; ++i) {
-                auto elem = *steps[i];
-                if (internal::is_projective_measurement(elem)) {
+            std::map<idx, idx> used_dits; // records the c <- q map
+            bool measured = false;
+            for (idx i = first_measurement_discard_reset_pos; i < num_steps;
+                 ++i) {
+                if (internal::is_projective_measurement(steps[i])) {
+                    measured = true;
                     auto [_, target, c_regs] =
-                        internal::extract_ctrl_target_c_reg(elem);
+                        internal::extract_ctrl_target_c_reg(steps[i]);
                     for (idx q = 0; q < target.size(); ++q) {
                         used_dits[c_regs[q]] = target[q];
                     }
                 }
             }
-
             // at least one qudit was measured
-            if (qc_ptr_->get_measurement_count() > 0) {
+            if (measured) {
                 // build the vector of measured qudits that we must sample from
                 std::vector<idx> sample_from;
                 sample_from.reserve(this->get_dits().size());
@@ -904,9 +920,9 @@ class QEngine : public IDisplay, public IJSON {
                     }
                     ++stats_.data()[sample_res];
                 }
-
                 // execute the last repetition, so we can compute the state psi
-                for (idx i = first_measurement_pos; i < num_steps; ++i) {
+                for (idx i = first_measurement_discard_reset_pos; i < num_steps;
+                     ++i) {
                     execute(steps[i]);
                 }
                 std::vector<idx> m_res = get_dits();
@@ -918,12 +934,16 @@ class QEngine : public IDisplay, public IJSON {
             for (idx rep = 0; rep < reps; ++rep) {
                 // sets the state of the engine to the entry state
                 st_ = current_engine_state;
-                for (idx i = first_measurement_pos; i < num_steps; ++i) {
-                    execute(*steps[i]);
+                bool measured = false;
+                for (idx i = first_measurement_discard_reset_pos; i < num_steps;
+                     ++i) {
+                    if (internal::is_measurement(steps[i])) {
+                        measured = true;
+                    }
+                    execute(steps[i]);
                 }
-
                 // at least one qudit was measured
-                if (qc_ptr_->get_measurement_count() > 0) {
+                if (measured) {
                     std::vector<idx> m_res = get_dits();
                     ++stats_.data()[m_res];
                 }
@@ -950,14 +970,12 @@ class QEngine : public IDisplay, public IJSON {
             result += "{";
 
         std::ostringstream ss;
-        if (this->can_sample) {
-            ss << "\"sampling\": " << this->can_sample << ", ";
-        }
         ss << "\"nq\": " << get_circuit().get_nq() << ", ";
         ss << "\"nc\": " << get_circuit().get_nc() << ", ";
         ss << "\"d\": " << get_circuit().get_d() << ", ";
         ss << R"("name": ")" << get_circuit().get_name() << "\", ";
 
+        ss << "\"sampling\": " << (this->can_sample ? "true" : "false") << ", ";
         ss << "\"measured/discarded (destructively)\": ";
         ss << disp(get_measured(), ", ");
         result += ss.str() + ", ";
@@ -1024,7 +1042,7 @@ class QEngine : public IDisplay, public IJSON {
         os << "<QCircuit nq: " << get_circuit().get_nq()
            << ", nc: " << get_circuit().get_nc()
            << ", d: " << get_circuit().get_d();
-        auto circ_name = get_circuit().get_name();
+        std::string circ_name = get_circuit().get_name();
         if (!circ_name.empty())
             os << ", name: \"" << circ_name << '\"';
         os << ">\n";
@@ -1087,7 +1105,7 @@ class QNoisyEngine : public QEngine {
         std::vector<idx> target_rel_pos = get_relative_pos_(get_non_measured());
         // if (elem.type_ != QCircuit::StepType::MEASUREMENT) {
         // apply the noise
-        for (auto i : target_rel_pos) {
+        for (idx i : target_rel_pos) {
             st_.psi_ = noise_(st_.psi_, i);
             // record the Kraus operator that occurred
             noise_results_[elem.ip_].emplace_back(noise_.get_last_idx());

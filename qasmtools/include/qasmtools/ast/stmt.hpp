@@ -29,7 +29,8 @@
  * \brief OpenQASM statements
  */
 
-#pragma once
+#ifndef QASMTOOLS_AST_STMT_HPP_
+#define QASMTOOLS_AST_STMT_HPP_
 
 #include "base.hpp"
 #include "expr.hpp"
@@ -671,5 +672,7 @@ class DeclaredGate final : public Gate {
     }
 };
 
-} // namespace ast
-} // namespace qasmtools
+} /* namespace ast */
+} /* namespace qasmtools */
+
+#endif /* QASMTOOLS_AST_STMT_HPP_ */

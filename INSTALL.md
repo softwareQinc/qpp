@@ -343,5 +343,4 @@ detect the location of the Eigen3 matrix library, set the environment variable
 (include the `include/eigen3` part of the path).
 
 For more details, please see
-[pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md)
-.
+[pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md).

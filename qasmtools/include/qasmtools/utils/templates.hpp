@@ -29,7 +29,8 @@
  * \brief Helper templates
  */
 
-#pragma once
+#ifndef QASMTOOLS_UTILS_TEMPLATES_HPP_
+#define QASMTOOLS_UTILS_TEMPLATES_HPP_
 
 namespace qasmtools {
 namespace utils {
@@ -43,5 +44,7 @@ struct overloaded : Ts... {
 template <class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
-} // namespace utils
-} // namespace qasmtools
+} /* namespace utils */
+} /* namespace qasmtools */
+
+#endif /* QASMTOOLS_UTILS_TEMPLATES_HPP_ */

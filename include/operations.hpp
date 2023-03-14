@@ -1748,8 +1748,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         throw exception::SubsysMismatchDims("qpp::applyCTRL()", "dims/target");
 
     // check that ctrl and target don't share common elements
-    for (auto elem_ctrl : ctrl)
-        for (auto elem_target : target)
+    for (idx elem_ctrl : ctrl)
+        for (idx elem_target : target)
             if (elem_ctrl == elem_target)
                 throw exception::OutOfRange("qpp::applyCTRL()", "ctrl/target");
 
@@ -1775,7 +1775,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     if (!shift.empty() && (shift.size() != ctrl.size()))
         throw exception::SizeMismatch("qpp::applyCTRL()", "ctrl/shift");
     if (!shift.empty())
-        for (auto& elem : shift) {
+        for (idx& elem : shift) {
             if (elem >= d)
                 throw exception::OutOfRange("qpp::applyCTRL()", "shift");
             elem = d - elem;
@@ -2037,8 +2037,8 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
             throw exception::DimsNotEqual("qpp::applyCTRL_fan()", "target");
 
     // check that ctrl and target don't share common elements
-    for (auto elem_ctrl : ctrl)
-        for (auto elem_target : target)
+    for (idx elem_ctrl : ctrl)
+        for (idx elem_target : target)
             if (elem_ctrl == elem_target)
                 throw exception::OutOfRange("qpp::applyCTRL_fan()",
                                             "ctrl/target");
@@ -2063,7 +2063,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
     if (!shift.empty() && (shift.size() != ctrl.size()))
         throw exception::SizeMismatch("qpp::applyCTRL_fan()", "ctrl/shift");
     if (!shift.empty())
-        for (auto& elem : shift) {
+        for (idx& elem : shift) {
             if (elem >= d)
                 throw exception::OutOfRange("qpp::applyCTRL_fan()", "shift");
             elem = d - elem;
@@ -2110,7 +2110,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
                 // apply gates on target if non-zero
                 if (chopped_psi !=
                     dyn_col_vect<typename Derived1::Scalar>::Zero(D)) {
-                    for (auto elem : target) {
+                    for (idx elem : target) {
                         chopped_psi = apply(chopped_psi, Ak[r], {elem}, dims);
                     }
                 }

@@ -31,7 +31,8 @@
  * \brief Manages includes for OpenQASM parsing
  */
 
-#pragma once
+#ifndef QASMTOOLS_PARSER_PREPROCESSOR_HPP_
+#define QASMTOOLS_PARSER_PREPROCESSOR_HPP_
 
 #include "lexer.hpp"
 
@@ -267,5 +268,7 @@ class Preprocessor {
     }
 };
 
-} // namespace parser
-} // namespace qasmtools
+} /* namespace parser */
+} /* namespace qasmtools */
+
+#endif /* QASMTOOLS_PARSER_PREPROCESSOR_HPP_ */
