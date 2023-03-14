@@ -1,8 +1,8 @@
 Version 4.0-rc2 - 14 March 2023
     - Major performance improvement in qpp::QEngine::execute(), which now takes
-      a second default argument 'bool try_sampling = true', so, if possible, the
+      a second default argument 'bool try_sampling = true'; if possible, the
       engine will sample from the output of the circuit instead of executing
-      the measurement steps
+      the measurement steps.
     - API changes in ["classes/circuits/circuits.hpp"], renamed:
           qpp::QCircuit::gate_joint()  -> qpp::QCircuit::gate()
           qpp::QCircuit::CTRL_joint()  -> qpp::QCircuit::CTRL()
