@@ -29,7 +29,8 @@
  * \brief Node traversal for syntax trees
  */
 
-#pragma once
+#ifndef QASMTOOLS_AST_TRAVERSAL_HPP_
+#define QASMTOOLS_AST_TRAVERSAL_HPP_
 
 #include "program.hpp"
 #include "visitor.hpp"
@@ -106,5 +107,7 @@ class Traverse : public Visitor {
     }
 };
 
-} // namespace ast
-} // namespace qasmtools
+} /* namespace ast */
+} /* namespace qasmtools */
+
+#endif /* QASMTOOLS_AST_TRAVERSAL_HPP_ */

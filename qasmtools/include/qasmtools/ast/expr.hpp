@@ -29,7 +29,8 @@
  * \brief OpenQASM expressions
  */
 
-#pragma once
+#ifndef QASMTOOLS_AST_EXPR_HPP_
+#define QASMTOOLS_AST_EXPR_HPP_
 
 #include "../utils/angle.hpp"
 #include "base.hpp"
@@ -541,5 +542,7 @@ inline ptr<Expr> angle_to_expr(const utils::Angle& theta) {
     }
 }
 
-} // namespace ast
-} // namespace qasmtools
+} /* namespace ast */
+} /* namespace qasmtools */
+
+#endif /* QASMTOOLS_AST_EXPR_HPP_ */

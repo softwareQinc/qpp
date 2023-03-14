@@ -29,7 +29,8 @@
  * \brief Visitor interface for syntax trees
  */
 
-#pragma once
+#ifndef QASMTOOLS_AST_VISITOR_HPP_
+#define QASMTOOLS_AST_VISITOR_HPP_
 
 namespace qasmtools {
 namespace ast {
@@ -99,5 +100,7 @@ class Visitor {
     virtual ~Visitor() = default;
 };
 
-} // namespace ast
-} // namespace qasmtools
+} /* namespace ast */
+} /* namespace qasmtools */
+
+#endif /* QASMTOOLS_AST_VISITOR_HPP_ */

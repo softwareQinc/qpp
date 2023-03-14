@@ -29,7 +29,8 @@
  * \brief OpenQASM variable utilities
  */
 
-#pragma once
+#ifndef QASMTOOLS_AST_VAR_HPP_
+#define QASMTOOLS_AST_VAR_HPP_
 
 #include "base.hpp"
 
@@ -167,8 +168,8 @@ class VarAccess final : public ASTNode {
     }
 };
 
-} // namespace ast
-} // namespace qasmtools
+} /* namespace ast */
+} /* namespace qasmtools */
 
 namespace std {
 /**
@@ -186,4 +187,6 @@ struct hash<qasmtools::ast::VarAccess> {
         return lhs;
     }
 };
-} // namespace std
+} /* namespace std */
+
+#endif /* QASMTOOLS_AST_VAR_HPP_ */

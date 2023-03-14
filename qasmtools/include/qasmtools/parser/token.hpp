@@ -31,7 +31,8 @@
  * \brief Tokens
  */
 
-#pragma once
+#ifndef QASMTOOLS_PARSER_TOKEN_HPP_
+#define QASMTOOLS_PARSER_TOKEN_HPP_
 
 #include "position.hpp"
 
@@ -385,5 +386,7 @@ static const std::unordered_map<std::string, Token::Kind> keywords{
     {"dirty", Token::Kind::kw_dirty},
     {"ancilla", Token::Kind::kw_ancilla}};
 
-} // namespace parser
-} // namespace qasmtools
+} /* namespace parser */
+} /* namespace qasmtools */
+
+#endif /* QASMTOOLS_PARSER_TOKEN_HPP_ */

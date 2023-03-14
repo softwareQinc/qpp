@@ -28,7 +28,8 @@
  * \file qasmtools/parser/position.hpp
  */
 
-#pragma once
+#ifndef QASMTOOLS_PARSER_POSITION_HPP_
+#define QASMTOOLS_PARSER_POSITION_HPP_
 
 #include <iostream>
 #include <string>
@@ -114,5 +115,7 @@ class Position {
     void advance_column(int num = 1) { column_ += num; }
 };
 
-} // namespace parser
-} // namespace qasmtools
+} /* namespace parser */
+} /* namespace qasmtools */
+
+#endif /* QASMTOOLS_PARSER_POSITION_HPP_ */
