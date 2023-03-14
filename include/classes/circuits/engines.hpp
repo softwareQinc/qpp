@@ -854,19 +854,20 @@ class QEngine : public IDisplay, public IJSON {
         // in the following, we will partition the circuit as
         // [0 ... first_measurement_pos ... sampling_pos ... end)
 
-        // find the position of the first measurement step
-        auto first_measurement_it =
+        // find the position of the first measurement/reset/discard step
+        auto first_measurement_discard_reset_it =
             std::find_if(steps.begin(), steps.end(), [](auto&& elem) {
-                return internal::is_measurement(elem);
+                return internal::is_measurement(elem) ||
+                       internal::is_discard(elem) || internal::is_reset(elem);
             });
-        idx first_measurement_pos =
-            std::distance(steps.begin(), first_measurement_it);
+        idx first_measurement_discard_reset_pos =
+            std::distance(steps.begin(), first_measurement_discard_reset_it);
 
         // decide if we can sample (every step after first_measurement_pos must
         // be a projective measurement)
         this->can_sample = (reps > 1) && try_sampling;
-        for (idx i = first_measurement_pos; i < num_steps && this->can_sample;
-             ++i) {
+        for (idx i = first_measurement_discard_reset_pos;
+             i < num_steps && this->can_sample; ++i) {
             if (!(internal::is_projective_measurement(steps[i])) ||
                 internal::is_discard(steps[i])) {
                 this->can_sample = false;
@@ -875,7 +876,7 @@ class QEngine : public IDisplay, public IJSON {
         }
 
         // executes everything ONCE in the interval [0, first_measurement_pos)
-        for (idx i = 0; i < first_measurement_pos; ++i) {
+        for (idx i = 0; i < first_measurement_discard_reset_pos; ++i) {
             execute(steps[i]);
         }
         // saves the state just before the first measurement
@@ -888,7 +889,8 @@ class QEngine : public IDisplay, public IJSON {
         if (this->can_sample) {
             std::map<idx, idx> used_dits; // records the c <- q map
             bool measured = false;
-            for (idx i = first_measurement_pos; i < num_steps; ++i) {
+            for (idx i = first_measurement_discard_reset_pos; i < num_steps;
+                 ++i) {
                 if (internal::is_projective_measurement(steps[i])) {
                     measured = true;
                     auto [_, target, c_regs] =
@@ -919,7 +921,8 @@ class QEngine : public IDisplay, public IJSON {
                     ++stats_.data()[sample_res];
                 }
                 // execute the last repetition, so we can compute the state psi
-                for (idx i = first_measurement_pos; i < num_steps; ++i) {
+                for (idx i = first_measurement_discard_reset_pos; i < num_steps;
+                     ++i) {
                     execute(steps[i]);
                 }
                 std::vector<idx> m_res = get_dits();
@@ -932,7 +935,8 @@ class QEngine : public IDisplay, public IJSON {
                 // sets the state of the engine to the entry state
                 st_ = current_engine_state;
                 bool measured = false;
-                for (idx i = first_measurement_pos; i < num_steps; ++i) {
+                for (idx i = first_measurement_discard_reset_pos; i < num_steps;
+                     ++i) {
                     if (internal::is_measurement(steps[i])) {
                         measured = true;
                     }

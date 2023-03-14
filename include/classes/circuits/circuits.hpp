@@ -5082,7 +5082,14 @@ inline QCircuit random_circuit_depth(
 }
 
 namespace internal {
-// true if the circuit step is a projective measurement step, false otherwise
+/**
+ * \brief True if the quantum circuit step is a projective measurement step,
+ * false otherwise
+ *
+ * \param elem Quantum circuit step
+ * \return True if the quantum circuit step is a projective measurement step,
+ * false otherwise
+ */
 inline bool
 is_projective_measurement(const QCircuit::iterator::value_type& elem) {
     if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
@@ -5099,14 +5106,26 @@ is_projective_measurement(const QCircuit::iterator::value_type& elem) {
     return false;
 }
 
-// true if the circuit iterator points to a measurement step, false
-// otherwise
+/**
+ * \brief True if the quantum circuit iterator points to a measurement step,
+ * false otherwise
+ *
+ * \param it Quantum circuit iterator
+ * \return True if the quantum circuit iterator points to a measurement step,
+ * false otherwise
+ */
 inline bool is_projective_measurement(QCircuit::iterator it) {
     return is_projective_measurement(*it);
 }
 
-// true if the circuit step is a measurement (projective or not), false
-// otherwise
+/**
+ * \brief True if the quantum circuit step is a measurement step (projective or
+ * not), false otherwise
+ *
+ * \param elem Quantum circuit step
+ * \return True if the quantum circuit step is a measurement step (projective or
+ * not), false otherwise
+ */
 inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
     if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
         switch (elem.measurements_ip_->measurement_type_) {
@@ -5122,13 +5141,24 @@ inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
     return is_projective_measurement(elem);
 }
 
-// true if the circuit iterator points to a measurement step (projective or not)
-// false otherwise
+/**
+ * \brief True if the quantum circuit iterator points to a measurement step
+ * (projective or not), false otherwise
+ *
+ * \param it Quantum circuit iterator
+ * \return True if the quantum circuit iterator points to a measurement step
+ * (projective or not), false otherwise
+ */
 inline bool is_measurement(QCircuit::iterator it) {
     return is_measurement(*it);
 }
 
-// true if the circuit step is a discard step, false otherwise
+/**
+ * \brief True if the quantum circuit step is a discard step, false otherwise
+ *
+ * \param elem Quantum circuit step
+ * \return True if the quantum circuit step is a discard step, false otherwise
+ */
 inline bool is_discard(const QCircuit::iterator::value_type& elem) {
     if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
         switch (elem.measurements_ip_->measurement_type_) {
@@ -5142,20 +5172,76 @@ inline bool is_discard(const QCircuit::iterator::value_type& elem) {
     return false;
 }
 
-// true if the circuit iterator points to a discard step, false otherwise
+/**
+ * \brief True if the quantum circuit iterator points to a discard step, false
+ * otherwise
+ *
+ * \param it Quantum circuit iterator
+ * \return True if the quantum circuit iterator points to a discard step, false
+ * otherwise
+ */
 inline bool is_discard(QCircuit::iterator it) { return is_discard(*it); }
 
-// true if the circuit step is a cCTRL step
+/**
+ * \brief True if the quantum circuit step is a reset step, false otherwise
+ *
+ * \param elem Quantum circuit step
+ * \return True if the quantum circuit step is a reset step, false otherwise
+ */
+inline bool is_reset(const QCircuit::iterator::value_type& elem) {
+    if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
+        switch (elem.measurements_ip_->measurement_type_) {
+            case QCircuit::MeasureType::RESET:
+            case QCircuit::MeasureType::RESET_MANY:
+                return true;
+            default:
+                break;
+        }
+    }
+    return false;
+}
+
+/**
+ * \brief True if the quantum circuit iterator points to a reset step, false
+ * otherwise
+ *
+ * \param it Quantum circuit iterator
+ * \return True if the quantum circuit iterator points to a reset step, false
+ * otherwise
+ */
+inline bool is_reset(QCircuit::iterator it) { return is_reset(*it); }
+
+/**
+ * \brief True if the quantum circuit step is a classical CTRL step, false
+ * otherwise
+ *
+ * \param elem Quantum circuit step
+ * \return True if the quantum circuit step is a classical CTRL step, false
+ * otherwise
+ */
 inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
     return (elem.type_ == QCircuit::StepType::GATE &&
             QCircuit::is_cCTRL(*(elem).gates_ip_));
 }
 
-// true if the iterator points to a cCTRL step
+/**
+ * \brief True if the quantum circuit iterator points to a classical CTRL step,
+ * false otherwise
+ *
+ * \param it Quantum circuit iterator
+ * \return True if the quantum circuit iterator points to a classical CTRL step,
+ * false otherwise
+ */
 inline bool is_cCTRL(QCircuit::iterator it) { return is_cCTRL(*it); }
 
-// extracts ctrl/target/c_reg vectors (in this order) from a circuit step,
-// as a tuple
+/**
+ * \brief Extracts ctrl, target, and c_reg vectors (in this order) from a
+ * quantum circuit step, as a tuple
+ *
+ * \param elem Quantum circuit step
+ * \return Tuple with vectors representing (in this order) ctrl, target, and
+ * c_reg, respectively
+ */
 inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>>
 extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
     std::vector<idx> ctrl, target, c_reg;
@@ -5207,15 +5293,27 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
     return {ctrl, target, c_reg};
 }
 
-// extracts ctrl/target/c_reg vectors (in this order) from a circuit
-// iterator, as a tuple
+/**
+ * \brief Extracts ctrl, target, and c_reg vectors (in this order) from a
+ * quantum circuit iterator, as a tuple
+ *
+ * \param it Quantum circuit iterator
+ * \return Tuple with vectors representing (in this order) ctrl, target, and
+ * c_reg, respectively
+ */
 inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>>
 extract_ctrl_target_c_reg(QCircuit::iterator it) {
     return extract_ctrl_target_c_reg(*it);
 }
 
-// true if two circuit steps (assumed added via the QCircuit API) can be
-// swapped
+/**
+ * \brief True if two quantum circuit steps (assumed added via the qpp::QCircuit
+ * API) can be swapped, false otherwise
+ *
+ * \param elem1 Quantum circuit step
+ * \param elem2 Quantum circuit step
+ * \return True if two quantum circuit steps can be swapped, false otherwise
+ */
 inline bool can_swap(const QCircuit::iterator::value_type& elem1,
                      const QCircuit::iterator::value_type& elem2) {
 
@@ -5240,13 +5338,27 @@ inline bool can_swap(const QCircuit::iterator::value_type& elem1,
     return true;
 }
 
-// true if two circuit steps (assumed added via the QCircuit API) can be
-// swapped
+/**
+ * \brief True if two quantum circuit steps (assumed added via the qpp::QCircuit
+ * API) can be swapped, false otherwise
+ *
+ * \param it1 Quantum circuit iterator pointing to a quantum circuit step
+ * \param it2 Quantum circuit iterator pointing to a quantum circuit step
+ * \return True if two quantum circuit steps can be swapped, false otherwise
+ */
 inline bool can_swap(QCircuit::iterator it1, QCircuit::iterator it2) {
     return can_swap(*it1, *it2);
 }
 
-// circuit as a vector of iterators to steps
+/**
+ * \brief Converts a quantum (sub)-circuit description to a vector of quantum
+ * circuit iterators
+ *
+ * \param start Quantum circuit iterator pointing to the first element
+ * \param finish Quantum circuit iterator pointing to the last element (not
+ * included)
+ * \return Vector of quantum circuit iterators
+ */
 inline std::vector<QCircuit::iterator>
 circuit_as_iterators(QCircuit::iterator start, QCircuit::iterator finish) {
     std::vector<QCircuit::iterator> steps; // circuit steps (as iterators)
@@ -5257,14 +5369,29 @@ circuit_as_iterators(QCircuit::iterator start, QCircuit::iterator finish) {
     return steps;
 }
 
-// circuit as a vector of iterators to steps
+/**
+ * \brief Converts a quantum (sub)-circuit description to a vector of quantum
+ * circuit iterators
+ *
+ * \param qc Quantum circuit description
+ * \return Vector of quantum circuit iterators
+ */
 inline std::vector<QCircuit::iterator>
 circuit_as_iterators(const QCircuit& qc) {
     return circuit_as_iterators(qc.begin(), qc.end());
 }
 
-// starting with the first measurement step from the circuit range [start,
-// finish), pushes all measurements and cCTRLs at the end of the circuit
+/**
+ * \brief Puts a quantum (sub)-circuit description in the canonical form, i.e.,
+starting with the first measurement step from the circuit range [start, finish),
+ * pushes all measurements and cCTRLs at the end of the circuit
+ *
+ * \param start Quantum circuit iterator pointing to the first element
+ * \param finish Quantum circuit iterator pointing to the last element (not
+ * included)
+ * \return Quantum circuit canonical form represented as a vector of quantum
+circuit iterators
+ */
 inline std::vector<QCircuit::iterator>
 canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
     auto first_measurement_it = std::find_if(
@@ -5318,7 +5445,15 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
     return steps_before_measurement;
 }
 
-// push all measurements and cCTRLs at the end of the circuit
+/**
+ * \brief Puts a quantum (sub)-circuit description in the canonical form, i.e.,
+ * starting with the first measurement step of the quantum circuit, pushes all
+ * measurements and cCTRLs at the end of the circuit
+ *
+ * \param qc Quantum circuit description
+ * \return Quantum circuit canonical form represented as a vector of quantum
+ * circuit iterators
+ */
 inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
     return canonical_form(qc.begin(), qc.end());
 }
