@@ -448,7 +448,7 @@ PYBIND11_MODULE(pyqpp, m) {
                  py::overload_cast<const std::vector<idx>&, idx, bool,
                                    std::string>(&QCircuit::measure),
                  "Z measurement of multiple qudits", py::arg("target"),
-                 py::arg("c_reg"), py::arg("destructive") = true,
+                 py::arg("c_reg") = 0, py::arg("destructive") = true,
                  py::arg("name") = "")
             .def("measure_all", &QCircuit::measure_all,
                  "Z measurement of all qudits", py::arg("c_reg") = 0,
@@ -653,8 +653,8 @@ PYBIND11_MODULE(pyqpp, m) {
             "get_stats",
             [](const QEngine& qe) {
                 std::map<std::string, idx> result;
-                const auto& stats = qe.get_stats().data();
-                for (auto&& elem : stats) {
+                const auto& stats = qe.get_stats();
+                for (auto&& elem : stats.data()) {
                     std::stringstream ss;
                     ss << qpp::disp(elem.first, "", "", "");
                     result[ss.str()] = elem.second;

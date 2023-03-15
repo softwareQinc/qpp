@@ -41,8 +41,7 @@ qc.CTRL(gates.X, 1, 2)
 # perform the Bell measurement between qubits 0 and 1
 qc.CTRL(gates.X, 0, 1)
 qc.gate(gates.H, 0)
-qc.measureZ(0, 0)
-qc.measureZ(1, 1)
+qc.measure([0, 1])
 
 # apply the classical controls
 qc.cCTRL(gates.X, 1, 2)

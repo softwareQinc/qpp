@@ -242,12 +242,12 @@ TEST(qpp_QCircuit_measureV, JointMultipleTargets) {}
 ///       bool destructive = true, std::string name = {})
 TEST(qpp_QCircuit_measureV, SingleTarget) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::measure(const std::vector<idx>& target, idx c_reg,
-///       bool destructive = true, std::string name = {})
+/// BEGIN QCircuit& QCircuit::measure(const std::vector<idx>& target,
+///       idx c_reg = 0, bool destructive = true, std::string name = {})
 TEST(qpp_QCircuit_measure, MultipleTargets) {}
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::measureZ(idx target,
-///       idx c_reg, bool destructive = true, std::string name = {})
+/// BEGIN QCircuit& QCircuit::measure(idx target, idx c_reg,
+///       bool destructive = true, std::string name = {})
 TEST(qpp_QCircuit_measure, SingleTarget) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::measure_all(idx c_reg = 0,

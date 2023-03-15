@@ -53,7 +53,7 @@ class QEngine : public IDisplay, public IJSON {
          * \brief Measurement/sampling statistics
          */
         using stats_t_ = std::map<std::vector<idx>, idx>;
-        mutable stats_t_ stats_{}; ///< statistics data
+        mutable stats_t_ stats_data_{}; ///< statistics data
 
       public:
         /**
@@ -66,7 +66,7 @@ class QEngine : public IDisplay, public IJSON {
          *
          * \param stats Instance of qpp::QEngine::Statistics
          */
-        explicit Statistics(stats_t_ stats) : stats_{std::move(stats)} {}
+        explicit Statistics(stats_t_ stats) : stats_data_{std::move(stats)} {}
 
         /**
          * \brief Number of samples
@@ -75,7 +75,7 @@ class QEngine : public IDisplay, public IJSON {
          */
         idx get_num_reps() const {
             idx result = 0;
-            for (auto&& [_, val] : stats_) {
+            for (auto&& [_, val] : stats_data_) {
                 result += val;
             }
             return result;
@@ -86,14 +86,14 @@ class QEngine : public IDisplay, public IJSON {
          *
          * \return Number of distinct outcomes
          */
-        idx get_num_outcomes() const { return stats_.size(); }
+        idx get_num_outcomes() const { return stats_data_.size(); }
 
         /**
          * \brief Raw data structure representing the statistics
          *
          * \return Raw data structure representing the statistics
          */
-        stats_t_& data() const& { return stats_; }
+        stats_t_& data() const& { return stats_data_; }
 
         /**
          * \brief qpp::IJSON::to_JSON() override
@@ -119,7 +119,7 @@ class QEngine : public IDisplay, public IJSON {
             std::string sep{};
             ss << "\"outcomes\": ";
             ss << "{";
-            for (auto&& [key, val] : stats_) {
+            for (auto&& [key, val] : stats_data_) {
                 ss << sep << "\"" << disp(key, ", ") << "\": " << val;
                 if (is_first) {
                     is_first = false;
@@ -151,7 +151,7 @@ class QEngine : public IDisplay, public IJSON {
             os << "\tnum_outcomes: " << get_num_outcomes() << '\n';
             bool is_first = true;
             std::string sep{};
-            for (auto&& [key, val] : stats_) {
+            for (auto&& [key, val] : stats_data_) {
                 os << sep << '\t' << disp(key, " ") << ": " << val;
                 if (is_first) {
                     is_first = false;
@@ -446,8 +446,7 @@ class QEngine : public IDisplay, public IJSON {
     QEngine::Statistics get_stats() const { return stats_; }
 
     /**
-     * \brief Determines if engines derived from \a qpp
-     * ::QEngine are noisy or
+     * \brief Determines if engines derived from \a qpp::QEngine are noisy or
      * not at runtime
      *
      * \return True if the engine is noisy, false otherwise
