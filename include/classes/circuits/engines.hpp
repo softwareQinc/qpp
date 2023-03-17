@@ -846,12 +846,8 @@ class QEngine : public IDisplay, public IJSON {
 
         idx num_steps = steps.size();
 
-        //        for (auto&& elem : steps)
-        //            std::cout << *elem << std::endl;
-        //        std::cout << std::endl;
-
         // in the following, we will partition the circuit as
-        // [0 ... first_measurement_pos ... sampling_pos ... end)
+        // [0 ... first_measurement_discard_reset_pos ... end)
 
         // find the position of the first measurement/reset/discard step
         auto first_measurement_discard_reset_it =
