@@ -1,4 +1,4 @@
-Version 4.0-rc2 - 14 March 2023
+Version 4.0 - 20 March 2023
     - Major performance improvement in qpp::QEngine::execute(), which now takes
       a second default argument 'bool try_sampling = true'; if possible, the
       engine will sample from the output of the circuit instead of executing
