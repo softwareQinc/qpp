@@ -3382,7 +3382,7 @@ class QCircuit : public IDisplay, public IJSON {
     // measurement of multiple qudits in the orthonormal basis or rank-1
     // projectors specified by the columns of matrix V
     /**
-     * \brief Joint measures multiple qudits in the orthonormal basis or
+     * \brief Jointly measures multiple qudits in the orthonormal basis or
      * rank-1 projectors specified by the columns of matrix \a V
      *
      * \param V Orthonormal basis or rank-1 projectors specified by the
