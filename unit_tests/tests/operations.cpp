@@ -294,9 +294,8 @@ TEST(qpp_ptranspose, Qudits) {}
 ///       const std::vector<idx>& target, idx d = 2)
 TEST(qpp_ptranspose, Qubits) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> dyn_col_vect<typename Derived::Scalar>
-///       QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
-///       bool swap = true)
+/// BEGIN template <typename Derived> expr_t<Derived>
+///       QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true)
 TEST(qpp_QFT, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_col_vect<typename Derived::Scalar>
@@ -320,7 +319,7 @@ TEST(qpp_syspermute, Qudits) {}
 ///       const std::vector<idx>& perm, idx d = 2)
 TEST(qpp_syspermute, Qubits) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> dyn_col_vect<typename Derived::Scalar>
+/// BEGIN template <typename Derived> expr_t<Derived>
 ///       TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true)
 TEST(qpp_TFQ, AllTests) {}
 /******************************************************************************/

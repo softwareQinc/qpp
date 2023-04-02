@@ -1,5 +1,5 @@
 Pre-release
-    - 
+    - Bugfix in qpp::QFT()/TFQ() when applied to density matrices
 
 Version 4.0 - 20 March 2023
     - Major performance improvement in qpp::QEngine::execute(), which now takes
