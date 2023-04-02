@@ -1,7 +1,7 @@
 import subprocess
 import sys
 from setuptools import setup
-from libs.pybind11.setup_helpers import Pybind11Extension
+from pybind11.setup_helpers import Pybind11Extension
 
 p = subprocess.Popen("cmake pyqpp",
                      shell=True,
