@@ -1,7 +1,8 @@
 import subprocess
 import sys
-from setuptools import setup
+
 from pybind11.setup_helpers import Pybind11Extension
+from setuptools import setup
 
 p = subprocess.Popen("cmake pyqpp",
                      shell=True,
@@ -43,8 +44,4 @@ setup(
     url='https://github.com/softwareQinc/qpp',
     license='MIT',
     platforms=sys.platform,
-    install_requires=[
-        'pybind11',
-        'numpy',
-    ],
     ext_modules=ext_modules)
