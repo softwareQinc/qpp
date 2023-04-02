@@ -21,7 +21,7 @@ RUN mkdir -p softwareq/qpp/notebooks
 WORKDIR softwareq/qpp
 COPY . .
 
-RUN pip3 install jupyter
+RUN pip3 install jupyter matplotlib numpy
 RUN pip3 install git+https://github.com/softwareqinc/qpp
 
 WORKDIR /src/notebooks

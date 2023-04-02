@@ -2454,9 +2454,9 @@ template <typename Derived>
  * \return Qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
-dyn_col_vect<typename Derived::Scalar> QFT(const Eigen::MatrixBase<Derived>& A,
-                                           idx d = 2, bool swap = true) {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+expr_t<Derived> QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
+                    bool swap = true) {
+    const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -2502,9 +2502,9 @@ dyn_col_vect<typename Derived::Scalar> QFT(const Eigen::MatrixBase<Derived>& A,
  * \return Inverse (adjoint) qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
-dyn_col_vect<typename Derived::Scalar> TFQ(const Eigen::MatrixBase<Derived>& A,
+expr_t<Derived> TFQ(const Eigen::MatrixBase<Derived>& A,
                                            idx d = 2, bool swap = true) {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+    expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
 

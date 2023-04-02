@@ -8,6 +8,8 @@ import qutip
 import sys
 import timeit
 
+from qutip.qip.circuit import QubitCircuit
+
 if len(sys.argv) != 3:
     sys.exit("Please specify the maximum number of cores and qubits!")
 
@@ -40,7 +42,7 @@ def qft_gate_sequence(n=1, swapping=True):
     if n < 1:
         raise ValueError("Minimum value of n can be 1")
 
-    qc = qutip.QubitCircuit(n)
+    qc = QubitCircuit(n)
     if n == 1:
         qc.add_gate("SNOT", targets=[0])
     else:
