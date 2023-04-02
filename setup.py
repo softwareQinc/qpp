@@ -44,6 +44,7 @@ setup(
     license='MIT',
     platforms=sys.platform,
     install_requires=[
+        'pybind11',
         'numpy',
     ],
     ext_modules=ext_modules)
