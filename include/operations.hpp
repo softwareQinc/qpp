@@ -2504,7 +2504,7 @@ expr_t<Derived> QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
 template <typename Derived>
 expr_t<Derived> TFQ(const Eigen::MatrixBase<Derived>& A,
                                            idx d = 2, bool swap = true) {
-    expr_t<Derived>& rA = A.derived();
+    const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
