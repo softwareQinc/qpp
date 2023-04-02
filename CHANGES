@@ -1,4 +1,5 @@
-Pre-release
+Version 4.0.1 - 2 April 2023
+    - This is a maintenance release with minor changes
     - Bugfix in qpp::QFT()/TFQ() when applied to density matrices
 
 Version 4.0 - 20 March 2023
