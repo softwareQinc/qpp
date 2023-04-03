@@ -2,4 +2,5 @@
 requires = [
     "setuptools>=42",
     "pybind11>=2.10.0",
+    "wheel"
 ]
