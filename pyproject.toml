@@ -5,3 +5,4 @@ requires = [
     "numpy",
     "wheel"
 ]
+build-backend = "setuptools.build_meta"
