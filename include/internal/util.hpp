@@ -366,22 +366,23 @@ inline idx get_num_subsys(idx D, idx d) {
     assert(D > 0);
     assert(d > 1);
 
-    return static_cast<idx>(std::llround(std::log2(D) / std::log2(d)));
+    auto n = static_cast<idx>(std::llround(std::log2(D) / std::log2(d)));
+    return n;
 }
 
 // returns the dimension of a subsystem (each subsystem assumed of the same
-// dimension d) from an object (ket/bra/matrix) of size sz consisting of N
+// dimension d) from an object (ket/bra/matrix) of size D consisting of n
 // subsystems
-inline idx get_dim_subsys(idx sz, idx N) {
+inline idx get_dim_subsys(idx D, idx n) {
     // error checks only in DEBUG version
-    assert(N > 0);
-    assert(sz > 0);
+    assert(n > 0);
+    assert(D > 0);
 
-    if (N == 2)
-        return static_cast<idx>(std::llround(std::sqrt(sz)));
+    auto d = (n == 2) ? static_cast<idx>(std::llround(std::sqrt(D)))
+                      : static_cast<idx>(std::llround(
+                            std::pow(D, 1. / static_cast<double>(n))));
 
-    return static_cast<idx>(
-        std::llround(std::pow(sz, 1. / static_cast<double>(N))));
+    return d;
 }
 
 // chops a floating point or complex number to zero
@@ -417,7 +418,7 @@ struct Display_Impl_ {
 
         for (idx i = 0; i < static_cast<idx>(A.rows()); ++i) {
             for (idx j = 0; j < static_cast<idx>(A.cols()); ++j) {
-                str.clear(); // clear the temporary string
+                str.clear();             // clear the temporary string
                 ostr.clear();
                 ostr.str(std::string{}); // clear the ostringstream
 

@@ -320,6 +320,11 @@ TEST(qpp_adjoint, QCircuitAllTests) {}
 /// BEGIN inline QCircuit kron(QCircuit qc1, const QCircuit& qc2)
 TEST(qpp_kron, QCircuitAllTests) {}
 /******************************************************************************/
+/// BEGIN inline QCircuit qpe_circuit(cmat U, qpp::idx n,
+///       bool omit_measurements = true, idx d = 2,
+///       const std::string& name = "qpe")
+TEST(qpp_qpe_circuit, AllTests) {}
+/******************************************************************************/
 /// BEGIN inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
 ///       const std::vector<idx>& target, idx pos_dit = -1)
 TEST(qpp_match_circuit_left, AllTests) {}

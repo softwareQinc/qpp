@@ -169,7 +169,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
                 }
 #ifdef HAS_OPENMP
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif        // HAS_OPENMP
                 { out_state += current_ket; }
             } // end if(overlap_ket)
         }     // end for
@@ -220,7 +220,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
                         }
 #ifdef HAS_OPENMP
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif                // HAS_OPENMP
                         { out_state += cA(i, j) * current_ket * current_bra; }
                     } // end if(overlap_bra)
                 }     // end for(all bras)
