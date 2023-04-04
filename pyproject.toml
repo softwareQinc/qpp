@@ -2,7 +2,26 @@
 requires = [
     "pybind11>=2.10.0",
     "setuptools>=42",
-    "numpy",
-    "wheel"
+    "wheel",
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyqpp"
+version = "4.0.1"
+description = "Python 3 wrapper for Quantum++"
+authors = [
+    {name = "softwareQ Inc.", email = "info@softwareq.ca"},
+]
+readme = "pyqpp/README.md"
+license = {text = "MIT"}
+dependencies = [
+    "numpy",
+]
+
+[project.urls]
+homepage = "https://github.com/softwareqinc/staq"
+repository = "https://github.com/softwareqinc/staq.git"
+
+[tool.setuptools]
+py-modules = []
