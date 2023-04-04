@@ -315,10 +315,15 @@ TEST(qpp_QCircuit_to_JSON, AllTests) {}
 TEST(qpp_add_circuit, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit adjoint(QCircuit qc)
-TEST(qpp_adjoint, QCircuitAllTests) {}
+TEST(qpp_adjoint, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit kron(QCircuit qc1, const QCircuit& qc2)
-TEST(qpp_kron, QCircuitAllTests) {}
+TEST(qpp_kron, AllTests) {}
+/******************************************************************************/
+/// BEGIN inline QCircuit qpe_circuit(cmat U, qpp::idx n,
+///       bool omit_measurements = true, idx d = 2,
+///       const std::string& name = "qpe")
+TEST(qpp_qpe_circuit, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
 ///       const std::vector<idx>& target, idx pos_dit = -1)

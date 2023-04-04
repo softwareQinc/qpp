@@ -51,9 +51,9 @@ class Dynamic_bitset : public IDisplay {
     using value_type = unsigned int; ///< type of the storage elements
     using storage_type = std::vector<value_type>; ///< type of the storage
   protected:
-    idx storage_size_;          ///< storage size
-    idx n_;                     ///< number of bits
-    std::vector<value_type> v_; ///< storage space
+    idx storage_size_;                            ///< storage size
+    idx n_;                                       ///< number of bits
+    std::vector<value_type> v_;                   ///< storage space
 
     /**
      * \brief Index of the \a pos bit in the storage space

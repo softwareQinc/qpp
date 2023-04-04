@@ -241,7 +241,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
             cmat tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized;
             probs[i] = std::abs(trace(tmp));        // probability
             if (probs[i] > 0) {
-                outstates[i] = tmp / probs[i]; // normalized
+                outstates[i] = tmp / probs[i];      // normalized
             }
         }
     }

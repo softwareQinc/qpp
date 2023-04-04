@@ -1,3 +1,7 @@
+Pre-release
+    - Implemented ["classes/circuits/circuits.hpp"]
+          qpp::qpe_circuit() - Quantum phase estimation circuit
+
 Version 4.0.1 - 2 April 2023
     - This is a maintenance release with minor changes
     - Updated pybind11 to version 2.10.4

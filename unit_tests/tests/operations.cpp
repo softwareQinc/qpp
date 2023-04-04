@@ -100,15 +100,15 @@ TEST(qpp_apply, SubsysChannelQubits) {}
 TEST(qpp_applyCTRL, Qudits) {
     idx d = 3;
     idx n = 4;
-    std::vector<idx> dims(n, d); // 4 qutrits
-    idx D = prod(dims);          // total dimension
+    std::vector<idx> dims(n, d);   // 4 qutrits
+    idx D = prod(dims);            // total dimension
 
     std::vector<idx> ctrl{0, 2};   // control
     std::vector<idx> target{1, 3}; // target
 
-    idx Dtarget = 1; // dimension of the target subsystems
+    idx Dtarget = 1;               // dimension of the target subsystems
     for (auto i : target)
-        Dtarget *= dims[i]; // compute it here
+        Dtarget *= dims[i];        // compute it here
 
     // ket
     ket psi = mket({2, 1, 2, 1}, d);
@@ -174,8 +174,8 @@ TEST(qpp_applyCTRL, Qubits) {}
 TEST(qpp_applyCTRL_fan, Qudits) {
     idx d = 3;
     idx n = 4;
-    std::vector<idx> dims(n, d); // 4 qutrits
-    idx D = prod(dims);          // total dimension
+    std::vector<idx> dims(n, d);   // 4 qutrits
+    idx D = prod(dims);            // total dimension
 
     std::vector<idx> ctrl{0, 2};   // control
     std::vector<idx> target{1, 3}; // target

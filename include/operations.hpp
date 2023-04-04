@@ -107,9 +107,9 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     idx n = dims.size();                     // total number of subsystems
     idx DA = static_cast<idx>(rA.rows());    // dimension of gate subsystem
 
-    idx Cdims[internal::maxn];      // local dimensions total
-    idx CdimsA[internal::maxn];     // local dimensions gate
-    idx CdimsA_bar[internal::maxn]; // local dimensions complement
+    idx Cdims[internal::maxn];               // local dimensions total
+    idx CdimsA[internal::maxn];              // local dimensions gate
+    idx CdimsA_bar[internal::maxn];          // local dimensions complement
 
     // compute the complementary subsystem of gate w.r.t. dims
     std::vector<idx> gate_bar = complement(target, n);
@@ -1192,7 +1192,7 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             }
 
             return sm;
-        }; /* end worker */
+        };                                    /* end worker */
 
         for (idx j = 0; j < Dsubsys_bar; ++j) // column major order for speed
         {
@@ -1249,7 +1249,7 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             }
 
             return sm;
-        }; /* end worker */
+        };                                    /* end worker */
 
         for (idx j = 0; j < Dsubsys_bar; ++j) // column major order for speed
         {
@@ -1882,7 +1882,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 #ifdef HAS_OPENMP
 // NOLINTNEXTLINE
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif    // HAS_OPENMP
             { result += kron(psi_i, phi_i_bra); }
         } // end for(i)
 
@@ -2172,7 +2172,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 #ifdef HAS_OPENMP
 // NOLINTNEXTLINE
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif    // HAS_OPENMP
             { result += kron(psi_i, phi_i_bra); }
         } // end for(i)
 
@@ -2502,8 +2502,8 @@ expr_t<Derived> QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
  * \return Inverse (adjoint) qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
-expr_t<Derived> TFQ(const Eigen::MatrixBase<Derived>& A,
-                                           idx d = 2, bool swap = true) {
+expr_t<Derived> TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2,
+                    bool swap = true) {
     const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS

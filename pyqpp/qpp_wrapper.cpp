@@ -580,6 +580,10 @@ PYBIND11_MODULE(pyqpp, m) {
           static_cast<QCircuit (*)(QCircuit, const QCircuit&)>(&qpp::kron),
           "Kronecker product between two quantum circuit descriptions",
           py::arg("qc1"), py::arg("qc2"));
+    m.def("qpe_circuit", &qpp::qpe_circuit,
+          "Quantum phase estimation circuit with n bits of precision",
+          py::arg("U"), py::arg("n"), py::arg("omit_measurements") = true,
+          py::arg("d") = 2, py::arg("name") = "qpe");
     m.def("match_circuit_left", &qpp::match_circuit_left,
           "Matches the second quantum circuit description to the left "
           "(beginning) of the first one",

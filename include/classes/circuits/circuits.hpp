@@ -49,7 +49,7 @@ class QCircuit : public IDisplay, public IJSON {
     std::string name_; ///< optional circuit name
 
     std::vector<bool>
-        measured_; ///< keeps track of the destructively measured qudits
+        measured_;    ///< keeps track of the destructively measured qudits
     std::vector<bool>
         measured_nd_; ///< keeps track of the non-destructively measured qudits
     std::vector<bool> clean_qudits_; ///< keeps track of clean (unused) qudits
@@ -64,7 +64,7 @@ class QCircuit : public IDisplay, public IJSON {
                           ///< with [Key = std::size_t, Value = cmat]
     std::unordered_map<std::size_t, idx> gate_count_{}; ///< gate counts
     std::unordered_map<std::size_t, idx>
-        measurement_count_{}; ///< measurement counts
+        measurement_count_{};                           ///< measurement counts
 
     /**
      * \brief Adds matrix to the hash table
@@ -95,23 +95,23 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Type of gate being executed in a gate step
      */
     enum class GateType {
-        NONE, ///< represents no gate
+        NONE,      ///< represents no gate
 
-        SINGLE, ///< unitary gate on a single qudit
+        SINGLE,    ///< unitary gate on a single qudit
 
-        TWO, ///< unitary gate on 2 qudits
+        TWO,       ///< unitary gate on 2 qudits
 
-        THREE, ///< unitary gate on 3 qudits
+        THREE,     ///< unitary gate on 3 qudits
 
-        JOINT, ///< joint gate on multiple qudits
+        JOINT,     ///< joint gate on multiple qudits
 
-        FAN, ///< the same unitary gate on multiple qudits
+        FAN,       ///< the same unitary gate on multiple qudits
 
-        CTRL, ///< controlled unitary gate with joint target
+        CTRL,      ///< controlled unitary gate with joint target
 
-        CTRL_FAN, ///< controlled unitary gate with multiple targets
+        CTRL_FAN,  ///< controlled unitary gate with multiple targets
 
-        cCTRL, ///< classically controlled unitary gate with joint target
+        cCTRL,     ///< classically controlled unitary gate with joint target
 
         cCTRL_FAN, ///< classically controlled unitary gate with multiple
                    ///< targets
@@ -240,20 +240,20 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Type of measurement being executed in a measurement step
      */
     enum class MeasureType {
-        NONE, ///< represents no measurement
+        NONE,         ///< represents no measurement
 
-        MEASURE, ///< Z measurement of single qudit
+        MEASURE,      ///< Z measurement of single qudit
 
         MEASURE_MANY, ///< Z measurement of multiple qudits
 
-        MEASURE_V, ///< measurement of single qudit in the orthonormal basis
+        MEASURE_V,    ///< measurement of single qudit in the orthonormal basis
         ///< or rank-1 projectors specified by the columns of matrix \a V
 
         MEASURE_V_JOINT, ///< joint measurement of multiple qudits in the
         ///< orthonormal basis or rank-1 projectors specified by the columns of
         ///< the matrix \a V
 
-        MEASURE_ND, ///< Z measurement of single qudit, non-destructive
+        MEASURE_ND,      ///< Z measurement of single qudit, non-destructive
 
         MEASURE_MANY_ND, ///< Z measurement of multiple qudits, non-destructive
 
@@ -265,11 +265,11 @@ class QCircuit : public IDisplay, public IJSON {
         ///< orthonormal basis or rank-1 projectors specified by the columns of
         ///< the matrix \a V, non-destructive
 
-        RESET, ///< resets single qudit
+        RESET,        ///< resets single qudit
 
-        RESET_MANY, ///< resets multiple qudits
+        RESET_MANY,   ///< resets multiple qudits
 
-        DISCARD, ///< discards single qudit
+        DISCARD,      ///< discards single qudit
 
         DISCARD_MANY, ///< discards multiple qudits
     };
@@ -547,7 +547,7 @@ class QCircuit : public IDisplay, public IJSON {
             StepType type_{StepType::NONE}; ///< step type
             idx ip_{static_cast<idx>(-1)};  ///< instruction pointer
             std::vector<GateStep>::const_iterator
-                gates_ip_{}; ///< gates instruction pointer
+                gates_ip_{};                ///< gates instruction pointer
             std::vector<MeasureStep>::const_iterator
                 measurements_ip_{}; ///< measurements instruction pointer
 
@@ -827,7 +827,7 @@ class QCircuit : public IDisplay, public IJSON {
         using pointer = const value_type*;                   ///< iterator trait
         using reference = const value_type&;                 ///< iterator trait
         using iterator_category = std::forward_iterator_tag; ///< iterator trait
-    }; /* class QCircuit::iterator */
+    };                               /* class QCircuit::iterator */
 
     using const_iterator = iterator; ///< both iterators are const_iterators
 
@@ -2048,7 +2048,7 @@ class QCircuit : public IDisplay, public IJSON {
                     CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "d+");
                 }
-                // apply qudit Fourier on qudit i
+                // apply adjoint qudit Fourier on qudit i
                 gate(qpp::adjoint(Gates::get_no_thread_local_instance().Fd(d_)),
                      target[i], "Fd+");
             }
@@ -4804,7 +4804,7 @@ inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
  * \see qpp::match_circuit_right() and qpp::add_circuit()
  * \see qpp::match_circuit_left() and qpp::add_circuit()
  *
- * \note The matched quantum circuit description \a qc 2cannot be larger
+ * \note The matched quantum circuit description \a qc2 cannot be larger
  * than the \a qc1 quantum circuit description, i.e., all qudit indexes of
  * the added quantum circuit description must match with qudits from the \a
  * qc1 quantum circuit description (and those matched of the latter must
@@ -5077,6 +5077,56 @@ inline QCircuit random_circuit_depth(
         current_depth = gate_has_value ? qc.get_gate_depth(gate_depth)
                                        : qc.get_gate_depth();
     }
+
+    return qc;
+}
+
+/**
+ * \brief Constructs a quantum phase estimation circuit with a \n bits of
+ * precision
+ * \note The number of classical bits will be equal with the number of ancillas
+ *
+ * \param U Unitary matrix
+ * \param n Number of ancilla qubits (translates to number of bits of precision)
+ * \param omit_measurements Optional (true by default); if true, omits
+ * measurements of the ancilla qubits
+ * \param d Subsystem dimensions (optional, default is qubit, i.e., \a d =2)
+ * \param name Optional ("qpe" by default) circuit name
+ * \return Quantum phase estimation circuit with \a n bits of precision
+ */
+inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
+                            idx d = 2, const std::string& name = "qpe") {
+    // EXCEPTION CHECKS
+
+    // check square matrix for the gate
+    if (!internal::check_square_mat(U))
+        throw exception::MatrixNotSquare("qpp::qpe_circuit()", "U");
+
+    auto D = static_cast<idx>(U.rows());
+    idx m = internal::get_num_subsys(D, d);
+    if (static_cast<idx>(std::pow(d, m)) != D)
+        throw exception::MatrixMismatchSubsys("qpp::qpe_circuit()", "U");
+    // END EXCEPTION CHECK
+
+    QCircuit qc{n + m, n, d, name};
+    std::vector<idx> counting_qubits(n);
+    std::iota(counting_qubits.begin(), counting_qubits.end(), 0);
+    std::vector<idx> ancilla(m);
+    std::iota(ancilla.begin(), ancilla.end(), n);
+
+    if (d == 2) {
+        qc.gate_fan(Gates::get_instance().H, counting_qubits);
+    } else {
+        qc.gate_fan(Gates::get_instance().Fd(d), counting_qubits, "Fd");
+    }
+    for (idx i = n; i-- > 0;) {
+        qc.CTRL(U, i, ancilla);
+        U = powm(U, 2);
+    }
+    qc.TFQ(counting_qubits); // inverse Fourier transform
+    // measure many qubits at once, store starting with the 0 classical dit
+    if (!omit_measurements)
+        qc.measure(counting_qubits);
 
     return qc;
 }

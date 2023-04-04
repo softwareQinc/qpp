@@ -285,8 +285,8 @@ class QEngine : public IDisplay, public IJSON {
      * \param qc Quantum circuit description
      */
     explicit QEngine(const QCircuit& qc)
-        : qc_ptr_{std::addressof(qc)}, st_{qc_ptr_}, stats_{}, can_sample{
-                                                                   false} {}
+        : qc_ptr_{std::addressof(qc)}, st_{qc_ptr_}, stats_{},
+          can_sample{false} {}
 
     // silence -Weffc++ class has pointer data members
     /**
