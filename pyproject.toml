@@ -20,8 +20,8 @@ dependencies = [
 ]
 
 [project.urls]
-homepage = "https://github.com/softwareqinc/staq"
-repository = "https://github.com/softwareqinc/staq.git"
+homepage = "https://github.com/softwareqinc/qpp"
+repository = "https://github.com/softwareqinc/qpp.git"
 
 [tool.setuptools]
 py-modules = []
