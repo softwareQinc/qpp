@@ -1,7 +1,9 @@
 Pre-release
     - Implemented ["classes/circuits/circuits.hpp"]
           qpp::qpe_circuit() - Quantum phase estimation circuit
-    - Migrated pyqpp installation to pyproject.toml
+    - Migrated pyqpp installation method to pyproject.toml
+    - Extensive code refactoring, transitioned qpp::QCircuit logic to
+      std::visit() over std::variant
 
 Version 4.0.1 - 2 April 2023
     - This is a maintenance release with minor changes

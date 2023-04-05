@@ -147,6 +147,21 @@ using expr_t = Eigen::Matrix<typename internal::eval_t<Derived>::Scalar,
  */
 using qram = std::vector<idx>;
 
+/**
+ * \brief Variant type-matching utility for std::visit
+ * \tparam Ts Type list
+ */
+template <class... Ts>
+struct overloaded : Ts... {
+    using Ts::operator()...;
+};
+
+/**
+ * \brief Template deduction rule
+ */
+template <class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
+
 } /* namespace qpp */
 
 #endif /* QPP_TYPES_HPP_ */
