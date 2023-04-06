@@ -636,10 +636,9 @@ double concurrence(const Eigen::MatrixBase<Derived>& A) {
     std::vector<double> lambdas_sorted(lambdas.data(),
                                        lambdas.data() + lambdas.size());
 
-    std::sort(std::begin(lambdas_sorted), std::end(lambdas_sorted),
-              std::greater<>());
-    std::transform(std::begin(lambdas_sorted), std::end(lambdas_sorted),
-                   std::begin(lambdas_sorted), [](double elem) {
+    std::sort(lambdas_sorted.begin(), lambdas_sorted.end(), std::greater<>());
+    std::transform(lambdas_sorted.begin(), lambdas_sorted.end(),
+                   lambdas_sorted.begin(), [](double elem) {
                        return std::sqrt(std::abs(elem));
                    }); // chop tiny negatives
 

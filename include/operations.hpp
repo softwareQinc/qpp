@@ -1134,8 +1134,7 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     idx Cmidxcolsubsys_bar[internal::maxn];
 
     std::vector<idx> subsys_bar = complement(target, n);
-    std::copy(std::begin(subsys_bar), std::end(subsys_bar),
-              std::begin(Csubsys_bar));
+    std::copy(subsys_bar.begin(), subsys_bar.end(), std::begin(Csubsys_bar));
 
     for (idx i = 0; i < n; ++i) {
         Cdims[i] = dims[i];
@@ -1761,9 +1760,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         throw exception::MatrixMismatchSubsys("qpp::applyCTRL()", "A/target");
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
-    ctrlgate.insert(std::end(ctrlgate), std::begin(target), std::end(target));
+    ctrlgate.insert(ctrlgate.end(), target.begin(), target.end());
     // FIXME if needed
-    std::sort(std::begin(ctrlgate), std::end(ctrlgate));
+    std::sort(ctrlgate.begin(), ctrlgate.end());
 
     // check that ctrl + gate subsystem is valid
     // with respect to local dimensions
@@ -2049,9 +2048,9 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
                                               "A/target");
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
-    ctrlgate.insert(std::end(ctrlgate), std::begin(target), std::end(target));
+    ctrlgate.insert(ctrlgate.end(), target.begin(), target.end());
     // FIXME if needed
-    std::sort(std::begin(ctrlgate), std::end(ctrlgate));
+    std::sort(ctrlgate.begin(), ctrlgate.end());
 
     // check that ctrl + gate subsystem is valid
     // with respect to local dimensions
@@ -2485,7 +2484,7 @@ expr_t<Derived> QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
     // END EXCEPTION CHECKS
 
     std::vector<idx> subsys(n);
-    std::iota(std::begin(subsys), std::end(subsys), 0);
+    std::iota(subsys.begin(), subsys.end(), 0);
     ket result = applyQFT(rA, subsys, d, swap);
 
     return result;
@@ -2533,7 +2532,7 @@ expr_t<Derived> TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2,
     // END EXCEPTION CHECKS
 
     std::vector<idx> subsys(n);
-    std::iota(std::begin(subsys), std::end(subsys), 0);
+    std::iota(subsys.begin(), subsys.end(), 0);
     ket result = applyTFQ(rA, subsys, d, swap);
 
     return result;
@@ -2578,7 +2577,7 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM) {
     if (data.size() < Din)
         throw exception::DimsInvalid("qpp::qRAM()", "data/psi");
 
-    idx max_val_qRAM = *std::max_element(std::begin(data), std::end(data));
+    idx max_val_qRAM = *std::max_element(data.begin(), data.end());
     if (DqRAM <= max_val_qRAM)
         throw exception::OutOfRange("qpp::qRAM()", "data/DqRAM");
     // END EXCEPTION CHECKS
@@ -2629,7 +2628,7 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data) {
         throw exception::ZeroSize("qpp::qRAM()", "data");
     // END EXCEPTION CHECKS
 
-    idx max_val_qRAM = *std::max_element(std::begin(data), std::end(data));
+    idx max_val_qRAM = *std::max_element(data.begin(), data.end());
 
     return qRAM(psi, data, 1 + max_val_qRAM);
 }

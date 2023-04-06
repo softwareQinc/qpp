@@ -1404,8 +1404,8 @@ n2multiidx(idx n, const std::vector<idx>& dims) {
         throw exception::DimsInvalid("qpp::n2multiidx()", "dims");
     }
 
-    if (n >= std::accumulate(std::begin(dims), std::end(dims),
-                             static_cast<idx>(1), std::multiplies<>())) {
+    if (n >= std::accumulate(dims.begin(), dims.end(), static_cast<idx>(1),
+                             std::multiplies<>())) {
         throw exception::OutOfRange("qpp::n2multiidx()", "n");
     }
     // END EXCEPTION CHECKS
@@ -1463,8 +1463,8 @@ n2multiidx(idx n, const std::vector<idx>& dims) {
 inline ket mket(const std::vector<idx>& mask, const std::vector<idx>& dims) {
     idx n = mask.size();
 
-    idx D = std::accumulate(std::begin(dims), std::end(dims),
-                            static_cast<idx>(1), std::multiplies<>());
+    idx D = std::accumulate(dims.begin(), dims.end(), static_cast<idx>(1),
+                            std::multiplies<>());
 
     // EXCEPTION CHECKS
 
@@ -1548,8 +1548,8 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2) {
 inline cmat mprj(const std::vector<idx>& mask, const std::vector<idx>& dims) {
     idx n = mask.size();
 
-    idx D = std::accumulate(std::begin(dims), std::end(dims),
-                            static_cast<idx>(1), std::multiplies<>());
+    idx D = std::accumulate(dims.begin(), dims.end(), static_cast<idx>(1),
+                            std::multiplies<>());
 
     // EXCEPTION CHECKS
 
@@ -1628,7 +1628,7 @@ inline cmat mprj(const std::vector<idx>& mask, idx d = 2) {
 template <typename InputIterator>
 std::vector<double> abssq(InputIterator first, InputIterator last) {
     std::vector<double> weights(std::distance(first, last));
-    std::transform(first, last, std::begin(weights),
+    std::transform(first, last, weights.begin(),
                    [](cplx z) -> double { return std::norm(z); });
 
     return weights;
@@ -1829,10 +1829,10 @@ inline std::vector<idx> complement(std::vector<idx> subsys, idx n) {
     std::vector<idx> all(n);
     std::vector<idx> subsys_bar(n - subsys.size());
 
-    std::iota(std::begin(all), std::end(all), 0);
-    std::sort(std::begin(subsys), std::end(subsys));
-    std::set_difference(std::begin(all), std::end(all), std::begin(subsys),
-                        std::end(subsys), std::begin(subsys_bar));
+    std::iota(all.begin(), all.end(), 0);
+    std::sort(subsys.begin(), subsys.end());
+    std::set_difference(all.begin(), all.end(), subsys.begin(), subsys.end(),
+                        subsys_bar.begin());
 
     return subsys_bar;
 }

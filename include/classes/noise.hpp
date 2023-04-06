@@ -128,8 +128,7 @@ class NoiseBase {
 
         // now do the actual noise generation
         assert(probs_ != decltype(probs_)(probs_.size(), 0)); // not all zeros
-        std::discrete_distribution<idx> dd{std::begin(probs_),
-                                           std::end(probs_)};
+        std::discrete_distribution<idx> dd{probs_.begin(), probs_.end()};
         auto& gen = RandomDevices::get_instance().get_prng();
         i_ = dd(gen);
         result = apply(state, Ks_[i_], target, D_);
