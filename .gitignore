@@ -19,5 +19,5 @@ doc/
 
 # Misc
 .DS_Store
-_test.cpp
+examples/_*.cpp
 out.tmp
