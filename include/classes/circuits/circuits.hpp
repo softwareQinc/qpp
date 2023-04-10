@@ -532,13 +532,17 @@ class QCircuit : public IDisplay, public IJSON {
      * \note The iterator is a const_iterator by default
      */
     class iterator {
-        struct value_type_ : IDisplay {
+        /**
+         * \class qpp::QCircuit::iterator::value_type_
+         * \brief Value type class for qpp::QCircuit::iterator
+         */
+        class value_type_ : public IDisplay {
             ///< non-owning pointer to the grand-parent const quantum circuit
             ///< description
             const QCircuit* qc_;
             idx ip_;       ///< instruction pointer
             VarStep step_; ///< current circuit step
-
+          public:
             /**
              * \brief Constructor
              *
@@ -561,6 +565,48 @@ class QCircuit : public IDisplay, public IJSON {
              * \return Reference to the current instance
              */
             value_type_& operator=(const value_type_&) = default;
+
+            /**
+             * \brief Equality operator
+             *
+             * \param rhs Instance against which the equality is being tested
+             * \return True if the instances not are equal (bit by bit), false
+             * otherwise
+             */
+            bool operator==(const value_type_& rhs) {
+                return std::tie(qc_, ip_, step_) ==
+                       std::tie(rhs.qc_, rhs.ip_, rhs.step_);
+            }
+
+            /**
+             * \brief Inequality operator
+             *
+             * \param rhs Instance against which the inequality is being tested
+             * \return True if the instances are not equal (bit by bit), false
+             * otherwise
+             */
+            bool operator!=(const value_type_& rhs) { return !(*this == rhs); }
+
+            // getters
+            /**
+             * \brief Pointer to underlying quantum circuit description
+             * \return Pointer to underlying quantum circuit description
+             */
+            const QCircuit* get_qc_ptr() const { return qc_; }
+
+            /**
+             * \brief Current quantum circuit description instruction pointer
+             *
+             * \return Current quantum circuit description instruction pointer
+             */
+            idx get_ip() const { return ip_; }
+
+            /**
+             * \brief Current quantum circuit description step
+             *
+             * \return Current quantum circuit description step
+             */
+            VarStep get_step() const { return step_; }
 
           private:
             std::ostream& display(std::ostream& os) const override {
@@ -606,15 +652,7 @@ class QCircuit : public IDisplay, public IJSON {
 
                 return os;
             }
-        };
-
-      public:
-        // iterator traits
-        using difference_type = std::ptrdiff_t;              ///< iterator trait
-        using value_type = value_type_;                      ///< iterator trait
-        using pointer = const value_type*;                   ///< iterator trait
-        using reference = const value_type&;                 ///< iterator trait
-        using iterator_category = std::forward_iterator_tag; ///< iterator trait
+        }; /* class QCircuit::iterator::value_type_ */
 
       private:
         ///< non-owning pointer to the parent const quantum circuit description
@@ -622,10 +660,25 @@ class QCircuit : public IDisplay, public IJSON {
         idx ip_{static_cast<idx>(-1)}; ///< instruction pointer
 
       public:
+        // iterator traits
+        using value_type = value_type_;                      ///< iterator trait
+        using pointer = const value_type*;                   ///< iterator trait
+        using reference = const value_type&;                 ///< iterator trait
+        using difference_type = std::ptrdiff_t;              ///< iterator trait
+        using iterator_category = std::forward_iterator_tag; ///< iterator trait
+
         /**
          * \brief Default constructor
          */
         iterator() = default;
+
+        /**
+         * \brief Explicit constructor
+         *
+         * \param qc Pointer to underlying quantum circuit description
+         * \param ip Quantum circuit description instruction pointer
+         */
+        explicit iterator(const QCircuit* qc, idx ip) : qc_{qc}, ip_{ip} {}
 
         // silence -Weffc++ class has pointer data members
         /**
@@ -736,47 +789,10 @@ class QCircuit : public IDisplay, public IJSON {
 
             return value_type{qc_, ip_, qc_->circuit_[ip_]};
         }
+    }; /* class QCircuit::iterator */
 
-        /**
-         * \brief Sets the iterator to std::begin(this)
-         *
-         * \param qc Pointer to constant quantum circuit description
-         */
-        void set_begin_(const QCircuit* qc) {
-            qc_ = qc;
-            ip_ = static_cast<idx>(-1);
-            if (qc_ != nullptr && qc_->get_step_count() != 0) {
-                ip_ = 0;
-            }
-        }
-
-        /**
-         * \brief Sets the iterator to std::begin(this)
-         *
-         * \param qc Pointer to constant quantum circuit description
-         */
-        void set_end_(const QCircuit* qc) {
-            qc_ = qc;
-
-            if (qc_ != nullptr && qc->get_step_count() != 0) {
-                ip_ = qc->get_step_count();
-            }
-        }
-    };                               /* class QCircuit::iterator */
-
+  public:
     using const_iterator = iterator; ///< both iterators are const_iterators
-
-    /**
-     * \brief Iterator to the first element
-     *
-     * \return Iterator to the first element
-     */
-    iterator begin() noexcept {
-        iterator it;
-        it.set_begin_(this);
-
-        return it;
-    }
 
     /**
      * \brief Constant iterator to the first element
@@ -784,11 +800,17 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Constant iterator to the first element
      */
     const_iterator begin() const noexcept {
-        iterator it;
-        it.set_begin_(this);
+        idx ip = get_step_count() != 0 ? 0 : static_cast<idx>(-1);
 
-        return it;
+        return const_iterator{this, ip};
     }
+
+    /**
+     * \brief Iterator to the first element
+     *
+     * \return Iterator to the first element
+     */
+    iterator begin() noexcept { return std::as_const(*this).begin(); }
 
     /**
      * \brief Constant iterator to the first element
@@ -796,22 +818,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Constant iterator to the first element
      */
     const_iterator cbegin() const noexcept {
-        iterator it;
-        it.set_begin_(this);
-
-        return it;
-    }
-
-    /**
-     * \brief Iterator to the next to the last element
-     *
-     * \return Iterator to the next to the last element
-     */
-    iterator end() noexcept {
-        iterator it;
-        it.set_end_(this);
-
-        return it;
+        return std::as_const(*this).begin();
     }
 
     /**
@@ -820,23 +827,28 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Constant iterator to the next to the last element
      */
     const_iterator end() const noexcept {
-        iterator it;
-        it.set_end_(this);
+        idx step_count = this->get_step_count();
+        idx ip = static_cast<idx>(-1);
+        if (step_count != 0) {
+            ip = step_count;
+        }
 
-        return it;
+        return const_iterator{this, ip};
     }
+
+    /**
+     * \brief Iterator to the next to the last element
+     *
+     * \return Iterator to the next to the last element
+     */
+    iterator end() noexcept { return std::as_const(*this).end(); }
 
     /**
      * \brief Constant iterator to the next to the last element
      *
      * \return Constant iterator to the next to the last element
      */
-    const_iterator cend() const noexcept {
-        iterator it;
-        it.set_end_(this);
-
-        return it;
-    }
+    const_iterator cend() const noexcept { return std::as_const(*this).end(); }
 
     /**
      * \brief Constructs a quantum circuit description
@@ -1144,7 +1156,7 @@ class QCircuit : public IDisplay, public IJSON {
                            [](const QCircuit::MeasurementStep&) {},
                            [](const QCircuit::NOPStep&) {},
                        },
-                       elem.step_);
+                       elem.get_step());
         } // end for
 
         return found ? *std::max_element(heights.begin(), heights.end()) : 0;
@@ -1259,7 +1271,7 @@ class QCircuit : public IDisplay, public IJSON {
                     },
                     [&](const NOPStep&) {},
                 },
-                elem.step_);
+                elem.get_step());
         } // end for
 
         return found ? *std::max_element(heights.begin(), heights.end()) : 0;
@@ -4534,7 +4546,7 @@ class QCircuit : public IDisplay, public IJSON {
         for (auto&& elem : *this) {
             result += sep;
             sep = ", ";
-            result += "{\"step\": " + std::to_string(elem.ip_) + ", ";
+            result += "{\"step\": " + std::to_string(elem.get_ip()) + ", ";
             result += "\"type\": ";
 
             std::visit(
@@ -4605,7 +4617,7 @@ class QCircuit : public IDisplay, public IJSON {
                         result += std::string{"\"NOP\""} + "}";
                     },
                 },
-                elem.step_);
+                elem.get_step());
         }                // end for
         result += "], "; // end steps
 
@@ -5120,7 +5132,7 @@ is_projective_measurement(const QCircuit::iterator::value_type& elem) {
                    },
                    [&](const QCircuit::NOPStep&) {},
                },
-               elem.step_);
+               elem.get_step());
 
     return result;
 }
@@ -5162,7 +5174,7 @@ inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
                    },
                    [&](const QCircuit::NOPStep&) {},
                },
-               elem.step_);
+               elem.get_step());
 
     return result || is_projective_measurement(elem);
 }
@@ -5200,7 +5212,7 @@ inline bool is_discard(const QCircuit::iterator::value_type& elem) {
                    },
                    [&](const QCircuit::NOPStep&) {},
                },
-               elem.step_);
+               elem.get_step());
 
     return result;
 }
@@ -5236,7 +5248,7 @@ inline bool is_reset(const QCircuit::iterator::value_type& elem) {
                    },
                    [&](const QCircuit::NOPStep&) {},
                },
-               elem.step_);
+               elem.get_step());
 
     return result;
 }
@@ -5268,7 +5280,7 @@ inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
                    [&](const QCircuit::MeasurementStep&) {},
                    [&](const QCircuit::NOPStep&) {},
                },
-               elem.step_);
+               elem.get_step());
 
     return result;
 }
@@ -5298,7 +5310,7 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
     // measurement
     if (is_measurement(elem)) {
         auto current_measurement_step =
-            std::get<QCircuit::MeasurementStep>(elem.step_);
+            std::get<QCircuit::MeasurementStep>(elem.get_step());
 
         ctrl = {};
         target = current_measurement_step.target_;
@@ -5328,7 +5340,7 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
     }
     // cCTRL
     else if (is_cCTRL(elem)) {
-        auto current_gate_step = std::get<QCircuit::GateStep>(elem.step_);
+        auto current_gate_step = std::get<QCircuit::GateStep>(elem.get_step());
 
         ctrl = {};
         target = current_gate_step.target_;
@@ -5337,8 +5349,9 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
     }
     // otherwise
     else {
-        if (std::holds_alternative<QCircuit::GateStep>(elem.step_)) {
-            auto current_gate_step = std::get<QCircuit::GateStep>(elem.step_);
+        if (std::holds_alternative<QCircuit::GateStep>(elem.get_step())) {
+            auto current_gate_step =
+                std::get<QCircuit::GateStep>(elem.get_step());
 
             ctrl = current_gate_step.ctrl_;
             target = current_gate_step.target_;

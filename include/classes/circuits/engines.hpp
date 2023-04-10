@@ -569,7 +569,7 @@ class QEngine : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         // iterator must point to the same quantum circuit description
-        if (elem.qc_ != qc_ptr_)
+        if (elem.get_qc_ptr() != qc_ptr_)
             throw exception::InvalidIterator(
                 "qpp::QEngine::execute()",
                 "Iterator does not point to the same circuit description");
@@ -793,7 +793,7 @@ class QEngine : public IDisplay, public IJSON {
                 },
                 [&](const QCircuit::NOPStep&) {},
             },
-            elem.step_);
+            elem.get_step());
 
         return *this;
     }
@@ -1080,7 +1080,7 @@ class QNoisyEngine : public QEngine {
         for (idx i : target_rel_pos) {
             st_.psi_ = noise_(st_.psi_, i);
             // record the Kraus operator that occurred
-            noise_results_[elem.ip_].emplace_back(noise_.get_last_idx());
+            noise_results_[elem.get_ip()].emplace_back(noise_.get_last_idx());
         }
         // }
         // execute the circuit step
