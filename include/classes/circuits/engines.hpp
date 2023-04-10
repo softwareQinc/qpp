@@ -576,7 +576,7 @@ class QEngine : public IDisplay, public IJSON {
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
-        auto h_tbl = qc_ptr_->get_cmat_hash_tbl_();
+        auto h_tbl = qc_ptr_->get_cmat_hash_tbl();
         idx d = qc_ptr_->get_d();
 
         std::visit(
@@ -588,17 +588,17 @@ class QEngine : public IDisplay, public IJSON {
 
                     // regular gate
                     switch (gate_step.gate_type_) {
-                        case QCircuit::GateType::NONE:
+                        case QCircuit::GateStep::Type::NONE:
                             break;
-                        case QCircuit::GateType::SINGLE:
-                        case QCircuit::GateType::TWO:
-                        case QCircuit::GateType::THREE:
-                        case QCircuit::GateType::JOINT:
+                        case QCircuit::GateStep::Type::SINGLE:
+                        case QCircuit::GateStep::Type::TWO:
+                        case QCircuit::GateStep::Type::THREE:
+                        case QCircuit::GateStep::Type::JOINT:
                             st_.psi_ =
                                 apply(st_.psi_, h_tbl[gate_step.gate_hash_],
                                       target_rel_pos, d);
                             break;
-                        case QCircuit::GateType::FAN:
+                        case QCircuit::GateStep::Type::FAN:
                             for (idx m = 0; m < gate_step.target_.size(); ++m) {
                                 st_.psi_ =
                                     apply(st_.psi_, h_tbl[gate_step.gate_hash_],
@@ -613,7 +613,7 @@ class QEngine : public IDisplay, public IJSON {
                     if (QCircuit::is_CTRL(gate_step)) {
                         ctrl_rel_pos = get_relative_pos_(gate_step.ctrl_);
                         bool is_fan = (gate_step.gate_type_ ==
-                                       QCircuit::GateType::CTRL_FAN);
+                                       QCircuit::GateStep::Type::CTRL_FAN);
                         st_.psi_ =
                             is_fan ? applyCTRL_fan(st_.psi_,
                                                    h_tbl[gate_step.gate_hash_],
@@ -628,7 +628,7 @@ class QEngine : public IDisplay, public IJSON {
                     // classically-controlled gate
                     if (QCircuit::is_cCTRL(gate_step)) {
                         bool is_fan = (gate_step.gate_type_ ==
-                                       QCircuit::GateType::cCTRL_FAN);
+                                       QCircuit::GateStep::Type::cCTRL_FAN);
                         if (!st_.dits_.empty()) {
                             {
                                 bool should_apply = true;
@@ -706,16 +706,16 @@ class QEngine : public IDisplay, public IJSON {
                     std::vector<ket> states;
 
                     switch (measure_step.measurement_type_) {
-                        case QCircuit::MeasurementType::NONE:
+                        case QCircuit::MeasurementStep::Type::NONE:
                             break;
-                        case QCircuit::MeasurementType::MEASURE:
+                        case QCircuit::MeasurementStep::Type::MEASURE:
                             std::tie(results, probs, st_.psi_) =
                                 measure_seq(st_.psi_, target_rel_pos, d);
                             st_.dits_[measure_step.c_reg_] = results[0];
                             st_.probs_[measure_step.c_reg_] = probs[0];
                             set_measured_(measure_step.target_[0]);
                             break;
-                        case QCircuit::MeasurementType::MEASURE_MANY:
+                        case QCircuit::MeasurementStep::Type::MEASURE_MANY:
                             std::tie(results, probs, st_.psi_) =
                                 measure_seq(st_.psi_, target_rel_pos, d);
                             std::copy(results.begin(), results.end(),
@@ -728,7 +728,7 @@ class QEngine : public IDisplay, public IJSON {
                                 set_measured_(target);
                             }
                             break;
-                        case QCircuit::MeasurementType::MEASURE_V:
+                        case QCircuit::MeasurementStep::Type::MEASURE_V:
                             std::tie(mres, probs, states) = measure(
                                 st_.psi_, h_tbl[measure_step.mats_hash_[0]],
                                 target_rel_pos, d);
@@ -737,7 +737,7 @@ class QEngine : public IDisplay, public IJSON {
                             st_.probs_[measure_step.c_reg_] = probs[mres];
                             set_measured_(measure_step.target_[0]);
                             break;
-                        case QCircuit::MeasurementType::MEASURE_V_JOINT:
+                        case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT:
                             std::tie(mres, probs, states) = measure(
                                 st_.psi_, h_tbl[measure_step.mats_hash_[0]],
                                 target_rel_pos, d);
@@ -748,13 +748,13 @@ class QEngine : public IDisplay, public IJSON {
                                 set_measured_(target);
                             }
                             break;
-                        case QCircuit::MeasurementType::MEASURE_ND:
+                        case QCircuit::MeasurementStep::Type::MEASURE_ND:
                             std::tie(results, probs, st_.psi_) =
                                 measure_seq(st_.psi_, target_rel_pos, d, false);
                             st_.dits_[measure_step.c_reg_] = results[0];
                             st_.probs_[measure_step.c_reg_] = probs[0];
                             break;
-                        case QCircuit::MeasurementType::MEASURE_MANY_ND:
+                        case QCircuit::MeasurementStep::Type::MEASURE_MANY_ND:
                             std::tie(results, probs, st_.psi_) =
                                 measure_seq(st_.psi_, target_rel_pos, d, false);
                             std::copy(results.begin(), results.end(),
@@ -764,8 +764,9 @@ class QEngine : public IDisplay, public IJSON {
                                       std::next(st_.probs_.begin(),
                                                 measure_step.c_reg_));
                             break;
-                        case QCircuit::MeasurementType::MEASURE_V_ND:
-                        case QCircuit::MeasurementType::MEASURE_V_JOINT_ND:
+                        case QCircuit::MeasurementStep::Type::MEASURE_V_ND:
+                        case QCircuit::MeasurementStep::Type::
+                            MEASURE_V_JOINT_ND:
                             std::tie(mres, probs, states) = measure(
                                 st_.psi_, h_tbl[measure_step.mats_hash_[0]],
                                 target_rel_pos, d, false);
@@ -773,16 +774,16 @@ class QEngine : public IDisplay, public IJSON {
                             st_.dits_[measure_step.c_reg_] = mres;
                             st_.probs_[measure_step.c_reg_] = probs[mres];
                             break;
-                        case QCircuit::MeasurementType::RESET:
-                        case QCircuit::MeasurementType::RESET_MANY:
+                        case QCircuit::MeasurementStep::Type::RESET:
+                        case QCircuit::MeasurementStep::Type::RESET_MANY:
                             st_.psi_ = qpp::reset(st_.psi_, target_rel_pos, d);
                             break;
-                        case QCircuit::MeasurementType::DISCARD:
+                        case QCircuit::MeasurementStep::Type::DISCARD:
                             std::tie(std::ignore, std::ignore, st_.psi_) =
                                 measure_seq(st_.psi_, target_rel_pos, d);
                             set_measured_(measure_step.target_[0]);
                             break;
-                        case QCircuit::MeasurementType::DISCARD_MANY:
+                        case QCircuit::MeasurementStep::Type::DISCARD_MANY:
                             std::tie(std::ignore, std::ignore, st_.psi_) =
                                 measure_seq(st_.psi_, target_rel_pos, d);
                             for (idx target : measure_step.target_) {

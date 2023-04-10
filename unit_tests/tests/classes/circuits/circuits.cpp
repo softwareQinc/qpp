@@ -132,6 +132,10 @@ TEST(qpp_QCircuit_get_clean_dits, AllTests) {}
 /// BEGIN std::vector<idx> QCircuit::get_clean_qudits() const
 TEST(qpp_QCircuit_get_clean_qudits, AllTests) {}
 /******************************************************************************/
+/// BEGIN const std::unordered_map<std::size_t, cmat>&
+///       QCircuit::get_cmat_hash_tbl() const noexcept
+TEST(qpp_QCircuit_get_cmat_hash_tbl, AllTests) {}
+/******************************************************************************/
 /// BEGIN idx QCircuit::get_d() const noexcept
 TEST(qpp_QCircuit_get_d, AllTests) {}
 /******************************************************************************/

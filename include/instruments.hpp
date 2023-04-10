@@ -612,11 +612,12 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 #pragma omp parallel for
 #endif // HAS_OPENMP
         for (idx i = 0; i < M; ++i) {
-            if (destructive)
+            if (destructive) {
                 outstates[i] =
                     ip(static_cast<const ket&>(V.col(i)), rpsi, target, dims);
-            else
+            } else {
                 outstates[i] = apply(rpsi, prj(V.col(i)), target, dims);
+            }
         }
 
         for (idx i = 0; i < M; ++i) {

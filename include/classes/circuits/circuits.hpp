@@ -39,8 +39,6 @@ namespace qpp {
  * \see qpp::QEngine
  */
 class QCircuit : public IDisplay, public IJSON {
-    friend class QEngine;
-
     idx nq_;           ///< number of qudits
     idx nc_;           ///< number of classical "dits"
     idx d_;            ///< qudit dimension
@@ -90,87 +88,86 @@ class QCircuit : public IDisplay, public IJSON {
 
   public:
     /**
-     * \brief Type of gate being executed in a gate step
-     */
-    enum class GateType {
-        NONE,      ///< represents no gate
-
-        SINGLE,    ///< unitary gate on a single qudit
-
-        TWO,       ///< unitary gate on 2 qudits
-
-        THREE,     ///< unitary gate on 3 qudits
-
-        JOINT,     ///< joint gate on multiple qudits
-
-        FAN,       ///< the same unitary gate on multiple qudits
-
-        CTRL,      ///< controlled unitary gate with joint target
-
-        CTRL_FAN,  ///< controlled unitary gate with multiple targets
-
-        cCTRL,     ///< classically controlled unitary gate with joint target
-
-        cCTRL_FAN, ///< classically controlled unitary gate with multiple
-                   ///< targets
-    };
-
-    /**
-     * \brief Extraction operator overload for qpp::QCircuit::GateType enum
-     * class
-     *
-     * \param os Output stream passed by reference
-     * \param gate_type qpp::QCircuit::GateType enum class
-     * \return Reference to the output stream
-     */
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const GateType& gate_type) {
-        switch (gate_type) {
-            case GateType::NONE:
-                os << "GATE NONE";
-                break;
-            case GateType::SINGLE:
-                os << "SINGLE";
-                break;
-            case GateType::TWO:
-                os << "TWO";
-                break;
-            case GateType::THREE:
-                os << "THREE";
-                break;
-            case GateType::FAN:
-                os << "FAN";
-                break;
-            case GateType::JOINT:
-                os << "JOINT";
-                break;
-            case GateType::CTRL:
-                os << "CTRL";
-                break;
-            case GateType::CTRL_FAN:
-                os << "CTRL_FAN";
-                break;
-            case GateType::cCTRL:
-                os << "cCTRL";
-                break;
-            case GateType::cCTRL_FAN:
-                os << "cCTRL_FAN";
-                break;
-        }
-
-        return os;
-    }
-
-    /**
      * \brief One step consisting only of gates/operators in the circuit
      */
     struct GateStep : IDisplay {
-        GateType gate_type_ = GateType::NONE; ///< gate type
-        std::size_t gate_hash_{};             ///< gate hash
-        std::vector<idx> ctrl_{};             ///< control
-        std::vector<idx> target_{}; ///< target where the gate is applied
-        std::vector<idx> shift_{};  ///< shifts in CTRL gates
-        std::string name_{};        ///< custom name of the gate(s)
+        /**
+         * \brief Type of gate being executed in a gate step
+         */
+        enum class Type {
+            NONE,     ///< represents no gate
+
+            SINGLE,   ///< unitary gate on a single qudit
+
+            TWO,      ///< unitary gate on 2 qudits
+
+            THREE,    ///< unitary gate on 3 qudits
+
+            JOINT,    ///< joint gate on multiple qudits
+
+            FAN,      ///< the same unitary gate on multiple qudits
+
+            CTRL,     ///< controlled unitary gate with joint target
+
+            CTRL_FAN, ///< controlled unitary gate with multiple targets
+
+            cCTRL,    ///< classically controlled unitary gate with joint target
+
+            cCTRL_FAN, ///< classically controlled unitary gate with multiple
+                       ///< targets
+        };
+        /**
+         * \brief Extraction operator overload for qpp::QCircuit::GateStep::Type
+         * enum class
+         *
+         * \param os Output stream passed by reference
+         * \param gate_type qpp::QCircuit::GateStep::Type enum class
+         * \return Reference to the output stream
+         */
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const Type& gate_type) {
+            switch (gate_type) {
+                case Type::NONE:
+                    os << "GATE NONE";
+                    break;
+                case Type::SINGLE:
+                    os << "SINGLE";
+                    break;
+                case Type::TWO:
+                    os << "TWO";
+                    break;
+                case Type::THREE:
+                    os << "THREE";
+                    break;
+                case Type::FAN:
+                    os << "FAN";
+                    break;
+                case Type::JOINT:
+                    os << "JOINT";
+                    break;
+                case Type::CTRL:
+                    os << "CTRL";
+                    break;
+                case Type::CTRL_FAN:
+                    os << "CTRL_FAN";
+                    break;
+                case Type::cCTRL:
+                    os << "cCTRL";
+                    break;
+                case Type::cCTRL_FAN:
+                    os << "cCTRL_FAN";
+                    break;
+            }
+
+            return os;
+        }
+
+        Type gate_type_ = Type::NONE; ///< gate type
+        std::size_t gate_hash_{};     ///< gate hash
+        std::vector<idx> ctrl_{};     ///< control
+        std::vector<idx> target_{};   ///< target where the gate is applied
+        std::vector<idx> shift_{};    ///< shifts in CTRL gates
+        std::string name_{};          ///< custom name of the gate(s)
 
         /**
          * \brief Default constructor
@@ -187,7 +184,7 @@ class QCircuit : public IDisplay, public IJSON {
          * \param shift Optional gate shifts (for CTRL gates)
          * \param name Optional gate name
          */
-        explicit GateStep(GateType gate_type, std::size_t gate_hash,
+        explicit GateStep(Type gate_type, std::size_t gate_hash,
                           std::vector<idx> ctrl, std::vector<idx> target,
                           std::vector<idx> shift = {}, std::string name = {})
             : gate_type_{gate_type}, gate_hash_{gate_hash},
@@ -207,6 +204,17 @@ class QCircuit : public IDisplay, public IJSON {
                    std::tie(target_, shift_, gate_type_, gate_hash_, ctrl_);
         }
 
+        /**
+         * \brief Inequality operator
+         * \note Ignores gate names
+         *
+         * \param rhs GateStep against which the inequality is being tested
+         * \return True if the GateStep(s) are not equal, false otherwise
+         */
+        bool operator!=(const GateStep& rhs) const noexcept {
+            return !(*this == rhs);
+        }
+
       private:
         /**
          * \brief qpp::IDisplay::display() override
@@ -219,11 +227,9 @@ class QCircuit : public IDisplay, public IJSON {
          */
         std::ostream& display(std::ostream& os) const override {
             os << gate_type_ << ", ";
-            if (gate_type_ == GateType::CTRL ||
-                gate_type_ == GateType::CTRL_FAN)
+            if (gate_type_ == Type::CTRL || gate_type_ == Type::CTRL_FAN)
                 os << "ctrl = " << disp(ctrl_, ", ") << ", ";
-            else if (gate_type_ == GateType::cCTRL ||
-                     gate_type_ == GateType::cCTRL_FAN)
+            else if (gate_type_ == Type::cCTRL || gate_type_ == Type::cCTRL_FAN)
                 os << "c_ctrl = " << disp(ctrl_, ", ") << ", ";
             os << "target = " << disp(target_, ", ") << ", ";
             if (!shift_.empty())
@@ -235,109 +241,111 @@ class QCircuit : public IDisplay, public IJSON {
     };
 
     /**
-     * \brief Type of measurement being executed in a measurement step
-     */
-    enum class MeasurementType {
-        NONE,         ///< represents no measurement
-
-        MEASURE,      ///< Z measurement of single qudit
-
-        MEASURE_MANY, ///< Z measurement of multiple qudits
-
-        MEASURE_V,    ///< measurement of single qudit in the orthonormal basis
-        ///< or rank-1 projectors specified by the columns of matrix \a V
-
-        MEASURE_V_JOINT, ///< joint measurement of multiple qudits in the
-        ///< orthonormal basis or rank-1 projectors specified by the columns of
-        ///< the matrix \a V
-
-        MEASURE_ND,      ///< Z measurement of single qudit, non-destructive
-
-        MEASURE_MANY_ND, ///< Z measurement of multiple qudits, non-destructive
-
-        MEASURE_V_ND, ///< measurement of single qudit in the orthonormal basis
-        ///< or rank-1 projectors specified by the columns of matrix \a V,
-        ///< non-destructive
-
-        MEASURE_V_JOINT_ND, ///< joint measurement of multiple qudits in the
-        ///< orthonormal basis or rank-1 projectors specified by the columns of
-        ///< the matrix \a V, non-destructive
-
-        RESET,        ///< resets single qudit
-
-        RESET_MANY,   ///< resets multiple qudits
-
-        DISCARD,      ///< discards single qudit
-
-        DISCARD_MANY, ///< discards multiple qudits
-    };
-
-    /**
-     * \brief Extraction operator overload for qpp::QCircuit::MeasurementType
-     * enum class
-     *
-     * \param os Output stream passed by reference
-     * \param measure_type qpp::QCircuit::MeasurementType enum class
-     * \return Reference to the output stream
-     */
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const MeasurementType& measure_type) {
-        switch (measure_type) {
-            case MeasurementType::NONE:
-                os << "MEASURE NONE";
-                break;
-            case MeasurementType::MEASURE:
-                os << "MEASURE";
-                break;
-            case MeasurementType::MEASURE_MANY:
-                os << "MEASURE_MANY";
-                break;
-            case MeasurementType::MEASURE_V:
-                os << "MEASURE_V";
-                break;
-            case MeasurementType::MEASURE_V_JOINT:
-                os << "MEASURE_V_JOINT";
-                break;
-            case MeasurementType::MEASURE_ND:
-                os << "MEASURE_ND";
-                break;
-            case MeasurementType::MEASURE_MANY_ND:
-                os << "MEASURE_MANY_ND";
-                break;
-            case MeasurementType::MEASURE_V_ND:
-                os << "MEASURE_V_ND";
-                break;
-            case MeasurementType::MEASURE_V_JOINT_ND:
-                os << "MEASURE_V_JOINT_ND";
-                break;
-            case MeasurementType::RESET:
-                os << "RESET";
-                break;
-            case MeasurementType::RESET_MANY:
-                os << "RESET_MANY";
-                break;
-            case MeasurementType::DISCARD:
-                os << "DISCARD";
-                break;
-            case MeasurementType::DISCARD_MANY:
-                os << "DISCARD_MANY";
-                break;
-        }
-
-        return os;
-    }
-
-    /**
      * \brief One step consisting only of measurements in the circuit
      */
     struct MeasurementStep : IDisplay {
-        MeasurementType measurement_type_ =
-            MeasurementType::NONE;             ///< measurement type
+        /**
+         * \brief Type of measurement being executed in a measurement step
+         */
+        enum class Type {
+            NONE,         ///< represents no measurement
+
+            MEASURE,      ///< Z measurement of single qudit
+
+            MEASURE_MANY, ///< Z measurement of multiple qudits
+
+            MEASURE_V, ///< measurement of single qudit in the orthonormal basis
+                       ///< or rank-1 projectors specified by the columns of
+                       ///< matrix \a V
+
+            MEASURE_V_JOINT, ///< joint measurement of multiple qudits in the
+                             ///< orthonormal basis or rank-1 projectors
+                             ///< specified by the columns of the matrix \a V
+
+            MEASURE_ND,      ///< Z measurement of single qudit, non-destructive
+
+            MEASURE_MANY_ND, ///< Z measurement of multiple qudits,
+                             ///< non-destructive
+
+            MEASURE_V_ND,    ///< measurement of single qudit in the orthonormal
+                             ///< basis or rank-1 projectors specified by the
+                             ///< columns of matrix \a V, ///< non-destructive
+
+            MEASURE_V_JOINT_ND, ///< joint measurement of multiple qudits in the
+                                ///< orthonormal basis or rank-1 projectors
+                                ///< specified by the columns of the matrix
+                                ///< \a V, non-destructive
+
+            RESET,              ///< resets single qudit
+
+            RESET_MANY,         ///< resets multiple qudits
+
+            DISCARD,            ///< discards single qudit
+
+            DISCARD_MANY,       ///< discards multiple qudits
+        };
+
+        /**
+         * \brief Extraction operator overload for
+         * qpp::QCircuit::MeasurementStep::Type enum class
+         *
+         * \param os Output stream passed by reference
+         * \param measure_type qpp::QCircuit::MeasurementStep::Type enum class
+         * \return Reference to the output stream
+         */
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const Type& measure_type) {
+            switch (measure_type) {
+                case Type::NONE:
+                    os << "MEASURE NONE";
+                    break;
+                case Type::MEASURE:
+                    os << "MEASURE";
+                    break;
+                case Type::MEASURE_MANY:
+                    os << "MEASURE_MANY";
+                    break;
+                case Type::MEASURE_V:
+                    os << "MEASURE_V";
+                    break;
+                case Type::MEASURE_V_JOINT:
+                    os << "MEASURE_V_JOINT";
+                    break;
+                case Type::MEASURE_ND:
+                    os << "MEASURE_ND";
+                    break;
+                case Type::MEASURE_MANY_ND:
+                    os << "MEASURE_MANY_ND";
+                    break;
+                case Type::MEASURE_V_ND:
+                    os << "MEASURE_V_ND";
+                    break;
+                case Type::MEASURE_V_JOINT_ND:
+                    os << "MEASURE_V_JOINT_ND";
+                    break;
+                case Type::RESET:
+                    os << "RESET";
+                    break;
+                case Type::RESET_MANY:
+                    os << "RESET_MANY";
+                    break;
+                case Type::DISCARD:
+                    os << "DISCARD";
+                    break;
+                case Type::DISCARD_MANY:
+                    os << "DISCARD_MANY";
+                    break;
+            }
+
+            return os;
+        }
+
+        Type measurement_type_ = Type::NONE;   ///< measurement type
         std::vector<std::size_t> mats_hash_{}; ///< hashes of measurement
-        ///< matrix/matrices
+                                               ///< matrix/matrices
         std::vector<idx> target_{}; ///< target where the measurement is applied
         idx c_reg_{}; ///< index of the classical register where the measurement
-        ///< result is being stored
+                      ///< result is being stored
         std::string name_{}; ///< custom name of the measurement(s)
 
         /**
@@ -355,7 +363,7 @@ class QCircuit : public IDisplay, public IJSON {
          * stored
          * \param name Optional gate name
          */
-        explicit MeasurementStep(MeasurementType measurement_type,
+        explicit MeasurementStep(Type measurement_type,
                                  std::vector<std::size_t> mats_hash,
                                  std::vector<idx> target, idx c_reg,
                                  std::string name = {})
@@ -376,6 +384,18 @@ class QCircuit : public IDisplay, public IJSON {
                    std::tie(target_, measurement_type_, mats_hash_, c_reg_);
         }
 
+        /**
+         * \brief Inequality operator
+         * \note Ignores measurement names
+         *
+         * \param rhs MeasurementStep against which the inequality is being
+         * tested
+         * \return True if the MeasurementStep(s) are not equal, false otherwise
+         */
+        bool operator!=(const MeasurementStep& rhs) const noexcept {
+            return !(*this == rhs);
+        }
+
       private:
         /**
          * \brief qpp::IDisplay::display() override
@@ -389,10 +409,10 @@ class QCircuit : public IDisplay, public IJSON {
         std::ostream& display(std::ostream& os) const override {
             os << measurement_type_ << ", ";
             os << "target = " << disp(target_, ", ") << ", ";
-            if (measurement_type_ != MeasurementType::RESET &&
-                measurement_type_ != MeasurementType::RESET_MANY &&
-                measurement_type_ != MeasurementType::DISCARD &&
-                measurement_type_ != MeasurementType::DISCARD_MANY)
+            if (measurement_type_ != Type::RESET &&
+                measurement_type_ != Type::RESET_MANY &&
+                measurement_type_ != Type::DISCARD &&
+                measurement_type_ != Type::DISCARD_MANY)
                 os << "c_reg = " << c_reg_ << ", ";
             os << "name = " << '\"' << name_ << '\"';
 
@@ -410,6 +430,15 @@ class QCircuit : public IDisplay, public IJSON {
          * \return True (always)
          */
         bool operator==(const NOPStep&) const noexcept { return true; }
+
+        /**
+         * \brief Inequality operator
+         *
+         * \return False (always)
+         */
+        bool operator!=(const NOPStep& rhs) const noexcept {
+            return !(*this == rhs);
+        }
 
       private:
         /**
@@ -514,16 +543,6 @@ class QCircuit : public IDisplay, public IJSON {
                                  NOPStep>; ///< circuit step variant
     std::vector<VarStep> circuit_;         ///<< quantum circuit representation
 
-    /**
-     * \brief Hash table with the matrices used in the circuit
-     *
-     * \return Hash table with the matrices used in the circuit
-     */
-    const std::unordered_map<std::size_t, cmat>&
-    get_cmat_hash_tbl_() const noexcept {
-        return cmat_hash_tbl_;
-    }
-
   public:
     /**
      * \class qpp::QCircuit::iterator
@@ -570,7 +589,7 @@ class QCircuit : public IDisplay, public IJSON {
              * \brief Equality operator
              *
              * \param rhs Instance against which the equality is being tested
-             * \return True if the instances not are equal (bit by bit), false
+             * \return True if the instances not are equal (bitwise), false
              * otherwise
              */
             bool operator==(const value_type_& rhs) {
@@ -622,26 +641,26 @@ class QCircuit : public IDisplay, public IJSON {
                         [&](const GateStep& gate_step) { os << gate_step; },
                         [&](const MeasurementStep& measurement_step) {
                             switch (measurement_step.measurement_type_) {
-                                case MeasurementType::NONE:
+                                case MeasurementStep::Type::NONE:
                                     break;
-                                case MeasurementType::MEASURE:
-                                case MeasurementType::MEASURE_MANY:
-                                case MeasurementType::MEASURE_V:
-                                case MeasurementType::MEASURE_V_JOINT:
+                                case MeasurementStep::Type::MEASURE:
+                                case MeasurementStep::Type::MEASURE_MANY:
+                                case MeasurementStep::Type::MEASURE_V:
+                                case MeasurementStep::Type::MEASURE_V_JOINT:
                                     os << "|> ";
                                     break;
-                                case MeasurementType::MEASURE_ND:
-                                case MeasurementType::MEASURE_MANY_ND:
-                                case MeasurementType::MEASURE_V_ND:
-                                case MeasurementType::MEASURE_V_JOINT_ND:
+                                case MeasurementStep::Type::MEASURE_ND:
+                                case MeasurementStep::Type::MEASURE_MANY_ND:
+                                case MeasurementStep::Type::MEASURE_V_ND:
+                                case MeasurementStep::Type::MEASURE_V_JOINT_ND:
                                     os << "|] ";
                                     break;
-                                case MeasurementType::RESET:
-                                case MeasurementType::RESET_MANY:
+                                case MeasurementStep::Type::RESET:
+                                case MeasurementStep::Type::RESET_MANY:
                                     os << "|* ";
                                     break;
-                                case MeasurementType::DISCARD:
-                                case MeasurementType::DISCARD_MANY:
+                                case MeasurementStep::Type::DISCARD:
+                                case MeasurementStep::Type::DISCARD_MANY:
                                     os << "|x ";
                                     break;
                             } /* end switch */
@@ -736,8 +755,9 @@ class QCircuit : public IDisplay, public IJSON {
          * \return Copy of the current instance before the increment
          */
         iterator operator++(int) {
-            iterator retval = *this;
-            ++(*this);
+            iterator retval{*this};
+            this->operator++();
+
             return retval;
         }
 
@@ -755,7 +775,7 @@ class QCircuit : public IDisplay, public IJSON {
          * \brief Inequality operator
          *
          * \param rhs Iterator against which the inequality is being tested
-         * \return True if the iterators are not equal (bit by bit), false
+         * \return True if the iterators are not equal (bitwise), false
          * otherwise
          */
         bool operator!=(const iterator& rhs) const noexcept {
@@ -791,8 +811,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
     }; /* class QCircuit::iterator */
 
-  public:
-    using const_iterator = iterator; ///< both iterators are const_iterators
+    ///< both iterators are const_iterators
+    using const_iterator = iterator;
 
     /**
      * \brief Constant iterator to the first element
@@ -888,8 +908,8 @@ class QCircuit : public IDisplay, public IJSON {
      */
     inline static bool is_CTRL(const GateStep& gate_step) {
         switch (gate_step.gate_type_) {
-            case GateType::CTRL:
-            case GateType::CTRL_FAN:
+            case GateStep::Type::CTRL:
+            case GateStep::Type::CTRL_FAN:
                 return true;
             default:
                 return false;
@@ -904,8 +924,8 @@ class QCircuit : public IDisplay, public IJSON {
      */
     inline static bool is_cCTRL(const GateStep& gate_step) {
         switch (gate_step.gate_type_) {
-            case GateType::cCTRL:
-            case GateType::cCTRL_FAN:
+            case GateStep::Type::cCTRL:
+            case GateStep::Type::cCTRL_FAN:
                 return true;
             default:
                 return false;
@@ -923,6 +943,16 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     // getters
+    /**
+     * \brief Hash table with the matrices used in the circuit
+     *
+     * \return Hash table with the matrices used in the circuit
+     */
+    const std::unordered_map<std::size_t, cmat>&
+    get_cmat_hash_tbl() const noexcept {
+        return cmat_hash_tbl_;
+    }
+
     /**
      * \brief Total number of qudits in the circuit
      *
@@ -1213,11 +1243,11 @@ class QCircuit : public IDisplay, public IJSON {
 
                         idx max_height = 0;
                         switch (measurement_step.measurement_type_) {
-                            case MeasurementType::NONE:
-                            case MeasurementType::MEASURE_V:
-                            case MeasurementType::MEASURE_V_JOINT:
-                            case MeasurementType::MEASURE_V_ND:
-                            case MeasurementType::MEASURE_V_JOINT_ND:
+                            case MeasurementStep::Type::NONE:
+                            case MeasurementStep::Type::MEASURE_V:
+                            case MeasurementStep::Type::MEASURE_V_JOINT:
+                            case MeasurementStep::Type::MEASURE_V_ND:
+                            case MeasurementStep::Type::MEASURE_V_JOINT_ND:
                                 // compute the "height" of the to-be-placed
                                 // measurement_step
                                 if (heights[c_reg] > max_height)
@@ -1231,10 +1261,10 @@ class QCircuit : public IDisplay, public IJSON {
                                     heights[nc_ + i] = max_height + 1;
                                 break;
 
-                            case MeasurementType::MEASURE:
-                            case MeasurementType::MEASURE_MANY:
-                            case MeasurementType::MEASURE_ND:
-                            case MeasurementType::MEASURE_MANY_ND:
+                            case MeasurementStep::Type::MEASURE:
+                            case MeasurementStep::Type::MEASURE_MANY:
+                            case MeasurementStep::Type::MEASURE_ND:
+                            case MeasurementStep::Type::MEASURE_MANY_ND:
                                 // compute the "height" of the to-be-placed
                                 // measurement_step
                                 for (idx i = 0; i < target.size(); ++i) {
@@ -1256,10 +1286,10 @@ class QCircuit : public IDisplay, public IJSON {
                                     heights[nc_ + i] = max_height + 1;
                                 break;
 
-                            case MeasurementType::RESET:
-                            case MeasurementType::RESET_MANY:
-                            case MeasurementType::DISCARD:
-                            case MeasurementType::DISCARD_MANY:
+                            case MeasurementStep::Type::RESET:
+                            case MeasurementStep::Type::RESET_MANY:
+                            case MeasurementStep::Type::DISCARD:
+                            case MeasurementStep::Type::DISCARD_MANY:
                                 for (idx i : target)
                                     if (heights[nc_ + i] > max_height)
                                         max_height = heights[nc_ + i];
@@ -1562,7 +1592,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::SINGLE, hashU,
+        circuit_.emplace_back(GateStep{GateStep::Type::SINGLE, hashU,
                                        std::vector<idx>{}, std::vector<idx>{i},
                                        std::vector<idx>{}, name});
 
@@ -1610,9 +1640,9 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::TWO, hashU, std::vector<idx>{},
-                                       std::vector<idx>{i, j},
-                                       std::vector<idx>{}, name});
+        circuit_.emplace_back(
+            GateStep{GateStep::Type::TWO, hashU, std::vector<idx>{},
+                     std::vector<idx>{i, j}, std::vector<idx>{}, name});
 
         ++gate_count_[hashU];
 
@@ -1661,7 +1691,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashU, U);
 
         circuit_.emplace_back(
-            GateStep{GateType::THREE, hashU, std::vector<idx>{},
+            GateStep{GateStep::Type::THREE, hashU, std::vector<idx>{},
                      std::vector<idx>{i, j, k}, std::vector<idx>{}, name});
 
         ++gate_count_[hashU];
@@ -1720,8 +1750,9 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::FAN, hashU, std::vector<idx>{},
-                                       target, std::vector<idx>{}, name});
+        circuit_.emplace_back(GateStep{GateStep::Type::FAN, hashU,
+                                       std::vector<idx>{}, target,
+                                       std::vector<idx>{}, name});
 
         gate_count_[hashU] += target.size();
 
@@ -1828,7 +1859,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::JOINT, hashU,
+        circuit_.emplace_back(GateStep{GateStep::Type::JOINT, hashU,
                                        std::vector<idx>{}, target,
                                        std::vector<idx>{}, name});
 
@@ -2132,7 +2163,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::CTRL_FAN, hashU,
+        circuit_.emplace_back(GateStep{GateStep::Type::CTRL_FAN, hashU,
                                        std::vector<idx>{ctrl}, target,
                                        std::vector<idx>{shift}, name});
 
@@ -2243,8 +2274,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(
-            GateStep{GateType::CTRL_FAN, hashU, ctrl, target, shift, name});
+        circuit_.emplace_back(GateStep{GateStep::Type::CTRL_FAN, hashU, ctrl,
+                                       target, shift, name});
 
         gate_count_[hashU] += target.size();
 
@@ -2353,7 +2384,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashU, U);
 
         circuit_.emplace_back(
-            GateStep{GateType::CTRL, hashU, ctrl, target, shift, name});
+            GateStep{GateStep::Type::CTRL, hashU, ctrl, target, shift, name});
 
         ++gate_count_[hashU];
 
@@ -2448,7 +2479,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::CTRL, hashU, ctrl,
+        circuit_.emplace_back(GateStep{GateStep::Type::CTRL, hashU, ctrl,
                                        std::vector<idx>{target}, shift, name});
 
         ++gate_count_[hashU];
@@ -2540,7 +2571,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::CTRL, hashU,
+        circuit_.emplace_back(GateStep{GateStep::Type::CTRL, hashU,
                                        std::vector<idx>{ctrl}, target,
                                        std::vector<idx>{shift}, name});
 
@@ -2605,7 +2636,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashU, U);
 
         circuit_.emplace_back(
-            GateStep{GateType::CTRL, hashU, std::vector<idx>{ctrl},
+            GateStep{GateStep::Type::CTRL, hashU, std::vector<idx>{ctrl},
                      std::vector<idx>{target}, std::vector<idx>{shift}, name});
 
         ++gate_count_[hashU];
@@ -2684,7 +2715,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::cCTRL_FAN, hashU,
+        circuit_.emplace_back(GateStep{GateStep::Type::cCTRL_FAN, hashU,
                                        std::vector<idx>{ctrl_dit}, target,
                                        std::vector<idx>{shift}, name});
 
@@ -2783,8 +2814,9 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::cCTRL_FAN, hashU, ctrl_dits,
-                                       std::vector<idx>{target}, shift, name});
+        circuit_.emplace_back(GateStep{GateStep::Type::cCTRL_FAN, hashU,
+                                       ctrl_dits, std::vector<idx>{target},
+                                       shift, name});
 
         gate_count_[hashU] += target.size();
 
@@ -2884,8 +2916,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(
-            GateStep{GateType::cCTRL, hashU, ctrl_dits, target, shift, name});
+        circuit_.emplace_back(GateStep{GateStep::Type::cCTRL, hashU, ctrl_dits,
+                                       target, shift, name});
 
         ++gate_count_[hashU];
 
@@ -2972,7 +3004,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::cCTRL, hashU, ctrl_dits,
+        circuit_.emplace_back(GateStep{GateStep::Type::cCTRL, hashU, ctrl_dits,
                                        std::vector<idx>{target}, shift, name});
 
         ++gate_count_[hashU];
@@ -3055,7 +3087,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateType::cCTRL, hashU,
+        circuit_.emplace_back(GateStep{GateStep::Type::cCTRL, hashU,
                                        std::vector<idx>{ctrl_dit}, target,
                                        std::vector<idx>{shift}, name});
 
@@ -3121,7 +3153,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashU, U);
 
         circuit_.emplace_back(
-            GateStep{GateType::cCTRL, hashU, std::vector<idx>{ctrl_dit},
+            GateStep{GateStep::Type::cCTRL, hashU, std::vector<idx>{ctrl_dit},
                      std::vector<idx>{target}, std::vector<idx>{shift}, name});
 
         ++gate_count_[hashU];
@@ -3171,16 +3203,18 @@ class QCircuit : public IDisplay, public IJSON {
         if (destructive) {
             measured_[target] = true;
 
-            circuit_.emplace_back(MeasurementStep{
-                MeasurementType::MEASURE, std::vector<std::size_t>{m_hash},
-                std::vector<idx>{target}, c_reg, name});
+            circuit_.emplace_back(
+                MeasurementStep{MeasurementStep::Type::MEASURE,
+                                std::vector<std::size_t>{m_hash},
+                                std::vector<idx>{target}, c_reg, name});
 
         } else {
             measured_nd_[target] = true;
 
-            circuit_.emplace_back(MeasurementStep{
-                MeasurementType::MEASURE_ND, std::vector<std::size_t>{m_hash},
-                std::vector<idx>{target}, c_reg, name});
+            circuit_.emplace_back(
+                MeasurementStep{MeasurementStep::Type::MEASURE_ND,
+                                std::vector<std::size_t>{m_hash},
+                                std::vector<idx>{target}, c_reg, name});
         }
         ++measurement_count_[m_hash];
 
@@ -3246,15 +3280,15 @@ class QCircuit : public IDisplay, public IJSON {
             }
 
             circuit_.emplace_back(MeasurementStep{
-                MeasurementType::MEASURE_MANY, std::vector<std::size_t>{m_hash},
-                target, c_reg, name});
+                MeasurementStep::Type::MEASURE_MANY,
+                std::vector<std::size_t>{m_hash}, target, c_reg, name});
         } else {
             for (idx elem : target) {
                 measured_nd_[elem] = true;
             }
 
             circuit_.emplace_back(MeasurementStep{
-                MeasurementType::MEASURE_MANY_ND,
+                MeasurementStep::Type::MEASURE_MANY_ND,
                 std::vector<std::size_t>{m_hash}, target, c_reg, name});
         }
         ++measurement_count_[m_hash];
@@ -3356,15 +3390,17 @@ class QCircuit : public IDisplay, public IJSON {
         if (destructive) {
             measured_[target] = true;
 
-            circuit_.emplace_back(MeasurementStep{
-                MeasurementType::MEASURE_V, std::vector<std::size_t>{hashV},
-                std::vector<idx>{target}, c_reg, name});
+            circuit_.emplace_back(
+                MeasurementStep{MeasurementStep::Type::MEASURE_V,
+                                std::vector<std::size_t>{hashV},
+                                std::vector<idx>{target}, c_reg, name});
         } else {
             measured_nd_[target] = true;
 
-            circuit_.emplace_back(MeasurementStep{
-                MeasurementType::MEASURE_V_ND, std::vector<std::size_t>{hashV},
-                std::vector<idx>{target}, c_reg, name});
+            circuit_.emplace_back(
+                MeasurementStep{MeasurementStep::Type::MEASURE_V_ND,
+                                std::vector<std::size_t>{hashV},
+                                std::vector<idx>{target}, c_reg, name});
         }
         ++measurement_count_[hashV];
 
@@ -3448,7 +3484,7 @@ class QCircuit : public IDisplay, public IJSON {
             }
 
             circuit_.emplace_back(MeasurementStep{
-                MeasurementType::MEASURE_V_JOINT,
+                MeasurementStep::Type::MEASURE_V_JOINT,
                 std::vector<std::size_t>{hashV}, target, c_reg, name});
         } else {
             for (idx elem : target) {
@@ -3456,7 +3492,7 @@ class QCircuit : public IDisplay, public IJSON {
             }
 
             circuit_.emplace_back(MeasurementStep{
-                MeasurementType::MEASURE_V_JOINT_ND,
+                MeasurementStep::Type::MEASURE_V_JOINT_ND,
                 std::vector<std::size_t>{hashV}, target, c_reg, name});
         }
         ++measurement_count_[hashV];
@@ -3502,7 +3538,7 @@ class QCircuit : public IDisplay, public IJSON {
         measured_[target] = true;
 
         circuit_.emplace_back(MeasurementStep{
-            MeasurementType::DISCARD, std::vector<std::size_t>{m_hash},
+            MeasurementStep::Type::DISCARD, std::vector<std::size_t>{m_hash},
             std::vector<idx>{target}, static_cast<idx>(-1), name});
         //++measurement_count_[m_hash];
 
@@ -3550,9 +3586,10 @@ class QCircuit : public IDisplay, public IJSON {
             measured_[elem] = true;
         }
 
-        circuit_.emplace_back(MeasurementStep{
-            MeasurementType::DISCARD_MANY, std::vector<std::size_t>{m_hash},
-            target, static_cast<idx>(-1), name});
+        circuit_.emplace_back(
+            MeasurementStep{MeasurementStep::Type::DISCARD_MANY,
+                            std::vector<std::size_t>{m_hash}, target,
+                            static_cast<idx>(-1), name});
         //++measurement_count_[m_hash];
 
         for (idx elem : target) {
@@ -3607,7 +3644,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t m_hash = hash_eigen(mprj({0}, d_));
 
         circuit_.emplace_back(MeasurementStep{
-            MeasurementType::RESET, std::vector<std::size_t>{m_hash},
+            MeasurementStep::Type::RESET, std::vector<std::size_t>{m_hash},
             std::vector<idx>{target}, static_cast<idx>(-1), name});
         //++measurement_count_[m_hash];
 
@@ -3652,7 +3689,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t m_hash = hash_eigen(mprj({0}, d_));
 
         circuit_.emplace_back(MeasurementStep{
-            MeasurementType::RESET_MANY, std::vector<std::size_t>{m_hash},
+            MeasurementStep::Type::RESET_MANY, std::vector<std::size_t>{m_hash},
             target, static_cast<idx>(-1), name});
         //++measurement_count_[m_hash];
 
@@ -4561,12 +4598,12 @@ class QCircuit : public IDisplay, public IJSON {
                             ss.clear();
                             ss << disp(gate_step.ctrl_, ", ");
                             switch (gate_step.gate_type_) {
-                                case GateType::CTRL:
-                                case GateType::CTRL_FAN:
+                                case GateStep::Type::CTRL:
+                                case GateStep::Type::CTRL_FAN:
                                     result += "\"ctrl\": " + ss.str() + ", ";
                                     break;
-                                case GateType::cCTRL:
-                                case GateType::cCTRL_FAN:
+                                case GateStep::Type::cCTRL:
+                                case GateStep::Type::cCTRL_FAN:
                                     result += "\"c_ctrl\": " + ss.str() + ", ";
                                     break;
                                 default:
@@ -4599,13 +4636,13 @@ class QCircuit : public IDisplay, public IJSON {
                         result += "\"target\": " + ss.str() + ", ";
 
                         if (measurement_step.measurement_type_ !=
-                                MeasurementType::RESET &&
+                                MeasurementStep::Type::RESET &&
                             measurement_step.measurement_type_ !=
-                                MeasurementType::RESET_MANY &&
+                                MeasurementStep::Type::RESET_MANY &&
                             measurement_step.measurement_type_ !=
-                                MeasurementType::DISCARD &&
+                                MeasurementStep::Type::DISCARD &&
                             measurement_step.measurement_type_ !=
-                                MeasurementType::DISCARD_MANY)
+                                MeasurementStep::Type::DISCARD_MANY)
                             result += "\"c_reg\": " +
                                       std::to_string(measurement_step.c_reg_) +
                                       ", ";
@@ -5117,22 +5154,23 @@ namespace internal {
 inline bool
 is_projective_measurement(const QCircuit::iterator::value_type& elem) {
     bool result = false;
-    std::visit(overloaded{
-                   [&](const QCircuit::GateStep&) {},
-                   [&](const QCircuit::MeasurementStep& measurement_step) {
-                       switch (measurement_step.measurement_type_) {
-                           case QCircuit::MeasurementType::MEASURE:
-                           case QCircuit::MeasurementType::MEASURE_MANY:
-                           case QCircuit::MeasurementType::MEASURE_ND:
-                           case QCircuit::MeasurementType::MEASURE_MANY_ND:
-                               result = true;
-                           default:
-                               break;
-                       }
-                   },
-                   [&](const QCircuit::NOPStep&) {},
-               },
-               elem.get_step());
+    std::visit(
+        overloaded{
+            [&](const QCircuit::GateStep&) {},
+            [&](const QCircuit::MeasurementStep& measurement_step) {
+                switch (measurement_step.measurement_type_) {
+                    case QCircuit::MeasurementStep::Type::MEASURE:
+                    case QCircuit::MeasurementStep::Type::MEASURE_MANY:
+                    case QCircuit::MeasurementStep::Type::MEASURE_ND:
+                    case QCircuit::MeasurementStep::Type::MEASURE_MANY_ND:
+                        result = true;
+                    default:
+                        break;
+                }
+            },
+            [&](const QCircuit::NOPStep&) {},
+        },
+        elem.get_step());
 
     return result;
 }
@@ -5159,22 +5197,23 @@ inline bool is_projective_measurement(QCircuit::iterator it) {
  */
 inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
     bool result = false;
-    std::visit(overloaded{
-                   [&](const QCircuit::GateStep&) {},
-                   [&](const QCircuit::MeasurementStep& measurement_step) {
-                       switch (measurement_step.measurement_type_) {
-                           case QCircuit::MeasurementType::MEASURE_V:
-                           case QCircuit::MeasurementType::MEASURE_V_JOINT:
-                           case QCircuit::MeasurementType::MEASURE_V_ND:
-                           case QCircuit::MeasurementType::MEASURE_V_JOINT_ND:
-                               result = true;
-                           default:
-                               break;
-                       }
-                   },
-                   [&](const QCircuit::NOPStep&) {},
-               },
-               elem.get_step());
+    std::visit(
+        overloaded{
+            [&](const QCircuit::GateStep&) {},
+            [&](const QCircuit::MeasurementStep& measurement_step) {
+                switch (measurement_step.measurement_type_) {
+                    case QCircuit::MeasurementStep::Type::MEASURE_V:
+                    case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT:
+                    case QCircuit::MeasurementStep::Type::MEASURE_V_ND:
+                    case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT_ND:
+                        result = true;
+                    default:
+                        break;
+                }
+            },
+            [&](const QCircuit::NOPStep&) {},
+        },
+        elem.get_step());
 
     return result || is_projective_measurement(elem);
 }
@@ -5203,8 +5242,8 @@ inline bool is_discard(const QCircuit::iterator::value_type& elem) {
                    [&](const QCircuit::GateStep&) {},
                    [&](const QCircuit::MeasurementStep& measurement_step) {
                        switch (measurement_step.measurement_type_) {
-                           case QCircuit::MeasurementType::DISCARD:
-                           case QCircuit::MeasurementType::DISCARD_MANY:
+                           case QCircuit::MeasurementStep::Type::DISCARD:
+                           case QCircuit::MeasurementStep::Type::DISCARD_MANY:
                                result = true;
                            default:
                                break;
@@ -5239,8 +5278,8 @@ inline bool is_reset(const QCircuit::iterator::value_type& elem) {
                    [&](const QCircuit::GateStep&) {},
                    [&](const QCircuit::MeasurementStep& measurement_step) {
                        switch (measurement_step.measurement_type_) {
-                           case QCircuit::MeasurementType::RESET:
-                           case QCircuit::MeasurementType::RESET_MANY:
+                           case QCircuit::MeasurementStep::Type::RESET:
+                           case QCircuit::MeasurementStep::Type::RESET_MANY:
                                result = true;
                            default:
                                break;
@@ -5317,19 +5356,19 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
 
         switch (current_measurement_step.measurement_type_) {
             // measure
-            case QCircuit::MeasurementType::MEASURE:
-            case QCircuit::MeasurementType::MEASURE_ND:
-            case QCircuit::MeasurementType::MEASURE_MANY:
-            case QCircuit::MeasurementType::MEASURE_MANY_ND:
+            case QCircuit::MeasurementStep::Type::MEASURE:
+            case QCircuit::MeasurementStep::Type::MEASURE_ND:
+            case QCircuit::MeasurementStep::Type::MEASURE_MANY:
+            case QCircuit::MeasurementStep::Type::MEASURE_MANY_ND:
                 c_reg.resize(target.size());
                 std::iota(c_reg.begin(), c_reg.end(),
                           current_measurement_step.c_reg_);
                 break;
             // measureV
-            case QCircuit::MeasurementType::MEASURE_V:
-            case QCircuit::MeasurementType::MEASURE_V_ND:
-            case QCircuit::MeasurementType::MEASURE_V_JOINT:
-            case QCircuit::MeasurementType::MEASURE_V_JOINT_ND:
+            case QCircuit::MeasurementStep::Type::MEASURE_V:
+            case QCircuit::MeasurementStep::Type::MEASURE_V_ND:
+            case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT:
+            case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT_ND:
                 c_reg.resize(1);
                 c_reg[0] = current_measurement_step.c_reg_;
                 break;
