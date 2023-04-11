@@ -1,6 +1,9 @@
 Pre-release
     - Implemented ["classes/circuits/circuits.hpp"]
-          qpp::qpe_circuit() - Quantum phase estimation circuit
+          qpp::qpe_circuit()                - Quantum phase estimation circuit
+          qpp::QCircuit::has_measurements() - True if the quantum circuit
+                                              description contains measurement
+                                              steps, false otherwise
     - Migrated pyqpp installation method to pyproject.toml
     - Extensive code refactoring, transitioned qpp::QCircuit logic to
       std::visit() over std::variant

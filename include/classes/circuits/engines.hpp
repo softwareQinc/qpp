@@ -172,7 +172,7 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Current state of the engine
      */
     struct state_ {
-        const QCircuit* qc_;          ///< non-owning pointer to the parent
+        const QCircuit* qc_ptr_;      ///< non-owning pointer to the parent
                                       ///< const quantum circuit description
         ket psi_{};                   ///< state vector
         std::vector<double> probs_{}; ///< measurement probabilities
@@ -185,13 +185,13 @@ class QEngine : public IDisplay, public IJSON {
         /**
          * \brief Constructor
          *
-         * \param qc Non-owning pointer to the parent const quantum circuit
+         * \param qc_ptr Non-owning pointer to the parent const quantum circuit
          * description
          */
-        explicit state_(const QCircuit* qc) : qc_{qc} {
+        explicit state_(const QCircuit* qc_ptr) : qc_ptr_{qc_ptr} {
             // EXCEPTION CHECKS
 
-            if (qc->get_nq() == 0)
+            if (qc_ptr->get_nq() == 0)
                 throw exception::ZeroSize("qpp::QEngine::state_::reset()",
                                           "nq");
             // END EXCEPTION CHECKS
@@ -216,11 +216,11 @@ class QEngine : public IDisplay, public IJSON {
          * \brief Resets the engine state
          */
         void reset() {
-            psi_ = States::get_no_thread_local_instance().zero(qc_->get_nq(),
-                                                               qc_->get_d());
-            probs_ = std::vector<double>(qc_->get_nc(), 0);
-            dits_ = std::vector<idx>(qc_->get_nc(), 0);
-            subsys_ = std::vector<idx>(qc_->get_nq(), 0);
+            psi_ = States::get_no_thread_local_instance().zero(
+                qc_ptr_->get_nq(), qc_ptr_->get_d());
+            probs_ = std::vector<double>(qc_ptr_->get_nc(), 0);
+            dits_ = std::vector<idx>(qc_ptr_->get_nc(), 0);
+            subsys_ = std::vector<idx>(qc_ptr_->get_nq(), 0);
             std::iota(subsys_.begin(), subsys_.end(), 0);
         }
     } st_;               ///< current state of the engine
