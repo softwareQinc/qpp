@@ -919,12 +919,12 @@ PYBIND11_MODULE(pyqpp, m) {
         [](std::size_t seed) {
             qpp::RandomDevices::get_instance().get_prng().seed(seed);
         },
-        "Sets prng seed", py::arg("seed"));
+        "Sets the prng seed to a specific value", py::arg("seed"));
     m.def(
         "set_prng_seed",
         []() {
             qpp::RandomDevices::get_instance().get_prng().seed(
                 std::random_device{}());
         },
-        "Sets prng seed to a random value");
+        "Sets the prng seed to a random value");
 }
