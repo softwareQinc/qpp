@@ -914,4 +914,17 @@ PYBIND11_MODULE(pyqpp, m) {
         "(Z-basis)",
         py::arg("num_samples"), py::arg("A"), py::arg("target"),
         py::arg("d") = 2);
+    m.def(
+        "set_prng_seed",
+        [](std::size_t seed) {
+            qpp::RandomDevices::get_instance().get_prng().seed(seed);
+        },
+        "Sets prng seed", py::arg("seed"));
+    m.def(
+        "set_prng_seed",
+        []() {
+            qpp::RandomDevices::get_instance().get_prng().seed(
+                std::random_device{}());
+        },
+        "Sets prng seed to a random value");
 }

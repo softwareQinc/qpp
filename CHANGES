@@ -8,6 +8,9 @@ Pre-release
                                               description contains any
                                               measurements that remove qudits,
                                               false otherwise
+    - Implemented ["pyqpp/qpp_wrapper_cpp"] (pyqpp Python wraper)
+          set_prng_seed() - sets the seed of the PRNG to a specific value, or,
+                            if invoked with no argument, to a random value
     - Migrated pyqpp installation method to pyproject.toml
     - Extensive code refactoring, transitioned qpp::QCircuit logic to
       std::visit() over std::variant
