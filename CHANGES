@@ -4,6 +4,10 @@ Pre-release
           qpp::QCircuit::has_measurements() - True if the quantum circuit
                                               description contains measurement
                                               steps, false otherwise
+          qpp::QCircuit::removes_qudits()   - True if the quantum circuit
+                                              description contains any
+                                              measurements that remove qudits,
+                                              false otherwise
     - Migrated pyqpp installation method to pyproject.toml
     - Extensive code refactoring, transitioned qpp::QCircuit logic to
       std::visit() over std::variant

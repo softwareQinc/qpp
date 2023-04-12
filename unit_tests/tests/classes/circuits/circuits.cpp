@@ -289,6 +289,8 @@ TEST(qpp_QCircuit_remove_clean_qudit, AllTests) {}
 /// BEGIN QCircuit& QCircuit::remove_clean_qudits(std::vector<idx> target)
 TEST(qpp_QCircuit_remove_clean_qudits, AllTests) {}
 /******************************************************************************/
+/// BEGIN bool QCircuit::removes_qudits() const noexcept
+TEST(qpp_QCircuit_removes_qudits, AllTests) {}
 /// BEGIN QCircuit& QCircuit::replicate(idx n)
 TEST(qpp_QCircuit_replicate, AllTests) {}
 /******************************************************************************/

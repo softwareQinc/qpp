@@ -3704,7 +3704,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (n == 0)
             throw exception::OutOfRange("qpp::QCircuit::replicate()", "n");
-        if (this->has_measurements())
+        if (this->removes_qudits())
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::replicate()",
                                                   "n");
         // END EXCEPTION CHECKS
@@ -3726,14 +3726,14 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Matches a quantum circuit description to the current quantum
      * circuit description, with the to-be-matched quantum circuit
      * description placed at the right (end) of the current quantum circuit
-     * description \see qpp::QCircuit::match_circuit_left() and
-     * qpp::QCircuit::add_circuit()
+     * description
+     * \see qpp::QCircuit::match_circuit_left() and qpp::QCircuit::add_circuit()
      *
      * \note The matched quantum circuit description cannot be larger than
      * the current quantum circuit description, i.e., all qudit indexes of
      * the added quantum circuit description must match with qudits from the
-     * current quantum circuit description (and those matched of the latter
-     * must contain no measurements)
+     * current quantum circuit description (and the latter should not contain
+     * any destructive measurements on the matched qudits)
      *
      * \note The classical dits are not relabeled
      *
@@ -3869,15 +3869,18 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Matches a quantum circuit description to the current quantum
      * circuit description, with the to-be-matched quantum circuit
      * description placed at the left (beginning) of the current quantum
-     * circuit description \see qpp::QCircuit::match_circuit_right() and
+     * circuit description
+     * \see qpp::QCircuit::match_circuit_right() and
      * qpp::QCircuit::add_circuit()
      *
-     * \note The matched quantum circuit description should not contain
-     * measurements and should not be larger than the current quantum circuit
-     * description, i.e., all qudit indexes of the added quantum circuit
-     * description must match with qudits from the current quantum circuit
-     * description (and those matched of the latter must contain no
-     * measurements) \note The classical dits are not relabeled
+     * \note The matched quantum circuit description should not contain any
+     * destructive  measurements and should not be larger than the current
+     * quantum circuit description, i.e., all qudit indexes of the added quantum
+     * circuit description must match with qudits from the current quantum
+     * circuit description (and \a other should not contain any destructive
+     * measurements)
+     *
+     * \note The classical dits are not relabeled
      *
      * \param other Quantum circuit description
      * \param target Qudit indexes of the current circuit description where
@@ -3905,7 +3908,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()",
                                         "pos_dit");
         // check no measurement for the matched circuit
-        if (this->has_measurements())
+        if (!other.get_measured().empty())
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::match_circuit_left()", "other");
         // check valid target
@@ -4012,7 +4015,8 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Appends (glues) a quantum circuit description to the end of
-     * the current one \see qpp::QCircuit::match_circuit_left() and
+     * the current one
+     * \see qpp::QCircuit::match_circuit_left() and
      * qpp::QCircuit::match_circuit_right()
      *
      * \note If the qudit indexes of the added quantum circuit description
@@ -4200,10 +4204,45 @@ class QCircuit : public IDisplay, public IJSON {
     bool has_measurements() const noexcept {
         for (auto&& elem : *this) {
             auto step = elem.get_step();
-            if (std::holds_alternative<QCircuit::MeasurementStep>(step)) {
+            if (std::holds_alternative<MeasurementStep>(step)) {
                 return true;
             }
         }
+
+        return false;
+    }
+
+    /**
+     * \brief Returns true if the quantum circuit description contains any
+     * measurements that remove qudits, false otherwise
+     *
+     * \return True if the quantum circuit description contains any
+     * measurements that remove qudits, false otherwise
+     */
+    bool removes_qudits() const noexcept {
+        for (auto&& elem : *this) {
+            auto step = elem.get_step();
+            if (std::holds_alternative<MeasurementStep>(step)) {
+                auto measurement_step = std::get<MeasurementStep>(step);
+                switch (measurement_step.measurement_type_) {
+                    case MeasurementStep::Type::MEASURE:
+                    case MeasurementStep::Type::MEASURE_MANY:
+                    case MeasurementStep::Type::MEASURE_V:
+                    case MeasurementStep::Type::MEASURE_V_JOINT:
+                    case MeasurementStep::Type::DISCARD:
+                    case MeasurementStep::Type::DISCARD_MANY:
+                        return true;
+                    case MeasurementStep::Type::NONE:
+                    case MeasurementStep::Type::MEASURE_ND:
+                    case MeasurementStep::Type::MEASURE_MANY_ND:
+                    case MeasurementStep::Type::MEASURE_V_ND:
+                    case MeasurementStep::Type::MEASURE_V_JOINT_ND:
+                    case MeasurementStep::Type::RESET:
+                    case MeasurementStep::Type::RESET_MANY:
+                        return false;
+                } // end switch
+            }     // end if
+        }         // end for
 
         return false;
     }
@@ -4297,7 +4336,8 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Checks whether a classical dit in the circuit was used to
      * store the result of a measurement (either destructive or
-     * non-destructive) \see qpp::QCircuit::get_measurement_dits()
+     * non-destructive)
+     * \see qpp::QCircuit::get_measurement_dits()
      *
      * \param i Classical dit index
      * \return True if the classical dit \a i was used before to store the
@@ -4868,7 +4908,7 @@ inline QCircuit replicate(QCircuit qc, idx n) {
 
     if (n == 0)
         throw exception::OutOfRange("qpp::replicate()", "n");
-    if (qc.has_measurements())
+    if (qc.removes_qudits())
         throw exception::QuditAlreadyMeasured("qpp::replicate()", "qc");
     if (n == 1)
         return qc;
