@@ -88,7 +88,7 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
         throw exception::DimsMismatchCvector("qpp::ip()", "dims/phi");
     // END EXCEPTION CHECKS
 
-    idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
+    idx Dsubsys = prod(subsys_dims);
 
     idx D = static_cast<idx>(rpsi.rows());
     idx Dsubsys_bar = D / Dsubsys;
@@ -104,8 +104,7 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
     idx Cdimssubsys_bar[internal::maxn];
 
     std::vector<idx> subsys_bar = complement(subsys, n);
-    std::copy(std::begin(subsys_bar), std::end(subsys_bar),
-              std::begin(Csubsys_bar));
+    std::copy(subsys_bar.begin(), subsys_bar.end(), std::begin(Csubsys_bar));
 
     for (idx i = 0; i < n; ++i) {
         Cdims[i] = dims[i];
@@ -262,7 +261,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 
     // sample from the probability distribution
     assert(probs != decltype(probs)(probs.size(), 0)); // not all zeros
-    std::discrete_distribution<idx> dd(std::begin(probs), std::end(probs));
+    std::discrete_distribution<idx> dd(probs.begin(), probs.end());
     auto& gen = RandomDevices::get_instance().get_prng();
     idx result = dd(gen);
 
@@ -380,7 +379,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     for (idx i = 0; i < target.size(); ++i)
         subsys_dims[i] = dims[target[i]];
 
-    idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
+    idx Dsubsys = prod(subsys_dims);
 
     // check the Kraus operators
     if (Ks.empty())
@@ -433,7 +432,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     }
     // sample from the probability distribution
     assert(probs != decltype(probs)(probs.size(), 0)); // not all zeros
-    std::discrete_distribution<idx> dd(std::begin(probs), std::end(probs));
+    std::discrete_distribution<idx> dd(probs.begin(), probs.end());
     auto& gen = RandomDevices::get_instance().get_prng();
     idx result = dd(gen);
 
@@ -590,7 +589,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     for (idx i = 0; i < target.size(); ++i)
         subsys_dims[i] = dims[target[i]];
 
-    idx Dsubsys = prod(std::begin(subsys_dims), std::end(subsys_dims));
+    idx Dsubsys = prod(subsys_dims);
 
     // check the matrix V
     if (!internal::check_nonzero_size(V))
@@ -613,11 +612,12 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 #pragma omp parallel for
 #endif // HAS_OPENMP
         for (idx i = 0; i < M; ++i) {
-            if (destructive)
+            if (destructive) {
                 outstates[i] =
                     ip(static_cast<const ket&>(V.col(i)), rpsi, target, dims);
-            else
+            } else {
                 outstates[i] = apply(rpsi, prj(V.col(i)), target, dims);
+            }
         }
 
         for (idx i = 0; i < M; ++i) {
@@ -632,7 +632,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 
         // sample from the probability distribution
         assert(probs != decltype(probs)(probs.size(), 0)); // not all zeros
-        std::discrete_distribution<idx> dd(std::begin(probs), std::end(probs));
+        std::discrete_distribution<idx> dd(probs.begin(), probs.end());
         auto& gen = RandomDevices::get_instance().get_prng();
         idx result = dd(gen);
 
@@ -755,7 +755,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 
     // sort target in decreasing order,
     // the order of measurements does not matter
-    std::sort(std::begin(target), std::end(target), std::greater<idx>{});
+    std::sort(target.begin(), target.end(), std::greater<idx>{});
 
     //************ ket or density matrix ************//
     while (!target.empty()) {
@@ -769,13 +769,13 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 
         if (destructive) {
             // remove the subsystem
-            dims.erase(std::next(std::begin(dims),
+            dims.erase(std::next(dims.begin(),
                                  static_cast<std::ptrdiff_t>(target[0])));
         }
-        target.erase(std::begin(target));
+        target.erase(target.begin());
     }
     // order result in increasing order with respect to target
-    std::reverse(std::begin(result), std::end(result));
+    std::reverse(result.begin(), result.end());
 
     return std::make_tuple(result, probs, rA);
 }

@@ -441,11 +441,11 @@ inline std::vector<idx> randperm(idx N) {
     std::vector<idx> result(N);
 
     // fill in increasing order
-    std::iota(std::begin(result), std::end(result), 0);
+    std::iota(result.begin(), result.end(), 0);
 
     // shuffle
     auto& gen = RandomDevices::get_instance().get_prng();
-    std::shuffle(std::begin(result), std::end(result), gen);
+    std::shuffle(result.begin(), result.end(), gen);
 
     return result;
 }
@@ -473,7 +473,7 @@ inline std::vector<double> randprob(idx N) {
         result[i] = ed(gen);
 
     // normalize
-    double sumprob = std::accumulate(std::begin(result), std::end(result), 0.0);
+    double sumprob = std::accumulate(result.begin(), result.end(), 0.0);
     for (idx i = 0; i < N; ++i)
         result[i] /= sumprob;
 

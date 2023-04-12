@@ -132,6 +132,10 @@ TEST(qpp_QCircuit_get_clean_dits, AllTests) {}
 /// BEGIN std::vector<idx> QCircuit::get_clean_qudits() const
 TEST(qpp_QCircuit_get_clean_qudits, AllTests) {}
 /******************************************************************************/
+/// BEGIN const std::unordered_map<std::size_t, cmat>&
+///       QCircuit::get_cmat_hash_tbl() const noexcept
+TEST(qpp_QCircuit_get_cmat_hash_tbl, AllTests) {}
+/******************************************************************************/
 /// BEGIN idx QCircuit::get_d() const noexcept
 TEST(qpp_QCircuit_get_d, AllTests) {}
 /******************************************************************************/
@@ -203,6 +207,9 @@ TEST(qpp_QCircuit_get_resources, AllTests) {}
 /******************************************************************************/
 /// BEGIN idx QCircuit::get_step_count() const noexcept
 TEST(qpp_QCircuit_get_step_count, AllTests) {}
+/******************************************************************************/
+/// BEGIN bool QCircuit::has_measurements() const noexcept
+TEST(qpp_QCircuit_has_measurements, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline static bool QCircuit::is_cCTRL(const GateStep& gate_step)
 TEST(qpp_QCircuit_is_cCTRL, AllTests) {}
@@ -282,6 +289,8 @@ TEST(qpp_QCircuit_remove_clean_qudit, AllTests) {}
 /// BEGIN QCircuit& QCircuit::remove_clean_qudits(std::vector<idx> target)
 TEST(qpp_QCircuit_remove_clean_qudits, AllTests) {}
 /******************************************************************************/
+/// BEGIN bool QCircuit::removes_qudits() const noexcept
+TEST(qpp_QCircuit_removes_qudits, AllTests) {}
 /// BEGIN QCircuit& QCircuit::replicate(idx n)
 TEST(qpp_QCircuit_replicate, AllTests) {}
 /******************************************************************************/

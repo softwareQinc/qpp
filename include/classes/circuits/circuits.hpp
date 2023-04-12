@@ -1,5 +1,3 @@
-#include <utility>
-
 /*
  * This file is part of Quantum++.
  *
@@ -41,8 +39,6 @@ namespace qpp {
  * \see qpp::QEngine
  */
 class QCircuit : public IDisplay, public IJSON {
-    friend class QEngine;
-
     idx nq_;           ///< number of qudits
     idx nc_;           ///< number of classical "dits"
     idx d_;            ///< qudit dimension
@@ -92,87 +88,86 @@ class QCircuit : public IDisplay, public IJSON {
 
   public:
     /**
-     * \brief Type of gate being executed in a gate step
-     */
-    enum class GateType {
-        NONE,      ///< represents no gate
-
-        SINGLE,    ///< unitary gate on a single qudit
-
-        TWO,       ///< unitary gate on 2 qudits
-
-        THREE,     ///< unitary gate on 3 qudits
-
-        JOINT,     ///< joint gate on multiple qudits
-
-        FAN,       ///< the same unitary gate on multiple qudits
-
-        CTRL,      ///< controlled unitary gate with joint target
-
-        CTRL_FAN,  ///< controlled unitary gate with multiple targets
-
-        cCTRL,     ///< classically controlled unitary gate with joint target
-
-        cCTRL_FAN, ///< classically controlled unitary gate with multiple
-                   ///< targets
-    };
-
-    /**
-     * \brief Extraction operator overload for qpp::QCircuit::GateType enum
-     * class
-     *
-     * \param os Output stream passed by reference
-     * \param gate_type qpp::QCircuit::GateType enum class
-     * \return Reference to the output stream
-     */
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const GateType& gate_type) {
-        switch (gate_type) {
-            case GateType::NONE:
-                os << "GATE NONE";
-                break;
-            case GateType::SINGLE:
-                os << "SINGLE";
-                break;
-            case GateType::TWO:
-                os << "TWO";
-                break;
-            case GateType::THREE:
-                os << "THREE";
-                break;
-            case GateType::FAN:
-                os << "FAN";
-                break;
-            case GateType::JOINT:
-                os << "JOINT";
-                break;
-            case GateType::CTRL:
-                os << "CTRL";
-                break;
-            case GateType::CTRL_FAN:
-                os << "CTRL_FAN";
-                break;
-            case GateType::cCTRL:
-                os << "cCTRL";
-                break;
-            case GateType::cCTRL_FAN:
-                os << "cCTRL_FAN";
-                break;
-        }
-
-        return os;
-    }
-
-    /**
      * \brief One step consisting only of gates/operators in the circuit
      */
     struct GateStep : IDisplay {
-        GateType gate_type_ = GateType::NONE; ///< gate type
-        std::size_t gate_hash_{};             ///< gate hash
-        std::vector<idx> ctrl_{};             ///< control
-        std::vector<idx> target_{}; ///< target where the gate is applied
-        std::vector<idx> shift_{};  ///< shifts in CTRL gates
-        std::string name_{};        ///< custom name of the gate(s)
+        /**
+         * \brief Type of gate being executed in a gate step
+         */
+        enum class Type {
+            NONE,     ///< represents no gate
+
+            SINGLE,   ///< unitary gate on a single qudit
+
+            TWO,      ///< unitary gate on 2 qudits
+
+            THREE,    ///< unitary gate on 3 qudits
+
+            JOINT,    ///< joint gate on multiple qudits
+
+            FAN,      ///< the same unitary gate on multiple qudits
+
+            CTRL,     ///< controlled unitary gate with joint target
+
+            CTRL_FAN, ///< controlled unitary gate with multiple targets
+
+            cCTRL,    ///< classically controlled unitary gate with joint target
+
+            cCTRL_FAN, ///< classically controlled unitary gate with multiple
+                       ///< targets
+        };
+        /**
+         * \brief Extraction operator overload for qpp::QCircuit::GateStep::Type
+         * enum class
+         *
+         * \param os Output stream passed by reference
+         * \param gate_type qpp::QCircuit::GateStep::Type enum class
+         * \return Reference to the output stream
+         */
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const Type& gate_type) {
+            switch (gate_type) {
+                case Type::NONE:
+                    os << "GATE NONE";
+                    break;
+                case Type::SINGLE:
+                    os << "SINGLE";
+                    break;
+                case Type::TWO:
+                    os << "TWO";
+                    break;
+                case Type::THREE:
+                    os << "THREE";
+                    break;
+                case Type::FAN:
+                    os << "FAN";
+                    break;
+                case Type::JOINT:
+                    os << "JOINT";
+                    break;
+                case Type::CTRL:
+                    os << "CTRL";
+                    break;
+                case Type::CTRL_FAN:
+                    os << "CTRL_FAN";
+                    break;
+                case Type::cCTRL:
+                    os << "cCTRL";
+                    break;
+                case Type::cCTRL_FAN:
+                    os << "cCTRL_FAN";
+                    break;
+            }
+
+            return os;
+        }
+
+        Type gate_type_ = Type::NONE; ///< gate type
+        std::size_t gate_hash_{};     ///< gate hash
+        std::vector<idx> ctrl_{};     ///< control
+        std::vector<idx> target_{};   ///< target where the gate is applied
+        std::vector<idx> shift_{};    ///< shifts in CTRL gates
+        std::string name_{};          ///< custom name of the gate(s)
 
         /**
          * \brief Default constructor
@@ -189,7 +184,7 @@ class QCircuit : public IDisplay, public IJSON {
          * \param shift Optional gate shifts (for CTRL gates)
          * \param name Optional gate name
          */
-        explicit GateStep(GateType gate_type, std::size_t gate_hash,
+        explicit GateStep(Type gate_type, std::size_t gate_hash,
                           std::vector<idx> ctrl, std::vector<idx> target,
                           std::vector<idx> shift = {}, std::string name = {})
             : gate_type_{gate_type}, gate_hash_{gate_hash},
@@ -209,6 +204,17 @@ class QCircuit : public IDisplay, public IJSON {
                    std::tie(target_, shift_, gate_type_, gate_hash_, ctrl_);
         }
 
+        /**
+         * \brief Inequality operator
+         * \note Ignores gate names
+         *
+         * \param rhs GateStep against which the inequality is being tested
+         * \return True if the GateStep(s) are not equal, false otherwise
+         */
+        bool operator!=(const GateStep& rhs) const noexcept {
+            return !(*this == rhs);
+        }
+
       private:
         /**
          * \brief qpp::IDisplay::display() override
@@ -221,11 +227,9 @@ class QCircuit : public IDisplay, public IJSON {
          */
         std::ostream& display(std::ostream& os) const override {
             os << gate_type_ << ", ";
-            if (gate_type_ == GateType::CTRL ||
-                gate_type_ == GateType::CTRL_FAN)
+            if (gate_type_ == Type::CTRL || gate_type_ == Type::CTRL_FAN)
                 os << "ctrl = " << disp(ctrl_, ", ") << ", ";
-            else if (gate_type_ == GateType::cCTRL ||
-                     gate_type_ == GateType::cCTRL_FAN)
+            else if (gate_type_ == Type::cCTRL || gate_type_ == Type::cCTRL_FAN)
                 os << "c_ctrl = " << disp(ctrl_, ", ") << ", ";
             os << "target = " << disp(target_, ", ") << ", ";
             if (!shift_.empty())
@@ -237,114 +241,117 @@ class QCircuit : public IDisplay, public IJSON {
     };
 
     /**
-     * \brief Type of measurement being executed in a measurement step
-     */
-    enum class MeasureType {
-        NONE,         ///< represents no measurement
-
-        MEASURE,      ///< Z measurement of single qudit
-
-        MEASURE_MANY, ///< Z measurement of multiple qudits
-
-        MEASURE_V,    ///< measurement of single qudit in the orthonormal basis
-        ///< or rank-1 projectors specified by the columns of matrix \a V
-
-        MEASURE_V_JOINT, ///< joint measurement of multiple qudits in the
-        ///< orthonormal basis or rank-1 projectors specified by the columns of
-        ///< the matrix \a V
-
-        MEASURE_ND,      ///< Z measurement of single qudit, non-destructive
-
-        MEASURE_MANY_ND, ///< Z measurement of multiple qudits, non-destructive
-
-        MEASURE_V_ND, ///< measurement of single qudit in the orthonormal basis
-        ///< or rank-1 projectors specified by the columns of matrix \a V,
-        ///< non-destructive
-
-        MEASURE_V_JOINT_ND, ///< joint measurement of multiple qudits in the
-        ///< orthonormal basis or rank-1 projectors specified by the columns of
-        ///< the matrix \a V, non-destructive
-
-        RESET,        ///< resets single qudit
-
-        RESET_MANY,   ///< resets multiple qudits
-
-        DISCARD,      ///< discards single qudit
-
-        DISCARD_MANY, ///< discards multiple qudits
-    };
-
-    /**
-     * \brief Extraction operator overload for qpp::QCircuit::MeasureType enum
-     * class
-     *
-     * \param os Output stream passed by reference
-     * \param measure_type qpp::QCircuit::MeasureType enum class
-     * \return Reference to the output stream
-     */
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const MeasureType& measure_type) {
-        switch (measure_type) {
-            case MeasureType::NONE:
-                os << "MEASURE NONE";
-                break;
-            case MeasureType::MEASURE:
-                os << "MEASURE";
-                break;
-            case MeasureType::MEASURE_MANY:
-                os << "MEASURE_MANY";
-                break;
-            case MeasureType::MEASURE_V:
-                os << "MEASURE_V";
-                break;
-            case MeasureType::MEASURE_V_JOINT:
-                os << "MEASURE_V_JOINT";
-                break;
-            case MeasureType::MEASURE_ND:
-                os << "MEASURE_ND";
-                break;
-            case MeasureType::MEASURE_MANY_ND:
-                os << "MEASURE_MANY_ND";
-                break;
-            case MeasureType::MEASURE_V_ND:
-                os << "MEASURE_V_ND";
-                break;
-            case MeasureType::MEASURE_V_JOINT_ND:
-                os << "MEASURE_V_JOINT_ND";
-                break;
-            case MeasureType::RESET:
-                os << "RESET";
-                break;
-            case MeasureType::RESET_MANY:
-                os << "RESET_MANY";
-                break;
-            case MeasureType::DISCARD:
-                os << "DISCARD";
-                break;
-            case MeasureType::DISCARD_MANY:
-                os << "DISCARD_MANY";
-                break;
-        }
-
-        return os;
-    }
-
-    /**
      * \brief One step consisting only of measurements in the circuit
      */
-    struct MeasureStep : IDisplay {
-        MeasureType measurement_type_ = MeasureType::NONE; ///< measurement type
+    struct MeasurementStep : IDisplay {
+        /**
+         * \brief Type of measurement being executed in a measurement step
+         */
+        enum class Type {
+            NONE,         ///< represents no measurement
+
+            MEASURE,      ///< Z measurement of single qudit
+
+            MEASURE_MANY, ///< Z measurement of multiple qudits
+
+            MEASURE_V, ///< measurement of single qudit in the orthonormal basis
+                       ///< or rank-1 projectors specified by the columns of
+                       ///< matrix \a V
+
+            MEASURE_V_JOINT, ///< joint measurement of multiple qudits in the
+                             ///< orthonormal basis or rank-1 projectors
+                             ///< specified by the columns of the matrix \a V
+
+            MEASURE_ND,      ///< Z measurement of single qudit, non-destructive
+
+            MEASURE_MANY_ND, ///< Z measurement of multiple qudits,
+                             ///< non-destructive
+
+            MEASURE_V_ND,    ///< measurement of single qudit in the orthonormal
+                             ///< basis or rank-1 projectors specified by the
+                             ///< columns of matrix \a V, ///< non-destructive
+
+            MEASURE_V_JOINT_ND, ///< joint measurement of multiple qudits in the
+                                ///< orthonormal basis or rank-1 projectors
+                                ///< specified by the columns of the matrix
+                                ///< \a V, non-destructive
+
+            RESET,              ///< resets single qudit
+
+            RESET_MANY,         ///< resets multiple qudits
+
+            DISCARD,            ///< discards single qudit
+
+            DISCARD_MANY,       ///< discards multiple qudits
+        };
+
+        /**
+         * \brief Extraction operator overload for
+         * qpp::QCircuit::MeasurementStep::Type enum class
+         *
+         * \param os Output stream passed by reference
+         * \param measure_type qpp::QCircuit::MeasurementStep::Type enum class
+         * \return Reference to the output stream
+         */
+        friend std::ostream& operator<<(std::ostream& os,
+                                        const Type& measure_type) {
+            switch (measure_type) {
+                case Type::NONE:
+                    os << "MEASURE NONE";
+                    break;
+                case Type::MEASURE:
+                    os << "MEASURE";
+                    break;
+                case Type::MEASURE_MANY:
+                    os << "MEASURE_MANY";
+                    break;
+                case Type::MEASURE_V:
+                    os << "MEASURE_V";
+                    break;
+                case Type::MEASURE_V_JOINT:
+                    os << "MEASURE_V_JOINT";
+                    break;
+                case Type::MEASURE_ND:
+                    os << "MEASURE_ND";
+                    break;
+                case Type::MEASURE_MANY_ND:
+                    os << "MEASURE_MANY_ND";
+                    break;
+                case Type::MEASURE_V_ND:
+                    os << "MEASURE_V_ND";
+                    break;
+                case Type::MEASURE_V_JOINT_ND:
+                    os << "MEASURE_V_JOINT_ND";
+                    break;
+                case Type::RESET:
+                    os << "RESET";
+                    break;
+                case Type::RESET_MANY:
+                    os << "RESET_MANY";
+                    break;
+                case Type::DISCARD:
+                    os << "DISCARD";
+                    break;
+                case Type::DISCARD_MANY:
+                    os << "DISCARD_MANY";
+                    break;
+            }
+
+            return os;
+        }
+
+        Type measurement_type_ = Type::NONE;   ///< measurement type
         std::vector<std::size_t> mats_hash_{}; ///< hashes of measurement
-        ///< matrix/matrices
+                                               ///< matrix/matrices
         std::vector<idx> target_{}; ///< target where the measurement is applied
         idx c_reg_{}; ///< index of the classical register where the measurement
-        ///< result is being stored
+                      ///< result is being stored
         std::string name_{}; ///< custom name of the measurement(s)
 
         /**
          * \brief Default constructor
          */
-        MeasureStep() = default;
+        MeasurementStep() = default;
 
         /**
          * \brief Constructs a measurement step instance
@@ -356,10 +363,10 @@ class QCircuit : public IDisplay, public IJSON {
          * stored
          * \param name Optional gate name
          */
-        explicit MeasureStep(MeasureType measurement_type,
-                             std::vector<std::size_t> mats_hash,
-                             std::vector<idx> target, idx c_reg,
-                             std::string name = {})
+        explicit MeasurementStep(Type measurement_type,
+                                 std::vector<std::size_t> mats_hash,
+                                 std::vector<idx> target, idx c_reg,
+                                 std::string name = {})
             : measurement_type_{measurement_type},
               mats_hash_{std::move(mats_hash)}, target_{std::move(target)},
               c_reg_{c_reg}, name_{std::move(name)} {}
@@ -368,13 +375,25 @@ class QCircuit : public IDisplay, public IJSON {
          * \brief Equality operator
          * \note Ignores measurement names
          *
-         * \param rhs MeasureStep against which the equality is being tested
-         * \return True if the MeasureStep(s) are equal, false otherwise
+         * \param rhs MeasurementStep against which the equality is being tested
+         * \return True if the MeasurementStep(s) are equal, false otherwise
          */
-        bool operator==(const MeasureStep& rhs) const noexcept {
+        bool operator==(const MeasurementStep& rhs) const noexcept {
             return std::tie(rhs.target_, rhs.measurement_type_, rhs.mats_hash_,
                             rhs.c_reg_) ==
                    std::tie(target_, measurement_type_, mats_hash_, c_reg_);
+        }
+
+        /**
+         * \brief Inequality operator
+         * \note Ignores measurement names
+         *
+         * \param rhs MeasurementStep against which the inequality is being
+         * tested
+         * \return True if the MeasurementStep(s) are not equal, false otherwise
+         */
+        bool operator!=(const MeasurementStep& rhs) const noexcept {
+            return !(*this == rhs);
         }
 
       private:
@@ -382,7 +401,7 @@ class QCircuit : public IDisplay, public IJSON {
          * \brief qpp::IDisplay::display() override
          *
          * Writes to the output stream a textual representation of the
-         * \a qpp::QCircuit::Measure instance
+         * \a qpp::QCircuit::MeasurementStep instance
          *
          * \param os Output stream passed by reference
          * \return Reference to the output stream
@@ -390,10 +409,10 @@ class QCircuit : public IDisplay, public IJSON {
         std::ostream& display(std::ostream& os) const override {
             os << measurement_type_ << ", ";
             os << "target = " << disp(target_, ", ") << ", ";
-            if (measurement_type_ != MeasureType::RESET &&
-                measurement_type_ != MeasureType::RESET_MANY &&
-                measurement_type_ != MeasureType::DISCARD &&
-                measurement_type_ != MeasureType::DISCARD_MANY)
+            if (measurement_type_ != Type::RESET &&
+                measurement_type_ != Type::RESET_MANY &&
+                measurement_type_ != Type::DISCARD &&
+                measurement_type_ != Type::DISCARD_MANY)
                 os << "c_reg = " << c_reg_ << ", ";
             os << "name = " << '\"' << name_ << '\"';
 
@@ -402,13 +421,40 @@ class QCircuit : public IDisplay, public IJSON {
     };
 
     /**
-     * \brief Types of each step in the quantum circuit description
+     * \brief No-op
      */
-    enum class StepType {
-        NONE,        ///< represents no step
-        GATE,        ///< quantum gate(s)
-        MEASUREMENT, ///< measurement
-        NOP,         ///< no-op
+    struct NOPStep : IDisplay {
+        /**
+         * \brief Equality operator
+         *
+         * \return True (always)
+         */
+        bool operator==(const NOPStep&) const noexcept { return true; }
+
+        /**
+         * \brief Inequality operator
+         *
+         * \return False (always)
+         */
+        bool operator!=(const NOPStep& rhs) const noexcept {
+            return !(*this == rhs);
+        }
+
+      private:
+        /**
+         * \brief qpp::IDisplay::display() override
+         *
+         * Writes to the output stream a textual representation of the
+         * \a qpp::QCircuit::NOPStep instance
+         *
+         * \param os Output stream passed by reference
+         * \return Reference to the output stream
+         */
+        std::ostream& display(std::ostream& os) const override {
+            os << "NOP";
+
+            return os;
+        }
     };
 
     /**
@@ -493,35 +539,9 @@ class QCircuit : public IDisplay, public IJSON {
     };
 
   private:
-    std::vector<GateStep> gates_{};           ///< gates
-    std::vector<MeasureStep> measurements_{}; ///< measurements
-    std::vector<StepType> step_types_{};      ///< type of each step
-
-    /**
-     * \brief Vector of qpp::QCircuit::MeasureStep
-     *
-     * \return Vector of qpp::QCircuit::MeasureStep
-     */
-    const std::vector<MeasureStep>& get_measurements_() const noexcept {
-        return measurements_;
-    }
-
-    /**
-     * \brief Vector of qpp::QCircuit::GateStep
-     *
-     * \return Vector of qpp::QCircuit::GateStep
-     */
-    const std::vector<GateStep>& get_gates_() const noexcept { return gates_; }
-
-    /**
-     * \brief Hash table with the matrices used in the circuit
-     *
-     * \return Hash table with the matrices used in the circuit
-     */
-    const std::unordered_map<std::size_t, cmat>&
-    get_cmat_hash_tbl_() const noexcept {
-        return cmat_hash_tbl_;
-    }
+    using VarStep = std::variant<GateStep, MeasurementStep,
+                                 NOPStep>; ///< circuit step variant
+    std::vector<VarStep> circuit_;         ///<< quantum circuit representation
 
   public:
     /**
@@ -531,34 +551,25 @@ class QCircuit : public IDisplay, public IJSON {
      * \note The iterator is a const_iterator by default
      */
     class iterator {
-        ///< non-owning pointer to the parent const quantum circuit description
-        const QCircuit* qc_{nullptr};
-
         /**
          * \class qpp::QCircuit::iterator::value_type_
          * \brief Value type class for qpp::QCircuit::iterator
          */
         class value_type_ : public IDisplay {
-          public:
             ///< non-owning pointer to the grand-parent const quantum circuit
             ///< description
-            const QCircuit* value_type_qc_;
-
-            StepType type_{StepType::NONE}; ///< step type
-            idx ip_{static_cast<idx>(-1)};  ///< instruction pointer
-            std::vector<GateStep>::const_iterator
-                gates_ip_{};                ///< gates instruction pointer
-            std::vector<MeasureStep>::const_iterator
-                measurements_ip_{}; ///< measurements instruction pointer
-
+            const QCircuit* qc_ptr_;
+            idx ip_;       ///< instruction pointer
+            VarStep step_; ///< current circuit step
+          public:
             /**
              * \brief Constructor
              *
-             * \param value_type_qc Pointer to constant quantum circuit
+             * \param qc_ptr Pointer to constant quantum circuit
              * description
              */
-            explicit value_type_(const QCircuit* value_type_qc)
-                : value_type_qc_{value_type_qc} {}
+            explicit value_type_(const QCircuit* qc_ptr, idx ip, VarStep step)
+                : qc_ptr_{qc_ptr}, ip_{ip}, step_{std::move(step)} {}
 
             // silence -Weffc++ class has pointer data members
             /**
@@ -574,77 +585,121 @@ class QCircuit : public IDisplay, public IJSON {
              */
             value_type_& operator=(const value_type_&) = default;
 
-          private:
             /**
-             * \brief qpp::IDisplay::display() override
+             * \brief Equality operator
              *
-             * Writes to the output stream the textual representation of the
-             * iterator de-referenced element
-             *
-             * \param os Output stream passed by reference
-             * \return Reference to the output stream
+             * \param rhs Instance against which the equality is being tested
+             * \return True if the instances not are equal (bitwise), false
+             * otherwise
              */
+            bool operator==(const value_type_& rhs) {
+                return std::tie(qc_ptr_, ip_, step_) ==
+                       std::tie(rhs.qc_ptr_, rhs.ip_, rhs.step_);
+            }
+
+            /**
+             * \brief Inequality operator
+             *
+             * \param rhs Instance against which the inequality is being tested
+             * \return True if the instances are not equal (bit by bit), false
+             * otherwise
+             */
+            bool operator!=(const value_type_& rhs) { return !(*this == rhs); }
+
+            // getters
+            /**
+             * \brief Pointer to underlying quantum circuit description
+             * \return Pointer to underlying quantum circuit description
+             */
+            const QCircuit* get_qc_ptr() const { return qc_ptr_; }
+
+            /**
+             * \brief Current quantum circuit description instruction pointer
+             *
+             * \return Current quantum circuit description instruction pointer
+             */
+            idx get_ip() const { return ip_; }
+
+            /**
+             * \brief Current quantum circuit description step
+             *
+             * \return Current quantum circuit description step
+             */
+            VarStep get_step() const { return step_; }
+
+          private:
             std::ostream& display(std::ostream& os) const override {
                 // field spacing for the step number
                 idx text_width =
-                    std::to_string(value_type_qc_->get_step_count()).size();
+                    std::to_string(qc_ptr_->get_step_count()).size();
 
                 os << std::left;
                 os << std::setw(static_cast<int>(text_width)) << ip_ << ": ";
                 os << std::right;
 
-                // gate step
-                if (type_ == StepType::GATE) {
-                    os << *gates_ip_;
-                }
-                // measurement step
-                else if (type_ == StepType::MEASUREMENT) {
-                    switch (measurements_ip_->measurement_type_) {
-                        case MeasureType::NONE:
-                            break;
-                        case MeasureType::MEASURE:
-                        case MeasureType::MEASURE_MANY:
-                        case MeasureType::MEASURE_V:
-                        case MeasureType::MEASURE_V_JOINT:
-                            os << "|> ";
-                            break;
-                        case MeasureType::MEASURE_ND:
-                        case MeasureType::MEASURE_MANY_ND:
-                        case MeasureType::MEASURE_V_ND:
-                        case MeasureType::MEASURE_V_JOINT_ND:
-                            os << "|] ";
-                            break;
-                        case MeasureType::RESET:
-                        case MeasureType::RESET_MANY:
-                            os << "|* ";
-                            break;
-                        case MeasureType::DISCARD:
-                        case MeasureType::DISCARD_MANY:
-                            os << "|x ";
-                            break;
-                    } /* end switch */
-
-                    os << *measurements_ip_;
-                }
-                // no-op
-                else if (type_ == StepType::NOP) {
-                    os << "NOP";
-                }
-                // otherwise
-                else {
-                }
+                std::visit(
+                    overloaded{
+                        [&](const GateStep& gate_step) { os << gate_step; },
+                        [&](const MeasurementStep& measurement_step) {
+                            switch (measurement_step.measurement_type_) {
+                                case MeasurementStep::Type::NONE:
+                                    break;
+                                case MeasurementStep::Type::MEASURE:
+                                case MeasurementStep::Type::MEASURE_MANY:
+                                case MeasurementStep::Type::MEASURE_V:
+                                case MeasurementStep::Type::MEASURE_V_JOINT:
+                                    os << "|> ";
+                                    break;
+                                case MeasurementStep::Type::MEASURE_ND:
+                                case MeasurementStep::Type::MEASURE_MANY_ND:
+                                case MeasurementStep::Type::MEASURE_V_ND:
+                                case MeasurementStep::Type::MEASURE_V_JOINT_ND:
+                                    os << "|] ";
+                                    break;
+                                case MeasurementStep::Type::RESET:
+                                case MeasurementStep::Type::RESET_MANY:
+                                    os << "|* ";
+                                    break;
+                                case MeasurementStep::Type::DISCARD:
+                                case MeasurementStep::Type::DISCARD_MANY:
+                                    os << "|x ";
+                                    break;
+                            } /* end switch */
+                            os << measurement_step;
+                        },
+                        [&](const NOPStep& nop_step) { os << nop_step; }},
+                    qc_ptr_->circuit_[ip_]);
 
                 return os;
             }
-        }; /* class QCircuit::value_type_ */
+        }; /* class QCircuit::iterator::value_type_ */
 
-        value_type_ elem_{nullptr};
+      private:
+        ///< non-owning pointer to the parent const quantum circuit description
+        const QCircuit* qc_ptr_{nullptr};
+        idx ip_{static_cast<idx>(-1)}; ///< instruction pointer
 
       public:
+        // iterator traits
+        using value_type = value_type_;                      ///< iterator trait
+        using pointer = const value_type*;                   ///< iterator trait
+        using reference = const value_type&;                 ///< iterator trait
+        using difference_type = std::ptrdiff_t;              ///< iterator trait
+        using iterator_category = std::forward_iterator_tag; ///< iterator trait
+
         /**
          * \brief Default constructor
          */
         iterator() = default;
+
+        /**
+         * \brief Explicit constructor
+         *
+         * \param qc_ptr Pointer to underlying quantum circuit description
+         * \param ip Quantum circuit description instruction pointer
+         */
+        explicit iterator(const QCircuit* qc_ptr, idx ip)
+            : qc_ptr_{qc_ptr}, ip_{ip} {}
 
         // silence -Weffc++ class has pointer data members
         /**
@@ -669,13 +724,13 @@ class QCircuit : public IDisplay, public IJSON {
             // EXCEPTION CHECKS
 
             // protects against incrementing invalid iterators
-            if (qc_ == nullptr) {
+            if (qc_ptr_ == nullptr) {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator++()",
                     "No qpp::QCircuit assigned");
             }
 
-            idx num_steps = qc_->get_step_count();
+            idx num_steps = qc_ptr_->get_step_count();
             // protects against incrementing an empty circuit iterator
             if (num_steps == 0) {
                 throw exception::InvalidIterator(
@@ -684,38 +739,14 @@ class QCircuit : public IDisplay, public IJSON {
             }
 
             // protects against incrementing past the end
-            if (elem_.ip_ == num_steps) {
+            if (ip_ == num_steps) {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator++()",
                     "Incrementing past the end");
             }
             // END EXCEPTION CHECKS
 
-            // gate step
-            if (elem_.type_ == StepType::GATE) {
-                std::advance(elem_.gates_ip_, 1);
-            }
-            // measurement step
-            else if (elem_.type_ == StepType::MEASUREMENT) {
-                std::advance(elem_.measurements_ip_, 1);
-            }
-            // no-op
-            else if (elem_.type_ == StepType::NOP) {
-            }
-            // otherwise
-            else {
-            }
-
-            // increment the instruction pointer
-            ++elem_.ip_;
-
-            // if we hit the end
-            if (elem_.ip_ == qc_->get_step_count()) {
-                elem_.type_ = StepType::NONE;
-            } else {
-                // set the next step type
-                elem_.type_ = qc_->step_types_[elem_.ip_];
-            }
+            ++ip_;
 
             return *this;
         }
@@ -726,8 +757,9 @@ class QCircuit : public IDisplay, public IJSON {
          * \return Copy of the current instance before the increment
          */
         iterator operator++(int) {
-            iterator retval = *this;
-            ++(*this);
+            iterator retval{*this};
+            this->operator++();
+
             return retval;
         }
 
@@ -738,17 +770,14 @@ class QCircuit : public IDisplay, public IJSON {
          * \return True if the iterators are equal, false otherwise
          */
         bool operator==(const iterator& rhs) const noexcept {
-            return std::tie(elem_.type_, elem_.ip_, elem_.gates_ip_,
-                            elem_.measurements_ip_) ==
-                   std::tie(rhs.elem_.type_, rhs.elem_.ip_, rhs.elem_.gates_ip_,
-                            rhs.elem_.measurements_ip_);
+            return std::tie(ip_, qc_ptr_) == std::tie(rhs.ip_, rhs.qc_ptr_);
         }
 
         /**
          * \brief Inequality operator
          *
          * \param rhs Iterator against which the inequality is being tested
-         * \return True if the iterators are not equal (bit by bit), false
+         * \return True if the iterators are not equal (bitwise), false
          * otherwise
          */
         bool operator!=(const iterator& rhs) const noexcept {
@@ -758,15 +787,15 @@ class QCircuit : public IDisplay, public IJSON {
         /**
          * \brief Safe de-referencing operator
          *
-         * \return Constant reference to the iterator element
+         * \return De-referenced iterator element
          */
-        const value_type_& operator*() const {
+        value_type operator*() const {
             // EXCEPTION CHECKS
 
             // protects against de-referencing past the last element or against
             // de-referencing invalid iterators
-            idx num_steps = qc_->get_step_count();
-            if (qc_ == nullptr)
+            idx num_steps = qc_ptr_->get_step_count();
+            if (qc_ptr_ == nullptr)
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator*()",
                     "No qpp::QCircuit assigned");
@@ -774,74 +803,18 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator*()",
                     "Zero-sized qpp::QCircuit");
-            if (elem_.ip_ == num_steps)
+            if (ip_ == num_steps)
                 throw exception::InvalidIterator(
                     "qpp::QCircuit::iterator::operator*()",
                     "Dereferencing past the end");
             // END EXCEPTION CHECKS
 
-            return elem_;
+            return value_type{qc_ptr_, ip_, qc_ptr_->circuit_[ip_]};
         }
+    }; /* class QCircuit::iterator */
 
-        /**
-         * \brief Sets the iterator to std::begin(this)
-         *
-         * \param qc Pointer to constant quantum circuit description
-         */
-        void set_begin_(const QCircuit* qc) {
-            qc_ = qc;
-            elem_ = value_type_{qc_};
-
-            if (qc_ != nullptr) {
-                if (qc_->get_step_count() != 0) // non-empty circuit
-                {
-                    elem_.type_ = qc_->step_types_[0];
-                    elem_.ip_ = 0;
-                }
-                elem_.gates_ip_ = std::begin(qc_->gates_);
-                elem_.measurements_ip_ = std::begin(qc_->measurements_);
-            }
-        }
-
-        /**
-         * \brief Sets the iterator to std::begin(this)
-         *
-         * \param qc Pointer to constant quantum circuit description
-         */
-        void set_end_(const QCircuit* qc) {
-            qc_ = qc;
-            elem_ = value_type_{qc_};
-
-            if (qc_ != nullptr) {
-                if (qc->get_step_count() != 0) {
-                    elem_.ip_ = qc->get_step_count();
-                }
-                elem_.gates_ip_ = std::end(qc->gates_);
-                elem_.measurements_ip_ = std::end(qc->measurements_);
-            }
-        }
-
-        // iterator traits
-        using difference_type = std::ptrdiff_t;              ///< iterator trait
-        using value_type = value_type_;                      ///< iterator trait
-        using pointer = const value_type*;                   ///< iterator trait
-        using reference = const value_type&;                 ///< iterator trait
-        using iterator_category = std::forward_iterator_tag; ///< iterator trait
-    };                               /* class QCircuit::iterator */
-
-    using const_iterator = iterator; ///< both iterators are const_iterators
-
-    /**
-     * \brief Iterator to the first element
-     *
-     * \return Iterator to the first element
-     */
-    iterator begin() noexcept {
-        iterator it;
-        it.set_begin_(this);
-
-        return it;
-    }
+    ///< both iterators are const_iterators
+    using const_iterator = iterator;
 
     /**
      * \brief Constant iterator to the first element
@@ -849,11 +822,17 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Constant iterator to the first element
      */
     const_iterator begin() const noexcept {
-        iterator it;
-        it.set_begin_(this);
+        idx ip = get_step_count() != 0 ? 0 : static_cast<idx>(-1);
 
-        return it;
+        return const_iterator{this, ip};
     }
+
+    /**
+     * \brief Iterator to the first element
+     *
+     * \return Iterator to the first element
+     */
+    iterator begin() noexcept { return std::as_const(*this).begin(); }
 
     /**
      * \brief Constant iterator to the first element
@@ -861,22 +840,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Constant iterator to the first element
      */
     const_iterator cbegin() const noexcept {
-        iterator it;
-        it.set_begin_(this);
-
-        return it;
-    }
-
-    /**
-     * \brief Iterator to the next to the last element
-     *
-     * \return Iterator to the next to the last element
-     */
-    iterator end() noexcept {
-        iterator it;
-        it.set_end_(this);
-
-        return it;
+        return std::as_const(*this).begin();
     }
 
     /**
@@ -885,23 +849,28 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Constant iterator to the next to the last element
      */
     const_iterator end() const noexcept {
-        iterator it;
-        it.set_end_(this);
+        idx step_count = this->get_step_count();
+        idx ip = static_cast<idx>(-1);
+        if (step_count != 0) {
+            ip = step_count;
+        }
 
-        return it;
+        return const_iterator{this, ip};
     }
+
+    /**
+     * \brief Iterator to the next to the last element
+     *
+     * \return Iterator to the next to the last element
+     */
+    iterator end() noexcept { return std::as_const(*this).end(); }
 
     /**
      * \brief Constant iterator to the next to the last element
      *
      * \return Constant iterator to the next to the last element
      */
-    const_iterator cend() const noexcept {
-        iterator it;
-        it.set_end_(this);
-
-        return it;
-    }
+    const_iterator cend() const noexcept { return std::as_const(*this).end(); }
 
     /**
      * \brief Constructs a quantum circuit description
@@ -918,7 +887,7 @@ class QCircuit : public IDisplay, public IJSON {
     explicit QCircuit(idx nq = 1, idx nc = 0, idx d = 2, std::string name = {})
         : nq_{nq}, nc_{nc}, d_{d}, name_{std::move(name)}, measured_(nq, false),
           measured_nd_(nq, false), clean_qudits_(nq_, true),
-          clean_dits_(nc_, true), measurement_dits_(nc_, false) {
+          clean_dits_(nc_, true), measurement_dits_(nc_, false), circuit_{} {
         // EXCEPTION CHECKS
 
         // if (nq == 0)
@@ -941,8 +910,8 @@ class QCircuit : public IDisplay, public IJSON {
      */
     inline static bool is_CTRL(const GateStep& gate_step) {
         switch (gate_step.gate_type_) {
-            case GateType::CTRL:
-            case GateType::CTRL_FAN:
+            case GateStep::Type::CTRL:
+            case GateStep::Type::CTRL_FAN:
                 return true;
             default:
                 return false;
@@ -957,8 +926,8 @@ class QCircuit : public IDisplay, public IJSON {
      */
     inline static bool is_cCTRL(const GateStep& gate_step) {
         switch (gate_step.gate_type_) {
-            case GateType::cCTRL:
-            case GateType::cCTRL_FAN:
+            case GateStep::Type::cCTRL:
+            case GateStep::Type::cCTRL_FAN:
                 return true;
             default:
                 return false;
@@ -976,6 +945,16 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     // getters
+    /**
+     * \brief Hash table with the matrices used in the circuit
+     *
+     * \return Hash table with the matrices used in the circuit
+     */
+    const std::unordered_map<std::size_t, cmat>&
+    get_cmat_hash_tbl() const noexcept {
+        return cmat_hash_tbl_;
+    }
+
     /**
      * \brief Total number of qudits in the circuit
      *
@@ -1159,15 +1138,16 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t hashU = hash_eigen(U);
         // iterate over all steps in the circuit
-        for (auto&& step : *this) {
-            // gates
-            if (step.type_ == StepType::GATE) {
-                GateStep gate_step = *step.gates_ip_;
 
-                if (gate_step.gate_hash_ != hashU && !compute_total_depth)
-                    continue; // we skip this gate step
+        for (auto&& elem : *this) {
+            auto step = elem.get_step();
+            if (std::holds_alternative<GateStep>(step)) {
+                auto gate_step = std::get<GateStep>(step);
+                if (gate_step.gate_hash_ != hashU && !compute_total_depth) {
+                    continue; // we skip this gate_step elem
+                }
 
-                found = true; // gate was found in the circuit
+                found = true; // gate_step was found in the circuit
 
                 std::vector<idx> ctrl = gate_step.ctrl_;
                 std::vector<idx> target = gate_step.target_;
@@ -1180,7 +1160,8 @@ class QCircuit : public IDisplay, public IJSON {
                 idx max_height = 0;
 
                 if (is_cCTRL(gate_step)) {
-                    // compute the "height" of the to-be-placed gate
+                    // compute the "height" of the to-be-placed
+                    // gate_step
                     for (idx i : ctrl)
                         if (heights[i] > max_height)
                             max_height = heights[i];
@@ -1190,23 +1171,23 @@ class QCircuit : public IDisplay, public IJSON {
                     // apply classical ctrl
                     for (idx i : ctrl)
                         heights[i] = max_height + 1;
-                    // apply gate
+                    // apply gate_step
                     for (idx i : target)
                         heights[nc_ + i] = max_height + 1;
                 } else {
-                    // compute the "height" of the to-be-placed gate
+                    // compute the "height" of the to-be-placed
+                    // gate_step
                     for (idx i : ctrl_target)
                         if (heights[nc_ + i] > max_height)
                             max_height = heights[nc_ + i];
-                    // apply (ctrl) gate
+                    // apply (ctrl) gate_step
                     for (idx i : ctrl_target)
                         heights[nc_ + i] = max_height + 1;
                 }
-            } // end if (step.type_ == StepType::GATE)
+            } // end if
         }     // end for
 
-        return found ? *std::max_element(std::begin(heights), std::end(heights))
-                     : 0;
+        return found ? *std::max_element(heights.begin(), heights.end()) : 0;
     }
 
     /**
@@ -1243,43 +1224,47 @@ class QCircuit : public IDisplay, public IJSON {
         // TODO check this
 
         // iterate over all steps in the circuit
-        for (auto&& step : *this) {
-            // measurements
-            if (step.type_ == StepType::MEASUREMENT) {
-                MeasureStep measure_step = *step.measurements_ip_;
+        for (auto&& elem : *this) {
+            auto step = elem.get_step();
+            if (std::holds_alternative<MeasurementStep>(step)) {
+                auto measurement_step =
+                    std::get<QCircuit::MeasurementStep>(step);
+                if (measurement_step.mats_hash_[0] != hashV &&
+                    !compute_total_depth) {
+                    continue; // we skip this measurement_step elem
+                }
 
-                if (measure_step.mats_hash_[0] != hashV && !compute_total_depth)
-                    continue; // we skip this measurement step
+                found = true; // measurement_step was found in the circuit
 
-                found = true; // measurement was found in the circuit
-
-                std::vector<idx> target = measure_step.target_;
-                idx c_reg = measure_step.c_reg_;
+                std::vector<idx> target = measurement_step.target_;
+                idx c_reg = measurement_step.c_reg_;
 
                 idx max_height = 0;
-                switch (measure_step.measurement_type_) {
-                    case MeasureType::NONE:
-                    case MeasureType::MEASURE_V:
-                    case MeasureType::MEASURE_V_JOINT:
-                    case MeasureType::MEASURE_V_ND:
-                    case MeasureType::MEASURE_V_JOINT_ND:
-                        // compute the "height" of the to-be-placed measurement
+                switch (measurement_step.measurement_type_) {
+                    case MeasurementStep::Type::NONE:
+                    case MeasurementStep::Type::MEASURE_V:
+                    case MeasurementStep::Type::MEASURE_V_JOINT:
+                    case MeasurementStep::Type::MEASURE_V_ND:
+                    case MeasurementStep::Type::MEASURE_V_JOINT_ND:
+                        // compute the "height" of the to-be-placed
+                        // measurement_step
                         if (heights[c_reg] > max_height)
                             max_height = heights[c_reg];
                         for (idx i : target)
                             if (heights[nc_ + i] > max_height)
                                 max_height = heights[nc_ + i];
-                        // apply measurement
+                        // apply measurement_step
                         heights[c_reg] = max_height + 1;
                         for (idx i : target)
                             heights[nc_ + i] = max_height + 1;
                         break;
 
-                    case MeasureType::MEASURE:
-                    case MeasureType::MEASURE_MANY:
-                    case MeasureType::MEASURE_ND:
-                    case MeasureType::MEASURE_MANY_ND:
-                        // compute the "height" of the to-be-placed measurement
+                    case MeasurementStep::Type::MEASURE:
+                    case MeasurementStep::Type::MEASURE_MANY:
+                    case MeasurementStep::Type::MEASURE_ND:
+                    case MeasurementStep::Type::MEASURE_MANY_ND:
+                        // compute the "height" of the to-be-placed
+                        // measurement_step
                         for (idx i = 0; i < target.size(); ++i) {
                             if (heights[c_reg + i] > max_height) {
                                 max_height = heights[c_reg + i];
@@ -1290,7 +1275,7 @@ class QCircuit : public IDisplay, public IJSON {
                                 max_height = heights[nc_ + i];
                             }
                         }
-                        // apply measurement
+                        // apply measurement_step
                         for (idx i = 0; i < target.size(); ++i) {
                             heights[c_reg + i] = max_height + 1;
                         }
@@ -1299,10 +1284,10 @@ class QCircuit : public IDisplay, public IJSON {
                             heights[nc_ + i] = max_height + 1;
                         break;
 
-                    case MeasureType::RESET:
-                    case MeasureType::RESET_MANY:
-                    case MeasureType::DISCARD:
-                    case MeasureType::DISCARD_MANY:
+                    case MeasurementStep::Type::RESET:
+                    case MeasurementStep::Type::RESET_MANY:
+                    case MeasurementStep::Type::DISCARD:
+                    case MeasurementStep::Type::DISCARD_MANY:
                         for (idx i : target)
                             if (heights[nc_ + i] > max_height)
                                 max_height = heights[nc_ + i];
@@ -1311,11 +1296,10 @@ class QCircuit : public IDisplay, public IJSON {
                             heights[nc_ + i] = max_height + 1;
                         break;
                 } // end switch
-            }     // if (step.type_ == StepType::MEASUREMENT) }
+            }     // end if
         }         // end for
 
-        return found ? *std::max_element(std::begin(heights), std::end(heights))
-                     : 0;
+        return found ? *std::max_element(heights.begin(), heights.end()) : 0;
     }
 
     /**
@@ -1380,7 +1364,7 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \return Total (gates + measurements) count
      */
-    idx get_step_count() const noexcept { return step_types_.size(); }
+    idx get_step_count() const noexcept { return circuit_.size(); }
 
     /**
      * \brief No-op count
@@ -1388,9 +1372,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \return No-op count
      */
     idx get_nop_count() const {
-        return std::count_if(
-            std::begin(step_types_), std::end(step_types_),
-            [](const StepType& s) { return s == StepType::NOP; });
+        return std::count_if(circuit_.begin(), circuit_.end(), [](auto&& arg) {
+            return std::holds_alternative<NOPStep>(arg);
+        });
     }
 
     /**
@@ -1448,45 +1432,48 @@ class QCircuit : public IDisplay, public IJSON {
 
         nq_ += n;
 
-        // update gate indexes
-        for (auto& gate : gates_) {
-            // update ctrl indexes
-            if (is_CTRL(gate)) {
-                for (idx& elem : gate.ctrl_) {
-                    if (elem >= pos)
-                        elem += n;
-                }
-            }
-
-            // update target indexes
-            for (idx& elem : gate.target_) {
-                if (elem >= pos)
-                    elem += n;
-            }
-        }
-
-        // update measurement indexes
-        for (auto& measurement : measurements_) {
-            for (idx& elem : measurement.target_) {
-                if (elem >= pos)
-                    elem += n;
-            }
+        for (auto& step : circuit_) {
+            std::visit(overloaded{
+                           // update gate_step indexes
+                           [&](GateStep& gate_step) { // update ctrl indexes
+                               if (is_CTRL(gate_step)) {
+                                   for (idx& elem : gate_step.ctrl_) {
+                                       if (elem >= pos)
+                                           elem += n;
+                                   }
+                               }
+                               // update target indexes
+                               for (idx& elem : gate_step.target_) {
+                                   if (elem >= pos)
+                                       elem += n;
+                               }
+                           },
+                           // update measurement indexes
+                           [&](MeasurementStep& measurement_step) {
+                               for (idx& elem : measurement_step.target_) {
+                                   if (elem >= pos)
+                                       elem += n;
+                               }
+                           },
+                           [&](NOPStep&) {},
+                       },
+                       step);
         }
 
         // update the destructively measured qudits
         measured_.insert(
-            std::next(std::begin(measured_), static_cast<std::ptrdiff_t>(pos)),
-            n, false);
+            std::next(measured_.begin(), static_cast<std::ptrdiff_t>(pos)), n,
+            false);
 
         // update the non-destructively measured qudits
-        measured_nd_.insert(std::next(std::begin(measured_nd_),
-                                      static_cast<std::ptrdiff_t>(pos)),
-                            n, false);
+        measured_nd_.insert(
+            std::next(measured_nd_.begin(), static_cast<std::ptrdiff_t>(pos)),
+            n, false);
 
         // update (enlarge) the clean qudits vector
-        clean_qudits_.insert(std::next(std::begin(clean_qudits_),
-                                       static_cast<std::ptrdiff_t>(pos)),
-                             n, true);
+        clean_qudits_.insert(
+            std::next(clean_qudits_.begin(), static_cast<std::ptrdiff_t>(pos)),
+            n, true);
 
         return *this;
     }
@@ -1519,29 +1506,36 @@ class QCircuit : public IDisplay, public IJSON {
         nc_ += n;
 
         // update gate indexes
-        for (auto& gate : gates_) {
-            // update cctrl indexes
-            if (is_cCTRL(gate)) {
-                for (idx& elem : gate.ctrl_) {
-                    if (elem >= pos)
-                        elem += n;
+        for (auto& gate_step : circuit_) {
+            if (std::holds_alternative<GateStep>(gate_step)) {
+                auto& gate = std::get<GateStep>(gate_step);
+                // update cctrl indexes
+                if (is_cCTRL(gate)) {
+                    for (idx& elem : gate.ctrl_) {
+                        if (elem >= pos)
+                            elem += n;
+                    }
                 }
             }
         }
 
         // update measurement indexes
-        for (auto& measurement : measurements_) {
-            if (measurement.c_reg_ >= pos)
-                measurement.c_reg_ += n;
+        for (auto& measurement_step : circuit_) {
+            if (std::holds_alternative<MeasurementStep>(measurement_step)) {
+                auto& measurement = std::get<MeasurementStep>(measurement_step);
+                if (measurement.c_reg_ >= pos) {
+                    measurement.c_reg_ += n;
+                }
+            }
         }
 
         // update (enlarge) the clean dits vector
-        clean_dits_.insert(std::next(std::begin(clean_dits_),
-                                     static_cast<std::ptrdiff_t>(pos)),
-                           n, true);
+        clean_dits_.insert(
+            std::next(clean_dits_.begin(), static_cast<std::ptrdiff_t>(pos)), n,
+            true);
 
         // update (enlarge) the measurement dits vector
-        measurement_dits_.insert(std::next(std::begin(measurement_dits_),
+        measurement_dits_.insert(std::next(measurement_dits_.begin(),
                                            static_cast<std::ptrdiff_t>(pos)),
                                  n, false);
 
@@ -1592,9 +1586,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::SINGLE, hashU, std::vector<idx>{},
-                            std::vector<idx>{i}, std::vector<idx>{}, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::SINGLE, hashU,
+                                       std::vector<idx>{}, std::vector<idx>{i},
+                                       std::vector<idx>{}, name});
+
         ++gate_count_[hashU];
 
         clean_qudits_[i] = false;
@@ -1638,9 +1634,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::TWO, hashU, std::vector<idx>{},
-                            std::vector<idx>{i, j}, std::vector<idx>{}, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(
+            GateStep{GateStep::Type::TWO, hashU, std::vector<idx>{},
+                     std::vector<idx>{i, j}, std::vector<idx>{}, name});
+
         ++gate_count_[hashU];
 
         clean_qudits_[i] = clean_qudits_[j] = false;
@@ -1686,10 +1684,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::THREE, hashU, std::vector<idx>{},
-                            std::vector<idx>{i, j, k}, std::vector<idx>{},
-                            name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(
+            GateStep{GateStep::Type::THREE, hashU, std::vector<idx>{},
+                     std::vector<idx>{i, j, k}, std::vector<idx>{}, name});
+
         ++gate_count_[hashU];
 
         clean_qudits_[i] = clean_qudits_[j] = clean_qudits_[k] = false;
@@ -1745,9 +1744,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::FAN, hashU, std::vector<idx>{}, target,
-                            std::vector<idx>{}, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::FAN, hashU,
+                                       std::vector<idx>{}, target,
+                                       std::vector<idx>{}, name});
+
         gate_count_[hashU] += target.size();
 
         for (idx elem : target) {
@@ -1852,9 +1853,11 @@ class QCircuit : public IDisplay, public IJSON {
             name = qpp::Gates::get_no_thread_local_instance().get_name(U);
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::JOINT, hashU, std::vector<idx>{}, target,
-                            std::vector<idx>{}, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::JOINT, hashU,
+                                       std::vector<idx>{}, target,
+                                       std::vector<idx>{}, name});
+
         ++gate_count_[hashU];
 
         for (idx elem : target) {
@@ -2154,9 +2157,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::CTRL_FAN, hashU, std::vector<idx>{ctrl},
-                            target, std::vector<idx>{shift}, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::CTRL_FAN, hashU,
+                                       std::vector<idx>{ctrl}, target,
+                                       std::vector<idx>{shift}, name});
+
         gate_count_[hashU] += target.size();
 
         clean_qudits_[ctrl] = false;
@@ -2263,9 +2268,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::CTRL_FAN, hashU, ctrl, target, shift,
-                            name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::CTRL_FAN, hashU, ctrl,
+                                       target, shift, name});
+
         gate_count_[hashU] += target.size();
 
         for (idx elem : ctrl) {
@@ -2371,8 +2377,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::CTRL, hashU, ctrl, target, shift, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(
+            GateStep{GateStep::Type::CTRL, hashU, ctrl, target, shift, name});
+
         ++gate_count_[hashU];
 
         for (idx elem : ctrl) {
@@ -2465,9 +2473,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::CTRL, hashU, ctrl,
-                            std::vector<idx>{target}, shift, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::CTRL, hashU, ctrl,
+                                       std::vector<idx>{target}, shift, name});
+
         ++gate_count_[hashU];
 
         for (idx elem : ctrl) {
@@ -2556,9 +2565,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::CTRL, hashU, std::vector<idx>{ctrl},
-                            target, std::vector<idx>{shift}, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::CTRL, hashU,
+                                       std::vector<idx>{ctrl}, target,
+                                       std::vector<idx>{shift}, name});
+
         ++gate_count_[hashU];
 
         clean_qudits_[ctrl] = false;
@@ -2618,10 +2629,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::CTRL, hashU, std::vector<idx>{ctrl},
-                            std::vector<idx>{target}, std::vector<idx>{shift},
-                            name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(
+            GateStep{GateStep::Type::CTRL, hashU, std::vector<idx>{ctrl},
+                     std::vector<idx>{target}, std::vector<idx>{shift}, name});
+
         ++gate_count_[hashU];
 
         clean_qudits_[ctrl] = false;
@@ -2697,10 +2709,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::cCTRL_FAN, hashU,
-                            std::vector<idx>{ctrl_dit}, target,
-                            std::vector<idx>{shift}, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::cCTRL_FAN, hashU,
+                                       std::vector<idx>{ctrl_dit}, target,
+                                       std::vector<idx>{shift}, name});
+
         gate_count_[hashU] += target.size();
 
         clean_dits_[ctrl_dit] = false;
@@ -2795,9 +2808,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::cCTRL_FAN, hashU, ctrl_dits,
-                            std::vector<idx>{target}, shift, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::cCTRL_FAN, hashU,
+                                       ctrl_dits, std::vector<idx>{target},
+                                       shift, name});
+
         gate_count_[hashU] += target.size();
 
         for (idx elem : ctrl_dits) {
@@ -2895,9 +2910,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::cCTRL, hashU, ctrl_dits, target, shift,
-                            name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::cCTRL, hashU, ctrl_dits,
+                                       target, shift, name});
+
         ++gate_count_[hashU];
 
         for (idx elem : ctrl_dits) {
@@ -2982,9 +2998,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::cCTRL, hashU, ctrl_dits,
-                            std::vector<idx>{target}, shift, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::cCTRL, hashU, ctrl_dits,
+                                       std::vector<idx>{target}, shift, name});
+
         ++gate_count_[hashU];
 
         for (idx elem : ctrl_dits) {
@@ -3064,9 +3081,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::cCTRL, hashU, std::vector<idx>{ctrl_dit},
-                            target, std::vector<idx>{shift}, name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(GateStep{GateStep::Type::cCTRL, hashU,
+                                       std::vector<idx>{ctrl_dit}, target,
+                                       std::vector<idx>{shift}, name});
+
         ++gate_count_[hashU];
 
         clean_dits_[ctrl_dit] = false;
@@ -3127,10 +3146,11 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
-        gates_.emplace_back(GateType::cCTRL, hashU, std::vector<idx>{ctrl_dit},
-                            std::vector<idx>{target}, std::vector<idx>{shift},
-                            name);
-        step_types_.emplace_back(StepType::GATE);
+
+        circuit_.emplace_back(
+            GateStep{GateStep::Type::cCTRL, hashU, std::vector<idx>{ctrl_dit},
+                     std::vector<idx>{target}, std::vector<idx>{shift}, name});
+
         ++gate_count_[hashU];
 
         clean_dits_[ctrl_dit] = false;
@@ -3177,16 +3197,20 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (destructive) {
             measured_[target] = true;
-            measurements_.emplace_back(MeasureType::MEASURE,
-                                       std::vector<std::size_t>{m_hash},
-                                       std::vector<idx>{target}, c_reg, name);
+
+            circuit_.emplace_back(
+                MeasurementStep{MeasurementStep::Type::MEASURE,
+                                std::vector<std::size_t>{m_hash},
+                                std::vector<idx>{target}, c_reg, name});
+
         } else {
             measured_nd_[target] = true;
-            measurements_.emplace_back(MeasureType::MEASURE_ND,
-                                       std::vector<std::size_t>{m_hash},
-                                       std::vector<idx>{target}, c_reg, name);
+
+            circuit_.emplace_back(
+                MeasurementStep{MeasurementStep::Type::MEASURE_ND,
+                                std::vector<std::size_t>{m_hash},
+                                std::vector<idx>{target}, c_reg, name});
         }
-        step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[m_hash];
 
         clean_qudits_[target] = false;
@@ -3249,18 +3273,19 @@ class QCircuit : public IDisplay, public IJSON {
             for (idx elem : target) {
                 measured_[elem] = true;
             }
-            measurements_.emplace_back(MeasureType::MEASURE_MANY,
-                                       std::vector<std::size_t>{m_hash}, target,
-                                       c_reg, name);
+
+            circuit_.emplace_back(MeasurementStep{
+                MeasurementStep::Type::MEASURE_MANY,
+                std::vector<std::size_t>{m_hash}, target, c_reg, name});
         } else {
             for (idx elem : target) {
                 measured_nd_[elem] = true;
             }
-            measurements_.emplace_back(MeasureType::MEASURE_MANY_ND,
-                                       std::vector<std::size_t>{m_hash}, target,
-                                       c_reg, name);
+
+            circuit_.emplace_back(MeasurementStep{
+                MeasurementStep::Type::MEASURE_MANY_ND,
+                std::vector<std::size_t>{m_hash}, target, c_reg, name});
         }
-        step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[m_hash];
 
         for (idx elem : target) {
@@ -3359,16 +3384,19 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (destructive) {
             measured_[target] = true;
-            measurements_.emplace_back(MeasureType::MEASURE_V,
-                                       std::vector<std::size_t>{hashV},
-                                       std::vector<idx>{target}, c_reg, name);
+
+            circuit_.emplace_back(
+                MeasurementStep{MeasurementStep::Type::MEASURE_V,
+                                std::vector<std::size_t>{hashV},
+                                std::vector<idx>{target}, c_reg, name});
         } else {
             measured_nd_[target] = true;
-            measurements_.emplace_back(MeasureType::MEASURE_V_ND,
-                                       std::vector<std::size_t>{hashV},
-                                       std::vector<idx>{target}, c_reg, name);
+
+            circuit_.emplace_back(
+                MeasurementStep{MeasurementStep::Type::MEASURE_V_ND,
+                                std::vector<std::size_t>{hashV},
+                                std::vector<idx>{target}, c_reg, name});
         }
-        step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[hashV];
 
         clean_qudits_[target] = false;
@@ -3449,18 +3477,19 @@ class QCircuit : public IDisplay, public IJSON {
             for (idx elem : target) {
                 measured_[elem] = true;
             }
-            measurements_.emplace_back(MeasureType::MEASURE_V_JOINT,
-                                       std::vector<std::size_t>{hashV}, target,
-                                       c_reg, name);
+
+            circuit_.emplace_back(MeasurementStep{
+                MeasurementStep::Type::MEASURE_V_JOINT,
+                std::vector<std::size_t>{hashV}, target, c_reg, name});
         } else {
             for (idx elem : target) {
                 measured_nd_[elem] = true;
             }
-            measurements_.emplace_back(MeasureType::MEASURE_V_JOINT_ND,
-                                       std::vector<std::size_t>{hashV}, target,
-                                       c_reg, name);
+
+            circuit_.emplace_back(MeasurementStep{
+                MeasurementStep::Type::MEASURE_V_JOINT_ND,
+                std::vector<std::size_t>{hashV}, target, c_reg, name});
         }
-        step_types_.emplace_back(StepType::MEASUREMENT);
         ++measurement_count_[hashV];
 
         for (idx elem : target) {
@@ -3502,11 +3531,10 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t m_hash = hash_eigen(cmat::Zero(d_, d_));
 
         measured_[target] = true;
-        measurements_.emplace_back(MeasureType::DISCARD,
-                                   std::vector<std::size_t>{m_hash},
-                                   std::vector<idx>{target}, -1, name);
 
-        step_types_.emplace_back(StepType::MEASUREMENT);
+        circuit_.emplace_back(MeasurementStep{
+            MeasurementStep::Type::DISCARD, std::vector<std::size_t>{m_hash},
+            std::vector<idx>{target}, static_cast<idx>(-1), name});
         //++measurement_count_[m_hash];
 
         clean_qudits_[target] = false;
@@ -3552,10 +3580,11 @@ class QCircuit : public IDisplay, public IJSON {
         for (idx elem : target) {
             measured_[elem] = true;
         }
-        measurements_.emplace_back(MeasureType::DISCARD_MANY,
-                                   std::vector<std::size_t>{m_hash}, target, -1,
-                                   name);
-        step_types_.emplace_back(StepType::MEASUREMENT);
+
+        circuit_.emplace_back(
+            MeasurementStep{MeasurementStep::Type::DISCARD_MANY,
+                            std::vector<std::size_t>{m_hash}, target,
+                            static_cast<idx>(-1), name});
         //++measurement_count_[m_hash];
 
         for (idx elem : target) {
@@ -3574,7 +3603,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& nop() {
-        step_types_.emplace_back(StepType::NOP);
+        circuit_.emplace_back(NOPStep{});
 
         return *this;
     }
@@ -3609,10 +3638,9 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t m_hash = hash_eigen(mprj({0}, d_));
 
-        measurements_.emplace_back(MeasureType::RESET,
-                                   std::vector<std::size_t>{m_hash},
-                                   std::vector<idx>{target}, -1, name);
-        step_types_.emplace_back(StepType::MEASUREMENT);
+        circuit_.emplace_back(MeasurementStep{
+            MeasurementStep::Type::RESET, std::vector<std::size_t>{m_hash},
+            std::vector<idx>{target}, static_cast<idx>(-1), name});
         //++measurement_count_[m_hash];
 
         return *this;
@@ -3655,10 +3683,9 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t m_hash = hash_eigen(mprj({0}, d_));
 
-        measurements_.emplace_back(MeasureType::RESET_MANY,
-                                   std::vector<std::size_t>{m_hash}, target, -1,
-                                   name);
-        step_types_.emplace_back(StepType::MEASUREMENT);
+        circuit_.emplace_back(MeasurementStep{
+            MeasurementStep::Type::RESET_MANY, std::vector<std::size_t>{m_hash},
+            target, static_cast<idx>(-1), name});
         //++measurement_count_[m_hash];
 
         return *this;
@@ -3666,8 +3693,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Replicates the circuit, in place
-     * \note The circuit should not contain any measurements when invoking
-     * this member function
+     * \note The circuit should not contain any measurement steps
      *
      * \param n Number of repetitions. If \a n == 1, returns the original
      * circuit.
@@ -3678,31 +3704,17 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (n == 0)
             throw exception::OutOfRange("qpp::QCircuit::replicate()", "n");
-        if (!get_measured().empty())
+        if (this->removes_qudits())
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::replicate()",
                                                   "n");
-        if (n == 1)
-            return *this;
         // END EXCEPTION CHECKS
 
-        auto gates_copy = gates_;
-        idx gates_size = gates_.size();
-
-        auto step_types_copy = step_types_;
-        idx step_types_size = step_types_.size();
-
-        gates_.resize(gates_.size() * n);
-        step_types_.resize(step_types_size * n);
-
-        for (idx i = 0; i < n - 1; ++i) {
-            std::copy(std::begin(gates_copy), std::end(gates_copy),
-                      std::next(std::begin(gates_), static_cast<std::ptrdiff_t>(
-                                                        (i + 1) * gates_size)));
-            std::copy(std::begin(step_types_copy), std::end(step_types_copy),
-                      std::next(std::begin(step_types_),
-                                static_cast<std::ptrdiff_t>((i + 1) *
-                                                            step_types_size)));
+        std::vector<VarStep> result;
+        result.reserve(n * circuit_.size());
+        for (idx i = 0; i < n; ++i) {
+            result.insert(result.end(), circuit_.begin(), circuit_.end());
         }
+        circuit_ = std::move(result);
 
         for (auto& elem : gate_count_)
             elem.second *= n;
@@ -3714,14 +3726,14 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Matches a quantum circuit description to the current quantum
      * circuit description, with the to-be-matched quantum circuit
      * description placed at the right (end) of the current quantum circuit
-     * description \see qpp::QCircuit::match_circuit_left() and
-     * qpp::QCircuit::add_circuit()
+     * description
+     * \see qpp::QCircuit::match_circuit_left() and qpp::QCircuit::add_circuit()
      *
      * \note The matched quantum circuit description cannot be larger than
      * the current quantum circuit description, i.e., all qudit indexes of
      * the added quantum circuit description must match with qudits from the
-     * current quantum circuit description (and those matched of the latter
-     * must contain no measurements)
+     * current quantum circuit description (and the latter should not contain
+     * any destructive measurements on the matched qudits)
      *
      * \note The classical dits are not relabeled
      *
@@ -3780,30 +3792,36 @@ class QCircuit : public IDisplay, public IJSON {
         add_dit(other.nc_, pos_dit);
 
         // STEP 1: update [c]ctrl and target indexes of other
-        for (auto& gate : other.gates_) {
-            // update the cctrl indexes
-            if (is_cCTRL(gate)) {
-                for (idx& dit : gate.ctrl_) {
-                    dit += pos_dit;
+        for (auto& gate_step : other.circuit_) {
+            if (std::holds_alternative<GateStep>(gate_step)) {
+                auto& gate = std::get<GateStep>(gate_step);
+                // update the cctrl indexes
+                if (is_cCTRL(gate)) {
+                    for (idx& dit : gate.ctrl_) {
+                        dit += pos_dit;
+                    }
                 }
-            }
-            // update the ctrl indexes
-            if (is_CTRL(gate)) {
-                for (idx& pos : gate.ctrl_) {
+                // update the ctrl indexes
+                if (is_CTRL(gate)) {
+                    for (idx& pos : gate.ctrl_) {
+                        pos = target[pos];
+                    }
+                }
+                // update the target indexes
+                for (idx& pos : gate.target_) {
                     pos = target[pos];
                 }
-            }
-            // update the target indexes
-            for (idx& pos : gate.target_) {
-                pos = target[pos];
             }
         } // end for other.gates_
 
         // update measurement indexes of other
-        for (auto& measurement : other.measurements_) {
-            measurement.c_reg_ += pos_dit;
-            for (idx& pos : measurement.target_) {
-                pos = target[pos];
+        for (auto& measurement_step : other.circuit_) {
+            if (std::holds_alternative<MeasurementStep>(measurement_step)) {
+                auto& measurement = std::get<MeasurementStep>(measurement_step);
+                measurement.c_reg_ += pos_dit;
+                for (idx& pos : measurement.target_) {
+                    pos = target[pos];
+                }
             }
         } // end for other.measurements_
 
@@ -3830,18 +3848,8 @@ class QCircuit : public IDisplay, public IJSON {
                 measurement_dits_[target[i]] = true;
 
         // STEP 2: append the copy of other to the current instance
-        // append gate steps vector
-        gates_.insert(std::end(gates_), std::begin(other.gates_),
-                      std::end(other.gates_));
-
-        // append measurement steps vector
-        measurements_.insert(std::end(measurements_),
-                             std::begin(other.measurements_),
-                             std::end(other.measurements_));
-
-        // append step types vector
-        step_types_.insert(std::end(step_types_), std::begin(other.step_types_),
-                           std::end(other.step_types_));
+        circuit_.insert(circuit_.end(), other.circuit_.begin(),
+                        other.circuit_.end());
 
         // STEP 3: modify gate counts, hash tables etc. accordingly
         // update matrix hash table
@@ -3861,15 +3869,18 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Matches a quantum circuit description to the current quantum
      * circuit description, with the to-be-matched quantum circuit
      * description placed at the left (beginning) of the current quantum
-     * circuit description \see qpp::QCircuit::match_circuit_right() and
+     * circuit description
+     * \see qpp::QCircuit::match_circuit_right() and
      * qpp::QCircuit::add_circuit()
      *
-     * \note The matched quantum circuit description cannot contain
-     * measurements and cannot be larger than the current quantum circuit
-     * description, i.e., all qudit indexes of the added quantum circuit
-     * description must match with qudits from the current quantum circuit
-     * description (and those matched of the latter must contain no
-     * measurements) \note The classical dits are not relabeled
+     * \note The matched quantum circuit description should not contain any
+     * destructive  measurements and should not be larger than the current
+     * quantum circuit description, i.e., all qudit indexes of the added quantum
+     * circuit description must match with qudits from the current quantum
+     * circuit description (and \a other should not contain any destructive
+     * measurements)
+     *
+     * \note The classical dits are not relabeled
      *
      * \param other Quantum circuit description
      * \param target Qudit indexes of the current circuit description where
@@ -3929,32 +3940,38 @@ class QCircuit : public IDisplay, public IJSON {
         add_dit(other.nc_, pos_dit);
 
         // STEP 1: update [c]ctrl and target indexes of other
-        for (auto& gate : other.gates_) {
-            // update the cctrl indexes
-            if (is_cCTRL(gate)) {
-                for (idx& dit : gate.ctrl_) {
-                    dit += pos_dit;
-                }
-            }
-            // update the ctrl indexes
-            if (is_CTRL(gate)) {
-                for (idx& pos : gate.ctrl_) {
-                    pos = target[pos];
-                }
-            }
-            // update the target indexes
-            for (idx& pos : gate.target_) {
-                pos = target[pos];
-            }
-        } // end for other.gates_
-
-        // update measurement indexes of other
-        for (auto& measurement : other.measurements_) {
-            measurement.c_reg_ += pos_dit;
-            for (idx& pos : measurement.target_) {
-                pos = target[pos];
-            }
-        } // end for other.measurements_
+        for (auto& step : other.circuit_) {
+            std::visit(overloaded{
+                           // update gate_step indexes of other
+                           [&](GateStep& gate_step) {
+                               // update the cctrl indexes
+                               if (is_cCTRL(gate_step)) {
+                                   for (idx& dit : gate_step.ctrl_) {
+                                       dit += pos_dit;
+                                   }
+                               }
+                               // update the ctrl indexes
+                               if (is_CTRL(gate_step)) {
+                                   for (idx& pos : gate_step.ctrl_) {
+                                       pos = target[pos];
+                                   }
+                               }
+                               // update the target indexes
+                               for (idx& pos : gate_step.target_) {
+                                   pos = target[pos];
+                               }
+                           },
+                           // update measurement_step indexes of other
+                           [&](MeasurementStep& measurement_step) {
+                               measurement_step.c_reg_ += pos_dit;
+                               for (idx& pos : measurement_step.target_) {
+                                   pos = target[pos];
+                               }
+                           },
+                           [&](NOPStep&) {},
+                       },
+                       step);
+        } // end for
 
         // TODO check this
 
@@ -3979,19 +3996,8 @@ class QCircuit : public IDisplay, public IJSON {
                 measurement_dits_[target[i]] = true;
 
         // STEP 2: append the copy of other to the current instance
-        // append gate steps vector
-        gates_.insert(std::begin(gates_), std::begin(other.gates_),
-                      std::end(other.gates_));
-
-        // append measurement steps vector
-        measurements_.insert(std::begin(measurements_),
-                             std::begin(other.measurements_),
-                             std::end(other.measurements_));
-
-        // append step types vector
-        step_types_.insert(std::begin(step_types_),
-                           std::begin(other.step_types_),
-                           std::end(other.step_types_));
+        circuit_.insert(circuit_.begin(), other.circuit_.begin(),
+                        other.circuit_.end());
 
         // STEP 3: modify gate counts, hash tables etc. accordingly
         // update matrix hash table
@@ -4009,7 +4015,8 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Appends (glues) a quantum circuit description to the end of
-     * the current one \see qpp::QCircuit::match_circuit_left() and
+     * the current one
+     * \see qpp::QCircuit::match_circuit_left() and
      * qpp::QCircuit::match_circuit_right()
      *
      * \note If the qudit indexes of the added quantum circuit description
@@ -4086,88 +4093,79 @@ class QCircuit : public IDisplay, public IJSON {
         add_dit(other.nc_, pos_dit);
 
         // STEP 1: update [c]ctrl and target indexes of other
-        for (auto& gate : other.gates_) {
-            // update the cctrl indexes
-            if (is_cCTRL(gate)) {
-                for (idx& pos : gate.ctrl_) {
-                    pos += pos_dit;
-                }
-            }
-            // update the ctrl indexes
-            if (is_CTRL(gate) && pos_qudit >= 0) {
-                for (idx& pos : gate.ctrl_) {
-                    pos += pos_qudit;
-                }
-            }
+        for (auto& step : other.circuit_) {
+            std::visit(overloaded{
+                           [&](GateStep& gate_step) {
+                               // update the cctrl indexes
+                               if (is_cCTRL(gate_step)) {
+                                   for (idx& pos : gate_step.ctrl_) {
+                                       pos += pos_dit;
+                                   }
+                               }
+                               // update the ctrl indexes
+                               if (is_CTRL(gate_step) && pos_qudit >= 0) {
+                                   for (idx& pos : gate_step.ctrl_) {
+                                       pos += pos_qudit;
+                                   }
+                               }
 
-            // update the target indexes
-            if (pos_qudit >= 0) {
-                for (idx& pos : gate.target_) {
-                    pos += pos_qudit;
-                }
-            }
-        } // end for other.gates_
+                               // update the target indexes
+                               if (pos_qudit >= 0) {
+                                   for (idx& pos : gate_step.target_) {
+                                       pos += pos_qudit;
+                                   }
+                               }
+                           },
+                           [&](MeasurementStep& measurement_step) {
+                               measurement_step.c_reg_ += pos_dit;
+                               if (pos_qudit >= 0) {
+                                   for (idx& pos : measurement_step.target_) {
+                                       pos += pos_qudit;
+                                   }
+                               }
+                           },
+                           [&](NOPStep&) {},
+                       },
+                       step);
 
-        // update measurement indexes of other
-        for (auto& measurement : other.measurements_) {
-            measurement.c_reg_ += pos_dit;
-            if (pos_qudit >= 0) {
-                for (idx& pos : measurement.target_) {
-                    pos += pos_qudit;
-                }
-            }
-        } // end for other.measurements_
+        } // end for
 
         // STEP 2
         // replace the corresponding elements of measured_, measured_nd_,
         // and clean_qudits_ with the ones of other
         if (pos_qudit < 0) {
-            std::copy_if(std::begin(other.measured_), std::end(other.measured_),
-                         std::begin(measured_), [](bool val) { return val; });
-            std::copy_if(std::begin(other.measured_nd_),
-                         std::end(other.measured_nd_), std::begin(measured_nd_),
-                         [](bool val) { return val; });
-            std::copy_if(
-                std::begin(other.clean_qudits_), std::end(other.clean_qudits_),
-                std::begin(clean_qudits_), [](bool val) { return !val; });
+            std::copy_if(other.measured_.begin(), other.measured_.end(),
+                         measured_.begin(), [](bool val) { return val; });
+            std::copy_if(other.measured_nd_.begin(), other.measured_nd_.end(),
+                         measured_nd_.begin(), [](bool val) { return val; });
+            std::copy_if(other.clean_qudits_.begin(), other.clean_qudits_.end(),
+                         clean_qudits_.begin(), [](bool val) { return !val; });
         } else {
-            std::copy_if(std::begin(other.measured_), std::end(other.measured_),
-                         std::next(std::begin(measured_), pos_qudit),
+            std::copy_if(other.measured_.begin(), other.measured_.end(),
+                         std::next(measured_.begin(), pos_qudit),
                          [](bool val) { return val; });
-            std::copy_if(std::begin(other.measured_nd_),
-                         std::end(other.measured_nd_),
-                         std::next(std::begin(measured_nd_), pos_qudit),
+            std::copy_if(other.measured_nd_.begin(), other.measured_nd_.end(),
+                         std::next(measured_nd_.begin(), pos_qudit),
                          [](bool val) { return val; });
-            std::copy_if(std::begin(other.clean_qudits_),
-                         std::end(other.clean_qudits_),
-                         std::next(std::begin(clean_qudits_), pos_qudit),
+            std::copy_if(other.clean_qudits_.begin(), other.clean_qudits_.end(),
+                         std::next(clean_qudits_.begin(), pos_qudit),
                          [](bool val) { return !val; });
         }
 
         // STEP 3
         // replace the corresponding elements of clean_dits_ and
         // measurement_dits_ with the ones of other
-        std::copy(std::begin(other.clean_dits_), std::end(other.clean_dits_),
-                  std::next(std::begin(clean_dits_),
+        std::copy(other.clean_dits_.begin(), other.clean_dits_.end(),
+                  std::next(clean_dits_.begin(),
                             static_cast<std::ptrdiff_t>(pos_dit)));
-        std::copy(std::begin(other.measurement_dits_),
-                  std::end(other.measurement_dits_),
-                  std::next(std::begin(measurement_dits_),
+        std::copy(other.measurement_dits_.begin(),
+                  other.measurement_dits_.end(),
+                  std::next(measurement_dits_.begin(),
                             static_cast<std::ptrdiff_t>(pos_dit)));
 
         // STEP 4: append the copy of other to the current instance
-        // append gate steps vector
-        gates_.insert(std::end(gates_), std::begin(other.gates_),
-                      std::end(other.gates_));
-
-        // append measurement steps vector
-        measurements_.insert(std::end(measurements_),
-                             std::begin(other.measurements_),
-                             std::end(other.measurements_));
-
-        // append step types vector
-        step_types_.insert(std::end(step_types_), std::begin(other.step_types_),
-                           std::end(other.step_types_));
+        circuit_.insert(circuit_.end(), other.circuit_.begin(),
+                        other.circuit_.end());
 
         // STEP 5: modify gate counts, hash tables etc. accordingly
         // update matrix hash table
@@ -4197,38 +4195,98 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Returns true if the quantum circuit description contains any
+     * measurements, false otherwise
+     *
+     * \return True if the quantum circuit description contains any
+     * measurements, false otherwise
+     */
+    bool has_measurements() const noexcept {
+        for (auto&& elem : *this) {
+            auto step = elem.get_step();
+            if (std::holds_alternative<MeasurementStep>(step)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * \brief Returns true if the quantum circuit description contains any
+     * measurements that remove qudits, false otherwise
+     *
+     * \return True if the quantum circuit description contains any
+     * measurements that remove qudits, false otherwise
+     */
+    bool removes_qudits() const noexcept {
+        for (auto&& elem : *this) {
+            auto step = elem.get_step();
+            if (std::holds_alternative<MeasurementStep>(step)) {
+                auto measurement_step = std::get<MeasurementStep>(step);
+                switch (measurement_step.measurement_type_) {
+                    case MeasurementStep::Type::MEASURE:
+                    case MeasurementStep::Type::MEASURE_MANY:
+                    case MeasurementStep::Type::MEASURE_V:
+                    case MeasurementStep::Type::MEASURE_V_JOINT:
+                    case MeasurementStep::Type::DISCARD:
+                    case MeasurementStep::Type::DISCARD_MANY:
+                        return true;
+                    case MeasurementStep::Type::NONE:
+                    case MeasurementStep::Type::MEASURE_ND:
+                    case MeasurementStep::Type::MEASURE_MANY_ND:
+                    case MeasurementStep::Type::MEASURE_V_ND:
+                    case MeasurementStep::Type::MEASURE_V_JOINT_ND:
+                    case MeasurementStep::Type::RESET:
+                    case MeasurementStep::Type::RESET_MANY:
+                        return false;
+                } // end switch
+            }     // end if
+        }         // end for
+
+        return false;
+    }
+
+    /**
      * \brief Adjoint quantum circuit description, in place
+     * \note The circuit should not contain any measurement steps
      *
      * \return Reference to the current instance
      */
     QCircuit& adjoint() {
         // EXCEPTION CHECKS
 
-        if (!get_measured().empty())
+        if (this->has_measurements()) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::adjoint()", "Current qpp::QCircuit instance");
+        }
         // END EXCEPTION CHECKS
 
         auto htbl = cmat_hash_tbl_; // copy the gate hash table of other
         cmat_hash_tbl_.clear();
 
-        std::reverse(std::begin(gates_), std::end(gates_));
-        std::reverse(std::begin(step_types_), std::end(step_types_));
+        std::reverse(circuit_.begin(), circuit_.end());
+        for (auto& step : circuit_) {
+            std::visit(overloaded{
+                           [&](QCircuit::GateStep& gate_step) {
+                               // get the gate and its corresponding hash
+                               std::size_t hashU = gate_step.gate_hash_;
+                               cmat U = htbl[hashU];
 
-        for (auto& elem : gates_) {
-            // get the gate and its corresponding hash
-            std::size_t hashU = elem.gate_hash_;
-            cmat U = htbl[hashU];
+                               // compute the adjoints
+                               cmat Udagger = qpp::adjoint(U);
+                               std::size_t hashUdagger = hash_eigen(Udagger);
 
-            // compute the adjoints
-            cmat Udagger = qpp::adjoint(U);
-            std::size_t hashUdagger = hash_eigen(Udagger);
-
-            // modify and add hash
-            elem.gate_hash_ = hashUdagger;
-            if (!elem.name_.empty())
-                elem.name_ += "+";
-            add_hash_(hashUdagger, Udagger);
+                               // modify and add hash
+                               gate_step.gate_hash_ = hashUdagger;
+                               if (!gate_step.name_.empty())
+                                   gate_step.name_ += "+";
+                               add_hash_(hashUdagger, Udagger);
+                           },
+                           [&](const QCircuit::MeasurementStep&) {},
+                           [&](const QCircuit::NOPStep&) {},
+                       },
+                       step);
         }
 
         return *this;
@@ -4278,7 +4336,8 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Checks whether a classical dit in the circuit was used to
      * store the result of a measurement (either destructive or
-     * non-destructive) \see qpp::QCircuit::get_measurement_dits()
+     * non-destructive)
+     * \see qpp::QCircuit::get_measurement_dits()
      *
      * \param i Classical dit index
      * \return True if the classical dit \a i was used before to store the
@@ -4365,29 +4424,33 @@ class QCircuit : public IDisplay, public IJSON {
                                         "target");
         // END EXCEPTION CHECKS
 
-        for (auto&& gate : gates_) {
-            if (is_CTRL(gate)) {
-                for (idx& pos : gate.ctrl_) {
-                    if (pos > target)
-                        --pos;
-                }
-            }
-            for (idx& pos : gate.target_) {
-                if (pos > target)
-                    --pos;
-            }
+        for (auto&& step : circuit_) {
+            std::visit(overloaded{
+                           [&](QCircuit::GateStep& gate_step) {
+                               if (is_CTRL(gate_step)) {
+                                   for (idx& pos : gate_step.ctrl_) {
+                                       if (pos > target)
+                                           --pos;
+                                   }
+                               }
+                               for (idx& pos : gate_step.target_) {
+                                   if (pos > target)
+                                       --pos;
+                               }
+                           },
+                           [&](QCircuit::MeasurementStep& measurement_step) {
+                               for (idx& pos : measurement_step.target_) {
+                                   if (pos > target)
+                                       --pos;
+                               }
+                           },
+                           [&](const QCircuit::NOPStep&) {},
+                       },
+                       step);
         }
 
-        for (auto&& measurement : measurements_) {
-            for (idx& pos : measurement.target_) {
-                if (pos > target)
-                    --pos;
-            }
-        }
-
-        clean_qudits_.erase(std::next(std::begin(clean_qudits_),
+        clean_qudits_.erase(std::next(clean_qudits_.begin(),
                                       static_cast<std::ptrdiff_t>(target)));
-
         --nq_;
 
         return *this;
@@ -4410,24 +4473,28 @@ class QCircuit : public IDisplay, public IJSON {
                                         "target");
         // END EXCEPTION CHECKS
 
-        for (auto&& gate : gates_) {
-            if (is_cCTRL(gate)) {
-                for (idx& pos : gate.ctrl_) {
-                    if (pos > target)
-                        --pos;
-                }
-            }
+        for (auto&& step : circuit_) {
+            std::visit(overloaded{
+                           [&](QCircuit::GateStep& gate_step) {
+                               if (is_cCTRL(gate_step)) {
+                                   for (idx& pos : gate_step.ctrl_) {
+                                       if (pos > target)
+                                           --pos;
+                                   }
+                               }
+                           },
+                           [&](QCircuit::MeasurementStep& measurement_step) {
+                               if (measurement_step.c_reg_ > target) {
+                                   --measurement_step.c_reg_;
+                               }
+                           },
+                           [&](const QCircuit::NOPStep&) {},
+                       },
+                       step);
         }
 
-        for (auto&& measurement : measurements_) {
-            if (measurement.c_reg_ > target) {
-                --measurement.c_reg_;
-            }
-        }
-
-        clean_dits_.erase(std::next(std::begin(clean_dits_),
+        clean_dits_.erase(std::next(clean_dits_.begin(),
                                     static_cast<std::ptrdiff_t>(target)));
-
         --nc_;
 
         return *this;
@@ -4454,7 +4521,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         // sort the target
-        std::sort(std::begin(target), std::end(target));
+        std::sort(target.begin(), target.end());
         idx dirty = 0;
 
         for (idx elem : target) {
@@ -4485,7 +4552,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         // sort the target
-        std::sort(std::begin(target), std::end(target));
+        std::sort(target.begin(), target.end());
         idx dirty = 0;
 
         for (idx elem : target) {
@@ -4528,11 +4595,9 @@ class QCircuit : public IDisplay, public IJSON {
      * otherwise
      */
     bool operator==(const QCircuit& rhs) const noexcept {
-        return std::tie(rhs.step_types_, rhs.nq_, rhs.nc_, rhs.measurements_,
-                        rhs.measured_, rhs.gates_, rhs.d_,
+        return std::tie(rhs.circuit_, rhs.nq_, rhs.nc_, rhs.measured_, rhs.d_,
                         rhs.cmat_hash_tbl_) ==
-               std::tie(step_types_, nq_, nc_, measurements_, measured_, gates_,
-                        d_, cmat_hash_tbl_);
+               std::tie(circuit_, nq_, nc_, measured_, d_, cmat_hash_tbl_);
     }
 
     /**
@@ -4571,79 +4636,78 @@ class QCircuit : public IDisplay, public IJSON {
         for (auto&& elem : *this) {
             result += sep;
             sep = ", ";
-            result += "{\"step\": " + std::to_string(elem.ip_) + ", ";
+            result += "{\"step\": " + std::to_string(elem.get_ip()) + ", ";
             result += "\"type\": ";
-            // gate step
-            if (elem.type_ == StepType::GATE) {
-                ss.str("");
-                ss.clear();
-                ss << elem.gates_ip_->gate_type_;
-                result += '\"' + ss.str() + "\", ";
-                if (!elem.gates_ip_->ctrl_.empty()) {
-                    ss.str("");
-                    ss.clear();
-                    ss << disp(elem.gates_ip_->ctrl_, ", ");
-                    switch (elem.gates_ip_->gate_type_) {
-                        case GateType::CTRL:
-                        case GateType::CTRL_FAN:
-                            result += "\"ctrl\": " + ss.str() + ", ";
-                            break;
-                        case GateType::cCTRL:
-                        case GateType::cCTRL_FAN:
-                            result += "\"c_ctrl\": " + ss.str() + ", ";
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                ss.str("");
-                ss.clear();
-                ss << disp(elem.gates_ip_->target_, ", ");
-                result += "\"target\": " + ss.str() + ", ";
 
-                if (!elem.gates_ip_->shift_.empty()) {
-                    ss.str("");
-                    ss.clear();
-                    ss << disp(elem.gates_ip_->shift_, ", ");
-                    result += "\"shift\": " + ss.str() + ", ";
-                }
+            std::visit(
+                overloaded{
+                    [&](const GateStep& gate_step) {
+                        ss.str("");
+                        ss.clear();
+                        ss << gate_step.gate_type_;
+                        result += '\"' + ss.str() + "\", ";
+                        if (!gate_step.ctrl_.empty()) {
+                            ss.str("");
+                            ss.clear();
+                            ss << disp(gate_step.ctrl_, ", ");
+                            switch (gate_step.gate_type_) {
+                                case GateStep::Type::CTRL:
+                                case GateStep::Type::CTRL_FAN:
+                                    result += "\"ctrl\": " + ss.str() + ", ";
+                                    break;
+                                case GateStep::Type::cCTRL:
+                                case GateStep::Type::cCTRL_FAN:
+                                    result += "\"c_ctrl\": " + ss.str() + ", ";
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        ss.str("");
+                        ss.clear();
+                        ss << disp(gate_step.target_, ", ");
+                        result += "\"target\": " + ss.str() + ", ";
 
-                result += "\"name\": ";
-                result += '\"' + elem.gates_ip_->name_ + "\"}";
-            }
-            // measurement step
-            else if (elem.type_ == StepType::MEASUREMENT) {
-                ss.str("");
-                ss.clear();
-                ss << elem.measurements_ip_->measurement_type_;
-                result += '\"' + ss.str() + "\", ";
-                ss.str("");
-                ss.clear();
-                ss << disp(elem.measurements_ip_->target_, ", ");
-                result += "\"target\": " + ss.str() + ", ";
+                        if (!gate_step.shift_.empty()) {
+                            ss.str("");
+                            ss.clear();
+                            ss << disp(gate_step.shift_, ", ");
+                            result += "\"shift\": " + ss.str() + ", ";
+                        }
 
-                if (elem.measurements_ip_->measurement_type_ !=
-                        MeasureType::RESET &&
-                    elem.measurements_ip_->measurement_type_ !=
-                        MeasureType::RESET_MANY &&
-                    elem.measurements_ip_->measurement_type_ !=
-                        MeasureType::DISCARD &&
-                    elem.measurements_ip_->measurement_type_ !=
-                        MeasureType::DISCARD_MANY)
-                    result += "\"c_reg\": " +
-                              std::to_string(elem.measurements_ip_->c_reg_) +
-                              ", ";
+                        result += "\"name\": ";
+                        result += '\"' + gate_step.name_ + "\"}";
+                    },
+                    [&](const MeasurementStep& measurement_step) {
+                        ss.str("");
+                        ss.clear();
+                        ss << measurement_step.measurement_type_;
+                        result += '\"' + ss.str() + "\", ";
+                        ss.str("");
+                        ss.clear();
+                        ss << disp(measurement_step.target_, ", ");
+                        result += "\"target\": " + ss.str() + ", ";
 
-                result += "\"name\": ";
-                result += '\"' + elem.measurements_ip_->name_ + "\"}";
-            }
-            // no-op
-            else if (elem.type_ == StepType::NOP) {
-                result += std::string{"\"NOP\""} + "}";
-            }
-            // otherwise
-            else {
-            }
+                        if (measurement_step.measurement_type_ !=
+                                MeasurementStep::Type::RESET &&
+                            measurement_step.measurement_type_ !=
+                                MeasurementStep::Type::RESET_MANY &&
+                            measurement_step.measurement_type_ !=
+                                MeasurementStep::Type::DISCARD &&
+                            measurement_step.measurement_type_ !=
+                                MeasurementStep::Type::DISCARD_MANY)
+                            result += "\"c_reg\": " +
+                                      std::to_string(measurement_step.c_reg_) +
+                                      ", ";
+
+                        result += "\"name\": ";
+                        result += '\"' + measurement_step.name_ + "\"}";
+                    },
+                    [&](const NOPStep&) {
+                        result += std::string{"\"NOP\""} + "}";
+                    },
+                },
+                elem.get_step());
         }                // end for
         result += "], "; // end steps
 
@@ -4688,7 +4752,7 @@ class QCircuit : public IDisplay, public IJSON {
         os << "]\n";
 
         std::string sep{};
-        for (auto&& elem : *this) {
+        for (auto elem : *this) {
             os << sep << elem;
             sep = '\n';
         }
@@ -4832,8 +4896,7 @@ inline QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
 
 /**
  * \brief Replicates a quantum circuit description
- * \note The circuit should not contain any measurements when invoking this
- * function
+ * \note The circuit should not contain any measurement steps
  *
  * \param qc Quantum circuit description
  * \param n Number of repetitions. If \a n == 1, returns the original
@@ -4845,7 +4908,7 @@ inline QCircuit replicate(QCircuit qc, idx n) {
 
     if (n == 0)
         throw exception::OutOfRange("qpp::replicate()", "n");
-    if (!qc.get_measured().empty())
+    if (qc.removes_qudits())
         throw exception::QuditAlreadyMeasured("qpp::replicate()", "qc");
     if (n == 1)
         return qc;
@@ -5142,18 +5205,22 @@ namespace internal {
  */
 inline bool
 is_projective_measurement(const QCircuit::iterator::value_type& elem) {
-    if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
-        switch (elem.measurements_ip_->measurement_type_) {
-            case QCircuit::MeasureType::MEASURE:
-            case QCircuit::MeasureType::MEASURE_MANY:
-            case QCircuit::MeasureType::MEASURE_ND:
-            case QCircuit::MeasureType::MEASURE_MANY_ND:
-                return true;
+    auto step = elem.get_step();
+    bool result = false;
+    if (std::holds_alternative<QCircuit::MeasurementStep>(step)) {
+        auto measurement_step = std::get<QCircuit::MeasurementStep>(step);
+        switch (measurement_step.measurement_type_) {
+            case QCircuit::MeasurementStep::Type::MEASURE:
+            case QCircuit::MeasurementStep::Type::MEASURE_MANY:
+            case QCircuit::MeasurementStep::Type::MEASURE_ND:
+            case QCircuit::MeasurementStep::Type::MEASURE_MANY_ND:
+                result = true;
             default:
                 break;
         }
     }
-    return false;
+
+    return result;
 }
 
 /**
@@ -5177,18 +5244,22 @@ inline bool is_projective_measurement(QCircuit::iterator it) {
  * not), false otherwise
  */
 inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
-    if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
-        switch (elem.measurements_ip_->measurement_type_) {
-            case QCircuit::MeasureType::MEASURE_V:
-            case QCircuit::MeasureType::MEASURE_V_JOINT:
-            case QCircuit::MeasureType::MEASURE_V_ND:
-            case QCircuit::MeasureType::MEASURE_V_JOINT_ND:
-                return true;
+    auto step = elem.get_step();
+    bool result = false;
+    if (std::holds_alternative<QCircuit::MeasurementStep>(step)) {
+        auto measurement_step = std::get<QCircuit::MeasurementStep>(step);
+        switch (measurement_step.measurement_type_) {
+            case QCircuit::MeasurementStep::Type::MEASURE_V:
+            case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT:
+            case QCircuit::MeasurementStep::Type::MEASURE_V_ND:
+            case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT_ND:
+                result = true;
             default:
                 break;
         }
     }
-    return is_projective_measurement(elem);
+
+    return result || is_projective_measurement(elem);
 }
 
 /**
@@ -5204,31 +5275,37 @@ inline bool is_measurement(QCircuit::iterator it) {
 }
 
 /**
- * \brief True if the quantum circuit step is a discard step, false otherwise
+ * \brief True if the quantum circuit step is a discard step, false
+ * otherwise
  *
  * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a discard step, false otherwise
+ * \return True if the quantum circuit step is a discard step, false
+ * otherwise
  */
 inline bool is_discard(const QCircuit::iterator::value_type& elem) {
-    if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
-        switch (elem.measurements_ip_->measurement_type_) {
-            case QCircuit::MeasureType::DISCARD:
-            case QCircuit::MeasureType::DISCARD_MANY:
-                return true;
+    auto step = elem.get_step();
+    bool result = false;
+    if (std::holds_alternative<QCircuit::MeasurementStep>(step)) {
+        auto measurement_step = std::get<QCircuit::MeasurementStep>(step);
+        switch (measurement_step.measurement_type_) {
+            case QCircuit::MeasurementStep::Type::DISCARD:
+            case QCircuit::MeasurementStep::Type::DISCARD_MANY:
+                result = true;
             default:
                 break;
         }
     }
-    return false;
+
+    return result;
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a discard step, false
- * otherwise
+ * \brief True if the quantum circuit iterator points to a discard step,
+ * false otherwise
  *
  * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a discard step, false
- * otherwise
+ * \return True if the quantum circuit iterator points to a discard step,
+ * false otherwise
  */
 inline bool is_discard(QCircuit::iterator it) { return is_discard(*it); }
 
@@ -5239,16 +5316,20 @@ inline bool is_discard(QCircuit::iterator it) { return is_discard(*it); }
  * \return True if the quantum circuit step is a reset step, false otherwise
  */
 inline bool is_reset(const QCircuit::iterator::value_type& elem) {
-    if (elem.type_ == QCircuit::StepType::MEASUREMENT) {
-        switch (elem.measurements_ip_->measurement_type_) {
-            case QCircuit::MeasureType::RESET:
-            case QCircuit::MeasureType::RESET_MANY:
-                return true;
+    auto step = elem.get_step();
+    bool result = false;
+    if (std::holds_alternative<QCircuit::MeasurementStep>(step)) {
+        auto measurement_step = std::get<QCircuit::MeasurementStep>(step);
+        switch (measurement_step.measurement_type_) {
+            case QCircuit::MeasurementStep::Type::RESET:
+            case QCircuit::MeasurementStep::Type::RESET_MANY:
+                result = true;
             default:
                 break;
         }
     }
-    return false;
+
+    return result;
 }
 
 /**
@@ -5256,8 +5337,8 @@ inline bool is_reset(const QCircuit::iterator::value_type& elem) {
  * otherwise
  *
  * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a reset step, false
- * otherwise
+ * \return True if the quantum circuit iterator points to a reset step,
+ * false otherwise
  */
 inline bool is_reset(QCircuit::iterator it) { return is_reset(*it); }
 
@@ -5270,17 +5351,23 @@ inline bool is_reset(QCircuit::iterator it) { return is_reset(*it); }
  * otherwise
  */
 inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
-    return (elem.type_ == QCircuit::StepType::GATE &&
-            QCircuit::is_cCTRL(*(elem).gates_ip_));
+    auto step = elem.get_step();
+    bool result = false;
+    if (std::holds_alternative<QCircuit::GateStep>(step)) {
+        auto gate_step = std::get<QCircuit::GateStep>(step);
+        result = QCircuit::is_cCTRL(gate_step);
+    }
+
+    return result;
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a classical CTRL step,
- * false otherwise
+ * \brief True if the quantum circuit iterator points to a classical CTRL
+ * step, false otherwise
  *
  * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a classical CTRL step,
- * false otherwise
+ * \return True if the quantum circuit iterator points to a classical CTRL
+ * step, false otherwise
  */
 inline bool is_cCTRL(QCircuit::iterator it) { return is_cCTRL(*it); }
 
@@ -5296,30 +5383,31 @@ inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>>
 extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
     std::vector<idx> ctrl, target, c_reg;
 
-    // measurement step
+    // measurement
     if (is_measurement(elem)) {
+        auto current_measurement_step =
+            std::get<QCircuit::MeasurementStep>(elem.get_step());
+
         ctrl = {};
+        target = current_measurement_step.target_;
 
-        auto current_measurement_step_it = elem.measurements_ip_;
-        target = current_measurement_step_it->target_;
-
-        switch (current_measurement_step_it->measurement_type_) {
+        switch (current_measurement_step.measurement_type_) {
             // measure
-            case QCircuit::MeasureType::MEASURE:
-            case QCircuit::MeasureType::MEASURE_ND:
-            case QCircuit::MeasureType::MEASURE_MANY:
-            case QCircuit::MeasureType::MEASURE_MANY_ND:
+            case QCircuit::MeasurementStep::Type::MEASURE:
+            case QCircuit::MeasurementStep::Type::MEASURE_ND:
+            case QCircuit::MeasurementStep::Type::MEASURE_MANY:
+            case QCircuit::MeasurementStep::Type::MEASURE_MANY_ND:
                 c_reg.resize(target.size());
                 std::iota(c_reg.begin(), c_reg.end(),
-                          current_measurement_step_it->c_reg_);
+                          current_measurement_step.c_reg_);
                 break;
             // measureV
-            case QCircuit::MeasureType::MEASURE_V:
-            case QCircuit::MeasureType::MEASURE_V_ND:
-            case QCircuit::MeasureType::MEASURE_V_JOINT:
-            case QCircuit::MeasureType::MEASURE_V_JOINT_ND:
+            case QCircuit::MeasurementStep::Type::MEASURE_V:
+            case QCircuit::MeasurementStep::Type::MEASURE_V_ND:
+            case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT:
+            case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT_ND:
                 c_reg.resize(1);
-                c_reg[0] = current_measurement_step_it->c_reg_;
+                c_reg[0] = current_measurement_step.c_reg_;
                 break;
             // discard/reset/none
             default:
@@ -5328,16 +5416,23 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
     }
     // cCTRL
     else if (is_cCTRL(elem)) {
+        auto current_gate_step = std::get<QCircuit::GateStep>(elem.get_step());
+
         ctrl = {};
-        target = elem.gates_ip_->target_;
-        c_reg = elem.gates_ip_->ctrl_;
+        target = current_gate_step.target_;
+        c_reg = current_gate_step.ctrl_;
 
     }
     // otherwise
     else {
-        ctrl = elem.gates_ip_->ctrl_;
-        target = elem.gates_ip_->target_;
-        c_reg = {};
+        auto step = elem.get_step();
+        if (std::holds_alternative<QCircuit::GateStep>(step)) {
+            auto current_gate_step = std::get<QCircuit::GateStep>(step);
+
+            ctrl = current_gate_step.ctrl_;
+            target = current_gate_step.target_;
+            c_reg = {};
+        }
     }
 
     return {ctrl, target, c_reg};
@@ -5357,8 +5452,8 @@ extract_ctrl_target_c_reg(QCircuit::iterator it) {
 }
 
 /**
- * \brief True if two quantum circuit steps (assumed added via the qpp::QCircuit
- * API) can be swapped, false otherwise
+ * \brief True if two quantum circuit steps (assumed added via the
+ * qpp::QCircuit API) can be swapped, false otherwise
  *
  * \param elem1 Quantum circuit step
  * \param elem2 Quantum circuit step
@@ -5389,8 +5484,8 @@ inline bool can_swap(const QCircuit::iterator::value_type& elem1,
 }
 
 /**
- * \brief True if two quantum circuit steps (assumed added via the qpp::QCircuit
- * API) can be swapped, false otherwise
+ * \brief True if two quantum circuit steps (assumed added via the
+ * qpp::QCircuit API) can be swapped, false otherwise
  *
  * \param it1 Quantum circuit iterator pointing to a quantum circuit step
  * \param it2 Quantum circuit iterator pointing to a quantum circuit step
@@ -5401,8 +5496,8 @@ inline bool can_swap(QCircuit::iterator it1, QCircuit::iterator it2) {
 }
 
 /**
- * \brief Converts a quantum (sub)-circuit description to a vector of quantum
- * circuit iterators
+ * \brief Converts a quantum (sub)-circuit description to a vector of
+ * quantum circuit iterators
  *
  * \param start Quantum circuit iterator pointing to the first element
  * \param finish Quantum circuit iterator pointing to the last element (not
@@ -5420,8 +5515,8 @@ circuit_as_iterators(QCircuit::iterator start, QCircuit::iterator finish) {
 }
 
 /**
- * \brief Converts a quantum (sub)-circuit description to a vector of quantum
- * circuit iterators
+ * \brief Converts a quantum (sub)-circuit description to a vector of
+ * quantum circuit iterators
  *
  * \param qc Quantum circuit description
  * \return Vector of quantum circuit iterators
@@ -5432,15 +5527,16 @@ circuit_as_iterators(const QCircuit& qc) {
 }
 
 /**
- * \brief Puts a quantum (sub)-circuit description in the canonical form, i.e.,
-starting with the first measurement step from the circuit range [start, finish),
- * pushes all measurements and cCTRLs at the end of the circuit
+ * \brief Puts a quantum (sub)-circuit description in the canonical form,
+ * i.e., starting with the first measurement step from the circuit range
+ * [start, finish), pushes all measurements and cCTRLs at the end of the
+ * circuit
  *
  * \param start Quantum circuit iterator pointing to the first element
  * \param finish Quantum circuit iterator pointing to the last element (not
  * included)
  * \return Quantum circuit canonical form represented as a vector of quantum
-circuit iterators
+ * circuit iterators
  */
 inline std::vector<QCircuit::iterator>
 canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
@@ -5455,14 +5551,11 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 
     // push all cCTRL steps to the end
     for (auto&& rit = steps.rbegin(); rit != steps.rend(); ++rit) {
-        // std::cout << **rit << std::endl;
         if (internal::is_cCTRL(*rit)) {
             // try to push it to the end
             for (auto&& next_it = rit.base(); next_it != steps.end();
                  ++next_it) {
                 auto cur_it = std::prev(next_it);
-                // std::cout << "\t cur_it:  " << **cur_it << std::endl;
-                // std::cout << "\t next_it: " << **next_it << std::endl;
                 if (internal::can_swap(*cur_it, *next_it)) {
                     std::swap(*cur_it, *next_it);
                 } else
@@ -5473,14 +5566,11 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 
     // next push all measurement steps to the end
     for (auto&& rit = steps.rbegin(); rit != steps.rend(); ++rit) {
-        // std::cout << **rit << std::endl;
         if (internal::is_measurement(*rit)) {
             // try to push it to the end
             for (auto&& next_it = rit.base(); next_it != steps.end();
                  ++next_it) {
                 auto cur_it = std::prev(next_it);
-                // std::cout << "\t cur_it:  " << **cur_it << std::endl;
-                // std::cout << "\t next_it: " << **next_it << std::endl;
                 if (internal::can_swap(*cur_it, *next_it)) {
                     std::swap(*cur_it, *next_it);
                 } else
@@ -5496,9 +5586,9 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 }
 
 /**
- * \brief Puts a quantum (sub)-circuit description in the canonical form, i.e.,
- * starting with the first measurement step of the quantum circuit, pushes all
- * measurements and cCTRLs at the end of the circuit
+ * \brief Puts a quantum (sub)-circuit description in the canonical form,
+ * i.e., starting with the first measurement step of the quantum circuit,
+ * pushes all measurements and cCTRLs at the end of the circuit
  *
  * \param qc Quantum circuit description
  * \return Quantum circuit canonical form represented as a vector of quantum

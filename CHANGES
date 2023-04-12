@@ -1,7 +1,19 @@
 Pre-release
     - Implemented ["classes/circuits/circuits.hpp"]
-          qpp::qpe_circuit() - Quantum phase estimation circuit
-    - Migrated pyqpp installation to pyproject.toml
+          qpp::qpe_circuit()                - Quantum phase estimation circuit
+          qpp::QCircuit::has_measurements() - True if the quantum circuit
+                                              description contains measurement
+                                              steps, false otherwise
+          qpp::QCircuit::removes_qudits()   - True if the quantum circuit
+                                              description contains any
+                                              measurements that remove qudits,
+                                              false otherwise
+    - Implemented ["pyqpp/qpp_wrapper_cpp"] (pyqpp Python wraper)
+          set_prng_seed() - sets the seed of the PRNG to a specific value, or,
+                            if invoked with no argument, to a random value
+    - Migrated pyqpp installation method to pyproject.toml
+    - Extensive code refactoring, transitioned qpp::QCircuit logic to
+      std::visit() over std::variant
 
 Version 4.0.1 - 2 April 2023
     - This is a maintenance release with minor changes

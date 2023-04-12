@@ -296,20 +296,20 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
 
     // The full system indexes {0,1,...,n-1}
     std::vector<idx> full_system(dims.size());
-    std::iota(std::begin(full_system), std::end(full_system), 0);
+    std::iota(full_system.begin(), full_system.end(), 0);
 
     // Sorted input subsystems
     std::vector<idx> subsysAsorted{subsysA};
     std::vector<idx> subsysBsorted{subsysB};
 
     // sort the input subsystems (as needed by std::set_union)
-    std::sort(std::begin(subsysAsorted), std::end(subsysAsorted));
-    std::sort(std::begin(subsysBsorted), std::end(subsysBsorted));
+    std::sort(subsysAsorted.begin(), subsysAsorted.end());
+    std::sort(subsysBsorted.begin(), subsysBsorted.end());
 
     // construct the union of A and B
     std::vector<idx> subsysAB;
-    std::set_union(std::begin(subsysAsorted), std::end(subsysAsorted),
-                   std::begin(subsysBsorted), std::end(subsysBsorted),
+    std::set_union(subsysAsorted.begin(), subsysAsorted.end(),
+                   subsysBsorted.begin(), subsysBsorted.end(),
                    std::back_inserter(subsysAB));
 
     // construct the complements

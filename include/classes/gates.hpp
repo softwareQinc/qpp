@@ -430,7 +430,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         for (idx elem : subsys_bar)
             Dsubsys_bar *= dims[elem];
 
-        std::copy(std::begin(subsys_bar), std::end(subsys_bar),
+        std::copy(subsys_bar.begin(), subsys_bar.end(),
                   std::begin(Csubsys_bar));
 
         for (idx k = 0; k < n; ++k) {
@@ -569,11 +569,10 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // ctrl + gate subsystem vector
         std::vector<idx> ctrlgate = ctrl;
-        std::sort(std::begin(ctrlgate), std::end(ctrlgate));
-        ctrlgate.insert(std::end(ctrlgate), std::begin(target),
-                        std::end(target));
+        std::sort(ctrlgate.begin(), ctrlgate.end());
+        ctrlgate.insert(ctrlgate.end(), target.begin(), target.end());
         // FIXME if needed
-        // std::sort(std::begin(ctrlgate), std::end(ctrlgate));
+        // std::sort(ctrlgate.begin(), ctrlgate.end());
 
         // check ctrl and target don't share common elements
         for (idx elem_ctrl : ctrl)

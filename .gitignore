@@ -1,6 +1,9 @@
 # Vim
 *.swp
 
+# Emacs
+\#*\#
+
 # MSVC 
 .vs/
 /out*
@@ -13,6 +16,13 @@ cmake-build*/
 
 # Windows build
 win/
+
+# pyqpp
+Makefile
+cmake_install.cmake
+CMakeCache.txt
+CMakeFiles/
+pyqpp.egg-info/
 
 # Documentation source files
 doc/

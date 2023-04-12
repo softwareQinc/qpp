@@ -137,13 +137,9 @@ inline bool check_dims(const std::vector<idx>& dims) {
     if (dims.empty())
         return false;
 
-    return std::find_if(std::begin(dims), std::end(dims),
-                        [dims](idx i) -> bool {
-                            if (i == 0)
-                                return true;
-                            else
-                                return false;
-                        }) == std::end(dims);
+    return std::find_if(dims.begin(), dims.end(), [dims](idx i) -> bool {
+               return (i == 0);
+           }) == dims.end();
 }
 
 // check that valid dims match the dimensions
@@ -155,8 +151,8 @@ bool check_dims_match_mat(const std::vector<idx>& dims,
     assert(!dims.empty());
     assert(A.rows() == A.cols());
 
-    idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-                                  static_cast<idx>(1), std::multiplies<>());
+    idx proddim = std::accumulate(dims.begin(), dims.end(), static_cast<idx>(1),
+                                  std::multiplies<>());
 
     return proddim == static_cast<idx>(A.cols());
 }
@@ -170,8 +166,8 @@ bool check_dims_match_cvect(const std::vector<idx>& dims,
     assert(A.rows() > 0);
     assert(A.cols() == 1);
 
-    idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-                                  static_cast<idx>(1), std::multiplies<>());
+    idx proddim = std::accumulate(dims.begin(), dims.end(), static_cast<idx>(1),
+                                  std::multiplies<>());
 
     return proddim == static_cast<idx>(A.rows());
 }
@@ -185,8 +181,8 @@ bool check_dims_match_rvect(const std::vector<idx>& dims,
     assert(A.cols() > 0);
     assert(A.rows() == 1);
 
-    idx proddim = std::accumulate(std::begin(dims), std::end(dims),
-                                  static_cast<idx>(1), std::multiplies<>());
+    idx proddim = std::accumulate(dims.begin(), dims.end(), static_cast<idx>(1),
+                                  std::multiplies<>());
 
     return proddim == static_cast<idx>(A.cols());
 }
@@ -196,14 +192,14 @@ inline bool check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept {
     // error checks only in DEBUG version
     assert(!dims.empty());
 
-    return std::all_of(std::begin(dims), std::end(dims),
+    return std::all_of(dims.begin(), dims.end(),
                        [dim](idx i) { return i == dim; });
 }
 
 // check that vector has no duplicates
 inline bool check_no_duplicates(std::vector<idx> v) {
-    std::sort(std::begin(v), std::end(v));
-    if (std::unique(std::begin(v), std::end(v)) != std::end(v))
+    std::sort(v.begin(), v.end());
+    if (std::unique(v.begin(), v.end()) != v.end())
         return false;
     else
         return true;
@@ -223,10 +219,9 @@ inline bool check_subsys_match_dims(const std::vector<idx>& subsys,
         return false;
 
     // check range of subsystems
-    return std::find_if(std::begin(subsys), std::end(subsys),
-                        [dims](idx i) -> bool {
-                            return i + 1 > dims.size();
-                        }) == std::end(subsys);
+    return std::find_if(subsys.begin(), subsys.end(), [dims](idx i) -> bool {
+               return i + 1 > dims.size();
+           }) == subsys.end();
 }
 
 // check matrix is 2 x 2
@@ -259,10 +254,9 @@ inline bool check_perm(const std::vector<idx>& perm) {
         return false;
 
     std::vector<idx> ordered(perm.size());
-    std::iota(std::begin(ordered), std::end(ordered), 0);
+    std::iota(ordered.begin(), ordered.end(), 0);
 
-    return std::is_permutation(std::begin(ordered), std::end(ordered),
-                               std::begin(perm));
+    return std::is_permutation(ordered.begin(), ordered.end(), perm.begin());
 }
 
 // Kronecker product of 2 matrices, preserve return type

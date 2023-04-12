@@ -261,6 +261,9 @@ PYBIND11_MODULE(pyqpp, m) {
                  py::overload_cast<>(&QCircuit::get_measurement_count,
                                      py::const_),
                  "Total measurement count")
+            .def("has_measurements", &QCircuit::has_measurements,
+                 "True if the quantum circuit description contains any "
+                 "measurements, false otherwise")
             .def("get_step_count", &QCircuit::get_step_count,
                  "Total (gates + measurements) count")
             .def("get_nop_count", &QCircuit::get_nop_count, "No-op count")
@@ -486,6 +489,9 @@ PYBIND11_MODULE(pyqpp, m) {
                      &QCircuit::reset),
                  "Reset multiple qudits", py::arg("target"),
                  py::arg("name") = "")
+            .def("removes_qudits", &QCircuit::removes_qudits,
+                 "True if the quantum circuit description contains any "
+                 "measurements that remove qudits, false otherwise")
             .def("replicate", &QCircuit::replicate,
                  "Replicates the quantum circuit description, in place",
                  py::arg("n"))
@@ -908,4 +914,17 @@ PYBIND11_MODULE(pyqpp, m) {
         "(Z-basis)",
         py::arg("num_samples"), py::arg("A"), py::arg("target"),
         py::arg("d") = 2);
+    m.def(
+        "set_prng_seed",
+        [](std::size_t seed) {
+            qpp::RandomDevices::get_instance().get_prng().seed(seed);
+        },
+        "Sets prng seed", py::arg("seed"));
+    m.def(
+        "set_prng_seed",
+        []() {
+            qpp::RandomDevices::get_instance().get_prng().seed(
+                std::random_device{}());
+        },
+        "Sets prng seed to a random value");
 }
