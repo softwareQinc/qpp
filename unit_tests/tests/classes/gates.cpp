@@ -207,7 +207,7 @@ TEST(qpp_Gates_GATE, Qubits) {
     EXPECT_NE(0, norm(res * psi - apply(psi, U, {1, 3})));
 }
 /******************************************************************************/
-/// BEGIN std::string Gates::get_name(const cmat& U) const
+/// BEGIN std::optional<std::string> Gates::get_name(const cmat& U) const
 TEST(qpp_Gates_get_name, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived = Eigen::MatrixXcd>

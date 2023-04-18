@@ -1672,12 +1672,12 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * \param ctrl Control subsystem indexes
  * \param target Subsystem indexes where the gate \a A is applied
  * \param dims Dimensions of the multi-partite system
- * \param shift Performs the control as if the \a ctrl qudits were
+ * \param shift Optional, performs the control as if the \a ctrl qudits were
  * \f$X\f$-incremented component-wise by \a shift (in the order given by
  * \a ctrl). For example, for two qutrits (D=3), applying a control gate on the
  * initial state \f$|00\rangle\f$ with first qutrit as control, second qutrit as
- * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If non-empty
- * (default), the size of \a shift must be the same as the size of \a ctrl.
+ * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If present,
+ * the size of \a shift must be the same as the size of \a ctrl.
  * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
@@ -1685,7 +1685,7 @@ template <typename Derived1, typename Derived2>
 applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
           const std::vector<idx>& target, const std::vector<idx>& dims,
-          std::vector<idx> shift = {}) {
+          std::optional<std::vector<idx>> shift = std::nullopt) {
     const expr_t<Derived1>& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
@@ -1771,10 +1771,10 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
                                             "dims/ctrl/target");
 
     // check shift
-    if (!shift.empty() && (shift.size() != ctrl.size()))
+    if (shift.has_value() && (shift.value().size() != ctrl.size()))
         throw exception::SizeMismatch("qpp::applyCTRL()", "ctrl/shift");
-    if (!shift.empty())
-        for (idx& elem : shift) {
+    if (shift.has_value())
+        for (idx& elem : shift.value()) {
             if (elem >= d)
                 throw exception::OutOfRange("qpp::applyCTRL()", "shift");
             elem = d - elem;
@@ -1782,7 +1782,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
     // END EXCEPTION CHECKS
 
-    if (shift.empty())
+    if (!shift.has_value())
         shift = std::vector<idx>(ctrl.size(), 0);
 
     // construct the table of A^k
@@ -1806,7 +1806,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 #endif // HAS_OPENMP
             for (idx r = 0; r < d; ++r) {
                 // copy shift
-                std::vector<idx> ctrl_shift = shift;
+                std::vector<idx> ctrl_shift = shift.value();
                 // increment ctrl_shift by r (mod d)
                 std::transform(ctrl_shift.begin(), ctrl_shift.end(),
                                ctrl_shift.begin(),
@@ -1903,20 +1903,20 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  * \param ctrl Control subsystem indexes
  * \param target Subsystem indexes where the gate \a A is applied
  * \param d Subsystem dimensions
- * \param shift Performs the control as if the \a ctrl qudits were
+ * \param shift Optional, performs the control as if the \a ctrl qudits were
  * \f$X\f$-incremented component-wise by \a shift. For example, for two qutrits
  * (D=3), applying a control gate on the initial state \f$|00\rangle\f$ with
  * first qutrit as control, second qutrit as target, and \a shift = {1}, yields
- * the state \f$|01\rangle\f$. If non-empty (default), the size of \a shift must
- * be the same as the size of \a ctrl.
+ * the state \f$|01\rangle\f$. If present, the size of \a shift must be the same
+ * as the size of \a ctrl.
  * \return CTRL-A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
-expr_t<Derived1> applyCTRL(const Eigen::MatrixBase<Derived1>& state,
-                           const Eigen::MatrixBase<Derived2>& A,
-                           const std::vector<idx>& ctrl,
-                           const std::vector<idx>& target, idx d = 2,
-                           const std::vector<idx>& shift = {}) {
+expr_t<Derived1>
+applyCTRL(const Eigen::MatrixBase<Derived1>& state,
+          const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
+          const std::vector<idx>& target, idx d = 2,
+          std::optional<std::vector<idx>> shift = std::nullopt) {
     const expr_t<Derived1>& rstate = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
@@ -1952,12 +1952,12 @@ expr_t<Derived1> applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  * \param target Target qudit indexes; the gate \a A is applied on every
  * one of them depending on the values of the control qudits
  * \param dims Dimensions of the multi-partite system
- * \param shift Performs the control as if the \a ctrl qudits were
+ * \param shift Optional, performs the control as if the \a ctrl qudits were
  * \f$X\f$-incremented component-wise by \a shift (in the order given by
  * \a ctrl). For example, for two qutrits (D=3), applying a control gate on the
  * initial state \f$|00\rangle\f$ with first qutrit as control, second qutrit as
- * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If non-empty
- * (default), the size of \a shift must be the same as the size of \a ctrl.
+ * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If present,
+ * the size of \a shift must be the same as the size of \a ctrl.
  * \return CTRL-CTRL-...-CTRL-A-A-...-A gate applied to every \a target qudit
  * in \a state
  */
@@ -1966,7 +1966,8 @@ template <typename Derived1, typename Derived2>
 applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
               const Eigen::MatrixBase<Derived2>& A,
               const std::vector<idx>& ctrl, const std::vector<idx>& target,
-              const std::vector<idx>& dims, std::vector<idx> shift = {}) {
+              const std::vector<idx>& dims,
+              std::optional<std::vector<idx>> shift = std::nullopt) {
     const expr_t<Derived1>& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
@@ -2059,10 +2060,10 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
                                             "dims/ctrl/target");
 
     // check shift
-    if (!shift.empty() && (shift.size() != ctrl.size()))
+    if (shift.has_value() && (shift.value().size() != ctrl.size()))
         throw exception::SizeMismatch("qpp::applyCTRL_fan()", "ctrl/shift");
-    if (!shift.empty())
-        for (idx& elem : shift) {
+    if (shift.has_value())
+        for (idx& elem : shift.value()) {
             if (elem >= d)
                 throw exception::OutOfRange("qpp::applyCTRL_fan()", "shift");
             elem = d - elem;
@@ -2070,7 +2071,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 
     // END EXCEPTION CHECKS
 
-    if (shift.empty())
+    if (!shift.has_value())
         shift = std::vector<idx>(ctrl.size(), 0);
 
     // construct the table of A^k
@@ -2094,7 +2095,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 #endif // HAS_OPENMP
             for (idx r = 0; r < d; ++r) {
                 // copy shift
-                std::vector<idx> ctrl_shift = shift;
+                std::vector<idx> ctrl_shift = shift.value();
                 // increment ctrl_shift by r (mod d)
                 std::transform(ctrl_shift.begin(), ctrl_shift.end(),
                                ctrl_shift.begin(),
@@ -2194,21 +2195,21 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
  * \param target Target qudit indexes; the gate \a A is applied on every
  * one of them depending on the values of the control qudits
  * \param d Subsystem dimensions
- * \param shift Performs the control as if the \a ctrl qudits were
+ * \param shift Optional, performs the control as if the \a ctrl qudits were
  * \f$X\f$-incremented component-wise by \a shift (in the order given by
  * \a ctrl). For example, for two qutrits (D=3), applying a control gate on the
  * initial state \f$|00\rangle\f$ with first qutrit as control, second qutrit as
- * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If non-empty
- * (default), the size of \a shift must be the same as the size of \a ctrl.
+ * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If present,
+ * the size of \a shift must be the same as the size of \a ctrl.
  * \return CTRL-CTRL-...-CTRL-A-A-...-A gate applied to every \a target qudit
  * in \a state
  */
 template <typename Derived1, typename Derived2>
-expr_t<Derived1> applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
-                               const Eigen::MatrixBase<Derived2>& A,
-                               const std::vector<idx>& ctrl,
-                               const std::vector<idx>& target, idx d = 2,
-                               const std::vector<idx>& shift = {}) {
+expr_t<Derived1>
+applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
+              const Eigen::MatrixBase<Derived2>& A,
+              const std::vector<idx>& ctrl, const std::vector<idx>& target,
+              idx d = 2, std::optional<std::vector<idx>> shift = std::nullopt) {
     const expr_t<Derived1>& rstate = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
@@ -2232,7 +2233,8 @@ expr_t<Derived1> applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 // as in https://arxiv.org/abs/1707.08834
 /**
  * \brief Applies the qudit quantum Fourier transform to the part \a target
- * of the multi-partite state vector or density matrix \a A \see qpp::QFT()
+ * of the multi-partite state vector or density matrix \a A
+ * \see qpp::QFT()
  *
  * \param A Eigen expression
  * \param target Subsystem indexes where the QFT is applied
@@ -2338,8 +2340,8 @@ template <typename Derived>
 // as in https://arxiv.org/abs/1707.08834
 /**
  * \brief Applies the inverse (adjoint) qudit quantum Fourier transform to
- * the part \a target of the multi-partite state vector or density matrix \a
- * A \see qpp::TFQ()
+ * the part \a target of the multi-partite state vector or density matrix \a A
+ * \see qpp::TFQ()
  *
  * \param A Eigen expression
  * \param target Subsystem indexes where the TFQ is applied

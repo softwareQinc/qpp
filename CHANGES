@@ -14,6 +14,8 @@ Pre-release
     - Migrated pyqpp installation method to pyproject.toml
     - Extensive code refactoring, transitioned qpp::QCircuit logic to
       std::visit() over std::variant
+    - API changes, all functions with "name" and "shift" default empty/zeroed
+      arguments are now wrapped in std::optional<>
 
 Version 4.0.1 - 2 April 2023
     - This is a maintenance release with minor changes

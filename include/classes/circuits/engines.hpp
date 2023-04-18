@@ -611,7 +611,8 @@ class QEngine : public IDisplay, public IJSON {
 
                     // controlled gate
                     if (QCircuit::is_CTRL(gate_step)) {
-                        ctrl_rel_pos = get_relative_pos_(gate_step.ctrl_);
+                        ctrl_rel_pos =
+                            get_relative_pos_(gate_step.ctrl_.value());
                         bool is_fan = (gate_step.gate_type_ ==
                                        QCircuit::GateStep::Type::CTRL_FAN);
                         st_.psi_ =
@@ -634,15 +635,18 @@ class QEngine : public IDisplay, public IJSON {
                                 bool should_apply = true;
                                 idx first_dit;
                                 // we have a shift
-                                if (!gate_step.shift_.empty()) {
+                                if (gate_step.shift_.has_value()) {
                                     first_dit =
-                                        (st_.dits_[(gate_step.ctrl_)[0]] +
-                                         gate_step.shift_[0]) %
+                                        (st_.dits_[(
+                                             gate_step.ctrl_.value())[0]] +
+                                         gate_step.shift_.value()[0]) %
                                         d;
-                                    for (idx m = 1; m < gate_step.ctrl_.size();
+                                    for (idx m = 1;
+                                         m < gate_step.ctrl_.value().size();
                                          ++m) {
-                                        if ((st_.dits_[(gate_step.ctrl_)[m]] +
-                                             gate_step.shift_[m]) %
+                                        if ((st_.dits_[(
+                                                 gate_step.ctrl_.value())[m]] +
+                                             gate_step.shift_.value()[m]) %
                                                 d !=
                                             first_dit) {
                                             should_apply = false;
@@ -652,10 +656,13 @@ class QEngine : public IDisplay, public IJSON {
                                 }
                                 // no shift
                                 else {
-                                    first_dit = st_.dits_[(gate_step.ctrl_)[0]];
-                                    for (idx m = 1; m < gate_step.ctrl_.size();
+                                    first_dit =
+                                        st_.dits_[(gate_step.ctrl_.value())[0]];
+                                    for (idx m = 1;
+                                         m < gate_step.ctrl_.value().size();
                                          ++m) {
-                                        if (st_.dits_[(gate_step.ctrl_)[m]] !=
+                                        if (st_.dits_[(
+                                                gate_step.ctrl_.value())[m]] !=
                                             first_dit) {
                                             should_apply = false;
                                             break;
@@ -946,8 +953,13 @@ class QEngine : public IDisplay, public IJSON {
         ss << "\"nq\": " << get_circuit().get_nq() << ", ";
         ss << "\"nc\": " << get_circuit().get_nc() << ", ";
         ss << "\"d\": " << get_circuit().get_d() << ", ";
-        ss << R"("name": ")" << get_circuit().get_name() << "\", ";
-
+        ss << "\"name\": ";
+        if (get_circuit().get_name().has_value()) {
+            ss << "\"" << get_circuit().get_name().value() << "\"";
+        } else {
+            ss << "null";
+        }
+        ss << ", ";
         ss << "\"sampling\": " << (this->can_sample ? "true" : "false") << ", ";
         ss << "\"measured/discarded (destructively)\": ";
         ss << disp(get_measured(), ", ");
@@ -1015,9 +1027,11 @@ class QEngine : public IDisplay, public IJSON {
         os << "<QCircuit nq: " << get_circuit().get_nq()
            << ", nc: " << get_circuit().get_nc()
            << ", d: " << get_circuit().get_d();
-        std::string circ_name = get_circuit().get_name();
-        if (!circ_name.empty())
-            os << ", name: \"" << circ_name << '\"';
+
+        if (get_circuit().get_name().has_value()) {
+            os << ", name: ";
+            os << "\"" << get_circuit().get_name().value() << "\"";
+        }
         os << ">\n";
 
         os << "last probs: " << disp(get_probs(), ", ") << '\n';

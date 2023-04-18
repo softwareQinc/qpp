@@ -79,15 +79,16 @@ class NoiseBase {
      * \param target Target qudit indexes where the noise is applied
      * \param caller Optional caller name
      */
-    void compute_probs_(const cmat& state, const std::vector<idx>& target,
-                        const std::string& caller = {}) const {
+    void
+    compute_probs_(const cmat& state, const std::vector<idx>& target,
+                   std::optional<std::string> caller = std::nullopt) const {
         if (!std::is_same<NoiseType::StateDependent, noise_type>::value)
             return; // no-op
 
         // minimal EXCEPTION CHECKS
 
         if (!internal::check_nonzero_size(state))
-            throw exception::ZeroSize(caller,
+            throw exception::ZeroSize(caller.value_or(""),
                                       "qpp::NoiseBase::compute_probs_()/state");
         // END EXCEPTION CHECKS
 
@@ -108,8 +109,9 @@ class NoiseBase {
      * \param caller Optional caller name
      * \return Resulting state after the noise was applied
      */
-    cmat compute_state_(const cmat& state, const std::vector<idx>& target,
-                        const std::string& caller = {}) const {
+    cmat
+    compute_state_(const cmat& state, const std::vector<idx>& target,
+                   std::optional<std::string> caller = std::nullopt) const {
         cmat result;
         idx D = static_cast<idx>(state.rows());
 
@@ -124,7 +126,7 @@ class NoiseBase {
         //************ Exception: not ket nor density matrix ************//
         else
             throw exception::MatrixNotSquareNorCvector(
-                caller, "qpp::NoiseBase::compute_state_()/state");
+                caller.value_or(""), "qpp::NoiseBase::compute_state_()/state");
 
         // now do the actual noise generation
         assert(probs_ != decltype(probs_)(probs_.size(), 0)); // not all zeros

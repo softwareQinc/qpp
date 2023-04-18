@@ -72,7 +72,7 @@ class Exception : public std::exception {
   protected:
     std::string where_;
     mutable std::string msg_;
-    std::string context_;
+    std::optional<std::string> context_;
 
   public:
     /**
@@ -81,7 +81,8 @@ class Exception : public std::exception {
      * \param where Text representing where the exception occurred
      * \param context Optional context-dependent message
      */
-    explicit Exception(std::string where, std::string context = {})
+    explicit Exception(std::string where,
+                       std::optional<std::string> context = std::nullopt)
         : where_{std::move(where)}, msg_{}, context_{std::move(context)} {}
 
     /**
@@ -96,8 +97,8 @@ class Exception : public std::exception {
         msg_ += description();
         msg_ += '!';
 
-        if (!context_.empty()) {
-            msg_ += " [" + context_ + ']';
+        if (context_.has_value()) {
+            msg_ += " [" + context_.value() + ']';
         }
 
         return msg_.c_str();
