@@ -154,7 +154,7 @@ void display(const bases_states_T& Alice_bases_states,
              const bases_states_T& Bob_bases_states) {
     using namespace qpp;
     auto n = Alice_bases_states.size();
-    std::cout << "Alice's states: ";
+    std::cout << "Alice's states:  ";
     for (idx i = 0; i < n; ++i) {
         std::string state;
         if (Alice_bases_states[i].first == 0) // Z basis
@@ -164,15 +164,15 @@ void display(const bases_states_T& Alice_bases_states,
         std::cout << state << ' ';
     }
     std::cout << '\n';
-    std::cout << "Alice's bases:  ";
+    std::cout << "Alice's bases:   ";
     for (idx i = 0; i < n; ++i)
         std::cout << (Alice_bases_states[i].first == 0 ? 'Z' : 'X') << ' ';
     std::cout << '\n';
-    std::cout << "Bob's bases:    ";
+    std::cout << "Bob's bases:     ";
     for (idx i = 0; i < n; ++i)
         std::cout << (Bob_bases_states[i].first == 0 ? 'Z' : 'X') << ' ';
     std::cout << '\n';
-    std::cout << "Bob's states:   ";
+    std::cout << "Bob's states:    ";
     for (idx i = 0; i < n; ++i) {
         std::string state;
         if (Bob_bases_states[i].first == 0) // Z basis
