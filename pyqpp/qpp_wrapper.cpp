@@ -283,34 +283,38 @@ PYBIND11_MODULE(pyqpp, m) {
             .def("add_dit", py::overload_cast<idx>(&QCircuit::add_dit),
                  "Adds n additional classical dits after the last qudit",
                  py::arg("n") = 1)
+            .def(
+                "gate",
+                py::overload_cast<const cmat&, idx, std::optional<std::string>>(
+                    &QCircuit::gate),
+                "Applies the single qudit gate U on single qudit i",
+                py::arg("U"), py::arg("i"), py::arg("name") = std::nullopt)
             .def("gate",
-                 py::overload_cast<const cmat&, idx, std::optional<std::string>>(
-                     &QCircuit::gate),
-                 "Applies the single qudit gate U on single qudit i",
-                 py::arg("U"), py::arg("i"), py::arg("name") = std::nullopt)
-            .def("gate",
-                 py::overload_cast<const cmat&, idx, idx, std::optional<std::string>>(
-                     &QCircuit::gate),
+                 py::overload_cast<const cmat&, idx, idx,
+                                   std::optional<std::string>>(&QCircuit::gate),
                  "Applies the two qudit gate U on qudits i and j", py::arg("U"),
                  py::arg("i"), py::arg("j"), py::arg("name") = std::nullopt)
             .def("gate",
-                 py::overload_cast<const cmat&, idx, idx, idx, std::optional<std::string>>(
-                     &QCircuit::gate),
+                 py::overload_cast<const cmat&, idx, idx, idx,
+                                   std::optional<std::string>>(&QCircuit::gate),
                  "Applies the three qudit gate U on qudits i, j and k",
                  py::arg("U"), py::arg("i"), py::arg("j"), py::arg("k"),
                  py::arg("name") = std::nullopt)
             .def("gate",
                  py::overload_cast<const cmat&, const std::vector<idx>&,
-                 std::optional<std::string>>(&QCircuit::gate),
+                                   std::optional<std::string>>(&QCircuit::gate),
                  "Jointly applies the multiple-qudit gate U on the qudit "
                  "indexes specified by target",
-                 py::arg("U"), py::arg("target"), py::arg("name") = std::nullopt)
+                 py::arg("U"), py::arg("target"),
+                 py::arg("name") = std::nullopt)
             .def("gate_fan",
                  py::overload_cast<const cmat&, const std::vector<idx>&,
-                 std::optional<std::string>>(&QCircuit::gate_fan),
+                                   std::optional<std::string>>(
+                     &QCircuit::gate_fan),
                  "Applies the single qudit gate U on every qudit listed in "
                  "target",
-                 py::arg("U"), py::arg("target"), py::arg("name") = std::nullopt)
+                 py::arg("U"), py::arg("target"),
+                 py::arg("name") = std::nullopt)
             .def("gate_fan",
                  py::overload_cast<const cmat&, std::optional<std::string>>(
                      &QCircuit::gate_fan),
@@ -338,128 +342,149 @@ PYBIND11_MODULE(pyqpp, m) {
                  "remaining non-measured qudits",
                  py::arg("swap") = true)
             .def("CTRL",
-                 py::overload_cast<const cmat&, idx, idx, idx, std::optional<std::string>>(
-                     &QCircuit::CTRL),
+                 py::overload_cast<const cmat&, idx, idx, std::optional<idx>,
+                                   std::optional<std::string>>(&QCircuit::CTRL),
                  "Applies the single qudit controlled gate U with control "
                  "qudit ctrl and target qudit target, i.e., CTRL-U",
                  py::arg("U"), py::arg("ctrl"), py::arg("target"),
-                 py::arg("shift") = 0, py::arg("name") = std::nullopt)
+                 py::arg("shift") = std::nullopt,
+                 py::arg("name") = std::nullopt)
             .def("CTRL",
                  py::overload_cast<const cmat&, idx, const std::vector<idx>&,
-                                   idx, std::optional<std::string>>(&QCircuit::CTRL),
+                                   std::optional<idx>,
+                                   std::optional<std::string>>(&QCircuit::CTRL),
                  "Jointly applies the single qudit controlled gate U with "
                  "control qudit ctrl on the qudit indexes specified by target, "
                  "i.e., CTRL-U_{joint}",
                  py::arg("U"), py::arg("ctrl"), py::arg("target"),
-                 py::arg("shift") = 0, py::arg("name") = std::nullopt)
+                 py::arg("shift") = std::nullopt,
+                 py::arg("name") = std::nullopt)
             .def("CTRL",
                  py::overload_cast<const cmat&, const std::vector<idx>&, idx,
-                 std::optional<std::vector<idx>>, std::optional<std::string>>(
-                     &QCircuit::CTRL),
+                                   std::optional<std::vector<idx>>,
+                                   std::optional<std::string>>(&QCircuit::CTRL),
                  "Applies the multiple-qudit controlled gate U with multiple "
                  "control qudits listed in ctrl on the target qudit specified "
                  "by target, i.e., CTRL-CTRL-...-CTRL-U",
                  py::arg("U"), py::arg("ctrl"), py::arg("target"),
-                 py::arg("shift") = std::nullopt, py::arg("name") = std::nullopt)
+                 py::arg("shift") = std::nullopt,
+                 py::arg("name") = std::nullopt)
             .def("CTRL",
                  py::overload_cast<const cmat&, const std::vector<idx>&,
                                    const std::vector<idx>&,
-                                   const std::vector<idx>&, std::optional<std::string>>(
-                     &QCircuit::CTRL),
+                                   std::optional<std::vector<idx>>,
+                                   std::optional<std::string>>(&QCircuit::CTRL),
                  "Jointly applies the multiple-qudit controlled gate U with "
                  "multiple control qudits listed in ctrl on the qudit indexes "
                  "specified by target, i.e., CTRL-CTRL-...-CTRL-U_{joint}",
                  py::arg("U"), py::arg("ctrl"), py::arg("target"),
-                 py::arg("shift") = std::vector<idx>(), py::arg("name") = std::nullopt)
+                 py::arg("shift") = std::nullopt,
+                 py::arg("name") = std::nullopt)
             .def("CTRL_fan",
                  py::overload_cast<const cmat&, const std::vector<idx>&,
                                    const std::vector<idx>&,
-                                   const std::vector<idx>&, std::optional<std::string>>(
+                                   std::optional<std::vector<idx>>,
+                                   std::optional<std::string>>(
                      &QCircuit::CTRL_fan),
                  "Applies the single qudit controlled gate U with multiple "
                  "control qudits listed in ctrl on every qudit listed in "
                  "target, i.e., CTRL-CTRL-...-CTRL-U-U-...-U",
                  py::arg("U"), py::arg("ctrl"), py::arg("target"),
-                 py::arg("shift") = std::vector<idx>(), py::arg("name") = std::nullopt)
+                 py::arg("shift") = std::nullopt,
+                 py::arg("name") = std::nullopt)
             .def("CTRL_fan",
                  py::overload_cast<const cmat&, idx, const std::vector<idx>&,
-                                   idx, std::optional<std::string>>(&QCircuit::CTRL_fan),
+                                   std::optional<idx>,
+                                   std::optional<std::string>>(
+                     &QCircuit::CTRL_fan),
                  "Applies the single qudit controlled gate U with control "
                  "qudit ctrl on every qudit listed in target, i.e., "
                  "CTRL-U-U-...-U",
                  py::arg("U"), py::arg("ctrl"), py::arg("target"),
-                 py::arg("shift") = 0, py::arg("name") = std::nullopt)
-            .def("cCTRL",
-                 py::overload_cast<const cmat&, idx, idx, idx, std::optional<std::string>>(
-                     &QCircuit::cCTRL),
-                 "Applies the single qubit controlled gate U with classical "
-                 "control dit ctrl and target qudit target, i.e., cCTRL-U",
-                 py::arg("U"), py::arg("ctrl_dit"), py::arg("target"),
-                 py::arg("shift") = 0, py::arg("name") = std::nullopt)
-            .def("cCTRL",
-                 py::overload_cast<const cmat&, idx, const std::vector<idx>&,
-                                   idx, std::optional<std::string>>(&QCircuit::cCTRL),
-                 "Jointly applies the single qudit controlled gate U with "
-                 "classical control dit ctrl on the qudit indexes specified "
-                 "by target, i.e., cCTRL-U_{joint}",
-                 py::arg("U"), py::arg("ctrl_dit"), py::arg("target"),
-                 py::arg("shift") = 0, py::arg("name") = std::nullopt)
-            .def("cCTRL",
-                 py::overload_cast<const cmat&, const std::vector<idx>&, idx,
-                                   const std::vector<idx>&, std::optional<std::string>>(
-                     &QCircuit::cCTRL),
-                 "Applies the single qudit controlled gate U with multiple "
-                 "classical control dits listed in ctrl on the target qudit "
-                 "target, i.e., cCTRL-cCTRL-...-cCTRL-U",
-                 py::arg("U"), py::arg("ctrl_dits"), py::arg("target"),
-                 py::arg("shift") = std::vector<idx>(), py::arg("name") =std::nullopt)
-            .def("cCTRL",
-                 py::overload_cast<const cmat&, const std::vector<idx>&,
-                                   const std::vector<idx>&,
-                                   const std::vector<idx>&, std::optional<std::string>>(
-                     &QCircuit::cCTRL),
-                 "Jointly applies the multiple-qudit controlled gate U with "
-                 "multiple classical control dits listed in ctrl on the qudit "
-                 "indexes specified by target, i.e., "
-                 "cCTRL-cCTRL-...-cCTRL-U_{joint}",
-                 py::arg("U"), py::arg("ctrl_dits"), py::arg("target"),
-                 py::arg("shift") = std::vector<idx>(), py::arg("name") = std::nullopt)
+                 py::arg("shift") = std::nullopt,
+                 py::arg("name") = std::nullopt)
+            .def(
+                "cCTRL",
+                py::overload_cast<const cmat&, idx, idx, std::optional<idx>,
+                                  std::optional<std::string>>(&QCircuit::cCTRL),
+                "Applies the single qubit controlled gate U with classical "
+                "control dit ctrl and target qudit target, i.e., cCTRL-U",
+                py::arg("U"), py::arg("ctrl_dit"), py::arg("target"),
+                py::arg("shift") = std::nullopt, py::arg("name") = std::nullopt)
+            .def(
+                "cCTRL",
+                py::overload_cast<const cmat&, idx, const std::vector<idx>&,
+                                  std::optional<idx>,
+                                  std::optional<std::string>>(&QCircuit::cCTRL),
+                "Jointly applies the single qudit controlled gate U with "
+                "classical control dit ctrl on the qudit indexes specified "
+                "by target, i.e., cCTRL-U_{joint}",
+                py::arg("U"), py::arg("ctrl_dit"), py::arg("target"),
+                py::arg("shift") = std::nullopt, py::arg("name") = std::nullopt)
+            .def(
+                "cCTRL",
+                py::overload_cast<const cmat&, const std::vector<idx>&, idx,
+                                  std::optional<std::vector<idx>>,
+                                  std::optional<std::string>>(&QCircuit::cCTRL),
+                "Applies the single qudit controlled gate U with multiple "
+                "classical control dits listed in ctrl on the target qudit "
+                "target, i.e., cCTRL-cCTRL-...-cCTRL-U",
+                py::arg("U"), py::arg("ctrl_dits"), py::arg("target"),
+                py::arg("shift") = std::nullopt, py::arg("name") = std::nullopt)
+            .def(
+                "cCTRL",
+                py::overload_cast<const cmat&, const std::vector<idx>&,
+                                  const std::vector<idx>&,
+                                  std::optional<std::vector<idx>>,
+                                  std::optional<std::string>>(&QCircuit::cCTRL),
+                "Jointly applies the multiple-qudit controlled gate U with "
+                "multiple classical control dits listed in ctrl on the qudit "
+                "indexes specified by target, i.e., "
+                "cCTRL-cCTRL-...-cCTRL-U_{joint}",
+                py::arg("U"), py::arg("ctrl_dits"), py::arg("target"),
+                py::arg("shift") = std::nullopt, py::arg("name") = std::nullopt)
             .def("cCTRL_fan",
                  py::overload_cast<const cmat&, const std::vector<idx>&,
                                    const std::vector<idx>&,
-                                   const std::vector<idx>&, std::optional<std::string>>(
+                                   std::optional<std::vector<idx>>,
+                                   std::optional<std::string>>(
                      &QCircuit::cCTRL_fan),
                  "Applies the single qudit controlled gate U with multiple "
                  "classical control dits listed in ctrl on every qudit "
                  "listed in target, i.e., cCTRL-cCTRL-...-cCTRL-U-U-...-U",
                  py::arg("U"), py::arg("ctrl_dits"), py::arg("target"),
-                 py::arg("shift") = std::vector<idx>(), py::arg("name") = std::nullopt)
+                 py::arg("shift") = std::nullopt,
+                 py::arg("name") = std::nullopt)
             .def("cCTRL_fan",
                  py::overload_cast<const cmat&, idx, const std::vector<idx>&,
-                                   idx, std::optional<std::string>>(&QCircuit::cCTRL_fan),
+                                   std::optional<idx>,
+                                   std::optional<std::string>>(
+                     &QCircuit::cCTRL_fan),
                  "Applies the single qudit controlled gate U with classical "
                  "control dit ctrl on every qudit listed in target, "
                  "i.e.,cCTRL-U-U-...-U",
                  py::arg("U"), py::arg("ctrl_dit"), py::arg("target"),
-                 py::arg("shift") = 0, py::arg("name") = std::nullopt)
+                 py::arg("shift") = std::nullopt,
+                 py::arg("name") = std::nullopt)
             .def("measure",
                  py::overload_cast<idx, idx, bool, std::optional<std::string>>(
                      &QCircuit::measure),
                  "Z measurement of single qudit", py::arg("target"),
                  py::arg("c_reg"), py::arg("destructive") = true,
-                 py::arg("name") = std::nullopt)
+                 py::arg("name") = "mZ")
             .def("measure",
                  py::overload_cast<const std::vector<idx>&, idx, bool,
                                    std::optional<std::string>>(
                      &QCircuit::measure),
                  "Z measurement of multiple qudits", py::arg("target"),
                  py::arg("c_reg") = 0, py::arg("destructive") = true,
-                 py::arg("name") = std::nullopt)
+                 py::arg("name") = "mZ")
             .def("measure_all", &QCircuit::measure_all,
                  "Z measurement of all qudits", py::arg("c_reg") = 0,
-                 py::arg("destructive") = true, py::arg("name") = std::nullopt)
+                 py::arg("destructive") = true, py::arg("name") = "mZ")
             .def("measureV",
-                 py::overload_cast<const cmat&, idx, idx, bool, std::optional<std::string>>(
+                 py::overload_cast<const cmat&, idx, idx, bool,
+                                   std::optional<std::string>>(
                      &QCircuit::measureV),
                  "Measurement of single qudit in the orthonormal basis "
                  "specified by the columns of matrix V",
@@ -467,30 +492,37 @@ PYBIND11_MODULE(pyqpp, m) {
                  py::arg("destructive") = true, py::arg("name") = std::nullopt)
             .def("measureV",
                  py::overload_cast<const cmat&, const std::vector<idx>&, idx,
-                                   bool, std::optional<std::string>>(&QCircuit::measureV),
+                                   bool, std::optional<std::string>>(
+                     &QCircuit::measureV),
                  "Measurement of multiple qudits in the orthonormal basis "
                  "specified by the columns of matrix V",
                  py::arg("V"), py::arg("target"), py::arg("c_reg"),
                  py::arg("destructive") = true, py::arg("name") = std::nullopt)
             .def("discard",
-                 py::overload_cast<idx, std::optional<std::string>>(&QCircuit::discard),
+                 py::overload_cast<idx, std::optional<std::string>>(
+                     &QCircuit::discard),
                  "Discards single qudit by measuring it destructively in the "
                  "Z-basis",
-                 py::arg("target"), py::arg("name") = std::nullopt)
+                 py::arg("target"), py::arg("name") = "discard")
             .def("discard",
-                 py::overload_cast<const std::vector<idx>&, std::optional<std::string>>(
+                 py::overload_cast<const std::vector<idx>&,
+                                   std::optional<std::string>>(
                      &QCircuit::discard),
                  "Discards multiple qudits by measuring them destructively in "
                  "the Z-basis",
-                 py::arg("target"), py::arg("name") = std::nullopt)
+                 py::arg("target"), py::arg("name") = "discard")
             .def("nop", &QCircuit::nop, "No operation (no-op)")
-            .def("reset", py::overload_cast<idx, std::optional<std::string>>(&QCircuit::reset),
-                 "Reset single qudit", py::arg("target"), py::arg("name") = std::nullopt)
             .def("reset",
-                 py::overload_cast<const std::vector<idx>&, std::optional<std::string>>(
+                 py::overload_cast<idx, std::optional<std::string>>(
                      &QCircuit::reset),
-                 "Reset multiple qudits", py::arg("target"),
-                 py::arg("name") = std::nullopt)
+                 "Reset single qudit", py::arg("target"),
+                 py::arg("name") = "reset")
+            .def(
+                "reset",
+                py::overload_cast<const std::vector<idx>&,
+                                  std::optional<std::string>>(&QCircuit::reset),
+                "Reset multiple qudits", py::arg("target"),
+                py::arg("name") = "reset")
             .def("removes_qudits", &QCircuit::removes_qudits,
                  "True if the quantum circuit description contains any "
                  "measurements that remove qudits, false otherwise")
@@ -604,19 +636,22 @@ PYBIND11_MODULE(pyqpp, m) {
           py::arg("pos_dit") = -1);
     m.def("random_circuit_count", &qpp::random_circuit_count,
           "Random quantum circuit description generator for fixed gate count",
-          py::arg("nq"), py::arg("num_steps"), py::arg("p_two"),
-          py::arg("one_qudit_gate_set") = std::vector<cmat>{},
-          py::arg("two_qudit_gate_set") = std::vector<cmat>{}, py::arg("d") = 2,
-          py::arg("one_qudit_gate_names") = std::vector<std::string>{},
-          py::arg("two_qudit_gate_names") = std::vector<std::string>{});
+          py::arg("nq"), py::arg("d"), py::arg("gate_count"),
+          py::arg("p_two") = std::nullopt,
+          py::arg("with_respect_to_gate") = std::nullopt,
+          py::arg("one_qudit_gate_set") = std::nullopt,
+          py::arg("two_qudit_gate_set") = std::nullopt,
+          py::arg("one_qudit_gate_names") = std::nullopt,
+          py::arg("two_qudit_gate_names") = std::nullopt);
     m.def("random_circuit_depth", &qpp::random_circuit_depth,
           "Random quantum circuit description generator for fixed gate depth",
-          py::arg("nq"), py::arg("num_steps"), py::arg("p_two"),
-          py::arg("gate_depth") = cmat{},
-          py::arg("one_qudit_gate_set") = std::vector<cmat>{},
-          py::arg("two_qudit_gate_set") = std::vector<cmat>{}, py::arg("d") = 2,
-          py::arg("one_qudit_gate_names") = std::vector<std::string>{},
-          py::arg("two_qudit_gate_names") = std::vector<std::string>{});
+          py::arg("nq"), py::arg("d"), py::arg("gate_depth"),
+          py::arg("p_two") = std::nullopt,
+          py::arg("with_respect_to_gate") = std::nullopt,
+          py::arg("one_qudit_gate_set") = std::nullopt,
+          py::arg("two_qudit_gate_set") = std::nullopt,
+          py::arg("one_qudit_gate_names") = std::nullopt,
+          py::arg("two_qudit_gate_names") = std::nullopt);
     m.def("replicate", &qpp::replicate,
           "Replicates a quantum circuit description", py::arg("qc"),
           py::arg("n"));

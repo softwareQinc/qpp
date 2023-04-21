@@ -1094,6 +1094,7 @@ class QCircuit : public IDisplay, public IJSON {
         return result;
     }
 
+    // TODO consider making U std::optional<cmat>
     /**
      * \brief Quantum circuit description gate count
      *
@@ -2338,8 +2339,9 @@ class QCircuit : public IDisplay, public IJSON {
      * depending on the values of the control qudits
      * \param shift Optional, performs the control as if the \a ctrl qudit
      * states were \f$X\f$-incremented component-wise by \a shift. If present,
-     * the size of \a shift must be the same as the size of \a ctrl. \param name
-     * Optional gate name \return Reference to the current instance
+     * the size of \a shift must be the same as the size of \a ctrl.
+     * \param name Optional gate name
+     * \return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl,
                    const std::vector<idx>& target,
@@ -4992,14 +4994,17 @@ inline QCircuit replicate(QCircuit qc, idx n) {
 }
 
 /**
- * \brief Random quantum circuit description generator for fixed gate count
+ * \brief Random quantum circuit description generator for fixed gate gate_count
  *
  * \param nq Number of qudits
- * \param num_steps Number of gates (steps) in the circuit
- * \param p_two Probability of applying a two qudit gate. If the two qudit
- * gate set has more than one element, then the gate is chosen at random
- * from the set.
- * \param d Subsystem dimensions (default is qubit, i.e., \a d = 2)
+ * \param d Subsystem dimensions
+ * \param gate_count Circuit gate count
+ * \param p_two Optional, probability of applying a two qudit gate, must belong
+ * to the interval (0,1). If the two qudit gate set has more than one element,
+ * then the gate is chosen at random from the set.
+ * \param with_respect_to_gate Optional, if present, gate count is calculated
+ * with respect to this particular gate (absent by default, so by default gate
+ * count is calculated with respect to all gates in the circuit)
  * \param one_qudit_gate_set Set of one qudit gates (optional, must be
  * specified for \a d > 2)
  * \param two_qudit_gate_set Set of two qudit gates (optional, must be
@@ -5009,7 +5014,8 @@ inline QCircuit replicate(QCircuit qc, idx n) {
  * \return Instance of random qpp::QCircuit for fixed gate count
  */
 inline QCircuit random_circuit_count(
-    idx nq, idx num_steps, double p_two, idx d = 2,
+    idx nq, idx d, idx gate_count, std::optional<double> p_two,
+    std::optional<cmat> with_respect_to_gate = std::nullopt,
     std::optional<std::vector<cmat>> one_qudit_gate_set = std::nullopt,
     std::optional<std::vector<cmat>> two_qudit_gate_set = std::nullopt,
     std::optional<std::vector<std::string>> one_qudit_gate_names = std::nullopt,
@@ -5021,20 +5027,33 @@ inline QCircuit random_circuit_count(
     if (d < 2)
         throw exception::DimsInvalid("qpp::random_circuit_count()", "d");
     // check valid probabilities
-    if (p_two < 0 || p_two > 1)
-        throw exception::OutOfRange("qpp::random_circuit_count()", "p_two");
-    if (nq < 1 || ((p_two > 0) && (nq == 1)))
+    if (p_two.has_value()) {
+        if (!(p_two.value() > 0 && p_two.value() < 1)) {
+            throw exception::OutOfRange("qpp::random_circuit_count()", "p_two");
+        }
+    }
+    if (nq < 1 || (p_two.has_value() && nq == 1)) {
         throw exception::OutOfRange("qpp::random_circuit_count()", "nq/p_two");
+    }
+    // pre-fill gate sets for qubits (in case they're empty)
+    if (d == 2 && !one_qudit_gate_set.has_value())
+        one_qudit_gate_set = std::vector{
+            Gates::get_instance().X, Gates::get_instance().Y,
+            Gates::get_instance().Z, Gates::get_instance().H,
+            Gates::get_instance().S, adjoint(Gates::get_instance().S),
+            Gates::get_instance().T, adjoint(Gates::get_instance().T)};
+    if (d == 2 && !two_qudit_gate_set.has_value())
+        two_qudit_gate_set = std::vector{Gates::get_instance().CNOT};
     // check gate sets are not empty for d > 2
     if (d > 2) {
         if (!one_qudit_gate_set.has_value())
             throw exception::ZeroSize("qpp::random_circuit_count()",
                                       "one_qudit_gate_set");
-        if (p_two > 0 && !two_qudit_gate_set.has_value())
+        if (p_two.has_value() && !two_qudit_gate_set.has_value())
             throw exception::ZeroSize("qpp::random_circuit_count()",
                                       "two_qudit_gate_set");
     }
-    // check gate name sizes
+    // check one qudit gate name sizes
     if (one_qudit_gate_names.has_value()) {
         if (!one_qudit_gate_set.has_value() ||
             one_qudit_gate_names.value().size() !=
@@ -5043,6 +5062,7 @@ inline QCircuit random_circuit_count(
                                           "one_qudit_gate_names");
         }
     }
+    // check two qudit gate name sizes
     if (two_qudit_gate_names.has_value()) {
         if (!two_qudit_gate_set.has_value() ||
             two_qudit_gate_names.value().size() !=
@@ -5073,21 +5093,51 @@ inline QCircuit random_circuit_count(
                     "qpp::random_circuit_count()", "two_qudit_gate_set");
         }
     }
+    // check with_respect_to_gate
+    if (with_respect_to_gate.has_value()) {
+        cmat wrt_gate = with_respect_to_gate.value();
+        auto rows = static_cast<idx>(wrt_gate.rows());
+        // check square matrix
+        if (!internal::check_square_mat(wrt_gate))
+            throw exception::MatrixNotSquare("qpp::random_circuit_count()",
+                                             "with_respect_to_gate");
+        // check size (either 1 qubit or 2 qubit gate)
+        bool is_one_qubit_gate = (rows == d);
+        bool is_two_qubit_gate = (rows == d * d);
+        if (!(is_one_qubit_gate || is_two_qubit_gate)) {
+            throw exception::MatrixMismatchSubsys("qpp::random_circuit_count()",
+                                                  "with_respect_to_gate");
+        }
+        // check with_respect_to_gate is present in the gate sets
+        if (is_one_qubit_gate) {
+            bool found =
+                std::find(one_qudit_gate_set.value().begin(),
+                          one_qudit_gate_set.value().end(),
+                          wrt_gate) != one_qudit_gate_set.value().end();
+            if (!found) {
+                throw exception::NotFound(
+                    "qpp::random_circuit_count()",
+                    "with_respect_to_gate/one_qudit_gate_set");
+            }
+        }
+        if (is_two_qubit_gate) {
+            bool found =
+                std::find(two_qudit_gate_set.value().begin(),
+                          two_qudit_gate_set.value().end(),
+                          wrt_gate) != two_qudit_gate_set.value().end();
+            if (!found) {
+                throw exception::NotFound(
+                    "qpp::random_circuit_count()",
+                    "with_respect_to_gate/two_qudit_gate_set");
+            }
+        }
+    } // end if (with_respect_to_gate.has_value())
     // END EXCEPTION CHECKS
 
-    if (d == 2 && !one_qudit_gate_set.has_value())
-        one_qudit_gate_set = std::vector{
-            Gates::get_instance().X, Gates::get_instance().Y,
-            Gates::get_instance().Z, Gates::get_instance().H,
-            Gates::get_instance().S, adjoint(Gates::get_instance().S),
-            Gates::get_instance().T, adjoint(Gates::get_instance().T)};
-
-    if (d == 2 && !two_qudit_gate_set.has_value())
-        two_qudit_gate_set = std::vector{Gates::get_instance().CNOT};
-
-    double p_one = 1 - p_two;
+    double p_one = p_two.has_value() ? 1 - p_two.value() : 1;
     QCircuit qc{nq, 0, d};
-    for (idx i = 0; i < num_steps; ++i) {
+    idx current_count = 0;
+    while (current_count < gate_count) {
         bool is_one_qudit_gate = bernoulli(p_one);
         if (is_one_qudit_gate) {
             idx q = randidx(0, nq - 1);
@@ -5112,23 +5162,26 @@ inline QCircuit random_circuit_count(
                         two_qudit_gate_names.value()[gate]);
             }
         }
+        current_count = with_respect_to_gate.has_value()
+                            ? qc.get_gate_count(with_respect_to_gate.value())
+                            : qc.get_gate_count();
     }
 
     return qc;
 }
 
 /**
- * \brief Random quantum circuit description generator for fixed gate depth
+ * \brief Random quantum circuit description generator for fixed gate gate_depth
  *
  * \param nq Number of qudits
- * \param depth Circuit depth
- * \param p_two Probability of applying a two qudit gate. If the two qudit
- * gate set has more than one element, then the gate is chosen at random
- * from the set.
- * \param d Subsystem dimensions (default is qubit, i.e., \a d = 2)
- * \param gate_depth Optional, if present, depth is calculated with respect to
- * this particular gate (absent by default, so by default depth is calculated
- * with respect to all gates in the circuit)
+ * \param d Subsystem dimensions
+ * \param gate_depth Circuit gate depth
+ * \param p_two Optional, probability of applying a two qudit gate, must belong
+ * to the interval (0,1). If the two qudit gate set has more than one element,
+ * then the gate is chosen at random from the set.
+ * \param with_respect_to_gate Optional, if present, gate depth is calculated
+ * with respect to this particular gate (absent by default, so by default
+ * gate depth is calculated with respect to all gates in the circuit)
  * \param one_qudit_gate_set Set of one qudit gates (optional, must be
  * specified for \a d > 2)
  * \param two_qudit_gate_set Set of two qudit gates (optional, must be
@@ -5138,8 +5191,8 @@ inline QCircuit random_circuit_count(
  * \return Instance of random qpp::QCircuit for fixed circuit gate depth
  */
 inline QCircuit random_circuit_depth(
-    idx nq, idx depth, double p_two, idx d = 2,
-    std::optional<cmat> gate_depth = std::nullopt,
+    idx nq, idx d, idx gate_depth, std::optional<double> p_two,
+    std::optional<cmat> with_respect_to_gate = std::nullopt,
     std::optional<std::vector<cmat>> one_qudit_gate_set = std::nullopt,
     std::optional<std::vector<cmat>> two_qudit_gate_set = std::nullopt,
     std::optional<std::vector<std::string>> one_qudit_gate_names = std::nullopt,
@@ -5151,33 +5204,47 @@ inline QCircuit random_circuit_depth(
     if (d < 2)
         throw exception::DimsInvalid("qpp::random_circuit_depth()", "d");
     // check valid probabilities
-    if (p_two < 0 || p_two > 1)
-        throw exception::OutOfRange("qpp::random_circuit_depth()", "p_two");
-    if (nq < 1 || ((p_two > 0) && (nq == 1)))
+    if (p_two.has_value()) {
+        if (!(p_two.value() > 0 && p_two.value() < 1)) {
+            throw exception::OutOfRange("qpp::random_circuit_depth()", "p_two");
+        }
+    }
+    if (nq < 1 || (p_two.has_value() && nq == 1)) {
         throw exception::OutOfRange("qpp::random_circuit_depth()", "nq/p_two");
+    }
+    // pre-fill gate sets for qubits (in case they're empty)
+    if (d == 2 && !one_qudit_gate_set.has_value())
+        one_qudit_gate_set = std::vector{
+            Gates::get_instance().X, Gates::get_instance().Y,
+            Gates::get_instance().Z, Gates::get_instance().H,
+            Gates::get_instance().S, adjoint(Gates::get_instance().S),
+            Gates::get_instance().T, adjoint(Gates::get_instance().T)};
+    if (d == 2 && !two_qudit_gate_set.has_value())
+        two_qudit_gate_set = std::vector{Gates::get_instance().CNOT};
     // check gate sets are not empty for d > 2
     if (d > 2) {
         if (!one_qudit_gate_set.has_value())
             throw exception::ZeroSize("qpp::random_circuit_depth()",
                                       "one_qudit_gate_set");
-        if (p_two > 0 && !two_qudit_gate_set.has_value())
+        if (p_two.has_value() && !two_qudit_gate_set.has_value())
             throw exception::ZeroSize("qpp::random_circuit_depth()",
                                       "two_qudit_gate_set");
     }
-    // check gate name sizes
+    // check one qudit gate name sizes
     if (one_qudit_gate_names.has_value()) {
         if (!one_qudit_gate_set.has_value() ||
             one_qudit_gate_names.value().size() !=
                 one_qudit_gate_set.value().size()) {
-            throw exception::SizeMismatch("qpp::random_circuit_count()",
+            throw exception::SizeMismatch("qpp::random_circuit_depth()",
                                           "one_qudit_gate_names");
         }
     }
+    // check two qudit gate name sizes
     if (two_qudit_gate_names.has_value()) {
         if (!two_qudit_gate_set.has_value() ||
             two_qudit_gate_names.value().size() !=
                 two_qudit_gate_set.value().size()) {
-            throw exception::SizeMismatch("qpp::random_circuit_count()",
+            throw exception::SizeMismatch("qpp::random_circuit_depth()",
                                           "two_qudit_gate_names");
         }
     }
@@ -5203,22 +5270,51 @@ inline QCircuit random_circuit_depth(
                     "qpp::random_circuit_depth()", "two_qudit_gate_set");
         }
     }
+    // check with_respect_to_gate
+    if (with_respect_to_gate.has_value()) {
+        cmat wrt_gate = with_respect_to_gate.value();
+        auto rows = static_cast<idx>(wrt_gate.rows());
+        // check square matrix
+        if (!internal::check_square_mat(wrt_gate))
+            throw exception::MatrixNotSquare("qpp::random_circuit_depth()",
+                                             "with_respect_to_gate");
+        // check size (either 1 qubit or 2 qubit gate)
+        bool is_one_qubit_gate = (rows == d);
+        bool is_two_qubit_gate = (rows == d * d);
+        if (!(is_one_qubit_gate || is_two_qubit_gate)) {
+            throw exception::MatrixMismatchSubsys("qpp::random_circuit_depth()",
+                                                  "with_respect_to_gate");
+        }
+        // check with_respect_to_gate is present in the gate sets
+        if (is_one_qubit_gate) {
+            bool found =
+                std::find(one_qudit_gate_set.value().begin(),
+                          one_qudit_gate_set.value().end(),
+                          wrt_gate) != one_qudit_gate_set.value().end();
+            if (!found) {
+                throw exception::NotFound(
+                    "qpp::random_circuit_depth()",
+                    "with_respect_to_gate/one_qudit_gate_set");
+            }
+        }
+        if (is_two_qubit_gate) {
+            bool found =
+                std::find(two_qudit_gate_set.value().begin(),
+                          two_qudit_gate_set.value().end(),
+                          wrt_gate) != two_qudit_gate_set.value().end();
+            if (!found) {
+                throw exception::NotFound(
+                    "qpp::random_circuit_depth()",
+                    "with_respect_to_gate/two_qudit_gate_set");
+            }
+        }
+    } // end if (with_respect_to_gate.has_value())
     // END EXCEPTION CHECKS
 
-    if (d == 2 && !one_qudit_gate_set.has_value())
-        one_qudit_gate_set = std::vector{
-            Gates::get_instance().X, Gates::get_instance().Y,
-            Gates::get_instance().Z, Gates::get_instance().H,
-            Gates::get_instance().S, adjoint(Gates::get_instance().S),
-            Gates::get_instance().T, adjoint(Gates::get_instance().T)};
-
-    if (d == 2 && !two_qudit_gate_set.has_value())
-        two_qudit_gate_set = std::vector{Gates::get_instance().CNOT};
-
-    double p_one = 1 - p_two;
+    double p_one = p_two.has_value() ? 1 - p_two.value() : 1;
     QCircuit qc{nq, 0, d};
     idx current_depth = 0;
-    while (current_depth < depth) {
+    while (current_depth < gate_depth) {
         bool is_one_qudit_gate = bernoulli(p_one);
         if (is_one_qudit_gate) {
             idx q = randidx(0, nq - 1);
@@ -5232,8 +5328,9 @@ inline QCircuit random_circuit_depth(
         } else {
             idx ctrl = randidx(0, nq - 1);
             idx target = randidx(0, nq - 1);
-            while (ctrl == target)
+            while (ctrl == target) {
                 target = randidx(0, nq - 1);
+            }
             idx gate = randidx(0, two_qudit_gate_set.value().size() - 1);
             if (!two_qudit_gate_names.has_value()) {
                 qc.gate(two_qudit_gate_set.value()[gate], ctrl, target);
@@ -5242,8 +5339,8 @@ inline QCircuit random_circuit_depth(
                         two_qudit_gate_names.value()[gate]);
             }
         }
-        current_depth = gate_depth.has_value()
-                            ? qc.get_gate_depth(gate_depth.value())
+        current_depth = with_respect_to_gate.has_value()
+                            ? qc.get_gate_depth(with_respect_to_gate.value())
                             : qc.get_gate_depth();
     }
 
@@ -5257,7 +5354,8 @@ inline QCircuit random_circuit_depth(
  * ancillas
  *
  * \param U Unitary matrix
- * \param n Number of ancilla qubits (translates to number of bits of precision)
+ * \param n Number of ancilla qubits (translates to number of bits of
+ * precision)
  * \param omit_measurements Optional (true by default); if true, omits
  * measurements of the ancilla qubits
  * \param d Subsystem dimensions (default is qubit, i.e., \a d =2)

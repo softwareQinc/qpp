@@ -515,6 +515,19 @@ class OutOfRange : public Exception {
 };
 
 /**
+ * \class qpp::exception::NotFound
+ * \brief Element not found
+ *
+ * Element not found
+ */
+class NotFound : public Exception {
+  public:
+    std::string description() const override { return "Element not found"; }
+
+    using Exception::Exception;
+};
+
+/**
  * \class qpp::exception::TypeMismatch
  * \brief Type mismatch exception
  *

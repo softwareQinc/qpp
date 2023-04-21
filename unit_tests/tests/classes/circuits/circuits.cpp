@@ -206,7 +206,7 @@ TEST(qpp_QCircuit_get_measurement_depth, SpecificMeasurementDepth) {}
 /// BEGIN std::vector<idx> QCircuit::get_measurement_dits() const
 TEST(qpp_QCircuit_get_measurement_dits, AllTests) {}
 /******************************************************************************/
-/// BEGIN std::string QCircuit::get_name() const
+/// BEGIN std::optional<std::string> QCircuit::get_name() const
 TEST(qpp_QCircuit_get_name, AllTests) {}
 /******************************************************************************/
 /// BEGIN idx QCircuit::get_nc() const noexcept
@@ -367,8 +367,9 @@ TEST(qpp_match_circuit_right, AllTests) {}
 /// BEGIN inline QCircuit replicate(QCircuit qc, idx n)
 TEST(qpp_replicate, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline QCircuit random_circuit_count(idx nq, idx num_steps,
-///       double p_two, idx d = 2,
+/// BEGIN inline QCircuit random_circuit_count(idx nq, idx d, idx gate_count,
+///       std::optional<double> p_two,
+///       std::optional<cmat> with_respect_to_gate = std::nullopt,
 ///       std::optional<std::vector<cmat>> one_qudit_gate_set = std::nullopt,
 ///       std::optional<std::vector<cmat>> two_qudit_gate_set = std::nullopt,
 ///       std::optional<std::vector<std::string>> one_qudit_gate_names =
@@ -377,8 +378,9 @@ TEST(qpp_replicate, AllTests) {}
 ///           std::nullopt)
 TEST(qpp_random_circuit_count, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline QCircuit random_circuit_depth(idx nq, idx depth, double p_two,
-///       std::optional<cmat> gate_depth = std::nullopt, idx d = 2,
+/// BEGIN inline QCircuit random_circuit_depth(idx nq, idx d, idx gate_depth,
+///       std::optional<double> p_two,
+///       std::optional<cmat> with_respect_to_gate = std::nullopt,
 ///       std::optional<std::vector<cmat>> one_qudit_gate_set = std::nullopt,
 ///       std::optional<std::vector<cmat>> two_qudit_gate_set = std::nullopt,
 ///       std::optional<std::vector<std::string>> one_qudit_gate_names =
