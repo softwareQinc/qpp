@@ -178,17 +178,10 @@ TEST(qpp_QCircuit_get_gate_depth, TotalGateDepth) {}
 TEST(qpp_QCircuit_get_gate_depth, SpecificGateDepth) {}
 /******************************************************************************/
 /// BEGIN std::vector<idx> QCircuit::get_measured() const
-TEST(qpp_QCircuit_get_measured, AllQudits) {}
-/******************************************************************************/
-/// BEGIN bool QCircuit::get_measured(idx i) const
-TEST(qpp_QCircuit_get_measured, SpecificQudit) {}
+TEST(qpp_QCircuit_get_measured, AllTests) {}
 /******************************************************************************/
 /// BEGIN std::vector<idx> QCircuit::get_measured_nd() const
-TEST(qpp_QCircuit_get_measured_nd, AllQudits) {}
-/******************************************************************************/
-/// BEGIN bool QCircuit::get_measured_nd(idx i) const
-TEST(qpp_QCircuit_get_measured_nd, SpecificQudit) {}
-/// BEGIN idx QCircuit::get_measurement_count() const
+TEST(qpp_QCircuit_get_measured_nd, AllTests) {}
 /******************************************************************************/
 /// BEGIN idx QCircuit::get_measurement_count(std::optional<cmat> V =
 ///       std::nullopt) const
@@ -241,9 +234,6 @@ TEST(qpp_QCircuit_is_CTRL, AllTests) {}
 /******************************************************************************/
 /// BEGIN bool QCircuit::is_measurement_dit(idx i) const
 TEST(qpp_QCircuit_is_measurement_dit, AllTests) {}
-/******************************************************************************/
-/// BEGIN inline static bool QCircuit::is_non_CTRL(const GateStep& gate_step)
-TEST(qpp_QCircuit_is_non_CTRL, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::kron(QCircuit qc)
 TEST(qpp_QCircuit_kron, AllTests) {}
@@ -334,6 +324,12 @@ TEST(qpp_QCircuit_TFQ, SpecificQudits) {}
 ///       bool enclosed_in_curly_brackets = true)
 ///       const override
 TEST(qpp_QCircuit_to_JSON, AllTests) {}
+/******************************************************************************/
+/// BEGIN bool QCircuit::was_measured(idx i) const
+TEST(qpp_QCircuit_was_measured, AllTests) {}
+/******************************************************************************/
+/// BEGIN bool QCircuit::was_measured_nd(idx i) const
+TEST(qpp_QCircuit_was_measured_nd, AllTests) {}
 /******************************************************************************/
 
 // free functions

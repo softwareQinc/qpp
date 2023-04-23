@@ -26,35 +26,10 @@
 
 #include "pyqpp_common.h"
 
-void init_constants(py::module_&);
-void init_functions(py::module_&);
-void init_instruments(py::module_&);
-void init_random(py::module_&);
+/* Some free functions (non-exhaustive list) from random.hpp */
+void init_random(py::module_& m) {
+    using namespace qpp;
 
-void init_classes_gates(py::module_&);
-void init_classes_reversible(py::module_&);
-void init_classes_states(py::module_&);
-
-void init_classes_circuits_circuits(py::module_&);
-void init_classes_circuits_engines(py::module_&);
-
-void init_pyqpp_specific(py::module_&);
-
-PYBIND11_MODULE(pyqpp, m) {
-    m.doc() =
-        "Python 3 wrapper for Quantum++ (https://github.com/softwareQinc/qpp)";
-
-    init_constants(m);
-    init_functions(m);
-    init_instruments(m);
-    init_random(m);
-
-    init_classes_gates(m);
-    init_classes_reversible(m);
-    init_classes_states(m);
-
-    init_classes_circuits_circuits(m);
-    init_classes_circuits_engines(m);
-
-    init_pyqpp_specific(m);
+    m.def("randU", &qpp::randU, "Generates a random unitary matrix",
+          py::arg("D") = 2);
 }

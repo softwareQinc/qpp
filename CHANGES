@@ -10,14 +10,14 @@ Pre-release
                                               false otherwise
    - Added new exception class ["classes/exception.hpp"]:
           qpp::exception::NotFound - Element not found
-    - Implemented ["pyqpp/qpp_wrapper_cpp"] (pyqpp Python wraper)
+   - Implemented ["pyqpp/qpp_wrapper_cpp"] (pyqpp Python wraper)
           set_prng_seed() - sets the seed of the PRNG to a specific value, or,
                             if invoked with no argument, to a random value
-    - Migrated pyqpp installation method to pyproject.toml
-    - Extensive code refactoring, transitioned qpp::QCircuit logic to
-      std::visit() over std::variant
-    - API changes in ["classes/circuits/circuits.hpp"], all functions with
-      "name" and "shift" defaulted empty/zeroed arguments are now wrapped in
+   - Migrated pyqpp installation method to pyproject.toml
+   - Extensive code refactoring, transitioned qpp::QCircuit logic to
+     std::visit() over std::variant
+   - API changes in ["classes/circuits/circuits.hpp"], all functions with
+     "name" and "shift" defaulted empty/zeroed arguments are now wrapped in
       std::optional<>, as well as some qpp::QCircuit getters, i.e.,
       qpp::QCircuit::
           get_gate_count(std::optional<cmat> U = std::nullopt)
@@ -27,6 +27,15 @@ Pre-release
       and the free functions
           qpp::random_circuit_count()
           qpp::random_circuit_depth()
+   - API changes in ["classes/circuits/circuits.hpp"], renamed qpp::QCircuit::
+          was_measured(idx i)    -> was_measured(idx i)
+          get_measured_nd(idx i) -> was_measured_nd(idx i)
+   - API changes in ["classes/circuits/engines.hpp"], renamed qpp::QEngine::
+          was_measured(idx i)    -> was_measured(idx i)
+          get_measured_nd(idx i) -> was_measured_nd(idx i)
+   - Removed qpp::QCircuit::is_non_CTRL()
+   - Refactored pyqpp, organized the source code in separate src/include
+     directory  structure that mirrors the qpp source code structure
 
 Version 4.0.1 - 2 April 2023
     - This is a maintenance release with minor changes
@@ -123,7 +132,7 @@ Version 3.1 - 11 January 2022
           get_dirty_dits()       - vector of used classical dits in the circuit
                                    (by either cCTRL or measurements)
           get_dirty_qudits()     - vector of used qudits in the circuit
-          get_measured_nd()      - vector of qudits that were measured
+          was_measured_nd()      - vector of qudits that were measured
                                    non-destructively
           get_measurement_dits() - vector of classical dits that participated in
                                    measurements

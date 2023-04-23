@@ -956,16 +956,6 @@ class QCircuit : public IDisplay, public IJSON {
         }
     }
 
-    /**
-     * \brief Checks whether a gate step is a regular gate (not a controlled
-     * gate)
-     *
-     * \return True if the gate step is a regular gate, false otherwise
-     */
-    inline static bool is_non_CTRL(const GateStep& gate_step) {
-        return !(is_CTRL(gate_step) || is_cCTRL(gate_step));
-    }
-
     // getters
     /**
      * \brief Hash table with the matrices used in the circuit
@@ -1004,17 +994,18 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Quantum circuit description name
      */
     std::optional<std::string> get_name() const { return name_; }
+
     /**
      * \brief Check whether qudit \a i was already measured (destructively)
      * \param i Qudit index
      * \return True if qudit \a i was already measured (destructively),
      * false otherwise
      */
-    bool get_measured(idx i) const {
+    bool was_measured(idx i) const {
         // EXCEPTION CHECKS
 
         if (i >= nq_)
-            throw exception::OutOfRange("qpp::QCircuit::get_measured()", "i");
+            throw exception::OutOfRange("qpp::QCircuit::was_measured()", "i");
         // END EXCEPTION CHECKS
 
         return measured_[i];
@@ -1028,7 +1019,7 @@ class QCircuit : public IDisplay, public IJSON {
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i)
-            if (get_measured(i))
+            if (was_measured(i))
                 result.emplace_back(i);
 
         return result;
@@ -1040,11 +1031,11 @@ class QCircuit : public IDisplay, public IJSON {
      * \return True if qudit \a i was already measured (non-destructively),
      * false otherwise
      */
-    bool get_measured_nd(idx i) const {
+    bool was_measured_nd(idx i) const {
         // EXCEPTION CHECKS
 
         if (i >= nq_)
-            throw exception::OutOfRange("qpp::QCircuit::get_measured_nd()",
+            throw exception::OutOfRange("qpp::QCircuit::was_measured_nd()",
                                         "i");
         // END EXCEPTION CHECKS
 
@@ -1059,7 +1050,7 @@ class QCircuit : public IDisplay, public IJSON {
     std::vector<idx> get_measured_nd() const {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i)
-            if (get_measured_nd(i))
+            if (was_measured_nd(i))
                 result.emplace_back(i);
 
         return result;
@@ -1073,7 +1064,7 @@ class QCircuit : public IDisplay, public IJSON {
     std::vector<idx> get_non_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i)
-            if (!get_measured(i))
+            if (!was_measured(i))
                 result.emplace_back(i);
 
         return result;
@@ -1549,7 +1540,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::gate()",
                                         context + ": i");
         // check not measured before
-        if (get_measured(i))
+        if (was_measured(i))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()",
                                                   context + ": i");
 
@@ -1599,7 +1590,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (i >= nq_ || j >= nq_ || i == j)
             throw exception::OutOfRange("qpp::QCircuit::gate()",
                                         context + ": i/j");
-        if (get_measured(i) || get_measured(j))
+        if (was_measured(i) || was_measured(j))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()",
                                                   context + ": i/j");
 
@@ -1652,7 +1643,7 @@ class QCircuit : public IDisplay, public IJSON {
             (j == k))
             throw exception::OutOfRange("qpp::QCircuit::gate()",
                                         context + ": i/j/k");
-        if (get_measured(i) || get_measured(j) || get_measured(k))
+        if (was_measured(i) || was_measured(j) || was_measured(k))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()",
                                                   context + ": i/j/k");
 
@@ -1708,7 +1699,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::gate_fan()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::gate_fan()", context + ": target");
         }
@@ -1820,7 +1811,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::gate()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()",
                                                       context + ": target");
         }
@@ -1881,7 +1872,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::QFT()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::QFT()",
                                                       context + ": target");
         }
@@ -1990,7 +1981,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::TFQ()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::TFQ()",
                                                       context + ": target");
         }
@@ -2100,7 +2091,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (ctrl >= nq_)
             throw exception::OutOfRange("qpp::QCircuit::CTRL_fan()",
                                         context + ": ctrl");
-        if (get_measured(ctrl))
+        if (was_measured(ctrl))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL_fan()",
                                                   context + ": ctrl");
 
@@ -2113,7 +2104,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::CTRL_fan()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::CTRL_fan()", context + ": target");
         }
@@ -2204,7 +2195,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::CTRL_fan()",
                                             context + ": ctrl");
             // check ctrl was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::CTRL_fan()", context + ": ctrl");
         }
@@ -2222,7 +2213,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::CTRL_fan()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::CTRL_fan()", context + ": target");
         }
@@ -2319,7 +2310,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                             context + ": ctrl");
             // check ctrl was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                       context + ": ctrl");
         }
@@ -2337,7 +2328,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                       context + ": target");
         }
@@ -2423,7 +2414,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                             context + ": ctrl");
             // check ctrl was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                       context + ": ctrl");
         }
@@ -2436,7 +2427,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (target >= nq_)
             throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                         context + ": target");
-        if (get_measured(target))
+        if (was_measured(target))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                   context + ": target");
 
@@ -2516,7 +2507,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (ctrl >= nq_)
             throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                         context + ": ctrl");
-        if (get_measured(ctrl))
+        if (was_measured(ctrl))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                   context + ": ctrl");
 
@@ -2529,7 +2520,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                       context + ": target");
         }
@@ -2609,7 +2600,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (ctrl >= nq_ || target >= nq_ || ctrl == target)
             throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                         context + ": ctrl/target");
-        if (get_measured(ctrl) || get_measured(target))
+        if (was_measured(ctrl) || was_measured(target))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                   context + ": ctrl/target");
 
@@ -2689,7 +2680,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL_fan()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::cCTRL_fan()", context + ": target");
         }
@@ -2787,7 +2778,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL_fan()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::cCTRL_fan()", context + ": target");
         }
@@ -2891,7 +2882,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
                                                       context + ": target");
         }
@@ -2986,7 +2977,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                         context + ": target");
         // check target was not measured before
-        if (get_measured(target))
+        if (was_measured(target))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
                                                   context + ": target");
 
@@ -3071,7 +3062,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
                                                       context + ": target");
         }
@@ -3146,7 +3137,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (ctrl_dit >= nc_ || target >= nq_)
             throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                         context + ": ctrl/target");
-        if (get_measured(target))
+        if (was_measured(target))
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
                                                   context + ": target");
 
@@ -3217,7 +3208,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::measure()",
                                         context + ": c_reg");
         // qudit was measured before
-        if (get_measured(target))
+        if (was_measured(target))
             throw exception::QuditAlreadyMeasured("qpp:QCircuit::measure()",
                                                   context + ": target");
         // END EXCEPTION CHECKS
@@ -3280,7 +3271,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::measure()",
                                             context + ": target");
             // qudit was measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp:QCircuit::measure()",
                                                       context + ": target");
         }
@@ -3390,7 +3381,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::measureV()",
                                         context + ": c_reg");
         // qudit was measured before
-        if (get_measured(target))
+        if (was_measured(target))
             throw exception::QuditAlreadyMeasured("qpp:QCircuit::measureV()",
                                                   context + ": target");
         // check matrix V
@@ -3467,7 +3458,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::measureV()",
                                             context + ": target");
             // check target was not measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::measureV()", context + ": target");
         }
@@ -3481,7 +3472,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": c_reg");
         // qudit was measured before
         for (idx elem : target) {
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::measureV()", context + ": target");
         }
@@ -3550,7 +3541,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::discard()",
                                         context + ": target");
         // qudit was measured before
-        if (get_measured(target))
+        if (was_measured(target))
             throw exception::QuditAlreadyMeasured("qpp:QCircuit::discard()",
                                                   context + ": target");
         // END EXCEPTION CHECKS
@@ -3594,7 +3585,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::discard()",
                                             context + ": target");
             // qudit was measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp:QCircuit::discard()",
                                                       context + ": target");
         }
@@ -3653,7 +3644,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::reset()",
                                         context + ": target");
         // qudit was measured before
-        if (get_measured(target))
+        if (was_measured(target))
             throw exception::QuditAlreadyMeasured("qpp:QCircuit::reset()",
                                                   context + ": target");
         // END EXCEPTION CHECKS
@@ -3695,7 +3686,7 @@ class QCircuit : public IDisplay, public IJSON {
                 throw exception::OutOfRange("qpp::QCircuit::reset()",
                                             context + ": target");
             // qudit was measured before
-            if (get_measured(elem))
+            if (was_measured(elem))
                 throw exception::QuditAlreadyMeasured("qpp:QCircuit::reset()",
                                                       context + ": target");
         }
@@ -3802,7 +3793,7 @@ class QCircuit : public IDisplay, public IJSON {
         // check matching qudits (in the current instance) were not already
         // measured destructively
         for (idx elem : target) {
-            if (get_measured(elem)) {
+            if (was_measured(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::match_circuit_right()", "target");
             }
@@ -3950,7 +3941,7 @@ class QCircuit : public IDisplay, public IJSON {
         // check matching qudits (in the current instance) were not already
         // measured destructively
         for (idx elem : target) {
-            if (get_measured(elem)) {
+            if (was_measured(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::match_circuit_left()", "target");
             }
@@ -4081,7 +4072,7 @@ class QCircuit : public IDisplay, public IJSON {
                                                static_cast<bigint>(other.nq_)),
                               nq_);
                  ++i)
-                if (get_measured(i))
+                if (was_measured(i))
                     throw exception::QuditAlreadyMeasured(
                         "qpp::QCircuit::add_circuit()",
                         "Current qpp::QCircuit instance");
@@ -4090,7 +4081,7 @@ class QCircuit : public IDisplay, public IJSON {
             for (idx i = 0;
                  i < std::min(static_cast<idx>(nq_ - pos_qudit), other.nq_);
                  ++i)
-                if (get_measured(pos_qudit + i))
+                if (was_measured(pos_qudit + i))
                     throw exception::QuditAlreadyMeasured(
                         "qpp::QCircuit::add_circuit()",
                         "Current qpp::QCircuit instance");
@@ -4791,9 +4782,9 @@ class QCircuit : public IDisplay, public IJSON {
 
         /* os << "\n$";
             os << "\nmeasured/discarded (destructive): "
-               << disp(get_measured(), ", ");
+               << disp(was_measured(), ", ");
             os << "\nmeasured (non-destructive): " <<
-           disp(get_measured_nd(), ",
+           disp(was_measured_nd(), ",
             "); os << "\nmeasurement dits: " << disp(get_measurement_dits(),
            ",
             "); */

@@ -4,10 +4,13 @@
 # Emacs
 \#*\#
 
-# MSVC 
+# MSVC
 .vs/
 /out*
 CMakeSettings.json
+
+# VSCode
+.vscode/
 
 # CLion
 .idea/

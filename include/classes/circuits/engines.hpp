@@ -234,13 +234,13 @@ class QEngine : public IDisplay, public IJSON {
     void set_measured_(idx i) {
         // EXCEPTION CHECKS
 
-        if (get_measured(i))
+        if (was_measured(i))
             throw exception::QuditAlreadyMeasured(
                 "qpp::QEngine::set_measured_()", "i");
         // END EXCEPTION CHECKS
         st_.subsys_[i] = static_cast<idx>(-1); // set qudit i to measured state
         for (idx m = i; m < qc_ptr_->get_nq(); ++m) {
-            if (!get_measured(m)) {
+            if (!was_measured(m)) {
                 --st_.subsys_[m];
             }
         }
@@ -260,7 +260,7 @@ class QEngine : public IDisplay, public IJSON {
         for (idx i = 0; i < vsize; ++i) {
             // EXCEPTION CHECKS
 
-            if (get_measured(v[i]))
+            if (was_measured(v[i]))
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QEngine::get_relative_pos_()", "v[i]");
             // END EXCEPTION CHECKS
@@ -384,7 +384,7 @@ class QEngine : public IDisplay, public IJSON {
      * \param i Qudit index
      * \return True if qudit \a i was already measured, false otherwise
      */
-    bool get_measured(idx i) const {
+    bool was_measured(idx i) const {
         return st_.subsys_[i] == static_cast<idx>(-1);
     }
 
@@ -398,7 +398,7 @@ class QEngine : public IDisplay, public IJSON {
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < qc_ptr_->get_nq(); ++i) {
-            if (get_measured(i))
+            if (was_measured(i))
                 result.emplace_back(i);
         }
 
@@ -413,7 +413,7 @@ class QEngine : public IDisplay, public IJSON {
     std::vector<idx> get_non_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < qc_ptr_->get_nq(); ++i) {
-            if (!get_measured(i))
+            if (!was_measured(i))
                 result.emplace_back(i);
         }
 
@@ -1009,7 +1009,7 @@ class QEngine : public IDisplay, public IJSON {
      */
     std::ostream& display(std::ostream& os) const override {
         /*
-        os << "measured/discarded (destructive): " << disp(get_measured(),
+        os << "measured/discarded (destructive): " << disp(was_measured(),
         ", ")
            << '\n';
         os << "non-measured/non-discarded: " << disp(get_non_measured(), ",
