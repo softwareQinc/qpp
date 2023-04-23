@@ -16,8 +16,17 @@ Pre-release
     - Migrated pyqpp installation method to pyproject.toml
     - Extensive code refactoring, transitioned qpp::QCircuit logic to
       std::visit() over std::variant
-    - API changes, all functions with "name" and "shift" defaulted empty/zeroed
-      arguments are now wrapped in std::optional<>
+    - API changes in ["classes/circuits/circuits.hpp"], all functions with
+      "name" and "shift" defaulted empty/zeroed arguments are now wrapped in
+      std::optional<>, as well as some qpp::QCircuit getters, i.e.,
+      qpp::QCircuit::
+          get_gate_count(std::optional<cmat> U = std::nullopt)
+          get_gate_depth(std::optional<cmat> U = std::nullopt)
+          get_measurement_count(std::optional<cmat> V = std::nullopt)
+          get_measurement_depth(std::optional<cmat> V = std::nullopt)
+      and the free functions
+          qpp::random_circuit_count()
+          qpp::random_circuit_depth()
 
 Version 4.0.1 - 2 April 2023
     - This is a maintenance release with minor changes

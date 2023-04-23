@@ -230,38 +230,16 @@ PYBIND11_MODULE(pyqpp, m) {
                  "Vector of already measured non-destructively qudit indexes")
             .def("get_non_measured", &QCircuit::get_non_measured,
                  "Non-measured qudit indexes")
-            .def("get_gate_count",
-                 py::overload_cast<const cmat&>(&QCircuit::get_gate_count,
-                                                py::const_),
-                 "Gate count", py::arg("U"))
-            .def("get_gate_count",
-                 py::overload_cast<>(&QCircuit::get_gate_count, py::const_),
-                 "Total gate count")
-            .def("get_gate_depth",
-                 py::overload_cast<const cmat&>(&QCircuit::get_gate_depth,
-                                                py::const_),
-                 "Gate depth", py::arg("U"))
-            .def("get_gate_depth",
-                 py::overload_cast<>(&QCircuit::get_gate_depth, py::const_),
-                 "Total gate depth")
-            .def("get_measurement_depth",
-                 py::overload_cast<const cmat&>(
-                     &QCircuit::get_measurement_depth, py::const_),
-                 "Measurement depth", py::arg("V"))
-            .def("get_measurement_depth",
-                 py::overload_cast<>(&QCircuit::get_measurement_depth,
-                                     py::const_),
-                 "Total measurement depth")
+            .def("get_gate_count", &QCircuit::get_gate_count,
+                 "(Total) Gate count", py::arg("U") = std::nullopt)
+            .def("get_gate_depth", &QCircuit::get_gate_depth,
+                 "(Total) Gate depth", py::arg("U") = std::nullopt)
+            .def("get_measurement_count", &QCircuit::get_measurement_count,
+                 "(Total) Measurement count", py::arg("V") = std::nullopt)
+            .def("get_measurement_depth", &QCircuit::get_measurement_depth,
+                 "(Total) Measurement depth", py::arg("V") = std::nullopt)
             .def("get_depth", &QCircuit::get_depth,
                  "Quantum circuit description total depth")
-            .def("get_measurement_count",
-                 py::overload_cast<const cmat&>(
-                     &QCircuit::get_measurement_count, py::const_),
-                 "Measurement count", py::arg("V"))
-            .def("get_measurement_count",
-                 py::overload_cast<>(&QCircuit::get_measurement_count,
-                                     py::const_),
-                 "Total measurement count")
             .def("has_measurements", &QCircuit::has_measurements,
                  "True if the quantum circuit description contains any "
                  "measurements, false otherwise")

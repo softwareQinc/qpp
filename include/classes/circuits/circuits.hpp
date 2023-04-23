@@ -1094,43 +1094,40 @@ class QCircuit : public IDisplay, public IJSON {
         return result;
     }
 
-    // TODO consider making U std::optional<cmat>
     /**
      * \brief Quantum circuit description gate count
      *
-     * \param U Gate
+     * \param U Optional, gate. If absent (default), the function computes the
+     * total circuit gate count.
      * \return Gate count
      */
-    idx get_gate_count(const cmat& U) const {
+    idx get_gate_count(std::optional<cmat> U = std::nullopt) const {
         // EXCEPTION CHECKS
 
         // square matrix
-        if (!internal::check_square_mat(U))
-            throw exception::MatrixNotSquare("qpp::get_gate_count()", "U");
+        if (U.has_value()) {
+            if (!internal::check_square_mat(U.value())) {
+                throw exception::MatrixNotSquare("qpp::get_gate_count()", "U");
+            }
+        }
         // END EXCEPTION CHECKS
 
-        idx result = 0;
-        std::size_t hashU = hash_eigen(U);
-        // gate hash not found in the hash table
-        try {
-            result = gate_count_.at(hashU);
-        } catch (...) {
-            return 0;
+        if (U.has_value()) {
+            idx result = 0;
+            std::size_t hashU = hash_eigen(U.value());
+            try {
+                result = gate_count_.at(hashU);
+            } // gate hash not found in the hash table
+            catch (...) {
+                return 0;
+            }
+            return result;
         }
 
-        return result;
-    }
-
-    /**
-     * \brief Quantum circuit description total gate count
-     *
-     * \return Total gate count
-     */
-    idx get_gate_count() const {
         idx result = 0;
-
-        for (auto&& elem : gate_count_)
+        for (auto&& elem : gate_count_) {
             result += elem.second;
+        }
 
         return result;
     }
@@ -1138,35 +1135,29 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit description gate depth
      *
-     * \param U Gate
+     * \param U Optional, gate. If absent (default), the function computes the
+     * total circuit gate depth.
      * \return Gate depth
      */
-    idx get_gate_depth(const cmat& U) const {
+    idx get_gate_depth(std::optional<cmat> U = std::nullopt) const {
         // EXCEPTION CHECKS
 
         // square matrix
-        if (!internal::check_square_mat(U))
+        if (U.has_value() && !internal::check_square_mat(U.value()))
             throw exception::MatrixNotSquare("qpp::get_gate_depth()", "U");
         // END EXCEPTION CHECKS
 
         bool found = false;
         std::vector<idx> heights(nc_ + nq_, 0);
 
-        cmat all_gates(1, 1);
-        all_gates << static_cast<double>(std::hash<std::string>{}("all gates"));
-        bool compute_total_depth = false;
-        if (U.rows() == 1 && U.cols() == 1)
-            if (U == all_gates)
-                compute_total_depth = true;
-
-        std::size_t hashU = hash_eigen(U);
+        std::size_t hashU = U.has_value() ? hash_eigen(U.value()) : 0;
         // iterate over all steps in the circuit
 
         for (auto&& elem : *this) {
             auto step = elem.get_step();
             if (std::holds_alternative<GateStep>(step)) {
                 auto gate_step = std::get<GateStep>(step);
-                if (gate_step.gate_hash_ != hashU && !compute_total_depth) {
+                if (U.has_value() && gate_step.gate_hash_ != hashU) {
                     continue; // we skip this gate_step elem
                 }
 
@@ -1215,35 +1206,18 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit description total gate depth
-     *
-     * \return Total gate depth
-     */
-    idx get_gate_depth() const {
-        cmat all_gates(1, 1);
-        all_gates << static_cast<double>(std::hash<std::string>{}("all gates"));
-        return get_gate_depth(all_gates);
-    }
-
-    /**
      * \brief Quantum circuit description measurement depth
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the
-     * columns of matrix \a V
+     * \param V Optional, orthonormal basis or rank-1 projectors specified by
+     * the columns of matrix \a V. If absent (default), the function computes
+     * the total circuit measurement depth.
      * \return Measurement depth
      */
-    idx get_measurement_depth(const cmat& V) const {
+    idx get_measurement_depth(std::optional<cmat> V = std::nullopt) const {
         bool found = false;
         std::vector<idx> heights(nc_ + nq_, 0);
 
-        cmat all_gates(1, 1);
-        all_gates << static_cast<double>(std::hash<std::string>{}("all gates"));
-        bool compute_total_depth = false;
-        if (V.rows() == 1 && V.cols() == 1)
-            if (V == all_gates)
-                compute_total_depth = true;
-
-        std::size_t hashV = hash_eigen(V);
+        std::size_t hashV = V.has_value() ? hash_eigen(V.value()) : 0;
 
         // TODO check this
 
@@ -1253,8 +1227,7 @@ class QCircuit : public IDisplay, public IJSON {
             if (std::holds_alternative<MeasurementStep>(step)) {
                 auto measurement_step =
                     std::get<QCircuit::MeasurementStep>(step);
-                if (measurement_step.mats_hash_[0] != hashV &&
-                    !compute_total_depth) {
+                if (V.has_value() && measurement_step.mats_hash_[0] != hashV) {
                     continue; // we skip this measurement_step elem
                 }
 
@@ -1326,17 +1299,6 @@ class QCircuit : public IDisplay, public IJSON {
         return found ? *std::max_element(heights.begin(), heights.end()) : 0;
     }
 
-    /**
-     * \brief Quantum circuit description total measurement depth
-     *
-     * \return Total measurement depth
-     */
-    idx get_measurement_depth() const {
-        cmat all_gates(1, 1);
-        all_gates << static_cast<double>(std::hash<std::string>{}("all gates"));
-        return get_measurement_depth(all_gates);
-    }
-
     // computes the depth greedily, measuring the "height" (depth) of the
     // "pieces" (gates) placed in a Tetris-like style
     /**
@@ -1349,33 +1311,27 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit description measurement count
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the
-     * columns of matrix \a V
+     * \param V Optional, orthonormal basis or rank-1 projectors specified by
+     * the columns of matrix \a V. If absent (default), the function computes
+     * the total circuit measurement count.
      * \return Measurement count
      */
-    idx get_measurement_count(const cmat& V) const {
+    idx get_measurement_count(std::optional<cmat> V = std::nullopt) const {
         // EXCEPTION CHECKS
 
-        idx result = 0;
-        std::size_t hashV = hash_eigen(V);
-        // basis matrix hash not found in the hash table
-        try {
-            result = measurement_count_.at(hashV);
-        } catch (...) {
-            return 0;
+        if (V.has_value()) {
+            idx result = 0;
+            std::size_t hashV = hash_eigen(V.value());
+            // basis matrix hash not found in the hash table
+            try {
+                result = measurement_count_.at(hashV);
+            } catch (...) {
+                return 0;
+            }
+            return result;
         }
 
-        return result;
-    }
-
-    /**
-     * \brief Quantum circuit description total measurement count
-     *
-     * \return Total measurement count
-     */
-    idx get_measurement_count() const {
         idx result = 0;
-
         for (auto&& elem : measurement_count_)
             result += elem.second;
 
@@ -4994,7 +4950,7 @@ inline QCircuit replicate(QCircuit qc, idx n) {
 }
 
 /**
- * \brief Random quantum circuit description generator for fixed gate gate_count
+ * \brief Random quantum circuit description generator for fixed gate count
  *
  * \param nq Number of qudits
  * \param d Subsystem dimensions
@@ -5171,7 +5127,7 @@ inline QCircuit random_circuit_count(
 }
 
 /**
- * \brief Random quantum circuit description generator for fixed gate gate_depth
+ * \brief Random quantum circuit description generator for fixed gate depth
  *
  * \param nq Number of qudits
  * \param d Subsystem dimensions

@@ -167,16 +167,14 @@ TEST(qpp_QCircuit_get_dirty_dits, AllTests) {}
 /// BEGIN std::vector<idx> QCircuit::get_dirty_qudits() const
 TEST(qpp_QCircuit_get_dirty_qudits, AllTests) {}
 /******************************************************************************/
-/// BEGIN idx QCircuit::get_gate_count() const
+/// BEGIN idx QCircuit::get_gate_count(std::optional<cmat> U = std::nullopt)
+///       const
 TEST(qpp_QCircuit_get_gate_count, TotalGateCount) {}
-/******************************************************************************/
-/// BEGIN idx QCircuit::get_gate_count(const cmat& U) const
 TEST(qpp_QCircuit_get_gate_count, SpecificGateCount) {}
 /******************************************************************************/
-/// BEGIN idx QCircuit::get_gate_depth() const
+/// BEGIN idx QCircuit::get_gate_depth(std::optional<cmat> U = std::nullopt)
+///       const
 TEST(qpp_QCircuit_get_gate_depth, TotalGateDepth) {}
-/******************************************************************************/
-/// BEGIN idx QCircuit::get_gate_depth(const cmat& U) const
 TEST(qpp_QCircuit_get_gate_depth, SpecificGateDepth) {}
 /******************************************************************************/
 /// BEGIN std::vector<idx> QCircuit::get_measured() const
@@ -190,17 +188,16 @@ TEST(qpp_QCircuit_get_measured_nd, AllQudits) {}
 /******************************************************************************/
 /// BEGIN bool QCircuit::get_measured_nd(idx i) const
 TEST(qpp_QCircuit_get_measured_nd, SpecificQudit) {}
-/******************************************************************************/
 /// BEGIN idx QCircuit::get_measurement_count() const
-TEST(qpp_QCircuit_get_measurement_count, TotalMeasurementCount) {}
 /******************************************************************************/
-/// BEGIN idx QCircuit::get_measurement_count(const cmat& V) const
+/// BEGIN idx QCircuit::get_measurement_count(std::optional<cmat> V =
+///       std::nullopt) const
+TEST(qpp_QCircuit_get_measurement_count, TotalMeasurementCount) {}
 TEST(qpp_QCircuit_get_measurement_count, SpecificMeasurementCount) {}
 /******************************************************************************/
-/// BEGIN idx QCircuit::get_measurement_depth() const
+/// BEGIN idx QCircuit::get_measurement_depth(std::optional<cmat> V =
+///       std::nullopt) const
 TEST(qpp_QCircuit_get_measurement_depth, TotalMeasurementDepth) {}
-/******************************************************************************/
-/// BEGIN idx QCircuit::get_measurement_depth(const cmat& V) const
 TEST(qpp_QCircuit_get_measurement_depth, SpecificMeasurementDepth) {}
 /******************************************************************************/
 /// BEGIN std::vector<idx> QCircuit::get_measurement_dits() const
