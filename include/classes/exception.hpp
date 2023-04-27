@@ -92,13 +92,11 @@ class Exception : public std::exception {
      */
     const char* what() const noexcept override {
         msg_.clear();
-        msg_ += where_;
-        msg_ += ": ";
-        msg_ += description();
-        msg_ += '!';
+        msg_ += "[WHERE: " + where_ + ']';
+        msg_ += " " + description() + '!';
 
         if (context_.has_value()) {
-            msg_ += " [" + context_.value() + ']';
+            msg_ += " [CONTEXT: " + context_.value() + ']';
         }
 
         return msg_.c_str();

@@ -3,13 +3,18 @@
 
 # Emacs
 \#*\#
+*~
+
+# clangd
+.cache/
+compile_commands.json
 
 # MSVC
 .vs/
 /out*
 CMakeSettings.json
 
-# VSCode
+# VS Code
 .vscode/
 
 # CLion
