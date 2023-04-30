@@ -1,6 +1,7 @@
 import subprocess
 import sys
 
+from glob import glob
 from pybind11.setup_helpers import Pybind11Extension
 from setuptools import setup
 
@@ -22,11 +23,13 @@ for line in p.stdout.read().decode('ascii').split('\n'):
 if eigen_path is None:
     raise Exception('Eigen3 not found!')
 
+source_files = [f for f in sorted(glob("pyqpp/**/*.cpp", recursive=True))]
 ext_modules = [
     Pybind11Extension(
         "pyqpp",
-        ["pyqpp/qpp_wrapper.cpp"],
+        source_files,
         extra_compile_args=["-Ilibs", "-Iinclude", "-Iqasmtools/include",
+                            "-Ipyqpp/include",
                             "-isystem" + eigen_path],
         cxx_std=17,
         include_pybind11=False,

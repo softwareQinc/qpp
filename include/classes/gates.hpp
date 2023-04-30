@@ -531,8 +531,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param target Target subsystem indexes where the gate \a A is applied
      * \param n Total number of subsystems
      * \param d Subsystem dimensions
-     * \param shift Performs the control as if the \a ctrl qudit states were
-     * \f$X\f$-incremented component-wise by \a shift. If non-empty (default),
+     * \param shift Optional, performs the control as if the \a ctrl qudit
+     * states were \f$X\f$-incremented component-wise by \a shift. If present,
      * the size of \a shift must be the same as the size of \a ctrl.
      * \return CTRL-A gate, as a matrix over the same scalar field as \a A
      */
@@ -540,7 +540,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     dyn_mat<typename Derived::Scalar>
     CTRL(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& ctrl,
          const std::vector<idx>& target, idx n, idx d = 2,
-         std::vector<idx> shift = {}) const {
+         std::optional<std::vector<idx>> shift = std::nullopt) const {
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
@@ -595,17 +595,17 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                                                   "A/d/target");
 
         // check shift
-        if (!shift.empty() && (shift.size() != ctrl.size()))
+        if (shift.has_value() && (shift.value().size() != ctrl.size()))
             throw exception::SizeMismatch("qpp::Gates::CTRL()", "ctrl/shift");
-        if (!shift.empty())
-            for (idx& elem : shift) {
+        if (shift.has_value())
+            for (idx& elem : shift.value()) {
                 if (elem >= d)
                     throw exception::OutOfRange("qpp::Gates::CTRL()", "shift");
                 elem = d - elem;
             }
         // END EXCEPTION CHECKS
 
-        if (shift.empty())
+        if (!shift.has_value())
             shift = std::vector<idx>(ctrl.size(), 0);
 
         idx D = prod(dims);
@@ -629,7 +629,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             dyn_mat<typename Derived::Scalar>::Identity(Dctrl, Dctrl);
         for (idx k = 0; k < d; ++k) {
             // copy shift
-            std::vector<idx> ctrl_shift = shift;
+            std::vector<idx> ctrl_shift = shift.value();
             // increment ctrl_shift by k (mod d)
             std::transform(ctrl_shift.begin(), ctrl_shift.end(),
                            ctrl_shift.begin(),
@@ -779,9 +779,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * not, returns the empty string
      *
      * \param U Complex matrix representing the quantum gate
-     * \return Name of the gate (if any), otherwise the empty string
+     * \return Optional name of the gate
      */
-    std::string get_name(const cmat& U) const {
+    std::optional<std::string> get_name(const cmat& U) const {
         // EXCEPTION CHECKS
 
         // check zero size
@@ -790,7 +790,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check square matrix
         if (!internal::check_square_mat(U))
-            return "";
+            return {};
 
         // END EXCEPTION CHECKS
 
@@ -818,7 +818,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                 else if (U == adjoint(T))
                     return "T+";
                 else
-                    return "";
+                    return {};
                 // 2 qubit gates
             case 4:
                 if (U == CNOT)
@@ -830,7 +830,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                 else if (U == SWAP)
                     return "SWAP";
                 else
-                    return "";
+                    return {};
                 // 3 qubit gates
             case 8:
                 if (U == TOF)
@@ -838,10 +838,10 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                 else if (U == FRED)
                     return "FRED";
                 else
-                    return "";
+                    return {};
 
             default:
-                return "";
+                return {};
         }
     }
     // end getters

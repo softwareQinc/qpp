@@ -121,7 +121,8 @@ disp(const PointerType* p, idx N, const std::string& separator,
 
 /**
  * \brief Saves Eigen expression to a text stream in corresponding machine
- * precision \see qpp::load()
+ * precision
+ * \see qpp::load()
  *
  * Example:
  * \code

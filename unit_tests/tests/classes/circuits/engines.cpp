@@ -29,9 +29,6 @@ TEST(qpp_QEngine_get_dit, AllTests) {}
 /// BEGIN std::vector<idx> QEngine::get_dits() const
 TEST(qpp_QEngine_get_dits, AllTests) {}
 /******************************************************************************/
-/// BEGIN std::vector<idx> QEngine::get_measured() const
-TEST(qpp_QEngine_get_measured, AllQudits) {}
-/******************************************************************************/
 /// BEGIN bool QEngine::get_measured(idx i) const
 TEST(qpp_QEngine_get_measured, SpecificQudit) {}
 /******************************************************************************/
@@ -69,6 +66,9 @@ TEST(qpp_QEngine_set_psi, AllTests) {}
 /// BEGIN std::string QEngine::to_JSON(
 ///       bool enclosed_in_curly_brackets = true) const override
 TEST(qpp_QEngine_to_JSON, AllTests) {}
+/******************************************************************************/
+/// BEGIN std::vector<idx> QEngine::was_measured() const
+TEST(qpp_QEngine_was_measured, AllQudits) {}
 /******************************************************************************/
 
 /******************************************************************************/

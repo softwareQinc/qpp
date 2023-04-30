@@ -15,7 +15,7 @@ int main() {
     idx n = 32;          // number of bits
     idx num_trials = 10; // number of trials
     Bit_circuit bc{n};
-    bc.rand(); // randomize the vector
+    bc.rand();           // randomize the vector
     Bit_circuit bc_initial = bc;
 
     std::cout << ">> Initial randomized bit circuit state\n"

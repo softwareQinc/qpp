@@ -24,8 +24,8 @@ int main() {
     idx statistics[4][4] = {{0}}; // total statistics
     long E[4] = {0};              // experimental estimate
 
-    idx gate_idx = 0;           // gate index (0, 1, 2 or 3)
-    for (auto&& gateA : {Q, R}) // measure Alice's side
+    idx gate_idx = 0;             // gate index (0, 1, 2 or 3)
+    for (auto&& gateA : {Q, R})   // measure Alice's side
     {
         // eigenvalues, so we know the order
         dyn_col_vect<double> evalsA = hevals(gateA);
