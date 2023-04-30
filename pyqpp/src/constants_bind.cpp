@@ -28,7 +28,9 @@
 
 /* Constants from constants.hpp */
 void init_constants(py::module_& m) {
-    m.attr("pi") = qpp::pi;
+    using namespace qpp;
+
     m.attr("ee") = qpp::ee;
     m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
+    m.attr("pi") = qpp::pi;
 }

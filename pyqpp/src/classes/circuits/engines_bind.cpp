@@ -33,25 +33,28 @@ void declare_noisy_engine(py::module& m, const std::string& type) {
 
     py::class_<NoiseModel>(m, type.c_str())
         .def(py::init<CtorTypeList...>())
+
         .def("get_d", &NoiseModel::get_d, "Qudit dimension")
         .def("get_Ks", &NoiseModel::get_Ks, "Vector of noise operators")
-        .def("get_probs", &NoiseModel::get_probs,
-             "Vector of probabilities corresponding to each noise operator")
         .def("get_last_idx", &NoiseModel::get_last_idx,
              "Index of the last occurring noise element")
+        .def("get_last_K", &NoiseModel::get_last_K,
+             "Last occurring noise element")
         .def("get_last_p", &NoiseModel::get_last_p,
              "Probability of the last occurring noise element")
-        .def("get_last_K", &NoiseModel::get_last_K,
-             "Last occurring noise element");
+        .def("get_probs", &NoiseModel::get_probs,
+             "Vector of probabilities corresponding to each noise operator");
 
     std::string pyname = "QNoisyEngine_" + type;
     py::class_<qpp::QNoisyEngine<NoiseModel>, QEngine>(m, pyname.c_str())
         .def(py::init<const QCircuit&, const NoiseModel&>(),
              py::keep_alive<1, 2>())
+
         .def(
             "get_noise_results",
             &qpp::QNoisyEngine<NoiseModel>::get_noise_results,
             "Vector of noise results obtained before every step in the circuit")
+
         .def("__copy__",
              [](const qpp::QNoisyEngine<NoiseModel>& self) {
                  return qpp::QNoisyEngine<NoiseModel>(self);
@@ -72,23 +75,26 @@ void declare_noisy_engine(py::module& m, const std::string& type) {
 /* qpp::QEngine */
 void init_classes_circuits_engines(py::module_& m) {
     using namespace qpp;
+
     py::class_<QEngine>(m, "QEngine")
         .def(py::init<const QCircuit&>(), py::keep_alive<1, 2>())
-        .def("get_psi", &QEngine::get_psi, "Underlying quantum state")
-        .def("get_dits", &QEngine::get_dits, "Underlying classical dits")
+
+        .def("execute", py::overload_cast<idx, bool>(&QEngine::execute),
+             "Executes the entire quantum circuit description",
+             py::arg("reps") = 1, py::arg("try_sampling") = true)
+        .def(
+            "get_circuit", [](const QEngine& qe) { return qe.get_circuit(); },
+            "Underlying quantum circuit description")
         .def("get_dit", &QEngine::get_dit,
              "Underlying classical dit at position i", py::arg("i"))
-        .def("get_probs", &QEngine::get_probs,
-             "Underlying measurement outcome probabilities")
-        .def("was_measured", &QEngine::was_measured,
-             "Whether qudit i was already measured destructively", py::arg("i"))
+        .def("get_dits", &QEngine::get_dits, "Underlying classical dits")
         .def("get_measured", &QEngine::get_measured,
              "Vector of already measured qudit indexes")
         .def("get_non_measured", &QEngine::get_non_measured,
              "Non-measured qudit indexes")
-        .def(
-            "get_circuit", [](const QEngine& qe) { return qe.get_circuit(); },
-            "Underlying quantum circuit description")
+        .def("get_probs", &QEngine::get_probs,
+             "Underlying measurement outcome probabilities")
+        .def("get_psi", &QEngine::get_psi, "Underlying quantum state")
         .def(
             "get_stats",
             [](const QEngine& qe) {
@@ -103,6 +109,10 @@ void init_classes_circuits_engines(py::module_& m) {
             },
             "Measurement statistics for multiple runs")
         .def("is_noisy", &QEngine::is_noisy, "Whether the engine is noisy")
+        .def("reset", &QEngine::reset, "Resets the engine",
+             py::arg("reset_stats") = true)
+        .def("reset_stats", &QEngine::reset_stats,
+             "Resets the collected measurement statistics hash table")
         .def("set_dit", &QEngine::set_dit,
              "Sets the classical dit at position i", py::arg("i"),
              py::arg("value"))
@@ -110,15 +120,11 @@ void init_classes_circuits_engines(py::module_& m) {
              py::arg("dits"))
         .def("set_psi", &QEngine::set_psi, "Sets the underlying quantum state",
              py::arg("psi"))
-        .def("reset_stats", &QEngine::reset_stats,
-             "Resets the collected measurement statistics hash table")
-        .def("reset", &QEngine::reset, "Resets the engine",
-             py::arg("reset_stats") = true)
-        .def("execute", py::overload_cast<idx, bool>(&QEngine::execute),
-             "Executes the entire quantum circuit description",
-             py::arg("reps") = 1, py::arg("try_sampling") = true)
         .def("to_JSON", &QEngine::to_JSON, "State of the engine in JSON format",
              py::arg("enclosed_in_curly_brackets") = true)
+        .def("was_measured", &QEngine::was_measured,
+             "Whether qudit i was already measured destructively", py::arg("i"))
+
         .def("__repr__",
              [](const QEngine& qe) {
                  std::ostringstream oss;
@@ -130,19 +136,14 @@ void init_classes_circuits_engines(py::module_& m) {
              [](const QEngine& self, py::dict) { return QEngine(self); });
 
     /* qpp::QNoisyEngine instantiations with different noise models */
-    declare_noisy_engine<qpp::QubitDepolarizingNoise, double>(
-        m, "QubitDepolarizingNoise");
-    declare_noisy_engine<qpp::QuditDepolarizingNoise, double, idx>(
-        m, "QuditDepolarizingNoise");
-    declare_noisy_engine<qpp::QubitPhaseFlipNoise, double>(
-        m, "QubitPhaseFlipNoise");
     declare_noisy_engine<qpp::QubitBitFlipNoise, double>(m,
                                                          "QubitBitFlipNoise");
     declare_noisy_engine<qpp::QubitBitPhaseFlipNoise, double>(
         m, "QubitBitPhaseFlipNoise");
-
-    /* OpenQASM interfacing */
-    auto py_qasm = m.def_submodule("qasm");
-    py_qasm.def("read_from_file", &qpp::qasm::read_from_file,
-                "Get QCircuit representation of OpenQASM circuit");
+    declare_noisy_engine<qpp::QubitDepolarizingNoise, double>(
+        m, "QubitDepolarizingNoise");
+    declare_noisy_engine<qpp::QubitPhaseFlipNoise, double>(
+        m, "QubitPhaseFlipNoise");
+    declare_noisy_engine<qpp::QuditDepolarizingNoise, double, idx>(
+        m, "QuditDepolarizingNoise");
 }

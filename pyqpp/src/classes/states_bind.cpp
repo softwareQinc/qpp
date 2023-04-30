@@ -37,39 +37,44 @@ void init_classes_states(py::module_& m) {
     states.attr("y1") = qpp::st.y1;
     states.attr("z0") = qpp::st.z0;
     states.attr("z1") = qpp::st.z1;
+
     states.attr("b00") = qpp::st.b00;
     states.attr("b01") = qpp::st.b01;
     states.attr("b10") = qpp::st.b10;
     states.attr("b11") = qpp::st.b11;
+
     states.attr("pb00") = qpp::st.pb00;
     states.attr("pb01") = qpp::st.pb01;
     states.attr("pb10") = qpp::st.pb10;
     states.attr("pb11") = qpp::st.pb11;
+
     states.attr("GHZ") = qpp::st.GHZ;
     states.attr("W") = qpp::st.W;
+
     states.attr("pGHZ") = qpp::st.pGHZ;
     states.attr("pW") = qpp::st.pW;
-    states.def(
-        "mes", [](idx d) { return qpp::st.mes(d); },
-        "Maximally entangled state of 2 qudits", py::arg("d") = 2);
-    states.def(
-        "zero", [](idx n, idx d) { return qpp::st.zero(n, d); },
-        "Zero state of n qudits", py::arg("n") = 1, py::arg("d") = 2);
-    states.def(
-        "one", [](idx n, idx d) { return qpp::st.one(n, d); },
-        "One state of n qudits", py::arg("n") = 1, py::arg("d") = 2);
-    states.def(
-        "jn", [](idx j, idx n, idx d) { return qpp::st.jn(j, n, d); },
-        "$|j\\rangle^{\\otimes n}$ state of n qudits", py::arg("j"),
-        py::arg("n") = 1, py::arg("d") = 2);
+
     states.def(
         "j", [](idx j, idx d) { return qpp::st.j(j, d); },
         "$|j\\rangle$ computational basis state of a single qudit",
         py::arg("j"), py::arg("d") = 2);
     states.def(
-        "plus", [](idx n) { return qpp::st.plus(n); }, "Plus state of n qubits",
-        py::arg("n") = 1);
+        "jn", [](idx j, idx n, idx d) { return qpp::st.jn(j, n, d); },
+        "$|j\\rangle^{\\otimes n}$ state of n qudits", py::arg("j"),
+        py::arg("n") = 1, py::arg("d") = 2);
+    states.def(
+        "mes", [](idx d) { return qpp::st.mes(d); },
+        "Maximally entangled state of 2 qudits", py::arg("d") = 2);
     states.def(
         "minus", [](idx n) { return qpp::st.minus(n); },
         "Minus state of n qubits", py::arg("n") = 1);
+    states.def(
+        "one", [](idx n, idx d) { return qpp::st.one(n, d); },
+        "One state of n qudits", py::arg("n") = 1, py::arg("d") = 2);
+    states.def(
+        "plus", [](idx n) { return qpp::st.plus(n); }, "Plus state of n qubits",
+        py::arg("n") = 1);
+    states.def(
+        "zero", [](idx n, idx d) { return qpp::st.zero(n, d); },
+        "Zero state of n qudits", py::arg("n") = 1, py::arg("d") = 2);
 }

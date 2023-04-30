@@ -38,6 +38,8 @@ void init_classes_states(py::module_&);
 void init_classes_circuits_circuits(py::module_&);
 void init_classes_circuits_engines(py::module_&);
 
+void init_qasm_qasm(py::module_&);
+
 void init_pyqpp_specific(py::module_&);
 
 PYBIND11_MODULE(pyqpp, m) {
@@ -55,6 +57,8 @@ PYBIND11_MODULE(pyqpp, m) {
 
     init_classes_circuits_circuits(m);
     init_classes_circuits_engines(m);
+
+    init_qasm_qasm(m);
 
     init_pyqpp_specific(m);
 }

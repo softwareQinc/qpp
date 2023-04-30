@@ -29,6 +29,8 @@
 // Python-specific functions only (not necessarily with an equivalent version in
 // qpp)
 void init_pyqpp_specific(py::module_& m) {
+    using namespace qpp;
+
     m.def(
         "set_prng_seed",
         [](std::size_t seed) {

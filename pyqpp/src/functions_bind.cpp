@@ -32,28 +32,16 @@ void init_functions(py::module_& m) {
 
     /* Template methods must be explicitly instantiated, some examples below */
     m.def(
-        "transpose", [](const cmat& A) { return qpp::transpose(A); },
-        "Transpose", py::arg("A"));
+        "adjoint", [](const cmat& A) { return qpp::adjoint(A); }, "Adjoint",
+        py::arg("A"));
     m.def(
         "conjugate", [](const cmat& A) { return qpp::conjugate(A); },
         "Complex conjugate", py::arg("A"));
     m.def(
-        "adjoint", [](const cmat& A) { return qpp::adjoint(A); }, "Adjoint",
-        py::arg("A"));
-    m.def(
-        "inverse", [](const cmat& A) { return qpp::inverse(A); }, "Inverse",
-        py::arg("A"));
-    m.def(
-        "trace", [](const cmat& A) { return qpp::trace(A); }, "trace",
-        py::arg("A"));
-    m.def(
         "det", [](const cmat& A) { return qpp::det(A); }, "Determinant",
         py::arg("A"));
     m.def(
-        "logdet", [](const cmat& A) { return qpp::logdet(A); },
-        "Logarithm of the determinant", py::arg("A"));
-    m.def(
-        "norm", [](const cmat& A) { return qpp::norm(A); }, "Frobenius norm",
+        "inverse", [](const cmat& A) { return qpp::inverse(A); }, "Inverse",
         py::arg("A"));
     m.def(
         "kron", [](const cmat& A, const cmat& B) { return qpp::kron(A, B); },
@@ -61,15 +49,27 @@ void init_functions(py::module_& m) {
     m.def("kron", static_cast<cmat (*)(const std::vector<cmat>&)>(&qpp::kron),
           "Kronecker product of a list of elements", py::arg("As"));
     m.def(
-        "sum", [](const cmat& A) { return qpp::sum(A); }, "Element-wise sum",
-        py::arg("A"));
+        "logdet", [](const cmat& A) { return qpp::logdet(A); },
+        "Logarithm of the determinant", py::arg("A"));
     m.def(
-        "sum", [](const std::vector<cmat>& As) { return qpp::sum(As); },
-        "Sum of the elements of the list", py::arg("A"));
+        "norm", [](const cmat& A) { return qpp::norm(A); }, "Frobenius norm",
+        py::arg("A"));
     m.def(
         "prod", [](const cmat& A) { return qpp::prod(A); },
         "Element-wise product", py::arg("As"));
     m.def(
         "prod", [](const std::vector<cmat>& As) { return qpp::prod(As); },
         "Products of the elements of the list", py::arg("As"));
+    m.def(
+        "sum", [](const cmat& A) { return qpp::sum(A); }, "Element-wise sum",
+        py::arg("A"));
+    m.def(
+        "sum", [](const std::vector<cmat>& As) { return qpp::sum(As); },
+        "Sum of the elements of the list", py::arg("A"));
+    m.def(
+        "trace", [](const cmat& A) { return qpp::trace(A); }, "trace",
+        py::arg("A"));
+    m.def(
+        "transpose", [](const cmat& A) { return qpp::transpose(A); },
+        "Transpose", py::arg("A"));
 }
