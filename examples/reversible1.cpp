@@ -12,7 +12,7 @@ int main() {
     Dynamic_bitset bits{4};                             // 4 classical bits
     std::cout << ">> Initial bitset: " << bits << '\n'; // display them
 
-    bits.rand();                                        // randomize the bits
+    bits.rand(); // randomize the bits
     std::cout << ">> After randomization: " << bits << '\n'; // display them
 
     Bit_circuit bc{bits}; // construct a bit circuit out of a bit set

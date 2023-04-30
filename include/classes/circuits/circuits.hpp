@@ -45,7 +45,7 @@ class QCircuit : public IDisplay, public IJSON {
     std::optional<std::string> name_; ///< optional circuit name
 
     std::vector<bool>
-        measured_;    ///< keeps track of the destructively measured qudits
+        measured_; ///< keeps track of the destructively measured qudits
     std::vector<bool>
         measured_nd_; ///< keeps track of the non-destructively measured qudits
     std::vector<bool> clean_qudits_; ///< keeps track of clean (unused) qudits
@@ -60,7 +60,7 @@ class QCircuit : public IDisplay, public IJSON {
                           ///< with [Key = std::size_t, Value = cmat]
     std::unordered_map<std::size_t, idx> gate_count_{}; ///< gate counts
     std::unordered_map<std::size_t, idx>
-        measurement_count_{};                           ///< measurement counts
+        measurement_count_{}; ///< measurement counts
 
     /**
      * \brief Adds matrix to the hash table
@@ -95,23 +95,23 @@ class QCircuit : public IDisplay, public IJSON {
          * \brief Type of gate being executed in a gate step
          */
         enum class Type {
-            NONE,     ///< represents no gate
+            NONE, ///< represents no gate
 
-            SINGLE,   ///< unitary gate on a single qudit
+            SINGLE, ///< unitary gate on a single qudit
 
-            TWO,      ///< unitary gate on 2 qudits
+            TWO, ///< unitary gate on 2 qudits
 
-            THREE,    ///< unitary gate on 3 qudits
+            THREE, ///< unitary gate on 3 qudits
 
-            JOINT,    ///< joint gate on multiple qudits
+            JOINT, ///< joint gate on multiple qudits
 
-            FAN,      ///< the same unitary gate on multiple qudits
+            FAN, ///< the same unitary gate on multiple qudits
 
-            CTRL,     ///< controlled unitary gate with joint target
+            CTRL, ///< controlled unitary gate with joint target
 
             CTRL_FAN, ///< controlled unitary gate with multiple targets
 
-            cCTRL,    ///< classically controlled unitary gate with joint target
+            cCTRL, ///< classically controlled unitary gate with joint target
 
             cCTRL_FAN, ///< classically controlled unitary gate with multiple
                        ///< targets
@@ -258,43 +258,43 @@ class QCircuit : public IDisplay, public IJSON {
          * \brief Type of measurement being executed in a measurement step
          */
         enum class Type {
-            NONE,            ///< represents no measurement
+            NONE, ///< represents no measurement
 
-            MEASURE,         ///< Z measurement of single qudit
+            MEASURE, ///< Z measurement of single qudit
 
-            MEASURE_MANY,    ///< Z measurement of multiple qudits
+            MEASURE_MANY, ///< Z measurement of multiple qudits
 
-            MEASURE_V,       ///< measurement of single qudit in the orthonormal
-                             ///< basis or rank-1 projectors specified by the
-                             ///< columns of matrix \a V
+            MEASURE_V, ///< measurement of single qudit in the orthonormal
+                       ///< basis or rank-1 projectors specified by the
+                       ///< columns of matrix \a V
 
             MEASURE_V_JOINT, ///< joint measurement of multiple qudits in
                              ///< the orthonormal basis or rank-1 projectors
                              ///< specified by the columns of the matrix \a
                              ///< V
 
-            MEASURE_ND,      ///< Z measurement of single qudit, non-destructive
+            MEASURE_ND, ///< Z measurement of single qudit, non-destructive
 
             MEASURE_MANY_ND, ///< Z measurement of multiple qudits,
                              ///< non-destructive
 
-            MEASURE_V_ND,    ///< measurement of single qudit in the
-                             ///< orthonormal basis or rank-1 projectors
-                             ///< specified by the columns of matrix \a V, ///<
-                             ///< non-destructive
+            MEASURE_V_ND, ///< measurement of single qudit in the
+                          ///< orthonormal basis or rank-1 projectors
+                          ///< specified by the columns of matrix \a V, ///<
+                          ///< non-destructive
 
             MEASURE_V_JOINT_ND, ///< joint measurement of multiple qudits in
                                 ///< the orthonormal basis or rank-1
                                 ///< projectors specified by the columns of
                                 ///< the matrix \a V, non-destructive
 
-            RESET,              ///< resets single qudit
+            RESET, ///< resets single qudit
 
-            RESET_MANY,         ///< resets multiple qudits
+            RESET_MANY, ///< resets multiple qudits
 
-            DISCARD,            ///< discards single qudit
+            DISCARD, ///< discards single qudit
 
-            DISCARD_MANY,       ///< discards multiple qudits
+            DISCARD_MANY, ///< discards multiple qudits
         };
 
         /**
@@ -359,7 +359,7 @@ class QCircuit : public IDisplay, public IJSON {
         idx c_reg_{}; ///< index of the classical register where the
                       ///< measurement result is being stored
         std::optional<std::string>
-            name_{};  ///< custom name of the measurement(s)
+            name_{}; ///< custom name of the measurement(s)
 
         /**
          * \brief Default constructor

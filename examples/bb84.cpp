@@ -159,7 +159,7 @@ void display(const bases_states_T& Alice_bases_states,
         std::string state;
         if (Alice_bases_states[i].first == 0) // Z basis
             state = std::to_string(Alice_bases_states[i].second);
-        else                                  // X basis
+        else // X basis
             state = Alice_bases_states[i].second == 0 ? "+" : "-";
         std::cout << state << ' ';
     }
@@ -177,7 +177,7 @@ void display(const bases_states_T& Alice_bases_states,
         std::string state;
         if (Bob_bases_states[i].first == 0) // Z basis
             state = std::to_string(Bob_bases_states[i].second);
-        else                                // X basis
+        else // X basis
             state = Bob_bases_states[i].second == 0 ? "+" : "-";
         std::cout << state << ' ';
     }

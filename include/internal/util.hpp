@@ -412,7 +412,7 @@ struct Display_Impl_ {
 
         for (idx i = 0; i < static_cast<idx>(A.rows()); ++i) {
             for (idx j = 0; j < static_cast<idx>(A.cols()); ++j) {
-                str.clear();             // clear the temporary string
+                str.clear(); // clear the temporary string
                 ostr.clear();
                 ostr.str(std::string{}); // clear the ostringstream
 

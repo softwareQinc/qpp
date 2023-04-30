@@ -117,7 +117,7 @@ class Singleton {
         return get_thread_local_instance();
 #endif // NO_THREAD_LOCAL_
     }
-};     /* class Singleton */
+}; /* class Singleton */
 
 } /* namespace qpp::internal */
 

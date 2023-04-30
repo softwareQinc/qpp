@@ -33,7 +33,7 @@ int main() {
     idx nq = nq_c + nq_a;                    // total number of qubits
     ket psi = mket(std::vector<idx>(nq, 0)); // |0>^\otimes n
 
-    cmat U(2, 2);                            // initialize a unitary operator
+    cmat U(2, 2); // initialize a unitary operator
     // we use the T gate as an example; we expect estimated theta = 1/8 (0.125).
     double theta = 0.125; // change if you want, increase n for more precision
     U << 1, 0, 0, std::exp(2 * pi * 1_i * theta);

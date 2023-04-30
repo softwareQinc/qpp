@@ -247,7 +247,7 @@ class Context {
         hash_ident_uptr val_;
     };
 
-    std::vector<Environment> env_{};     ///< environment stack
+    std::vector<Environment> env_{}; ///< environment stack
     [[maybe_unused]] std::list<idx>
         qubit_pool_{};                   ///< pool of unassigned physical qubits
     idx max_bit_ = static_cast<idx>(-1); ///< largest classical bit index
@@ -414,7 +414,7 @@ class Context {
  * \brief Visitor for converting a QASM AST to a QCircuit
  */
 class QCircuitBuilder final : public ast::Visitor {
-    Context ctx;    ///< QCircuit translation context
+    Context ctx; ///< QCircuit translation context
     double
         temp_value; ///< stores intermediate values when computing expressions
 
