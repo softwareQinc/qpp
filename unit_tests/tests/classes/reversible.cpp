@@ -12,17 +12,15 @@ TEST(qpp_Bit_circuit_CNOT, AllTests) {}
 /// BEGIN Bit_circuit& Bit_circuit::FRED(const std::vector<idx>& pos)
 TEST(qpp_Bit_circuit_FRED, AllTests) {}
 /******************************************************************************/
-/// BEGIN idx Bit_circuit::get_gate_count() const
-TEST(qpp_Bit_circuit_get_gate_count, AllGates) {}
+/// BEGIN idx Bit_circuit::get_gate_count(std::optional<std::string> name =
+///       std::nullopt) const
+TEST(qpp_Bit_circuit_get_gate_count, TotalGateCount) {}
+TEST(qpp_Bit_circuit_get_gate_count, SpecificGateCount) {}
 /******************************************************************************/
-/// BEGIN idx Bit_circuit::get_gate_count(const std::string& name) const
-TEST(qpp_Bit_circuit_get_gate_count, SpecificGate) {}
-/******************************************************************************/
-/// BEGIN idx Bit_circuit::get_gate_depth() const
-TEST(qpp_Bit_circuit_get_gate_depth, AllGates) {}
-/******************************************************************************/
-/// BEGIN idx Bit_circuit::get_gate_depth(const std::string& name) const
-TEST(qpp_Bit_circuit_get_gate_depth, SpecificGate) {}
+/// BEGIN idx Bit_circuit::get_gate_depth(std::optional<std::string> name =
+///       std::nullopt) const
+TEST(qpp_Bit_circuit_get_gate_depth, TotalGateDepth) {}
+TEST(qpp_Bit_circuit_get_gate_depth, SpecificGateDepth) {}
 /******************************************************************************/
 /// BEGIN Bit_circuit& Bit_circuit::NOT(idx pos)
 TEST(qpp_Bit_circuit_NOT, AllTests) {}

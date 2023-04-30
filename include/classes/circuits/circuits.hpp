@@ -1088,7 +1088,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit description gate count
      *
-     * \param U Optional, gate. If absent (default), the function computes the
+     * \param U Optional, gate. If absent (default), this function computes the
      * total circuit gate count.
      * \return Gate count
      */
@@ -1126,7 +1126,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Quantum circuit description gate depth
      *
-     * \param U Optional, gate. If absent (default), the function computes the
+     * \param U Optional, gate. If absent (default), this function computes the
      * total circuit gate depth.
      * \return Gate depth
      */
@@ -1200,7 +1200,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Quantum circuit description measurement depth
      *
      * \param V Optional, orthonormal basis or rank-1 projectors specified by
-     * the columns of matrix \a V. If absent (default), the function computes
+     * the columns of matrix \a V. If absent (default), this function computes
      * the total circuit measurement depth.
      * \return Measurement depth
      */
@@ -1303,7 +1303,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Quantum circuit description measurement count
      *
      * \param V Optional, orthonormal basis or rank-1 projectors specified by
-     * the columns of matrix \a V. If absent (default), the function computes
+     * the columns of matrix \a V. If absent (default), this function computes
      * the total circuit measurement count.
      * \return Measurement count
      */

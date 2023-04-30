@@ -757,43 +757,28 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     /**
      * \brief Bit circuit gate count
      *
-     * \param name Gate name. Possible names are NOT (X), CNOT, SWAP, TOF, FRED.
+     * \param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
+     * TOF, FRED. If absent (default), this function computes the total circuit
+     * gate count
      * \return Gate count
      */
-    idx get_gate_count(const std::string& name) const {
+    idx get_gate_count(std::optional<std::string> name = std::nullopt) const {
         idx result;
 
-        // EXCEPTION CHECKS
-
-        try {
-            if (name == "X")
-                result = count_.at("NOT");
-            else
-                result = count_.at(name);
-        } catch (...) {
-            return 0;
+        if (name.has_value()) {
+            try {
+                result =
+                    (name == "X") ? count_.at("NOT") : count_.at(name.value());
+            } catch (...) {
+                return 0;
+            }
+        } else {
+            try {
+                result = count_.at(__FILE__ "__total__");
+            } catch (...) {
+                return 0;
+            }
         }
-        // END EXCEPTION CHECKS
-
-        return result;
-    }
-
-    /**
-     * \brief Bit circuit total gate count
-     *
-     * \return Total gate count
-     */
-    idx get_gate_count() const {
-        idx result;
-
-        // EXCEPTION CHECKS
-
-        try {
-            result = count_.at(__FILE__ "__total__");
-        } catch (...) {
-            return 0;
-        }
-        // END EXCEPTION CHECKS
 
         return result;
     }
@@ -801,43 +786,28 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     /**
      * \brief Bit circuit gate depth
      *
-     * \param name Gate name. Possible names are NOT (X), CNOT, SWAP, TOF, FRED.
+     * \param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
+     * TOF, FRED. If absent (default), this function computes the total circuit
+     * gate depth
      * \return Gate depth
      */
-    idx get_gate_depth(const std::string& name) const {
+    idx get_gate_depth(std::optional<std::string> name = std::nullopt) const {
         idx result;
 
-        // EXCEPTION CHECKS
-
-        try {
-            if (name == "X")
-                result = depth_.at("NOT");
-            else
-                result = depth_.at(name);
-        } catch (...) {
-            return 0;
+        if (name.has_value()) {
+            try {
+                result =
+                    (name == "X") ? depth_.at("NOT") : depth_.at(name.value());
+            } catch (...) {
+                return 0;
+            }
+        } else {
+            try {
+                result = depth_.at(__FILE__ "__total__");
+            } catch (...) {
+                return 0;
+            }
         }
-        // END EXCEPTION CHECKS
-
-        return result;
-    }
-
-    /**
-     * \brief Bit circuit total gate depth
-     *
-     * \return Total gate depth
-     */
-    idx get_gate_depth() const {
-        idx result;
-
-        // EXCEPTION CHECKS
-
-        try {
-            result = depth_.at(__FILE__ "__total__");
-        } catch (...) {
-            return 0;
-        }
-        // END EXCEPTION CHECKS
 
         return result;
     }
