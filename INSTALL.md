@@ -20,7 +20,7 @@ as [Windows](https://www.microsoft.com/en-us/windows).
       variable `EIGEN3_INSTALL_DIR` to point to the location of the Eigen3
       library (include the `include/eigen3` part of the path), or pass the
       flag `-DEIGEN3_INSTALL_DIR=/path/to/eigen3` to CMake
-- A C++17 compliant compiler, e.g., [gcc](https://gcc.gnu.org/)
+- C++17 compliant compiler, e.g., [gcc](https://gcc.gnu.org/)
   , [clang](https://clang.llvm.org)
   , [MSVC](https://visualstudio.microsoft.com/vs/) etc.
 

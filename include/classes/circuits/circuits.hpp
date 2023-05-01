@@ -4226,10 +4226,10 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Returns true if the quantum circuit description contains any
-     * measurements that remove qudits, false otherwise
+     * operations/measurements that remove qudits, false otherwise
      *
      * \return True if the quantum circuit description contains any
-     * measurements that remove qudits, false otherwise
+     * operations/measurements that remove qudits, false otherwise
      */
     bool removes_qudits() const noexcept {
         for (auto&& elem : *this) {

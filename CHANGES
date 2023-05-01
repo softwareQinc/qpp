@@ -1,4 +1,4 @@
-Pre-release
+Version 4.1 - 1 May 2023
     - Implemented ["classes/circuits/circuits.hpp"]
           qpp::qpe_circuit()                - Quantum phase estimation circuit
           qpp::QCircuit::has_measurements() - True if the quantum circuit
