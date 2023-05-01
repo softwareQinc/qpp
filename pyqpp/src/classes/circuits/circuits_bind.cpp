@@ -304,11 +304,13 @@ void init_classes_circuits_circuits(py::module_& m) {
             .def("match_circuit_left", &QCircuit::match_circuit_left,
                  "Matches a quantum circuit description to the current one, "
                  "placed at the left (beginning) of the current one",
-                 py::arg("other"), py::arg("target"), py::arg("pos_dit") = -1)
+                 py::arg("other"), py::arg("target"),
+                 py::arg("pos_dit") = std::nullopt)
             .def("match_circuit_right", &QCircuit::match_circuit_right,
                  "Matches a quantum circuit description to the current one, "
                  "placed at the right (end) of the current one",
-                 py::arg("other"), py::arg("target"), py::arg("pos_dit") = -1)
+                 py::arg("other"), py::arg("target"),
+                 py::arg("pos_dit") = std::nullopt)
             .def("measure",
                  py::overload_cast<idx, idx, bool, std::optional<std::string>>(
                      &QCircuit::measure),

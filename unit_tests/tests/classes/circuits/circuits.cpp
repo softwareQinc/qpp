@@ -337,7 +337,7 @@ TEST(qpp_QCircuit_was_measured_nd, AllTests) {}
 // free functions
 /******************************************************************************/
 /// BEGIN inline QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2,
-///       bigint pos_qudit, idx pos_dit = -1)
+///       bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_add_circuit, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit adjoint(QCircuit qc)
