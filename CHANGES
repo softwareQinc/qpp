@@ -39,6 +39,9 @@ Version 4.1 - 1 May 2023
           have the signature qpp::BitCircuit::
               get_gate_count(std::optional<std::string> name = std::nullopt)
               get_gate_depth(std::optional<std::string> name = std::nullopt)
+    - API changes in ["functions.hpp"], qpp::n2multiidx() and qpp::multiidx2n()
+          now take their argument underlying type (number, array) as template
+          (must be an integral type)
     - Removed qpp::QCircuit::is_non_CTRL()
     - Refactored pyqpp, organized the source code in separate src/include
       directory  structure that mirrors the qpp source code structure

@@ -1384,18 +1384,23 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
 
 // TODO check why 2 * internal::maxn
 /**
- * \brief Non-negative integer index to multi-index
+ * \brief Non-negative integer index to non-negative integer multi-index
  * \see qpp::multiidx2n()
  *
  * Uses standard lexicographical order, i.e., 00...0, 00...1 etc.
  *
+ * \tparam T Underlying non-negative integer type
  * \param n Non-negative integer index
  * \param dims Dimensions of the multi-partite system
- * \return Multi-index of the same size as \a dims
+ * \return Non-negative integer multi-index of the same size as \a dims
  */
-[[qpp::critical]] inline std::vector<idx>
-n2multiidx(idx n, const std::vector<idx>& dims) {
+template <class T>
+[[qpp::critical]] std::vector<T> n2multiidx(T n, const std::vector<idx>& dims) {
     // EXCEPTION CHECKS
+    static_assert(std::is_integral_v<T>, "T must be an integral value");
+
+    if (n < 0)
+        throw exception::OutOfRange("qpp::n2multiidx()", "n");
 
     if (dims.size() > internal::maxn)
         throw exception::OutOfRange("qpp::n2multiidx()", "dims/maxn");
@@ -1404,32 +1409,41 @@ n2multiidx(idx n, const std::vector<idx>& dims) {
         throw exception::DimsInvalid("qpp::n2multiidx()", "dims");
     }
 
-    if (n >= std::accumulate(dims.begin(), dims.end(), static_cast<idx>(1),
-                             std::multiplies<>())) {
+    if (n >= std::accumulate(dims.begin(), dims.end(), static_cast<T>(1),
+                             std::multiplies<>{})) {
         throw exception::OutOfRange("qpp::n2multiidx()", "n");
     }
     // END EXCEPTION CHECKS
 
     // double the size for matrices reshaped as vectors
-    idx result[2 * internal::maxn];
+    T result[2 * internal::maxn];
     internal::n2multiidx(n, dims.size(), dims.data(), result);
 
-    return std::vector<idx>(result, result + dims.size());
+    return std::vector<T>(std::begin(result),
+                          std::next(std::begin(result), dims.size()));
 }
 
 /**
- * \brief Multi-index to non-negative integer index
+ * \brief Non-negative integer multi-index to non-negative integer index
  * \see qpp::n2multiidx()
  *
  * Uses standard lexicographical order, i.e., 00...0, 00...1 etc.
  *
- * \param midx Multi-index
+ * \tparam T Underlying non-negative integer type
+ * \param midx Non-negative integer multi-index
  * \param dims Dimensions of the multi-partite system
  * \return Non-negative integer index
  */
-[[qpp::critical]] inline idx multiidx2n(const std::vector<idx>& midx,
-                                        const std::vector<idx>& dims) {
+template <class T>
+[[qpp::critical]] T multiidx2n(const std::vector<T>& midx,
+                               const std::vector<idx>& dims) {
+    static_assert(std::is_integral_v<T>, "T must be an integral value");
+
     // EXCEPTION CHECKS
+    for (auto val : midx)
+        if (val < 0)
+            throw exception::OutOfRange("qpp::multiidx2n()", "midx");
+
     if (midx.size() != dims.size())
         throw exception::SizeMismatch("qpp::multiidx2n()", "dims/midx");
 
@@ -1440,7 +1454,7 @@ n2multiidx(idx n, const std::vector<idx>& dims) {
         throw exception::OutOfRange("qpp::multiidx2n()", "dims/maxn");
 
     for (idx i = 0; i < dims.size(); ++i)
-        if (midx[i] >= dims[i]) {
+        if (static_cast<idx>(midx[i]) >= dims[i]) {
             throw exception::OutOfRange("qpp::multiidx2n()", "dims/midx");
         }
     // END EXCEPTION CHECKS
