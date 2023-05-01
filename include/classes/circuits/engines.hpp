@@ -823,6 +823,7 @@ class QEngine : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     virtual QEngine& execute(idx reps = 1, bool try_sampling = true) {
+        this->reset(false);
         auto steps = (reps > 1 && try_sampling)
                          ? internal::canonical_form(*qc_ptr_)
                          : internal::circuit_as_iterators(*qc_ptr_);
