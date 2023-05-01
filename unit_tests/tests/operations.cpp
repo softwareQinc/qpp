@@ -300,7 +300,7 @@ TEST(qpp_QFT, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> dyn_col_vect<typename Derived::Scalar>
 ///       qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data,
-///       idx DqRAM = -1)
+///       idx DqRAM)
 TEST(qpp_qRAM, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline cmat super2choi(const cmat& A)
