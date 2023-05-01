@@ -1453,10 +1453,11 @@ template <class T>
     if (dims.size() > internal::maxn)
         throw exception::OutOfRange("qpp::multiidx2n()", "dims/maxn");
 
-    for (idx i = 0; i < static_cast<idx>(dims.size()); ++i)
+    for (idx i = 0; i < static_cast<idx>(dims.size()); ++i) {
         if (static_cast<idx>(midx[i]) >= dims[i]) {
             throw exception::OutOfRange("qpp::multiidx2n()", "dims/midx");
         }
+    }
     // END EXCEPTION CHECKS
 
     return internal::multiidx2n(midx.data(), dims.size(), dims.data());
