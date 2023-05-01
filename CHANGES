@@ -1,4 +1,4 @@
-Pre-release
+Version 4.1 - 1 May 2023
     - Implemented ["classes/circuits/circuits.hpp"]
           qpp::qpe_circuit()                - Quantum phase estimation circuit
           qpp::QCircuit::has_measurements() - True if the quantum circuit
@@ -28,6 +28,24 @@ Pre-release
       functions
           qpp::random_circuit_count()
           qpp::random_circuit_depth()
+    - API changes in ["classes/circuits/circuits.hpp"], more std::optional<>,
+          updated the following qpp::QCircuit member functions signatures to
+          qpp::QCircuit::
+              add_circuit(QCircuit other, bigint pos_qudit,
+                  std::optional<idx> pos_dit = std::nullopt)
+              match_circuit_left(QCircuit other, const std::vector<idx>& target,
+                  std::optional<idx> pos_dit = std::nullopt)
+              match_circuit_right(QCircuit other,
+                  const std::vector<idx>& target,
+                  std::optional<idx> pos_dit = std::nullopt)
+              add_circuit(QCircuit qc1, const QCircuit& qc2, bigint pos_qudit,
+                  std::optional<idx> pos_dit = std::nullopt)
+              match_circuit_left(QCircuit qc1, const QCircuit& qc2,
+                  const std::vector<idx>& target,
+                  std::optional<idx> pos_dit = std::nullopt)
+              match_circuit_right(QCircuit qc1, const QCircuit& qc2,
+                  const std::vector<idx>& target,
+                  std::optional<idx> pos_dit = std::nullopt)
     - API changes in ["classes/circuits/circuits.hpp"], renamed qpp::QCircuit::
           was_measured(idx i)    -> was_measured(idx i)
           get_measured_nd(idx i) -> was_measured_nd(idx i)
@@ -39,6 +57,9 @@ Pre-release
           have the signature qpp::BitCircuit::
               get_gate_count(std::optional<std::string> name = std::nullopt)
               get_gate_depth(std::optional<std::string> name = std::nullopt)
+    - API changes in ["functions.hpp"], qpp::n2multiidx() and qpp::multiidx2n()
+          now take their argument underlying type (number, array) as template
+          (must be an integral type)
     - Removed qpp::QCircuit::is_non_CTRL()
     - Refactored pyqpp, organized the source code in separate src/include
       directory  structure that mirrors the qpp source code structure

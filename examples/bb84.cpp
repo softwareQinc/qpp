@@ -153,7 +153,7 @@ int main() {
 void display(const bases_states_T& Alice_bases_states,
              const bases_states_T& Bob_bases_states) {
     using namespace qpp;
-    auto n = Alice_bases_states.size();
+    auto n = static_cast<idx>(Alice_bases_states.size());
     std::cout << "Alice's states:  ";
     for (idx i = 0; i < n; ++i) {
         std::string state;
@@ -188,7 +188,7 @@ void display(const bases_states_T& Alice_bases_states,
 void sift(bases_states_T& Alice_bases_states,
           bases_states_T& Bob_bases_states) {
     using namespace qpp;
-    auto n = Alice_bases_states.size();
+    auto n = static_cast<idx>(Alice_bases_states.size());
     bases_states_T result_A, result_B;
     for (idx i = 0; i < n; ++i) {
         if (Alice_bases_states[i].first != Bob_bases_states[i].first)
@@ -205,7 +205,7 @@ void sift(bases_states_T& Alice_bases_states,
 double sample(bases_states_T& Alice_bases_states,
               bases_states_T& Bob_bases_states, qpp::idx k) {
     using namespace qpp;
-    auto n = Alice_bases_states.size();
+    auto n = static_cast<idx>(Alice_bases_states.size());
 
     if (k > n) {
         std::cout << ">> Not enough check qubits (k too large), aborting...\n";
@@ -267,7 +267,7 @@ double sample(bases_states_T& Alice_bases_states,
 // privacy amplification; however, here we simply discard the bits that differ
 key_T final(const key_T& Alice_raw_key, const key_T& Bob_raw_key) {
     using namespace qpp;
-    auto n = Alice_raw_key.size();
+    auto n = static_cast<idx>(Alice_raw_key.size());
     key_T result;
     for (idx i = 0; i < n; ++i) {
         if (Alice_raw_key[i] != Bob_raw_key[i])
@@ -280,7 +280,7 @@ key_T final(const key_T& Alice_raw_key, const key_T& Bob_raw_key) {
 // helper, retrieves the key from a collection of (basis, state) pairs
 key_T get_key(const bases_states_T& bases_states) {
     using namespace qpp;
-    auto n = bases_states.size();
+    auto n = static_cast<idx>(bases_states.size());
     key_T result(n);
     for (idx i = 0; i < n; ++i)
         result[i] = bases_states[i].second;

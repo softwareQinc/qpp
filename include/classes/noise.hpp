@@ -95,7 +95,7 @@ class NoiseBase {
         cmat rho_i;
         idx n = internal::get_num_subsys(state.rows(), D_);
 
-        for (idx i = 0; i < Ks_.size(); ++i) {
+        for (idx i = 0; i < static_cast<idx>(Ks_.size()); ++i) {
             rho_i = ptrace(state, complement(target, n), D_);
             probs_[i] = trace(Ks_[i] * rho_i * adjoint(Ks_[i])).real();
         }

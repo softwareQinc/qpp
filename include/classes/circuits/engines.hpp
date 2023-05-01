@@ -238,7 +238,8 @@ class QEngine : public IDisplay, public IJSON {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QEngine::set_measured_()", "i");
         // END EXCEPTION CHECKS
-        st_.subsys_[i] = static_cast<idx>(-1); // set qudit i to measured state
+        st_.subsys_[i] =
+            std::numeric_limits<idx>::max(); // set qudit i to measured state
         for (idx m = i; m < qc_ptr_->get_nq(); ++m) {
             if (!was_measured(m)) {
                 --st_.subsys_[m];
@@ -385,7 +386,7 @@ class QEngine : public IDisplay, public IJSON {
      * \return True if qudit \a i was already measured, false otherwise
      */
     bool was_measured(idx i) const {
-        return st_.subsys_[i] == static_cast<idx>(-1);
+        return st_.subsys_[i] == std::numeric_limits<idx>::max();
     }
 
     /**
@@ -599,7 +600,9 @@ class QEngine : public IDisplay, public IJSON {
                                       target_rel_pos, d);
                             break;
                         case QCircuit::GateStep::Type::FAN:
-                            for (idx m = 0; m < gate_step.target_.size(); ++m) {
+                            for (idx m = 0;
+                                 m < static_cast<idx>(gate_step.target_.size());
+                                 ++m) {
                                 st_.psi_ =
                                     apply(st_.psi_, h_tbl[gate_step.gate_hash_],
                                           {target_rel_pos[m]}, d);
@@ -642,7 +645,9 @@ class QEngine : public IDisplay, public IJSON {
                                          gate_step.shift_.value()[0]) %
                                         d;
                                     for (idx m = 1;
-                                         m < gate_step.ctrl_.value().size();
+                                         m <
+                                         static_cast<idx>(
+                                             gate_step.ctrl_.value().size());
                                          ++m) {
                                         if ((st_.dits_[(
                                                  gate_step.ctrl_.value())[m]] +
@@ -659,7 +664,9 @@ class QEngine : public IDisplay, public IJSON {
                                     first_dit =
                                         st_.dits_[(gate_step.ctrl_.value())[0]];
                                     for (idx m = 1;
-                                         m < gate_step.ctrl_.value().size();
+                                         m <
+                                         static_cast<idx>(
+                                             gate_step.ctrl_.value().size());
                                          ++m) {
                                         if (st_.dits_[(
                                                 gate_step.ctrl_.value())[m]] !=
@@ -823,6 +830,7 @@ class QEngine : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     virtual QEngine& execute(idx reps = 1, bool try_sampling = true) {
+        this->reset(false);
         auto steps = (reps > 1 && try_sampling)
                          ? internal::canonical_form(*qc_ptr_)
                          : internal::circuit_as_iterators(*qc_ptr_);
@@ -875,7 +883,7 @@ class QEngine : public IDisplay, public IJSON {
                     measured = true;
                     auto [_, target, c_regs] =
                         internal::extract_ctrl_target_c_reg(steps[i]);
-                    for (idx q = 0; q < target.size(); ++q) {
+                    for (idx q = 0; q < static_cast<idx>(target.size()); ++q) {
                         used_dits[c_regs[q]] = target[q];
                     }
                 }

@@ -84,8 +84,9 @@ class Dynamic_bitset : public IDisplay {
      * \param n Number of bits in the bitset
      */
     explicit Dynamic_bitset(idx n)
-        : storage_size_{n / (sizeof(value_type) * CHAR_BIT) + 1}, n_{n},
-          v_(storage_size_) {}
+        : storage_size_{static_cast<idx>(n / (sizeof(value_type) * CHAR_BIT) +
+                                         1)},
+          n_{n}, v_(storage_size_) {}
 
     /**
      * \brief Constructs a dynamic bitset instance out of a string
@@ -97,7 +98,7 @@ class Dynamic_bitset : public IDisplay {
      */
     explicit Dynamic_bitset(std::string str, char zero = '0',
                             [[maybe_unused]] char one = '1')
-        : Dynamic_bitset{str.size()} {
+        : Dynamic_bitset{static_cast<idx>(str.size())} {
         idx n = str.size();
         for (idx i = 0; i < n; ++i) {
             assert(str[i] == zero || str[i] == one);
@@ -458,8 +459,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      */
     explicit Bit_circuit(std::string str, char zero = '0',
                          [[maybe_unused]] char one = '1')
-        : Dynamic_bitset{str.size()}, bNOT_{size()}, bCNOT_{size()},
-          bSWAP_{size()}, bTOF_{size()}, bFRED_{size()}, btotal_{size()} {
+        : Dynamic_bitset{static_cast<idx>(str.size())}, bNOT_{size()},
+          bCNOT_{size()}, bSWAP_{size()}, bTOF_{size()}, bFRED_{size()},
+          btotal_{size()} {
         idx n = str.size();
         for (idx i = 0; i < n; ++i) {
             assert(str[i] == zero || str[i] == one);

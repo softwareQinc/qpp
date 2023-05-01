@@ -83,7 +83,8 @@ inline std::vector<bigint> x2contfrac(double x, idx N, idx cut = 100000) {
  *
  * \return Real representation of the simple continued fraction
  */
-inline double contfrac2x(const std::vector<bigint>& cf, idx N = idx(-1)) {
+inline double contfrac2x(const std::vector<bigint>& cf,
+                         idx N = std::numeric_limits<idx>::max()) {
     // EXCEPTION CHECKS
     if (cf.empty())
         throw exception::ZeroSize("qpp::contfrac2x()", "cf");
@@ -92,7 +93,7 @@ inline double contfrac2x(const std::vector<bigint>& cf, idx N = idx(-1)) {
         throw exception::OutOfRange("qpp::contfrac2x()", "N");
     // END EXCEPTION CHECKS
 
-    if (N > cf.size())
+    if (N > static_cast<idx>(cf.size()))
         N = cf.size();
 
     if (N == 1) // degenerate case, integer
@@ -149,7 +150,7 @@ inline bigint gcd(const std::vector<bigint>& as) {
     // END EXCEPTION CHECKS
 
     bigint result = as[0]; // convention: gcd({a}) = a
-    for (idx i = 1; i < as.size(); ++i) {
+    for (idx i = 1; i < static_cast<idx>(as.size()); ++i) {
         result = gcd(result, as[i]);
     }
 
@@ -198,7 +199,7 @@ inline bigint lcm(const std::vector<bigint>& as) {
 
     bigint result = as[0]; // convention: lcm({n}) = a
 
-    for (idx i = 1; i < as.size(); ++i) {
+    for (idx i = 1; i < static_cast<idx>(as.size()); ++i) {
         result = lcm(result, as[i]);
     }
 
@@ -220,7 +221,7 @@ inline std::vector<idx> invperm(const std::vector<idx>& perm) {
 
     // construct the inverse
     std::vector<idx> result(perm.size());
-    for (idx i = 0; i < perm.size(); ++i)
+    for (idx i = 0; i < static_cast<idx>(perm.size()); ++i)
         result[perm[i]] = i;
 
     return result;
@@ -248,7 +249,7 @@ inline std::vector<idx> compperm(const std::vector<idx>& perm,
 
     // construct the composition perm(sigma)
     std::vector<idx> result(perm.size());
-    for (idx i = 0; i < perm.size(); ++i)
+    for (idx i = 0; i < static_cast<idx>(perm.size()); ++i)
         result[i] = perm[sigma[i]];
 
     return result;
@@ -648,7 +649,7 @@ inline std::vector<std::pair<bigint, bigint>> convergents(double x, idx N) {
         throw exception::OutOfRange("qpp::convergents()", "N");
 
     auto cf = x2contfrac(x, N);
-    if (cf.size() < N)
+    if (static_cast<idx>(cf.size()) < N)
         N = cf.size();
 
     return convergents(x2contfrac(x, N));

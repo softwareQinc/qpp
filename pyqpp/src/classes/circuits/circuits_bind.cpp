@@ -41,7 +41,7 @@ void init_classes_circuits_circuits(py::module_& m) {
                  "Appends (glues) a quantum circuit description to the current "
                  "one",
                  py::arg("other"), py::arg("pos_qudit"),
-                 py::arg("pos_dit") = -1)
+                 py::arg("pos_dit") = std::nullopt)
             .def("add_dit", py::overload_cast<idx>(&QCircuit::add_dit),
                  "Adds n additional classical dits after the last qudit",
                  py::arg("n") = 1)
@@ -443,7 +443,7 @@ void init_classes_circuits_circuits(py::module_& m) {
           "Appends (glues) the second quantum circuit description to the first "
           "one",
           py::arg("qc1"), py::arg("qc2"), py::arg("pos_qudit"),
-          py::arg("pos_dit") = -1);
+          py::arg("pos_dit") = std::nullopt);
     m.def("adjoint", static_cast<QCircuit (*)(QCircuit)>(&qpp::adjoint),
           "Adjoint quantum circuit description", py::arg("qc"));
     m.def("kron",
@@ -454,12 +454,12 @@ void init_classes_circuits_circuits(py::module_& m) {
           "Matches the second quantum circuit description to the left "
           "(beginning) of the first one",
           py::arg("qc1"), py::arg("qc2"), py::arg("target"),
-          py::arg("pos_dit") = -1);
+          py::arg("pos_dit") = std::nullopt);
     m.def("match_circuit_right", &qpp::match_circuit_right,
           "Matches the second quantum circuit description to the right (end) "
           "of the first one",
           py::arg("qc1"), py::arg("qc2"), py::arg("target"),
-          py::arg("pos_dit") = -1);
+          py::arg("pos_dit") = std::nullopt);
     m.def("qpe_circuit", &qpp::qpe_circuit,
           "Quantum phase estimation circuit with n bits of precision",
           py::arg("U"), py::arg("n"), py::arg("omit_measurements") = true,

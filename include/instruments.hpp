@@ -82,7 +82,7 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
 
     // check that subsys match phi column vector
     std::vector<idx> subsys_dims(subsys.size());
-    for (idx i = 0; i < subsys.size(); ++i)
+    for (idx i = 0; i < static_cast<idx>(subsys.size()); ++i)
         subsys_dims[i] = dims[subsys[i]];
     if (!internal::check_dims_match_cvect(subsys_dims, rphi))
         throw exception::DimsMismatchCvector("qpp::ip()", "dims/phi");
@@ -235,7 +235,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     //************ density matrix ************//
     if (internal::check_square_mat(rA)) // square matrix
     {
-        for (idx i = 0; i < Ks.size(); ++i) {
+        for (idx i = 0; i < static_cast<idx>(Ks.size()); ++i) {
             outstates[i] = cmat::Zero(Dout, Dout);
             cmat tmp = Ks[i] * rA * adjoint(Ks[i]); // un-normalized;
             probs[i] = std::abs(trace(tmp));        // probability
@@ -247,7 +247,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     //************ ket ************//
     else if (internal::check_cvector(rA)) // column vector
     {
-        for (idx i = 0; i < Ks.size(); ++i) {
+        for (idx i = 0; i < static_cast<idx>(Ks.size()); ++i) {
             outstates[i] = ket::Zero(Dout);
             ket tmp = Ks[i] * rA; // un-normalized;
             // probability
@@ -376,7 +376,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         throw exception::MatrixNotSquareNorCvector("qpp::measure()", "A");
 
     std::vector<idx> subsys_dims(target.size());
-    for (idx i = 0; i < target.size(); ++i)
+    for (idx i = 0; i < static_cast<idx>(target.size()); ++i)
         subsys_dims[i] = dims[target[i]];
 
     idx Dsubsys = prod(subsys_dims);
@@ -401,7 +401,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     //************ ket ************//
     if (internal::check_cvector(rA)) // column vector
     {
-        for (idx i = 0; i < Ks.size(); ++i) {
+        for (idx i = 0; i < static_cast<idx>(Ks.size()); ++i) {
             expr_t<Derived> tmp = apply(rA, Ks[i], target, dims);
             probs[i] = std::pow(norm(tmp), 2);
             if (probs[i] > 0) {
@@ -418,7 +418,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     //************ density matrix ************//
     else // square matrix
     {
-        for (idx i = 0; i < Ks.size(); ++i) {
+        for (idx i = 0; i < static_cast<idx>(Ks.size()); ++i) {
             expr_t<Derived> tmp = apply(rA, Ks[i], target, dims);
             if (destructive)
                 tmp = ptrace(tmp, target, dims);
@@ -586,7 +586,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         throw exception::MatrixNotSquareNorCvector("qpp::measure()", "A");
 
     std::vector<idx> subsys_dims(target.size());
-    for (idx i = 0; i < target.size(); ++i)
+    for (idx i = 0; i < static_cast<idx>(target.size()); ++i)
         subsys_dims[i] = dims[target[i]];
 
     idx Dsubsys = prod(subsys_dims);
@@ -1081,7 +1081,7 @@ reset(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     std::vector<idx> resZ;
 
     std::tie(resZ, std::ignore, result) = measure_seq(rA, target, dims, false);
-    for (idx i = 0; i < target.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(target.size()); ++i) {
         cmat correction =
             powm(Gates::get_no_thread_local_instance().Xd(dims[i]),
                  dims[i] - resZ[i]);

@@ -8,7 +8,7 @@ using namespace qpp;
 
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::add_circuit(QCircuit other, bigint pos_qudit,
-///       idx pos_dit = -1)
+///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_QCircuit_add_circuit, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::add_dit(idx n = 1, idx i = -1)
@@ -239,11 +239,13 @@ TEST(qpp_QCircuit_is_measurement_dit, AllTests) {}
 TEST(qpp_QCircuit_kron, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::match_circuit_left(QCircuit other,
-///       const std::vector<idx>& target, idx pos_dit = -1)
+///       const std::vector<idx>& target,
+///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_QCircuit_match_circuit_left, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::match_circuit_right(QCircuit other,
-///       const std::vector<idx>& target, idx pos_dit = -1)
+///       const std::vector<idx>& target,
+///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_QCircuit_match_circuit_right, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::measureV(const cmat& V,
@@ -346,15 +348,17 @@ TEST(qpp_kron, QCircuitAllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit qpe_circuit(cmat U, qpp::idx n,
 ///       bool omit_measurements = true, idx d = 2,
-///       const std::string& name = "qpe")
+///       std::optional<std::string> name = "qpe")
 TEST(qpp_qpe_circuit, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
-///       const std::vector<idx>& target, idx pos_dit = -1)
+///       const std::vector<idx>& target,
+///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_match_circuit_left, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
-///       const std::vector<idx>& target, idx pos_dit = -1)
+///       const std::vector<idx>& target,
+///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_match_circuit_right, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit replicate(QCircuit qc, idx n)

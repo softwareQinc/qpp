@@ -48,7 +48,7 @@ int main() {
               << " counting qubits, nq_a = " << nq_a << " ancilla qubits\n";
 
     std::cout << ">> The sequence of applied gates is:\n";
-    for (idx i = 0; i < counting_qubits.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(counting_qubits.size()); ++i) {
         // apply Hadamard on counting qubits
         result = apply(result, gt.H, {i});
         std::cout << "H" << i << " ";

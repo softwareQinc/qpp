@@ -249,9 +249,11 @@ class Context {
 
     std::vector<Environment> env_{}; ///< environment stack
     [[maybe_unused]] std::list<idx>
-        qubit_pool_{};                   ///< pool of unassigned physical qubits
-    idx max_bit_ = static_cast<idx>(-1); ///< largest classical bit index
-    idx max_qubit_ = static_cast<idx>(-1); ///< largest (virtual) qubit index
+        qubit_pool_{}; ///< pool of unassigned physical qubits
+    idx max_bit_ =
+        std::numeric_limits<idx>::max(); ///< largest classical bit index
+    idx max_qubit_ =
+        std::numeric_limits<idx>::max(); ///< largest (virtual) qubit index
 
     // For controlled contexts
     std::vector<idx> cctrls_{}; ///< classical controls in the current context
@@ -510,7 +512,7 @@ class QCircuitBuilder final : public ast::Visitor {
         auto circuit = ctx.get_circuit();
 
         // apply measurements non-destructively
-        for (idx i = 0; i < q_args.size(); i++) {
+        for (idx i = 0; i < static_cast<idx>(q_args.size()); i++) {
             circuit->measure(q_args[i], c_args[i], false);
         }
     }
@@ -529,7 +531,7 @@ class QCircuitBuilder final : public ast::Visitor {
         // create the shift
         int tmp = stmt.cond();
         std::vector<idx> shift(creg->indices_.size(), 0);
-        for (idx i = 0; i < creg->indices_.size(); i++) {
+        for (idx i = 0; i < static_cast<idx>(creg->indices_.size()); i++) {
             if (tmp % 2 == 0)
                 shift[i] = 1;
             tmp >>= 1;
@@ -623,7 +625,7 @@ class QCircuitBuilder final : public ast::Visitor {
                 }
             }
         } else if (ctrls.size() == tgts.size()) {
-            for (idx i = 0; i < ctrls.size(); i++) {
+            for (idx i = 0; i < static_cast<idx>(ctrls.size()); i++) {
                 if (ctx.ccontrolled()) {
                     std::vector<idx> tmp{ctrls[i], tgts[i]};
                     circuit->cCTRL(Gates::get_no_thread_local_instance().CNOT,
@@ -657,7 +659,7 @@ class QCircuitBuilder final : public ast::Visitor {
         // map gate across registers
         idx mapping_size = 1;
         std::vector<bool> mapped(q_args.size(), false);
-        for (idx i = 0; i < q_args.size(); i++) {
+        for (idx i = 0; i < static_cast<idx>(q_args.size()); i++) {
             if (q_args[i].size() > 1) {
                 mapped[i] = true;
                 mapping_size = q_args[i].size();
@@ -674,7 +676,7 @@ class QCircuitBuilder final : public ast::Visitor {
             for (idx j = 0; j < mapping_size; j++) {
                 // map virtual qubits to physical qubits
                 std::vector<idx> mapped_args(q_args.size());
-                for (idx i = 0; i < q_args.size(); i++) {
+                for (idx i = 0; i < static_cast<idx>(q_args.size()); i++) {
                     mapped_args[i] = mapped[i] ? q_args[i][j] : q_args[i][0];
                 }
 
@@ -689,7 +691,7 @@ class QCircuitBuilder final : public ast::Visitor {
         } else {
             // push classical arguments onto a new scope
             ctx.enter_scope();
-            for (idx i = 0; i < c_args.size(); i++) {
+            for (idx i = 0; i < static_cast<idx>(c_args.size()); i++) {
                 ctx.set(gate->c_params_[i],
                         std::unique_ptr<Value>(new Number(c_args[i])));
             }
@@ -697,7 +699,7 @@ class QCircuitBuilder final : public ast::Visitor {
             // map the gate
             for (idx j = 0; j < mapping_size; j++) {
                 ctx.enter_scope();
-                for (idx i = 0; i < q_args.size(); i++) {
+                for (idx i = 0; i < static_cast<idx>(q_args.size()); i++) {
                     ctx.set(gate->q_params_[i],
                             std::unique_ptr<Value>(new Qubit(
                                 mapped[i] ? q_args[i][j] : q_args[i][0])));

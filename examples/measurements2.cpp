@@ -60,7 +60,7 @@ int main() {
     cmat rho_out_bar = cmat::Zero(4, 4);
 
     // compute the resulting mixed state after the measurement
-    for (idx i = 0; i < probs.size(); ++i)
+    for (idx i = 0; i < static_cast<idx>(probs.size()); ++i)
         rho_out_bar += probs[i] * density_operators[i];
 
     // verification

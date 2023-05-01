@@ -114,7 +114,7 @@ avg(const std::vector<double>& prob, const Container& X,
     // END EXCEPTION CHECKS
 
     double result = 0;
-    for (idx i = 0; i < prob.size(); ++i)
+    for (idx i = 0; i < static_cast<idx>(prob.size()); ++i)
         result += prob[i] * X[i];
 
     return result;
@@ -140,9 +140,9 @@ cov(const dmat& probXY, const Container& X, const Container& Y,
         throw exception::ZeroSize("qpp::cov()", "X");
     if (!internal::check_nonzero_size(Y))
         throw exception::ZeroSize("qpp::cov()", "Y");
-    if (static_cast<idx>(probXY.rows()) != X.size())
+    if (static_cast<idx>(probXY.rows()) != static_cast<idx>(X.size()))
         throw exception::SizeMismatch("qpp::cov()", "probXY/X");
-    if (static_cast<idx>(probXY.cols()) != Y.size())
+    if (static_cast<idx>(probXY.cols()) != static_cast<idx>(Y.size()))
         throw exception::SizeMismatch("qpp::cov()", "probXY/Y");
     // END EXCEPTION CHECKS
 
@@ -150,8 +150,8 @@ cov(const dmat& probXY, const Container& X, const Container& Y,
     std::vector<double> probY = marginalY(probXY); // marginals
 
     double result = 0;
-    for (idx i = 0; i < X.size(); ++i) {
-        for (idx j = 0; j < Y.size(); ++j) {
+    for (idx i = 0; i < static_cast<idx>(X.size()); ++i) {
+        for (idx j = 0; j < static_cast<idx>(Y.size()); ++j) {
             result += probXY(i, j) * X[i] * Y[j];
         }
     }
@@ -180,7 +180,7 @@ var(const std::vector<double>& prob, const Container& X,
     // END EXCEPTION CHECKS
 
     Eigen::VectorXd diag(prob.size());
-    for (idx i = 0; i < prob.size(); ++i)
+    for (idx i = 0; i < static_cast<idx>(prob.size()); ++i)
         diag(i) = prob[i];
     dmat probXX = diag.asDiagonal();
 

@@ -417,7 +417,7 @@ apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
         throw exception::MatrixNotSquareNorCvector("qpp::apply()", "A");
 
     std::vector<idx> subsys_dims(target.size());
-    for (idx i = 0; i < target.size(); ++i)
+    for (idx i = 0; i < static_cast<idx>(target.size()); ++i)
         subsys_dims[i] = dims[target[i]];
 
     // check the Kraus operators
@@ -1734,7 +1734,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
     // check that all control subsystems have the same dimension
     idx d = dims[ctrl[0]];
-    for (idx i = 1; i < ctrl.size(); ++i)
+    for (idx i = 1; i < static_cast<idx>(ctrl.size()); ++i)
         if (dims[ctrl[i]] != d)
             throw exception::DimsNotEqual("qpp::applyCTRL()", "ctrl");
 
@@ -1754,7 +1754,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
     // check that gate matches the dimensions of the target
     std::vector<idx> target_dims(target.size());
-    for (idx i = 0; i < target.size(); ++i)
+    for (idx i = 0; i < static_cast<idx>(target.size()); ++i)
         target_dims[i] = dims[target[i]];
     if (!internal::check_dims_match_mat(target_dims, rA))
         throw exception::MatrixMismatchSubsys("qpp::applyCTRL()", "A/target");
@@ -2018,7 +2018,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 
     // check that all control subsystems have the same dimension
     idx d = dims[ctrl[0]];
-    for (idx i = 1; i < ctrl.size(); ++i)
+    for (idx i = 1; i < static_cast<idx>(ctrl.size()); ++i)
         if (dims[ctrl[i]] != d)
             throw exception::DimsNotEqual("qpp::applyCTRL_fan()", "ctrl");
 
@@ -2032,7 +2032,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
                                             "dims/target");
 
     // check that all target subsystems have the same dimension
-    for (idx i = 1; i < target.size(); ++i)
+    for (idx i = 1; i < static_cast<idx>(target.size()); ++i)
         if (dims[target[i]] != d)
             throw exception::DimsNotEqual("qpp::applyCTRL_fan()", "target");
 
@@ -2576,7 +2576,7 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM) {
 
     // check equal dimensions
     idx Din = static_cast<idx>(rpsi.rows());
-    if (data.size() < Din)
+    if (static_cast<idx>(data.size()) < Din)
         throw exception::DimsInvalid("qpp::qRAM()", "data/psi");
 
     idx max_val_qRAM = *std::max_element(data.begin(), data.end());

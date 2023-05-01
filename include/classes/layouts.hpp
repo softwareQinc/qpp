@@ -120,7 +120,7 @@ class Lattice : public ILayout {
 
         if (xs.size() != dims_.size())
             throw exception::SizeMismatch("qpp::Lattice::operator()", "xs");
-        for (idx i = 0; i < dims_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(dims_.size()); ++i)
             if (xs[i] >= dims_[i])
                 throw exception::OutOfRange("qpp::Lattice::operator()", "xs");
         // END EXCEPTION CHECKS
@@ -196,7 +196,7 @@ class PeriodicBoundaryLattice : public Lattice {
         // END EXCEPTION CHECKS
 
         std::vector<idx> xs_copy = xs;
-        for (idx i = 0; i < dims_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(dims_.size()); ++i)
             xs_copy[i] = xs[i] % dims_[i];
         return Lattice::operator()(xs_copy);
     }

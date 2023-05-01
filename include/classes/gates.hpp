@@ -696,7 +696,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             throw exception::MatrixNotSquare("qpp::Gates::expandout()", "A");
 
         // check that position is valid
-        if (pos + 1 > dims.size())
+        if (pos + 1 > static_cast<idx>(dims.size()))
             throw exception::OutOfRange("qpp::Gates::expandout()", "dims/pos");
 
         // check that dims[pos] match the dimension of A

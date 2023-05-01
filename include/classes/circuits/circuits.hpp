@@ -871,7 +871,7 @@ class QCircuit : public IDisplay, public IJSON {
      */
     const_iterator end() const noexcept {
         idx step_count = this->get_step_count();
-        idx ip = static_cast<idx>(-1);
+        idx ip = std::numeric_limits<idx>::max();
         if (step_count != 0) {
             ip = step_count;
         }
@@ -1253,7 +1253,8 @@ class QCircuit : public IDisplay, public IJSON {
                     case MeasurementStep::Type::MEASURE_MANY_ND:
                         // compute the "height" of the to-be-placed
                         // measurement_step
-                        for (idx i = 0; i < target.size(); ++i) {
+                        for (idx i = 0; i < static_cast<idx>(target.size());
+                             ++i) {
                             if (heights[c_reg + i] > max_height) {
                                 max_height = heights[c_reg + i];
                             }
@@ -1264,7 +1265,8 @@ class QCircuit : public IDisplay, public IJSON {
                             }
                         }
                         // apply measurement_step
-                        for (idx i = 0; i < target.size(); ++i) {
+                        for (idx i = 0; i < static_cast<idx>(target.size());
+                             ++i) {
                             heights[c_reg + i] = max_height + 1;
                         }
 
@@ -3280,7 +3282,8 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::Duplicates("qpp::QCircuit::measure()",
                                         context + ": target");
         // not enough dits to store the result
-        if (target.size() > nc_ || c_reg > nc_ - target.size())
+        if (static_cast<idx>(target.size()) > nc_ ||
+            c_reg > static_cast<idx>(nc_ - target.size()))
             throw exception::OutOfRange("qpp::QCircuit::measure()",
                                         context + ": c_reg, target");
         // END EXCEPTION CHECKS
@@ -3310,7 +3313,7 @@ class QCircuit : public IDisplay, public IJSON {
             clean_qudits_[elem] = false;
         }
 
-        for (idx i = 0; i < target.size(); ++i) {
+        for (idx i = 0; i < static_cast<idx>(target.size()); ++i) {
             clean_dits_[c_reg + i] = false;
             measurement_dits_[c_reg + i] = true;
         }
@@ -3342,7 +3345,8 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::QuditAlreadyMeasured(
                 "qpp:QCircuit::measure_all()",
                 context + ": all qudits measured already");
-        if (non_measured.size() > nc_ || c_reg > nc_ - non_measured.size())
+        if (static_cast<idx>(non_measured.size()) > nc_ ||
+            c_reg > static_cast<idx>(nc_ - non_measured.size()))
             throw exception::OutOfRange("qpp::QCircuit::measure_all()",
                                         context + ": c_reg");
         // END EXCEPTION CHECKS
@@ -3754,15 +3758,15 @@ class QCircuit : public IDisplay, public IJSON {
      * the qudits of \a other are being matched, i.e., the first/top qudit
      * of \a other quantum circuit description is matched with the target[0]
      * qudit of the current circuit description, and so on
-     * \param pos_dit The first classical dit of \a other is inserted before
-     * the \a pos_dit classical dit index of the current quantum circuit
+     * \param pos_dit Optional, the first classical dit of \a other is inserted
+     * before the \a pos_dit classical dit index of the current quantum circuit
      * description (in the classical dits array), the rest following in
-     * order. By default, insertion is performed at the end.
+     * order. If absent (default), insertion is performed at the end.
      * \return Reference to the current instance
      */
     QCircuit& match_circuit_right(QCircuit other,
                                   const std::vector<idx>& target,
-                                  idx pos_dit = -1) {
+                                  std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 
         // check equal dimensions
@@ -3770,16 +3774,17 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::DimsNotEqual(
                 "qpp::QCircuit::match_circuit_right()", "other");
         // check classical dits
-        if (pos_dit == static_cast<idx>(-1))
+        if (!pos_dit.has_value()) {
             pos_dit = nc_;
-        else if (pos_dit > nc_)
+        } else if (pos_dit.value() < 0 || pos_dit.value() > nc_) {
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()",
                                         "pos_dit");
+        }
         // check valid target
-        if (target.size() != other.nq_)
+        if (static_cast<idx>(target.size()) != other.nq_)
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()",
                                         "target");
-        if (target.size() > nq_)
+        if (static_cast<idx>(target.size()) > nq_)
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()",
                                         "target");
         if (!internal::check_no_duplicates(target))
@@ -3801,7 +3806,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         // STEP 0: insert classical dits from the to-be-matched circuit
-        add_dit(other.nc_, pos_dit);
+        add_dit(other.nc_, pos_dit.value());
 
         // STEP 1: update [c]ctrl and target indexes of other
         for (auto& gate_step : other.circuit_) {
@@ -3810,7 +3815,7 @@ class QCircuit : public IDisplay, public IJSON {
                 // update the cctrl indexes
                 if (is_cCTRL(gate)) {
                     for (idx& dit : gate.ctrl_.value()) {
-                        dit += pos_dit;
+                        dit += pos_dit.value();
                     }
                 }
                 // update the ctrl indexes
@@ -3830,7 +3835,7 @@ class QCircuit : public IDisplay, public IJSON {
         for (auto& measurement_step : other.circuit_) {
             if (std::holds_alternative<MeasurementStep>(measurement_step)) {
                 auto& measurement = std::get<MeasurementStep>(measurement_step);
-                measurement.c_reg_ += pos_dit;
+                measurement.c_reg_ += pos_dit.value();
                 for (idx& pos : measurement.target_) {
                     pos = target[pos];
                 }
@@ -3842,20 +3847,21 @@ class QCircuit : public IDisplay, public IJSON {
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
         // of other
-        for (idx i = 0; i < other.measured_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(other.measured_.size()); ++i)
             if (other.measured_[i])
                 measured_[target[i]] = true;
-        for (idx i = 0; i < other.measured_nd_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(other.measured_nd_.size()); ++i)
             if (other.measured_nd_[i])
                 measured_nd_[target[i]] = true;
-        for (idx i = 0; i < other.clean_qudits_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(other.clean_qudits_.size()); ++i)
             if (!other.clean_qudits_[i])
                 clean_qudits_[target[i]] = false;
 
-        for (idx i = 0; i < other.clean_dits_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(other.clean_dits_.size()); ++i)
             if (!other.clean_dits_[i])
                 clean_dits_[target[i]] = false;
-        for (idx i = 0; i < other.measurement_dits_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(other.measurement_dits_.size());
+             ++i)
             if (other.measurement_dits_[i])
                 measurement_dits_[target[i]] = true;
 
@@ -3899,14 +3905,14 @@ class QCircuit : public IDisplay, public IJSON {
      * the qudits of \a other are being matched, i.e., the first/top qudit
      * of \a other quantum circuit description is matched with the target[0]
      * qudit of the current circuit description, and so on
-     * \param pos_dit The first classical dit of \a other is inserted before
-     * the \a pos_dit classical dit index of the current quantum circuit
+     * \param pos_dit Optional, the first classical dit of \a other is inserted
+     * before the \a pos_dit classical dit index of the current quantum circuit
      * description (in the classical dits array), the rest following in
-     * order. By default, insertion is performed at the end.
+     * order. If absent (default), insertion is performed at the end.
      * \return Reference to the current instance
      */
     QCircuit& match_circuit_left(QCircuit other, const std::vector<idx>& target,
-                                 idx pos_dit = -1) {
+                                 std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 
         // check equal dimensions
@@ -3914,20 +3920,21 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::DimsNotEqual("qpp::QCircuit::match_circuit_left()",
                                           "other");
         // check classical dits
-        if (pos_dit == static_cast<idx>(-1))
+        if (!pos_dit.has_value()) {
             pos_dit = nc_;
-        else if (pos_dit > nc_)
+        } else if (pos_dit.value() < 0 || pos_dit.value() > nc_) {
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()",
                                         "pos_dit");
+        }
         // check no measurement for the matched circuit
         if (!other.get_measured().empty())
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::match_circuit_left()", "other");
         // check valid target
-        if (target.size() != other.nq_)
+        if (static_cast<idx>(target.size()) != other.nq_)
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()",
                                         "target");
-        if (target.size() > nq_)
+        if (static_cast<idx>(target.size()) > nq_)
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()",
                                         "target");
         if (!internal::check_no_duplicates(target))
@@ -3949,7 +3956,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         // STEP 0: insert classical dits from the to-be-matched circuit
-        add_dit(other.nc_, pos_dit);
+        add_dit(other.nc_, pos_dit.value());
 
         // STEP 1: update [c]ctrl and target indexes of other
         for (auto& step : other.circuit_) {
@@ -3959,7 +3966,7 @@ class QCircuit : public IDisplay, public IJSON {
                                // update the cctrl indexes
                                if (is_cCTRL(gate_step)) {
                                    for (idx& dit : gate_step.ctrl_.value()) {
-                                       dit += pos_dit;
+                                       dit += pos_dit.value();
                                    }
                                }
                                // update the ctrl indexes
@@ -3975,7 +3982,7 @@ class QCircuit : public IDisplay, public IJSON {
                            },
                            // update measurement_step indexes of other
                            [&](MeasurementStep& measurement_step) {
-                               measurement_step.c_reg_ += pos_dit;
+                               measurement_step.c_reg_ += pos_dit.value();
                                for (idx& pos : measurement_step.target_) {
                                    pos = target[pos];
                                }
@@ -3990,20 +3997,21 @@ class QCircuit : public IDisplay, public IJSON {
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
         // of other
-        for (idx i = 0; i < other.measured_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(other.measured_.size()); ++i)
             if (other.measured_[i])
                 measured_[target[i]] = true;
-        for (idx i = 0; i < other.measured_nd_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(other.measured_nd_.size()); ++i)
             if (other.measured_nd_[i])
                 measured_nd_[target[i]] = true;
-        for (idx i = 0; i < other.clean_qudits_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(other.clean_qudits_.size()); ++i)
             if (!other.clean_qudits_[i])
                 clean_qudits_[target[i]] = false;
 
-        for (idx i = 0; i < other.clean_dits_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(other.clean_dits_.size()); ++i)
             if (!other.clean_dits_[i])
                 clean_dits_[target[i]] = false;
-        for (idx i = 0; i < other.measurement_dits_.size(); ++i)
+        for (idx i = 0; i < static_cast<idx>(other.measurement_dits_.size());
+             ++i)
             if (other.measurement_dits_[i])
                 measurement_dits_[target[i]] = true;
 
@@ -4044,13 +4052,14 @@ class QCircuit : public IDisplay, public IJSON {
      * current quantum circuit description, then the required number of
      * additional qudits are automatically added to the current quantum
      * circuit description.
-     * \param pos_dit The first classical dit of \a other is inserted before
-     * the \a pos_dit classical dit index of the current quantum circuit
-     * description (in the classical dits array), the rest following in
-     * order. By default, insertion is performed at the end.
+     * \param pos_dit Optional, the first classical dit of \a other is
+     * inserted before the \a pos_dit classical dit index of the current
+     * quantum circuit description (in the classical dits array), the rest
+     * following in order. If absent, insertion is performed at the end.
      * \return Reference to the current instance
      */
-    QCircuit& add_circuit(QCircuit other, bigint pos_qudit, idx pos_dit = -1) {
+    QCircuit& add_circuit(QCircuit other, bigint pos_qudit,
+                          std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 
         // check equal dimensions
@@ -4058,11 +4067,13 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::DimsNotEqual("qpp::QCircuit::add_circuit()",
                                           "other");
         // check classical dits
-        if (pos_dit == static_cast<idx>(-1))
+        if (!pos_dit.has_value()) {
             pos_dit = nc_;
-        else if (pos_dit > nc_)
-            throw exception::OutOfRange("qpp::QCircuit::add_circuit()",
-                                        "pos_dit");
+        } else {
+            if (pos_dit.value() < 0 || pos_dit.value() > nc_)
+                throw exception::OutOfRange("qpp::QCircuit::add_circuit()",
+                                            "pos_dit");
+        }
         // check that overlapping qudits (in the current instance) were not
         // already destructively measured
         if (pos_qudit < 0 &&
@@ -4102,7 +4113,7 @@ class QCircuit : public IDisplay, public IJSON {
                 add_qudit(extra_qudits);
             }
         }
-        add_dit(other.nc_, pos_dit);
+        add_dit(other.nc_, pos_dit.value());
 
         // STEP 1: update [c]ctrl and target indexes of other
         for (auto& step : other.circuit_) {
@@ -4111,7 +4122,7 @@ class QCircuit : public IDisplay, public IJSON {
                                // update the cctrl indexes
                                if (is_cCTRL(gate_step)) {
                                    for (idx& pos : gate_step.ctrl_.value()) {
-                                       pos += pos_dit;
+                                       pos += pos_dit.value();
                                    }
                                }
                                // update the ctrl indexes
@@ -4129,7 +4140,7 @@ class QCircuit : public IDisplay, public IJSON {
                                }
                            },
                            [&](MeasurementStep& measurement_step) {
-                               measurement_step.c_reg_ += pos_dit;
+                               measurement_step.c_reg_ += pos_dit.value();
                                if (pos_qudit >= 0) {
                                    for (idx& pos : measurement_step.target_) {
                                        pos += pos_qudit;
@@ -4169,11 +4180,11 @@ class QCircuit : public IDisplay, public IJSON {
         // measurement_dits_ with the ones of other
         std::copy(other.clean_dits_.begin(), other.clean_dits_.end(),
                   std::next(clean_dits_.begin(),
-                            static_cast<std::ptrdiff_t>(pos_dit)));
+                            static_cast<std::ptrdiff_t>(pos_dit.value())));
         std::copy(other.measurement_dits_.begin(),
                   other.measurement_dits_.end(),
                   std::next(measurement_dits_.begin(),
-                            static_cast<std::ptrdiff_t>(pos_dit)));
+                            static_cast<std::ptrdiff_t>(pos_dit.value())));
 
         // STEP 4: append the copy of other to the current instance
         circuit_.insert(circuit_.end(), other.circuit_.begin(),
@@ -4226,10 +4237,10 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Returns true if the quantum circuit description contains any
-     * measurements that remove qudits, false otherwise
+     * operations/measurements that remove qudits, false otherwise
      *
      * \return True if the quantum circuit description contains any
-     * measurements that remove qudits, false otherwise
+     * operations/measurements that remove qudits, false otherwise
      */
     bool removes_qudits() const noexcept {
         for (auto&& elem : *this) {
@@ -4812,15 +4823,16 @@ class QCircuit : public IDisplay, public IJSON {
  * If negative or greater than the total number of qudits of \a qc1,
  * then the required number of additional qudits are automatically added
  * to the output quantum circuit description.
- * \param pos_dit The first classical dit of \a qc2 quantum circuit
+ * \param pos_dit Optional, the first classical dit of \a qc2 quantum circuit
  * description is inserted before the \a pos_dit classical dit index of
  * \a qc1 quantum circuit description (in the classical dits array), the
- * rest following in order. By default, insertion is performed at the end.
+ * rest following in order. If absent (default), insertion is performed at the
+ * end.
  * \return Combined quantum circuit description, with \a qc2 added at the
  * end of \a qc1
  */
 inline QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2, bigint pos_qudit,
-                            idx pos_dit = -1) {
+                            std::optional<idx> pos_dit = std::nullopt) {
     return qc1.add_circuit(qc2, pos_qudit, pos_dit);
 }
 
@@ -4872,15 +4884,15 @@ inline QCircuit kron(QCircuit qc1, const QCircuit& qc2) {
  * qudits of \a qc2 are being matched, i.e., the first/top qudit of
  * \a qc2 quantum circuit description is matched with the target[0] qudit
  * of the \a qc1 circuit description, and so on
- * \param pos_dit The first classical dit of \a qc2 is inserted before
+ * \param pos_dit Optional, the first classical dit of \a qc2 is inserted before
  * the \a pos_dit classical dit index of the \a qc1 quantum circuit
  * description (in the classical dits array), the rest following in order.
- * By default, insertion is performed at the end.
+ * If absent (default), insertion is performed at the end.
  * \return Combined quantum circuit description
  */
 inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
                                    const std::vector<idx>& target,
-                                   idx pos_dit = -1) {
+                                   std::optional<idx> pos_dit = std::nullopt) {
     return qc1.match_circuit_left(qc2, target, pos_dit);
 }
 
@@ -4913,7 +4925,7 @@ inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
  */
 inline QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
                                     const std::vector<idx>& target,
-                                    idx pos_dit = -1) {
+                                    std::optional<idx> pos_dit = std::nullopt) {
     return qc1.match_circuit_right(qc2, target, pos_dit);
 }
 
@@ -5310,7 +5322,8 @@ inline QCircuit random_circuit_depth(
  * \return Quantum phase estimation circuit with \a n bits of precision
  */
 inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
-                            idx d = 2, const std::string& name = "qpe") {
+                            idx d = 2,
+                            std::optional<std::string> name = "qpe") {
     // EXCEPTION CHECKS
 
     // check square matrix for the gate

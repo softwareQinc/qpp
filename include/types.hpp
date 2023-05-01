@@ -34,9 +34,9 @@
 
 namespace qpp {
 /**
- * \brief Non-negative integer index, make sure you use an unsigned type
+ * \brief Non-negative integer index (we use an unsigned type)
  */
-using idx = std::size_t;
+using idx = long long int;
 
 /**
  * \brief Big integer

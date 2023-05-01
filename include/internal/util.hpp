@@ -40,8 +40,11 @@ namespace qpp {
 namespace internal {
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g., 00, 01, 10, 11
-[[qpp::critical]] inline void
-n2multiidx(idx n, idx numdims, const idx* const dims, idx* result) noexcept {
+template <class T = idx>
+[[qpp::critical]] void n2multiidx(T n, idx numdims, const idx* const dims,
+                                  T* result) noexcept {
+    static_assert(std::is_integral_v<T>, "T must be an integral value");
+
     // error checks only in DEBUG version
 #ifndef NDEBUG
     if (numdims > 0) // numdims equal zero is a no-op
@@ -49,7 +52,7 @@ n2multiidx(idx n, idx numdims, const idx* const dims, idx* result) noexcept {
         idx D = 1;
         for (idx i = 0; i < numdims; ++i)
             D *= dims[i];
-        assert(n < D);
+        assert(static_cast<idx>(n) < D);
     }
 #endif
     // no error checks in release version to improve speed
@@ -68,22 +71,25 @@ n2multiidx(idx n, idx numdims, const idx* const dims, idx* result) noexcept {
 #endif
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g., 00->0, 01->1, 10->2, 11->3
-[[qpp::critical]] inline idx multiidx2n(const idx* const midx, idx numdims,
-                                        const idx* const dims) noexcept {
+template <class T = idx>
+[[qpp::critical]] T multiidx2n(const T* const midx, idx numdims,
+                               const idx* const dims) noexcept {
+    static_assert(std::is_integral_v<T>, "T must be an integral value");
+
     // error checks only in DEBUG version
     assert(numdims > 0);
     assert(numdims < internal::maxn);
 #ifndef NDEBUG
     for (idx i = 0; i < numdims; ++i)
-        assert(midx[i] < dims[i]);
+        assert(static_cast<idx>(midx[i]) < dims[i]);
 #endif
     // no error checks in release version to improve speed
 
     // Static allocation for speed!
     // double the size for matrices reshaped as vectors
-    idx part_prod[2 * internal::maxn];
+    T part_prod[2 * internal::maxn];
 
-    idx result = 0;
+    T result = 0;
     part_prod[numdims - 1] = 1;
     for (idx i = 1; i < numdims; ++i) {
         part_prod[numdims - i - 1] = part_prod[numdims - i] * dims[numdims - i];
@@ -220,7 +226,7 @@ inline bool check_subsys_match_dims(const std::vector<idx>& subsys,
 
     // check range of subsystems
     return std::find_if(subsys.begin(), subsys.end(), [dims](idx i) -> bool {
-               return i + 1 > dims.size();
+               return i + 1 > static_cast<idx>(dims.size());
            }) == subsys.end();
 }
 
@@ -458,7 +464,8 @@ struct Display_Impl_ {
 
         for (idx i = 0; i < static_cast<idx>(A.rows()); ++i)
             for (idx j = 0; j < static_cast<idx>(A.cols()); ++j)
-                if (vstr[i * A.cols() + j].size() > maxlengthcols[j])
+                if (static_cast<idx>(vstr[i * A.cols() + j].size()) >
+                    maxlengthcols[j])
                     maxlengthcols[j] = vstr[i * A.cols() + j].size();
 
         // finally, display it!

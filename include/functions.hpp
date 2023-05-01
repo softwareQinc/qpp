@@ -952,7 +952,7 @@ kron(const std::vector<Derived>& As) {
     // END EXCEPTION CHECKS
 
     dyn_mat<typename Derived::Scalar> result = As[0].derived();
-    for (idx i = 1; i < As.size(); ++i) {
+    for (idx i = 1; i < static_cast<idx>(As.size()); ++i) {
         result = kron(result, As[i]);
     }
 
@@ -1314,7 +1314,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
     std::vector<dyn_mat<typename Derived::Scalar>> outvecs;
     // find the first non-zero vector in the list
     idx pos = 0;
-    for (pos = 0; pos < As.size(); ++pos) {
+    for (pos = 0; pos < static_cast<idx>(As.size()); ++pos) {
         if (norm(As[pos]) > 0) // add it as the first element
         {
             outvecs.emplace_back(As[pos]);
@@ -1323,7 +1323,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
     }
 
     // start the process
-    for (idx i = pos + 1; i < As.size(); ++i) {
+    for (idx i = pos + 1; i < static_cast<idx>(As.size()); ++i) {
         cut -= prj(outvecs[i - 1 - pos]);
         vi = cut * As[i];
         outvecs.emplace_back(vi);
@@ -1384,18 +1384,23 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
 
 // TODO check why 2 * internal::maxn
 /**
- * \brief Non-negative integer index to multi-index
+ * \brief Non-negative integer index to non-negative integer multi-index
  * \see qpp::multiidx2n()
  *
  * Uses standard lexicographical order, i.e., 00...0, 00...1 etc.
  *
+ * \tparam T Underlying non-negative integer type
  * \param n Non-negative integer index
  * \param dims Dimensions of the multi-partite system
- * \return Multi-index of the same size as \a dims
+ * \return Non-negative integer multi-index of the same size as \a dims
  */
-[[qpp::critical]] inline std::vector<idx>
-n2multiidx(idx n, const std::vector<idx>& dims) {
+template <class T>
+[[qpp::critical]] std::vector<T> n2multiidx(T n, const std::vector<idx>& dims) {
     // EXCEPTION CHECKS
+    static_assert(std::is_integral_v<T>, "T must be an integral value");
+
+    if (n < 0)
+        throw exception::OutOfRange("qpp::n2multiidx()", "n");
 
     if (dims.size() > internal::maxn)
         throw exception::OutOfRange("qpp::n2multiidx()", "dims/maxn");
@@ -1404,32 +1409,41 @@ n2multiidx(idx n, const std::vector<idx>& dims) {
         throw exception::DimsInvalid("qpp::n2multiidx()", "dims");
     }
 
-    if (n >= std::accumulate(dims.begin(), dims.end(), static_cast<idx>(1),
-                             std::multiplies<>())) {
+    if (n >= std::accumulate(dims.begin(), dims.end(), static_cast<T>(1),
+                             std::multiplies<>{})) {
         throw exception::OutOfRange("qpp::n2multiidx()", "n");
     }
     // END EXCEPTION CHECKS
 
     // double the size for matrices reshaped as vectors
-    idx result[2 * internal::maxn];
+    T result[2 * internal::maxn];
     internal::n2multiidx(n, dims.size(), dims.data(), result);
 
-    return std::vector<idx>(result, result + dims.size());
+    return std::vector<T>(std::begin(result),
+                          std::next(std::begin(result), dims.size()));
 }
 
 /**
- * \brief Multi-index to non-negative integer index
+ * \brief Non-negative integer multi-index to non-negative integer index
  * \see qpp::n2multiidx()
  *
  * Uses standard lexicographical order, i.e., 00...0, 00...1 etc.
  *
- * \param midx Multi-index
+ * \tparam T Underlying non-negative integer type
+ * \param midx Non-negative integer multi-index
  * \param dims Dimensions of the multi-partite system
  * \return Non-negative integer index
  */
-[[qpp::critical]] inline idx multiidx2n(const std::vector<idx>& midx,
-                                        const std::vector<idx>& dims) {
+template <class T>
+[[qpp::critical]] T multiidx2n(const std::vector<T>& midx,
+                               const std::vector<idx>& dims) {
+    static_assert(std::is_integral_v<T>, "T must be an integral value");
+
     // EXCEPTION CHECKS
+    for (auto val : midx)
+        if (val < 0)
+            throw exception::OutOfRange("qpp::multiidx2n()", "midx");
+
     if (midx.size() != dims.size())
         throw exception::SizeMismatch("qpp::multiidx2n()", "dims/midx");
 
@@ -1439,8 +1453,8 @@ n2multiidx(idx n, const std::vector<idx>& dims) {
     if (dims.size() > internal::maxn)
         throw exception::OutOfRange("qpp::multiidx2n()", "dims/maxn");
 
-    for (idx i = 0; i < dims.size(); ++i)
-        if (midx[i] >= dims[i]) {
+    for (idx i = 0; i < static_cast<idx>(dims.size()); ++i)
+        if (static_cast<idx>(midx[i]) >= dims[i]) {
             throw exception::OutOfRange("qpp::multiidx2n()", "dims/midx");
         }
     // END EXCEPTION CHECKS
@@ -1819,7 +1833,7 @@ rho2pure(const Eigen::MatrixBase<Derived>& A) {
 inline std::vector<idx> complement(std::vector<idx> subsys, idx n) {
     // EXCEPTION CHECKS
 
-    if (n < subsys.size())
+    if (n < static_cast<idx>(subsys.size()))
         throw exception::OutOfRange("qpp::complement()", "n");
     for (idx s : subsys)
         if (s >= n)

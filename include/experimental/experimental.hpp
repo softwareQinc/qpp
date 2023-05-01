@@ -95,12 +95,12 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     std::vector<idx> subsys = complement(target, n); // complement of target
 
     std::vector<idx> dims_target(target.size());
-    for (idx i = 0; i < target.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(target.size()); ++i) {
         dims_target[i] = dims[target[i]];
     }
 
     std::vector<idx> dims_subsys(subsys.size());
-    for (idx i = 0; i < subsys.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(subsys.size()); ++i) {
         dims_subsys[i] = dims[subsys[i]];
     }
     idx Dsubsys = prod(dims_subsys);
@@ -160,7 +160,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
                 ket current_ket;
                 if (destructive) {
                     std::vector<idx> subsys_midx(subsys.size());
-                    for (idx j = 0; j < subsys.size(); ++j) {
+                    for (idx j = 0; j < static_cast<idx>(subsys.size()); ++j) {
                         subsys_midx[j] = ket_midx[subsys[j]];
                     }
                     current_ket = mket(subsys_midx, dims_subsys) * cA(i);
@@ -194,7 +194,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
                 ket current_ket;
                 if (destructive) {
                     std::vector<idx> subsys_midx(subsys.size());
-                    for (idx k = 0; k < subsys.size(); ++k) {
+                    for (idx k = 0; k < static_cast<idx>(subsys.size()); ++k) {
                         subsys_midx[k] = ket_midx[subsys[k]];
                     }
                     current_ket = mket(subsys_midx, dims_subsys);
@@ -210,7 +210,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
                     if (overlap(bra_midx, measurement_midx, target)) {
                         if (destructive) {
                             std::vector<idx> subsys_midx(subsys.size());
-                            for (idx k = 0; k < subsys.size(); ++k) {
+                            for (idx k = 0; k < static_cast<idx>(subsys.size());
+                                 ++k) {
                                 subsys_midx[k] = bra_midx[subsys[k]];
                             }
                             current_bra =
