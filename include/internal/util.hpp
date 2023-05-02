@@ -86,7 +86,7 @@ template <typename T>
     // no error checks in release version to improve speed
 
     // Static allocation for speed!
-    // double the size for matrices reshaped as vectors
+    // allocate twice the size for matrices reshaped as vectors
     T part_prod[2 * internal::maxn];
 
     T result = 0;
@@ -380,16 +380,16 @@ inline idx get_dim_subsys(idx D, idx n) {
 
     auto d = (n == 2) ? static_cast<idx>(std::llround(std::sqrt(D)))
                       : static_cast<idx>(std::llround(
-                            std::pow(D, 1. / static_cast<double>(n))));
+                            std::pow(D, 1. / static_cast<realT>(n))));
 
     return d;
 }
 
-// chops a floating point or complex number to zero
+// chops a floating-point or complex number to zero
 template <typename T,
           typename std::enable_if<std::numeric_limits<T>::is_iec559 ||
                                   is_complex<T>::value>::type* = nullptr>
-T abs_chop(const T& x, double chop = qpp::chop) {
+T abs_chop(const T& x, realT chop = qpp::chop) {
     if (std::abs(x) < chop)
         return 0;
 
@@ -400,7 +400,7 @@ T abs_chop(const T& x, double chop = qpp::chop) {
 template <typename T,
           typename std::enable_if<!(std::numeric_limits<T>::is_iec559 ||
                                     is_complex<T>::value)>::type* = nullptr>
-T abs_chop(const T& x, [[maybe_unused]] double chop = qpp::chop) {
+T abs_chop(const T& x, [[maybe_unused]] realT chop = qpp::chop) {
     return x;
 }
 
@@ -409,7 +409,7 @@ struct Display_Impl_ {
     template <typename T>
     // T must support rows(), cols(), operator()(idx, idx) const
     std::ostream& display_impl_(const T& A, std::ostream& os,
-                                double chop = qpp::chop) const {
+                                realT chop = qpp::chop) const {
         std::ostringstream ostr;
         ostr.copyfmt(os); // copy os' state
 
@@ -423,8 +423,8 @@ struct Display_Impl_ {
                 ostr.str(std::string{}); // clear the ostringstream
 
                 // convert to complex
-                double re = static_cast<cplx>(A(i, j)).real();
-                double im = static_cast<cplx>(A(i, j)).imag();
+                realT re = static_cast<cplx>(A(i, j)).real();
+                realT im = static_cast<cplx>(A(i, j)).imag();
 
                 // zero
                 if (std::abs(re) < chop && std::abs(im) < chop) {

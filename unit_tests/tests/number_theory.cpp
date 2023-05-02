@@ -28,11 +28,11 @@ TEST(qpp_compperm, AllTests) {
     EXPECT_EQ(result3, compperm(sigma3, tau3));
 }
 /******************************************************************************/
-/// BEGIN double contfrac2x(const std::vector<bigint>& cf, idx N = idx(-1))
+/// BEGIN realT contfrac2x(const std::vector<bigint>& cf, idx N = idx(-1))
 TEST(qpp_contfrac2x, DefaultN) {
-    EXPECT_NEAR(0, contfrac2x({0}), 1e-7);
-    EXPECT_NEAR(42, contfrac2x({42}), 1e-7);
-    EXPECT_NEAR(-42, contfrac2x({-42}), 1e-7);
+    EXPECT_NEAR(0, contfrac2x({0}), 1e-5);
+    EXPECT_NEAR(42, contfrac2x({42}), 1e-5);
+    EXPECT_NEAR(-42, contfrac2x({-42}), 1e-5);
     EXPECT_NEAR(pi, contfrac2x({3, 7, 15, 1, 292, 1}), 1e-5);
     EXPECT_NEAR(-pi, contfrac2x({-3, -7, -15, -1, -292, -1}), 1e-5);
     EXPECT_NEAR(0.1234, contfrac2x({0, 8, 9, 1, 1, 1}), 1e-5);
@@ -41,9 +41,9 @@ TEST(qpp_contfrac2x, DefaultN) {
 }
 /******************************************************************************/
 TEST(qpp_contfrac2x, UserSpecifiedN) {
-    EXPECT_NEAR(0, contfrac2x({0}, 1), 1e-7);
-    EXPECT_NEAR(42, contfrac2x({42}, 1), 1e-7);
-    EXPECT_NEAR(-42, contfrac2x({-42}, 1), 1e-7);
+    EXPECT_NEAR(0, contfrac2x({0}, 1), 1e-5);
+    EXPECT_NEAR(42, contfrac2x({42}, 1), 1e-5);
+    EXPECT_NEAR(-42, contfrac2x({-42}, 1), 1e-5);
     EXPECT_NEAR(3.141, contfrac2x({3, 7, 15, 1, 292, 1}, 3), 1e-2);
     EXPECT_NEAR(-3.141, contfrac2x({-3, -7, -15, -1, -292, -1}, 3), 1e-2);
     EXPECT_NEAR(0.1234, contfrac2x({0, 8, 9, 1, 1, 1}, 4), 1e-3);
@@ -55,7 +55,7 @@ TEST(qpp_contfrac2x, UserSpecifiedN) {
 TEST(qpp_convergents, ContinuedFraction) {}
 /******************************************************************************/
 /// BEGIN std::vector<std::pair<bigint, bigint>>
-///       convergents(double x, idx N)
+///       convergents(realT x, idx N)
 TEST(qpp_convergents, RealNumber) {}
 /******************************************************************************/
 /// BEGIN std::tuple<bigint, bigint, bigint> egcd(bigint m, bigint n)
@@ -333,15 +333,17 @@ TEST(qpp_randprime, AllTests) {
     EXPECT_TRUE(isprime(randprime(10000, 10100)));
 }
 /******************************************************************************/
-/// BEGIN std::vector<bigint> x2contfrac(double x, idx n, idx cut = 1e5)
+/// BEGIN std::vector<bigint> x2contfrac(realT x, idx n, idx cut = 1e5)
 TEST(qpp_x2contfrac, AllTests) {
     EXPECT_EQ(std::vector<bigint>({0}), x2contfrac(0, 3));
     EXPECT_EQ(std::vector<bigint>({1}), x2contfrac(1, 3));
     EXPECT_EQ(std::vector<bigint>({3, 7, 15, 1, 292, 1, 1, 1, 2, 1}),
               x2contfrac(pi, 10));
+
     EXPECT_EQ(std::vector<bigint>({0, -8, -9, -1, -135665, -1}),
               x2contfrac(-0.123456789, 6,
                          1000000)); // due to large term in c.f.e.
+
     EXPECT_EQ(
         std::vector<bigint>({0, -8, -9, -1}),
         x2contfrac(-0.123456789, 6)); // cuts the expansion at the 4th term

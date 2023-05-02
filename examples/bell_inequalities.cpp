@@ -28,24 +28,24 @@ int main() {
     for (auto&& gateA : {Q, R}) // measure Alice's side
     {
         // eigenvalues, so we know the order
-        dyn_col_vect<double> evalsA = hevals(gateA);
+        dyn_col_vect<realT> evalsA = hevals(gateA);
         cmat basisA = hevects(gateA); // eigenvectors, ordered by eigenvalues
         for (auto&& gateB : {S, T})   // measure Bob's side
         {
             // eigenvalues, so we know the order
-            dyn_col_vect<double> evalsB = hevals(gateB);
+            dyn_col_vect<realT> evalsB = hevals(gateB);
             cmat basisB = hevects(gateB);
             for (idx i = 0; i < N; ++i) // repeat the "experiment" N times
             {
                 auto measuredA = measure(psi, basisA, {0});
                 idx mA = std::get<RES>(measuredA); // result on A
                 // the eigenvalues corresponding to the measurement results
-                double evalA = evalsA[mA];
+                realT evalA = evalsA[mA];
                 // resulting state on B
                 ket psiB = std::get<ST>(measuredA)[mA];
                 auto measuredB = measure(psiB, basisB);
                 idx mB = std::get<RES>(measuredB); // measurement result B
-                double evalB = evalsB[mB];
+                realT evalB = evalsB[mB];
                 // count the correlations
                 if (evalA > 0 && evalB > 0) // +1 +1 correlation
                 {
@@ -75,16 +75,16 @@ int main() {
     std::cout << "RT: " << disp(statistics[3], 4, " ") << " " << E[3] << '\n';
 
     // Experimental average
-    double exp_avg =
-        static_cast<double>(E[0] - E[1] + E[2] + E[3]) / static_cast<double>(N);
+    realT exp_avg =
+        static_cast<realT>(E[0] - E[1] + E[2] + E[3]) / static_cast<realT>(N);
     std::cout << ">> Experimental estimate of <QS> + <RS> + <RT> - <QT> = ";
     std::cout << exp_avg << '\n';
 
     // Theoretical average
-    double th_avg = (adjoint(psi) *
-                     (kron(Q, S) + kron(R, S) + kron(R, T) - kron(Q, T)) * psi)
-                        .value()
-                        .real();
+    realT th_avg = (adjoint(psi) *
+                    (kron(Q, S) + kron(R, S) + kron(R, T) - kron(Q, T)) * psi)
+                       .value()
+                       .real();
     std::cout << ">> Theoretical value of <QS> + <RS> + <RT> - <QT> = ";
     std::cout << th_avg << '\n';
 

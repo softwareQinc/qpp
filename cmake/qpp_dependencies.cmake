@@ -1,6 +1,88 @@
 #### Quantum++ additional dependencies
 #### Do not modify unless you know what you're doing
 
+#### Custom index type. If none selected, a default one is selected by
+#### include/types.hpp (usually std::size_t)
+set(TYPE_IDX "default" CACHE
+        STRING "Default index type, see include/types.hpp")
+set_property(CACHE TYPE_IDX PROPERTY
+        STRINGS "default" "short" "int" "long" "long long" "unsigned short"
+        "unsigned int" "unsigned long" "unsigned long long")
+
+if (TYPE_IDX STREQUAL "default")
+    message(STATUS "Index type - default (see include/types.hpp)")
+    add_compile_definitions(TYPE_IDX_DEFAULT)
+elseif (TYPE_IDX STREQUAL "short")
+    message(STATUS "Index type - short")
+    add_compile_definitions(TYPE_IDX_SHORT)
+elseif (TYPE_IDX STREQUAL "int")
+    message(STATUS "Index type - int")
+    add_compile_definitions(TYPE_IDX_INT)
+elseif (TYPE_IDX STREQUAL "long")
+    message(STATUS "Index type - long")
+    add_compile_definitions(TYPE_IDX_LONG)
+elseif (TYPE_IDX STREQUAL "long long")
+    message(STATUS "Index type - long long")
+    add_compile_definitions(TYPE_IDX_LONG_LONG)
+elseif (TYPE_IDX STREQUAL "unsigned short")
+    message(STATUS "Index type - unsigned short")
+    add_compile_definitions(TYPE_IDX_USHORT)
+elseif (TYPE_IDX STREQUAL "unsigned int")
+    message(STATUS "Index type - unsigned int")
+    add_compile_definitions(TYPE_IDX_UINT)
+elseif (TYPE_IDX STREQUAL "unsigned long")
+    message(STATUS "Index type - unsigned long")
+    add_compile_definitions(TYPE_IDX_ULONG)
+elseif (TYPE_IDX STREQUAL "unsigned long long")
+    message(STATUS "Index type - unsigned long long")
+    add_compile_definitions(TYPE_IDX_ULONG_LONG)
+endif ()
+
+#### Custom signed big integer type. If none selected, a default one is
+#### selected by include/types.hpp (usually long long)
+set(TYPE_BIGINT "default" CACHE
+        STRING "Default big integer type, see include/types.hpp")
+set_property(CACHE TYPE_BIGINT PROPERTY
+        STRINGS "default" "short" "int" "long" "long long")
+
+if (TYPE_BIGINT STREQUAL "default")
+    message(STATUS "Big integer type - default (see include/types.hpp)")
+    add_compile_definitions(TYPE_BIGINT_DEFAULT)
+elseif (TYPE_BIGINT STREQUAL "short")
+    message(STATUS "Big integer type - short")
+    add_compile_definitions(TYPE_BIGINT_SHORT)
+elseif (TYPE_BIGINT STREQUAL "int")
+    message(STATUS "Big integer type - int")
+    add_compile_definitions(TYPE_BIGINT_INT)
+elseif (TYPE_BIGINT STREQUAL "long")
+    message(STATUS "Big integer type - long")
+    add_compile_definitions(TYPE_BIGINT_LONG)
+elseif (TYPE_BIGINT STREQUAL "long long")
+    message(STATUS "Big integer type - long long")
+    add_compile_definitions(TYPE_BIGINT_LONG_LONG)
+endif ()
+
+#### Custom floating-point type. If none selected, a default one is selected by
+#### include/types.hpp (usually double)
+set(TYPE_FP "default" CACHE
+        STRING "Default floating-point type, see include/types.hpp")
+set_property(CACHE TYPE_FP PROPERTY
+        STRINGS "default" "float" "double" "long double")
+
+if (TYPE_FP STREQUAL "default")
+    message(STATUS "Floating-point type - default (see include/types.hpp)")
+    add_compile_definitions(TYPE_FP_DEFAULT)
+elseif (TYPE_FP STREQUAL "float")
+    message(STATUS "Floating-point type - float")
+    add_compile_definitions(TYPE_FP_FLOAT)
+elseif (TYPE_FP STREQUAL "double")
+    message(STATUS "Floating-point type - double")
+    add_compile_definitions(TYPE_FP_DOUBLE)
+elseif (TYPE_FP STREQUAL "long double")
+    message(STATUS "Floating-point type - long double")
+    add_compile_definitions(TYPE_FP_LONG_DOUBLE)
+endif ()
+
 #### Enable OpenQASM 2.0 specs, see DISCREPANCIES.md for a comparison with Qiskit
 option(USE_OPENQASM2_SPECS "Use OpenQASM 2.0 standard instead of Qiskit gate specifications" OFF)
 if (${USE_OPENQASM2_SPECS})

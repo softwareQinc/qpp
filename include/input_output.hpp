@@ -42,7 +42,7 @@ namespace qpp {
  */
 template <typename Derived>
 internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
-                            double chop = qpp::chop) {
+                            realT chop = qpp::chop) {
     return internal::IOManipEigen(A, chop);
 }
 
@@ -50,11 +50,11 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
  * \brief Complex number ostream manipulator
  *
  * \param z Complex number (or any other type implicitly cast-able to
- * std::complex<double>)
+ * std::complex<realT>)
  * \param chop Set to zero the elements smaller in absolute value than \a chop
  * \return Instance of qpp::internal::IOManipEigen
  */
-inline internal::IOManipEigen disp(cplx z, double chop = qpp::chop) {
+inline internal::IOManipEigen disp(cplx z, realT chop = qpp::chop) {
     return internal::IOManipEigen(z, chop);
 }
 
@@ -73,7 +73,7 @@ template <typename InputIterator>
 internal::IOManipRange<InputIterator>
 disp(InputIterator first, InputIterator last, const std::string& separator,
      const std::string& start = "[", const std::string& end = "]",
-     double chop = qpp::chop) {
+     realT chop = qpp::chop) {
     return internal::IOManipRange<InputIterator>(first, last, separator, start,
                                                  end, chop);
 }
@@ -93,7 +93,7 @@ template <typename Container>
 internal::IOManipRange<typename Container::const_iterator>
 disp(const Container& c, const std::string& separator,
      const std::string& start = "[", const std::string& end = "]",
-     double chop = qpp::chop,
+     realT chop = qpp::chop,
      typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     return internal::IOManipRange<typename Container::const_iterator>(
         std::begin(c), std::end(c), separator, start, end, chop);
@@ -114,7 +114,7 @@ template <typename PointerType>
 internal::IOManipPointer<PointerType>
 disp(const PointerType* p, idx N, const std::string& separator,
      const std::string& start = "[", const std::string& end = "]",
-     double chop = qpp::chop) {
+     realT chop = qpp::chop) {
     return internal::IOManipPointer<PointerType>(p, N, separator, start, end,
                                                  chop);
 }
@@ -230,7 +230,7 @@ load(std::istream& is,
  * \code
  * // loads a real Eigen dynamic complex matrix from a text stream
  * std::ifstream fin("mat.txt");
- * dmat mat = load<dmat>(fin);
+ * rmat mat = load<rmat>(fin);
  * \endcode
  *
  * \param is Input text stream
@@ -259,10 +259,11 @@ load(std::istream& is,
     return A;
 }
 
+// obsolete code, do not rely on it
 namespace obsolete {
 /**
  * \brief Saves an Eigen expression to a binary stream (internal format) in
- * double precision
+ * realT precision
  * \see qpp::obsolete::load()
  *
  * Example:
@@ -306,7 +307,7 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
 }
 
 /**
- * \brief Loads an Eigen matrix from a binary stream (internal format) in double
+ * \brief Loads an Eigen matrix from a binary stream (internal format) in realT
  * precision
  * \see qpp::obsolete::save()
  *

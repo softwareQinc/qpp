@@ -20,17 +20,17 @@ TEST(qpp_literals_operator_prj, AllTests) {}
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_absm, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Container> std::vector<double> abssq(
+/// BEGIN template <typename Container> std::vector<realT> abssq(
 ///       const Container& c,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
 ///       = nullptr)
 TEST(qpp_abssq, Container) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> std::vector<double> abssq(
+/// BEGIN template <typename Derived> std::vector<realT> abssq(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_abssq, Matrix) {}
 /******************************************************************************/
-/// BEGIN template <typename InputIterator> std::vector<double> abssq(
+/// BEGIN template <typename InputIterator> std::vector<realT> abssq(
 ///       InputIterator first, InputIterator last)
 TEST(qpp_abssq, Iterator) {}
 /******************************************************************************/
@@ -44,7 +44,7 @@ TEST(qpp_adjoint, AllTests) {}
 ///       const Eigen::MatrixBase<Derived2>& B)
 TEST(qpp_anticomm, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline cmat bloch2rho(const std::vector<double>& r)
+/// BEGIN inline cmat bloch2rho(const std::vector<realT>& r)
 TEST(qpp_bloch2rho, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived1, typename Derived2>
@@ -124,11 +124,11 @@ TEST(qpp_grams, Vector) {}
 /// BEGIN template <typename Derived> std::size_t hash_eigen(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_hash_eigen, AllTests) {}
-/// BEGIN template <typename Derived> std::pair<dyn_col_vect<double>, cmat>
+/// BEGIN template <typename Derived> std::pair<dyn_col_vect<realT>, cmat>
 ///       heig(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_heig, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> dyn_col_vect<double> hevals(
+/// BEGIN template <typename Derived> dyn_col_vect<realT> hevals(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_hevals, AllTests) {}
 /******************************************************************************/
@@ -186,7 +186,7 @@ TEST(qpp_multiidx2n, AllTests) {}
 ///       const std::vector<idx>& dims)
 TEST(qpp_n2multiidx, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> double norm(
+/// BEGIN template <typename Derived> realT norm(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_norm, AllTests) {}
 /******************************************************************************/
@@ -227,7 +227,7 @@ TEST(qpp_prod, Iterator) {
 ///       reshape(const Eigen::MatrixBase<Derived>& A, idx rows, idx cols)
 TEST(qpp_reshape, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> std::vector<double> rho2bloch(
+/// BEGIN template <typename Derived> std::vector<realT> rho2bloch(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_rho2bloch, AllTests) {}
 /******************************************************************************/
@@ -235,8 +235,8 @@ TEST(qpp_rho2bloch, AllTests) {}
 ///       rho2pure(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_rho2pure, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> double schatten(
-///       const Eigen::MatrixBase<Derived>& A, double p)
+/// BEGIN template <typename Derived> realT schatten(
+///       const Eigen::MatrixBase<Derived>& A, realT p)
 TEST(qpp_schatten, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> cmat sinm(
@@ -271,12 +271,12 @@ TEST(qpp_sum, Iterator) {
     EXPECT_EQ(6, sum(v.begin(), v.end()));
 }
 /******************************************************************************/
-/// BEGIN template <typename Derived> dyn_col_vect<double> svals(
+/// BEGIN template <typename Derived> dyn_col_vect<realT> svals(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_svals, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived>
-///       std::tuple<cmat, dyn_col_vect<double>, cmat> svd(
+///       std::tuple<cmat, dyn_col_vect<realT>, cmat> svd(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_svd, AllTests) {}
 /******************************************************************************/
@@ -298,11 +298,11 @@ TEST(qpp_transpose, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> std::vector<idx> zket2dits(
 ///       const Eigen::MatrixBase<Derived>& psi, const std::vector<idx>& dims,
-///       double precision = 1e-12)
+///       realT precision = 1e-12)
 TEST(qpp_zket2dits, Qudits) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> std::vector<idx> zket2dits(
 ///       const Eigen::MatrixBase<Derived>& psi, idx d = 2,
-///       double precision = 1e-12)
+///       realT precision = 1e-12)
 TEST(qpp_zket2dits, Qubits) {}
 /******************************************************************************/

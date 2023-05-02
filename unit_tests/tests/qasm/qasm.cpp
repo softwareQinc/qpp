@@ -73,8 +73,8 @@ TEST(qpp_qasm_read_from_file, BuiltinGates) {
     ket psi2 = gt.RZ(0.2) * gt.RY(0.1) * gt.RZ(0.3) * 0_ket;
     ket psi3 = gt.RZ(0.2 + 3 * pi) * gt.RX(pi / 2) * gt.RZ(0.1 + pi) *
                gt.RX(pi / 2) * gt.RZ(0.3) * 0_ket;
-    EXPECT_NEAR(1, norm(adjoint(psi1) * kron(psi2, m)), 1e-7);
-    EXPECT_NEAR(1, norm(adjoint(psi1) * kron(psi3, m)), 1e-7);
+    EXPECT_NEAR(1, norm(adjoint(psi1) * kron(psi2, m)), 1e-5);
+    EXPECT_NEAR(1, norm(adjoint(psi1) * kron(psi3, m)), 1e-5);
 
     // Check CX gate
     EXPECT_EQ(1, c0);
@@ -92,7 +92,7 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
     auto rho = ptrace(engine.get_psi(), {0, 1}, {2, 2, 2});
 
     // Check norm
-    EXPECT_NEAR(0, norm(rho - prj(0_ket)), 1e-7);
+    EXPECT_NEAR(0, norm(rho - prj(0_ket)), 1e-5);
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, MappedGates) {
@@ -111,7 +111,7 @@ TEST(qpp_qasm_read_from_file, MappedGates) {
                    : kron(gt.H * 0_ket, gt.H * 0_ket);
 
     // Check norm
-    EXPECT_NEAR(0, norm(psi1 - psi2), 1e-7);
+    EXPECT_NEAR(0, norm(psi1 - psi2), 1e-5);
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, NonDestrMeas) {
@@ -131,7 +131,7 @@ TEST(qpp_qasm_read_from_file, NonDestrMeas) {
     ket mres = USE_OPENQASM2_SPECS ? mket({res}) * (-1_i) : mket({res});
 
     // Check norm
-    EXPECT_NEAR(0, norm(psi - mres), 1e-7);
+    EXPECT_NEAR(0, norm(psi - mres), 1e-5);
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, Reset) {
@@ -147,7 +147,7 @@ TEST(qpp_qasm_read_from_file, Reset) {
     ket psi2 = USE_OPENQASM2_SPECS ? 0_ket * (-1_i) : 0_ket;
 
     // Check norm
-    EXPECT_NEAR(0, norm(psi - psi2), 1e-7);
+    EXPECT_NEAR(0, norm(psi - psi2), 1e-5);
 }
 /******************************************************************************/
 TEST(qpp_qasm_read_from_file, SciNot) {
@@ -163,6 +163,6 @@ TEST(qpp_qasm_read_from_file, SciNot) {
     ket phi = gt.H * gt.RZ(1.0E-3) * gt.H * 0_ket;
 
     // Check norm
-    EXPECT_NEAR(1, norm(adjoint(psi) * phi), 1e-7);
+    EXPECT_NEAR(1, norm(adjoint(psi) * phi), 1e-5);
 }
 /******************************************************************************/

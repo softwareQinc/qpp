@@ -1894,7 +1894,9 @@ class QCircuit : public IDisplay, public IJSON {
                 for (idx j = 2; j <= n_subsys - i; ++j) {
                     // construct Rj
                     cmat Rj(2, 2);
-                    Rj << 1, 0, 0, std::exp(2.0 * pi * 1_i / std::pow(2, j));
+                    Rj << 1, 0, 0,
+                        std::exp(static_cast<cplx::value_type>(2.0 * pi) * 1_i /
+                                 static_cast<cplx::value_type>(std::pow(2, j)));
                     CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j));
                 }
@@ -1917,8 +1919,9 @@ class QCircuit : public IDisplay, public IJSON {
                     // construct Rj
                     cmat Rj = cmat::Zero(d_, d_);
                     for (idx m = 0; m < d_; ++m) {
-                        Rj(m, m) = std::exp(2.0 * pi * static_cast<double>(m) *
-                                            1_i / std::pow(d_, j));
+                        Rj(m, m) = std::exp(
+                            static_cast<cplx::value_type>(2.0 * pi * m) * 1_i /
+                            static_cast<cplx::value_type>(std::pow(d_, j)));
                     }
                     CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "d");
@@ -2008,7 +2011,10 @@ class QCircuit : public IDisplay, public IJSON {
                 for (idx j = n_subsys - i + 1; j-- > 2;) {
                     // construct Rj
                     cmat Rj(2, 2);
-                    Rj << 1, 0, 0, std::exp(-2.0 * pi * 1_i / std::pow(2, j));
+                    Rj << 1, 0, 0,
+                        std::exp(static_cast<cplx::value_type>(-2.0 * pi) *
+                                 1_i /
+                                 static_cast<cplx::value_type>(std::pow(2, j)));
                     CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "+");
                 }
@@ -2029,8 +2035,9 @@ class QCircuit : public IDisplay, public IJSON {
                     // construct Rj
                     cmat Rj = cmat::Zero(d_, d_);
                     for (idx m = 0; m < d_; ++m) {
-                        Rj(m, m) = std::exp(-2.0 * pi * static_cast<double>(m) *
-                                            1_i / std::pow(d_, j));
+                        Rj(m, m) = std::exp(
+                            static_cast<cplx::value_type>(-2.0 * pi * m) * 1_i /
+                            static_cast<cplx::value_type>(std::pow(d_, j)));
                     }
                     CTRL(Rj, target[i + j - 1], target[i], {},
                          "CTRL-R" + std::to_string(j) + "d+");
@@ -4975,7 +4982,7 @@ inline QCircuit replicate(QCircuit qc, idx n) {
  * \return Instance of random qpp::QCircuit for fixed gate count
  */
 inline QCircuit random_circuit_count(
-    idx nq, idx d, idx gate_count, std::optional<double> p_two,
+    idx nq, idx d, idx gate_count, std::optional<realT> p_two,
     std::optional<cmat> with_respect_to_gate = std::nullopt,
     std::optional<std::vector<cmat>> one_qudit_gate_set = std::nullopt,
     std::optional<std::vector<cmat>> two_qudit_gate_set = std::nullopt,
@@ -5095,7 +5102,7 @@ inline QCircuit random_circuit_count(
     } // end if (with_respect_to_gate.has_value())
     // END EXCEPTION CHECKS
 
-    double p_one = p_two.has_value() ? 1 - p_two.value() : 1;
+    realT p_one = p_two.has_value() ? 1 - p_two.value() : 1;
     QCircuit qc{nq, 0, d};
     idx current_count = 0;
     while (current_count < gate_count) {
@@ -5152,7 +5159,7 @@ inline QCircuit random_circuit_count(
  * \return Instance of random qpp::QCircuit for fixed circuit gate depth
  */
 inline QCircuit random_circuit_depth(
-    idx nq, idx d, idx gate_depth, std::optional<double> p_two,
+    idx nq, idx d, idx gate_depth, std::optional<realT> p_two,
     std::optional<cmat> with_respect_to_gate = std::nullopt,
     std::optional<std::vector<cmat>> one_qudit_gate_set = std::nullopt,
     std::optional<std::vector<cmat>> two_qudit_gate_set = std::nullopt,
@@ -5272,7 +5279,7 @@ inline QCircuit random_circuit_depth(
     } // end if (with_respect_to_gate.has_value())
     // END EXCEPTION CHECKS
 
-    double p_one = p_two.has_value() ? 1 - p_two.value() : 1;
+    realT p_one = p_two.has_value() ? 1 - p_two.value() : 1;
     QCircuit qc{nq, 0, d};
     idx current_depth = 0;
     while (current_depth < gate_depth) {

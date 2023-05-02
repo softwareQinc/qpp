@@ -6,7 +6,7 @@
 #include "qpp.h"
 
 // test function used by qpp::cwise()
-qpp::cplx pow3(qpp::cplx z) { return std::pow(z, 3); }
+qpp::cplx pow3(qpp::cplx z) { return static_cast<qpp::cplx>(std::pow(z, 3)); }
 
 int main() {
     using namespace qpp;

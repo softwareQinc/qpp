@@ -12,7 +12,7 @@ int main() {
     ket rket = randket(5);
     std::cout << disp(rket) << '\n';
 
-    std::vector<double> probs = abssq(rket);
+    std::vector<realT> probs = abssq(rket);
     std::cout << ">> Probabilities: " << disp(probs, ", ") << '\n';
 
     std::cout << ">> Sum of the probabilities: ";

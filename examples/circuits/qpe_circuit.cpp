@@ -19,8 +19,8 @@ int main() {
     std::cout << ">> nq_c = " << nq_c << " counting qubits, nq_a = " << nq_a
               << " ancilla qubits\n\n";
 
-    double theta = 0.25; // change if you want, increase nq_c for more precision
-    cmat U(2, 2);        // initialize a unitary operator
+    realT theta = 0.25; // change if you want, increase nq_c for more precision
+    cmat U(2, 2);       // initialize a unitary operator
     U << 1, 0, 0, std::exp(pi * 1_i * theta); // T gate
     // we use the T\otimes T gate as an example; we want to estimate its last
     // (4-th) eigenvalue; we expect estimated theta = 1/4 (0.25).
@@ -50,7 +50,8 @@ int main() {
     engine.execute();
     // decimal representation of the measurement result
     idx decimal = multiidx2n(engine.get_dits(), std::vector<idx>(nq_c, 2));
-    auto theta_e = static_cast<double>(decimal) / std::pow(2, nq_c);
+    auto theta_e =
+        static_cast<realT>(decimal) / static_cast<realT>(std::pow(2, nq_c));
 
     std::cout << ">> Input theta = " << theta << '\n';
     std::cout << ">> Estimated theta = " << theta_e << '\n';

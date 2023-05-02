@@ -71,7 +71,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         Z << 1, 0, 0, -1;
         Y << 0, -1_i, 1_i, 0;
         S << 1, 0, 0, 1_i;
-        T << 1, 0, 0, std::exp(1_i * pi / 4.0);
+        T << 1, 0, 0, std::exp(1_i * static_cast<cplx::value_type>(pi / 4.0));
         CNOT.block(2, 2, 2, 2) = X;
         CNOTba(0, 0) = 1;
         CNOTba(1, 3) = 1;
@@ -102,10 +102,11 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param n 3-dimensional real (unit) vector
      * \return Rotation gate
      */
-    cmat Rn(double theta, const std::array<double, 3>& n) const {
+    cmat Rn(realT theta, const std::array<realT, 3>& n) const {
         cmat result(2, 2);
         result = std::cos(theta / 2) * Id2 -
-                 1_i * std::sin(theta / 2) * (n[0] * X + n[1] * Y + n[2] * Z);
+                 1_i * static_cast<cplx::value_type>(std::sin(theta / 2)) *
+                     (n[0] * X + n[1] * Y + n[2] * Z);
 
         return result;
     }
@@ -116,7 +117,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param theta Rotation angle
      * \return Rotation gate
      */
-    cmat RX(double theta) const {
+    cmat RX(realT theta) const {
         // EXCEPTION CHECKS
 
         // END EXCEPTION CHECKS
@@ -130,7 +131,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param theta Rotation angle
      * \return Rotation gate
      */
-    cmat RY(double theta) const {
+    cmat RY(realT theta) const {
         // EXCEPTION CHECKS
 
         // END EXCEPTION CHECKS
@@ -144,7 +145,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param theta Rotation angle
      * \return Rotation gate
      */
-    cmat RZ(double theta) const {
+    cmat RZ(realT theta) const {
         // EXCEPTION CHECKS
 
         // END EXCEPTION CHECKS
@@ -176,7 +177,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         cmat result = cmat::Zero(D, D);
         for (idx i = 0; i < D; ++i)
-            result(i, i) = std::pow(omega(D), static_cast<double>(i));
+            result(i, i) = std::pow(omega(D), static_cast<realT>(i));
 
         return result;
     }
@@ -242,8 +243,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
        // column major order for speed
         for (idx j = 0; j < D; ++j)
             for (idx i = 0; i < D; ++i)
-                result(i, j) = 1 / std::sqrt(D) *
-                               std::pow(omega(D), static_cast<double>(i * j));
+                result(i, j) = 1 / static_cast<cplx::value_type>(std::sqrt(D)) *
+                               std::pow(omega(D), static_cast<realT>(i * j));
 
         return result;
     }
@@ -339,7 +340,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \param D Dimension of the Hilbert space
      * \return Identity gate on a Hilbert space of dimension \a D
      */
-    template <typename Derived = Eigen::MatrixXcd>
+    template <typename Derived = cmat>
     Derived Id(idx D = 2) const {
         // EXCEPTION CHECKS
 

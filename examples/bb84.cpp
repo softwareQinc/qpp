@@ -25,8 +25,8 @@ void sift(bases_states_T& Alice_bases_states, bases_states_T& Bob_bases_states);
 
 // Alice and Bob sample a subset (of size k) of their qubits and estimate how
 // much Eve eavesdropped; returns the number of positions where they disagree
-double sample(bases_states_T& Alice_bases_states,
-              bases_states_T& Bob_bases_states, qpp::idx k);
+qpp::realT sample(bases_states_T& Alice_bases_states,
+                  bases_states_T& Bob_bases_states, qpp::idx k);
 
 // compute the final key; technically, here is where we do error correction and
 // privacy amplification; however, here we simply discard the bits that differ
@@ -38,11 +38,11 @@ key_T get_key(const bases_states_T& bases_states);
 int main() {
     using namespace qpp;
 
-    idx n = 100;    // no. of qubits Alice sends to Bob
-    idx k = 20;     // no. of qubits Alice and Bob check for eavesdropping
-    double p = 0.5; // probability of Eve intercepting (and altering) the qubits
+    idx n = 100;   // no. of qubits Alice sends to Bob
+    idx k = 20;    // no. of qubits Alice and Bob check for eavesdropping
+    realT p = 0.5; // probability of Eve intercepting (and altering) the qubits
     // when we should abort due to eavesdropping; lower in reality
-    double abort_rate = 0.2;
+    realT abort_rate = 0.2;
 
     std::cout << ">> BB84, sending n = " << n
               << " qubits from Alice to Bob, k = " << k
@@ -142,7 +142,7 @@ int main() {
     // display the final final_key and the corresponding rate
     auto final_key = final(raw_key_A, raw_key_B);
     auto final_key_rate =
-        static_cast<double>(final_key.size()) / static_cast<double>(n);
+        static_cast<realT>(final_key.size()) / static_cast<realT>(n);
     std::cout << "Final key:       " << disp(final_key, " ", "", "") << '\n';
     std::cout << ">> Bits/keys sizes: " << n << '/' << sifted_key_size << '/'
               << raw_key_size << '/' << final_key.size() << '\n';
@@ -202,8 +202,8 @@ void sift(bases_states_T& Alice_bases_states,
 
 // Alice and Bob sample a subset (of size k) of their qubits and estimate how
 // much Eve eavesdropped; returns the number of positions where they disagree
-double sample(bases_states_T& Alice_bases_states,
-              bases_states_T& Bob_bases_states, qpp::idx k) {
+qpp::realT sample(bases_states_T& Alice_bases_states,
+                  bases_states_T& Bob_bases_states, qpp::idx k) {
     using namespace qpp;
     auto n = static_cast<idx>(Alice_bases_states.size());
 
@@ -260,7 +260,7 @@ double sample(bases_states_T& Alice_bases_states,
     Alice_bases_states = result_A;
     Bob_bases_states = result_B;
 
-    return static_cast<double>(cnt) / static_cast<double>(k);
+    return static_cast<realT>(cnt) / static_cast<realT>(k);
 }
 
 // compute the final key; technically, here is where we do error correction and

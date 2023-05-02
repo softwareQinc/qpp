@@ -40,12 +40,12 @@ template <typename InputIterator>
 class IOManipRange : public IDisplay {
     InputIterator first_, last_;
     std::string separator_, start_, end_;
-    double chop_;
+    realT chop_;
 
   public:
     explicit IOManipRange(InputIterator first, InputIterator last,
                           std::string separator, std::string start = "[",
-                          std::string end = "]", double chop = qpp::chop)
+                          std::string end = "]", realT chop = qpp::chop)
         : first_{first}, last_{last}, separator_{std::move(separator)},
           start_{std::move(start)}, end_{std::move(end)}, chop_{chop} {}
 
@@ -76,12 +76,12 @@ class IOManipPointer : public IDisplay {
     const PointerType* p_;
     idx N_;
     std::string separator_, start_, end_;
-    double chop_;
+    realT chop_;
 
   public:
     explicit IOManipPointer(const PointerType* p, idx N, std::string separator,
                             std::string start = "[", std::string end = "]",
-                            double chop = qpp::chop)
+                            realT chop = qpp::chop)
         : p_{p}, N_{N}, separator_{std::move(separator)},
           start_{std::move(start)}, end_{std::move(end)}, chop_{chop} {}
 
@@ -119,18 +119,18 @@ class IOManipEigen : public IDisplay, private Display_Impl_ {
 #pragma GCC diagnostic pop
 #endif
     cmat A_;
-    double chop_;
+    realT chop_;
 
   public:
     // Eigen matrices
     template <typename Derived>
     explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A,
-                          double chop = qpp::chop)
+                          realT chop = qpp::chop)
         : A_{A.template cast<cplx>()}, // copy, so we can bind rvalues safely
           chop_{chop} {}
 
     // Complex numbers
-    explicit IOManipEigen(const cplx z, double chop = qpp::chop)
+    explicit IOManipEigen(const cplx z, realT chop = qpp::chop)
         : A_{cmat::Zero(1, 1)}, chop_{chop} {
         // put the complex number inside an Eigen matrix
         A_(0, 0) = z;

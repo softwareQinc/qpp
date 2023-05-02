@@ -172,15 +172,15 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Current state of the engine
      */
     struct state_ {
-        const QCircuit* qc_ptr_;      ///< non-owning pointer to the parent
-                                      ///< const quantum circuit description
-        ket psi_{};                   ///< state vector
-        std::vector<double> probs_{}; ///< measurement probabilities
-        std::vector<idx> dits_{};     ///< classical dits (where measurement
-                                      ///< results are usually stored)
-        std::vector<idx> subsys_{};   ///< keeps track of the measured
-                                      ///< subsystems, re-label them after
-                                      ///< measurements
+        const QCircuit* qc_ptr_;     ///< non-owning pointer to the parent
+                                     ///< const quantum circuit description
+        ket psi_{};                  ///< state vector
+        std::vector<realT> probs_{}; ///< measurement probabilities
+        std::vector<idx> dits_{};    ///< classical dits (where measurement
+                                     ///< results are usually stored)
+        std::vector<idx> subsys_{};  ///< keeps track of the measured
+                                     ///< subsystems, re-label them after
+                                     ///< measurements
 
         /**
          * \brief Constructor
@@ -218,7 +218,7 @@ class QEngine : public IDisplay, public IJSON {
         void reset() {
             psi_ = States::get_no_thread_local_instance().zero(
                 qc_ptr_->get_nq(), qc_ptr_->get_d());
-            probs_ = std::vector<double>(qc_ptr_->get_nc(), 0);
+            probs_ = std::vector<realT>(qc_ptr_->get_nc(), 0);
             dits_ = std::vector<idx>(qc_ptr_->get_nc(), 0);
             subsys_ = std::vector<idx>(qc_ptr_->get_nq(), 0);
             std::iota(subsys_.begin(), subsys_.end(), 0);
@@ -376,7 +376,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Vector of underlying measurement outcome probabilities
      */
-    std::vector<double> get_probs() const { return st_.probs_; }
+    std::vector<realT> get_probs() const { return st_.probs_; }
 
     /**
      * \brief Check whether qudit \a i was already measured (destructively)
@@ -716,7 +716,7 @@ class QEngine : public IDisplay, public IJSON {
 
                     idx mres = 0;
                     std::vector<idx> results;
-                    std::vector<double> probs;
+                    std::vector<realT> probs;
                     std::vector<ket> states;
 
                     switch (measure_step.measurement_type_) {

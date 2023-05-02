@@ -37,25 +37,25 @@ inline namespace literals {
 /**
  * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
  *
- * Example: \code cplx z = 4_i; // type of z is std::complex<double> \endcode
+ * Example: \code cplx z = 4_i; // type of z is std::complex<realT> \endcode
  */
 inline constexpr cplx operator"" _i(unsigned long long int x) noexcept {
-    return {0., static_cast<double>(x)};
+    return {0., static_cast<cplx::value_type>(x)};
 }
 
 /**
  * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
  *
- * Example: \code cplx z = 4.5_i; // type of z is std::complex<double> \endcode
+ * Example: \code cplx z = 4.5_i; // type of z is std::complex<realT> \endcode
  */
 inline constexpr cplx operator"" _i(long double x) noexcept {
-    return {0., static_cast<double>(x)};
+    return {0., static_cast<cplx::value_type>(x)};
 }
 
 /**
  * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
  *
- * Example: \code auto z = 4_if; // type of z is std::complex<double> \endcode
+ * Example: \code auto z = 4_if; // type of z is std::complex<float> \endcode
  */
 inline constexpr std::complex<float>
 operator"" _if(unsigned long long int x) noexcept {
@@ -77,21 +77,21 @@ inline constexpr std::complex<float> operator"" _if(long double x) noexcept {
  * \brief  Used in qpp::disp() for setting to zero  numbers that have their
  * absolute value smaller than qpp::chop
  */
-constexpr double chop = 1e-14;
+constexpr realT chop = 1e-14;
 
 /**
  * \brief \f$\pi\f$
  */
-constexpr double pi = 3.141592653589793238462643383279502884;
+constexpr realT pi = 3.141592653589793238462643383279502884;
 /**
  * \brief Base of natural logarithm, \f$e\f$
  */
-constexpr double ee = 2.718281828459045235360287471352662497;
+constexpr realT ee = 2.718281828459045235360287471352662497;
 
 /**
- * \brief Used to denote infinity in double precision
+ * \brief Used to denote infinity in realT precision
  */
-constexpr double infty = std::numeric_limits<double>::infinity();
+constexpr realT infty = std::numeric_limits<realT>::infinity();
 
 /**
  * \brief D-th root of unity
@@ -100,9 +100,12 @@ constexpr double infty = std::numeric_limits<double>::infinity();
  * \return D-th root of unity \f$\exp(2\pi i/D)\f$
  */
 inline cplx omega(idx D) {
-    if (D == 0)
+    if (D == 0) {
         throw exception::OutOfRange("qpp::omega()", "D");
-    return std::exp(2.0 * pi * 1_i / static_cast<double>(D));
+    }
+
+    return std::exp(static_cast<cplx::value_type>(2.0 * pi) * 1_i /
+                    static_cast<cplx::value_type>(D));
 }
 
 /**

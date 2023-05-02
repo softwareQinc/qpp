@@ -63,19 +63,19 @@ void init_classes_gates(py::module_& m) {
         py::arg("n"));
     gates.def(
         "Rn",
-        [](double theta, const std::array<double, 3>& n) {
+        [](realT theta, const std::array<realT, 3>& n) {
             return qpp::gt.Rn(theta, n);
         },
         "Qubit rotation of theta about the 3-dimensional real (unit) vector n",
         py::arg("theta"), py::arg("n"));
     gates.def(
-        "RX", [](double theta) { return qpp::gt.RX(theta); },
+        "RX", [](realT theta) { return qpp::gt.RX(theta); },
         "Qubit rotation of theta about the X axis", py::arg("theta"));
     gates.def(
-        "RY", [](double theta) { return qpp::gt.RY(theta); },
+        "RY", [](realT theta) { return qpp::gt.RY(theta); },
         "Qubit rotation of theta about the Y axis", py::arg("theta"));
     gates.def(
-        "RZ", [](double theta) { return qpp::gt.RZ(theta); },
+        "RZ", [](realT theta) { return qpp::gt.RZ(theta); },
         "Qubit rotation of theta about the Z axis", py::arg("theta"));
     gates.def(
         "SWAPd", [](idx D) { return qpp::gt.SWAPd(D); }, "SWAP gate for qudits",

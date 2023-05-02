@@ -19,10 +19,10 @@ TEST(qpp_NoiseBase_get_last_idx, AllTests) {}
 /// BEGIN cmat NoiseBase::get_last_K() const
 TEST(qpp_NoiseBase_get_last_K, AllTests) {}
 /******************************************************************************/
-/// BEGIN double NoiseBase::get_last_p() const
+/// BEGIN realT NoiseBase::get_last_p() const
 TEST(qpp_NoiseBase_get_last_p, AllTests) {}
 /******************************************************************************/
-/// BEGIN std::vector<double> NoiseBase::get_probs() const
+/// BEGIN std::vector<realT> NoiseBase::get_probs() const
 TEST(qpp_NoiseBase_get_probs, AllTests) {}
 /******************************************************************************/
 /// BEGIN virtual cmat NoiseBase::operator()(const cmat& state) const
@@ -39,32 +39,32 @@ TEST(qpp_NoiseBase_functor, CorrelatedNoise) {}
 
 /******************************************************************************/
 /// BEGIN explicit QubitAmplitudeDampingNoise::QubitAmplitudeDampingNoise(
-///       double gamma)
+///       realT gamma)
 TEST(qpp_QubitAmplitudeDampingNoise_QubitAmplitudeDampingNoise, AllTests) {}
 /******************************************************************************/
 
 /******************************************************************************/
-/// BEGIN explicit QubitBitFlipNoise::QubitBitFlipNoise(double p)
+/// BEGIN explicit QubitBitFlipNoise::QubitBitFlipNoise(realT p)
 TEST(qpp_QubitBitFlipNoise_QubitBitFlipNoise, AllTests) {}
 /******************************************************************************/
 
 /******************************************************************************/
-/// BEGIN explicit QubitBitPhaseFlipNoise::QubitBitPhaseFlipNoise(double p)
+/// BEGIN explicit QubitBitPhaseFlipNoise::QubitBitPhaseFlipNoise(realT p)
 TEST(qpp_QubitBitPhaseFlipNoise_QubitBitPhaseFlipNoise, AllTests) {}
 /******************************************************************************/
 
 /******************************************************************************/
-/// BEGIN explicit QubitDepolarizingNoise::QubitDepolarizingNoise(double p)
+/// BEGIN explicit QubitDepolarizingNoise::QubitDepolarizingNoise(realT p)
 TEST(qpp_QubitDepolarizingNoise_QubitDepolarizingNoise, AllTests) {}
 /******************************************************************************/
 
 /******************************************************************************/
-/// BEGIN explicit QubitPhaseFlipNoise::QubitPhaseFlipNoise(double p)
+/// BEGIN explicit QubitPhaseFlipNoise::QubitPhaseFlipNoise(realT p)
 TEST(qpp_QubitPhaseFlipNoise_QubitPhaseFlipNoise, AllTests) {}
 /******************************************************************************/
 
 /******************************************************************************/
-/// BEGIN explicit QuditDepolarizingNoise::QuditDepolarizingNoise(double p,
+/// BEGIN explicit QuditDepolarizingNoise::QuditDepolarizingNoise(realT p,
 ///       idx d)
 TEST(qpp_QuditDepolarizingNoise_QuditDepolarizingNoise, AllTests) {}
 /******************************************************************************/

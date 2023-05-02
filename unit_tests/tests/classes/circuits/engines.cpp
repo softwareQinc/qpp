@@ -35,7 +35,7 @@ TEST(qpp_QEngine_get_measured, SpecificQudit) {}
 /// BEGIN std::vector<idx> QEngine::get_non_measured() const
 TEST(qpp_QEngine_get_non_measured, AllTests) {}
 /******************************************************************************/
-/// BEGIN std::vector<double> QEngine::get_probs() const
+/// BEGIN std::vector<realT> QEngine::get_probs() const
 TEST(qpp_QEngine_get_probs, AllTests) {}
 /******************************************************************************/
 /// BEGIN ket QEngine::get_psi() const

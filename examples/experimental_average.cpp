@@ -10,7 +10,7 @@ int main() {
 
     ket psi = 0_ket; // same as st.z0;
     cmat X = gt.X;
-    dyn_col_vect<double> evals = hevals(X);
+    dyn_col_vect<realT> evals = hevals(X);
     cmat evects = hevects(X);
 
     long res = 0;
@@ -28,7 +28,7 @@ int main() {
     std::cout << disp(X) << '\n';
     std::cout << "on the state psi\n";
     std::cout << disp(psi) << '\n';
-    std::cout << "is: " << static_cast<double>(res) / static_cast<double>(N)
+    std::cout << "is: " << static_cast<realT>(res) / static_cast<realT>(N)
               << '\n';
     std::cout << ">> Theoretical average <psi | X | psi> = ";
     std::cout << disp((adjoint(psi) * X * psi).value()) << '\n';

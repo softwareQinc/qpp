@@ -83,10 +83,10 @@ TEST(qpp_Dynamic_bitset_operator_minus, AllTests) {}
 ///       noexcept
 TEST(qpp_Dynamic_bitset_operator_eq, AllTests) {}
 /******************************************************************************/
-/// BEGIN Dynamic_bitset& Dynamic_bitset::rand(double p = 0.5)
+/// BEGIN Dynamic_bitset& Dynamic_bitset::rand(realT p = 0.5)
 TEST(qpp_Dynamic_bitset_rand_default, AllBits) {}
 /******************************************************************************/
-/// BEGIN Dynamic_bitset& Dynamic_bitset::rand(idx pos, double p = 0.5)
+/// BEGIN Dynamic_bitset& Dynamic_bitset::rand(idx pos, realT p = 0.5)
 TEST(qpp_Dynamic_bitset_rand, SpecificBit) {}
 /******************************************************************************/
 /// BEGIN virtual Dynamic_bitset& Dynamic_bitset::reset() noexcept

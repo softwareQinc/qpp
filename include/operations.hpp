@@ -572,7 +572,7 @@ inline std::vector<cmat> choi2kraus(const cmat& A, idx Din, idx Dout) {
         throw exception::DimsInvalid("qpp::choi2kraus()", "A/Din/Dout");
     // END EXCEPTION CHECKS
 
-    dmat ev = hevals(A);
+    rmat ev = hevals(A);
     cmat evec = hevects(A);
     std::vector<cmat> result;
 
@@ -1551,7 +1551,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 
         auto worker = [&Cdims, &Cperm, n](idx i) noexcept -> idx {
             // use static allocation for speed,
-            // double the size for matrices reshaped as vectors
+            // allocate twice the size for matrices reshaped as vectors
             idx midx[internal::maxn];
             idx midxtmp[internal::maxn];
             idx permdims[internal::maxn];
@@ -1595,7 +1595,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 
         auto worker = [&Cdims, &Cperm, n](idx i) noexcept -> idx {
             // use static allocation for speed,
-            // double the size for matrices reshaped as vectors
+            // allocate twice the size for matrices reshaped as vectors
             idx midx[2 * internal::maxn];
             idx midxtmp[2 * internal::maxn];
             idx permdims[2 * internal::maxn];
@@ -2293,7 +2293,9 @@ template <typename Derived>
             for (idx j = 2; j <= n_subsys - i; ++j) {
                 // construct Rj
                 cmat Rj(2, 2);
-                Rj << 1, 0, 0, std::exp(2.0 * pi * 1_i / std::pow(2, j));
+                Rj << 1, 0, 0,
+                    std::exp(static_cast<cplx::value_type>(2.0 * pi) * 1_i /
+                             static_cast<cplx::value_type>(std::pow(2, j)));
                 result =
                     applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]});
             }
@@ -2317,8 +2319,9 @@ template <typename Derived>
                 // construct Rj
                 cmat Rj = cmat::Zero(d, d);
                 for (idx m = 0; m < d; ++m) {
-                    Rj(m, m) = std::exp(2.0 * pi * static_cast<double>(m) *
-                                        1_i / std::pow(d, j));
+                    Rj(m, m) = std::exp(
+                        static_cast<cplx::value_type>(2.0 * pi * m) * 1_i /
+                        static_cast<cplx::value_type>(std::pow(d, j)));
                 }
                 result =
                     applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]}, d);
@@ -2405,7 +2408,9 @@ template <typename Derived>
             for (idx j = n_subsys - i + 1; j-- > 2;) {
                 // construct Rj
                 cmat Rj(2, 2);
-                Rj << 1, 0, 0, std::exp(-2.0 * pi * 1_i / std::pow(2, j));
+                Rj << 1, 0, 0,
+                    std::exp(static_cast<cplx::value_type>(-2.0 * pi) * 1_i /
+                             static_cast<cplx::value_type>(std::pow(2, j)));
                 result =
                     applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]});
             }
@@ -2428,8 +2433,9 @@ template <typename Derived>
                 // construct Rj
                 cmat Rj = cmat::Zero(d, d);
                 for (idx m = 0; m < d; ++m) {
-                    Rj(m, m) = std::exp(-2.0 * pi * static_cast<double>(m) *
-                                        1_i / std::pow(d, j));
+                    Rj(m, m) = std::exp(
+                        static_cast<cplx::value_type>(-2.0 * pi * m) * 1_i /
+                        static_cast<cplx::value_type>(std::pow(d, j)));
                 }
                 result =
                     applyCTRL(result, Rj, {target[i + j - 1]}, {target[i]}, d);

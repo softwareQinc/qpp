@@ -33,45 +33,81 @@
 #define QPP_TYPES_HPP_
 
 namespace qpp {
+
+// Fundamental types, can be changed at compile time
+
 /**
- * \brief Non-negative integer index (we use an unsigned type)
+ * \brief Integer index
  */
+#if defined(TYPE_IDX_DEFAULT)
 using idx = std::size_t;
+#elif defined(TYPE_IDX_SHORT)
+using idx = short int;
+#elif defined(TYPE_IDX_INT)
+using idx = int;
+#elif defined(TYPE_IDX_LONG)
+using idx = long int;
+#elif defined(TYPE_IDX_LONG_LONG)
+using idx = long long int;
+#elif defined(TYPE_IDX_USHORT)
+using idx = unsigned short int;
+#elif defined(TYPE_IDX_UINT)
+using idx = unsigned int;
+#elif defined(TYPE_IDX_ULONG)
+using idx = unsigned long int;
+#elif defined(TYPE_IDX_ULONG_LONG)
+using idx = unsigned long long int;
+#endif
+static_assert(std::is_integral_v<idx>, "Type must be integral");
+static_assert(sizeof(idx) > 1, "Type must be at least 2 bytes long");
 
 /**
  * \brief Signed big integer
  */
+#if defined(TYPE_BIGINT_DEFAULT)
 using bigint = long long int;
+#elif defined(TYPE_BIGINT_SHORT)
+using bigint = short int;
+#elif defined(TYPE_BIGINT_INT)
+using bigint = int;
+#elif defined(TYPE_BIGINT_LONG)
+using bigint = long int;
+#elif defined(TYPE_BIGINT_LONG_LONG)
+using bigint = long long int;
+#endif
+static_assert(std::is_integral_v<bigint>, "Type must be integral");
+static_assert(std::is_signed_v<bigint>, "Type must be signed");
+static_assert(sizeof(bigint) > 1, "Type must be at least 2 bytes long");
+
+/**
+ * \brief Underlying floating-point type
+ */
+#if defined(TYPE_FP_FLOAT)
+using realT = float;
+#elif defined(TYPE_FP_DOUBLE)
+using realT = double;
+#elif defined(TYPE_FP_LONG_DOUBLE)
+using realT = long double;
+#elif defined(TYPE_FP_DEFAULT)
+using realT = double; // default floating-point type
+#endif
+static_assert(std::is_floating_point_v<realT>, "Type myst be floating-point");
+
+// The types below are dependent types, please do not change anything below this
+// line
 
 /**
  * \brief Unsigned big integer
  */
-using ubigint = unsigned long long int;
+using ubigint = std::make_unsigned<bigint>::type;
+static_assert(std::is_integral_v<ubigint>, "Type must be integral");
+static_assert(std::is_unsigned_v<ubigint>, "Type must be unsigned");
+static_assert(sizeof(ubigint) > 1, "Type must be at least 2 bytes long");
 
 /**
- * \brief Complex number in double precision
+ * \brief Complex number in realT precision
  */
-using cplx = std::complex<double>;
-
-/**
- * \brief Complex (double precision) dynamic Eigen column vector
- */
-using ket = Eigen::VectorXcd;
-
-/**
- * \brief Complex (double precision) dynamic Eigen row vector
- */
-using bra = Eigen::RowVectorXcd;
-
-/**
- * \brief Complex (double precision) dynamic Eigen matrix
- */
-using cmat = Eigen::MatrixXcd;
-
-/**
- * \brief Real (double precision) dynamic Eigen matrix
- */
-using dmat = Eigen::MatrixXd;
+using cplx = std::complex<realT>;
 
 /**
  * \brief Dynamic Eigen matrix over the field specified by \a Scalar
@@ -109,6 +145,31 @@ using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 template <typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
 using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;
 
+/**
+ * \brief Complex (realT precision) dynamic Eigen column vector
+ */
+using ket = dyn_col_vect<cplx>;
+
+/**
+ * \brief Complex (realT precision) dynamic Eigen row vector
+ */
+using bra = dyn_row_vect<cplx>;
+
+/**
+ * \brief Complex (realT precision) dynamic Eigen matrix
+ */
+using cmat = dyn_mat<cplx>;
+
+/**
+ * \brief Real (realT precision) dynamic Eigen matrix
+ */
+using rmat = dyn_mat<realT>;
+
+/**
+ * \brief Quantumly-accessible Random Access Memory (qRAM)
+ */
+using qram = std::vector<idx>;
+
 namespace internal {
 /**
  * \brief Eigen type (ket/density matrix) deduced from the expression Derived
@@ -116,22 +177,6 @@ namespace internal {
 template <typename Derived>
 using eval_t =
     std::decay_t<typename Eigen::MatrixBase<Derived>::EvalReturnType>;
-
-/**
- * \brief Detect if the expression Derived is a bra at compile time
- */
-template <typename Derived>
-bool constexpr is_bra() {
-    return (eval_t<Derived>::RowsAtCompileTime == 1);
-}
-
-/**
- * \brief Detect if the expression Derived is a ket at compile time
- */
-template <typename Derived>
-bool constexpr is_ket() {
-    return (eval_t<Derived>::ColsAtCompileTime == 1);
-}
 } /* namespace internal */
 
 /**
@@ -140,32 +185,27 @@ bool constexpr is_ket() {
 // thanks @antoine-bussy for the suggestion
 // https://github.com/softwareQinc/qpp/issues/132#issuecomment-1258360069
 template <typename Derived>
-using expr_t = Eigen::Matrix<typename internal::eval_t<Derived>::Scalar,
-                             internal::is_bra<Derived>() ? 1 : Eigen::Dynamic,
-                             internal::is_ket<Derived>() ? 1 : Eigen::Dynamic,
-                             internal::eval_t<Derived>::Options,
-                             internal::is_bra<Derived>() ? 1 : Eigen::Dynamic,
-                             internal::is_ket<Derived>() ? 1 : Eigen::Dynamic>;
-
-/**
- * \brief Quantumly-accessible Random Access Memory (qRAM)
- */
-using qram = std::vector<idx>;
+using expr_t = Eigen::Matrix<
+    typename internal::eval_t<Derived>::Scalar,
+    internal::eval_t<Derived>::RowsAtCompileTime == 1 ? 1 : Eigen::Dynamic,
+    internal::eval_t<Derived>::ColsAtCompileTime == 1 ? 1 : Eigen::Dynamic,
+    internal::eval_t<Derived>::Options,
+    internal::eval_t<Derived>::RowsAtCompileTime == 1 ? 1 : Eigen::Dynamic,
+    internal::eval_t<Derived>::ColsAtCompileTime == 1 ? 1 : Eigen::Dynamic>;
 
 /**
  * \brief Variant type-matching utility for std::visit
  * \tparam Ts Type list
  */
-template <typename... Ts>
+template <class... Ts>
 struct overloaded : Ts... {
     using Ts::operator()...;
 };
 
 /**
  * \brief Template deduction rule
- * \tparam Ts Type list
  */
-template <typename... Ts>
+template <class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
 } /* namespace qpp */

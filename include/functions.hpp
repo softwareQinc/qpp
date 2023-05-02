@@ -257,7 +257,7 @@ typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A) {
  * \return Frobenius norm of \a A
  */
 template <typename Derived>
-double norm(const Eigen::MatrixBase<Derived>& A) {
+realT norm(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -292,7 +292,7 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
     dyn_mat<typename Derived::Scalar> result;
 
     if (internal::check_cvector(rA) || internal::check_rvector(rA)) {
-        double normA = norm(rA);
+        realT normA = norm(rA);
         if (normA == 0) {
             throw std::overflow_error("qpp::normalize(): Division by zero!");
         }
@@ -399,7 +399,7 @@ cmat evects(const Eigen::MatrixBase<Derived>& A) {
  * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
  */
 template <typename Derived>
-[[qpp::critical]] std::pair<dyn_col_vect<double>, cmat>
+[[qpp::critical]] std::pair<dyn_col_vect<realT>, cmat>
 heig(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -427,7 +427,7 @@ heig(const Eigen::MatrixBase<Derived>& A) {
  * \return Eigenvalues of Hermitian \a A, as a real dynamic column vector
  */
 template <typename Derived>
-dyn_col_vect<double> hevals(const Eigen::MatrixBase<Derived>& A) {
+dyn_col_vect<realT> hevals(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -479,7 +479,7 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A) {
  * as columns of a complex dynamic matrix
  */
 template <typename Derived>
-[[qpp::critical]] std::tuple<cmat, dyn_col_vect<double>, cmat>
+[[qpp::critical]] std::tuple<cmat, dyn_col_vect<realT>, cmat>
 svd(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -503,7 +503,7 @@ svd(const Eigen::MatrixBase<Derived>& A) {
  * dynamic column vector
  */
 template <typename Derived>
-dyn_col_vect<double> svals(const Eigen::MatrixBase<Derived>& A) {
+dyn_col_vect<realT> svals(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -839,7 +839,7 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
  * \return Schatten-\a p matrix norm of \a A
  */
 template <typename Derived>
-double schatten(const Eigen::MatrixBase<Derived>& A, double p) {
+realT schatten(const Eigen::MatrixBase<Derived>& A, realT p) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -854,8 +854,8 @@ double schatten(const Eigen::MatrixBase<Derived>& A, double p) {
     if (p == infty) // infinity norm (largest singular value)
         return svals(rA)(0);
 
-    const dyn_col_vect<double> sv = svals(rA);
-    double result = 0;
+    const dyn_col_vect<realT> sv = svals(rA);
+    realT result = 0;
     for (idx i = 0; i < static_cast<idx>(sv.rows()); ++i)
         result += std::pow(sv[i], p);
 
@@ -1269,7 +1269,7 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& A) {
         throw exception::MatrixNotCvector("qpp::prj()", "A");
     // END EXCEPTION CHECKS
 
-    double normA = norm(rA);
+    realT normA = norm(rA);
     if (normA > 0)
         return rA * adjoint(rA) / (normA * normA);
     else
@@ -1333,7 +1333,7 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
 
     idx tmp = 0;
     for (auto&& elem : outvecs) {
-        double normA = norm(elem);
+        realT normA = norm(elem);
         if (normA > 0) // we add only the non-zero vectors
         {
             result.col(tmp++) = elem / normA;
@@ -1415,7 +1415,7 @@ template <typename T>
     }
     // END EXCEPTION CHECKS
 
-    // double the size for matrices reshaped as vectors
+    // allocate twice the size for matrices reshaped as vectors
     T result[2 * internal::maxn];
     internal::n2multiidx(n, dims.size(), dims.data(), result);
 
@@ -1641,10 +1641,10 @@ inline cmat mprj(const std::vector<idx>& mask, idx d = 2) {
 * \return Real vector consisting of the range absolute values squared
 */
 template <typename InputIterator>
-std::vector<double> abssq(InputIterator first, InputIterator last) {
-    std::vector<double> weights(std::distance(first, last));
+std::vector<realT> abssq(InputIterator first, InputIterator last) {
+    std::vector<realT> weights(std::distance(first, last));
     std::transform(first, last, weights.begin(),
-                   [](cplx z) -> double { return std::norm(z); });
+                   [](cplx z) -> realT { return std::norm(z); });
 
     return weights;
 }
@@ -1656,7 +1656,7 @@ std::vector<double> abssq(InputIterator first, InputIterator last) {
  * \return Real vector consisting of the container's absolute values squared
  */
 template <typename Container>
-std::vector<double>
+std::vector<realT>
 abssq(const Container& c,
       typename std::enable_if<is_iterable<Container>::value>::type* = nullptr)
 // we need the std::enable_if to SFINAE out Eigen expressions
@@ -1676,7 +1676,7 @@ abssq(const Container& c,
 * \return Real vector consisting of the absolute values squared
 */
 template <typename Derived>
-std::vector<double> abssq(const Eigen::MatrixBase<Derived>& A) {
+std::vector<realT> abssq(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1807,7 +1807,7 @@ rho2pure(const Eigen::MatrixBase<Derived>& A) {
         throw exception::MatrixNotSquare("qpp::rho2pure()", "A");
     // END EXCEPTION CHECKS
 
-    dyn_col_vect<double> tmp_evals = hevals(rA);
+    dyn_col_vect<realT> tmp_evals = hevals(rA);
     cmat tmp_evects = hevects(rA);
     dyn_col_vect<typename Derived::Scalar> result =
         dyn_col_vect<typename Derived::Scalar>::Zero(rA.rows());
@@ -1863,7 +1863,7 @@ inline std::vector<idx> complement(std::vector<idx> subsys, idx n) {
  * \return 3-dimensional Bloch vector
  */
 template <typename Derived>
-std::vector<double> rho2bloch(const Eigen::MatrixBase<Derived>& A) {
+std::vector<realT> rho2bloch(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1873,7 +1873,7 @@ std::vector<double> rho2bloch(const Eigen::MatrixBase<Derived>& A) {
         throw exception::NotQubitMatrix("qpp::rho2bloch()", "A");
     // END EXCEPTION CHECKS
 
-    std::vector<double> result(3);
+    std::vector<realT> result(3);
     cmat X(2, 2), Y(2, 2), Z(2, 2);
     X << 0, 1, 1, 0;
     Y << 0, -1_i, 1_i, 0;
@@ -1893,7 +1893,7 @@ std::vector<double> rho2bloch(const Eigen::MatrixBase<Derived>& A) {
  * \param r 3-dimensional real vector
  * \return Qubit density matrix
  */
-inline cmat bloch2rho(const std::vector<double>& r) {
+inline cmat bloch2rho(const std::vector<realT>& r) {
     // EXCEPTION CHECKS
 
     // check 3-dimensional vector
@@ -1933,7 +1933,7 @@ inline cmat bloch2rho(const std::vector<double>& r) {
 template <typename Derived>
 std::vector<idx> zket2dits(const Eigen::MatrixBase<Derived>& psi,
                            const std::vector<idx>& dims,
-                           double precision = 1e-12) {
+                           realT precision = 1e-12) {
     const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
 
     // EXCEPTION CHECKS
@@ -1987,7 +1987,7 @@ std::vector<idx> zket2dits(const Eigen::MatrixBase<Derived>& psi,
  */
 template <typename Derived>
 std::vector<idx> zket2dits(const Eigen::MatrixBase<Derived>& psi, idx d = 2,
-                           double precision = 1e-12) {
+                           realT precision = 1e-12) {
     const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
 
     // EXCEPTION CHECKS
