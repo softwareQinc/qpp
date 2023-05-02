@@ -3776,7 +3776,8 @@ class QCircuit : public IDisplay, public IJSON {
         // check classical dits
         if (!pos_dit.has_value()) {
             pos_dit = nc_;
-        } else if (pos_dit.value() < 0 || pos_dit.value() > nc_) {
+        } else if (internal::is_negative(pos_dit.value()) ||
+                   pos_dit.value() > nc_) {
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()",
                                         "pos_dit");
         }
@@ -3922,7 +3923,8 @@ class QCircuit : public IDisplay, public IJSON {
         // check classical dits
         if (!pos_dit.has_value()) {
             pos_dit = nc_;
-        } else if (pos_dit.value() < 0 || pos_dit.value() > nc_) {
+        } else if (internal::is_negative(pos_dit.value()) ||
+                   pos_dit.value() > nc_) {
             throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()",
                                         "pos_dit");
         }
@@ -4070,7 +4072,7 @@ class QCircuit : public IDisplay, public IJSON {
         if (!pos_dit.has_value()) {
             pos_dit = nc_;
         } else {
-            if (pos_dit.value() < 0 || pos_dit.value() > nc_)
+            if (internal::is_negative(pos_dit.value()) || pos_dit.value() > nc_)
                 throw exception::OutOfRange("qpp::QCircuit::add_circuit()",
                                             "pos_dit");
         }

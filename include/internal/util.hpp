@@ -486,6 +486,12 @@ struct Display_Impl_ {
     }
 };
 
+// self-documented
+template <typename T>
+constexpr bool is_negative(T t) {
+    return t < 0;
+}
+
 // converts a real value to a text representation (to machine precision)
 template <typename T>
 std::string real2text(T d) {
