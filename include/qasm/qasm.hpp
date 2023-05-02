@@ -292,6 +292,8 @@ class Context {
      * \return Index of a fresh classical bit
      */
     idx alloc_bit() {
+        if (max_bit_ == std::numeric_limits<idx>::max()) // safe wrap around
+            max_bit_ = static_cast<idx>(-1);
         idx ret = ++max_bit_;
 
         // check if circuit has enough classical bits
@@ -308,6 +310,8 @@ class Context {
      * \return Index of a fresh qubit
      */
     idx alloc_qubit() {
+        if (max_qubit_ == std::numeric_limits<idx>::max()) // safe wrap around
+            max_qubit_ = static_cast<idx>(-1);
         idx ret = ++max_qubit_;
 
         // check if circuit has enough qubits
