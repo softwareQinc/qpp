@@ -103,7 +103,7 @@ class Lattice : public ILayout {
      * \tparam Ts Variadic type list
      * \param ds Lattice dimensions
      */
-    template <class... Ts>
+    template <typename... Ts>
     explicit Lattice(Ts... ds)
         : Lattice(std::vector<idx>{static_cast<idx>(ds)...}) {}
 
@@ -137,7 +137,7 @@ class Lattice : public ILayout {
      * \return Index of the point represented by \a xs in the lattice coordinate
      * system
      */
-    template <class... Ts>
+    template <typename... Ts>
     idx operator()(Ts... xs) const {
         return operator()(std::vector<idx>{static_cast<idx>(xs)...});
     }

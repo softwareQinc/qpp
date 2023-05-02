@@ -40,7 +40,7 @@ namespace qpp {
 namespace internal {
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g., 00, 01, 10, 11
-template <class T = idx>
+template <typename T>
 [[qpp::critical]] void n2multiidx(T n, idx numdims, const idx* const dims,
                                   T* result) noexcept {
     static_assert(std::is_integral_v<T>, "T must be an integral value");
@@ -71,7 +71,7 @@ template <class T = idx>
 #endif
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g., 00->0, 01->1, 10->2, 11->3
-template <class T = idx>
+template <typename T>
 [[qpp::critical]] T multiidx2n(const T* const midx, idx numdims,
                                const idx* const dims) noexcept {
     static_assert(std::is_integral_v<T>, "T must be an integral value");

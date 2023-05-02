@@ -13,7 +13,7 @@ TEST(qpp_Lattice_get_dims, AllTests) {}
 /// BEGIN idx Lattice::operator()(const std::vector<idx>& xs) const override
 TEST(qpp_Lattice_functor, Vector) {}
 /******************************************************************************/
-/// BEGIN template <class... Ts> idx Lattice::operator()(Ts... xs) const
+/// BEGIN template <typename... Ts> idx Lattice::operator()(Ts... xs) const
 TEST(qpp_Lattice_functor, Variadic) {}
 /******************************************************************************/
 /// BEGIN std::vector<idx> Lattice::to_coordinates(idx i) const override

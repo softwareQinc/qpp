@@ -54,7 +54,7 @@ struct NoiseType {
  * \class qpp::NoiseBase
  * \brief Base class for all noise models, derive your particular noise model
  */
-template <class T>
+template <typename T>
 class NoiseBase {
   public:
     using noise_type = T;

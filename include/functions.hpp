@@ -1394,7 +1394,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
  * \param dims Dimensions of the multi-partite system
  * \return Non-negative integer multi-index of the same size as \a dims
  */
-template <class T>
+template <typename T>
 [[qpp::critical]] std::vector<T> n2multiidx(T n, const std::vector<idx>& dims) {
     // EXCEPTION CHECKS
     static_assert(std::is_integral_v<T>, "T must be an integral value");
@@ -1434,7 +1434,7 @@ template <class T>
  * \param dims Dimensions of the multi-partite system
  * \return Non-negative integer index
  */
-template <class T>
+template <typename T>
 [[qpp::critical]] T multiidx2n(const std::vector<T>& midx,
                                const std::vector<idx>& dims) {
     static_assert(std::is_integral_v<T>, "T must be an integral value");
@@ -2107,7 +2107,7 @@ namespace internal {
  * \param seed Initial seed, will be updated by the function
  * \param v Value with which the hash is combined
  */
-template <class T>
+template <typename T>
 void hash_combine(std::size_t& seed, const T& v) {
     std::hash<T> hasher;
     seed ^= hasher(v) + 0x9e3779b9 + (seed << static_cast<std::size_t>(6)) +
