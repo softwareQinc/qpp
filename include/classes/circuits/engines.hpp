@@ -827,6 +827,8 @@ class QEngine : public IDisplay, public IJSON {
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
+     * \param try_sampling If possible, try to sample from the output (instead
+     * of measuring)
      * \return Reference to the current instance
      */
     virtual QEngine& execute(idx reps = 1, bool try_sampling = true) {

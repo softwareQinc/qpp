@@ -156,15 +156,16 @@ using qram = std::vector<idx>;
  * \brief Variant type-matching utility for std::visit
  * \tparam Ts Type list
  */
-template <class... Ts>
+template <typename... Ts>
 struct overloaded : Ts... {
     using Ts::operator()...;
 };
 
 /**
  * \brief Template deduction rule
+ * \tparam Ts Type list
  */
-template <class... Ts>
+template <typename... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
 } /* namespace qpp */
