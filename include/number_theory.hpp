@@ -305,8 +305,6 @@ inline std::vector<bigint> factors(bigint a) {
  * \return \f$ab\f$ \f$\mathrm{ mod }\f$ \f$p\f$ avoiding overflow
  */
 inline bigint modmul(bigint a, bigint b, bigint p) {
-    using ubigint = unsigned long long int;
-
     // EXCEPTION CHECKS
 
     if (p < 1)

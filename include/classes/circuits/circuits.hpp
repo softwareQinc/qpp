@@ -5336,7 +5336,7 @@ inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
         throw exception::MatrixMismatchSubsys("qpp::qpe_circuit()", "U");
     // END EXCEPTION CHECK
 
-    QCircuit qc{n + m, n, d, name};
+    QCircuit qc{static_cast<idx>(n + m), n, d, name};
     std::vector<idx> counting_qubits(n);
     std::iota(counting_qubits.begin(), counting_qubits.end(), 0);
     std::vector<idx> ancilla(m);

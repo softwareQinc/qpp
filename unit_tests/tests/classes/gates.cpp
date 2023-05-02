@@ -273,7 +273,7 @@ TEST(qpp_Gates_Xd, AllTests) {
         cmat Xd = gt.Xd(D);
         for (idx i = 0; i < D; ++i) {
             ket psi = mket({i}, D);
-            ket res = mket({(i + 1) % D}, D);
+            ket res = mket({static_cast<idx>((i + 1) % D)}, D);
             EXPECT_NEAR(0, norm(res - Xd * psi), 1e-7);
         }
     }
