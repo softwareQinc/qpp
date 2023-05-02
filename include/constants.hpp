@@ -55,7 +55,7 @@ inline constexpr cplx operator"" _i(long double x) noexcept {
 /**
  * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
  *
- * Example: \code auto z = 4_if; // type of z is std::complex<double> \endcode
+ * Example: \code auto z = 4_if; // type of z is std::complex<float> \endcode
  */
 inline constexpr std::complex<float>
 operator"" _if(unsigned long long int x) noexcept {
