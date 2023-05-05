@@ -1,4 +1,6 @@
 Pre-release
+    - On macOS, Quantum++ can now be installed via Homebrew with
+      'brew install quantum++'
     - New types in ["types.hpp"]
           realT   - floating point type, replaces 'double' in the source code
           ubigint - unsigned big integer, defined in terms of bigint as

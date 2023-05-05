@@ -80,7 +80,7 @@ static_assert(std::is_signed_v<bigint>, "Type must be signed");
 static_assert(sizeof(bigint) > 1, "Type must be at least 2 bytes long");
 
 /**
- * \brief Underlying floating-point type
+ * \brief Floating-point type
  */
 #if defined(TYPE_FP_FLOAT)
 using realT = float;
