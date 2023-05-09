@@ -39,3 +39,4 @@ doc/
 .DS_Store
 examples/_*.cpp
 out.tmp
+.cmake/
