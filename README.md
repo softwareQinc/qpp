@@ -89,8 +89,9 @@ under your specific operating system.
 
 ## Python 3 wrapper
 
-pyqpp is a Python 3 wrapper for Quantum++. pyqpp requires the same dependencies
-as Quantum++, and can be installed using `pip`:
+[pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3 
+wrapper for Quantum++. pyqpp requires the same dependencies as Quantum++, and 
+can be installed using `pip`
 
 ```
 pip install git+https://github.com/softwareQinc/qpp

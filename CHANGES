@@ -13,17 +13,17 @@ Pre-release
       "long long", "unsigned short", "unsigned int", "unsigned long", and
       "unsigned long long". The "default" type is set in ["types.hpp"]. To
       change the underlying type with CMake, pass the variable "-DTYPE_IDX" to
-      CMake, e.g., 'cmake .. -DTYPE_IDX="unsigned long long"'.
+      CMake, e.g., 'cmake -B build -DTYPE_IDX="unsigned long long"'.
     - Added support for changing the underlying big integer type via the CMake
       property TYPE_IDX. Choices are "default", "short", "int", "long",
       long long". The "default" type is set in ["types.hpp"]. To change the
       underlying type with CMake, pass the variable "-DTYPE_BIGINT" to CMake,
-      e.g., 'cmake .. -DTYPE_BIGINT="long long"'.
+      e.g., 'cmake -B build -DTYPE_BIGINT="long long"'.
     - Added support for changing the underlying floating point type via the
       CMake property TYPE_FP. Choices are "default", "float", "double", and
       "long double". The "default" type is set in ["types.hpp"]. To change the
       underlying type with CMake, pass the variable "-DTYPE_FP" to CMake, e.g.,
-      'cmake .. -DTYPE_FP="long double"'.
+      'cmake -B build -DTYPE_FP="long double"'.
     - Refactored the two instances of qpp::rand(a, b) ["random.hpp"] to a single
       template function
           template<typename T, std::enable_if...> qpp::rand(T a, T b)
@@ -33,6 +33,7 @@ Pre-release
           template<typename T, std::enable_if...> qpp::random(T a, T b)
       enabled only on arithmetic types by
       typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr
+    - CMake minimum required version bumped to 3.15
 
 Version 4.1 - 2 May 2023
     - Implemented ["classes/circuits/circuits.hpp"]
