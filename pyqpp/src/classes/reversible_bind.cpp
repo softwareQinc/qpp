@@ -49,10 +49,10 @@ void init_classes_reversible(py::module_& m) {
                  "The value of the bit at position pos", py::arg("pos"))
             .def("none", &Dynamic_bitset::none,
                  "True if none of the bits are set")
-            .def("rand", py::overload_cast<double>(&Dynamic_bitset::rand),
+            .def("rand", py::overload_cast<realT>(&Dynamic_bitset::rand),
                  "Sets all bits according to a Bernoulli(p) distribution",
                  py::arg("p") = 0.5)
-            .def("rand", py::overload_cast<idx, double>(&Dynamic_bitset::rand),
+            .def("rand", py::overload_cast<idx, realT>(&Dynamic_bitset::rand),
                  "Sets the bit at position pos according to a Bernoulli(p) "
                  "distribution",
                  py::arg("pos"), py::arg("p") = 0.5)

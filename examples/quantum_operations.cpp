@@ -40,6 +40,6 @@ int main() {
     std::cout << disp(rhoA) << '\n';
 
     // compute the von-Neumann entropy
-    double ent = entropy(rhoA);
+    realT ent = entropy(rhoA);
     std::cout << ">> Entropy: " << ent << '\n';
 }

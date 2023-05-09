@@ -103,9 +103,9 @@
 
 // do not change the order in this group, interdependencies
 #include "types.hpp"
+#include "traits.hpp"
 #include "classes/exception.hpp"
 #include "constants.hpp"
-#include "traits.hpp"
 #include "classes/idisplay.hpp"
 #include "internal/util.hpp"
 #include "internal/classes/iomanip.hpp"

@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 project(standalone)
 set(CMAKE_CXX_STANDARD 17)
 
 # If the Quantum++ installation path was non-standard, i.e., specified by
 #
-# cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/installed/qpp
+# cmake -B build -DCMAKE_INSTALL_PREFIX=/path/to/installed/qpp
 #
 # then uncomment the following line and replace the installation path with yours
 

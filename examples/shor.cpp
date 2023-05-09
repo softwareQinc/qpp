@@ -11,10 +11,10 @@
 int main() {
     using namespace qpp;
 
-    bigint N = 15;                                  // number to factor
-    bigint a = rand(static_cast<bigint>(3), N - 1); // random co-prime with N
+    bigint N = 15;                   // number to factor
+    auto a = rand<bigint>(3, N - 1); // random co-prime with N
     while (gcd(a, N) != 1) {
-        a = rand(static_cast<bigint>(3), N - 1);
+        a = rand<bigint>(3, N - 1);
     }
     // qubits required for half of the circuit, in total we need 2n qubits
     // if you know the order 'r' of 'a', then you can take the smallest 'n' s.t.
@@ -47,9 +47,9 @@ int main() {
     // modular multiplications
     for (idx i = 0; i < n; ++i) {
         // compute 2^(n-i-1) mod N
-        idx j = static_cast<idx>(std::llround(std::pow(2, n - i - 1)));
+        bigint j = std::llround(std::pow(2, n - i - 1));
         // compute the a^(2^(n-i-1)) mod N
-        idx aj = modpow(a, j, N);
+        bigint aj = modpow(a, static_cast<bigint>(j), N);
         // apply the controlled modular multiplication
         psi = applyCTRL(psi, gt.MODMUL(aj, N, n), {i}, second_subsys);
     }
@@ -61,21 +61,21 @@ int main() {
     // FIRST MEASUREMENT STAGE
     auto measured1 = measure_seq(psi, first_subsys); // measure first n qubits
     std::vector<idx> vect_results1 = std::get<RES>(measured1); // results
-    double prob1 = prod(std::get<PROB>(measured1)); // probability of the result
+    realT prob1 = prod(std::get<PROB>(measured1)); // probability of the result
     idx n1 = multiidx2n(vect_results1, std::vector<idx>(n, 2)); // binary to int
-    auto x1 =
-        static_cast<double>(n1) / static_cast<double>(D); // multiple of 1/r
+    auto x1 = static_cast<realT>(n1) / static_cast<realT>(D); // multiple of 1/r
 
     std::cout << ">> First measurement:  " << disp(vect_results1, " ") << " ";
     std::cout << "i.e., j = " << n1 << " with probability " << prob1;
     std::cout << '\n';
 
     bool failed = true;
-    idx r1 = 0, c1 = 0;
+    bigint r1 = 0, c1 = 0;
     for (auto&& elem : convergents(x1, 10)) {
         std::tie(c1, r1) = elem;
-        auto c1r1 = static_cast<double>(c1) / r1;
-        if (abs(x1 - c1r1) < 1. / std::pow(2, (n - 1.) / 2.)) {
+        auto c1r1 = static_cast<realT>(c1) / static_cast<realT>(r1);
+        if (abs(x1 - c1r1) <
+            1. / std::pow(2, (static_cast<realT>(n) - 1.) / 2.)) {
             failed = false;
             break;
         }
@@ -89,9 +89,9 @@ int main() {
     // SECOND MEASUREMENT STAGE
     auto measured2 = measure_seq(psi, first_subsys); // measure first n qubits
     std::vector<idx> vect_results2 = std::get<RES>(measured2); // results
-    double prob2 = prod(std::get<PROB>(measured2)); // probability of the result
+    realT prob2 = prod(std::get<PROB>(measured2)); // probability of the result
     idx n2 = multiidx2n(vect_results2, std::vector<idx>(n, 2)); // binary to int
-    auto x2 = static_cast<double>(n2) / D; // multiple of 1/r
+    auto x2 = static_cast<realT>(n2) / static_cast<realT>(D); // multiple of 1/r
 
     std::cout << ">> Second measurement: " << disp(vect_results2, " ") << " ";
     std::cout << "i.e., j = " << n2 << " with probability " << prob2;
@@ -101,8 +101,9 @@ int main() {
     idx r2 = 0, c2 = 0;
     for (auto&& elem : convergents(x2, 10)) {
         std::tie(c2, r2) = elem;
-        auto c2r2 = static_cast<double>(c2) / r2;
-        if (abs(x2 - c2r2) < 1. / std::pow(2, (n - 1.) / 2.)) {
+        auto c2r2 = static_cast<realT>(c2) / static_cast<realT>(r2);
+        if (abs(x2 - c2r2) <
+            1. / std::pow(2, (static_cast<realT>(n) - 1.) / 2.)) {
             failed = false;
             break;
         }
@@ -114,12 +115,16 @@ int main() {
     // END SECOND MEASUREMENT STAGE
 
     // THIRD POST-PROCESSING STAGE
-    idx r = lcm(r1, r2); // candidate order of a mod N
-    std::cout << ">> r = " << r << ", a^r mod N = " << modpow(a, r, N) << '\n';
-    if (r % 2 == 0 && modpow(a, r / 2, N) != static_cast<bigint>(N - 1)) {
+    idx r = lcm(static_cast<bigint>(r1),
+                static_cast<bigint>(r2)); // candidate order of a mod N
+    std::cout << ">> r = " << r << ", a^r mod N = "
+              << modpow(a, static_cast<bigint>(r), static_cast<bigint>(N))
+              << '\n';
+    if (r % 2 == 0 && modpow(a, static_cast<bigint>(r / 2), N) !=
+                          static_cast<bigint>(N - 1)) {
         // at least one of those is a non-trivial factor
-        bigint p = gcd(modpow(a, r / 2, N) - 1, N);
-        bigint q = gcd(modpow(a, r / 2, N) + 1, N);
+        bigint p = gcd(modpow(a, static_cast<bigint>(r / 2), N) - 1, N);
+        bigint q = gcd(modpow(a, static_cast<bigint>(r / 2), N) + 1, N);
         if (p == 1)
             p = N / q;
         if (q == 1)

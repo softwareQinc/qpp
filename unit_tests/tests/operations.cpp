@@ -24,7 +24,7 @@ TEST(qpp_apply, Qudits) {
     ket resultZ = apply(psi, gt.Z, {0}, std::vector<idx>({2}));
     EXPECT_EQ(-1_ket, resultZ);
     ket resultH = apply(psi, gt.H, {0}, std::vector<idx>({2}));
-    EXPECT_NEAR(0, norm(resultH - (0_ket - 1_ket) / std::sqrt(2)), 1e-7);
+    EXPECT_NEAR(0, norm(resultH - (0_ket - 1_ket) / std::sqrt(2)), 1e-5);
 
     // 2 qubits
     psi = 0.8 * 00_ket + 0.6 * 11_ket;
@@ -57,7 +57,7 @@ TEST(qpp_apply, Qudits) {
     psi = mket({0, 0}, d) + mket({1, 0}, d) / std::sqrt(2);
     ket result = apply(psi, gt.Xd(d), {0}, d);
     ket expected = mket({1, 0}, d) + mket({2, 0}, d) / std::sqrt(2);
-    EXPECT_NEAR(0, norm(result - expected), 1e-7);
+    EXPECT_NEAR(0, norm(result - expected), 1e-5);
 
     // 4 qudits
 
@@ -69,7 +69,7 @@ TEST(qpp_apply, Qudits) {
     cmat expected_rho =
         0.6 * prj(mket({1, 0}, d) + mket({2, 0}, d) / std::sqrt(2)) +
         0.4 * prj(mket({1, 1}, d) + mket({2, 1}, d) / std::sqrt(2));
-    EXPECT_NEAR(0, norm(result_rho - expected_rho), 1e-7);
+    EXPECT_NEAR(0, norm(result_rho - expected_rho), 1e-5);
 }
 /******************************************************************************/
 /// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
@@ -114,21 +114,21 @@ TEST(qpp_applyCTRL, Qudits) {
     ket psi = mket({2, 1, 2, 1}, d);
     psi = applyCTRL(psi, kron(gt.Xd(3), gt.Xd(3)), ctrl, target, dims);
     ket expected = mket({2, 0, 2, 0}, d);
-    EXPECT_NEAR(0, norm(psi - expected), 1e-7);
+    EXPECT_NEAR(0, norm(psi - expected), 1e-5);
 
     // ket, with shift
     std::vector<idx> shift{1, 2};
     psi = mket({2, 1, 1, 1}, d); // will behave as if |0101>
     psi = applyCTRL(psi, kron(gt.Xd(3), gt.Xd(3)), ctrl, target, dims, shift);
     expected = mket({2, 1, 1, 1}, d);
-    EXPECT_NEAR(0, norm(psi - expected), 1e-7);
+    EXPECT_NEAR(0, norm(psi - expected), 1e-5);
 
     // density matrix
     psi = mket({2, 0, 2, 0}, d);
     cmat rho =
         applyCTRL(prj(psi), kron(gt.Xd(3), gt.Xd(3)), ctrl, target, dims);
     cmat expected_rho = mprj({2, 2, 2, 2}, d);
-    EXPECT_NEAR(0, norm(rho - expected_rho), 1e-7);
+    EXPECT_NEAR(0, norm(rho - expected_rho), 1e-5);
 
     // density matrix, with shift
     shift = {1, 2};
@@ -136,7 +136,7 @@ TEST(qpp_applyCTRL, Qudits) {
     rho = applyCTRL(prj(psi), kron(gt.Xd(3), gt.Xd(3)), ctrl, target, dims,
                     shift);
     expected_rho = mprj({1, 2, 0, 2}, d);
-    EXPECT_NEAR(0, norm(rho - expected_rho), 1e-7);
+    EXPECT_NEAR(0, norm(rho - expected_rho), 1e-5);
 
     // some random n qudit pure state
     psi = randket(D);
@@ -155,8 +155,8 @@ TEST(qpp_applyCTRL, Qudits) {
     // result when using CTRL-U(rho)CTRL-U^\dagger
     const cmat& result_rho = B;
 
-    double res = norm(result_psi - result_rho);
-    EXPECT_NEAR(0, res, 1e-7);
+    realT res = norm(result_psi - result_rho);
+    EXPECT_NEAR(0, res, 1e-5);
 }
 /******************************************************************************/
 /// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
@@ -184,27 +184,27 @@ TEST(qpp_applyCTRL_fan, Qudits) {
     ket psi = mket({2, 1, 2, 1}, d);
     psi = applyCTRL_fan(psi, gt.Xd(3), ctrl, target, dims);
     ket expected = mket({2, 0, 2, 0}, d);
-    EXPECT_NEAR(0, norm(psi - expected), 1e-7);
+    EXPECT_NEAR(0, norm(psi - expected), 1e-5);
 
     // ket, with shift
     std::vector<idx> shift{1, 2};
     psi = mket({2, 1, 1, 1}, d); // will behave as if |0101>
     psi = applyCTRL_fan(psi, gt.Xd(3), ctrl, target, dims, shift);
     expected = mket({2, 1, 1, 1}, d);
-    EXPECT_NEAR(0, norm(psi - expected), 1e-7);
+    EXPECT_NEAR(0, norm(psi - expected), 1e-5);
 
     // density matrix
     psi = mket({2, 0, 2, 0}, d);
     cmat rho = applyCTRL_fan(prj(psi), gt.Xd(3), ctrl, target, dims);
     cmat expected_rho = mprj({2, 2, 2, 2}, d);
-    EXPECT_NEAR(0, norm(rho - expected_rho), 1e-7);
+    EXPECT_NEAR(0, norm(rho - expected_rho), 1e-5);
 
     // density matrix, with shift
     shift = {1, 2};
     psi = mket({1, 0, 0, 0}, d); // will behave as if |2020>
     rho = applyCTRL_fan(prj(psi), gt.Xd(3), ctrl, target, dims, shift);
     expected_rho = mprj({1, 2, 0, 2}, d);
-    EXPECT_NEAR(0, norm(rho - expected_rho), 1e-7);
+    EXPECT_NEAR(0, norm(rho - expected_rho), 1e-5);
 
     // some random n qudit pure state
     psi = randket(D);
@@ -223,8 +223,8 @@ TEST(qpp_applyCTRL_fan, Qudits) {
     // result when using CTRL-U(rho)CTRL-U^\dagger
     const cmat& result_rho = B;
 
-    double res = norm(result_psi - result_rho);
-    EXPECT_NEAR(0, res, 1e-7);
+    realT res = norm(result_psi - result_rho);
+    EXPECT_NEAR(0, res, 1e-5);
 }
 /******************************************************************************/
 /// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>

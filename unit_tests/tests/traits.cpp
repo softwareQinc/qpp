@@ -30,7 +30,7 @@ TEST(qpp_is_iterable, AllTests) {
 /******************************************************************************/
 /// BEGIN template<typename Derived> struct is_matrix_expression
 TEST(qpp_is_matrix_expression, AllTests) {
-    dmat A, B, C, D;
+    rmat A, B, C, D;
     int x{}, y{}, z{};
 
     EXPECT_TRUE(is_matrix_expression<decltype(3 * A)>::value);

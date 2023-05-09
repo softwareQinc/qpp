@@ -35,7 +35,7 @@ int main() {
 
     cmat U(2, 2); // initialize a unitary operator
     // we use the T gate as an example; we expect estimated theta = 1/8 (0.125).
-    double theta = 0.125; // change if you want, increase n for more precision
+    realT theta = 0.125; // change if you want, increase n for more precision
     U << 1, 0, 0, std::exp(2 * pi * 1_i * theta);
 
     ket result = psi;
@@ -62,7 +62,8 @@ int main() {
     for (idx i = 0; i < nq_c; ++i) {
         std::cout << "CU(" << nq_c - i - 1 << ", " << disp(ancilla, ", ")
                   << ")^" << powerU << '\n';
-        result = applyCTRL(result, U, {nq_c - i - 1}, ancilla);
+        result =
+            applyCTRL(result, U, {static_cast<idx>(nq_c - i - 1)}, ancilla);
         U = powm(U, 2);
         powerU *= 2;
     }
@@ -82,7 +83,8 @@ int main() {
     idx decimal = multiidx2n(res, std::vector<idx>(counting_qubits.size(), 2));
 
     // readout phase estimate
-    auto theta_e = static_cast<double>(decimal) / std::pow(2, nq_c);
+    auto theta_e =
+        static_cast<realT>(decimal) / static_cast<realT>(std::pow(2, nq_c));
     std::cout << ">> Input theta = " << theta << '\n';
     std::cout << ">> Estimated theta = " << theta_e << '\n';
     std::cout << ">> Norm difference: " << std::abs(theta_e - theta) << '\n';

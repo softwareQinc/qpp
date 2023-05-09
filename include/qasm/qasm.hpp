@@ -42,116 +42,124 @@ namespace ast = qasmtools::ast;
 namespace parser = qasmtools::parser;
 
 static std::unordered_map<ast::symbol,
-                          std::function<cmat(const std::vector<double>&)>>
+                          std::function<cmat(const std::vector<realT>&)>>
     known_matrices{
         ///< generators for various gate constants
         {"cx",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return Gates::get_no_thread_local_instance().CNOT;
          }},
         {"id",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return Gates::get_no_thread_local_instance().Id2;
          }},
         {"x",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return USE_OPENQASM2_SPECS
                         ? Gates::get_no_thread_local_instance().X * (-1_i)
                         : Gates::get_no_thread_local_instance().X;
          }},
         {"y",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return USE_OPENQASM2_SPECS
                         ? Gates::get_no_thread_local_instance().Y * (-1_i)
                         : Gates::get_no_thread_local_instance().Y;
          }},
         {"z",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return USE_OPENQASM2_SPECS
                         ? Gates::get_no_thread_local_instance().Z * (-1_i)
                         : Gates::get_no_thread_local_instance().Z;
          }},
         {"h",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return USE_OPENQASM2_SPECS
                         ? Gates::get_no_thread_local_instance().H * (-1_i)
                         : Gates::get_no_thread_local_instance().H;
          }},
         {"s",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return USE_OPENQASM2_SPECS
                         ? Gates::get_no_thread_local_instance().S *
-                              std::exp(-1_i * pi / 4.0)
+                              std::exp(-1_i *
+                                       static_cast<cplx::value_type>(pi / 4.0))
                         : Gates::get_no_thread_local_instance().S;
          }},
         {"sdg",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return USE_OPENQASM2_SPECS
                         ? (Gates::get_no_thread_local_instance().S.adjoint() *
-                           std::exp(1_i * pi / 4.0))
+                           std::exp(1_i *
+                                    static_cast<cplx::value_type>(pi / 4.0)))
                               .eval()
                         : Gates::get_no_thread_local_instance().S.adjoint();
          }},
         {"t",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return USE_OPENQASM2_SPECS
                         ? Gates::get_no_thread_local_instance().T *
-                              std::exp(-1_i * pi / 8.0)
+                              std::exp(-1_i *
+                                       static_cast<cplx::value_type>(pi / 8.0))
                         : Gates::get_no_thread_local_instance().T;
          }},
         {"tdg",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return USE_OPENQASM2_SPECS
                         ? (Gates::get_no_thread_local_instance().T.adjoint() *
-                           std::exp(1_i * pi / 8.0))
+                           std::exp(1_i *
+                                    static_cast<cplx::value_type>(pi / 8.0)))
                               .eval()
                         : Gates::get_no_thread_local_instance().T.adjoint();
          }},
         {"rx",
-         [](const std::vector<double>& args) {
+         [](const std::vector<realT>& args) {
              assert(!args.empty());
              return Gates::get_no_thread_local_instance().RX(args[0]);
          }},
         {"rz",
-         [](const std::vector<double>& args) {
+         [](const std::vector<realT>& args) {
              assert(!args.empty());
              return Gates::get_no_thread_local_instance().RZ(args[0]);
          }},
         {"ry",
-         [](const std::vector<double>& args) {
+         [](const std::vector<realT>& args) {
              assert(!args.empty());
              return Gates::get_no_thread_local_instance().RY(args[0]);
          }},
         {"cz",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return USE_OPENQASM2_SPECS
                         ? Gates::get_no_thread_local_instance().CZ * (-1)
                         : Gates::get_no_thread_local_instance().CZ;
          }},
         {"cy",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              cmat mat{cmat::Identity(4, 4)};
              mat.block(2, 2, 2, 2) = Gates::get_no_thread_local_instance().Y;
              return mat;
          }},
         {"swap",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return Gates::get_no_thread_local_instance().SWAP;
          }},
         {"ch",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              cmat mat{cmat::Identity(4, 4)};
              mat.block(2, 2, 2, 2) = Gates::get_no_thread_local_instance().H;
-             return USE_OPENQASM2_SPECS ? mat * std::exp(-1_i * pi / 4.0) : mat;
+             return USE_OPENQASM2_SPECS
+                        ? mat * std::exp(-1_i * static_cast<cplx::value_type>(
+                                                    pi / 4.0))
+                        : mat;
          }},
         {"ccx",
-         [](const std::vector<double>&) {
+         [](const std::vector<realT>&) {
              return USE_OPENQASM2_SPECS
                         ? Gates::get_no_thread_local_instance().TOF *
-                              (-std::exp(-1_i * pi / 8.0))
+                              (-std::exp(-1_i * static_cast<cplx::value_type>(
+                                                    pi / 8.0)))
                         : Gates::get_no_thread_local_instance().TOF;
          }},
-        {"crz", [](const std::vector<double>& args) {
+        {"crz", [](const std::vector<realT>& args) {
              assert(!args.empty());
              cmat mat{cmat::Identity(4, 4)};
              mat.block(2, 2, 2, 2) =
@@ -221,9 +229,9 @@ class Qubit : public Value {
  */
 class Number : public Value {
   public:
-    double value_; ///< the floating point number
+    realT value_; ///< the floating-point number
 
-    explicit Number(double value) : value_(value) {}
+    explicit Number(realT value) : value_(value) {}
 };
 
 /**
@@ -420,9 +428,8 @@ class Context {
  * \brief Visitor for converting a QASM AST to a QCircuit
  */
 class QCircuitBuilder final : public ast::Visitor {
-    Context ctx; ///< QCircuit translation context
-    double
-        temp_value; ///< stores intermediate values when computing expressions
+    Context ctx;      ///< QCircuit translation context
+    realT temp_value; ///< stores intermediate values when computing expressions
 
   public:
     /**
@@ -439,9 +446,9 @@ class QCircuitBuilder final : public ast::Visitor {
     // - Set temp_value to the value of the expression
     void visit(ast::BExpr& expr) override {
         expr.lexp().accept(*this);
-        double lval = temp_value;
+        realT lval = temp_value;
         expr.rexp().accept(*this);
-        double rval = temp_value;
+        realT rval = temp_value;
 
         switch (expr.op()) {
             case ast::BinaryOp::Plus:
@@ -466,7 +473,7 @@ class QCircuitBuilder final : public ast::Visitor {
 
     void visit(ast::UExpr& expr) override {
         expr.subexp().accept(*this);
-        double val = temp_value;
+        realT val = temp_value;
 
         switch (expr.op()) {
             case ast::UnaryOp::Neg:
@@ -498,7 +505,7 @@ class QCircuitBuilder final : public ast::Visitor {
     void visit(ast::PiExpr&) override { temp_value = qpp::pi; }
 
     void visit(ast::IntExpr& expr) override {
-        temp_value = static_cast<double>(expr.value());
+        temp_value = static_cast<realT>(expr.value());
     }
 
     void visit(ast::RealExpr& expr) override { temp_value = expr.value(); }
@@ -550,11 +557,11 @@ class QCircuitBuilder final : public ast::Visitor {
     // Gates
     void visit(ast::UGate& gate) override {
         gate.theta().accept(*this);
-        double theta = temp_value;
+        realT theta = temp_value;
         gate.phi().accept(*this);
-        double phi = temp_value;
+        realT phi = temp_value;
         gate.lambda().accept(*this);
-        double lambda = temp_value;
+        realT lambda = temp_value;
         auto args = var_access_as_qreg(gate.arg());
         auto circuit = ctx.get_circuit();
 
@@ -651,7 +658,7 @@ class QCircuitBuilder final : public ast::Visitor {
             dynamic_cast<const Circuit*>(ctx.lookup(dgate.name(), dgate.pos()));
 
         // evaluate arguments
-        std::vector<double> c_args(dgate.num_cargs());
+        std::vector<realT> c_args(dgate.num_cargs());
         std::vector<std::vector<idx>> q_args(dgate.num_qargs());
         for (int i = 0; i < dgate.num_cargs(); i++) {
             dgate.carg(i).accept(*this);

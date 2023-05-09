@@ -26,7 +26,8 @@ int main() {
             cmat Rj(2, 2);
             auto pow_j = static_cast<idx>(std::llround(std::pow(2, j)));
             Rj << 1, 0, 0, omega(pow_j);
-            result = applyCTRL(result, Rj, {i + j - 1}, {i});
+            result = applyCTRL(result, Rj, {static_cast<idx>(i + j - 1)},
+                               {static_cast<idx>(i)});
             std::cout << "R" << j << "(" << i + j - 1 << ", " << i << ") ";
         }
         std::cout << '\n';
@@ -35,7 +36,7 @@ int main() {
     // we have the qubits in reversed order, we must swap them
     for (idx i = 0; i < n / 2; ++i) {
         std::cout << "SWAP(" << i << ", " << n - i - 1 << ")\n";
-        result = apply(result, gt.SWAP, {i, n - i - 1});
+        result = apply(result, gt.SWAP, {i, static_cast<idx>(n - i - 1)});
     }
 
     // check that we got the Fourier transform, compute the norm difference

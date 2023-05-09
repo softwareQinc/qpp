@@ -39,14 +39,15 @@ namespace qpp {
  * \param N Size of the alphabet
  * \return Real vector consisting of a uniform distribution of size \a N
  */
-inline std::vector<double> uniform(idx N) {
+inline std::vector<realT> uniform(idx N) {
     // EXCEPTION CHECKS
 
     if (N == 0)
         throw exception::ZeroSize("qpp::uniform()", "N");
     // END EXCEPTION CHECKS
 
-    return std::vector<double>(N, 1. / static_cast<double>(N));
+    return {
+        std::vector<realT>(N, static_cast<realT>(1.) / static_cast<realT>(N))};
 }
 
 /**
@@ -57,14 +58,14 @@ inline std::vector<double> uniform(idx N) {
  * columns)
  * \return Real vector consisting of the marginal distribution of \a X
  */
-inline std::vector<double> marginalX(const dmat& probXY) {
+inline std::vector<realT> marginalX(const rmat& probXY) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(probXY))
         throw exception::ZeroSize("qpp::marginalX()", "probXY");
     // END EXCEPTION CHECKS
 
-    std::vector<double> result(probXY.rows(), 0);
+    std::vector<realT> result(probXY.rows(), 0);
     for (idx i = 0; i < static_cast<idx>(probXY.rows()); ++i) {
         for (idx j = 0; j < static_cast<idx>(probXY.cols()); ++j) {
             result[i] += probXY(i, j);
@@ -82,7 +83,7 @@ inline std::vector<double> marginalX(const dmat& probXY) {
  * columns)
  * \return Real vector consisting of the marginal distribution of \a Y
  */
-inline std::vector<double> marginalY(const dmat& probXY) {
+inline std::vector<realT> marginalY(const rmat& probXY) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(probXY))
@@ -102,8 +103,8 @@ inline std::vector<double> marginalY(const dmat& probXY) {
  * \return Average of \a X
  */
 template <typename Container>
-double
-avg(const std::vector<double>& prob, const Container& X,
+realT avg(
+    const std::vector<realT>& prob, const Container& X,
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
@@ -113,7 +114,7 @@ avg(const std::vector<double>& prob, const Container& X,
         throw exception::SizeMismatch("qpp::avg()", "prob/X");
     // END EXCEPTION CHECKS
 
-    double result = 0;
+    realT result = 0;
     for (idx i = 0; i < static_cast<idx>(prob.size()); ++i)
         result += prob[i] * X[i];
 
@@ -131,8 +132,8 @@ avg(const std::vector<double>& prob, const Container& X,
  * \return Covariance of \a X and \a Y
  */
 template <typename Container>
-double
-cov(const dmat& probXY, const Container& X, const Container& Y,
+realT cov(
+    const rmat& probXY, const Container& X, const Container& Y,
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
@@ -146,10 +147,10 @@ cov(const dmat& probXY, const Container& X, const Container& Y,
         throw exception::SizeMismatch("qpp::cov()", "probXY/Y");
     // END EXCEPTION CHECKS
 
-    std::vector<double> probX = marginalX(probXY); // marginals
-    std::vector<double> probY = marginalY(probXY); // marginals
+    std::vector<realT> probX = marginalX(probXY); // marginals
+    std::vector<realT> probY = marginalY(probXY); // marginals
 
-    double result = 0;
+    realT result = 0;
     for (idx i = 0; i < static_cast<idx>(X.size()); ++i) {
         for (idx j = 0; j < static_cast<idx>(Y.size()); ++j) {
             result += probXY(i, j) * X[i] * Y[j];
@@ -168,8 +169,8 @@ cov(const dmat& probXY, const Container& X, const Container& Y,
  * \return Variance of \a X
  */
 template <typename Container>
-double
-var(const std::vector<double>& prob, const Container& X,
+realT var(
+    const std::vector<realT>& prob, const Container& X,
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
@@ -179,10 +180,10 @@ var(const std::vector<double>& prob, const Container& X,
         throw exception::SizeMismatch("qpp::var()", "prob/X");
     // END EXCEPTION CHECKS
 
-    Eigen::VectorXd diag(prob.size());
+    dyn_col_vect<realT> diag(prob.size());
     for (idx i = 0; i < static_cast<idx>(prob.size()); ++i)
         diag(i) = prob[i];
-    dmat probXX = diag.asDiagonal();
+    rmat probXX = diag.asDiagonal();
 
     return cov(probXX, X, X);
 }
@@ -196,9 +197,9 @@ var(const std::vector<double>& prob, const Container& X,
  * \return Standard deviation of \a X
  */
 template <typename Container>
-double
-sigma(const std::vector<double>& prob, const Container& X,
-      typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
+realT sigma(
+    const std::vector<realT>& prob, const Container& X,
+    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob))
@@ -221,8 +222,8 @@ sigma(const std::vector<double>& prob, const Container& X,
  * \return Correlation of \a X and \a Y
  */
 template <typename Container>
-double
-cor(const dmat& probXY, const Container& X, const Container& Y,
+realT cor(
+    const rmat& probXY, const Container& X, const Container& Y,
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 

@@ -23,9 +23,9 @@ TEST(qpp_RandomDevices_load_save, AllTests) {
     // generate some random index
     idx i1 = randidx(0, 100);
     // generate some random biging
-    bigint b1 = rand(static_cast<bigint>(-100), 100);
-    // finally generate some random double
-    double d1 = rand(-100.0, 100.0);
+    bigint b1 = rand(static_cast<bigint>(-100), static_cast<bigint>(100));
+    // finally generate some random realT
+    realT d1 = rand(static_cast<realT>(-100.0), static_cast<realT>(100.0));
 
     // load the state of the PRNG
     ss.seekg(0);
@@ -36,9 +36,9 @@ TEST(qpp_RandomDevices_load_save, AllTests) {
     // generate again some random index
     idx i2 = randidx(0, 100);
     // generate again some random biging
-    bigint b2 = rand(static_cast<bigint>(-100), 100);
-    // finally generate again some random double
-    double d2 = rand(-100.0, 100.0);
+    bigint b2 = rand(static_cast<bigint>(-100), static_cast<bigint>(100));
+    // finally generate again some random realT
+    realT d2 = rand(static_cast<realT>(-100.0), static_cast<realT>(100.0));
 
     // make sure we reproduce the randomness
     EXPECT_EQ(0, norm(A1 - A2));

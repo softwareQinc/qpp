@@ -13,10 +13,10 @@ int main() {
     std::vector<int> Y{1, 2, 3};
 
     // joint probability distribution
-    dmat probXY(2, 3);
+    rmat probXY(2, 3);
     probXY << 0.25, 0.25, 0, 0, 0.25, 0.25;
-    std::vector<double> probX = marginalX(probXY);
-    std::vector<double> probY = marginalY(probXY);
+    std::vector<realT> probX = marginalX(probXY);
+    std::vector<realT> probY = marginalY(probXY);
 
     std::cout << ">> ProbX: " << disp(marginalX(probXY), ", ") << '\n';
     std::cout << ">> ProbY: " << disp(marginalY(probXY), ", ") << '\n';

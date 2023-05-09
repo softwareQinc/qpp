@@ -45,8 +45,8 @@ namespace qpp {
  * dynamic column vector
  */
 template <typename Derived>
-dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
-                                   const std::vector<idx>& dims) {
+dyn_col_vect<realT> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
+                                  const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -80,8 +80,8 @@ dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
  * dynamic column vector
  */
 template <typename Derived>
-dyn_col_vect<double> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
-                                   idx d = 2) {
+dyn_col_vect<realT> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
+                                  idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -238,8 +238,8 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
  * in decreasing order
  */
 template <typename Derived>
-std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
-                                 const std::vector<idx>& dims) {
+std::vector<realT> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
+                                const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -258,8 +258,8 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
         throw exception::DimsMismatchCvector("qpp::schmidtprobs()", "A/dims");
     // END EXCEPTION CHECKS
 
-    std::vector<double> result;
-    dyn_col_vect<double> scf = schmidtcoeffs(rA, dims);
+    std::vector<realT> result;
+    dyn_col_vect<realT> scf = schmidtcoeffs(rA, dims);
     for (idx i = 0; i < static_cast<idx>(scf.rows()); ++i)
         result.emplace_back(std::pow(scf(i), 2));
 
@@ -279,8 +279,8 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
  * in decreasing order
  */
 template <typename Derived>
-std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
-                                 idx d = 2) {
+std::vector<realT> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
+                                idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -319,7 +319,7 @@ std::vector<double> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
  * column vector
  */
 template <typename Derived>
-std::tuple<cmat, cmat, dyn_col_vect<double>, dyn_col_vect<double>>
+std::tuple<cmat, cmat, dyn_col_vect<realT>, dyn_col_vect<realT>>
 schmidt(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
@@ -364,7 +364,7 @@ schmidt(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
  * column vector
  */
 template <typename Derived>
-std::tuple<cmat, cmat, dyn_col_vect<double>, dyn_col_vect<double>>
+std::tuple<cmat, cmat, dyn_col_vect<realT>, dyn_col_vect<realT>>
 schmidt(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     // EXCEPTION CHECKS
 
@@ -395,8 +395,8 @@ schmidt(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
  * \return Entanglement, with the logarithm in base 2
  */
 template <typename Derived>
-double entanglement(const Eigen::MatrixBase<Derived>& A,
-                    const std::vector<idx>& dims) {
+realT entanglement(const Eigen::MatrixBase<Derived>& A,
+                   const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -430,7 +430,7 @@ double entanglement(const Eigen::MatrixBase<Derived>& A,
  * \return Entanglement, with the logarithm in base 2
  */
 template <typename Derived>
-double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
+realT entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -463,7 +463,7 @@ double entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
  */
 // the G-concurrence
 template <typename Derived>
-double gconcurrence(const Eigen::MatrixBase<Derived>& A) {
+realT gconcurrence(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -483,8 +483,9 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A) {
     // END EXCEPTION CHECKS
 
     // we compute exp(logdet()) to avoid underflow
-    return d * std::abs(std::exp(2. / static_cast<double>(d) *
-                                 logdet(reshape(rA, d, d))));
+    return d *
+           std::abs(std::exp(static_cast<realT>(2.) / static_cast<realT>(d) *
+                             logdet(reshape(rA, d, d))));
 }
 
 /**
@@ -495,8 +496,8 @@ double gconcurrence(const Eigen::MatrixBase<Derived>& A) {
  * \return Negativity
  */
 template <typename Derived>
-double negativity(const Eigen::MatrixBase<Derived>& A,
-                  const std::vector<idx>& dims) {
+realT negativity(const Eigen::MatrixBase<Derived>& A,
+                 const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -526,7 +527,7 @@ double negativity(const Eigen::MatrixBase<Derived>& A,
  * \return Negativity
  */
 template <typename Derived>
-double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
+realT negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -554,8 +555,8 @@ double negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
  * \return Logarithmic negativity, with the logarithm in base 2
  */
 template <typename Derived>
-double lognegativity(const Eigen::MatrixBase<Derived>& A,
-                     const std::vector<idx>& dims) {
+realT lognegativity(const Eigen::MatrixBase<Derived>& A,
+                    const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -585,7 +586,7 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A,
  * \return Logarithmic negativity, with the logarithm in base 2
  */
 template <typename Derived>
-double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
+realT lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -612,7 +613,7 @@ double lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
  * \return Wootters concurrence
  */
 template <typename Derived>
-double concurrence(const Eigen::MatrixBase<Derived>& A) {
+realT concurrence(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -629,21 +630,21 @@ double concurrence(const Eigen::MatrixBase<Derived>& A) {
     // END EXCEPTION CHECKS
 
     cmat sigmaY = Gates::get_no_thread_local_instance().Y;
-    dyn_col_vect<double> lambdas =
+    dyn_col_vect<realT> lambdas =
         evals(rA * kron(sigmaY, sigmaY) * conjugate(rA) * kron(sigmaY, sigmaY))
             .real();
 
-    std::vector<double> lambdas_sorted(lambdas.data(),
-                                       lambdas.data() + lambdas.size());
+    std::vector<realT> lambdas_sorted(lambdas.data(),
+                                      lambdas.data() + lambdas.size());
 
     std::sort(lambdas_sorted.begin(), lambdas_sorted.end(), std::greater<>());
     std::transform(lambdas_sorted.begin(), lambdas_sorted.end(),
-                   lambdas_sorted.begin(), [](double elem) {
+                   lambdas_sorted.begin(), [](realT elem) {
                        return std::sqrt(std::abs(elem));
                    }); // chop tiny negatives
 
-    return std::max(0., lambdas_sorted[0] - lambdas_sorted[1] -
-                            lambdas_sorted[2] - lambdas_sorted[3]);
+    return std::max<realT>(0., lambdas_sorted[0] - lambdas_sorted[1] -
+                                   lambdas_sorted[2] - lambdas_sorted[3]);
 }
 
 } /* namespace qpp */

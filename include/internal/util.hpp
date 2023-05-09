@@ -86,7 +86,7 @@ template <typename T>
     // no error checks in release version to improve speed
 
     // Static allocation for speed!
-    // double the size for matrices reshaped as vectors
+    // allocate twice the size for matrices reshaped as vectors
     T part_prod[2 * internal::maxn];
 
     T result = 0;
@@ -380,16 +380,16 @@ inline idx get_dim_subsys(idx D, idx n) {
 
     auto d = (n == 2) ? static_cast<idx>(std::llround(std::sqrt(D)))
                       : static_cast<idx>(std::llround(
-                            std::pow(D, 1. / static_cast<double>(n))));
+                            std::pow(D, 1. / static_cast<realT>(n))));
 
     return d;
 }
 
-// chops a floating point or complex number to zero
+// chops a floating-point or complex number to zero
 template <typename T,
           typename std::enable_if<std::numeric_limits<T>::is_iec559 ||
                                   is_complex<T>::value>::type* = nullptr>
-T abs_chop(const T& x, double chop = qpp::chop) {
+T abs_chop(const T& x, realT chop = qpp::chop) {
     if (std::abs(x) < chop)
         return 0;
 
@@ -400,91 +400,9 @@ T abs_chop(const T& x, double chop = qpp::chop) {
 template <typename T,
           typename std::enable_if<!(std::numeric_limits<T>::is_iec559 ||
                                     is_complex<T>::value)>::type* = nullptr>
-T abs_chop(const T& x, [[maybe_unused]] double chop = qpp::chop) {
+T abs_chop(const T& x, [[maybe_unused]] realT chop = qpp::chop) {
     return x;
 }
-
-// implementation details for pretty formatting
-struct Display_Impl_ {
-    template <typename T>
-    // T must support rows(), cols(), operator()(idx, idx) const
-    std::ostream& display_impl_(const T& A, std::ostream& os,
-                                double chop = qpp::chop) const {
-        std::ostringstream ostr;
-        ostr.copyfmt(os); // copy os' state
-
-        std::vector<std::string> vstr;
-        std::string str;
-
-        for (idx i = 0; i < static_cast<idx>(A.rows()); ++i) {
-            for (idx j = 0; j < static_cast<idx>(A.cols()); ++j) {
-                str.clear(); // clear the temporary string
-                ostr.clear();
-                ostr.str(std::string{}); // clear the ostringstream
-
-                // convert to complex
-                double re = static_cast<cplx>(A(i, j)).real();
-                double im = static_cast<cplx>(A(i, j)).imag();
-
-                // zero
-                if (std::abs(re) < chop && std::abs(im) < chop) {
-                    ostr << "0"; // otherwise, segfault on destruction
-                    // if using only vstr.emplace_back("0 ");
-                    // bug in MATLAB libmx
-                    vstr.emplace_back(ostr.str());
-                }
-                // pure imag
-                else if (std::abs(re) < chop) {
-                    ostr << im;
-                    vstr.emplace_back(ostr.str() + "i");
-                }
-                // real
-                else if (std::abs(im) < chop) {
-                    ostr << re;
-                    vstr.emplace_back(ostr.str());
-                }
-                // full complex
-                else {
-                    ostr << re;
-                    str = ostr.str();
-
-                    str += (im > 0 ? " + " : " - ");
-                    ostr.clear();
-                    ostr.str(std::string()); // clear
-                    ostr << std::abs(im);
-                    str += ostr.str();
-                    str += "i";
-                    vstr.emplace_back(str);
-                }
-            }
-        }
-
-        // determine the maximum lenght of the entries in each column
-        std::vector<idx> maxlengthcols(A.cols(), 0);
-
-        for (idx i = 0; i < static_cast<idx>(A.rows()); ++i)
-            for (idx j = 0; j < static_cast<idx>(A.cols()); ++j)
-                if (static_cast<idx>(vstr[i * A.cols() + j].size()) >
-                    maxlengthcols[j])
-                    maxlengthcols[j] = vstr[i * A.cols() + j].size();
-
-        // finally, display it!
-        for (idx i = 0; i < static_cast<idx>(A.rows()); ++i) {
-            os << std::setw(static_cast<int>(maxlengthcols[0])) << std::right
-               << vstr[i * A.cols()]; // display first column
-            // then the rest
-            idx spacer = 2;
-            for (idx j = 1; j < static_cast<idx>(A.cols()); ++j)
-                os << std::setw(static_cast<int>(maxlengthcols[j] + spacer))
-                   << std::right << vstr[i * A.cols() + j];
-
-            if (i < static_cast<idx>(A.rows()) - 1)
-                os << '\n';
-        }
-
-        return os;
-    }
-};
 
 // self-documented
 template <typename T>

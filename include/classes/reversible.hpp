@@ -247,12 +247,12 @@ class Dynamic_bitset : public IDisplay {
      * \param p Probability
      * \return Reference to the current instance
      */
-    Dynamic_bitset& rand(idx pos, double p = 0.5) {
+    Dynamic_bitset& rand(idx pos, realT p = 0.5) {
         assert(pos < size());
 
         std::random_device rd;
         std::mt19937 gen{rd()};
-        std::bernoulli_distribution d{p};
+        std::bernoulli_distribution d(p);
 
         set(pos, d(gen));
 
@@ -265,7 +265,7 @@ class Dynamic_bitset : public IDisplay {
      * \param p Probability
      * \return Reference to the current instance
      */
-    Dynamic_bitset& rand(double p = 0.5) {
+    Dynamic_bitset& rand(realT p = 0.5) {
         idx bitset_size = size();
         for (idx i = 0; i < bitset_size; ++i) {
             this->rand(i, p);

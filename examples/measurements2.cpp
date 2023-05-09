@@ -12,7 +12,7 @@ int main() {
     ket psi = st.b00;
     std::vector<idx> subsys = {0};
     idx result;
-    std::vector<double> probs;
+    std::vector<realT> probs;
     std::vector<ket> states;
 
     // measures the first subsystem of the Bell state (|00> + |11>) / sqrt(2)
@@ -50,7 +50,7 @@ int main() {
         std::cout << disp(it) << "\n\n";
 
     // check now how the state after the measurement "looks"
-    // on the left over subsystems {0, 3}
+    // on the leftover subsystems {0, 3}
 
     // it should be the same as the partial trace over {1, 2}
     // of the initial state (before the measurement), as local CPTP maps

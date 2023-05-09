@@ -12,7 +12,7 @@ int main() {
     std::cout << ">> Original matrix:\n" << disp(rH) << '\n';
 
     // spectral decomposition here
-    dyn_col_vect<double> evalsH = hevals(rH);
+    dyn_col_vect<realT> evalsH = hevals(rH);
     cmat evectsH = hevects(rH);
     cmat spec = cmat::Zero(D, D);
     // reconstruct the matrix

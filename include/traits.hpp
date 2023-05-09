@@ -133,6 +133,22 @@ struct is_complex<std::complex<T>> : std::true_type {};
 #pragma GCC diagnostic pop
 #endif
 
+/**
+ * \brief Detect if the expression Derived is a bra at compile time
+ */
+template <typename Derived>
+bool constexpr is_bra() {
+    return (internal::eval_t<Derived>::RowsAtCompileTime == 1);
+}
+
+/**
+ * \brief Detect if the expression Derived is a ket at compile time
+ */
+template <typename Derived>
+bool constexpr is_ket() {
+    return (internal::eval_t<Derived>::ColsAtCompileTime == 1);
+}
+
 } /* namespace qpp */
 
 #endif /* QPP_TRAITS_HPP_ */

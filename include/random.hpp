@@ -34,51 +34,187 @@
 
 namespace qpp {
 /**
- * \brief Generates a random real number uniformly distributed in the interval
- * [a, b)
+ * \brief Generates a random number in the interval [a, b] for integer types,
+ * and in the interval [a, b) for floating-point types
  *
+ * \tparam T Arithmetic type
+ * \param a Beginning of the interval
+ * \param b End of the interval
+ * \return Random number uniformly distributed in the interval [a, b)/[a, b]
+ */
+template <typename T,
+          typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
+T rand(T a, T b) {
+    static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>,
+                  "Not defined for this type");
+
+    auto& gen = RandomDevices::get_instance().get_prng();
+    if constexpr (std::is_integral_v<T>) {
+        if (a > b) {
+            throw exception::OutOfRange("qpp::rand()", "a/b");
+        }
+        std::uniform_int_distribution<T> uid(a, b);
+        return uid(gen);
+    } else if constexpr (std::is_floating_point_v<T>) {
+        if (a >= b) {
+            throw exception::OutOfRange("qpp::rand()", "a/b");
+        }
+        std::uniform_real_distribution<realT> ud(a, b);
+        return ud(gen);
+    }
+}
+
+/**
+ * \brief Generates a random real or complex matrix with entries uniformly
+ * distributed in the interval [a, b)
+ *
+ * \note The template parameter cannot be automatically deduced and must be
+ * explicitly provided. It is only specialized for qpp::rmat and qpp::cmat.
+ *
+ * \note If complex, then both real and imaginary parts are uniformly
+ * distributed in [a, b)
+ *
+ * Example:
+ * \code
+ * // generates a 3 x 3 random Eigen::MatrixX over qpp::realT,
+ * // with entries uniformly distributed in [-1,1)
+ * rmat mat = rand<rmat>(3, 3, -1, 1);
+ *
+ * // generates a 3 x 3 random Eigen::MatrixX over qpp::cplx,
+ * // with entries (both real and imaginary) uniformly distributed in [-1,1)
+ * cmat mat = rand<cmat>(3, 3, -1, 1);
+ * \endcode
+ *
+ * \tparam Derived Matrix type, must be either qpp::rmat or qpp::cmat
+ * \param rows Number of rows of the randomly generated matrix
+ * \param cols Number of columns of the randomly generated matrix
  * \param a Beginning of the interval, belongs to it
  * \param b End of the interval, does not belong to it
- * \return Random real number (double) uniformly distributed in the interval
- * [a, b)
+ * \return Random real (qpp::rmat specialization) or complex
+ * (qpp::cmat specialization) matrix
  */
-inline double rand(double a, double b) {
+template <typename Derived,
+          typename std::enable_if_t<!std::is_arithmetic_v<Derived>>* = nullptr>
+Derived rand([[maybe_unused]] idx rows, [[maybe_unused]] idx cols,
+             [[maybe_unused]] realT a = 0, [[maybe_unused]] realT b = 1) {
+    throw exception::UndefinedType("qpp::rand()");
+}
+
+/// \cond DO_NOT_DOCUMENT
+template <>
+inline rmat rand(idx rows, idx cols, realT a, realT b) {
     // EXCEPTION CHECKS
 
+    if (rows == 0 || cols == 0)
+        throw exception::ZeroSize("qpp::rand()", "rows/cols");
     if (a >= b)
         throw exception::OutOfRange("qpp::rand()", "a/b");
     // END EXCEPTION CHECKS
 
-    std::uniform_real_distribution<> ud(a, b);
-    auto& gen = RandomDevices::get_instance().get_prng();
-
-    return ud(gen);
+    return rmat::Zero(rows, cols).unaryExpr([a, b](realT) {
+        return rand(a, b);
+    });
 }
 
-/**
- * \brief Generates a random big integer uniformly distributed in the interval
- * [a, b]
- *
- * \note To avoid ambiguity with double qpp::rand(double, double) cast at least
- * one of the arguments to qpp::bigint
- *
- * \param a Beginning of the interval, belongs to it
- * \param b End of the interval, belongs to it
- * \return Random big integer uniformly distributed in the interval [a, b]
- */
-inline bigint rand(bigint a, bigint b) {
+template <>
+inline cmat rand(idx rows, idx cols, realT a, realT b) {
     // EXCEPTION CHECKS
 
-    if (a > b)
+    if (rows == 0 || cols == 0)
+        throw exception::ZeroSize("qpp::rand()", "rows/cols");
+    if (a >= b)
         throw exception::OutOfRange("qpp::rand()", "a/b");
     // END EXCEPTION CHECKS
 
-    std::uniform_int_distribution<bigint> uid(a, b);
+    return rand<rmat>(rows, cols, a, b).cast<cplx>() +
+           1_i * rand<rmat>(rows, cols, a, b).cast<cplx>();
+}
+/// \endcond
 
+/**
+ * \brief Generates a random real number normally distributed in
+ * N(mean, sigma)
+ *
+ * \tparam T Arithmetic type
+ * \param mean Mean
+ * \param sigma Standard deviation
+ * \return Random real number normally distributed in N(mean, sigma)
+ */
+template <typename T,
+          typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
+T randn(T mean = 0, T sigma = 1) {
+    std::normal_distribution<T> nd(mean, sigma);
     auto& gen = RandomDevices::get_instance().get_prng();
 
-    return uid(gen);
+    return nd(gen);
 }
+
+/**
+ * \brief Generates a random real or complex matrix with entries normally
+ * distributed in N(mean, sigma).
+ *
+ * \note The template parameter cannot be automatically deduced and must be
+ * explicitly provided. It is only specialized for qpp::rmat and qpp::cmat.
+ *
+ * \note If complex, then both real and imaginary parts are normally distributed
+ * in N(mean, sigma)
+ *
+ * Example:
+ * \code
+ * // generates a 3 x 3 random Eigen::MatrixX over qpp::realT,
+ * // with entries normally distributed in N(0,2)
+ * rmat mat = randn<rmat>(3, 3, 0, 2);
+ *
+ * // generates a 3 x 3 random Eigen::MatrixX over qpp::cplx,
+ * // with entries (both real and imaginary) normally distributed in N(0,2)
+ * cmat mat = randn<cmat>(3, 3, 0, 2);
+ * \endcode
+ *
+ * \tparam Derived Matrix type, must be either qpp::rmat or qpp::cmat
+ * \param rows Number of rows of the randomly generated matrix
+ * \param cols Number of columns of the randomly generated matrix
+ * \param mean Mean
+ * \param sigma Standard deviation
+ * \return Random real (qpp::rmat specialization) or complex
+ * (qpp::cmat specialization) matrix
+ */
+template <typename Derived,
+          typename std::enable_if_t<!std::is_arithmetic_v<Derived>>* = nullptr>
+Derived randn([[maybe_unused]] idx rows, [[maybe_unused]] idx cols,
+              [[maybe_unused]] realT mean = 0,
+              [[maybe_unused]] realT sigma = 1) {
+    throw exception::UndefinedType("qpp::randn()");
+}
+
+/// \cond DO_NOT_DOCUMENT
+template <>
+inline rmat randn(idx rows, idx cols, realT mean, realT sigma) {
+    // EXCEPTION CHECKS
+
+    if (rows == 0 || cols == 0)
+        throw exception::ZeroSize("qpp::randn()", "rows/cols");
+    // END EXCEPTION CHECKS
+
+    std::normal_distribution<realT> nd(mean, sigma);
+    auto& gen = RandomDevices::get_instance().get_prng();
+
+    return rmat::Zero(rows, cols).unaryExpr([&nd, &gen](realT) {
+        return nd(gen);
+    });
+}
+
+template <>
+inline cmat randn(idx rows, idx cols, realT mean, realT sigma) {
+    // EXCEPTION CHECKS
+
+    if (rows == 0 || cols == 0)
+        throw exception::ZeroSize("qpp::randn()", "rows/cols");
+    // END EXCEPTION CHECKS
+
+    return randn<rmat>(rows, cols, mean, sigma).cast<cplx>() +
+           1_i * randn<rmat>(rows, cols, mean, sigma).cast<cplx>();
+}
+/// \endcond
 
 /**
  * \brief Generates a random index (idx) uniformly distributed in the interval
@@ -100,153 +236,6 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
     auto& gen = RandomDevices::get_instance().get_prng();
 
     return uid(gen);
-}
-
-/**
- * \brief Generates a random real or complex matrix with entries uniformly
- * distributed in the interval [a, b)
- *
- * \note The template parameter cannot be automatically deduced and must be
- * explicitly provided. It is only specialized for qpp::dmat and qpp::cmat.
- *
- * \note If complex, then both real and imaginary parts are uniformly
- * distributed in [a, b)
- *
- * Example:
- * \code
- * // generates a 3 x 3 random Eigen::MatrixXd,
- * // with entries uniformly distributed in [-1,1)
- * dmat mat = rand<dmat>(3, 3, -1, 1);
- *
- * // generates a 3 x 3 random Eigen::MatrixXcd,
- * // with entries (both real and imaginary) uniformly distributed in [-1,1)
- * cmat mat = rand<cmat>(3, 3, -1, 1);
- * \endcode
- *
- * \tparam Derived Matrix type, must be either qpp::dmat or qpp::cmat
- * \param rows Number of rows of the randomly generated matrix
- * \param cols Number of columns of the randomly generated matrix
- * \param a Beginning of the interval, belongs to it
- * \param b End of the interval, does not belong to it
- * \return Random real (qpp::dmat specialization) or complex
- * (qpp::cmat specialization) matrix
- */
-template <typename Derived>
-Derived rand([[maybe_unused]] idx rows, [[maybe_unused]] idx cols,
-             [[maybe_unused]] double a = 0, [[maybe_unused]] double b = 1) {
-    throw exception::UndefinedType("qpp::rand()");
-}
-
-/// \cond DO_NOT_DOCUMENT
-template <>
-inline dmat rand(idx rows, idx cols, double a, double b) {
-    // EXCEPTION CHECKS
-
-    if (rows == 0 || cols == 0)
-        throw exception::ZeroSize("qpp::rand()", "rows/cols");
-    if (a >= b)
-        throw exception::OutOfRange("qpp::rand()", "a/b");
-    // END EXCEPTION CHECKS
-
-    return dmat::Zero(rows, cols).unaryExpr([a, b](double) {
-        return rand(a, b);
-    });
-}
-
-template <>
-inline cmat rand(idx rows, idx cols, double a, double b) {
-    // EXCEPTION CHECKS
-
-    if (rows == 0 || cols == 0)
-        throw exception::ZeroSize("qpp::rand()", "rows/cols");
-    if (a >= b)
-        throw exception::OutOfRange("qpp::rand()", "a/b");
-    // END EXCEPTION CHECKS
-
-    return rand<dmat>(rows, cols, a, b).cast<cplx>() +
-           1_i * rand<dmat>(rows, cols, a, b).cast<cplx>();
-}
-/// \endcond
-
-/**
- * \brief Generates a random real or complex matrix with entries normally
- * distributed in N(mean, sigma).
- *
- * \note The template parameter cannot be automatically deduced and must be
- * explicitly provided. It is only specialized for qpp::dmat and qpp::cmat.
- *
- * \note If complex, then both real and imaginary parts are normally distributed
- * in N(mean, sigma)
- *
- * Example:
- * \code
- * // generates a 3 x 3 random Eigen::MatrixXd,
- * // with entries normally distributed in N(0,2)
- * dmat mat = randn<dmat>(3, 3, 0, 2);
- *
- * // generates a 3 x 3 random Eigen::MatrixXcd,
- * // with entries (both real and imaginary) normally distributed in N(0,2)
- * cmat mat = randn<cmat>(3, 3, 0, 2);
- * \endcode
- *
- * \tparam Derived Matrix type, must be either qpp::dmat or qpp::cmat
- * \param rows Number of rows of the randomly generated matrix
- * \param cols Number of columns of the randomly generated matrix
- * \param mean Mean
- * \param sigma Standard deviation
- * \return Random real (qpp::dmat specialization) or complex
- * (qpp::cmat specialization) matrix
- */
-template <typename Derived>
-Derived randn([[maybe_unused]] idx rows, [[maybe_unused]] idx cols,
-              [[maybe_unused]] double mean = 0,
-              [[maybe_unused]] double sigma = 1) {
-    throw exception::UndefinedType("qpp::randn()");
-}
-
-/// \cond DO_NOT_DOCUMENT
-template <>
-inline dmat randn(idx rows, idx cols, double mean, double sigma) {
-    // EXCEPTION CHECKS
-
-    if (rows == 0 || cols == 0)
-        throw exception::ZeroSize("qpp::randn()", "rows/cols");
-    // END EXCEPTION CHECKS
-
-    std::normal_distribution<> nd(mean, sigma);
-    auto& gen = RandomDevices::get_instance().get_prng();
-
-    return dmat::Zero(rows, cols).unaryExpr([&nd, &gen](double) {
-        return nd(gen);
-    });
-}
-
-template <>
-inline cmat randn(idx rows, idx cols, double mean, double sigma) {
-    // EXCEPTION CHECKS
-
-    if (rows == 0 || cols == 0)
-        throw exception::ZeroSize("qpp::randn()", "rows/cols");
-    // END EXCEPTION CHECKS
-
-    return randn<dmat>(rows, cols, mean, sigma).cast<cplx>() +
-           1_i * randn<dmat>(rows, cols, mean, sigma).cast<cplx>();
-}
-/// \endcond
-
-/**
- * \brief Generates a random real number (double) normally distributed in
- * N(mean, sigma)
- *
- * \param mean Mean
- * \param sigma Standard deviation
- * \return Random real number normally distributed in N(mean, sigma)
- */
-inline double randn(double mean = 0, double sigma = 1) {
-    std::normal_distribution<> nd(mean, sigma);
-    auto& gen = RandomDevices::get_instance().get_prng();
-
-    return nd(gen);
 }
 
 /**
@@ -272,9 +261,10 @@ inline cmat randU(idx D = 2)
     // phase correction so that the resultant matrix is
     // uniformly distributed according to the Haar measure
 
-    Eigen::VectorXcd phases = (rand<dmat>(D, 1)).cast<cplx>();
+    dyn_col_vect<cplx> phases = (rand<rmat>(D, 1)).cast<cplx>();
     for (idx i = 0; i < static_cast<idx>(phases.rows()); ++i)
-        phases(i) = std::exp(2 * pi * 1_i * phases(i));
+        phases(i) =
+            std::exp(static_cast<cplx::value_type>(2 * pi) * 1_i * phases(i));
 
     Q = Q * phases.asDiagonal();
 
@@ -373,7 +363,8 @@ inline cmat randH(idx D = 2) {
         throw exception::DimsInvalid("qpp::randH()", "D");
     // END EXCEPTION CHECKS
 
-    cmat H = 2 * rand<cmat>(D, D) - (1. + 1_i) * cmat::Ones(D, D);
+    cmat H = 2 * rand<cmat>(D, D) -
+             (static_cast<realT>(1.) + 1_i) * cmat::Ones(D, D);
 
     return H + H.adjoint();
 }
@@ -457,23 +448,23 @@ inline std::vector<idx> randperm(idx N) {
  * \param N Size of the probability vector
  * \return Random probability vector
  */
-inline std::vector<double> randprob(idx N) {
+inline std::vector<realT> randprob(idx N) {
     // EXCEPTION CHECKS
 
     if (N == 0)
         throw exception::ZeroSize("qpp::randprob()");
     // END EXCEPTION CHECKS
 
-    std::vector<double> result(N);
+    std::vector<realT> result(N);
 
     // generate
-    std::exponential_distribution<> ed(1);
+    std::exponential_distribution<realT> ed(1);
     auto& gen = RandomDevices::get_instance().get_prng();
     for (idx i = 0; i < N; ++i)
         result[i] = ed(gen);
 
     // normalize
-    double sumprob = std::accumulate(result.begin(), result.end(), 0.0);
+    realT sumprob = std::accumulate(result.begin(), result.end(), 0.0);
     for (idx i = 0; i < N; ++i)
         result[i] /= sumprob;
 
@@ -487,7 +478,7 @@ inline std::vector<double> randprob(idx N) {
  * \param p Probability bias (0.5 by default)
  * \return Boolean drawn from a Bernoulli-\f$p\f$ distribution
  */
-inline bool bernoulli(double p = 0.5) {
+inline bool bernoulli(realT p = 0.5) {
     std::bernoulli_distribution bd(p);
     auto& gen = RandomDevices::get_instance().get_prng();
 

@@ -40,7 +40,7 @@ namespace qpp {
  * \return von-Neumann entropy, with the logarithm in base 2
  */
 template <typename Derived>
-double entropy(const Eigen::MatrixBase<Derived>& A) {
+realT entropy(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -54,8 +54,8 @@ double entropy(const Eigen::MatrixBase<Derived>& A) {
         throw exception::MatrixNotSquare("qpp::entropy()", "A");
     // END EXCEPTION CHECKS
 
-    dmat ev = svals(rA); // get the singular values
-    double result = 0;
+    rmat ev = svals(rA); // get the singular values
+    realT result = 0;
     for (idx i = 0; i < static_cast<idx>(ev.rows()); ++i)
         if (ev(i) != 0) // not identically zero
             result -= ev(i) * std::log2(ev(i));
@@ -69,7 +69,7 @@ double entropy(const Eigen::MatrixBase<Derived>& A) {
  * \param prob Real probability vector
  * \return Shannon entropy, with the logarithm in base 2
  */
-inline double entropy(const std::vector<double>& prob) {
+inline realT entropy(const std::vector<realT>& prob) {
     // EXCEPTION CHECKS
 
     // check zero-size
@@ -77,8 +77,8 @@ inline double entropy(const std::vector<double>& prob) {
         throw exception::ZeroSize("qpp::entropy()", "prob");
     // END EXCEPTION CHECKS
 
-    double result = 0;
-    for (double p : prob)
+    realT result = 0;
+    for (realT p : prob)
         if (std::abs(p) != 0) // not identically zero
             result -= std::abs(p) * std::log2(std::abs(p));
 
@@ -98,7 +98,7 @@ inline double entropy(const std::vector<double>& prob) {
  * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
  */
 template <typename Derived>
-double renyi(const Eigen::MatrixBase<Derived>& A, double alpha) {
+realT renyi(const Eigen::MatrixBase<Derived>& A, realT alpha) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -124,8 +124,8 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha) {
     if (alpha == infty) // H min
         return -std::log2(svals(rA)[0]);
 
-    dmat sv = svals(rA); // get the singular values
-    double result = 0;
+    rmat sv = svals(rA); // get the singular values
+    realT result = 0;
     for (idx i = 0; i < static_cast<idx>(sv.rows()); ++i)
         if (sv(i) != 0) // not identically zero
             result += std::pow(sv(i), alpha);
@@ -145,7 +145,7 @@ double renyi(const Eigen::MatrixBase<Derived>& A, double alpha) {
  * \f$\alpha = \infty\f$
  * \return Renyi-\f$\alpha\f$ entropy, with the logarithm in base 2
  */
-inline double renyi(const std::vector<double>& prob, double alpha) {
+inline realT renyi(const std::vector<realT>& prob, realT alpha) {
     // EXCEPTION CHECKS
 
     // check zero-size
@@ -164,16 +164,16 @@ inline double renyi(const std::vector<double>& prob, double alpha) {
 
     if (alpha == infty) // H min
     {
-        double max = 0;
-        for (double p : prob)
+        realT max = 0;
+        for (realT p : prob)
             if (std::abs(p) > max)
                 max = std::abs(p);
 
         return -std::log2(max);
     }
 
-    double result = 0;
-    for (double p : prob)
+    realT result = 0;
+    for (realT p : prob)
         if (std::abs(p) != 0) // not identically zero
             result += std::pow(std::abs(p), alpha);
 
@@ -191,7 +191,7 @@ inline double renyi(const std::vector<double>& prob, double alpha) {
  * \return Tsallis-\f$q\f$ entropy
  */
 template <typename Derived>
-double tsallis(const Eigen::MatrixBase<Derived>& A, double q) {
+realT tsallis(const Eigen::MatrixBase<Derived>& A, realT q) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -211,8 +211,8 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q) {
     if (q == 1) // Shannon/von-Neumann with base e logarithm
         return entropy(rA) * std::log(2);
 
-    dmat ev = svals(rA); // get the singular values
-    double result = 0;
+    rmat ev = svals(rA); // get the singular values
+    realT result = 0;
     for (idx i = 0; i < static_cast<idx>(ev.rows()); ++i)
         if (ev(i) != 0) // not identically zero
             result += std::pow(ev(i), q);
@@ -231,7 +231,7 @@ double tsallis(const Eigen::MatrixBase<Derived>& A, double q) {
  * \param q Non-negative real number
  * \return Tsallis-\f$q\f$ entropy
  */
-inline double tsallis(const std::vector<double>& prob, double q) {
+inline realT tsallis(const std::vector<realT>& prob, realT q) {
     // EXCEPTION CHECKS
 
     // check zero-size
@@ -245,8 +245,8 @@ inline double tsallis(const std::vector<double>& prob, double q) {
     if (q == 1) // Shannon/von-Neumann with base e logarithm
         return entropy(prob) * std::log(2);
 
-    double result = 0;
-    for (double p : prob)
+    realT result = 0;
+    for (realT p : prob)
         if (std::abs(p) != 0) // not identically zero
             result += std::pow(std::abs(p), q);
 
@@ -263,10 +263,10 @@ inline double tsallis(const std::vector<double>& prob, double q) {
  * \return Mutual information between the 2 subsystems
  */
 template <typename Derived>
-double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-                   const std::vector<idx>& subsysA,
-                   const std::vector<idx>& subsysB,
-                   const std::vector<idx>& dims) {
+realT qmutualinfo(const Eigen::MatrixBase<Derived>& A,
+                  const std::vector<idx>& subsysA,
+                  const std::vector<idx>& subsysB,
+                  const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -334,9 +334,9 @@ double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
  * \return Mutual information between the 2 subsystems
  */
 template <typename Derived>
-double qmutualinfo(const Eigen::MatrixBase<Derived>& A,
-                   const std::vector<idx>& subsysA,
-                   const std::vector<idx>& subsysB, idx d = 2) {
+realT qmutualinfo(const Eigen::MatrixBase<Derived>& A,
+                  const std::vector<idx>& subsysA,
+                  const std::vector<idx>& subsysB, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS

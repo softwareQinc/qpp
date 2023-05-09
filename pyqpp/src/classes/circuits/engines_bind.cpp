@@ -136,14 +136,13 @@ void init_classes_circuits_engines(py::module_& m) {
              [](const QEngine& self, py::dict) { return QEngine(self); });
 
     /* qpp::QNoisyEngine instantiations with different noise models */
-    declare_noisy_engine<qpp::QubitBitFlipNoise, double>(m,
-                                                         "QubitBitFlipNoise");
-    declare_noisy_engine<qpp::QubitBitPhaseFlipNoise, double>(
+    declare_noisy_engine<qpp::QubitBitFlipNoise, realT>(m, "QubitBitFlipNoise");
+    declare_noisy_engine<qpp::QubitBitPhaseFlipNoise, realT>(
         m, "QubitBitPhaseFlipNoise");
-    declare_noisy_engine<qpp::QubitDepolarizingNoise, double>(
+    declare_noisy_engine<qpp::QubitDepolarizingNoise, realT>(
         m, "QubitDepolarizingNoise");
-    declare_noisy_engine<qpp::QubitPhaseFlipNoise, double>(
+    declare_noisy_engine<qpp::QubitPhaseFlipNoise, realT>(
         m, "QubitPhaseFlipNoise");
-    declare_noisy_engine<qpp::QuditDepolarizingNoise, double, idx>(
+    declare_noisy_engine<qpp::QuditDepolarizingNoise, realT, idx>(
         m, "QuditDepolarizingNoise");
 }

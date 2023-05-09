@@ -56,7 +56,7 @@ namespace qpp::experimental {
  */
 template <typename Derived>
 [[qpp::critical,
-  qpp::parallel]] std::tuple<std::vector<idx>, double, expr_t<Derived>>
+  qpp::parallel]] std::tuple<std::vector<idx>, realT, expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             const std::vector<idx>& dims, bool destructive = true) {
     // typename Eigen::MatrixBase<Derived>::EvalReturnType cA = A.derived();
@@ -106,7 +106,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     idx Dsubsys = prod(dims_subsys);
 
     bool is_ket = internal::check_cvector(cA);
-    std::vector<double> pbs;
+    std::vector<realT> pbs;
     if (is_ket) {
         pbs = qpp::abssq(cA);
     } else {
@@ -116,7 +116,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     }
 
     // sample
-    std::discrete_distribution dd(pbs.begin(), pbs.end());
+    std::discrete_distribution<idx> dd(pbs.begin(), pbs.end());
     auto& gen = RandomDevices::get_instance().get_prng();
     idx sample_dec = dd(gen);
     auto sample_midx = n2multiidx(sample_dec, dims);
@@ -143,7 +143,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     };
 
     expr_t<Derived> out_state{};
-    double prob = 0;
+    realT prob = 0;
     //************ ket ************//
     if (is_ket) {
         // compute the probability of the outcome and the output state
@@ -173,7 +173,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
                 { out_state += current_ket; }
             } // end if(overlap_ket)
         }     // end for
-        double norm_out_state = norm(out_state);
+        realT norm_out_state = norm(out_state);
         prob = norm_out_state * norm_out_state;
         out_state = out_state / norm_out_state;
     } // end if(ket)
@@ -252,7 +252,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  * probability, and 3. Post-measurement normalized state
  */
 template <typename Derived>
-std::tuple<std::vector<idx>, double, expr_t<Derived>>
+std::tuple<std::vector<idx>, realT, expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             idx d = 2, bool destructive = true) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();

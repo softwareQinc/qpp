@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 set(QPP_VERSION_NUM 4.1)
 set(QPP_VERSION_STR "${QPP_VERSION_NUM}")
 project(qpp VERSION ${QPP_VERSION_NUM} LANGUAGES CXX)
@@ -16,7 +16,12 @@ add_compile_definitions(PROJECT_ROOT_DIR="${PROJECT_SOURCE_DIR}")
 
 #### Guard against in-source builds (snippet from Eigen's CMakeLists.txt)
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-    message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt.")
+    message(FATAL_ERROR "In-source builds not allowed.
+    Please instruct cmake to use an out-of-source build, e.g.,
+
+        'cmake --build build ...'
+
+    You may need to remove CMakeCache.txt.")
 endif ()
 
 add_library(libqpp INTERFACE)
@@ -80,8 +85,8 @@ install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_dependencies.cmake" DESTINATION "li
 
 #### Uninstall
 #### https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
-#### UNIX/Linux: sudo make uninstall (or sudo cmake --build . --target uninstall)
-#### Windows:    cmake --build . --target UNINSTALL
+#### UNIX/Linux: sudo cmake --build build --target uninstall
+#### Windows:    cmake --build build --target UNINSTALL
 if (NOT TARGET uninstall)
     configure_file(
             "${CMAKE_CURRENT_SOURCE_DIR}/cmake/qpp_uninstall.cmake.in"

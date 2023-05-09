@@ -18,7 +18,7 @@ TEST(qpp_load_save, Matrix) {
     // DA = 1, DB = 1 degenerate case
     idx DA = 1, DB = 1;
     cmat A = rand<cmat>(DA, DB), loadA;
-    dmat B = rand<dmat>(DA, DB), loadB;
+    rmat B = rand<rmat>(DA, DB), loadB;
     dyn_mat<int> C = dyn_mat<int>::Random(DA, DB), loadC;
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -28,7 +28,7 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadA = load<cmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadA - A), 1e-7);
+    EXPECT_NEAR(0, norm(loadA - A), 1e-5);
 
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -36,9 +36,9 @@ TEST(qpp_load_save, Matrix) {
     }
     {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
-        loadB = load<dmat>(fin);
+        loadB = load<rmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadB - B), 1e-7);
+    EXPECT_NEAR(0, norm(loadB - B), 1e-5);
 
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -48,12 +48,12 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadC = load<dyn_mat<int>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadC - C), 1e-7);
+    EXPECT_NEAR(0, norm(loadC - C), 1e-5);
 
     // DA = 1, DB = 10
     DA = 1, DB = 10;
     A = rand<cmat>(DA, DB);
-    B = rand<dmat>(DA, DB);
+    B = rand<rmat>(DA, DB);
     C = dyn_mat<int>::Random(DA, DB);
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -63,7 +63,7 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadA = load<cmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadA - A), 1e-7);
+    EXPECT_NEAR(0, norm(loadA - A), 1e-5);
 
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -71,9 +71,9 @@ TEST(qpp_load_save, Matrix) {
     }
     {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
-        loadB = load<dmat>(fin);
+        loadB = load<rmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadB - B), 1e-7);
+    EXPECT_NEAR(0, norm(loadB - B), 1e-5);
 
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -83,12 +83,12 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadC = load<dyn_mat<int>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadC - C), 1e-7);
+    EXPECT_NEAR(0, norm(loadC - C), 1e-5);
 
     // DA = 32, DB = 24
     DA = 32, DB = 24;
     A = rand<cmat>(DA, DB);
-    B = rand<dmat>(DA, DB);
+    B = rand<rmat>(DA, DB);
     C = dyn_mat<int>::Random(DA, DB);
 
     {
@@ -100,7 +100,7 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadA = load<cmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadA - A), 1e-7);
+    EXPECT_NEAR(0, norm(loadA - A), 1e-5);
 
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -108,9 +108,9 @@ TEST(qpp_load_save, Matrix) {
     }
     {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
-        loadB = load<dmat>(fin);
+        loadB = load<rmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadB - B), 1e-7);
+    EXPECT_NEAR(0, norm(loadB - B), 1e-5);
 
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -120,7 +120,7 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadC = load<dyn_mat<int>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadC - C), 1e-7);
+    EXPECT_NEAR(0, norm(loadC - C), 1e-5);
 
     // expression
     A = rand<cmat>(5, 5);
@@ -133,7 +133,7 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         load_expression = load<cmat>(fin);
     }
-    EXPECT_NEAR(0, norm(load_expression - (A * A + A)), 1e-7);
+    EXPECT_NEAR(0, norm(load_expression - (A * A + A)), 1e-5);
 }
 /******************************************************************************/
 TEST(qpp_load_save, Vector) {
@@ -142,7 +142,7 @@ TEST(qpp_load_save, Vector) {
     // D = 1 degenerate case
     idx D = 1;
     ket A = randket(D), loadA;
-    dyn_row_vect<double> B = dyn_row_vect<double>::Random(D), loadB;
+    dyn_row_vect<realT> B = dyn_row_vect<realT>::Random(D), loadB;
     dyn_row_vect<int> C = dyn_row_vect<int>::Random(D), loadC;
 
     {
@@ -153,7 +153,7 @@ TEST(qpp_load_save, Vector) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadA = load<ket>(fin);
     }
-    EXPECT_NEAR(0, norm(loadA - A), 1e-7);
+    EXPECT_NEAR(0, norm(loadA - A), 1e-5);
 
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -161,9 +161,9 @@ TEST(qpp_load_save, Vector) {
     }
     {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
-        loadB = load<dyn_row_vect<double>>(fin);
+        loadB = load<dyn_row_vect<realT>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadB - B), 1e-7);
+    EXPECT_NEAR(0, norm(loadB - B), 1e-5);
 
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -173,12 +173,12 @@ TEST(qpp_load_save, Vector) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadC = load<dyn_row_vect<int>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadC - C), 1e-7);
+    EXPECT_NEAR(0, norm(loadC - C), 1e-5);
 
     // D = 32
     D = 32;
     A = randket(D);
-    B = dyn_row_vect<double>::Random(D);
+    B = dyn_row_vect<realT>::Random(D);
     C = dyn_row_vect<int>::Random(D);
 
     {
@@ -189,7 +189,7 @@ TEST(qpp_load_save, Vector) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadA = load<ket>(fin);
     }
-    EXPECT_NEAR(0, norm(loadA - A), 1e-7);
+    EXPECT_NEAR(0, norm(loadA - A), 1e-5);
 
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -197,9 +197,9 @@ TEST(qpp_load_save, Vector) {
     }
     {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
-        loadB = load<dyn_row_vect<double>>(fin);
+        loadB = load<dyn_row_vect<realT>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadB - B), 1e-7);
+    EXPECT_NEAR(0, norm(loadB - B), 1e-5);
 
     {
         std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
@@ -209,7 +209,7 @@ TEST(qpp_load_save, Vector) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         loadC = load<dyn_row_vect<int>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadC - C), 1e-7);
+    EXPECT_NEAR(0, norm(loadC - C), 1e-5);
 
     // expression
     {
@@ -221,7 +221,7 @@ TEST(qpp_load_save, Vector) {
         std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
         load_expression = load<ket>(fin);
     }
-    EXPECT_NEAR(0, norm(load_expression - (3. * A + A)), 1e-7);
+    EXPECT_NEAR(0, norm(load_expression - (3. * A + A)), 1e-5);
 }
 #endif // if (0)
 
@@ -237,7 +237,7 @@ TEST(qpp_load_save, Matrix) {
     // DA = 1, DB = 1 degenerate case
     idx DA = 1, DB = 1;
     cmat A = rand<cmat>(DA, DB), loadA;
-    dmat B = rand<dmat>(DA, DB), loadB;
+    rmat B = rand<rmat>(DA, DB), loadB;
     dyn_mat<int> C = dyn_mat<int>::Random(DA, DB), loadC;
     {
         std::ofstream fout("mat.txt");
@@ -247,7 +247,7 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.txt");
         loadA = load<cmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadA - A), 1e-7);
+    EXPECT_NEAR(0, norm(loadA - A), 1e-5);
 
     {
         std::ofstream fout("mat.txt");
@@ -255,9 +255,9 @@ TEST(qpp_load_save, Matrix) {
     }
     {
         std::ifstream fin("mat.txt");
-        loadB = load<dmat>(fin);
+        loadB = load<rmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadB - B), 1e-7);
+    EXPECT_NEAR(0, norm(loadB - B), 1e-5);
 
     {
         std::ofstream fout("mat.txt");
@@ -267,12 +267,12 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.txt");
         loadC = load<dyn_mat<int>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadC - C), 1e-7);
+    EXPECT_NEAR(0, norm(loadC - C), 1e-5);
 
     // DA = 1, DB = 10
     DA = 1, DB = 10;
     A = rand<cmat>(DA, DB);
-    B = rand<dmat>(DA, DB);
+    B = rand<rmat>(DA, DB);
     C = dyn_mat<int>::Random(DA, DB);
     {
         std::ofstream fout("mat.txt");
@@ -282,7 +282,7 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.txt");
         loadA = load<cmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadA - A), 1e-7);
+    EXPECT_NEAR(0, norm(loadA - A), 1e-5);
 
     {
         std::ofstream fout("mat.txt");
@@ -290,9 +290,9 @@ TEST(qpp_load_save, Matrix) {
     }
     {
         std::ifstream fin("mat.txt");
-        loadB = load<dmat>(fin);
+        loadB = load<rmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadB - B), 1e-7);
+    EXPECT_NEAR(0, norm(loadB - B), 1e-5);
 
     {
         std::ofstream fout("mat.txt");
@@ -302,12 +302,12 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.txt");
         loadC = load<dyn_mat<int>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadC - C), 1e-7);
+    EXPECT_NEAR(0, norm(loadC - C), 1e-5);
 
     // DA = 32, DB = 24
     DA = 32, DB = 24;
     A = rand<cmat>(DA, DB);
-    B = rand<dmat>(DA, DB);
+    B = rand<rmat>(DA, DB);
     C = dyn_mat<int>::Random(DA, DB);
 
     {
@@ -319,7 +319,7 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.txt");
         loadA = load<cmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadA - A), 1e-7);
+    EXPECT_NEAR(0, norm(loadA - A), 1e-5);
 
     {
         std::ofstream fout("mat.txt");
@@ -327,9 +327,9 @@ TEST(qpp_load_save, Matrix) {
     }
     {
         std::ifstream fin("mat.txt");
-        loadB = load<dmat>(fin);
+        loadB = load<rmat>(fin);
     }
-    EXPECT_NEAR(0, norm(loadB - B), 1e-7);
+    EXPECT_NEAR(0, norm(loadB - B), 1e-5);
 
     {
         std::ofstream fout("mat.txt");
@@ -339,7 +339,7 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.txt");
         loadC = load<dyn_mat<int>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadC - C), 1e-7);
+    EXPECT_NEAR(0, norm(loadC - C), 1e-5);
 
     // expression
     A = rand<cmat>(5, 5);
@@ -352,7 +352,7 @@ TEST(qpp_load_save, Matrix) {
         std::ifstream fin("mat.txt");
         load_expression = load<cmat>(fin);
     }
-    EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
+    EXPECT_NEAR(0, norm(load_expression - expression), 1e-5);
 }
 /******************************************************************************/
 TEST(qpp_load_save, Vector) {
@@ -361,7 +361,7 @@ TEST(qpp_load_save, Vector) {
     // D = 1 degenerate case
     idx D = 1;
     ket A = randket(D), loadA;
-    dyn_row_vect<double> B = dyn_row_vect<double>::Random(D), loadB;
+    dyn_row_vect<realT> B = dyn_row_vect<realT>::Random(D), loadB;
     dyn_row_vect<int> C = dyn_row_vect<int>::Random(D), loadC;
 
     {
@@ -372,7 +372,7 @@ TEST(qpp_load_save, Vector) {
         std::ifstream fin("mat.txt");
         loadA = load<ket>(fin);
     }
-    EXPECT_NEAR(0, norm(loadA - A), 1e-7);
+    EXPECT_NEAR(0, norm(loadA - A), 1e-5);
 
     {
         std::ofstream fout("mat.txt");
@@ -380,9 +380,9 @@ TEST(qpp_load_save, Vector) {
     }
     {
         std::ifstream fin("mat.txt");
-        loadB = load<dyn_row_vect<double>>(fin);
+        loadB = load<dyn_row_vect<realT>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadB - B), 1e-7);
+    EXPECT_NEAR(0, norm(loadB - B), 1e-5);
 
     {
         std::ofstream fout("mat.txt");
@@ -392,12 +392,12 @@ TEST(qpp_load_save, Vector) {
         std::ifstream fin("mat.txt");
         loadC = load<dyn_row_vect<int>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadC - C), 1e-7);
+    EXPECT_NEAR(0, norm(loadC - C), 1e-5);
 
     // D = 32
     D = 32;
     A = randket(D);
-    B = dyn_row_vect<double>::Random(D);
+    B = dyn_row_vect<realT>::Random(D);
     C = dyn_row_vect<int>::Random(D);
 
     {
@@ -408,7 +408,7 @@ TEST(qpp_load_save, Vector) {
         std::ifstream fin("mat.txt");
         loadA = load<ket>(fin);
     }
-    EXPECT_NEAR(0, norm(loadA - A), 1e-7);
+    EXPECT_NEAR(0, norm(loadA - A), 1e-5);
 
     {
         std::ofstream fout("mat.txt");
@@ -416,9 +416,9 @@ TEST(qpp_load_save, Vector) {
     }
     {
         std::ifstream fin("mat.txt");
-        loadB = load<dyn_row_vect<double>>(fin);
+        loadB = load<dyn_row_vect<realT>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadB - B), 1e-7);
+    EXPECT_NEAR(0, norm(loadB - B), 1e-5);
 
     {
         std::ofstream fout("mat.txt");
@@ -428,7 +428,7 @@ TEST(qpp_load_save, Vector) {
         std::ifstream fin("mat.txt");
         loadC = load<dyn_row_vect<int>>(fin);
     }
-    EXPECT_NEAR(0, norm(loadC - C), 1e-7);
+    EXPECT_NEAR(0, norm(loadC - C), 1e-5);
 
     // expression
     ket expression = 3. * A + A, load_expression;
@@ -440,6 +440,6 @@ TEST(qpp_load_save, Vector) {
         std::ifstream fin("mat.txt");
         load_expression = load<ket>(fin);
     }
-    EXPECT_NEAR(0, norm(load_expression - expression), 1e-7);
+    EXPECT_NEAR(0, norm(load_expression - expression), 1e-5);
 }
 /******************************************************************************/

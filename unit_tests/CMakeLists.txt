@@ -7,7 +7,7 @@ if (MSVC)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif ()
 
-add_subdirectory(lib/googletest-release-1.12.1 EXCLUDE_FROM_ALL)
+add_subdirectory(libs/googletest-release-1.12.1 EXCLUDE_FROM_ALL SYSTEM)
 
 aux_source_directory(tests TEST_FILES)
 aux_source_directory(tests/MATLAB TEST_FILES)

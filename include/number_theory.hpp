@@ -44,7 +44,7 @@ namespace qpp {
  * of \a x. If there are \a M less than \a N terms in the expansion, a shorter
  * vector with \a M components is returned.
  */
-inline std::vector<bigint> x2contfrac(double x, idx N, idx cut = 100000) {
+inline std::vector<bigint> x2contfrac(realT x, idx N, idx cut = 10000) {
     // EXCEPTION CHECKS
 
     if (N == 0)
@@ -64,7 +64,7 @@ inline std::vector<bigint> x2contfrac(double x, idx N, idx cut = 100000) {
                 static_cast<bigint>(std::llround(std::ceil(x))));
             x = 1 / (x - std::ceil(x));
         }
-        if (!std::isfinite(x) || std::abs(x) > static_cast<double>(cut))
+        if (!std::isfinite(x) || std::abs(x) > static_cast<realT>(cut))
             return result;
     }
 
@@ -83,8 +83,8 @@ inline std::vector<bigint> x2contfrac(double x, idx N, idx cut = 100000) {
  *
  * \return Real representation of the simple continued fraction
  */
-inline double contfrac2x(const std::vector<bigint>& cf,
-                         idx N = std::numeric_limits<idx>::max()) {
+inline realT contfrac2x(const std::vector<bigint>& cf,
+                        idx N = std::numeric_limits<idx>::max()) {
     // EXCEPTION CHECKS
     if (cf.empty())
         throw exception::ZeroSize("qpp::contfrac2x()", "cf");
@@ -97,14 +97,14 @@ inline double contfrac2x(const std::vector<bigint>& cf,
         N = cf.size();
 
     if (N == 1) // degenerate case, integer
-        return static_cast<double>(cf[0]);
+        return static_cast<realT>(cf[0]);
 
-    double tmp = 1. / static_cast<double>(cf[N - 1]);
+    realT tmp = 1. / static_cast<realT>(cf[N - 1]);
     for (idx i = N - 2; i != 0; --i) {
-        tmp = 1. / (tmp + static_cast<double>(cf[i]));
+        tmp = 1. / (tmp + static_cast<realT>(cf[i]));
     }
 
-    return static_cast<double>(cf[0]) + tmp;
+    return static_cast<realT>(cf[0]) + tmp;
 }
 
 /**
@@ -360,7 +360,7 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
         }
         ua >>= static_cast<ubigint>(1);
 
-        /* double b, modulo a */
+        /* twice b, modulo a */
         temp_b = ub;
         if (ub >= up - ub) /* equiv to if (2 * ub >= p), without overflow */
             temp_b -= up;
@@ -497,7 +497,7 @@ inline bool isprime(bigint p, idx k = 80) {
         return true;
 
     //    // perform a Fermat primality test
-    bigint x = rand(2, p - 1);
+    bigint x = rand<bigint>(2, p - 1);
     if (modpow(x, p - 1, p) != 1)
         return false;
 
@@ -512,7 +512,7 @@ inline bool isprime(bigint p, idx k = 80) {
     // repeat k times
     for (idx i = 0; i < k; ++i) {
         // pick a random integer 'a' in the range [2, p - 2]
-        bigint a = rand(2, p - 2);
+        bigint a = rand<bigint>(2, p - 2);
 
         // set z = a^r mod p
         bigint z = modpow(a, r, p);
@@ -569,7 +569,7 @@ inline bigint randprime(bigint a, bigint b, idx N = 1000) {
             return candidate;
 
         // perform a Fermat test
-        bigint x = rand(2, candidate - 1);
+        bigint x = rand<bigint>(2, candidate - 1);
         if (modpow(x, candidate - 1, candidate) != 1)
             continue; // candidate fails
 
@@ -639,7 +639,7 @@ convergents(const std::vector<bigint>& cf) {
  * \return Vector of convergents pairs \f$(a_k, b_k)\f$ that approximate the
  * number \a x
  */
-inline std::vector<std::pair<bigint, bigint>> convergents(double x, idx N) {
+inline std::vector<std::pair<bigint, bigint>> convergents(realT x, idx N) {
 
     // EXCEPTION CHECKS
 

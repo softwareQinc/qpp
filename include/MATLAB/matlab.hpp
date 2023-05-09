@@ -127,7 +127,7 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
  * \code
  * // loads a previously saved Eigen dynamic double matrix
  * // from the MATLAB file "input.mat"
- * dmat mat = load_MATLAB<dmat>("input.mat");
+ * rmat mat = load_MATLAB<rmat>("input.mat");
  * \endcode
  *
  * \tparam Derived Non-complex Eigen type

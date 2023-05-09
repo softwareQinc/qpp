@@ -29,25 +29,23 @@ jobs:
       - run:
           name: Install the library
           command: |
-            mkdir build && cd build
-            cmake .. -DWITH_EXAMPLES=ON -DWITH_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
-            sudo make install
+            cmake -B build -DWITH_EXAMPLES=ON -DWITH_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
+            sudo cmake --build build --target install
       - run:
           name: Compile and run a standalone example
           command: |
-            cd examples/standalone && mkdir build && cd build
-            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j2
-            ./standalone
+            cd examples/standalone
+            cmake -B build -DCMAKE_BUILD_TYPE=Debug
+            cmake --build build
+            ./build/standalone
       - run:
           name: Build the examples
           command: |
-            cd build
-            make -j2 examples
+            cmake --build build --target examples --parallel 2
       - run:
           name: Build the unit tests
           command: |
-            cd build
-            make -j2 unit_tests
+            cmake --build build --target unit_tests --parallel 2
       - run:
           name: Run the unit tests
           command: |
@@ -71,25 +69,23 @@ jobs:
       - run:
           name: Install the library
           command: |
-            mkdir build && cd build
-            cmake .. -DWITH_EXAMPLES=ON -DWITH_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
-            sudo make install
+            cmake -B build -DWITH_EXAMPLES=ON -DWITH_UNIT_TESTS=ON -DCMAKE_BUILD_TYPE=Debug
+            sudo cmake --build build --target install
       - run:
           name: Compile and run a standalone example
           command: |
-            cd examples/standalone && mkdir build && cd build
-            cmake .. -DCMAKE_BUILD_TYPE=Debug && make -j2
-            ./standalone
+            cd examples/standalone
+            cmake -B build -DCMAKE_BUILD_TYPE=Debug
+            cmake --build build
+            ./build/standalone
       - run:
           name: Build the examples
           command: |
-            cd build
-            make -j2 examples
+            cmake --build build --target examples --parallel 2
       - run:
           name: Build the unit tests
           command: |
-            cd build
-            make -j2 unit_tests
+            cmake --build build --target unit_tests --parallel 2
       - run:
           name: Run the unit tests
           command: |

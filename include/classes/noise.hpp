@@ -62,9 +62,9 @@ class NoiseBase {
                   std::is_same<NoiseType::StateIndependent, noise_type>::value);
 
   protected:
-    const std::vector<cmat> Ks_;        ///< Kraus operators
-    mutable std::vector<double> probs_; ///< probabilities
-    mutable idx D_{};                   ///< qudit dimension
+    const std::vector<cmat> Ks_;       ///< Kraus operators
+    mutable std::vector<realT> probs_; ///< probabilities
+    mutable idx D_{};                  ///< qudit dimension
 
     mutable idx i_{}; ///< index of the last occurring noise element
     mutable bool generated_{false}; ///< set to true after compute_state_() is
@@ -181,7 +181,7 @@ class NoiseBase {
      */
     template <typename U = noise_type>
     explicit NoiseBase(
-        const std::vector<cmat>& Ks, const std::vector<double>& probs,
+        const std::vector<cmat>& Ks, const std::vector<realT>& probs,
         typename std::enable_if<std::is_same<NoiseType::StateIndependent,
                                              U>::value>::type* = nullptr)
         : Ks_{Ks}, probs_(probs) {
@@ -236,7 +236,7 @@ class NoiseBase {
      *
      * \return Probability vector
      */
-    std::vector<double> get_probs() const {
+    std::vector<realT> get_probs() const {
         if (generated_ ||
             std::is_same<NoiseType::StateIndependent, noise_type>::value) {
             return probs_;
@@ -265,7 +265,7 @@ class NoiseBase {
      *
      * \return Probability of the last occurring noise element
      */
-    double get_last_p() const {
+    realT get_last_p() const {
         if (generated_) {
             return probs_[i_];
         } else
@@ -357,7 +357,7 @@ class QubitDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
      *
      * \param p Noise probability
      */
-    explicit QubitDepolarizingNoise(double p)
+    explicit QubitDepolarizingNoise(realT p)
         : NoiseBase({Gates::get_no_thread_local_instance().Id2,
                      Gates::get_no_thread_local_instance().X,
                      Gates::get_no_thread_local_instance().Y,
@@ -383,7 +383,7 @@ class QubitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
      *
      * \param p Noise probability
      */
-    explicit QubitPhaseFlipNoise(double p)
+    explicit QubitPhaseFlipNoise(realT p)
         : NoiseBase({Gates::get_no_thread_local_instance().Id2,
                      Gates::get_no_thread_local_instance().Z},
                     {1 - p, p}) {
@@ -407,7 +407,7 @@ class QubitBitFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
      *
      * \param p Noise probability
      */
-    explicit QubitBitFlipNoise(double p)
+    explicit QubitBitFlipNoise(realT p)
         : NoiseBase({Gates::get_no_thread_local_instance().Id2,
                      Gates::get_no_thread_local_instance().X},
                     {1 - p, p}) {
@@ -431,7 +431,7 @@ class QubitBitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
      *
      * \param p Noise probability
      */
-    explicit QubitBitPhaseFlipNoise(double p)
+    explicit QubitBitPhaseFlipNoise(realT p)
         : NoiseBase({Gates::get_no_thread_local_instance().Id2,
                      Gates::get_no_thread_local_instance().Y},
                     {1 - p, p}) {
@@ -455,7 +455,7 @@ class QubitAmplitudeDampingNoise : public NoiseBase<NoiseType::StateDependent> {
      *
      * \param gamma Amplitude damping coefficient
      */
-    explicit QubitAmplitudeDampingNoise(double gamma)
+    explicit QubitAmplitudeDampingNoise(realT gamma)
         : NoiseBase(std::vector<cmat>{
               ((cmat(2, 2)) << 1, 0, 0, std::sqrt(gamma)).finished(),
               ((cmat(2, 2)) << 0, std::sqrt(1 - gamma), 0, 0).finished()}) {
@@ -480,7 +480,7 @@ class QubitPhaseDampingNoise : public NoiseBase<NoiseType::StateDependent> {
      *
      * \param lambda Phase damping coefficient
      */
-    explicit QubitPhaseDampingNoise(double lambda)
+    explicit QubitPhaseDampingNoise(realT lambda)
         : NoiseBase(std::vector<cmat>{
               ((cmat(2, 2)) << 1, 0, 0, std::sqrt(1 - lambda)).finished(),
               ((cmat(2, 2)) << 0, 0, 0, std::sqrt(lambda)).finished()}) {
@@ -526,12 +526,12 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \param D Qudit dimension
      * \return Probability vector
      */
-    static std::vector<double> fill_probs_(double p, idx D) {
-        std::vector<double> probs(D * D);
+    static std::vector<realT> fill_probs_(realT p, idx D) {
+        std::vector<realT> probs(D * D);
         probs[0] = 1 - p;
         for (idx i = 1; i < D * D; ++i)
             probs[i] =
-                p / static_cast<double>(D - 1) * static_cast<double>(D - 1);
+                p / static_cast<realT>(D - 1) * static_cast<realT>(D - 1);
 
         return probs;
     }
@@ -543,7 +543,7 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
      * \param p Noise probability
      * \param D Qudit dimension
      */
-    explicit QuditDepolarizingNoise(double p, idx D)
+    explicit QuditDepolarizingNoise(realT p, idx D)
         : NoiseBase(fill_Ks_(D), fill_probs_(p, D)) {
         // EXCEPTION CHECKS
 

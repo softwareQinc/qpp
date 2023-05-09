@@ -365,7 +365,7 @@ TEST(qpp_match_circuit_right, AllTests) {}
 TEST(qpp_replicate, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit random_circuit_count(idx nq, idx d, idx gate_count,
-///       std::optional<double> p_two,
+///       std::optional<realT> p_two,
 ///       std::optional<cmat> with_respect_to_gate = std::nullopt,
 ///       std::optional<std::vector<cmat>> one_qudit_gate_set = std::nullopt,
 ///       std::optional<std::vector<cmat>> two_qudit_gate_set = std::nullopt,
@@ -376,7 +376,7 @@ TEST(qpp_replicate, AllTests) {}
 TEST(qpp_random_circuit_count, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit random_circuit_depth(idx nq, idx d, idx gate_depth,
-///       std::optional<double> p_two,
+///       std::optional<realT> p_two,
 ///       std::optional<cmat> with_respect_to_gate = std::nullopt,
 ///       std::optional<std::vector<cmat>> one_qudit_gate_set = std::nullopt,
 ///       std::optional<std::vector<cmat>> two_qudit_gate_set = std::nullopt,
