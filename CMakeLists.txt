@@ -85,8 +85,8 @@ install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_dependencies.cmake" DESTINATION "li
 
 #### Uninstall
 #### https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
-#### UNIX/Linux: sudo make uninstall (or sudo cmake --build . --target uninstall)
-#### Windows:    cmake --build . --target UNINSTALL
+#### UNIX/Linux: sudo cmake --build build --target uninstall
+#### Windows:    cmake --build build --target UNINSTALL
 if (NOT TARGET uninstall)
     configure_file(
             "${CMAKE_CURRENT_SOURCE_DIR}/cmake/qpp_uninstall.cmake.in"
