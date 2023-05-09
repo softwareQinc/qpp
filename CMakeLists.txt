@@ -16,12 +16,9 @@ add_compile_definitions(PROJECT_ROOT_DIR="${PROJECT_SOURCE_DIR}")
 
 #### Guard against in-source builds (snippet from Eigen's CMakeLists.txt)
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-    message(FATAL_ERROR "In-source builds not allowed.
-    Please instruct cmake to use an out-of-source build, e.g.,
-
-        'cmake --build build ...'
-
-    You may need to remove CMakeCache.txt.")
+    message(FATAL_ERROR "In-source builds not allowed. Please instruct CMake to use an out-of-source build, e.g.,
+    cmake --build build ...
+You may need to remove CMakeCache.txt.")
 endif ()
 
 add_library(libqpp INTERFACE)
