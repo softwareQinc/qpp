@@ -41,11 +41,11 @@ jobs:
       - run:
           name: Build the examples
           command: |
-            cmake --build build --target examples --parallel 4
+            cmake --build build --target examples --parallel 2
       - run:
           name: Build the unit tests
           command: |
-            cmake --build build --target unit_tests --parallel 4
+            cmake --build build --target unit_tests --parallel 2
       - run:
           name: Run the unit tests
           command: |
@@ -80,11 +80,11 @@ jobs:
       - run:
           name: Build the examples
           command: |
-            cmake --build build --target examples --parallel 4
+            cmake --build build --target examples --parallel 2
       - run:
           name: Build the unit tests
           command: |
-            cmake --build build --target unit_tests --parallel 4
+            cmake --build build --target unit_tests --parallel 2
       - run:
           name: Run the unit tests
           command: |
