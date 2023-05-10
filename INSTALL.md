@@ -67,7 +67,13 @@ cmake --build build --target=examples --target=unit_tests --parallel 8
 The above command builds all examples as executables in `./build`, 
 followed by building the unit tests executable in 
 `./build/unit_tests/unit_tests`. The `--parallel 8` instructs CMake to build
-in parallel using 8 threads.
+in parallel using 8 threads. 
+
+Tu run the unit tests, execute
+
+```bash
+ctest --test-dir build
+```
 
 To build **only** a specific target, execute, e.g.,
 
