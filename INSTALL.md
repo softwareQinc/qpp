@@ -39,7 +39,7 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 ## Configuring the system
 
 First configure the system via CMake to use an out-of-source build directory 
-(e.g., `./build`) by typing in a terminal/console/command prompt
+(e.g., `./build`) by executing in a terminal/console/command prompt
 
 ```bash
 cmake -B build
@@ -181,13 +181,13 @@ target_link_libraries(standalone PUBLIC ${QPP_LINK_DEPS} libqpp)
 to `target_link_libraries()`!** (last line of the
 `CMakeLists.txt` file above).
 
-Configure the application in an out-of-source directory by typing 
+Configure the application in an out-of-source directory by executing
 
 ```bash
 cmake -B build 
 ```
 
-followed by build the application with
+followed by building the application with
 
 ```bash
 cmake --build build
@@ -216,7 +216,7 @@ does.
 
 ## Additional platform-specific instructions
 
-#### Eigen 3 installation under Windows
+### Eigen 3 installation under Windows
 
 - We **strongly** recommend installing [Eigen3](https://eigen.tuxfamily.org)
   using the [CMake](https://cmake.org) system, according to the installation
@@ -224,7 +224,7 @@ does.
   directory (which you obtain after un-zipping the Eigen distribution archive).
   For MSVC, this translates into downloading the Eigen3 archive
   form [https://eigen.tuxfamily.org](https://eigen.tuxfamily.org), unziping it
-  to e.g. `C:\path\to\eigen-3.x.x\`, followed by typing the following in an
+  to e.g. `C:\path\to\eigen-3.x.x\`, followed by executing the following in an
   Administrator Developer Command Prompt
 
 ```shell
@@ -237,7 +237,7 @@ Running the last line may require Administrator privileges. For other compilers,
 you may need to replace the last line `cmake --build . --target INSTALL`
 with `make install`.
 
-#### macOS/OS X specific instructions
+### macOS/OS X specific instructions
 
 - We highly recommend installing [clang](https://clang.llvm.org/) 
   via [Homebrew](https://brew.sh/), since the native AppleClang does not offer 
@@ -249,7 +249,7 @@ with `make install`.
 brew install libomp
 ```
 
-#### MATLAB support under Windows
+### MATLAB support under Windows
 
 If building under Windows
 with [MATLAB](https://www.mathworks.com/products/matlab/) support, please add the
@@ -257,6 +257,8 @@ location of
 `libmx.dll` and `libmat.dll` (the `.dll` **and not** the `.lib` files) to
 your `PATH` environment variable. In our case they are located
 under `C:\Program Files\MATLAB\R2021a\bin\win64`.
+
+## Python 3 wrapper
 
 [pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
 wrapper for Quantum++. pyqpp requires the same dependencies as Quantum++, and

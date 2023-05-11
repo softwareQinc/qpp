@@ -1,8 +1,8 @@
-pyqpp is a Python 3 wrapper for Quantum++.
+# Installation instructions
 
-# Installation
-
-pyqpp can be installed using `pip`:
+[pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
+wrapper for Quantum++. pyqpp requires the same dependencies as Quantum++, and
+can be installed using `pip`
 
 ```
 pip install git+https://github.com/softwareQinc/qpp
@@ -13,7 +13,10 @@ detect the location of the Eigen3 matrix library, set the environment variable
 `EIGEN3_INSTALL_DIR` to point to the location of the Eigen3 library
 (include the `include/eigen3` part of the path).
 
-# Overview
+For more details, please see
+[pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md).
+
+## Overview
 
 pyqpp includes `Bit_circuit`, `Dynamic_bitset`, `QCircuit`, `QEngine`, and
 several `QNoisyEngine` classes from Quantum++. Additionally, pyqpp provides
@@ -75,7 +78,7 @@ print("Norm difference:\n", norm(psi_out - psi_in))
 Use `pyqpp.qasm.read_from_file` to obtain the `QCircuit` representation of an
 OpenQASM 2.0 file.
 
-# Custom Bindings
+## Custom Bindings
 
 pyqpp was created using pybind11 (
 see [`pyqpp/qpp_wrapper.cpp`](https://github.com/softwareQinc/qpp/blob/main/pyqpp/qpp_wrapper.cpp))
