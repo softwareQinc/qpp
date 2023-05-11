@@ -216,7 +216,7 @@ does.
 
 ## Additional platform-specific instructions
 
-#### Eigen 3 installation under Windows
+### Eigen 3 installation under Windows
 
 - We **strongly** recommend installing [Eigen3](https://eigen.tuxfamily.org)
   using the [CMake](https://cmake.org) system, according to the installation
@@ -237,7 +237,7 @@ Running the last line may require Administrator privileges. For other compilers,
 you may need to replace the last line `cmake --build . --target INSTALL`
 with `make install`.
 
-#### macOS/OS X specific instructions
+### macOS/OS X specific instructions
 
 - We highly recommend installing [clang](https://clang.llvm.org/) 
   via [Homebrew](https://brew.sh/), since the native AppleClang does not offer 
@@ -249,7 +249,7 @@ with `make install`.
 brew install libomp
 ```
 
-#### MATLAB support under Windows
+### MATLAB support under Windows
 
 If building under Windows
 with [MATLAB](https://www.mathworks.com/products/matlab/) support, please add the
@@ -257,6 +257,8 @@ location of
 `libmx.dll` and `libmat.dll` (the `.dll` **and not** the `.lib` files) to
 your `PATH` environment variable. In our case they are located
 under `C:\Program Files\MATLAB\R2021a\bin\win64`.
+
+## Python 3 wrapper
 
 [pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
 wrapper for Quantum++. pyqpp requires the same dependencies as Quantum++, and
