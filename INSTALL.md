@@ -39,7 +39,7 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 ## Configuring the system
 
 First configure the system via CMake to use an out-of-source build directory 
-(e.g., `./build`) by typing in a terminal/console/command prompt
+(e.g., `./build`) by executing in a terminal/console/command prompt
 
 ```bash
 cmake -B build
@@ -181,13 +181,13 @@ target_link_libraries(standalone PUBLIC ${QPP_LINK_DEPS} libqpp)
 to `target_link_libraries()`!** (last line of the
 `CMakeLists.txt` file above).
 
-Configure the application in an out-of-source directory by typing 
+Configure the application in an out-of-source directory by executing
 
 ```bash
 cmake -B build 
 ```
 
-followed by build the application with
+followed by building the application with
 
 ```bash
 cmake --build build
@@ -224,7 +224,7 @@ does.
   directory (which you obtain after un-zipping the Eigen distribution archive).
   For MSVC, this translates into downloading the Eigen3 archive
   form [https://eigen.tuxfamily.org](https://eigen.tuxfamily.org), unziping it
-  to e.g. `C:\path\to\eigen-3.x.x\`, followed by typing the following in an
+  to e.g. `C:\path\to\eigen-3.x.x\`, followed by executing the following in an
   Administrator Developer Command Prompt
 
 ```shell
