@@ -1,4 +1,4 @@
-Pre-release
+Version 4.2 - 13 May 2023
     - On macOS, Quantum++ can now be installed via Homebrew with
       'brew install quantum++'
     - New types in ["types.hpp"]

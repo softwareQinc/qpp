@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.12)
-project(stress_tests VERSION 2.6 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.15)
+project(stress_tests LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 #### Guard against in-source builds (snippet from Eigen's CMakeLists.txt)
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})

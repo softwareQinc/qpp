@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 4.1 - 2 May 2023
+## Version 4.2 - 13 May 2023
 
 **Build status:**
 

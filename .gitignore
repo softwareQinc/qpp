@@ -40,3 +40,4 @@ doc/
 examples/_*.cpp
 out.tmp
 .cmake/
+Testing/
