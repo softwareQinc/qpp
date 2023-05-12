@@ -85,7 +85,7 @@ template <typename T>
 #endif
     // no error checks in release version to improve speed
 
-    // Static allocation for speed!
+    // static allocation for speed!
     // allocate twice the size for matrices reshaped as vectors
     T part_prod[2 * internal::maxn];
 

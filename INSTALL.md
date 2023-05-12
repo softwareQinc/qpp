@@ -116,6 +116,8 @@ required libraries and header files via the additional arguments
 
 ## Installing Quantum++
 
+### UNIX/UNIX-like
+
 To install Quantum++ (after [Configuring the system](#configuring-the-system)), 
 execute in a terminal/console (UNIX/UNIX-like systems)
 
@@ -144,9 +146,9 @@ Quantum++ with
 
     pkg install quantum++
 
-### macOS
+### macOS/Linux
 
-If you are running macOS, you can install Quantum++ via 
+If you are running macOS or Linux, you can install Quantum++ via 
 [Homebrew](https://brew.sh) with
 
     brew install quantum++
