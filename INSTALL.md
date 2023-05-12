@@ -223,9 +223,9 @@ does.
 - We **strongly** recommend installing [Eigen3](https://eigen.tuxfamily.org)
   using the [CMake](https://cmake.org) system, according to the installation
   instructions file INSTALL from the [Eigen3](https://eigen.tuxfamily.org) root
-  directory (which you obtain after un-zipping the Eigen distribution archive).
+  directory (which you obtain after unzipping the Eigen distribution archive).
   For MSVC, this translates into downloading the Eigen3 archive
-  form [https://eigen.tuxfamily.org](https://eigen.tuxfamily.org), unziping it
+  form [https://eigen.tuxfamily.org](https://eigen.tuxfamily.org), unzipping it
   to e.g. `C:\path\to\eigen-3.x.x\`, followed by executing the following in an
   Administrator Developer Command Prompt
 

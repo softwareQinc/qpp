@@ -15,7 +15,7 @@ Quantum++ is a modern C++ general purpose quantum computing library, composed
 solely of template header files. Quantum++ is written in standard C++17 and has
 very low external dependencies, using only
 the [Eigen 3](https://eigen.tuxfamily.org) linear algebra header-only template
-library and, if available, the [OpenMP](https://www.openmp.org/) multi-processing
+library and, if available, the [OpenMP](https://www.openmp.org/) multiprocessing
 library.
 
 Quantum++ is not restricted to qubit systems or specific quantum information
