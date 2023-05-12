@@ -12,8 +12,8 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 
 - [CMake](https://cmake.org/)
 - [Eigen 3](https://eigen.tuxfamily.org) linear algebra library
-    - Preferably install Eigen3 with via CMake or with a package manager,
-      e.g. `sudo apt install libeigen3-dev` to install on Ubuntu/Debian Linux,
+    - Preferably install Eigen3 with a package manager,
+      e.g., `sudo apt install libeigen3-dev` to install on Ubuntu/Debian Linux,
       so it is visible system-wide
     - **Important**: If, when building with Quantum++, your system is unable to
       detect the location of the Eigen3 matrix library, set the environment
