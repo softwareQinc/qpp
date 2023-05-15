@@ -1389,21 +1389,29 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
  *
  * Uses standard lexicographical order, i.e., 00...0, 00...1 etc.
  *
- * \tparam T Underlying non-negative integer type
+ * \tparam T Underlying (non-negative) integer type
+ * \tparam U Underlying (non-negative) integer type
+ * \tparam V Underlying (non-negative) integer type
  * \param n Non-negative integer index
  * \param dims Dimensions of the multi-partite system
  * \return Non-negative integer multi-index of the same size as \a dims
  */
-template <typename T>
-[[qpp::critical]] std::vector<T> n2multiidx(T n, const std::vector<idx>& dims) {
+template <typename T, typename U = T, typename V = T>
+[[qpp::critical]] std::vector<V> n2multiidx(T n, const std::vector<U>& dims) {
     // EXCEPTION CHECKS
     static_assert(std::is_integral_v<T>, "T must be an integral value");
+    static_assert(std::is_integral_v<U>, "U must be an integral value");
+    static_assert(std::is_integral_v<V>, "V must be an integral value");
 
     if (n < 0)
         throw exception::OutOfRange("qpp::n2multiidx()", "n");
 
     if (dims.size() > internal::maxn)
         throw exception::OutOfRange("qpp::n2multiidx()", "dims/maxn");
+
+    for (auto val : dims)
+        if (val < 0)
+            throw exception::OutOfRange("qpp::n2multiidx()", "dims");
 
     if (!internal::check_dims(dims)) {
         throw exception::DimsInvalid("qpp::n2multiidx()", "dims");
@@ -1416,7 +1424,7 @@ template <typename T>
     // END EXCEPTION CHECKS
 
     // allocate twice the size for matrices reshaped as vectors
-    T result[2 * internal::maxn];
+    idx result[2 * internal::maxn];
     internal::n2multiidx(n, dims.size(), dims.data(), result);
 
     return std::vector<T>(std::begin(result),
@@ -1429,20 +1437,28 @@ template <typename T>
  *
  * Uses standard lexicographical order, i.e., 00...0, 00...1 etc.
  *
- * \tparam T Underlying non-negative integer type
+ * \tparam T Underlying (non-negative) integer type
+ * \tparam U Underlying (non-negative) integer type
+ * \tparam V Underlying (non-negative) integer type
  * \param midx Non-negative integer multi-index
  * \param dims Dimensions of the multi-partite system
  * \return Non-negative integer index
  */
-template <typename T>
-[[qpp::critical]] T multiidx2n(const std::vector<T>& midx,
-                               const std::vector<idx>& dims) {
+template <typename V, typename T = V, typename U = T>
+[[qpp::critical]] T multiidx2n(const std::vector<V>& midx,
+                               const std::vector<U>& dims) {
     static_assert(std::is_integral_v<T>, "T must be an integral value");
+    static_assert(std::is_integral_v<U>, "U must be an integral value");
+    static_assert(std::is_integral_v<V>, "V must be an integral value");
 
     // EXCEPTION CHECKS
     for (auto val : midx)
         if (val < 0)
             throw exception::OutOfRange("qpp::multiidx2n()", "midx");
+
+    for (auto val : dims)
+        if (val < 0)
+            throw exception::OutOfRange("qpp::multiidx2n()", "dims");
 
     if (midx.size() != dims.size())
         throw exception::SizeMismatch("qpp::multiidx2n()", "dims/midx");
