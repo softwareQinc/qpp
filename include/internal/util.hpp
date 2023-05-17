@@ -40,23 +40,25 @@ namespace qpp {
 namespace internal {
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g., 00, 01, 10, 11
-template <typename T>
-[[qpp::critical]] void n2multiidx(T n, idx numdims, const idx* const dims,
-                                  T* result) noexcept {
+template <typename T, typename U = T, typename V = T>
+[[qpp::critical]] void n2multiidx(T n, std::size_t numdims, const U* const dims,
+                                  V* result) noexcept {
     static_assert(std::is_integral_v<T>, "T must be an integral value");
+    static_assert(std::is_integral_v<U>, "U must be an integral value");
+    static_assert(std::is_integral_v<V>, "V must be an integral value");
 
     // error checks only in DEBUG version
 #ifndef NDEBUG
     if (numdims > 0) // numdims equal zero is a no-op
     {
         idx D = 1;
-        for (idx i = 0; i < numdims; ++i)
+        for (std::size_t i = 0; i < numdims; ++i)
             D *= dims[i];
         assert(static_cast<idx>(n) < D);
     }
 #endif
     // no error checks in release version to improve speed
-    for (idx i = 0; i < numdims; ++i) {
+    for (std::size_t i = 0; i < numdims; ++i) {
         result[numdims - i - 1] = n % (dims[numdims - i - 1]);
         n /= (dims[numdims - i - 1]);
     }
@@ -71,16 +73,18 @@ template <typename T>
 #endif
 // multi-index to integer index, use C-style array for speed,
 // standard lexicographical order, e.g., 00->0, 01->1, 10->2, 11->3
-template <typename T>
-[[qpp::critical]] T multiidx2n(const T* const midx, idx numdims,
-                               const idx* const dims) noexcept {
+template <typename V, typename T = V, typename U = T>
+[[qpp::critical]] T multiidx2n(const V* const midx, std::size_t numdims,
+                               const U* const dims) noexcept {
     static_assert(std::is_integral_v<T>, "T must be an integral value");
+    static_assert(std::is_integral_v<U>, "U must be an integral value");
+    static_assert(std::is_integral_v<V>, "V must be an integral value");
 
     // error checks only in DEBUG version
     assert(numdims > 0);
     assert(numdims < internal::maxn);
 #ifndef NDEBUG
-    for (idx i = 0; i < numdims; ++i)
+    for (std::size_t i = 0; i < numdims; ++i)
         assert(static_cast<idx>(midx[i]) < dims[i]);
 #endif
     // no error checks in release version to improve speed
@@ -91,7 +95,7 @@ template <typename T>
 
     T result = 0;
     part_prod[numdims - 1] = 1;
-    for (idx i = 1; i < numdims; ++i) {
+    for (std::size_t i = 1; i < numdims; ++i) {
         part_prod[numdims - i - 1] = part_prod[numdims - i] * dims[numdims - i];
         result += midx[numdims - i - 1] * part_prod[numdims - i - 1];
     }
@@ -367,6 +371,7 @@ inline idx get_num_subsys(idx D, idx d) {
     assert(d > 1);
 
     auto n = static_cast<idx>(std::llround(std::log2(D) / std::log2(d)));
+
     return n;
 }
 
@@ -416,6 +421,7 @@ std::string real2text(T d) {
     std::stringstream ss;
     ss << std::setprecision(std::numeric_limits<T>::max_digits10);
     ss << d;
+
     return ss.str();
 }
 
@@ -426,25 +432,24 @@ T text2real(const std::string& str) {
     return std::strtod(str.c_str(), nullptr);
 }
 
-// returns true if the index i as a multi-index contains the multi-index
-// dits as a sub-index
+// returns true if the index i as a multi-index contains the multi-index dits
 inline bool idx_contains_dits(idx i, const std::vector<idx>& dits,
                               const std::vector<idx>& subsys,
                               const std::vector<idx>& dims) {
-
-    idx Cresult[internal::maxn];
+    idx Cstorage[internal::maxn];
     idx n = dims.size();
     idx subsys_size = subsys.size();
 
     /* get the col multi-indexes of the complement */
-    internal::n2multiidx(i, n, dims.data(), Cresult);
-    std::vector<idx> midx_i(Cresult, Cresult + n);
+    internal::n2multiidx(i, n, dims.data(), Cstorage);
+    std::vector<idx> midx_i(Cstorage, Cstorage + n);
 
     for (idx m = 0; m < subsys_size; m++) {
         if (midx_i[subsys[m]] != dits[m]) {
             return false;
         }
     }
+
     return true;
 }
 
@@ -463,6 +468,7 @@ dyn_col_vect<Derived> project_ket_on_dits(dyn_col_vect<Derived> psi,
             psi(i) = 0;
         }
     }
+
     return psi;
 }
 } /* namespace internal */
