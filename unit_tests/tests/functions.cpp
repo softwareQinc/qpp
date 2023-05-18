@@ -178,12 +178,12 @@ TEST(qpp_mprj, Qudits) {}
 /// BEGIN inline cmat mprj(const std::vector<idx>& mask, idx d = 2)
 TEST(qpp_mprj, Qubits) {}
 /******************************************************************************/
-/// BEGIN template <typename T> multiidx2n(const std::vector<T>& midx,
-///       const std::vector<idx>& dims)
+/// BEGIN template template <typename V, typename T = V, typename U = T>
+///       T multiidx2n(const std::vector<V>& midx, const std::vector<U>& dims)
 TEST(qpp_multiidx2n, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename T> std::vector<T> n2multiidx(T n,
-///       const std::vector<idx>& dims)
+/// BEGIN template <typename T, typename U = T, typename V = T>
+///       std::vector<V> n2multiidx(T n, const std::vector<U>& dims)
 TEST(qpp_n2multiidx, AllTests) {}
 /******************************************************************************/
 /// BEGIN template <typename Derived> realT norm(
