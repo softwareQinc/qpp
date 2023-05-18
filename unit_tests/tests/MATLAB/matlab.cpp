@@ -1,5 +1,3 @@
-#ifdef HAS_MATLAB_ENABLED
-
 #include "gtest/gtest.h"
 #include "qpp.h"
 
@@ -132,5 +130,3 @@ TEST(qpp_MATLAB_load_save_MATLAB, Vector) {
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-5);
 }
 /******************************************************************************/
-
-#endif // HAS_MATLAB_ENABLED
