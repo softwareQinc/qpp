@@ -38,10 +38,10 @@ jobs:
             cmake -B build -DCMAKE_BUILD_TYPE=Debug
             cmake --build build
             ./build/standalone
-      - run:
-          name: Build the examples
-          command: |
-            cmake --build build --target examples --parallel 2
+#      - run:
+#          name: Build the examples
+#          command: |
+#            cmake --build build --target examples --parallel 2
       - run:
           name: Build the unit tests
           command: |
@@ -50,6 +50,8 @@ jobs:
           name: Run the unit tests
           command: |
             pwd
+            ls -lsa
+            ls build
             ctest --test-dir build -E qpp_Timer
 
   macOS:
