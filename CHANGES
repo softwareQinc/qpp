@@ -1,5 +1,5 @@
 Pre-release
-    -
+    - Migrated all continuous integration to GitHub actions
 
 Version 4.2 - 13 May 2023
     - Quantum++ is now available on Homebrew (macOS/Linux), and can be

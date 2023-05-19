@@ -2,54 +2,86 @@ name: GitHub actions
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "**" ]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
-  WIN_EIGEN3_INSTALL_DIR: 'C:\ProgramData\chocolatey\lib\eigen'
+  EIGEN3_WIN_INSTALL_DIR: C:/ProgramData/chocolatey/lib/eigen/include
 
 jobs:
   build:
-    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
-    # You can convert this to a matrix build if you need cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Install Eigen3
-      run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          choco install eigen
-        elif [ "$RUNNER_OS" == "Linux" ]; then
-          sudo apt-get install -y libeigen3-dev
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          brew install eigen
-        else
-          echo "$RUNNER_OS not supported"
-          exit 1
-        fi
-      shell: bash
+      - name: Install Eigen3
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            choco install eigen
+          elif [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt-get install -y libeigen3-dev
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            brew install eigen
+          else
+            echo "$RUNNER_OS not supported"
+            exit 1
+          fi
 
-    - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: |
-        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON
+      - name: Configure Quantum++
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            cmake -B "${{github.workspace}}"/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DEIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}" -DWITH_UNIT_TESTS=ON -DWITH_EXAMPLES=ON
+          else
+            cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON -DWITH_EXAMPLES=ON
+          fi
 
-    - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target unit_tests --parallel 4
+      - name: Install Quantum++
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            cmake --build "${{github.workspace}}"/build --target install
+          else
+            sudo cmake --build ${{github.workspace}}/build --target install
+          fi
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}} -E qpp_Timer
+      - name: Configure standalone example
+        shell: bash
+        run: |
+          cd "${{github.workspace}}"/examples/standalone
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            cmake -B build -DEIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
+          else
+            cmake -B build
+          fi
+
+      - name: Build standalone example
+        run: |
+          cd ${{github.workspace}}/examples/standalone
+          cmake --build build --target standalone
+
+      - name: Run standalone example
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            "${{github.workspace}}"/examples/standalone/build/Debug/standalone.exe
+          else
+            ${{github.workspace}}/examples/standalone/build/standalone
+          fi
+
+      - name: Build examples
+        run: cmake --build ${{github.workspace}}/build --target examples
+
+      - name: Build unit tests
+        run: cmake --build ${{github.workspace}}/build --target unit_tests
+
+      - name: Run unit tests
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C ${{env.BUILD_TYPE}} -E qpp_Timer
