@@ -27,13 +27,15 @@ jobs:
     - name: Install Eigen3
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          choco install wget
+          choco install eigen
+        elif [ "$RUNNER_OS" == "Linux" ]; then
+          sudo apt-get install -y libeigen3-dev
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          brew install eigen
+        else
+          echo "$RUNNER_OS not supported"
+          exit 1
         fi
-        wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip
-        unzip eigen3.zip > nul
-        cd eigen-3.3.7
-        cmake -B build -DCMAKE_INSTALL_PREFIX=${{env.EIGEN3_INSTALL_DIR}}
-        cmake --build build --target install
       shell: bash
 
     - name: Configure CMake
