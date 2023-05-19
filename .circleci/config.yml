@@ -93,7 +93,7 @@ jobs:
 workflows:
   build:
     jobs:
-      - ubuntu_bionic:
-          name: ubuntu-bionic
+      - ubuntu:
+          name: ubuntu
 #     - macOS:
-#         name: macOS-base
+#         name: macOS
