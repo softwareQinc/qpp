@@ -43,7 +43,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DEIGEN3_INSTALL_DIR=${{env.WIN_EIGEN3_INSTALL_DIR}}/include/eigen3 -DWITH_UNIT_TESTS=ON
+          cmake -B "${{github.workspace}}"/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DEIGEN3_INSTALL_DIR=${{env.WIN_EIGEN3_INSTALL_DIR}}/include/eigen3 -DWITH_UNIT_TESTS=ON
         else
           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON
         fi
