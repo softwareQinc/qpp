@@ -9,6 +9,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  EIGEN3_INSTALL_DIR: ${{github.workspace}}/eigen3
 
 jobs:
   build:
@@ -21,12 +22,18 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install Eigen3
-      run: sudo apt-get install libeigen3-dev
+      run: |
+# sudo apt-get install libeigen3-dev
+        wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip
+        unzip eigen3.zip
+        cd eigen-3.3.7
+        cmake -B build -DCMAKE_INSTALL_PREFIX=${{env.EIGEN3_INSTALL_DIR}}
+        cmake --build build --target install
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DEIGEN3_INSTALL_DIR=${{env.EIGEN3_INSTALL_DIR}} -DWITH_UNIT_TESTS=ON
 
     - name: Build
       # Build your program with the given configuration
