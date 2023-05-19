@@ -27,7 +27,7 @@ jobs:
     - name: Install Eigen3
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          ls /ProgramData/chocolatey/lib
+          ls 'C:/ProgramData/chocolatey/lib'
           choco install eigen
         elif [ "$RUNNER_OS" == "Linux" ]; then
           sudo apt-get install -y libeigen3-dev
