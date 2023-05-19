@@ -182,7 +182,7 @@ TEST(qpp_mprj, Qubits) {}
 ///       T multiidx2n(const std::vector<V>& midx, const std::vector<U>& dims)
 TEST(qpp_multiidx2n, AllTests) {}
 /******************************************************************************/
-/// BEGIN <typename T, typename U = T, typename V = T> n2multiidx(T n,
+/// BEGIN template <typename T, typename U = T, typename V = T> n2multiidx(T n,
 ///       const std::vector<U>& dims)
 TEST(qpp_n2multiidx, AllTests) {}
 /******************************************************************************/
