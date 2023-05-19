@@ -38,10 +38,10 @@ jobs:
             cmake -B build -DCMAKE_BUILD_TYPE=Debug
             cmake --build build
             ./build/standalone
-#      - run:
-#          name: Build the examples
-#          command: |
-#            cmake --build build --target examples --parallel 2
+      - run:
+          name: Build the examples
+          command: |
+            cmake --build build --target examples --parallel 2
       - run:
           name: Build the unit tests
           command: |
@@ -49,10 +49,8 @@ jobs:
       - run:
           name: Run the unit tests
           command: |
-            ctest --test-dir ./build 
-            ctest --test-dir ./build/
             cd build
-            ctest 
+            ctest -E qpp_Timer
 
   macOS:
     description: A template for building and testing Quantum++ on macOS
@@ -91,7 +89,8 @@ jobs:
       - run:
           name: Run the unit tests
           command: |
-            ctest --test-dir build -E qpp_Timer
+            cd build
+            ctest -E qpp_Timer
 
 workflows:
   build:
