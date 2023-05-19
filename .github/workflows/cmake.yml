@@ -23,7 +23,6 @@ jobs:
 
     - name: Install Eigen3
       run: |
-# sudo apt-get install libeigen3-dev
         wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip
         unzip eigen3.zip
         cd eigen-3.3.7
