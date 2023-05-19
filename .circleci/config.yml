@@ -11,10 +11,10 @@ localCheckout: &localCheckout
     cp -a /tmp/_circleci_local_build_repo/.git ${PROJECT_PATH}
 
 jobs:
-  ubuntu_bionic:
+  ubuntu:
     description: A template for building and testing Quantum++ on Ubuntu Linux
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2204:current
     steps:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
@@ -49,8 +49,7 @@ jobs:
       - run:
           name: Run the unit tests
           command: |
-            cd build
-            ctest -E qpp_Timer
+            ctest --test-dir build -E qpp_Timer
 
   macOS:
     description: A template for building and testing Quantum++ on macOS
@@ -89,8 +88,7 @@ jobs:
       - run:
           name: Run the unit tests
           command: |
-            cd build
-            ctest -E qpp_Timer
+            ctest --test-dir build -E qpp_Timer
 
 workflows:
   build:

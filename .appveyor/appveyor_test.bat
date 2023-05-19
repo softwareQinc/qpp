@@ -1,5 +1,5 @@
 @echo off
-IF %COMPILER%==msvc2019 (
+IF %COMPILER%==msvc2022 (
     ctest --test-dir build -E qpp_Timer
 )
 IF %COMPILER%==msys2 (

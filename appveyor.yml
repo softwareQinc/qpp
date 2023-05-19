@@ -1,13 +1,13 @@
 version: 1.0.{build}
 
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 platform: x64
 
 environment: 
   EIGEN3_INSTALL_PATH: eigen3
   matrix:
-    - compiler: msvc2019
+    - compiler: msvc2022
     - compiler: msys2
     
 install:
