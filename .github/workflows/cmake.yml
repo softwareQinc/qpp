@@ -38,9 +38,14 @@ jobs:
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            cmake -B "${{github.workspace}}"/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DEIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}" -DWITH_UNIT_TESTS=ON -DWITH_EXAMPLES=ON
+            cmake -B "${{github.workspace}}"/build \
+              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+              -DEIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}" \
+              -DWITH_UNIT_TESTS=ON -DWITH_EXAMPLES=ON
           else
-            cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON -DWITH_EXAMPLES=ON
+            cmake -B ${{github.workspace}}/build \
+              -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON \
+              -DWITH_EXAMPLES=ON
           fi
 
       - name: Install Quantum++
@@ -57,7 +62,8 @@ jobs:
         run: |
           cd "${{github.workspace}}"/examples/standalone
           if [ "$RUNNER_OS" == "Windows" ]; then
-            cmake -B build -DEIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
+            cmake -B build \
+              -DEIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
           else
             cmake -B build
           fi
