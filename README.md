@@ -4,8 +4,7 @@
 
 **Build status:**
 
-[![Build status - CircleCI Linux/macOS](https://circleci.com/gh/softwareQinc/qpp.svg?style=svg)](https://circleci.com/gh/softwareQinc/qpp)
-[![Build status](https://ci.appveyor.com/api/projects/status/1k2866yffaiaapmw?svg=true)](https://ci.appveyor.com/project/vsoftco/qpp)
+[![GitHub actions](https://github.com/softwareqinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
 
 ---
 
