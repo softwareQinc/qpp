@@ -49,10 +49,10 @@ jobs:
       - run:
           name: Run the unit tests
           command: |
-            pwd
-            ls -lsa
-            ls build
-            ctest --test-dir build -E qpp_Timer
+            ctest --test-dir ./build 
+            ctest --test-dir ./build/
+            cd build
+            ctest 
 
   macOS:
     description: A template for building and testing Quantum++ on macOS
