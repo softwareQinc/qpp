@@ -49,6 +49,7 @@ jobs:
       - run:
           name: Run the unit tests
           command: |
+            pwd
             ctest --test-dir build -E qpp_Timer
 
   macOS:
