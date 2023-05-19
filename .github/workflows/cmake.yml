@@ -24,7 +24,7 @@ jobs:
     - name: Install Eigen3
       run: |
         wget https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip -O eigen3.zip
-        unzip eigen3.zip
+        unzip eigen3.zip > nul
         cd eigen-3.3.7
         cmake -B build -DCMAKE_INSTALL_PREFIX=${{env.EIGEN3_INSTALL_DIR}}
         cmake --build build --target install
