@@ -46,7 +46,7 @@ project's root directory
 cmake -B build
 ```
 
-## Building the examples and/or unit_tests
+## Building the examples and/or unit tests
 
 To build
 the [examples](https://github.com/softwareQinc/qpp/tree/main/examples) and/or 
