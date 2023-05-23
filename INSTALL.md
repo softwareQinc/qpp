@@ -39,7 +39,8 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 ## Configuring the system
 
 First configure the system via CMake to use an out-of-source build directory 
-(e.g., `./build`) by executing in a terminal/console/command prompt
+(e.g., `./build`) by executing (in a terminal/console/command prompt) under the 
+project's root directory
 
 ```bash
 cmake -B build
