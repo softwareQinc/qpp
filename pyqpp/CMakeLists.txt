@@ -1,5 +1,5 @@
-project(pyqpp)
 cmake_minimum_required(VERSION 3.15)
+project(pyqpp)
 
 #### Eigen3
 message(STATUS "Detecting Eigen3")
