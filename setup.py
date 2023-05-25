@@ -30,7 +30,7 @@ ext_modules = [
         source_files,
         extra_compile_args=["-Ilibs", "-Iinclude", "-Iqasmtools/include",
                             "-Ipyqpp/include",
-                            "-isystem" + eigen_path,
+                            "-I" + eigen_path,
                             "-DTYPE_IDX_DEFAULT",
                             "-DTYPE_BIGINT_DEFAULT",
                             "-DTYPE_FP_DEFAULT"],
