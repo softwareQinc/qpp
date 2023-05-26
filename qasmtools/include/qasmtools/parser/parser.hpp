@@ -34,10 +34,10 @@
 #ifndef QASMTOOLS_PARSER_PARSER_HPP_
 #define QASMTOOLS_PARSER_PARSER_HPP_
 
+#include <list>
+
 #include "../ast/ast.hpp"
 #include "preprocessor.hpp"
-
-#include <list>
 
 namespace qasmtools {
 namespace parser {

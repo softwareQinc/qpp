@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+
 #include "qpp.h"
 
 #include "MATLAB/matlab.hpp"

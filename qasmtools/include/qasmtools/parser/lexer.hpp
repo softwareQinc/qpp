@@ -34,10 +34,10 @@
 #ifndef QASMTOOLS_PARSER_LEXER_HPP_
 #define QASMTOOLS_PARSER_LEXER_HPP_
 
-#include "token.hpp"
-
 #include <cctype>
 #include <memory>
+
+#include "token.hpp"
 
 namespace qasmtools {
 namespace parser {
@@ -282,7 +282,7 @@ class Lexer {
                     << "Lexical error at " << tok_start
                     << ": identifiers must start with lowercase letters\n";
                 return Token(tok_start, Token::Kind::error,
-                             std::string({'C', (char) buf_->get()}));
+                             std::string({'C', (char)buf_->get()}));
 
             case 'U':
                 skip_char();
@@ -358,7 +358,7 @@ class Lexer {
                 std::cerr << "Lexical error at " << tok_start
                           << ": expected \"=\" after \"=\"\n";
                 return Token(tok_start, Token::Kind::error,
-                             std::string({'=', (char) buf_->get()}));
+                             std::string({'=', (char)buf_->get()}));
 
             case ',':
                 skip_char();
@@ -371,7 +371,7 @@ class Lexer {
             default:
                 skip_char();
                 return Token(tok_start, Token::Kind::error,
-                             std::string({(char) buf_->get()}));
+                             std::string({(char)buf_->get()}));
         }
     }
 };

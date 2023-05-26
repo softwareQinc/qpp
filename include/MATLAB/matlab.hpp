@@ -88,7 +88,7 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
 // populate the result
 #if MX_HAS_INTERLEAVED_COMPLEX
     dyn_mat<cplx> result(mxGetM(pa), mxGetN(pa));
-    std::memcpy((void*) result.data(), (void*) mxGetComplexDoubles(pa),
+    std::memcpy((void*)result.data(), (void*)mxGetComplexDoubles(pa),
                 sizeof(cplx) * result.size());
     mxDestroyArray(pa);
     matClose(pmat);
@@ -99,11 +99,11 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
     dyn_mat<double> result_im(mxGetM(pa), mxGetN(pa));
 
     // populate the real part of the created array
-    std::memcpy((void*) result_re.data(), (void*) mxGetPr(pa),
+    std::memcpy((void*)result_re.data(), (void*)mxGetPr(pa),
                 sizeof(double) * result_re.size());
 
     if (mxIsComplex(pa)) // populate the imaginary part if exists
-        std::memcpy((void*) result_im.data(), (void*) mxGetPi(pa),
+        std::memcpy((void*)result_im.data(), (void*)mxGetPi(pa),
                     sizeof(double) * result_im.size());
     else // set to zero the imaginary part
         std::memset(result_im.data(), 0, sizeof(double) * result_im.size());
@@ -169,10 +169,10 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
 
 // populate the result
 #if MX_HAS_INTERLEAVED_COMPLEX
-    std::memcpy((void*) result.data(), (void*) mxGetDoubles(pa),
+    std::memcpy((void*)result.data(), (void*)mxGetDoubles(pa),
                 sizeof(double) * result.size());
 #else
-    std::memcpy((void*) result.data(), (void*) mxGetPr(pa),
+    std::memcpy((void*)result.data(), (void*)mxGetPr(pa),
                 sizeof(double) * result.size());
 #endif // MX_HAS_INTERLEAVED_COMPLEX
 
@@ -222,7 +222,7 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
 
 // populate the MATLAB structure
 #if MX_HAS_INTERLEAVED_COMPLEX
-    std::memcpy((void*) mxGetComplexDoubles(pa), (void*) rA.data(),
+    std::memcpy((void*)mxGetComplexDoubles(pa), (void*)rA.data(),
                 sizeof(cplx) * rA.size());
 #else
     // cast the input to a double (internal MATLAB format)
@@ -230,11 +230,11 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
     dyn_mat<double> tmp_im = rA.imag();
 
     // populate the real part of the created array
-    std::memcpy((void*) mxGetPr(pa), (void*) tmp_re.data(),
+    std::memcpy((void*)mxGetPr(pa), (void*)tmp_re.data(),
                 sizeof(double) * tmp_re.size());
 
     // populate the imaginary part of the created array
-    std::memcpy((void*) mxGetPi(pa), (void*) tmp_im.data(),
+    std::memcpy((void*)mxGetPi(pa), (void*)tmp_im.data(),
                 sizeof(double) * tmp_im.size());
 #endif // MX_HAS_INTERLEAVED_COMPLEX
 
@@ -289,10 +289,10 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
 
 // populate the MATLAB structure
 #if MX_HAS_INTERLEAVED_COMPLEX
-    std::memcpy((void*) mxGetDoubles(pa), (void*) rA.data(),
+    std::memcpy((void*)mxGetDoubles(pa), (void*)rA.data(),
                 sizeof(double) * rA.size());
 #else
-    std::memcpy((void*) mxGetPr(pa), (void*) rA.data(),
+    std::memcpy((void*)mxGetPr(pa), (void*)rA.data(),
                 sizeof(double) * rA.size());
 #endif // MX_HAS_INTERLEAVED_COMPLEX
 

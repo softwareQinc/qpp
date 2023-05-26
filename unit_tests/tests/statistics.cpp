@@ -1,5 +1,6 @@
 #include "gmock/gmock.h" // for matchers
 #include "gtest/gtest.h"
+
 #include "qpp.h"
 
 using namespace qpp;

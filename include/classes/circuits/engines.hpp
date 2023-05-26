@@ -1109,7 +1109,7 @@ class QNoisyEngine : public QEngine {
         }
         // }
         // execute the circuit step
-        (void) QEngine::execute(elem);
+        (void)QEngine::execute(elem);
 
         return *this;
     }
@@ -1128,7 +1128,7 @@ class QNoisyEngine : public QEngine {
             st_ = initial_engine_state;
 
             for (auto&& elem : *qc_ptr_) {
-                (void) execute(elem);
+                (void)execute(elem);
             }
 
             // we measured at least one qudit

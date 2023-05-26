@@ -2,8 +2,8 @@
 // Source: ./examples/matlab_io.cpp
 #include <iostream>
 
-#include "qpp.h"
 #include "MATLAB/matlab.hpp" // must be explicitly included
+#include "qpp.h"
 
 int main() {
     using namespace qpp;

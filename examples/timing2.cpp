@@ -1,8 +1,8 @@
 // Timing
 // Source: ./examples/timing2.cpp
-#include <numeric>
 #include <cmath>
 #include <iostream>
+#include <numeric>
 #include <vector>
 
 #include "qpp.h"

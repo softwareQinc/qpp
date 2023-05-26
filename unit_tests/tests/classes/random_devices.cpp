@@ -1,5 +1,7 @@
 #include <sstream>
+
 #include "gtest/gtest.h"
+
 #include "qpp.h"
 
 using namespace qpp;

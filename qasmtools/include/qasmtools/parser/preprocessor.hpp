@@ -34,11 +34,11 @@
 #ifndef QASMTOOLS_PARSER_PREPROCESSOR_HPP_
 #define QASMTOOLS_PARSER_PREPROCESSOR_HPP_
 
-#include "lexer.hpp"
-
 #include <fstream>
 #include <sstream>
 #include <vector>
+
+#include "lexer.hpp"
 
 namespace qasmtools {
 namespace parser {

@@ -32,12 +32,12 @@
 #ifndef QASMTOOLS_AST_BASE_HPP_
 #define QASMTOOLS_AST_BASE_HPP_
 
+#include <memory>
+#include <set>
+
 #include "../parser/position.hpp"
 #include "cloneable.hpp"
 #include "visitor.hpp"
-
-#include <memory>
-#include <set>
 
 namespace qasmtools {
 namespace ast {

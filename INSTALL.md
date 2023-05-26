@@ -128,16 +128,29 @@ sudo cmake --build build --target install
 
 which installs Quantum++ in `/usr/local/include/qpp`.
 
+To uninstall, execute
+
+```bash
+sudo cmake --build build --target uninstall
+```
+
 ### Windows
 
 To install Quantum++ on a Windows platform, execute in an
-Administrator Developer Command Prompt
+Administrator Command Prompt
 
 ```shell
 cmake --build build --target INSTALL
 ```
 
 which installs Quantum++ in `C:\Program Files (x86)\qpp`.
+
+To uninstall, execute in an Administrator Command Prompt
+
+```shell
+cmake --build build --target UNINSTALL
+```
+
 
 ### FreeBSD
 
@@ -228,7 +241,7 @@ does.
   For MSVC, this translates into downloading the Eigen3 archive
   form [https://eigen.tuxfamily.org](https://eigen.tuxfamily.org), unzipping it
   to e.g. `C:\path\to\eigen-3.x.x\`, followed by executing the following in an
-  Administrator Developer Command Prompt
+  Administrator Command Prompt
 
 ```shell
 cd C:\path\to\eigen-3.x.x\

@@ -34,10 +34,10 @@
 #ifndef QASMTOOLS_PARSER_TOKEN_HPP_
 #define QASMTOOLS_PARSER_TOKEN_HPP_
 
-#include "position.hpp"
-
 #include <unordered_map>
 #include <variant>
+
+#include "position.hpp"
 
 namespace qasmtools {
 namespace parser {
