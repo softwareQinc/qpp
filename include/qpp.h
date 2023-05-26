@@ -101,6 +101,8 @@
 
 // Quantum++ headers
 
+// clang-format off
+
 // do not change the order in this group, interdependencies
 #include "types.hpp"
 #include "traits.hpp"
@@ -142,6 +144,8 @@
 // do not change the order in this group, interdependencies
 #include "qasmtools/parser/parser.hpp"
 #include "qasm/qasm.hpp"
+
+// clang-format on
 
 /**
  * \namespace qpp

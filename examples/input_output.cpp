@@ -1,7 +1,7 @@
 // Input/output
 // Source: ./examples/input_output.cpp
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 #include "qpp.h"
 

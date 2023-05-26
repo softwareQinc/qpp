@@ -1,4 +1,5 @@
-Pre-release
+Version 4.3 - 26 May 2023
+    - This is a maintenance release
     - Fixed pyqpp installation on Windows under MSVC
     - Migrated all continuous integration to GitHub actions
 

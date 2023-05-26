@@ -1,6 +1,8 @@
 #include <cmath>
 #include <complex>
+
 #include "gtest/gtest.h"
+
 #include "qpp.h"
 
 using namespace qpp;

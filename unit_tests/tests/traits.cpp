@@ -1,7 +1,9 @@
 #include <cmath>
-#include <vector>
 #include <list>
+#include <vector>
+
 #include "gtest/gtest.h"
+
 #include "qpp.h"
 
 using namespace qpp;

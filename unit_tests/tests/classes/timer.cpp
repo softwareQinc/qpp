@@ -1,6 +1,8 @@
 #include <chrono>
 #include <thread> // for std::this_thread::sleep_for()
+
 #include "gtest/gtest.h"
+
 #include "qpp.h"
 
 using namespace qpp;

@@ -742,7 +742,7 @@ class QCircuitBuilder final : public ast::Visitor {
 
     void visit(ast::RegisterDecl& decl) override {
         std::vector<idx> indices(decl.size());
-        for (idx i = 0; i < (idx) decl.size(); i++) {
+        for (idx i = 0; i < (idx)decl.size(); i++) {
             indices[i] =
                 decl.is_quantum() ? ctx.alloc_qubit() : ctx.alloc_bit();
         }
