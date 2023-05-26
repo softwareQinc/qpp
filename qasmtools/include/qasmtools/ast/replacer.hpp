@@ -32,6 +32,8 @@
 #ifndef QASMTOOLS_AST_REPLACER_HPP_
 #define QASMTOOLS_AST_REPLACER_HPP_
 
+#include <unordered_map>
+
 #include "program.hpp"
 #include "visitor.hpp"
 

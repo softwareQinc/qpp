@@ -34,6 +34,7 @@
 
 #include <memory>
 #include <set>
+#include <string>
 
 #include "../parser/position.hpp"
 #include "cloneable.hpp"
