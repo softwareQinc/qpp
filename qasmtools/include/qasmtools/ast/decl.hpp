@@ -32,9 +32,9 @@
 #ifndef QASMTOOLS_AST_DECL_HPP_
 #define QASMTOOLS_AST_DECL_HPP_
 
-#include "stmt.hpp"
-
 #include <list>
+
+#include "stmt.hpp"
 
 namespace qasmtools {
 namespace ast {

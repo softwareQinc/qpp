@@ -32,12 +32,12 @@
 #ifndef QASMTOOLS_AST_STMT_HPP_
 #define QASMTOOLS_AST_STMT_HPP_
 
+#include <functional>
+#include <vector>
+
 #include "base.hpp"
 #include "expr.hpp"
 #include "var.hpp"
-
-#include <functional>
-#include <vector>
 
 namespace qasmtools {
 namespace ast {

@@ -32,13 +32,13 @@
 #ifndef QASMTOOLS_AST_SEMANTIC_HPP_
 #define QASMTOOLS_AST_SEMANTIC_HPP_
 
-#include "ast.hpp"
-#include "visitor.hpp"
-
 #include <algorithm>
 #include <cstddef>
 #include <set>
 #include <unordered_map>
+
+#include "ast.hpp"
+#include "visitor.hpp"
 
 namespace qasmtools {
 namespace ast {
@@ -227,8 +227,8 @@ class SemanticChecker final : public Visitor {
             pop_scope();
 
             // Add declaration
-            set(decl.id(), GateType{(int) decl.c_params().size(),
-                                    (int) decl.q_params().size()});
+            set(decl.id(), GateType{(int)decl.c_params().size(),
+                                    (int)decl.q_params().size()});
         }
     }
     void visit(OracleDecl& decl) {
@@ -237,7 +237,7 @@ class SemanticChecker final : public Visitor {
                       << "\" previously declared\n";
             error_ = true;
         } else {
-            set(decl.id(), GateType{0, (int) decl.params().size()});
+            set(decl.id(), GateType{0, (int)decl.params().size()});
         }
     }
     void visit(RegisterDecl& decl) {

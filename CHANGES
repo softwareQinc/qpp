@@ -2,6 +2,7 @@ Version 4.3 - 26 May 2023
     - This is a maintenance release
     - Fixed pyqpp installation on Windows under MSVC
     - Migrated all continuous integration to GitHub actions
+    - Minor updates in qasmtools
 
 Version 4.2 - 13 May 2023
     - Quantum++ is now available on Homebrew (macOS/Linux), and can be

@@ -34,13 +34,13 @@
 #ifndef QASMTOOLS_UTILS_ANGLE_HPP_
 #define QASMTOOLS_UTILS_ANGLE_HPP_
 
-#include "templates.hpp"
-
 #include <cmath>
 #include <iostream>
 #include <numeric>
 #include <optional>
 #include <variant>
+
+#include "templates.hpp"
 
 namespace qasmtools {
 namespace utils {
@@ -104,7 +104,7 @@ class Angle {
     constexpr double numeric_value() const {
         if (std::holds_alternative<fraction>(value_)) {
             auto frac = std::get<fraction>(value_);
-            return ((double) frac.first * pi) / (double) frac.second;
+            return ((double)frac.first * pi) / (double)frac.second;
         } else {
             return std::get<double>(value_);
         }
@@ -154,7 +154,7 @@ class Angle {
             normalize();
         } else {
             auto a = numeric_value();
-            value_ = a * (double) fac;
+            value_ = a * (double)fac;
         }
 
         return *this;
@@ -167,7 +167,7 @@ class Angle {
             normalize();
         } else {
             auto a = numeric_value();
-            value_ = a / (double) div;
+            value_ = a / (double)div;
         }
 
         return *this;

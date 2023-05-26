@@ -32,11 +32,11 @@
 #ifndef QASMTOOLS_AST_EXPR_HPP_
 #define QASMTOOLS_AST_EXPR_HPP_
 
-#include "../utils/angle.hpp"
-#include "base.hpp"
-
 #include <cmath>
 #include <iomanip>
+
+#include "../utils/angle.hpp"
+#include "base.hpp"
 
 namespace qasmtools {
 namespace ast {
@@ -317,7 +317,7 @@ class UExpr final : public Expr {
     }
     void accept(Visitor& visitor) override { visitor.visit(*this); }
     std::ostream& pretty_print(std::ostream& os, bool ctx) const override {
-        (void) ctx;
+        (void)ctx;
 
         os << op_;
         if (op_ == UnaryOp::Neg)
@@ -362,7 +362,7 @@ class PiExpr final : public Expr {
     std::optional<double> constant_eval() const override { return utils::pi; }
     void accept(Visitor& visitor) override { visitor.visit(*this); }
     std::ostream& pretty_print(std::ostream& os, bool ctx) const override {
-        (void) ctx;
+        (void)ctx;
 
         os << "pi";
         return os;
@@ -404,11 +404,11 @@ class IntExpr final : public Expr {
     int value() const { return value_; }
 
     std::optional<double> constant_eval() const override {
-        return (double) value_;
+        return (double)value_;
     }
     void accept(Visitor& visitor) override { visitor.visit(*this); }
     std::ostream& pretty_print(std::ostream& os, bool ctx) const override {
-        (void) ctx;
+        (void)ctx;
 
         os << value_;
         return os;
@@ -452,7 +452,7 @@ class RealExpr final : public Expr {
     std::optional<double> constant_eval() const override { return value_; }
     void accept(Visitor& visitor) override { visitor.visit(*this); }
     std::ostream& pretty_print(std::ostream& os, bool ctx) const override {
-        (void) ctx;
+        (void)ctx;
 
         std::streamsize ss = os.precision();
         os << std::setprecision(15) << value_ << std::setprecision(ss);
@@ -499,7 +499,7 @@ class VarExpr final : public Expr {
     }
     void accept(Visitor& visitor) override { visitor.visit(*this); }
     std::ostream& pretty_print(std::ostream& os, bool ctx) const override {
-        (void) ctx;
+        (void)ctx;
         os << var_;
         return os;
     }

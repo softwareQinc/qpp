@@ -32,10 +32,10 @@
 #ifndef QASMTOOLS_AST_VAR_HPP_
 #define QASMTOOLS_AST_VAR_HPP_
 
-#include "base.hpp"
-
 #include <cstddef>
 #include <optional>
+
+#include "base.hpp"
 
 namespace qasmtools {
 namespace ast {
