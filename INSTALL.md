@@ -84,7 +84,7 @@ cmake --build build --target=bb84
 
 The command above only builds the example 
 [examples/bb84](https://github.com/softwareQinc/qpp/tree/main/examples/bb84) 
-and output the executable in `./build/bb84`. Reminder: for this to work, 
+and outputs the executable `./build/bb84`. Reminder: for this to work, 
 do not forget to configure the system with the `-DWITH_EXAMPLES=ON` flag.
 
 ## CMake optional arguments and flags
