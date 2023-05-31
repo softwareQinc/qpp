@@ -2,7 +2,7 @@
 #### Do not modify unless you know what you're doing
 
 #### Custom index type. If none selected, a default one is selected by
-#### include/types.hpp (usually std::size_t)
+#### include/types.hpp (usually std::size_t).
 set(TYPE_IDX "default" CACHE
         STRING "Default index type, see include/types.hpp")
 set_property(CACHE TYPE_IDX PROPERTY
@@ -39,7 +39,7 @@ elseif (TYPE_IDX STREQUAL "unsigned long long")
 endif ()
 
 #### Custom signed big integer type. If none selected, a default one is
-#### selected by include/types.hpp (usually long long)
+#### selected by include/types.hpp (usually long long).
 set(TYPE_BIGINT "default" CACHE
         STRING "Default big integer type, see include/types.hpp")
 set_property(CACHE TYPE_BIGINT PROPERTY
@@ -63,7 +63,7 @@ elseif (TYPE_BIGINT STREQUAL "long long")
 endif ()
 
 #### Custom floating-point type. If none selected, a default one is selected by
-#### include/types.hpp (usually double)
+#### include/types.hpp (usually double).
 set(TYPE_FP "default" CACHE
         STRING "Default floating-point type, see include/types.hpp")
 set_property(CACHE TYPE_FP PROPERTY
