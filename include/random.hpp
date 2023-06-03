@@ -322,10 +322,10 @@ inline cmat randV(idx Din, idx Dout) {
     cmat Fk(Dout, Din);
     cmat U = randU(N * Dout);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(3)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     for (idx k = 0; k < N; ++k)
         for (idx a = 0; a < Dout; ++a)
             for (idx b = 0; b < Din; ++b)

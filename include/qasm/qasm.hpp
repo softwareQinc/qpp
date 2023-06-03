@@ -32,8 +32,8 @@
 #ifndef QPP_QASM_QASM_HPP_
 #define QPP_QASM_QASM_HPP_
 
-#ifndef USE_OPENQASM2_SPECS
-#define USE_OPENQASM2_SPECS false
+#ifndef QPP_QASM2_SPECS
+#define QPP_QASM2_SPECS false
 #endif
 
 namespace qpp::qasm {
@@ -55,31 +55,31 @@ static std::unordered_map<ast::symbol,
          }},
         {"x",
          [](const std::vector<realT>&) {
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? Gates::get_no_thread_local_instance().X * (-1_i)
                         : Gates::get_no_thread_local_instance().X;
          }},
         {"y",
          [](const std::vector<realT>&) {
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? Gates::get_no_thread_local_instance().Y * (-1_i)
                         : Gates::get_no_thread_local_instance().Y;
          }},
         {"z",
          [](const std::vector<realT>&) {
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? Gates::get_no_thread_local_instance().Z * (-1_i)
                         : Gates::get_no_thread_local_instance().Z;
          }},
         {"h",
          [](const std::vector<realT>&) {
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? Gates::get_no_thread_local_instance().H * (-1_i)
                         : Gates::get_no_thread_local_instance().H;
          }},
         {"s",
          [](const std::vector<realT>&) {
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? Gates::get_no_thread_local_instance().S *
                               std::exp(-1_i *
                                        static_cast<cplx::value_type>(pi / 4.0))
@@ -87,7 +87,7 @@ static std::unordered_map<ast::symbol,
          }},
         {"sdg",
          [](const std::vector<realT>&) {
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? (Gates::get_no_thread_local_instance().S.adjoint() *
                            std::exp(1_i *
                                     static_cast<cplx::value_type>(pi / 4.0)))
@@ -96,7 +96,7 @@ static std::unordered_map<ast::symbol,
          }},
         {"t",
          [](const std::vector<realT>&) {
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? Gates::get_no_thread_local_instance().T *
                               std::exp(-1_i *
                                        static_cast<cplx::value_type>(pi / 8.0))
@@ -104,7 +104,7 @@ static std::unordered_map<ast::symbol,
          }},
         {"tdg",
          [](const std::vector<realT>&) {
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? (Gates::get_no_thread_local_instance().T.adjoint() *
                            std::exp(1_i *
                                     static_cast<cplx::value_type>(pi / 8.0)))
@@ -128,7 +128,7 @@ static std::unordered_map<ast::symbol,
          }},
         {"cz",
          [](const std::vector<realT>&) {
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? Gates::get_no_thread_local_instance().CZ * (-1)
                         : Gates::get_no_thread_local_instance().CZ;
          }},
@@ -146,14 +146,14 @@ static std::unordered_map<ast::symbol,
          [](const std::vector<realT>&) {
              cmat mat{cmat::Identity(4, 4)};
              mat.block(2, 2, 2, 2) = Gates::get_no_thread_local_instance().H;
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? mat * std::exp(-1_i * static_cast<cplx::value_type>(
                                                     pi / 4.0))
                         : mat;
          }},
         {"ccx",
          [](const std::vector<realT>&) {
-             return USE_OPENQASM2_SPECS
+             return QPP_QASM2_SPECS
                         ? Gates::get_no_thread_local_instance().TOF *
                               (-std::exp(-1_i * static_cast<cplx::value_type>(
                                                     pi / 8.0)))
@@ -568,13 +568,17 @@ class QCircuitBuilder final : public ast::Visitor {
         // generate the matrix
         cmat u{cmat::Zero(2, 2)};
 
-#if USE_OPENQASM2_SPECS
+#if QPP_QASM2_SPECS
         // standard QASM spec, as defined in
         // https://arxiv.org/pdf/1707.03429.pdf
-        u << std::cos(theta / 2) * std::exp(-1_i * (phi + lambda) / 2.0),
-            -(std::sin(theta / 2)) * std::exp(-1_i * (phi - lambda) / 2.0),
-            std::sin(theta / 2) * std::exp(1_i * (phi - lambda) / 2.0),
-            std::cos(theta / 2) * std::exp(1_i * (phi + lambda) / 2.0);
+        u << std::cos(theta / 2) *
+                 std::exp(-1_i * (phi + lambda) / static_cast<realT>(2.0)),
+            -(std::sin(theta / 2)) *
+                std::exp(-1_i * (phi - lambda) / static_cast<realT>(2.0)),
+            std::sin(theta / 2) *
+                std::exp(1_i * (phi - lambda) / static_cast<realT>(2.0)),
+            std::cos(theta / 2) *
+                std::exp(1_i * (phi + lambda) / static_cast<realT>(2.0));
 #else
         // Qiskit spec, as defined in
         // https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/circuit/library/standard_gates
