@@ -301,10 +301,10 @@ kron2(const Eigen::MatrixBase<Derived1>& A,
     dyn_mat<typename Derived1::Scalar> result;
     result.resize(Arows * Brows, Acols * Bcols);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     // column major order for speed
     for (idx j = 0; j < Acols; ++j)
         for (idx i = 0; i < Arows; ++i)
@@ -459,10 +459,10 @@ dyn_col_vect<Derived> project_ket_on_dits(dyn_col_vect<Derived> psi,
                                           const std::vector<idx>& dits,
                                           const std::vector<idx>& subsys,
                                           const std::vector<idx>& dims, idx D) {
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     for (idx i = 0; i < D; ++i) {
         if (!idx_contains_dits(i, dits, subsys, dims)) {
             psi(i) = 0;

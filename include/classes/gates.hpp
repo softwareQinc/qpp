@@ -201,10 +201,10 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         cmat result = cmat::Zero(D * D, D * D);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
        // column major order for speed
         for (idx j = 0; j < D; ++j)
             for (idx i = 0; i < D; ++i)
@@ -236,10 +236,10 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         cmat result(D, D);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
        // column major order for speed
         for (idx j = 0; j < D; ++j)
             for (idx i = 0; i < D; ++i)
@@ -285,10 +285,10 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         cmat result = cmat::Zero(D, D);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
        // column major order for speed
         for (idx j = 0; j < N; ++j)
             for (idx i = 0; i < N; ++i)
@@ -297,10 +297,10 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                                             static_cast<bigint>(N))) == i)
                     result(i, j) = 1;
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
        // complete the matrix
         for (idx i = N; i < D; ++i)
             result(i, i) = 1;

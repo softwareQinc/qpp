@@ -39,23 +39,23 @@ namespace qpp {
 /**
  * \brief Integer index
  */
-#if defined(TYPE_IDX_DEFAULT)
+#if defined(QPP_IDX_DEFAULT)
 using idx = std::size_t;
-#elif defined(TYPE_IDX_SHORT)
+#elif defined(QPP_IDX_SHORT)
 using idx = short int;
-#elif defined(TYPE_IDX_INT)
+#elif defined(QPP_IDX_INT)
 using idx = int;
-#elif defined(TYPE_IDX_LONG)
+#elif defined(QPP_IDX_LONG)
 using idx = long int;
-#elif defined(TYPE_IDX_LONG_LONG)
+#elif defined(QPP_IDX_LONG_LONG)
 using idx = long long int;
-#elif defined(TYPE_IDX_USHORT)
+#elif defined(QPP_IDX_USHORT)
 using idx = unsigned short int;
-#elif defined(TYPE_IDX_UINT)
+#elif defined(QPP_IDX_UINT)
 using idx = unsigned int;
-#elif defined(TYPE_IDX_ULONG)
+#elif defined(QPP_IDX_ULONG)
 using idx = unsigned long int;
-#elif defined(TYPE_IDX_ULONG_LONG)
+#elif defined(QPP_IDX_ULONG_LONG)
 using idx = unsigned long long int;
 #endif
 static_assert(std::is_integral_v<idx>, "Type must be integral");
@@ -64,15 +64,15 @@ static_assert(sizeof(idx) > 1, "Type must be at least 2 bytes long");
 /**
  * \brief Signed big integer
  */
-#if defined(TYPE_BIGINT_DEFAULT)
+#if defined(QPP_BIGINT_DEFAULT)
 using bigint = long long int;
-#elif defined(TYPE_BIGINT_SHORT)
+#elif defined(QPP_BIGINT_SHORT)
 using bigint = short int;
-#elif defined(TYPE_BIGINT_INT)
+#elif defined(QPP_BIGINT_INT)
 using bigint = int;
-#elif defined(TYPE_BIGINT_LONG)
+#elif defined(QPP_BIGINT_LONG)
 using bigint = long int;
-#elif defined(TYPE_BIGINT_LONG_LONG)
+#elif defined(QPP_BIGINT_LONG_LONG)
 using bigint = long long int;
 #endif
 static_assert(std::is_integral_v<bigint>, "Type must be integral");
@@ -82,14 +82,14 @@ static_assert(sizeof(bigint) > 1, "Type must be at least 2 bytes long");
 /**
  * \brief Floating-point type
  */
-#if defined(TYPE_FP_FLOAT)
-using realT = float;
-#elif defined(TYPE_FP_DOUBLE)
-using realT = double;
-#elif defined(TYPE_FP_LONG_DOUBLE)
-using realT = long double;
-#elif defined(TYPE_FP_DEFAULT)
+#if defined(QPP_FP_DEFAULT)
 using realT = double; // default floating-point type
+#elif defined(QPP_FP_FLOAT)
+using realT = float;
+#elif defined(QPP_FP_DOUBLE)
+using realT = double;
+#elif defined(QPP_FP_LONG_DOUBLE)
+using realT = long double;
 #endif
 static_assert(std::is_floating_point_v<realT>, "Type myst be floating-point");
 

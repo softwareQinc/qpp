@@ -243,10 +243,10 @@ apply(const Eigen::MatrixBase<Derived1>& state,
 
         expr_t<Derived1> result = rstate;
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
         for (idx m = 0; m < DA; ++m)
             for (idx r = 0; r < DA_bar; ++r) {
                 result(coeff_idx_ket(m, r).second) = coeff_idx_ket(m, r).first;
@@ -266,10 +266,10 @@ apply(const Eigen::MatrixBase<Derived1>& state,
 
         expr_t<Derived1> result = rstate;
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(4)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
         for (idx m1 = 0; m1 < DA; ++m1)
             for (idx r1 = 0; r1 < DA_bar; ++r1)
                 for (idx m2 = 0; m2 < DA; ++m2)
@@ -354,14 +354,14 @@ template <typename Derived>
     idx Dout = Ks[0].rows();
     cmat result = cmat::Zero(Dout, Dout);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     for (const auto& K : Ks) {
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
         { result += K * rA * adjoint(K); }
     }
 
@@ -435,14 +435,14 @@ apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 
     cmat result = cmat::Zero(rA.rows(), rA.cols());
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     for (const auto& K : Ks) {
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
         { result += apply(rA, K, target, dims); }
     }
 
@@ -516,10 +516,10 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     // (un-normalized maximally entangled state)
     cmat MES = cmat::Zero(Din * Din, 1);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     for (idx a = 0; a < Din; ++a)
         MES(a * Din + a, 0) = 1;
 
@@ -527,14 +527,14 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 
     cmat result = cmat::Zero(Din * Dout, Din * Dout);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     for (const auto& K : Ks) {
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
         {
             result += kron(cmat::Identity(Din, Din), K) * Omega *
                       adjoint(kron(cmat::Identity(Din, Din), K));
@@ -641,10 +641,10 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
 
     cmat result(Dout * Dout, Din * Din);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(4)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     for (idx a = 0; a < Dout; ++a)
         for (idx b = 0; b < Dout; ++b)
             for (idx m = 0; m < Din; ++m)
@@ -707,10 +707,10 @@ inline cmat choi2super(const cmat& A) {
 
     cmat result(Din * Dout, Din * Dout);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(4)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     for (idx a = 0; a < Dout; ++a)
         for (idx b = 0; b < Dout; ++b)
             for (idx m = 0; m < Din; ++m)
@@ -757,15 +757,15 @@ inline cmat choi2super(const cmat& A) {
     ket B = ket::Zero(Dout);
     cmat result(Dout * Dout, Din * Din);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     for (idx m = 0; m < Din; ++m) {
         for (idx n = 0; n < Din; ++n) {
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 #pragma omp critical
-#endif        // HAS_OPENMP
+#endif        // QPP_OPENMP
             { // DO NOT ERASE THIS CURLY BRACKET!!!! OMP CRITICAL CODE
                 // compute E(|m><n|)
                 MN(m, n) = 1;
@@ -877,10 +877,10 @@ ptrace1(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
             return sum;
         }; /* end worker */
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
        // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
@@ -901,10 +901,10 @@ ptrace1(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
             return sum;
         }; /* end worker */
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
        // column major order for speed
         for (idx j = 0; j < DB; ++j)
             for (idx i = 0; i < DB; ++i)
@@ -1005,10 +1005,10 @@ ptrace2(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
             return sum;
         }; /* end worker */
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
        // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
@@ -1021,10 +1021,10 @@ ptrace2(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
         if (!internal::check_dims_match_mat(dims, rA))
             throw exception::DimsMismatchMatrix("qpp::ptrace2()", "A/dims");
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
        // column major order for speed
         for (idx j = 0; j < DA; ++j)
             for (idx i = 0; i < DA; ++i)
@@ -1198,10 +1198,10 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             // compute the column multi-indexes of the complement
             internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
                                  Cmidxcolsubsys_bar);
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
             for (idx i = 0; i < Dsubsys_bar; ++i) {
                 result(i, j) = worker(i);
             }
@@ -1255,10 +1255,10 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             // compute the column multi-indexes of the complement
             internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
                                  Cmidxcolsubsys_bar);
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
             for (idx i = 0; i < Dsubsys_bar; ++i) {
                 result(i, j) = worker(i);
             }
@@ -1396,10 +1396,10 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
             // compute the column multi-index
             internal::n2multiidx(j, n, Cdims, Cmidxcol);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
             for (idx i = 0; i < D; ++i)
                 result(i, j) = worker(i);
         }
@@ -1436,10 +1436,10 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
             // compute the column multi-index
             internal::n2multiidx(j, n, Cdims, Cmidxcol);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
             for (idx i = 0; i < D; ++i)
                 result(i, j) = worker(i);
         }
@@ -1567,10 +1567,10 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
             return internal::multiidx2n(midxtmp, n, permdims);
         }; /* end worker */
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
         for (idx i = 0; i < D; ++i)
             result(worker(i)) = rA(i);
     }
@@ -1611,10 +1611,10 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
             return internal::multiidx2n(midxtmp, 2 * n, permdims);
         }; /* end worker */
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
         for (idx i = 0; i < D * D; ++i)
             result(worker(i)) = rA(i);
 
@@ -1800,10 +1800,10 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
             const dyn_col_vect<typename Derived1::Scalar>& state) {
             dyn_col_vect<typename Derived1::Scalar> result =
                 dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
             for (idx r = 0; r < d; ++r) {
                 // copy shift
                 std::vector<idx> ctrl_shift = shift.value();
@@ -1823,10 +1823,10 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
                     dyn_col_vect<typename Derived1::Scalar>::Zero(D)) {
                     chopped_psi = apply(chopped_psi, Ak[r], target, dims);
                 }
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
                 { result += (chopped_psi + chopped_psi_bar); }
             }
 
@@ -1860,10 +1860,10 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         dyn_mat<typename Derived1::Scalar> result =
             dyn_mat<typename Derived1::Scalar>::Zero(D, D);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
        // decompose rho as \sum |psi_i><phi_i|
         for (idx i = 0; i < D; ++i) {
             std::vector<idx> midx_i = n2multiidx(i, dims);
@@ -1878,10 +1878,10 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
             psi_i = applyCTRL_ket(psi_i);
             phi_i_bra = adjoint(applyCTRL_ket(phi_i_ket));
 // add to result
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
             { result += kron(psi_i, phi_i_bra); }
         } // end for(i)
 
@@ -2089,10 +2089,10 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
             const dyn_col_vect<typename Derived1::Scalar>& state) {
             dyn_col_vect<typename Derived1::Scalar> result =
                 dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
             for (idx r = 0; r < d; ++r) {
                 // copy shift
                 std::vector<idx> ctrl_shift = shift.value();
@@ -2114,10 +2114,10 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
                         chopped_psi = apply(chopped_psi, Ak[r], {elem}, dims);
                     }
                 }
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
                 { result += (chopped_psi + chopped_psi_bar); }
             }
             return result;
@@ -2150,10 +2150,10 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
         dyn_mat<typename Derived1::Scalar> result =
             dyn_mat<typename Derived1::Scalar>::Zero(D, D);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
        // decompose rho as \sum |psi_i><phi_i| and applyCTRL_fan_ket()
        // individually
         for (idx i = 0; i < D; ++i) {
@@ -2169,10 +2169,10 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
             psi_i = applyCTRL_fan_ket(psi_i);
             phi_i_bra = adjoint(applyCTRL_fan_ket(phi_i_ket));
 // add to result
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
             { result += kron(psi_i, phi_i_bra); }
         } // end for(i)
 
@@ -2593,10 +2593,10 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM) {
     idx Dout = Din * DqRAM;
     ket result(Dout);
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     for (idx i = 0; i < Din; ++i) {
         dyn_col_vect<typename Derived::Scalar> ket_i =
             dyn_col_vect<typename Derived::Scalar>::Zero(DqRAM);

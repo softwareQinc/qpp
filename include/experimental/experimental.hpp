@@ -148,10 +148,10 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     if (is_ket) {
         // compute the probability of the outcome and the output state
         out_state = destructive ? ket::Zero(Dsubsys) : ket::Zero(D);
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
         for (idx i = 0; i < D; ++i) {
             if (pbs[i] == 0)
                 continue;
@@ -167,9 +167,9 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
                 } else {
                     current_ket = mket(ket_midx, dims) * cA(i);
                 }
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
                 { out_state += current_ket; }
             } // end if(overlap_ket)
         }     // end for
@@ -182,10 +182,10 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
         // compute the probability of the outcome and the output state
         out_state =
             destructive ? cmat::Zero(Dsubsys, Dsubsys) : cmat::Zero(D, D);
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
         for (idx i = 0; i < D; ++i) {
             if (pbs[i] == 0)
                 continue;
@@ -219,9 +219,9 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
                         } else {
                             current_bra = adjoint(mket(bra_midx, dims));
                         }
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 #pragma omp critical
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
                         { out_state += cA(i, j) * current_ket * current_bra; }
                     } // end if(overlap_bra)
                 }     // end for(all bras)

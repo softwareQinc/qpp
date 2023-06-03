@@ -887,10 +887,10 @@ cwise(const Eigen::MatrixBase<Derived>& A,
 
     dyn_mat<OutputScalar> result(rA.rows(), rA.cols());
 
-#ifdef HAS_OPENMP
+#ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif // HAS_OPENMP
+#endif // QPP_OPENMP
     // column major order for speed
     for (idx j = 0; j < static_cast<idx>(rA.cols()); ++j)
         for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i)

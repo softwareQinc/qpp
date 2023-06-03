@@ -108,7 +108,7 @@ TEST(qpp_qasm_read_from_file, MappedGates) {
     ket psi1 = engine.get_psi();
 
     // Reference state
-    ket psi2 = USE_OPENQASM2_SPECS
+    ket psi2 = QPP_QASM2_SPECS
                    ? kron(gt.H * 0_ket * (-1_i), gt.H * 0_ket * (-1_i))
                    : kron(gt.H * 0_ket, gt.H * 0_ket);
 
@@ -130,7 +130,7 @@ TEST(qpp_qasm_read_from_file, NonDestrMeas) {
     ket psi = engine.get_psi();
 
     // Reference state
-    ket mres = USE_OPENQASM2_SPECS ? mket({res}) * (-1_i) : mket({res});
+    ket mres = QPP_QASM2_SPECS ? mket({res}) * (-1_i) : mket({res});
 
     // Check norm
     EXPECT_NEAR(0, norm(psi - mres), 1e-5);
@@ -146,7 +146,7 @@ TEST(qpp_qasm_read_from_file, Reset) {
     ket psi = engine.get_psi();
 
     // Reference state
-    ket psi2 = USE_OPENQASM2_SPECS ? 0_ket * (-1_i) : 0_ket;
+    ket psi2 = QPP_QASM2_SPECS ? 0_ket * (-1_i) : 0_ket;
 
     // Check norm
     EXPECT_NEAR(0, norm(psi - psi2), 1e-5);

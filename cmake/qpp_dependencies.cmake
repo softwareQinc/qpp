@@ -2,93 +2,95 @@
 #### Do not modify unless you know what you're doing
 
 #### Custom index type. If none selected, a default one is selected by
-#### include/types.hpp (usually std::size_t)
-set(TYPE_IDX "default" CACHE
-        STRING "Default index type, see include/types.hpp")
-set_property(CACHE TYPE_IDX PROPERTY
+#### include/types.hpp (usually std::size_t).
+set(QPP_IDX "default" CACHE
+        STRING "Default index type, see <qpp/types.hpp>")
+set_property(CACHE QPP_IDX PROPERTY
         STRINGS "default" "short" "int" "long" "long long" "unsigned short"
         "unsigned int" "unsigned long" "unsigned long long")
 
-if (TYPE_IDX STREQUAL "default")
-    message(STATUS "Index type - default (see include/types.hpp)")
-    add_compile_definitions(TYPE_IDX_DEFAULT)
-elseif (TYPE_IDX STREQUAL "short")
+if (QPP_IDX STREQUAL "default")
+    message(STATUS "Index type - default (see <qpp/types.hpp>)")
+    add_compile_definitions(QPP_IDX_DEFAULT)
+elseif (QPP_IDX STREQUAL "short")
     message(STATUS "Index type - short")
-    add_compile_definitions(TYPE_IDX_SHORT)
-elseif (TYPE_IDX STREQUAL "int")
+    add_compile_definitions(QPP_IDX_SHORT)
+elseif (QPP_IDX STREQUAL "int")
     message(STATUS "Index type - int")
-    add_compile_definitions(TYPE_IDX_INT)
-elseif (TYPE_IDX STREQUAL "long")
+    add_compile_definitions(QPP_IDX_INT)
+elseif (QPP_IDX STREQUAL "long")
     message(STATUS "Index type - long")
-    add_compile_definitions(TYPE_IDX_LONG)
-elseif (TYPE_IDX STREQUAL "long long")
+    add_compile_definitions(QPP_IDX_LONG)
+elseif (QPP_IDX STREQUAL "long long")
     message(STATUS "Index type - long long")
-    add_compile_definitions(TYPE_IDX_LONG_LONG)
-elseif (TYPE_IDX STREQUAL "unsigned short")
+    add_compile_definitions(QPP_IDX_LONG_LONG)
+elseif (QPP_IDX STREQUAL "unsigned short")
     message(STATUS "Index type - unsigned short")
-    add_compile_definitions(TYPE_IDX_USHORT)
-elseif (TYPE_IDX STREQUAL "unsigned int")
+    add_compile_definitions(QPP_IDX_USHORT)
+elseif (QPP_IDX STREQUAL "unsigned int")
     message(STATUS "Index type - unsigned int")
-    add_compile_definitions(TYPE_IDX_UINT)
-elseif (TYPE_IDX STREQUAL "unsigned long")
+    add_compile_definitions(QPP_IDX_UINT)
+elseif (QPP_IDX STREQUAL "unsigned long")
     message(STATUS "Index type - unsigned long")
-    add_compile_definitions(TYPE_IDX_ULONG)
-elseif (TYPE_IDX STREQUAL "unsigned long long")
+    add_compile_definitions(QPP_IDX_ULONG)
+elseif (QPP_IDX STREQUAL "unsigned long long")
     message(STATUS "Index type - unsigned long long")
-    add_compile_definitions(TYPE_IDX_ULONG_LONG)
+    add_compile_definitions(QPP_IDX_ULONG_LONG)
 endif ()
 
 #### Custom signed big integer type. If none selected, a default one is
-#### selected by include/types.hpp (usually long long)
-set(TYPE_BIGINT "default" CACHE
-        STRING "Default big integer type, see include/types.hpp")
-set_property(CACHE TYPE_BIGINT PROPERTY
+#### selected by include/types.hpp (usually long long).
+set(QPP_BIGINT "default" CACHE
+        STRING "Default big integer type, see <qpp/types.hpp>")
+set_property(CACHE QPP_BIGINT PROPERTY
         STRINGS "default" "short" "int" "long" "long long")
 
-if (TYPE_BIGINT STREQUAL "default")
-    message(STATUS "Big integer type - default (see include/types.hpp)")
-    add_compile_definitions(TYPE_BIGINT_DEFAULT)
-elseif (TYPE_BIGINT STREQUAL "short")
+if (QPP_BIGINT STREQUAL "default")
+    message(STATUS "Big integer type - default (see <qpp/types.hpp>)")
+    add_compile_definitions(QPP_BIGINT_DEFAULT)
+elseif (QPP_BIGINT STREQUAL "short")
     message(STATUS "Big integer type - short")
-    add_compile_definitions(TYPE_BIGINT_SHORT)
-elseif (TYPE_BIGINT STREQUAL "int")
+    add_compile_definitions(QPP_BIGINT_SHORT)
+elseif (QPP_BIGINT STREQUAL "int")
     message(STATUS "Big integer type - int")
-    add_compile_definitions(TYPE_BIGINT_INT)
-elseif (TYPE_BIGINT STREQUAL "long")
+    add_compile_definitions(QPP_BIGINT_INT)
+elseif (QPP_BIGINT STREQUAL "long")
     message(STATUS "Big integer type - long")
-    add_compile_definitions(TYPE_BIGINT_LONG)
-elseif (TYPE_BIGINT STREQUAL "long long")
+    add_compile_definitions(QPP_BIGINT_LONG)
+elseif (QPP_BIGINT STREQUAL "long long")
     message(STATUS "Big integer type - long long")
-    add_compile_definitions(TYPE_BIGINT_LONG_LONG)
+    add_compile_definitions(QPP_BIGINT_LONG_LONG)
 endif ()
 
 #### Custom floating-point type. If none selected, a default one is selected by
-#### include/types.hpp (usually double)
-set(TYPE_FP "default" CACHE
-        STRING "Default floating-point type, see include/types.hpp")
-set_property(CACHE TYPE_FP PROPERTY
+#### include/types.hpp (usually double).
+set(QPP_FP "default" CACHE
+        STRING "Default floating-point type, see <qpp/types.hpp>")
+set_property(CACHE QPP_FP PROPERTY
         STRINGS "default" "float" "double" "long double")
 
-if (TYPE_FP STREQUAL "default")
-    message(STATUS "Floating-point type - default (see include/types.hpp)")
-    add_compile_definitions(TYPE_FP_DEFAULT)
-elseif (TYPE_FP STREQUAL "float")
+if (QPP_FP STREQUAL "default")
+    message(STATUS "Floating-point type - default (see <qpp/types.hpp>)")
+    add_compile_definitions(QPP_FP_DEFAULT)
+elseif (QPP_FP STREQUAL "float")
     message(STATUS "Floating-point type - float")
-    add_compile_definitions(TYPE_FP_FLOAT)
-elseif (TYPE_FP STREQUAL "double")
+    add_compile_definitions(QPP_FP_FLOAT)
+elseif (QPP_FP STREQUAL "double")
     message(STATUS "Floating-point type - double")
-    add_compile_definitions(TYPE_FP_DOUBLE)
-elseif (TYPE_FP STREQUAL "long double")
+    add_compile_definitions(QPP_FP_DOUBLE)
+elseif (QPP_FP STREQUAL "long double")
     message(STATUS "Floating-point type - long double")
-    add_compile_definitions(TYPE_FP_LONG_DOUBLE)
+    add_compile_definitions(QPP_FP_LONG_DOUBLE)
 endif ()
 
 #### Enable OpenQASM 2.0 specs, see DISCREPANCIES.md for a comparison with Qiskit
-option(USE_OPENQASM2_SPECS "Use OpenQASM 2.0 standard instead of Qiskit gate specifications" OFF)
-if (${USE_OPENQASM2_SPECS})
-    add_compile_definitions(USE_OPENQASM2_SPECS=true)
+option(QPP_QASM2_SPECS "Use OpenQASM 2.0 standard instead of Qiskit gate specifications" OFF)
+if (${QPP_QASM2_SPECS})
+    add_compile_definitions(QPP_QASM2_SPECS=true)
+    message(STATUS "OpenQASM2 specs - ON")
 else ()
-    add_compile_definitions(USE_OPENQASM2_SPECS=false)
+    add_compile_definitions(QPP_QASM2_SPECS=false)
+    message(STATUS "OpenQASM2 specs - OFF")
 endif ()
 
 #### Eigen3
@@ -109,7 +111,7 @@ if (NOT ${EIGEN3_INSTALL_DIR} STREQUAL "")
     else ()
         message(FATAL_ERROR "Invalid path to Eigen3 installation")
     endif ()
-#### Location set via environment variable
+    #### Location set via environment variable
 elseif (LOCATION_SET_VIA_ENV)
     message(STATUS "Overriding automatic Eigen3 detection (EIGEN3_INSTALL_DIR environment variable)")
     if (IS_DIRECTORY ${EIGEN3_INSTALL_DIR_ENV})
@@ -118,7 +120,7 @@ elseif (LOCATION_SET_VIA_ENV)
     else ()
         message(FATAL_ERROR "Invalid path to Eigen3 installation")
     endif ()
-#### Try to find the location automatically
+    #### Try to find the location automatically
 else ()
     find_package(Eigen3 3.0 QUIET NO_MODULE)
     if (NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
@@ -135,13 +137,13 @@ or set the EIGEN3_INSTALL_DIR environment variable to point to your Eigen3 insta
 endif ()
 
 #### OpenMP support
-option(WITH_OPENMP "OpenMP support" ON)
-if (${WITH_OPENMP})
+option(QPP_OPENMP "OpenMP support" ON)
+if (${QPP_OPENMP})
     find_package(OpenMP)
     if (OpenMP_CXX_FOUND)
         if (OpenMP_CXX_VERSION_MAJOR GREATER_EQUAL 3)
             #### inject definition (as #define) in the source files
-            add_compile_definitions(HAS_OPENMP)
+            add_compile_definitions(QPP_OPENMP)
             # OpenMP linking dependencies to be injected in the main CMakeLists.txt
             set(QPP_OPENMP_LINK_DEPS OpenMP::OpenMP_CXX)
         else ()
@@ -152,8 +154,8 @@ requires OpenMP 3.0 or later")
 endif ()
 
 #### MATLAB support, disabled by default
-option(WITH_MATLAB "MATLAB support" OFF)
-if (${WITH_MATLAB})
+option(QPP_MATLAB "MATLAB support" OFF)
+if (${QPP_MATLAB})
     message(STATUS "Detecting MATLAB")
     #### Try to find it automatically
     find_package(Matlab OPTIONAL_COMPONENTS MX_LIBRARY MAT_LIBRARY QUIET)
@@ -184,7 +186,7 @@ if (${WITH_MATLAB})
             message(FATAL_ERROR "Platform not supported, aborting.")
         endif ()
         link_directories(${MATLAB_LIB_DIR})
-        add_compile_definitions(HAS_MATLAB_ENABLED)
+        add_compile_definitions(QPP_MATLAB)
         set(BUILD_WITH_MATLAB TRUE)
     else () #### Location manually specified
         set(MATLAB_INSTALL_DIR "" CACHE PATH
@@ -230,7 +232,7 @@ if (${WITH_MATLAB})
             #### Everything is OK, inject definition (as #define) in the source
             message(STATUS
                     "Detecting MATLAB - done (in ${MATLAB_INSTALL_DIR})")
-            add_compile_definitions(HAS_MATLAB_ENABLED)
+            add_compile_definitions(QPP_MATLAB)
             set(BUILD_WITH_MATLAB TRUE)
         else ()
             message(FATAL_ERROR "Could not detect MATLAB, aborting")
