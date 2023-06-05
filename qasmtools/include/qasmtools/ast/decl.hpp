@@ -39,7 +39,7 @@
 namespace qasmtools {
 namespace ast {
 
-#if USE_OPENQASM2_SPECS
+#if QASMTOOLS_QASM2_SPECS
 static const std::set<std::string_view> qelib_defs{
     "u3", "u2",   "u1",  "cx",  "id",  "u0",  "x",  "y",  "z",
     "h",  "s",    "sdg", "t",   "tdg", "rx",  "ry", "rz", "cz",
