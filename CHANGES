@@ -1,14 +1,14 @@
 Pre-release
     - CMake dependent flag name changes. These flags can be used in standalone
       projects when configuring with CMake.
-          USE_OPENQASM2_SPECS -> QPP_QASM2_SPECS
+          USE_OPENQASM2_SPECS -> QASMTOOLS_QASM2_SPECS
           WITH_MATLAB         -> QPP_MATLAB
           WITH_OPENMP         -> QPP_OPENMP
           TYPE_BIGINT         -> QPP_BIGINT
           TYPE_FP             -> QPP_FP
           TYPE_IDX            -> QPP_IDX
     - Compile-time error fix when using FP_TYPE="long double" with
-      QPP_QASM2_SPECS=ON
+      QASMTOOLS_QASM2_SPECS=ON
 
 Version 4.3 - 26 May 2023
     - This is a maintenance release
