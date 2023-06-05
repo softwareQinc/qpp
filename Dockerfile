@@ -8,7 +8,7 @@ RUN apt-get update && \
 
 RUN apt-get install -y \
     build-essential \
-    python3.6 \
+    python3.10 \
     python3-pip \
     python3-dev \
     libeigen3-dev \

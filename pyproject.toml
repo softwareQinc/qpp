@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyqpp"
-version = "4.3"
+version = "4.3.1"
 description = "Python 3 wrapper for Quantum++"
 authors = [
     {name = "softwareQ Inc.", email = "info@softwareq.ca"},

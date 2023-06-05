@@ -1,4 +1,4 @@
-Pre-release
+Version 4.3.1 - 5 June 2023
     - CMake dependent flag name changes. These flags can be used in standalone
       projects when configuring with CMake.
           USE_OPENQASM2_SPECS -> QASMTOOLS_QASM2_SPECS

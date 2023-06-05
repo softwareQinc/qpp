@@ -38,8 +38,8 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 
 ## Configuring the system
 
-First configure the system via CMake to use an out-of-source build directory 
-(e.g., `./build`) by executing (in a terminal/console/command prompt) under the 
+First configure the system via CMake to use an out-of-source build directory
+(e.g., `./build`) by executing (in a terminal/console/command prompt) under the
 project's root directory
 
 ```bash
@@ -49,9 +49,9 @@ cmake -B build
 ## Building the examples and/or unit tests
 
 To build
-the [examples](https://github.com/softwareQinc/qpp/tree/main/examples) and/or 
-the [unit tests](https://github.com/softwareQinc/qpp/tree/main/unit_tests), you 
-need to pass the additional 
+the [examples](https://github.com/softwareQinc/qpp/tree/main/examples) and/or
+the [unit tests](https://github.com/softwareQinc/qpp/tree/main/unit_tests), you
+need to pass the additional
 [optional flags](#cmake-optional-arguments-and-flags)  
 `WITH_EXAMPLES=ON` and/or `WITH_UNIT_TESTS=ON` to CMake, e.g.,
 
@@ -59,14 +59,14 @@ need to pass the additional
 cmake -B build -DWITH_EXAMPLES=ON -DWITH_UNIT_TESTS=ON
 ```
 
-followed by the build command 
+followed by the build command
 
 ```bash
 cmake --build build --target=examples --target=unit_tests --parallel 8
 ```
 
-The above command builds all examples as executables in `./build`, 
-followed by building the unit tests executable in 
+The above command builds all examples as executables in `./build`,
+followed by building the unit tests executable in
 `./build/unit_tests/unit_tests`. The `--parallel 8` instructs CMake to build
 in parallel using 8 threads, modify accordingly.
 
@@ -82,29 +82,33 @@ To build **only** a specific target, execute, e.g.,
 cmake --build build --target=bb84
 ```
 
-The command above only builds the example 
-[examples/bb84](https://github.com/softwareQinc/qpp/tree/main/examples/bb84) 
-and outputs the executable `./build/bb84[.exe]`. Reminder: for this to work, 
+The command above only builds the example
+[examples/bb84](https://github.com/softwareQinc/qpp/tree/main/examples/bb84)
+and outputs the executable `./build/bb84[.exe]`. Reminder: for this to work,
 do not forget to configure the system with the `-DWITH_EXAMPLES=ON` flag.
 
 ## CMake optional arguments and flags
 
-| Optional argument        | Value                                  | Description                                                                                                                                                                                                                      |
-|--------------------------|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `CMAKE_INSTALL_PREFIX`   | `/path/to/install`                     | Installs Quantum++ header files in a non-standard location (e.g., due to lack of admin. rights)                                                                                                                                  |
-| `EIGEN3_INSTALL_DIR`     | `/path/to/eigen3`                      | Path to Eigen3 installation, if not automatically detected. This path can alternatively be enforced by setting the environment variable with the same name, e.g., via `export EIGEN3_INSTALL_DIR=/path/to/eigen3` in UNIX/Linux. |
-|                          |                                        |                                                                                                                                                                                                                                  | 
-| `QPP_MATLAB`             | `ON/OFF` [`OFF` by default]            | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load Quantum++ matrices and vectors to/from MATLAB.                  |
-| `QPP_OPENMP`             | `ON/OFF` [`ON` by default]             | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                                  |
-| `QASMTOOLS_QASM2_SPECS`  | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications; see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                                      |
-|                          |                                        |                                                                                                                                                                                                                                  |
-| `QPP_BIGINT`             | `default`, etc. [`default` by default] | Signed big integer type (`qpp::bigint`)                                                                                                                                                                                          |
-| `QPP_FP`                 | `default`, etc. [`default` by default] | Floating-point type (`qpp::realT`)                                                                                                                                                                                               |
-| `QPP_IDX`                | `default`, etc. [`default` by default] | Integer index type (`qpp::idx`)                                                                                                                                                                                                  |
-|                          |                                        |                                                                                                                                                                                                                                  |
-| `SANITIZE`               | `ON/OFF` [`OFF` by default]            | Enable code sanitizing (only for gcc/clang)                                                                                                                                                                                      |
-| `WITH_EXAMPLES`          | `ON/OFF` [`OFF` by default]            | Enables/disables examples as a CMake build target                                                                                                                                                                                |
-| `WITH_UNIT_TESTS`        | `ON/OFF` [`OFF` by default]            | Enables/disables unit tests as a CMake build target                                                                                                                                                                              |
+Note that all CMake flags below that start with `QPP_` and `QASMTOOLS_`
+propagate to subprojects that use Quantum++ in
+their corresponding `CMakeLists.txt` via `findpackage(qpp ...)`.
+
+| Optional argument       | Value                                  | Description                                                                                                                                                                                                                      |
+|-------------------------|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `CMAKE_INSTALL_PREFIX`  | `/path/to/install`                     | Installs Quantum++ header files in a non-standard location (e.g., due to lack of admin. rights)                                                                                                                                  |
+| `EIGEN3_INSTALL_DIR`    | `/path/to/eigen3`                      | Path to Eigen3 installation, if not automatically detected. This path can alternatively be enforced by setting the environment variable with the same name, e.g., via `export EIGEN3_INSTALL_DIR=/path/to/eigen3` in UNIX/Linux. |
+|                         |                                        |                                                                                                                                                                                                                                  | 
+| `QPP_MATLAB`            | `ON/OFF` [`OFF` by default]            | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load Quantum++ matrices and vectors to/from MATLAB.                  |
+| `QPP_OPENMP`            | `ON/OFF` [`ON` by default]             | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                                  |
+| `QASMTOOLS_QASM2_SPECS` | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications; see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                                      |
+|                         |                                        |                                                                                                                                                                                                                                  |
+| `QPP_BIGINT`            | `default`, etc. [`default` by default] | Signed big integer type (`qpp::bigint`)                                                                                                                                                                                          |
+| `QPP_FP`                | `default`, etc. [`default` by default] | Floating-point type (`qpp::realT`)                                                                                                                                                                                               |
+| `QPP_IDX`               | `default`, etc. [`default` by default] | Integer index type (`qpp::idx`)                                                                                                                                                                                                  |
+|                         |                                        |                                                                                                                                                                                                                                  |
+| `SANITIZE`              | `ON/OFF` [`OFF` by default]            | Enable code sanitizing (only for gcc/clang)                                                                                                                                                                                      |
+| `WITH_EXAMPLES`         | `ON/OFF` [`OFF` by default]            | Enables/disables examples as a CMake build target                                                                                                                                                                                |
+| `WITH_UNIT_TESTS`       | `ON/OFF` [`OFF` by default]            | Enables/disables unit tests as a CMake build target                                                                                                                                                                              |
 
 If `QPP_MATLAB=ON` and the system could not detect your MATLAB installation,
 you can manually specify the path to MATLAB's installation directory via the
@@ -122,7 +126,7 @@ required libraries and header files via the additional arguments
 
 ### UNIX/UNIX-like
 
-To install Quantum++ (after [Configuring the system](#configuring-the-system)), 
+To install Quantum++ (after [Configuring the system](#configuring-the-system)),
 execute in a terminal/console (UNIX/UNIX-like systems)
 
 ```bash
@@ -154,18 +158,17 @@ To uninstall, execute in an Administrator Command Prompt
 cmake --build build --target UNINSTALL
 ```
 
-
 ### FreeBSD
 
 We are proud to be part of the [FreeBSD](https://www.freebsd.org/) operating
-system as an official package. If you are running FreeBSD, you can install 
+system as an official package. If you are running FreeBSD, you can install
 Quantum++ with
 
     pkg install quantum++
 
 ### macOS/Linux
 
-If you are running macOS or Linux, you can install Quantum++ via 
+If you are running macOS or Linux, you can install Quantum++ via
 [Homebrew](https://brew.sh) with
 
     brew install quantum++
@@ -212,14 +215,14 @@ followed by building the application with
 cmake --build build
 ```
 
-The commands above builds the `standalone` executable inside the `build` 
+The commands above builds the `standalone` executable inside the `build`
 directory.
 
 ## Building and running a standalone application that uses Quantum++ without a build system
 
-Quantum++ is a header-only library. Hence, you can technically build an 
-application that uses Quantum++ without using a building system, by simply using 
-the compiler and specifying the location to all required dependencies, like 
+Quantum++ is a header-only library. Hence, you can technically build an
+application that uses Quantum++ without using a building system, by simply using
+the compiler and specifying the location to all required dependencies, like
 below (assumes UNIX/UNIX-like, adapt accordingly for Windows)
 
 ```bash
@@ -258,8 +261,8 @@ with `make install`.
 
 ### macOS/OS X specific instructions
 
-- We highly recommend installing [clang](https://clang.llvm.org/) 
-  via [Homebrew](https://brew.sh/), since the native AppleClang does not offer 
+- We highly recommend installing [clang](https://clang.llvm.org/)
+  via [Homebrew](https://brew.sh/), since the native AppleClang does not offer
   OpenMP support.
 - In case you get any compiler or linker errors when OpenMP is enabled, you need
   to install the `libomp` package, e.g., execute
@@ -271,7 +274,8 @@ brew install libomp
 ### MATLAB support under Windows
 
 If building under Windows
-with [MATLAB](https://www.mathworks.com/products/matlab/) support, please add the
+with [MATLAB](https://www.mathworks.com/products/matlab/) support, please add
+the
 location of
 `libmx.dll` and `libmat.dll` (the `.dll` **and not** the `.lib` files) to
 your `PATH` environment variable. In our case they are located
