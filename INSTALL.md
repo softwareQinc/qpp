@@ -124,7 +124,7 @@ required libraries and header files via the additional arguments
 
 ## Installing Quantum++
 
-### UNIX/UNIX-like
+### UNIX/UNIX-like/Windows
 
 To install Quantum++ (after [Configuring the system](#configuring-the-system)),
 execute in a terminal/console (UNIX/UNIX-like systems)
@@ -133,29 +133,26 @@ execute in a terminal/console (UNIX/UNIX-like systems)
 sudo cmake --build build --target install
 ```
 
-which installs Quantum++ in `/usr/local/include/qpp`.
+or in an Administrator Command Prompt (Windows)
 
-To uninstall, execute
+```bash
+cmake --build build --target install
+```
+
+The above commands install Quantum++ in `/usr/local/include/qpp` on
+UNIX/UNIX-like platforms, and in `C:\Program Files (x86)\qpp` on Windows
+platforms.
+
+To uninstall, execute in a terminal/console (UNIX/UNIX-like systems)
 
 ```bash
 sudo cmake --build build --target uninstall
 ```
 
-### Windows
-
-To install Quantum++ on a Windows platform, execute in an
-Administrator Command Prompt
+or in an Administrator Command Prompt (Windows)
 
 ```shell
-cmake --build build --target INSTALL
-```
-
-which installs Quantum++ in `C:\Program Files (x86)\qpp`.
-
-To uninstall, execute in an Administrator Command Prompt
-
-```shell
-cmake --build build --target UNINSTALL
+cmake --build build --target uninstall
 ```
 
 ### FreeBSD
@@ -164,14 +161,30 @@ We are proud to be part of the [FreeBSD](https://www.freebsd.org/) operating
 system as an official package. If you are running FreeBSD, you can install
 Quantum++ with
 
-    pkg install quantum++
+```bash
+sudo pkg install quantum++
+```    
+
+and uninstall it with
+
+```bash
+sudo pkg remove quantum++
+```
 
 ### macOS/Linux
 
 If you are running macOS or Linux, you can install Quantum++ via
 [Homebrew](https://brew.sh) with
 
-    brew install quantum++
+```bash
+brew install quantum++
+```
+
+and uninstall it with
+
+```bash
+brew uninstall quantum++
+```
 
 ## Building and running a standalone application that uses Quantum++
 
@@ -252,12 +265,8 @@ does.
 ```shell
 cd C:\path\to\eigen-3.x.x\
 cmake -B build
-cmake --build build --target INSTALL
+cmake --build build --target install
 ```
-
-Running the last line may require Administrator privileges. For other compilers,
-you may need to replace the last line `cmake --build . --target INSTALL`
-with `make install`.
 
 ### macOS/OS X specific instructions
 
