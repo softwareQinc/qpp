@@ -42,7 +42,7 @@ First configure the system via CMake to use an out-of-source build directory
 (e.g., `./build`) by executing (in a terminal/console/command prompt) under the
 project's root directory
 
-```bash
+```shell
 cmake -B build
 ```
 
@@ -55,13 +55,13 @@ need to pass the additional
 [optional flags](#cmake-optional-arguments-and-flags)  
 `WITH_EXAMPLES=ON` and/or `WITH_UNIT_TESTS=ON` to CMake, e.g.,
 
-```bash
+```shell
 cmake -B build -DWITH_EXAMPLES=ON -DWITH_UNIT_TESTS=ON
 ```
 
 followed by the build command
 
-```bash
+```shell
 cmake --build build --target=examples --target=unit_tests --parallel 8
 ```
 
@@ -72,13 +72,13 @@ in parallel using 8 threads, modify accordingly.
 
 Tu run the unit tests, execute
 
-```bash
+```shell
 ctest --test-dir build
 ```
 
 To build **only** a specific target, execute, e.g.,
 
-```bash
+```shell
 cmake --build build --target=bb84
 ```
 
@@ -129,13 +129,13 @@ required libraries and header files via the additional arguments
 To install Quantum++ (after [Configuring the system](#configuring-the-system)),
 execute in a terminal/console (UNIX/UNIX-like systems)
 
-```bash
+```shell
 sudo cmake --build build --target install
 ```
 
 or in an Administrator Command Prompt (Windows)
 
-```bash
+```shell
 cmake --build build --target install
 ```
 
@@ -145,7 +145,7 @@ platforms.
 
 To uninstall, execute in a terminal/console (UNIX/UNIX-like systems)
 
-```bash
+```shell
 sudo cmake --build build --target uninstall
 ```
 
@@ -161,13 +161,13 @@ We are proud to be part of the [FreeBSD](https://www.freebsd.org/) operating
 system as an official package. If you are running FreeBSD, you can install
 Quantum++ with
 
-```bash
+```shell
 sudo pkg install quantum++
 ```    
 
 and uninstall it with
 
-```bash
+```shell
 sudo pkg remove quantum++
 ```
 
@@ -176,13 +176,13 @@ sudo pkg remove quantum++
 If you are running macOS or Linux, you can install Quantum++ via
 [Homebrew](https://brew.sh) with
 
-```bash
+```shell
 brew install quantum++
 ```
 
 and uninstall it with
 
-```bash
+```shell
 brew uninstall quantum++
 ```
 
@@ -218,13 +218,13 @@ to `target_link_libraries()`!** (last line of the
 
 Configure the application in an out-of-source directory by executing
 
-```bash
+```shell
 cmake -B build 
 ```
 
 followed by building the application with
 
-```bash
+```shell
 cmake --build build
 ```
 
@@ -238,7 +238,7 @@ application that uses Quantum++ without using a building system, by simply using
 the compiler and specifying the location to all required dependencies, like
 below (assumes UNIX/UNIX-like, adapt accordingly for Windows)
 
-```bash
+```shell
 c++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
     -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
     -isystem $HOME/eigen3 -I $HOME/qpp/include -I $HOME/qpp/qasmtools/include \
@@ -276,7 +276,7 @@ cmake --build build --target install
 - In case you get any compiler or linker errors when OpenMP is enabled, you need
   to install the `libomp` package, e.g., execute
 
-```bash
+```shell
 brew install libomp
 ```
 
