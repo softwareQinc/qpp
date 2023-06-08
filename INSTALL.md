@@ -296,7 +296,7 @@ under `C:\Program Files\MATLAB\R2021a\bin\win64`.
 wrapper for Quantum++. pyqpp requires the same dependencies as Quantum++, and
 can be installed using `pip`
 
-```
+```shell
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
