@@ -40,9 +40,8 @@ jobs:
           if [ "$RUNNER_OS" == "Windows" ]; then
             export EIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
           fi
-          cmake -B "${{github.workspace}}"/build \
-            -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON \
-            -DWITH_EXAMPLES=ON
+          cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+            -DWITH_UNIT_TESTS=ON -DWITH_EXAMPLES=ON
 
       - name: Install Quantum++
         shell: bash
