@@ -83,8 +83,7 @@ jobs:
         run: cmake --build ${{github.workspace}}/build --target unit_tests
 
       - name: Run unit tests
-        working-directory: ${{github.workspace}}/build
-        run: ctest -C ${{env.BUILD_TYPE}} -E qpp_Timer
+        run: ctest --test-dir build -C ${{env.BUILD_TYPE}} -E qpp_Timer
 
       - name: Install pyqpp
         shell: bash
