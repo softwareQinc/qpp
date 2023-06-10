@@ -213,7 +213,7 @@ class BExpr final : public Expr {
             case BinaryOp::Divide:
                 return *lexp / *rexp;
             case BinaryOp::Pow:
-                return pow(*lexp, *rexp);
+                return std::pow(*lexp, *rexp);
             default:
                 return 0; // inaccessible
         }
