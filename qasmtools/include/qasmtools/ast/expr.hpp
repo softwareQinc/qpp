@@ -300,17 +300,17 @@ class UExpr final : public Expr {
             case UnaryOp::Neg:
                 return -(*expr);
             case UnaryOp::Sin:
-                return sin(*expr);
+                return std::sin(*expr);
             case UnaryOp::Cos:
-                return cos(*expr);
+                return std::cos(*expr);
             case UnaryOp::Tan:
-                return tan(*expr);
+                return std::tan(*expr);
             case UnaryOp::Sqrt:
-                return sqrt(*expr);
+                return std::sqrt(*expr);
             case UnaryOp::Ln:
-                return log(*expr);
+                return std::log(*expr);
             case UnaryOp::Exp:
-                return exp(*expr);
+                return std::exp(*expr);
             default:
                 return 0; // inaccessible
         }
