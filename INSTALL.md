@@ -8,6 +8,8 @@ supporting [UNIX](https://www.opengroup.org/membership/forums/platform/unix)
 (e.g., [Linux](https://www.linux.org)), as well
 as [Windows](https://www.microsoft.com/en-us/windows).
 
+---
+
 ## Pre-requisites
 
 - [CMake](https://cmake.org/)
@@ -24,7 +26,7 @@ as [Windows](https://www.microsoft.com/en-us/windows).
   , [clang](https://clang.llvm.org)
   , [MSVC](https://visualstudio.microsoft.com/vs/) etc.
 
-## Optional
+### Optional
 
 - [Python 3](https://www.python.org/) for running the `pyqpp` Python 3 wrapper
 - [MATLAB](https://www.mathworks.com/products/matlab/) compiler shared libraries
@@ -36,6 +38,8 @@ as [Windows](https://www.microsoft.com/en-us/windows).
   `/usr/local/MATLAB/R2021a/extern/include`, respectively. On your platform the
   locations may of course differ.
 
+---
+
 ## Configuring the system
 
 First configure the system via CMake to use an out-of-source build directory
@@ -45,6 +49,8 @@ project's root directory
 ```shell
 cmake -B build
 ```
+
+---
 
 ## Building the examples and/or unit tests
 
@@ -87,6 +93,8 @@ The command above only builds the example
 and outputs the executable `./build/bb84[.exe]`. Reminder: for this to work,
 do not forget to configure the system with the `-DWITH_EXAMPLES=ON` flag.
 
+---
+
 ## CMake optional arguments and flags
 
 Note that all CMake flags below that start with `QPP_` and `QASMTOOLS_`
@@ -121,6 +129,8 @@ required libraries and header files via the additional arguments
 
     MATLAB_LIB_DIR=/path/to/MATLAB/libs
     MATLAB_INCLUDE_DIR=/path/to/MATLAB/headers
+
+---
 
 ## Installing Quantum++
 
@@ -186,6 +196,8 @@ and uninstall it with
 brew uninstall quantum++
 ```
 
+---
+
 ## Building and running a standalone application that uses Quantum++
 
 Below is a minimal `CMakeLists.txt` of a standalone application that uses
@@ -231,6 +243,8 @@ cmake --build build
 The commands above builds the `standalone` executable inside the `build`
 directory.
 
+---
+
 ## Building and running a standalone application that uses Quantum++ without a build system
 
 Quantum++ is a header-only library. Hence, you can technically build an
@@ -248,6 +262,8 @@ c++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
 If you intend to go via this route, we assume that you are familiar with how
 compilers work, so we won't add any more explanations to what the line above
 does.
+
+---
 
 ## Additional platform-specific instructions
 
@@ -289,6 +305,21 @@ location of
 `libmx.dll` and `libmat.dll` (the `.dll` **and not** the `.lib` files) to
 your `PATH` environment variable. In our case they are located
 under `C:\Program Files\MATLAB\R2021a\bin\win64`.
+
+---
+
+## Platform-dependent issues
+
+### SunOS/OpenIndiana
+
+The Python3 wrapper [pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp)
+doesn't compile under SunOS/OpenIndiana due to errors in `<cmath>` such as
+
+``` 
+no member named 'llround' in the global namespace; did you mean 'lround'?
+```
+
+---
 
 ## Python 3 wrapper
 

@@ -83,7 +83,7 @@ elseif (QPP_FP STREQUAL "long double")
     add_compile_definitions(QPP_FP_LONG_DOUBLE)
 endif ()
 
-#### Enable OpenQASM 2.0 specs, see DISCREPANCIES.md for a comparison with Qiskit
+#### OpenQASM 2.0 specs, see DISCREPANCIES.md for a comparison with Qiskit
 option(QASMTOOLS_QASM2_SPECS "Use OpenQASM 2.0 standard instead of Qiskit gate specifications" OFF)
 if (${QASMTOOLS_QASM2_SPECS})
     add_compile_definitions(QASMTOOLS_QASM2_SPECS=true)

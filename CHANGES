@@ -1,5 +1,6 @@
-Pre-release
-    -
+Version 4.3.2 - 12 June 2023
+    - This is a maintenance release
+    - Compiling errors fixed on SunOS/OpenIndiana
 
 Version 4.3.1 - 5 June 2023
     - CMake dependent flag name changes. These flags can be used in standalone

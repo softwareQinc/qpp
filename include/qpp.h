@@ -61,6 +61,14 @@
 
 #endif
 
+// SunOS Solaris/OpenIndiana issues
+#if defined(__sun)
+// CTRL defined as a macro
+#ifdef CTRL
+#undef CTRL
+#endif // CTRL
+#endif // __sun
+
 // standard C++ library headers
 #include <algorithm>
 #include <array>
@@ -188,8 +196,8 @@ static const States& st [[maybe_unused]] =
  * Initializes the random devices, see the class qpp::RandomDevices
  *
  * \note If the compiler supports thread_local, has thread_local storage
- * duration, due to mutability of its public member std::mt19937 and possible
- * data races
+ * duration, due to mutability of its public member std::mt19937 and
+ * possible data races
  */
 
 #ifndef NO_THREAD_LOCAL_
