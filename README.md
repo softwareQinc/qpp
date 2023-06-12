@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 4.3.1 - 5 June 2023
+## Version 4.3.2 - 12 June 2023
 
 [![GitHub actions](https://github.com/softwareqinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
 
@@ -84,10 +84,12 @@ your LaTeX compiler. This will create the `doc/latex/refman.pdf` documentation
 file. Consult your favourite LaTeX manual for how to compile/build LaTeX files
 under your specific operating system.
 
+---
+
 ## Python 3 wrapper
 
-[pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3 
-wrapper for Quantum++. pyqpp requires the same dependencies as Quantum++, and 
+[pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
+wrapper for Quantum++. pyqpp requires the same dependencies as Quantum++, and
 can be installed using `pip`
 
 ```shell
