@@ -40,51 +40,47 @@ jobs:
           if [ "$RUNNER_OS" == "Windows" ]; then
             export EIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
           fi
-          cmake -B "${{github.workspace}}"/build \
-            -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWITH_UNIT_TESTS=ON \
-            -DWITH_EXAMPLES=ON
+          cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
+            -DWITH_UNIT_TESTS=ON -DWITH_EXAMPLES=ON
 
       - name: Install Quantum++
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            cmake --build "${{github.workspace}}"/build --target install
+            cmake --build build --target install
           else
-            sudo cmake --build ${{github.workspace}}/build --target install
+            sudo cmake --build build --target install
           fi
 
       - name: Configure standalone example
         shell: bash
         run: |
-          cd "${{github.workspace}}"/examples/standalone
           if [ "$RUNNER_OS" == "Windows" ]; then
             export EIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
           fi
-          cmake -B build
+          cmake -S examples/standalone -B examples/standalone/build
 
       - name: Build standalone example
         run: |
-          cd ${{github.workspace}}/examples/standalone
-          cmake --build build --target standalone
+          cmake --build examples/standalone/build --target standalone
 
       - name: Run standalone example
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            "${{github.workspace}}"/examples/standalone/build/Debug/standalone.exe
+            ./examples/standalone/build/${{env.BUILD_TYPE}}/standalone.exe
           else
-            ${{github.workspace}}/examples/standalone/build/standalone
+            ./examples/standalone/build/standalone
           fi
 
       - name: Build examples
-        run: cmake --build ${{github.workspace}}/build --target examples
+        run: cmake --build build --target examples --parallel 2
 
       - name: Build unit tests
-        run: cmake --build ${{github.workspace}}/build --target unit_tests
+        run: cmake --build build --target unit_tests --parallel 2
 
       - name: Run unit tests
-        working-directory: ${{github.workspace}}/build
-        run: ctest -C ${{env.BUILD_TYPE}} -E qpp_Timer
+        run: ctest --test-dir build -E qpp_Timer
 
       - name: Install pyqpp
         shell: bash

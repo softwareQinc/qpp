@@ -1,3 +1,36 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
 # Vim
 *.swp
 
@@ -22,8 +55,16 @@ CMakeSettings.json
 build/
 cmake-build*/
 
-# Windows build
-win/
+# Documentation source files
+doc/
+
+# Misc
+.DS_Store
+.cmake/
+Testing/
+mat.txt
+examples/_*.cpp
+out.tmp
 
 # pyqpp
 Makefile
@@ -31,14 +72,3 @@ cmake_install.cmake
 CMakeCache.txt
 CMakeFiles/
 pyqpp.egg-info/
-
-# Documentation source files
-doc/
-
-# Misc
-.DS_Store
-examples/_*.cpp
-out.tmp
-.cmake/
-Testing/
-mat.txt

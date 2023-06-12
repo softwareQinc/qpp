@@ -75,7 +75,7 @@ The HTML documentation file will be accessible by opening `doc/html/index.html`
 with the browser of your choice. To generate a PDF file of the documentation,
 run
 
-```bash
+```shell
 latexmk -pdf refman.tex
 ```
 
@@ -90,7 +90,7 @@ under your specific operating system.
 wrapper for Quantum++. pyqpp requires the same dependencies as Quantum++, and 
 can be installed using `pip`
 
-```
+```shell
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
