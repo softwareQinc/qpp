@@ -308,19 +308,6 @@ under `C:\Program Files\MATLAB\R2021a\bin\win64`.
 
 ---
 
-## Platform-dependent issues
-
-### SunOS/OpenIndiana
-
-The Python3 wrapper [pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp)
-doesn't compile under SunOS/OpenIndiana due to errors in `<cmath>` such as
-
-``` 
-no member named 'llround' in the global namespace; did you mean 'lround'?
-```
-
----
-
 ## Python 3 wrapper
 
 [pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
@@ -338,3 +325,16 @@ detect the location of the Eigen3 matrix library, set the environment variable
 
 For more details, please see
 [pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md).
+
+---
+
+## Platform-dependent issues
+
+### SunOS/OpenIndiana
+
+The Python3 wrapper [pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp)
+doesn't compile under SunOS/OpenIndiana due to errors in `<cmath>` such as
+
+``` 
+no member named 'llround' in the global namespace; did you mean 'lround'?
+```
