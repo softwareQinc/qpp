@@ -74,10 +74,10 @@ jobs:
           fi
 
       - name: Build examples
-        run: cmake --build build --target examples --parallel 2
+        run: cmake --build build --target examples
 
       - name: Build unit tests
-        run: cmake --build build --target unit_tests --parallel 2
+        run: cmake --build build --target unit_tests
 
       - name: Run unit tests
         run: ctest --test-dir build -E qpp_Timer
