@@ -214,10 +214,23 @@ class QEngine : public IDisplay, public IJSON {
 
         /**
          * \brief Resets the engine state
+         *
+         * \param psi Optional engine's initial quantum state
          */
-        void reset() {
-            psi_ = States::get_no_thread_local_instance().zero(
-                qc_ptr_->get_nq(), qc_ptr_->get_d());
+        void reset(std::optional<ket> psi = std::nullopt) {
+            if (psi.has_value()) {
+                idx D = static_cast<idx>(std::llround(
+                    std::pow(qc_ptr_->get_d(), qc_ptr_->get_nq())));
+                if (psi.value().rows() != D) {
+                    if (static_cast<idx>(psi.value().rows()) != D)
+                        throw exception::DimsNotEqual(
+                            "qpp::QEngine::state_::reset()", "psi");
+                }
+                psi_ = psi.value();
+            } else {
+                psi_ = States::get_no_thread_local_instance().zero(
+                    qc_ptr_->get_nq(), qc_ptr_->get_d());
+            }
             probs_ = std::vector<realT>(qc_ptr_->get_nc(), 0);
             dits_ = std::vector<idx>(qc_ptr_->get_nc(), 0);
             subsys_ = std::vector<idx>(qc_ptr_->get_nq(), 0);
@@ -550,7 +563,7 @@ class QEngine : public IDisplay, public IJSON {
      */
     virtual QEngine& reset(bool reset_stats = true) {
         this->can_sample = false;
-        st_.reset();
+        st_.reset(st_.psi_);
         if (reset_stats)
             this->reset_stats();
 
