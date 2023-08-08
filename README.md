@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 4.3.2 - 12 June 2023
+## Version 4.3.3 - 8 August 2023
 
 [![GitHub actions](https://github.com/softwareqinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
 
