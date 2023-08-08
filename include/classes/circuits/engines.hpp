@@ -221,7 +221,7 @@ class QEngine : public IDisplay, public IJSON {
             if (psi.has_value()) {
                 idx D = static_cast<idx>(std::llround(
                     std::pow(qc_ptr_->get_d(), qc_ptr_->get_nq())));
-                if (psi.value().rows() != D) {
+                if (static_cast<idx>(psi.value().rows()) != D) {
                     if (static_cast<idx>(psi.value().rows()) != D)
                         throw exception::DimsNotEqual(
                             "qpp::QEngine::state_::reset()", "psi");
