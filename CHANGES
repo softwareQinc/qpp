@@ -1,3 +1,6 @@
+Pre-release:
+    - Docker update, see the ["docker/"] directory
+
 Version 4.3.3 - 8 August 2023
     - Minor bugfix in pyqpp setup.py that prevented pip install from remote
     - Bug fix in qpp::QEngine::execute() that prevented setting the initial
