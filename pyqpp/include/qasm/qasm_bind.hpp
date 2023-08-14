@@ -24,13 +24,16 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_QASM_QASM_BIND_HPP_
+#define PYQPP_QASM_QASM_BIND_HPP_
 
 /* OpenQASM interfacing */
-void init_qasm_qasm(py::module_& m) {
+inline void init_qasm_qasm(py::module_& m) {
     using namespace qpp;
 
     auto py_qasm = m.def_submodule("qasm");
     py_qasm.def("read_from_file", &qpp::qasm::read_from_file,
                 "Get QCircuit representation of OpenQASM circuit");
 }
+
+#endif /* PYQPP_QASM_QASM_BIND_HPP_ */

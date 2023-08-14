@@ -24,10 +24,11 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_CLASSES_REVERSIBLE_BIND_HPP_
+#define PYQPP_CLASSES_REVERSIBLE_BIND_HPP_
 
 /* qpp::Dynamic_bitset and qpp::Bit_circuit */
-void init_classes_reversible(py::module_& m) {
+inline void init_classes_reversible(py::module_& m) {
     using namespace qpp;
 
     /* qpp::Dynamic_bitset */
@@ -136,3 +137,5 @@ void init_classes_reversible(py::module_& m) {
                 return oss.str();
             });
 }
+
+#endif /* PYQPP_CLASSES_REVERSIBLE_BIND_HPP_ */

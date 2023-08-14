@@ -24,10 +24,11 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_INSTRUMENTS_BIND_HPP_
+#define PYQPP_INSTRUMENTS_BIND_HPP_
 
 /* Some free functions (non-exhaustive list) from instruments.hpp */
-void init_instruments(py::module_& m) {
+inline void init_instruments(py::module_& m) {
     using namespace qpp;
 
     m.def(
@@ -80,3 +81,5 @@ void init_instruments(py::module_& m) {
         py::arg("num_samples"), py::arg("A"), py::arg("target"),
         py::arg("d") = 2);
 }
+
+#endif /* PYQPP_INSTRUMENTS_BIND_HPP_ */

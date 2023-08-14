@@ -24,7 +24,8 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_CLASSES_CIRCUITS_ENGINES_BIND_HPP_
+#define PYQPP_CLASSES_CIRCUITS_ENGINES_BIND_HPP_
 
 /* qpp::QNoisyEngine instantiator */
 template <typename NoiseModel, typename... CtorTypeList>
@@ -73,7 +74,7 @@ void declare_noisy_engine(py::module& m, const std::string& type) {
 }
 
 /* qpp::QEngine */
-void init_classes_circuits_engines(py::module_& m) {
+inline void init_classes_circuits_engines(py::module_& m) {
     using namespace qpp;
 
     py::class_<QEngine>(m, "QEngine")
@@ -146,3 +147,5 @@ void init_classes_circuits_engines(py::module_& m) {
     declare_noisy_engine<qpp::QuditDepolarizingNoise, realT, idx>(
         m, "QuditDepolarizingNoise");
 }
+
+#endif /* PYQPP_CLASSES_CIRCUITS_ENGINES_BIND_HPP_ */

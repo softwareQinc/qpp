@@ -24,10 +24,11 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_CLASSES_GATES_BIND_HPP_
+#define PYQPP_CLASSES_GATES_BIND_HPP_
 
 /* qpp::Gates */
-void init_classes_gates(py::module_& m) {
+inline void init_classes_gates(py::module_& m) {
     using namespace qpp;
 
     auto gates = m.def_submodule("gates");
@@ -87,3 +88,5 @@ void init_classes_gates(py::module_& m) {
         "Zd", [](idx D) { return qpp::gt.Zd(D); },
         "Generalized Z gate for qudits", py::arg("D") = 2);
 }
+
+#endif /* PYQPP_CLASSES_GATES_BIND_HPP_ */
