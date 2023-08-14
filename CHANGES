@@ -1,5 +1,6 @@
 Pre-release
     - Docker update, see the ["docker/"] directory
+    - Fix in ["types.hpp"] for defaulting types when not using CMake
 
 Version 4.3.3 - 8 August 2023
     - Minor bugfix in pyqpp setup.py that prevented pip install from remote
