@@ -57,6 +57,8 @@ using idx = unsigned int;
 using idx = unsigned long int;
 #elif defined(QPP_IDX_ULONG_LONG)
 using idx = unsigned long long int;
+#else // build without CMake
+using idx = std::size_t;
 #endif
 static_assert(std::is_integral_v<idx>, "Type must be integral");
 static_assert(sizeof(idx) > 1, "Type must be at least 2 bytes long");
@@ -74,6 +76,8 @@ using bigint = int;
 using bigint = long int;
 #elif defined(QPP_BIGINT_LONG_LONG)
 using bigint = long long int;
+#else // build without CMake
+using bigint = long long int;
 #endif
 static_assert(std::is_integral_v<bigint>, "Type must be integral");
 static_assert(std::is_signed_v<bigint>, "Type must be signed");
@@ -90,6 +94,8 @@ using realT = float;
 using realT = double;
 #elif defined(QPP_FP_LONG_DOUBLE)
 using realT = long double;
+#else // build without CMake
+using realT = double;
 #endif
 static_assert(std::is_floating_point_v<realT>, "Type myst be floating-point");
 
