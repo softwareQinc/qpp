@@ -24,10 +24,11 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_CLASSES_STATES_BIND_HPP_
+#define PYQPP_CLASSES_STATES_BIND_HPP_
 
 /* qpp::States */
-void init_classes_states(py::module_& m) {
+inline void init_classes_states(py::module_& m) {
     using namespace qpp;
 
     auto states = m.def_submodule("states");
@@ -78,3 +79,5 @@ void init_classes_states(py::module_& m) {
         "zero", [](idx n, idx d) { return qpp::st.zero(n, d); },
         "Zero state of n qudits", py::arg("n") = 1, py::arg("d") = 2);
 }
+
+#endif /* PYQPP_CLASSES_STATES_BIND_HPP_ */

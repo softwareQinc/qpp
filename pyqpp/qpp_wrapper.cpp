@@ -26,21 +26,20 @@
 
 #include "pyqpp_common.h"
 
-void init_constants(py::module_&);
-void init_functions(py::module_&);
-void init_instruments(py::module_&);
-void init_random(py::module_&);
+#include "classes/circuits/circuits_bind.hpp"
+#include "classes/circuits/engines_bind.hpp"
 
-void init_classes_gates(py::module_&);
-void init_classes_reversible(py::module_&);
-void init_classes_states(py::module_&);
+#include "classes/gates_bind.hpp"
+#include "classes/reversible_bind.hpp"
+#include "classes/states_bind.hpp"
 
-void init_classes_circuits_circuits(py::module_&);
-void init_classes_circuits_engines(py::module_&);
+#include "qasm/qasm_bind.hpp"
 
-void init_qasm_qasm(py::module_&);
-
-void init_pyqpp_specific(py::module_&);
+#include "constants_bind.hpp"
+#include "functions_bind.hpp"
+#include "instruments_bind.hpp"
+#include "pyqpp_specific_bind.hpp"
+#include "random_bind.hpp"
 
 PYBIND11_MODULE(pyqpp, m) {
     m.doc() =

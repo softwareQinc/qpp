@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_CONSTANTS_BIND_HPP_
+#define PYQPP_CONSTANTS_BIND_HPP_
 
-/* Some free functions (non-exhaustive list) from random.hpp */
-void init_random(py::module_& m) {
+/* Constants from constants.hpp */
+inline void init_constants(py::module_& m) {
     using namespace qpp;
 
-    m.def("randU", &qpp::randU, "Generates a random unitary matrix",
-          py::arg("D") = 2);
+    m.attr("ee") = qpp::ee;
+    m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
+    m.attr("pi") = qpp::pi;
 }
+
+#endif /* PYQPP_CONSTANTS_BIND_HPP_ */

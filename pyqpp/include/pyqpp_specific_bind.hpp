@@ -24,11 +24,12 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_PYQPP_SPECIFIC_BIND_HPP_
+#define PYQPP_PYQPP_SPECIFIC_BIND_HPP_
 
-// Python-specific functions only (not necessarily with an equivalent version in
-// qpp)
-void init_pyqpp_specific(py::module_& m) {
+/* Python-specific functions only (not necessarily with an equivalent version in
+ * qpp) */
+inline void init_pyqpp_specific(py::module_& m) {
     using namespace qpp;
 
     m.def(
@@ -45,3 +46,5 @@ void init_pyqpp_specific(py::module_& m) {
         },
         "Sets the prng seed to a random value");
 }
+
+#endif /* PYQPP_PYQPP_SPECIFIC_BIND_HPP_ */

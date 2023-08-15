@@ -24,10 +24,11 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_FUNCTIONS_BIND_HPP_
+#define PYQPP_FUNCTIONS_BIND_HPP_
 
 /* Some free functions (non-exhaustive list) from functions.hpp */
-void init_functions(py::module_& m) {
+inline void init_functions(py::module_& m) {
     using namespace qpp;
 
     /* Template methods must be explicitly instantiated, some examples below */
@@ -73,3 +74,5 @@ void init_functions(py::module_& m) {
         "transpose", [](const cmat& A) { return qpp::transpose(A); },
         "Transpose", py::arg("A"));
 }
+
+#endif /* PYQPP_FUNCTIONS_BIND_HPP_ */

@@ -24,10 +24,11 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_CLASSES_CIRCUITS_CIRCUITS_BIND_HPP_
+#define PYQPP_CLASSES_CIRCUITS_CIRCUITS_BIND_HPP_
 
 /* qpp::QCircuit and related free functions */
-void init_classes_circuits_circuits(py::module_& m) {
+inline void init_classes_circuits_circuits(py::module_& m) {
     using namespace qpp;
 
     auto pyQCircuit =
@@ -488,3 +489,5 @@ void init_classes_circuits_circuits(py::module_& m) {
           "Replicates a quantum circuit description", py::arg("qc"),
           py::arg("n"));
 }
+
+#endif /* PYQPP_CLASSES_CIRCUITS_CIRCUITS_BIND_HPP_ */
