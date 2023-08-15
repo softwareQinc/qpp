@@ -26,20 +26,21 @@
 
 #include "pyqpp_common.h"
 
-#include "classes/circuits/circuits_bind.hpp"
-#include "classes/circuits/engines_bind.hpp"
+#include "constants_bind.hpp"
+#include "functions_bind.hpp"
+#include "instruments_bind.hpp"
+#include "random_bind.hpp"
 
 #include "classes/gates_bind.hpp"
 #include "classes/reversible_bind.hpp"
 #include "classes/states_bind.hpp"
 
+#include "classes/circuits/circuits_bind.hpp"
+#include "classes/circuits/engines_bind.hpp"
+
 #include "qasm/qasm_bind.hpp"
 
-#include "constants_bind.hpp"
-#include "functions_bind.hpp"
-#include "instruments_bind.hpp"
 #include "pyqpp_specific_bind.hpp"
-#include "random_bind.hpp"
 
 PYBIND11_MODULE(pyqpp, m) {
     m.doc() =
