@@ -68,6 +68,7 @@ if (${WITH_EXAMPLES})
 endif ()
 ######## END LOCAL stuff
 
+#### Installation
 set(QPP_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include/${PROJECT_NAME}")
 install(DIRECTORY include/ DESTINATION ${QPP_INSTALL_DIR})
 install(DIRECTORY qasmtools/include/ DESTINATION ${QPP_INSTALL_DIR})
@@ -84,7 +85,7 @@ install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_dependencies.cmake" DESTINATION "li
 #### Uninstall
 #### https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
 #### UNIX/Linux: sudo cmake --build build --target uninstall
-#### Windows:    cmake --build build --target UNINSTALL
+#### Windows:    cmake --build build --target uninstall
 if (NOT TARGET uninstall)
     configure_file(
             "${CMAKE_CURRENT_SOURCE_DIR}/cmake/qpp_uninstall.cmake.in"
