@@ -3749,7 +3749,7 @@ class QCircuit : public IDisplay, public IJSON {
      * circuit description, with the to-be-matched quantum circuit
      * description placed at the right (end) of the current quantum circuit
      * description
-     * \see qpp::QCircuit::match_circuit_left() and
+     * \see qpp::QCircuit::add_circuit_inplace_left() and
      * qpp::QCircuit::add_circuit()
      *
      * \note The matched quantum circuit description cannot be larger than
@@ -3771,7 +3771,7 @@ class QCircuit : public IDisplay, public IJSON {
      * order. If absent (default), insertion is performed at the end.
      * \return Reference to the current instance
      */
-    QCircuit& match_circuit_right(QCircuit other,
+    QCircuit& add_circuit_inplace_right(QCircuit other,
                                   const std::vector<idx>& target,
                                   std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
@@ -3779,36 +3779,36 @@ class QCircuit : public IDisplay, public IJSON {
         // check equal dimensions
         if (other.d_ != d_)
             throw exception::DimsNotEqual(
-                "qpp::QCircuit::match_circuit_right()", "other");
+                "qpp::QCircuit::add_circuit_inplace_right()", "other");
         // check classical dits
         if (!pos_dit.has_value()) {
             pos_dit = nc_;
         } else if (internal::is_negative(pos_dit.value()) ||
                    pos_dit.value() > nc_) {
-            throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()",
+            throw exception::OutOfRange("qpp::QCircuit::add_circuit_inplace_right()",
                                         "pos_dit");
         }
         // check valid target
         if (static_cast<idx>(target.size()) != other.nq_)
-            throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()",
+            throw exception::OutOfRange("qpp::QCircuit::add_circuit_inplace_right()",
                                         "target");
         if (static_cast<idx>(target.size()) > nq_)
-            throw exception::OutOfRange("qpp::QCircuit::match_circuit_right()",
+            throw exception::OutOfRange("qpp::QCircuit::add_circuit_inplace_right()",
                                         "target");
         if (!internal::check_no_duplicates(target))
-            throw exception::Duplicates("qpp::QCircuit::match_circuit_right()",
+            throw exception::Duplicates("qpp::QCircuit::add_circuit_inplace_right()",
                                         "target");
         for (idx elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange(
-                    "qpp::QCircuit::match_circuit_right()", "target");
+                    "qpp::QCircuit::add_circuit_inplace_right()", "target");
         }
         // check matching qudits (in the current instance) were not already
         // measured destructively
         for (idx elem : target) {
             if (was_measured(elem)) {
                 throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::match_circuit_right()", "target");
+                    "qpp::QCircuit::add_circuit_inplace_right()", "target");
             }
         }
         // END EXCEPTION CHECKS
@@ -3896,7 +3896,7 @@ class QCircuit : public IDisplay, public IJSON {
      * circuit description, with the to-be-matched quantum circuit
      * description placed at the left (beginning) of the current quantum
      * circuit description
-     * \see qpp::QCircuit::match_circuit_right() and
+     * \see qpp::QCircuit::add_circuit_inplace_right() and
      * qpp::QCircuit::add_circuit()
      *
      * \note The matched quantum circuit description should not contain any
@@ -3919,47 +3919,47 @@ class QCircuit : public IDisplay, public IJSON {
      * order. If absent (default), insertion is performed at the end.
      * \return Reference to the current instance
      */
-    QCircuit& match_circuit_left(QCircuit other, const std::vector<idx>& target,
+    QCircuit& add_circuit_inplace_left(QCircuit other, const std::vector<idx>& target,
                                  std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 
         // check equal dimensions
         if (other.d_ != d_)
-            throw exception::DimsNotEqual("qpp::QCircuit::match_circuit_left()",
+            throw exception::DimsNotEqual("qpp::QCircuit::add_circuit_inplace_left()",
                                           "other");
         // check classical dits
         if (!pos_dit.has_value()) {
             pos_dit = nc_;
         } else if (internal::is_negative(pos_dit.value()) ||
                    pos_dit.value() > nc_) {
-            throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()",
+            throw exception::OutOfRange("qpp::QCircuit::add_circuit_inplace_left()",
                                         "pos_dit");
         }
         // check no measurement for the matched circuit
         if (!other.get_measured().empty())
             throw exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::match_circuit_left()", "other");
+                "qpp::QCircuit::add_circuit_inplace_left()", "other");
         // check valid target
         if (static_cast<idx>(target.size()) != other.nq_)
-            throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()",
+            throw exception::OutOfRange("qpp::QCircuit::add_circuit_inplace_left()",
                                         "target");
         if (static_cast<idx>(target.size()) > nq_)
-            throw exception::OutOfRange("qpp::QCircuit::match_circuit_left()",
+            throw exception::OutOfRange("qpp::QCircuit::add_circuit_inplace_left()",
                                         "target");
         if (!internal::check_no_duplicates(target))
-            throw exception::Duplicates("qpp::QCircuit::match_circuit_left()",
+            throw exception::Duplicates("qpp::QCircuit::add_circuit_inplace_left()",
                                         "target");
         for (idx elem : target) {
             if (elem >= nq_)
                 throw exception::OutOfRange(
-                    "qpp::QCircuit::match_circuit_left()", "target");
+                    "qpp::QCircuit::add_circuit_inplace_left()", "target");
         }
         // check matching qudits (in the current instance) were not already
         // measured destructively
         for (idx elem : target) {
             if (was_measured(elem)) {
                 throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::match_circuit_left()", "target");
+                    "qpp::QCircuit::add_circuit_inplace_left()", "target");
             }
         }
         // END EXCEPTION CHECKS
@@ -4045,8 +4045,8 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Appends (glues) a quantum circuit description to the end of
      * the current one
-     * \see qpp::QCircuit::match_circuit_left() and
-     * qpp::QCircuit::match_circuit_right()
+     * \see qpp::QCircuit::add_circuit_inplace_left() and
+     * qpp::QCircuit::add_circuit_inplace_right()
      *
      * \note If the qudit indexes of the added quantum circuit description
      * do not totally overlap with the indexes of the current quantum
@@ -4817,7 +4817,7 @@ class QCircuit : public IDisplay, public IJSON {
 
 /**
  * \brief Appends (glues) a quantum circuit description to another one
- * \see qpp::match_circuit_left() and qpp::match_circuit_right()
+ * \see qpp::add_circuit_inplace_left() and qpp::add_circuit_inplace_right()
  *
  * \note If qudit indexes of the second quantum circuit description do
  * not totally overlap with the indexes of the first quantum circuit
@@ -4844,6 +4844,8 @@ inline QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2, bigint pos_qudit,
                             std::optional<idx> pos_dit = std::nullopt) {
     return qc1.add_circuit(qc2, pos_qudit, pos_dit);
 }
+
+// TODO: check for reset/measured non-destructively eyc.
 
 /**
  * \brief Adjoint quantum circuit description
@@ -4877,7 +4879,7 @@ inline QCircuit kron(QCircuit qc1, const QCircuit& qc2) {
  * \brief Matches a quantum circuit description \a qc2 to another quantum
  * circuit description \a qc1, with the \a qc2 quantum circuit description
  * placed at the left (beginning) of the first quantum circuit description
- * \see qpp::match_circuit_right() and qpp::add_circuit()
+ * \see qpp::add_circuit_inplace_right() and qpp::add_circuit()
  *
  * \note The matched quantum circuit description \a qc2 cannot be larger
  * than the \a qc1 quantum circuit description, i.e., all qudit indexes of
@@ -4899,18 +4901,18 @@ inline QCircuit kron(QCircuit qc1, const QCircuit& qc2) {
  * If absent (default), insertion is performed at the end.
  * \return Combined quantum circuit description
  */
-inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
+inline QCircuit add_circuit_inplace_left(QCircuit qc1, const QCircuit& qc2,
                                    const std::vector<idx>& target,
                                    std::optional<idx> pos_dit = std::nullopt) {
-    return qc1.match_circuit_left(qc2, target, pos_dit);
+    return qc1.add_circuit_inplace_left(qc2, target, pos_dit);
 }
 
 /**
  * \brief Matches a quantum circuit description \a qc2 to another quantum
  * circuit description \a qc1, with the \a qc2 quantum circuit description
  * placed at the right (end) of the first quantum circuit description
- * \see qpp::match_circuit_right() and qpp::add_circuit()
- * \see qpp::match_circuit_left() and qpp::add_circuit()
+ * \see qpp::add_circuit_inplace_right() and qpp::add_circuit()
+ * \see qpp::add_circuit_inplace_left() and qpp::add_circuit()
  *
  * \note The matched quantum circuit description \a qc2 cannot be larger
  * than the \a qc1 quantum circuit description, i.e., all qudit indexes of
@@ -4932,10 +4934,10 @@ inline QCircuit match_circuit_left(QCircuit qc1, const QCircuit& qc2,
  * By default, insertion is performed at the end.
  * \return Combined quantum circuit description
  */
-inline QCircuit match_circuit_right(QCircuit qc1, const QCircuit& qc2,
+inline QCircuit add_circuit_inplace_right(QCircuit qc1, const QCircuit& qc2,
                                     const std::vector<idx>& target,
                                     std::optional<idx> pos_dit = std::nullopt) {
-    return qc1.match_circuit_right(qc2, target, pos_dit);
+    return qc1.add_circuit_inplace_right(qc2, target, pos_dit);
 }
 
 /**

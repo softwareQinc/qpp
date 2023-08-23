@@ -1,5 +1,9 @@
 Pre-release
     - Significant speedup in pyqpp's compilation time
+    - API changes in ["classes/circuits/circuits.hpp"]
+        [qpp::QCircuit::]
+        match_circuit_left()  -> add_circuit_inplace_left()
+        match_circuit_right() -> add_circuit_inplace_right()
 
 Version 4.3.4 - 14 August 2023
     - Docker update, see the ["docker/"] directory
