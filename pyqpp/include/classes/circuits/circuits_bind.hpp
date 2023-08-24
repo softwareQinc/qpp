@@ -43,6 +43,18 @@ inline void init_classes_circuits_circuits(py::module_& m) {
                  "one",
                  py::arg("other"), py::arg("pos_qudit"),
                  py::arg("pos_dit") = std::nullopt)
+            .def("add_circuit_inplace_left",
+                 &QCircuit::add_circuit_inplace_left,
+                 "Matches a quantum circuit description to the current one, "
+                 "placed at the left (beginning) of the current one",
+                 py::arg("other"), py::arg("target"),
+                 py::arg("pos_dit") = std::nullopt)
+            .def("add_circuit_inplace_right",
+                 &QCircuit::add_circuit_inplace_right,
+                 "Matches a quantum circuit description to the current one, "
+                 "placed at the right (end) of the current one",
+                 py::arg("other"), py::arg("target"),
+                 py::arg("pos_dit") = std::nullopt)
             .def("add_dit", py::overload_cast<idx>(&QCircuit::add_dit),
                  "Adds n additional classical dits after the last qudit",
                  py::arg("n") = 1)
@@ -302,16 +314,6 @@ inline void init_classes_circuits_circuits(py::module_& m) {
                  "Kronecker product with another quantum circuit description, "
                  "in place",
                  py::arg("qc"))
-            .def("match_circuit_left", &QCircuit::match_circuit_left,
-                 "Matches a quantum circuit description to the current one, "
-                 "placed at the left (beginning) of the current one",
-                 py::arg("other"), py::arg("target"),
-                 py::arg("pos_dit") = std::nullopt)
-            .def("match_circuit_right", &QCircuit::match_circuit_right,
-                 "Matches a quantum circuit description to the current one, "
-                 "placed at the right (end) of the current one",
-                 py::arg("other"), py::arg("target"),
-                 py::arg("pos_dit") = std::nullopt)
             .def("measure",
                  py::overload_cast<idx, idx, bool, std::optional<std::string>>(
                      &QCircuit::measure),
@@ -447,22 +449,22 @@ inline void init_classes_circuits_circuits(py::module_& m) {
           "one",
           py::arg("qc1"), py::arg("qc2"), py::arg("pos_qudit"),
           py::arg("pos_dit") = std::nullopt);
+    m.def("add_circuit_inplace_left", &qpp::add_circuit_inplace_left,
+          "Matches the second quantum circuit description to the left "
+          "(beginning) of the first one",
+          py::arg("qc1"), py::arg("qc2"), py::arg("target"),
+          py::arg("pos_dit") = std::nullopt);
+    m.def("add_circuit_inplace_right", &qpp::add_circuit_inplace_right,
+          "Matches the second quantum circuit description to the right (end) "
+          "of the first one",
+          py::arg("qc1"), py::arg("qc2"), py::arg("target"),
+          py::arg("pos_dit") = std::nullopt);
     m.def("adjoint", static_cast<QCircuit (*)(QCircuit)>(&qpp::adjoint),
           "Adjoint quantum circuit description", py::arg("qc"));
     m.def("kron",
           static_cast<QCircuit (*)(QCircuit, const QCircuit&)>(&qpp::kron),
           "Kronecker product between two quantum circuit descriptions",
           py::arg("qc1"), py::arg("qc2"));
-    m.def("match_circuit_left", &qpp::match_circuit_left,
-          "Matches the second quantum circuit description to the left "
-          "(beginning) of the first one",
-          py::arg("qc1"), py::arg("qc2"), py::arg("target"),
-          py::arg("pos_dit") = std::nullopt);
-    m.def("match_circuit_right", &qpp::match_circuit_right,
-          "Matches the second quantum circuit description to the right (end) "
-          "of the first one",
-          py::arg("qc1"), py::arg("qc2"), py::arg("target"),
-          py::arg("pos_dit") = std::nullopt);
     m.def("qpe_circuit", &qpp::qpe_circuit,
           "Quantum phase estimation circuit with n bits of precision",
           py::arg("U"), py::arg("n"), py::arg("omit_measurements") = true,
