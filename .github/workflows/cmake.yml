@@ -47,9 +47,9 @@ jobs:
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            cmake --build build --target install
+            cmake --install build
           else
-            sudo cmake --build build --target install
+            sudo cmake --install build
           fi
 
       - name: Configure standalone example
