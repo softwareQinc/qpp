@@ -56,6 +56,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     cmat CZ{cmat::Identity(4, 4)};   ///< Controlled-Phase gate
     cmat CNOTba{cmat::Zero(4, 4)};   ///< Controlled-NOT target->control gate
     cmat SWAP{cmat::Identity(4, 4)}; ///< SWAP gate
+    cmat RXX{cmat::Identity(4, 4)};   ///< R_XX gate for Molmer-Sorensen
+    cmat RYY{cmat::Identity(4, 4)};   ///< R_YY gate
 
     // three qubit gates
     cmat TOF{cmat::Identity(8, 8)};  ///< Toffoli gate
@@ -78,6 +80,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         CNOTba(2, 2) = 1;
         CNOTba(3, 1) = 1;
         CZ(3, 3) = -1;
+        
+        RXX = RXX*(1 / std::sqrt(2.));
+        RXX.block(2,2,0,2) = ((-1_i / std::sqrt(2.)))*X;
+        RXX.block(2,2,2,0) = ((-1_i / std::sqrt(2.)))*X;
+
+        RYY = RYY*(1 / std::sqrt(2.));
+        RYY.block(2,2,0,2) = (1 / std::sqrt(2.))*Y.transpose().conjugate();
+        RYY.block(2,2,2,0) = (1 / std::sqrt(2.))*Y;
 
         SWAP.block(1, 1, 2, 2) = X;
         TOF.block(6, 6, 2, 2) = X;
