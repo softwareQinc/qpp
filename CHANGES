@@ -4,6 +4,8 @@ Pre-release
         [qpp::QCircuit::]
         match_circuit_left()  -> add_circuit_inplace_left()
         match_circuit_right() -> add_circuit_inplace_right()
+    - Added support for two qubit rotations by pi/2 (Molmer-Sorensen two qubit
+      gates). 
 
 Version 4.3.4 - 14 August 2023
     - Docker update, see the ["docker/"] directory
