@@ -46,6 +46,9 @@ inline void init_classes_gates(py::module_& m) {
     gates.attr("CNOTba") = qpp::gt.CNOTba;
     gates.attr("SWAP") = qpp::gt.SWAP;
 
+    gates.attr("RXX") = qpp::gt.RXX;
+    gates.attr("RYY") = qpp::gt.RYY;
+
     gates.attr("TOF") = qpp::gt.TOF;
     gates.attr("FRED") = qpp::gt.FRED;
 
