@@ -282,7 +282,6 @@ endif ()
 #### Force clang to use libc++
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     add_compile_options(-stdlib=libc++)
-    list(APPEND QPP_LINK_DEPS c++)
 endif ()
 
 #### GNU gcc additional debug settings
