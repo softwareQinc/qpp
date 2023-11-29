@@ -46,7 +46,7 @@ endif ()
 
 #### Unit testing
 if (${WITH_UNIT_TESTS})
-    include(cmake/qpp_unit_tests.cmake)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/)
 endif ()
 
 #### Enable all warnings for GNU gcc and Clang/AppleClang
@@ -96,11 +96,11 @@ if (NOT TARGET uninstall)
                 COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
                 COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_INSTALL_PREFIX}/lib/cmake/${PROJECT_NAME}"
                 COMMAND ${CMAKE_COMMAND} -E remove_directory "${QPP_INSTALL_DIR}"
-                )
+        )
     else ()
         add_custom_target(uninstall
                 COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
                 COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_INSTALL_PREFIX}"
-                )
+        )
     endif ()
 endif ()
