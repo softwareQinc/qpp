@@ -23,11 +23,11 @@ You may need to remove CMakeCache.txt.")
 endif ()
 
 add_library(libqpp INTERFACE)
+target_compile_definitions(libqpp INTERFACE -DQPP_VERSION_NUM=${QPP_VERSION_NUM})
+target_compile_definitions(libqpp INTERFACE -DQPP_VERSION_STR="${QPP_VERSION_STR}")
 target_include_directories(libqpp INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
         $<INSTALL_INTERFACE:include/>)
-target_compile_definitions(libqpp INTERFACE -DQPP_VERSION_NUM=${QPP_VERSION_NUM})
-target_compile_definitions(libqpp INTERFACE -DQPP_VERSION_STR="${QPP_VERSION_STR}")
 
 #### qasmtools library
 target_include_directories(libqpp INTERFACE

@@ -89,3 +89,6 @@ jobs:
             export EIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
           fi
           pip3 install .
+
+      - name: Uninstall
+        run: cmake --build build --target uninstall
