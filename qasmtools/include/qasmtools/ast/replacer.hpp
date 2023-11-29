@@ -178,19 +178,29 @@ class Replacer : public Visitor {
     void visit(IfStmt& stmt) override {
         stmt.then().accept(*this);
         if (replacement_stmts_) {
-            std::list<ptr<Stmt>> ret;
+            std::optional<std::list<ptr<Stmt>>> ret = std::nullopt;
             for (auto& rep : *replacement_stmts_) {
                 auto tmp = object::clone(stmt);
                 tmp->set_then(std::move(rep));
-                ret.emplace_back(std::move(tmp));
+                auto stmts = replace(*tmp);
+                if (!ret) {
+                    ret = std::move(stmts);
+                } else if (stmts) {
+                    ret->splice(ret->end(), *stmts);
+                }
             }
             replacement_stmts_ = std::move(ret);
         } else if (replacement_gates_) {
-            std::list<ptr<Stmt>> ret;
+            std::optional<std::list<ptr<Stmt>>> ret = std::nullopt;
             for (auto& rep : *replacement_gates_) {
                 auto tmp = object::clone(stmt);
                 tmp->set_then(std::move(rep));
-                ret.emplace_back(std::move(tmp));
+                auto stmts = replace(*tmp);
+                if (!ret) {
+                    ret = std::move(stmts);
+                } else if (stmts) {
+                    ret->splice(ret->end(), *stmts);
+                }
             }
             replacement_gates_ = std::nullopt;
             replacement_stmts_ = std::move(ret);
