@@ -64,7 +64,7 @@ endif ()
 
 #### Examples
 if (${WITH_EXAMPLES})
-    include(cmake/qpp_examples.cmake)
+    include(cmake/examples.cmake)
 endif ()
 ######## END LOCAL stuff
 
