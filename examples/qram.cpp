@@ -1,8 +1,9 @@
 // Quantumly-accessible Random Access Memory over classical data
 // Source: ./examples/qram.cpp
+
 #include <iostream>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

@@ -1,5 +1,6 @@
 // BB84 quantum key establishment
 // Source: ./examples/bb84.cpp
+
 #include <cstdlib>
 #include <iostream>
 #include <numeric>
@@ -8,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 using basis_T = short; // basis type
 using state_T = short; // state index type

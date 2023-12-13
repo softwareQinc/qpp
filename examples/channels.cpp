@@ -1,10 +1,11 @@
 // Quantum channels
 // Source: ./examples/channels.cpp
+
 #include <complex>
 #include <iostream>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

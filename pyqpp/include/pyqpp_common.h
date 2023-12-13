@@ -32,7 +32,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 namespace py = pybind11;
 

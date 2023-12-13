@@ -1,12 +1,13 @@
 // Grover's searching
 // Source: ./examples/grover.cpp
+
 #include <cmath>
 #include <iostream>
 #include <numeric>
 #include <tuple>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

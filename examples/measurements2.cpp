@@ -1,10 +1,11 @@
 // Measurements
 // Source: ./examples/measurements2.cpp
+
 #include <iostream>
 #include <tuple>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

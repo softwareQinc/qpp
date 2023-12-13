@@ -1,8 +1,9 @@
 // Graph states
 // Source: ./examples/graph_states.cpp
+
 #include <iostream>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

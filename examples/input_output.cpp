@@ -1,9 +1,10 @@
 // Input/output
 // Source: ./examples/input_output.cpp
+
 #include <fstream>
 #include <iostream>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

@@ -1,9 +1,10 @@
 // Quantum operations
 // Source: ./examples/quantum_operations.cpp
+
 #include <iostream>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

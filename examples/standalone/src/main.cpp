@@ -1,3 +1,6 @@
+// Standalone example, assumes quantum++ is installed in a system-wide visible
+// directory
+
 #include <iostream>
 
 #include <qpp/qpp.h>

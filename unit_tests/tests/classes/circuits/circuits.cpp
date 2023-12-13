@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 using namespace qpp;
 
@@ -342,12 +342,14 @@ TEST(qpp_QCircuit_was_measured_nd, AllTests) {}
 ///       bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_add_circuit, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline QCircuit add_circuit_inplace_left(QCircuit qc1, const QCircuit& qc2,
+/// BEGIN inline QCircuit add_circuit_inplace_left(QCircuit qc1, const QCircuit&
+/// qc2,
 ///       const std::vector<idx>& target,
 ///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_add_circuit_inplace_left, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline QCircuit add_circuit_inplace_right(QCircuit qc1, const QCircuit& qc2,
+/// BEGIN inline QCircuit add_circuit_inplace_right(QCircuit qc1, const
+/// QCircuit& qc2,
 ///       const std::vector<idx>& target,
 ///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_add_circuit_inplace_right, AllTests) {}

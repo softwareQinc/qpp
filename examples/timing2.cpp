@@ -1,11 +1,12 @@
 // Timing
 // Source: ./examples/timing2.cpp
+
 #include <cmath>
 #include <iostream>
 #include <numeric>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

@@ -1,12 +1,13 @@
 // Quantum phase estimation circuit simulator
 // Source: ./examples/circuits/qpe_circuit.cpp
 // See also ./examples/qpe.cpp for a low-level API example
+
 #include <cmath>
 #include <iostream>
 #include <numeric>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

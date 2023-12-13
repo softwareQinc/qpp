@@ -1,8 +1,9 @@
 // Gram-Schmidt orthogonalization
 // Source: ./examples/gram_schmidt.cpp
+
 #include <iostream>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

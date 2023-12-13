@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 using namespace qpp;
 

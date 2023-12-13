@@ -4,9 +4,10 @@
 // there are three or more arguments (i.e., argc  > 3), the projector onto the
 // final state is displayed.
 // Source: ./examples/qasm/qpp_qasm.cpp
+
 #include <iostream>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main(int argc, char** argv) {
     using namespace qpp;

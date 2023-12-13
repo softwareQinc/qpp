@@ -1,10 +1,11 @@
 // Quantum Fourier transform
 // Source: ./examples/qft.cpp
+
 #include <cmath>
 #include <iostream>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

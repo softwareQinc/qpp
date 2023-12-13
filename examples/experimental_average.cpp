@@ -1,9 +1,10 @@
 // Experimental average
 // Source: ./examples/experimental_average.cpp
+
 #include <iostream>
 #include <tuple>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

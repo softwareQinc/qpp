@@ -23,7 +23,7 @@ execute simulation on the phase of U = diag(1, e^{2*pi*i*theta}).
 #include <tuple>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

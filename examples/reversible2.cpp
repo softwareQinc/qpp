@@ -1,11 +1,12 @@
 // Classical reversible circuits
 // Source: ./examples/reversible2.cpp
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

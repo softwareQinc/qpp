@@ -1,8 +1,9 @@
 // Qudit teleportation circuit simulator
 // Source: ./examples/circuits/teleport_qudit_circuit.cpp
+
 #include <iostream>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

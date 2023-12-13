@@ -1,9 +1,10 @@
 // Bell inequalities (CHSH) violation
 // Source: ./examples/bell_inequalities.cpp
+
 #include <iostream>
 #include <tuple>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

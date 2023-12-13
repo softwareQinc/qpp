@@ -1,12 +1,13 @@
 // Shor's algorithm
 // Source: ./examples/shor.cpp
+
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <tuple>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

@@ -1,9 +1,10 @@
 // Randomness
 // Source: ./examples/randomness.cpp
+
 #include <iostream>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

@@ -1,9 +1,10 @@
 // Statistics
 // Source: ./examples/statistics.cpp
+
 #include <iostream>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

@@ -1,8 +1,9 @@
 // Qubit teleportation circuit simulator
 // Source: ./examples/circuits/teleport_qubit_circuit.cpp
+
 #include <iostream>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

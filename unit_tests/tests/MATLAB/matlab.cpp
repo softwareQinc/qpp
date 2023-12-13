@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
-#include "MATLAB/matlab.hpp"
+#include "qpp/MATLAB/matlab.hpp"
 
 using namespace qpp;
 
