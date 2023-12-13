@@ -5,7 +5,13 @@ Pre-release
         match_circuit_left()  -> add_circuit_inplace_left()
         match_circuit_right() -> add_circuit_inplace_right()
     - Added support for two qubit rotations by pi/2 (Molmer-Sorensen two qubit
-      gates). 
+      gates).
+    - All header files are moved into "[include/qpp]", so to include the header
+      one now must #include "qpp/qpp.h" (and similarly for other header files
+      in the internal implementation). This change was made for the sake of
+      making the include statements look "uniform" in both non-installed
+      (compiling without having Quantum++ installed) and installed (compiling
+      with Quantum++ installed headers) modes.
 
 Version 4.3.4 - 14 August 2023
     - Docker update, see the ["docker"] directory
