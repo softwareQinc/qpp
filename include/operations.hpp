@@ -32,6 +32,23 @@
 #ifndef QPP_OPERATIONS_HPP_
 #define QPP_OPERATIONS_HPP_
 
+#include <algorithm>
+#include <numeric>
+#include <vector>
+
+#include <Eigen/Dense>
+#include <Eigen/SVD>
+
+#include "constants.hpp"
+#include "type_traits"
+#include "types.hpp"
+
+#include "functions.hpp"
+
+#include "classes/exception.hpp"
+#include "classes/gates.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 /**
  * \brief Applies the gate \a A to the part \a target of the multi-partite state

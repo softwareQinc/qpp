@@ -32,6 +32,29 @@
 #ifndef QPP_CLASSES_CIRCUITS_CIRCUITS_HPP_
 #define QPP_CLASSES_CIRCUITS_CIRCUITS_HPP_
 
+#include <algorithm>
+#include <cstddef>
+#include <initializer_list>
+#include <iomanip>
+#include <iterator>
+#include <optional>
+#include <ostream>
+#include <string>
+#include <tuple>
+#include <unordered_map>
+#include <utility>
+#include <variant>
+#include <vector>
+
+#include "functions.hpp"
+#include "input_output.hpp"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "classes/gates.hpp"
+#include "classes/idisplay.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 /**
  * \class qpp::QCircuit
@@ -4244,7 +4267,8 @@ class QCircuit : public IDisplay, public IJSON {
      * performed at the end.
      * \return Reference to the current instance
      */
-    QCircuit& add_CTRL_circuit(const std::vector<idx>& ctrl, QCircuit other, bigint pos_qudit,
+    QCircuit& add_CTRL_circuit(const std::vector<idx>& ctrl, QCircuit other,
+                               bigint pos_qudit,
                                std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 

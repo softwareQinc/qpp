@@ -29,6 +29,22 @@
  * \brief Measurement functions
  */
 
+#include <initializer_list>
+#include <map>
+#include <vector>
+
+#include <Eigen/Dense>
+
+#include "constants.hpp"
+#include "functions.hpp"
+#include "operations.hpp"
+#include "random.hpp"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "classes/gates.hpp"
+#include "internal/util.hpp"
+
 #ifndef QPP_INSTRUMENTS_HPP_
 #define QPP_INSTRUMENTS_HPP_
 
@@ -694,6 +710,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     return measure(rA, V, target, dims, destructive);
 }
 
+// TODO change the sorting, confusing
+
 /**
  * \brief Sequentially measures the part \a target of the multi-partite state
  * vector or density matrix \a A in the computational basis
@@ -707,7 +725,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * \param dims Dimensions of the multi-partite system
  * \param destructive Destructive measurement, true by default
  * \return Tuple of: 1. Vector of outcome results of the measurement (ordered in
- * increasing order with respect to \a target, i.e. first measurement result
+ * increasing order with respect to \a target, i.e., first measurement result
  * corresponds to the subsystem with the smallest index), 2. Outcome
  * probabilities, and 3. Post-measurement normalized state
  */
@@ -762,10 +780,10 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
         auto tmp = measure(
             rA, Gates::get_no_thread_local_instance().Id(dims[target[0]]),
             {target[0]}, dims, destructive);
-        idx m = std::get<0>(tmp);
+        idx m = std::get<RES>(tmp);
         result.emplace_back(m);
-        probs.emplace_back(std::get<1>(tmp)[m]);
-        rA = std::get<2>(tmp)[m];
+        probs.emplace_back(std::get<PROB>(tmp)[m]);
+        rA = std::get<ST>(tmp)[m];
 
         if (destructive) {
             // remove the subsystem
@@ -793,7 +811,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  * \param d Subsystem dimensions
  * \param destructive Destructive measurement, true by default
  * \return Tuple of: 1. Vector of outcome results of the measurement (ordered in
- * increasing order with respect to \a target, i.e. first measurement result
+ * increasing order with respect to \a target, i.e., first measurement result
  * corresponds to the subsystem with the smallest index), 2. Outcome
  * probabilities, and 3. Post-measurement normalized state
  */
@@ -967,6 +985,7 @@ sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
         throw exception::OutOfRange("qpp::sample()", "num_samples");
     // END EXCEPTION CHECKS
 
+    // TODO check this
     idx D = prod(dims); // total dimension
     // std::sort(target.begin(), target.end());
 

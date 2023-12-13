@@ -32,6 +32,11 @@
 #ifndef QPP_CLASSES_TIMER_HPP_
 #define QPP_CLASSES_TIMER_HPP_
 
+#include <chrono>
+#include <ostream>
+
+#include "classes/idisplay.hpp"
+
 namespace qpp {
 /**
  * \class qpp::Timer

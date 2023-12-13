@@ -32,6 +32,8 @@
 #ifndef QPP_CLASSES_INIT_HPP_
 #define QPP_CLASSES_INIT_HPP_
 
+#include "internal/classes/singleton.hpp"
+
 namespace qpp {
 /**
  * \class qpp::Init

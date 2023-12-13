@@ -32,6 +32,21 @@
 #ifndef QPP_EXPERIMENTAL_EXPERIMENTAL_HPP_
 #define QPP_EXPERIMENTAL_EXPERIMENTAL_HPP_
 
+#include <algorithm>
+#include <complex>
+#include <random>
+#include <tuple>
+#include <vector>
+
+#include <Eigen/Dense>
+
+#include "functions.hpp"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "classes/random_devices.hpp"
+#include "internal/util.hpp"
+
 /**
  * \namespace qpp::experimental
  * \brief Experimental/test functions/classes, do not use or modify
@@ -50,7 +65,7 @@ namespace qpp::experimental {
  * \param dims Dimensions of the multi-partite system
  * \param destructive Destructive measurement, true by default
  * \return Tuple of: 1. Vector of outcome results of the measurement (ordered in
- * increasing order with respect to \a target, i.e. first measurement result
+ * increasing order with respect to \a target, i.e., first measurement result
  * corresponds to the subsystem with the smallest index), 2. Outcome
  * probability, and 3. Post-measurement normalized state
  */
@@ -247,7 +262,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  * \param d Subsystem dimensions
  * \param destructive Destructive measurement, true by default
  * \return Tuple of: 1. Vector of outcome results of the measurement (ordered in
- * increasing order with respect to \a target, i.e. first measurement result
+ * increasing order with respect to \a target, i.e., first measurement result
  * corresponds to the subsystem with the smallest index), 2. Outcome
  * probability, and 3. Post-measurement normalized state
  */

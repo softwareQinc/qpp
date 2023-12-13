@@ -32,6 +32,16 @@
 #ifndef QPP_CLASSES_REVERSIBLE_HPP_
 #define QPP_CLASSES_REVERSIBLE_HPP_
 
+#include <cassert>
+#include <random>
+#include <unordered_map>
+#include <vector>
+#include <ostream>
+
+#include "types.hpp"
+
+#include "classes/idisplay.hpp"
+
 namespace qpp {
 /**
  * \class qpp::Dynamic_bitset
@@ -92,7 +102,7 @@ class Dynamic_bitset : public IDisplay {
      * \brief Constructs a dynamic bitset instance out of a string
      *
      * \param str String, \a str[0] corresponds to the left bit (most
-     * significant) in the bitset, i.e. corresponds to the bit at position n-1
+     * significant) in the bitset, i.e., corresponds to the bit at position n-1
      * \param zero Character representing false (zero)
      * \param one Character representing true (one)
      */
@@ -453,7 +463,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * \brief Constructs a bit circuit instance out of a string
      *
      * \param str String, with \a str[0] corresponding to the top bit 0 (most
-     * significant) in the circuit, i.e. the bit at position 0
+     * significant) in the circuit, i.e., the bit at position 0
      * \param zero Character representing false (zero)
      * \param one Character representing true (one)
      */

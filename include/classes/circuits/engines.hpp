@@ -32,6 +32,33 @@
 #ifndef QPP_CLASSES_CIRCUITS_ENGINES_HPP_
 #define QPP_CLASSES_CIRCUITS_ENGINES_HPP_
 
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <limits>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <optional>
+#include <ostream>
+#include <sstream>
+#include <string>
+#include <tuple>
+#include <utility>
+#include <variant>
+#include <vector>
+
+#include "input_output.hpp"
+#include "instruments.hpp"
+#include "operations.hpp"
+#include "types.hpp"
+
+#include "classes/circuits/circuits.hpp"
+#include "classes/gates.hpp"
+#include "classes/idisplay.hpp"
+#include "classes/states.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 /**
  * \class qpp::QEngine

@@ -32,6 +32,14 @@
 #ifndef QPP_TYPES_HPP_
 #define QPP_TYPES_HPP_
 
+#include <complex>
+#include <cstddef>
+#include <type_traits>
+
+#include <Eigen/Dense>
+
+#include "traits.hpp"
+
 namespace qpp {
 
 // Fundamental types, can be changed at compile time
@@ -175,15 +183,6 @@ using rmat = dyn_mat<realT>;
  * \brief Quantumly-accessible Random Access Memory (qRAM)
  */
 using qram = std::vector<idx>;
-
-namespace internal {
-/**
- * \brief Eigen type (ket/density matrix) deduced from the expression Derived
- */
-template <typename Derived>
-using eval_t =
-    std::decay_t<typename Eigen::MatrixBase<Derived>::EvalReturnType>;
-} /* namespace internal */
 
 /**
  * \brief Eigen type (ket/density matrix) deduced from the expression Derived

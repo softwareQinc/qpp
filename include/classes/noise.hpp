@@ -32,6 +32,23 @@
 #ifndef QPP_QPP_CLASSES_NOISE_HPP_
 #define QPP_QPP_CLASSES_NOISE_HPP_
 
+#include <cassert>
+#include <cmath>
+#include <optional>
+#include <random>
+#include <string>
+#include <type_traits>
+#include <vector>
+
+#include "functions.hpp"
+#include "operations.hpp"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "classes/gates.hpp"
+#include "classes/random_devices.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 /**
  * \class qpp::NoiseType

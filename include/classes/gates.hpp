@@ -32,6 +32,23 @@
 #ifndef QPP_CLASSES_GATES_HPP_
 #define QPP_CLASSES_GATES_HPP_
 
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <cmath>
+#include <initializer_list>
+#include <vector>
+
+#include "constants.hpp"
+#include "functions.hpp"
+#include "number_theory.hpp"
+#include "type_traits"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "internal/classes/singleton.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 /**
  * \class qpp::Gates

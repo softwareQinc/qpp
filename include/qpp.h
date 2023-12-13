@@ -69,91 +69,37 @@
 #endif // CTRL
 #endif // __sun
 
-// standard C++ library headers
-#include <algorithm>
-#include <array>
-#include <cassert>
-#include <chrono>
-#include <cmath>
-#include <complex>
-#include <cstdlib>
-#include <cstring>
-#include <exception>
-#include <fstream>
-#include <functional>
-#include <initializer_list>
-#include <iomanip>
-#include <istream>
-#include <iterator>
-#include <limits>
-#include <list>
-#include <map>
-#include <memory>
-#include <numeric>
-#include <optional>
-#include <ostream>
-#include <random>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <tuple>
-#include <type_traits>
-#include <unordered_map>
-#include <utility>
-#include <variant>
-#include <vector>
+// Quantum++ library headers
 
-// Eigen headers
-#include <Eigen/Dense>
-#include <Eigen/SVD>
-
-// Quantum++ headers
-
-// clang-format off
-
-// do not change the order in this group, interdependencies
-#include "types.hpp"
-#include "traits.hpp"
-#include "classes/exception.hpp"
 #include "constants.hpp"
-#include "classes/idisplay.hpp"
-#include "internal/util.hpp"
-#include "internal/classes/iomanip.hpp"
-#include "input_output.hpp"
-
-// do not change the order in this group, interdependencies
-#include "internal/classes/singleton.hpp"
-#include "classes/random_devices.hpp"
-#include "random.hpp"
-#include "number_theory.hpp"
-
-// do not change the order in this group, interdependencies
-#include "functions.hpp"
-#include "classes/init.hpp"
-#include "classes/codes.hpp"
-#include "classes/gates.hpp"
-#include "classes/states.hpp"
-
-// do not change the order in this group, interdependencies
-#include "statistics.hpp"
-#include "operations.hpp"
-#include "entropies.hpp"
 #include "entanglement.hpp"
-
-// the ones below can be in any order, no interdependencies
+#include "entropies.hpp"
+#include "functions.hpp"
+#include "input_output.hpp"
 #include "instruments.hpp"
+#include "number_theory.hpp"
+#include "operations.hpp"
+#include "random.hpp"
+#include "statistics.hpp"
+#include "traits.hpp"
+#include "types.hpp"
+
+#include "classes/codes.hpp"
+#include "classes/exception.hpp"
+#include "classes/gates.hpp"
+#include "classes/idisplay.hpp"
+#include "classes/init.hpp"
 #include "classes/layouts.hpp"
 #include "classes/noise.hpp"
+#include "classes/random_devices.hpp"
 #include "classes/reversible.hpp"
+#include "classes/states.hpp"
 #include "classes/timer.hpp"
+
 #include "classes/circuits/circuits.hpp"
 #include "classes/circuits/engines.hpp"
 
-// do not change the order in this group, interdependencies
-#include "qasmtools/parser/parser.hpp"
 #include "qasm/qasm.hpp"
-
-// clang-format on
 
 /**
  * \namespace qpp

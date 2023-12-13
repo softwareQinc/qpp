@@ -32,6 +32,8 @@
 #ifndef QPP_INTERNAL_CLASSES_SINGLETON_HPP_
 #define QPP_INTERNAL_CLASSES_SINGLETON_HPP_
 
+#include <type_traits>
+
 namespace qpp::internal // internal class, do not modify
 {
 /**

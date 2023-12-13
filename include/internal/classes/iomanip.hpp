@@ -32,6 +32,15 @@
 #ifndef QPP_INTERNAL_CLASSES_IOMANIP_HPP_
 #define QPP_INTERNAL_CLASSES_IOMANIP_HPP_
 
+#include <string>
+#include <utility>
+
+#include "constants.hpp"
+#include "types.hpp"
+
+#include "classes/idisplay.hpp"
+#include "internal/util.hpp"
+
 namespace qpp::internal {
 // ostream manipulators for nice formatting of
 // Eigen matrices and STL/C-style containers/vectors

@@ -34,6 +34,14 @@
 #ifndef QPP_CLASSES_LAYOUTS_HPP_
 #define QPP_CLASSES_LAYOUTS_HPP_
 
+#include <vector>
+
+#include "functions.hpp"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 
 /**

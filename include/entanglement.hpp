@@ -32,6 +32,23 @@
 #ifndef QPP_ENTANGLEMENT_HPP_
 #define QPP_ENTANGLEMENT_HPP_
 
+#include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <tuple>
+#include <vector>
+
+#include <Eigen/Dense>
+
+#include "entropies.hpp"
+#include "functions.hpp"
+#include "types.hpp"
+#include "operations.hpp"
+
+#include "classes/exception.hpp"
+#include "classes/gates.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 /**
  * \brief Schmidt coefficients of the bi-partite pure state \a A

@@ -32,6 +32,14 @@
 #ifndef QPP_CLASSES_CODES_HPP_
 #define QPP_CLASSES_CODES_HPP_
 
+#include <cmath>
+
+#include "functions.hpp"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "internal/classes/singleton.hpp"
+
 namespace qpp {
 /**
  * \class qpp::Codes

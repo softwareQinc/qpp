@@ -32,6 +32,12 @@
 #ifndef QPP_CLASSES_RANDOM_DEVICES_HPP_
 #define QPP_CLASSES_RANDOM_DEVICES_HPP_
 
+#include <istream>
+#include <ostream>
+#include <random>
+
+#include "internal/classes/singleton.hpp"
+
 namespace qpp {
 /**
  * \class qpp::RandomDevices

@@ -32,6 +32,15 @@
 #ifndef QPP_CLASSES_STATES_HPP_
 #define QPP_CLASSES_STATES_HPP_
 
+#include <cmath>
+#include <vector>
+
+#include "functions.hpp"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "internal/classes/singleton.hpp"
+
 namespace qpp {
 /**
  * \class qpp::States

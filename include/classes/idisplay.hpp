@@ -33,6 +33,12 @@
 #ifndef QPP_CLASSES_IDISPLAY_HPP_
 #define QPP_CLASSES_IDISPLAY_HPP_
 
+#include <cmath>
+#include <ostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
 namespace qpp {
 /**
  * \class qpp::IDisplay

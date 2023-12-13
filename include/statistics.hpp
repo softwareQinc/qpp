@@ -32,6 +32,14 @@
 #ifndef QPP_STATISTICS_HPP_
 #define QPP_STATISTICS_HPP_
 
+#include <type_traits>
+#include <vector>
+
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 /**
  * \brief Uniform probability distribution vector

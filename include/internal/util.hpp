@@ -32,6 +32,10 @@
 #ifndef QPP_INTERNAL_UTIL_HPP_
 #define QPP_INTERNAL_UTIL_HPP_
 
+#include <cstddef>
+#include <type_traits>
+#include <iomanip>
+
 namespace qpp {
 /**
  * \namespace qpp::internal

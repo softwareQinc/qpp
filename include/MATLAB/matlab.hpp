@@ -32,6 +32,15 @@
 #ifndef QPP_MATLAB_MATLAB_HPP_
 #define QPP_MATLAB_MATLAB_HPP_
 
+#include <stdexcept>
+#include <string>
+#include <type_traits>
+
+#include "constants.hpp"
+#include "types.hpp"
+
+#include "internal/util.hpp"
+
 #include "mat.h"
 #include "mex.h"
 

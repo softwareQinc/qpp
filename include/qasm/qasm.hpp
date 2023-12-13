@@ -32,6 +32,24 @@
 #ifndef QPP_QASM_QASM_HPP_
 #define QPP_QASM_QASM_HPP_
 
+#include <cmath>
+#include <functional>
+#include <list>
+#include <memory>
+#include <sstream>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+#include "constants.hpp"
+#include "types.hpp"
+
+#include "classes/circuits/circuits.hpp"
+#include "classes/exception.hpp"
+#include "classes/gates.hpp"
+
+#include "qasmtools/parser/parser.hpp"
+
 #ifndef QASMTOOLS_QASM2_SPECS
 #define QASMTOOLS_QASM2_SPECS false
 #endif

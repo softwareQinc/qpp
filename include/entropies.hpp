@@ -32,6 +32,22 @@
 #ifndef QPP_ENTROPY_HPP_
 #define QPP_ENTROPY_HPP_
 
+#include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <numeric>
+#include <vector>
+
+#include <Eigen/Dense>
+
+#include "constants.hpp"
+#include "functions.hpp"
+#include "operations.hpp"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 /**
  * \brief von-Neumann entropy of the density matrix \a A

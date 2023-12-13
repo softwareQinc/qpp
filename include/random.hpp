@@ -32,6 +32,14 @@
 #ifndef QPP_RANDOM_HPP_
 #define QPP_RANDOM_HPP_
 
+#include <type_traits>
+
+#include "types.hpp"
+#include "constants.hpp"
+
+#include "classes/exception.hpp"
+#include "classes/random_devices.hpp"
+
 namespace qpp {
 /**
  * \brief Generates a random number in the interval [a, b] for integer types,

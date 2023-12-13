@@ -32,6 +32,16 @@
 #ifndef QPP_NUMBER_THEORY_HPP_
 #define QPP_NUMBER_THEORY_HPP_
 
+#include <tuple>
+#include <utility>
+#include <vector>
+
+#include "random.hpp"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 /**
  * \brief Simple continued fraction expansion

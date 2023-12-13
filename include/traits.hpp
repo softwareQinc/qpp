@@ -32,6 +32,10 @@
 #ifndef QPP_TRAITS_HPP_
 #define QPP_TRAITS_HPP_
 
+#include <type_traits>
+
+#include <Eigen/Dense>
+
 namespace qpp {
 /**
  * \brief Checks whether \a T is compatible with an STL-like iterable container
@@ -132,6 +136,15 @@ struct is_complex<std::complex<T>> : std::true_type {};
     (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic pop
 #endif
+
+namespace internal {
+/**
+ * \brief Eigen type (ket/density matrix) deduced from the expression Derived
+ */
+template <typename Derived>
+using eval_t =
+    std::decay_t<typename Eigen::MatrixBase<Derived>::EvalReturnType>;
+} /* namespace internal */
 
 /**
  * \brief Detect if the expression Derived is a bra at compile time

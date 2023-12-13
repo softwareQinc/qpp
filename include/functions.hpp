@@ -32,6 +32,22 @@
 #ifndef QPP_FUNCTIONS_HPP_
 #define QPP_FUNCTIONS_HPP_
 
+#include <cmath>
+#include <cstdlib>
+#include <initializer_list>
+#include <iterator>
+#include <numeric>
+#include <stdexcept>
+#include <tuple>
+#include <utility>
+#include <vector>
+
+#include "constants.hpp"
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+#include "internal/util.hpp"
+
 namespace qpp {
 // Eigen function wrappers
 /**
@@ -2109,7 +2125,7 @@ cmat operator"" _prj() {
     }
     // END EXCEPTION CHECKS
 
-    return kron(operator""_ket<Bits...>(), operator""_bra<Bits...>());
+    return kron(operator""_ket < Bits... > (), operator""_bra < Bits... > ());
 }
 } /* namespace literals */
 

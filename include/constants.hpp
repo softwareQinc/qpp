@@ -32,6 +32,13 @@
 #ifndef QPP_CONSTANTS_HPP_
 #define QPP_CONSTANTS_HPP_
 
+#include <complex>
+#include <limits>
+
+#include "types.hpp"
+
+#include "classes/exception.hpp"
+
 namespace qpp {
 inline namespace literals {
 /**

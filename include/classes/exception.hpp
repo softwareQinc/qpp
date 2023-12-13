@@ -32,6 +32,11 @@
 #ifndef QPP_CLASSES_EXCEPTION_HPP_
 #define QPP_CLASSES_EXCEPTION_HPP_
 
+#include <exception>
+#include <optional>
+#include <string>
+#include <utility>
+
 namespace qpp {
 /**
  * \namespace qpp::exception
