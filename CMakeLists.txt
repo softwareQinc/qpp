@@ -22,12 +22,13 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 You may need to remove CMakeCache.txt.")
 endif ()
 
+#### Quantum++ headers
 add_library(libqpp INTERFACE)
 target_compile_definitions(libqpp INTERFACE -DQPP_VERSION_NUM=${QPP_VERSION_NUM})
 target_compile_definitions(libqpp INTERFACE -DQPP_VERSION_STR="${QPP_VERSION_STR}")
 target_include_directories(libqpp INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
-        $<INSTALL_INTERFACE:include/>)
+        $<INSTALL_INTERFACE:include/qpp>)
 
 #### qasmtools library
 target_include_directories(libqpp INTERFACE
