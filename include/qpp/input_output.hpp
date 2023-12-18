@@ -148,7 +148,7 @@ disp(const PointerType* p, idx N, const std::string& separator,
 template <typename Scalar>
 internal::IOManipDirac<Scalar>
 disp(const io_braket<Scalar>& A, bool normal_form = false,
-     const std::string& add_op = "\n", const std::string& mult_op = "*",
+     const std::string& add_op = "\n", const std::string& mult_op = " * ",
      realT chop = qpp::chop) {
     return internal::IOManipDirac<Scalar>(A, normal_form, add_op, mult_op,
                                           chop);
