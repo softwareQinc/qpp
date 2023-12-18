@@ -4267,8 +4267,8 @@ class QCircuit : public IDisplay, public IJSON {
      * performed at the end.
      * \return Reference to the current instance
      */
-    QCircuit& add_CTRL_circuit(const std::vector<idx>& ctrl, QCircuit other,
-                               bigint pos_qudit,
+    QCircuit& add_CTRL_circuit([[maybe_unused]] const std::vector<idx>& ctrl,
+                               QCircuit other, bigint pos_qudit,
                                std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 

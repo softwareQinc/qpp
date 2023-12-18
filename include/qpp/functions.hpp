@@ -37,6 +37,7 @@
 #include <initializer_list>
 #include <iterator>
 #include <numeric>
+#include <optional>
 #include <stdexcept>
 #include <tuple>
 #include <utility>
@@ -296,7 +297,7 @@ realT norm(const Eigen::MatrixBase<Derived>& A) {
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
 normalize(const Eigen::MatrixBase<Derived>& A) {
-    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+    const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
 
@@ -305,9 +306,9 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
         throw exception::ZeroSize("qpp::normalize()", "A");
     // END EXCEPTION CHECKS
 
-    dyn_mat<typename Derived::Scalar> result;
+    expr_t<Derived> result;
 
-    if (internal::check_cvector(rA) || internal::check_rvector(rA)) {
+    if (internal::check_vector(rA)) {
         realT normA = norm(rA);
         if (normA == 0) {
             throw std::overflow_error("qpp::normalize(): Division by zero!");
@@ -1946,26 +1947,26 @@ inline cmat bloch2rho(const std::vector<realT>& r) {
 /**
  * \brief Extracts the dits from a normalized multi-partite pure state in the
  * computational basis. Behaves like the "inverse" of qpp::mket().
- * \see qpp::mket()
+ * \see qpp::mket(), qpp::ket2dits()
  *
  * \note Assumes \a psi is a normalized state vector (ket) in the computational
  * basis, up to a phase; finds the first coefficient of \a psi close to 1 up to
  * \a precision, and returns the digit representation of the corresponding state
  * with a single 1 in that position. If there's no such coefficient (i.e., the
- * state is not a computational basis state up to a phase), returns the empty
- * vector.
+ * state is not a computational basis state up to a phase), returns
+ * std::nullopt.
  *
  * \param psi Column vector Eigen expression
  * \param dims Dimensions of the multi-partite system
  * \param precision Numerical precision (how close to 1 should the nonzero
  * coefficient be)
- * \return Vector containing the digit representation of \a psi, or the empty
- * vector if \a psi is not a  computational basis state up to a phase.
+ * \return Optional vector containing the digit representation of \a psi, or
+ * std::nullopt if \a psi is not a  computational basis state up to a phase.
  */
 template <typename Derived>
-std::vector<idx> zket2dits(const Eigen::MatrixBase<Derived>& psi,
-                           const std::vector<idx>& dims,
-                           realT precision = 1e-12) {
+std::optional<std::vector<idx>> zket2dits(const Eigen::MatrixBase<Derived>& psi,
+                                          const std::vector<idx>& dims,
+                                          realT precision = 1e-12) {
     const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
 
     // EXCEPTION CHECKS
@@ -1994,35 +1995,42 @@ std::vector<idx> zket2dits(const Eigen::MatrixBase<Derived>& psi,
         }
     }
 
-    return {};
+    return std::nullopt;
 }
 
 /**
  * \brief Extracts the dits from a normalized multi-partite pure state in the
  * computational basis, all subsystem having equal dimension \a d. Behaves like
  * the "inverse" of qpp::mket().
- * \see qpp::mket()
+ * \see qpp::mket(), qpp::ket2dits()
  *
  * \note Assumes \a psi is a normalized state vector (ket) in the computational
  * basis, up to a phase; finds the first coefficient of \a psi close to 1 up to
  * \a precision, and returns the digit representation of the corresponding state
  * with a single 1 in that position. If there's no such coefficient (i.e., the
- * state is not a computational basis state up to a phase), returns the empty
- * vector.
+ * state is not a computational basis state up to a phase), returns
+ * std::nullopt.
+ *
  *
  * \param psi Column vector Eigen expression
  * \param d Subsystem dimensions
  * \param precision Numerical precision (how close to 1 should the nonzero
  * coefficient be)
- * \return Vector containing the digit representation of \a psi, or the empty
- * vector if \a psi is not a  computational basis state up to a phase.
+ * \return Optional vector containing the digit representation of \a psi, or
+ * std::nullopt if \a psi is not a  computational basis state up to a phase.
  */
 template <typename Derived>
-std::vector<idx> zket2dits(const Eigen::MatrixBase<Derived>& psi, idx d = 2,
-                           realT precision = 1e-12) {
+std::optional<std::vector<idx>> zket2dits(const Eigen::MatrixBase<Derived>& psi,
+                                          idx d = 2, realT precision = 1e-12) {
     const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
 
     // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(rpsi)) {
+        throw exception::ZeroSize("qpp::zket2dits()", "psi");
+    }
+
     // check valid dims
     if (d < 2)
         throw exception::DimsInvalid("qpp::zket2dits()", "d");
@@ -2033,6 +2041,151 @@ std::vector<idx> zket2dits(const Eigen::MatrixBase<Derived>& psi, idx d = 2,
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return zket2dits(psi, dims, precision);
+}
+
+/**
+ * \brief Converts \a A to Dirac (braket) representation
+ * \see qpp::zket2dits(), qpp::disp(), qpp::io_braket
+ *
+ * \param A Eigen expression
+ * \param dims_rows Dimensions of the multi-partite system (rows), empty if
+ * \a A is a row vector
+ * \param dims_cols Dimensions of the multi-partite system (columns), empty if
+ * \a A is a column vector
+ * \return Dirac representation of \a A, as a qpp::io_braket object
+ */
+template <typename Derived>
+io_braket<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
+                                          std::vector<idx> dims_rows,
+                                          std::vector<idx> dims_cols) {
+    const expr_t<Derived>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    if (dims_rows.empty()) {
+        dims_rows.emplace_back(1);
+    }
+
+    if (dims_cols.empty()) {
+        dims_cols.emplace_back(1);
+    }
+
+    // check zero-size
+    if (!internal::check_nonzero_size(rA))
+        throw exception::ZeroSize("qpp::dirac()", "A");
+
+    // check row subsystem dimensions
+    if (!internal::check_dims(dims_rows)) {
+        throw exception::DimsInvalid("qpp::dirac()", "dims_rows");
+    }
+
+    // check column subsystem dimensions
+    if (!internal::check_dims(dims_cols)) {
+        throw exception::DimsInvalid("qpp::dirac()", "dims_cols");
+    }
+
+    idx D_rows = prod(dims_rows);
+    idx D_cols = prod(dims_cols);
+
+    // check row matching dimensions
+    if (D_rows != static_cast<idx>(A.rows())) {
+        // check that dims match state column vector
+        throw exception::MatrixMismatchSubsys("qpp::dirac()", "dims_rows/A");
+    }
+
+    // check column matching dimensions
+    if (D_cols != static_cast<idx>(A.cols())) {
+        // check that dims match state column vector
+        throw exception::MatrixMismatchSubsys("qpp::dirac()", "dims_cols/A");
+    }
+    // END EXCEPTION CHECKS
+
+    bool is_scalar = D_rows == 1 && D_cols == 1;
+    bool is_col_vec = D_rows > 1 && D_cols == 1;
+    bool is_row_vec = D_rows == 1 && D_cols > 1;
+    bool is_matrix = D_rows > 1 && D_cols > 1;
+
+    io_braket<typename Derived::Scalar> result;
+    result.dims_rows = dims_rows;
+    result.dims_cols = dims_cols;
+
+    // scalar
+    if (is_scalar) {
+        result.states.emplace_back(rA(0, 0), std::vector<idx>{});
+    }
+    // row vector (bra)
+    else if (is_row_vec) {
+        for (idx i = 0; i < D_cols; ++i) {
+            auto coeff = rA(i);
+            if (coeff != 0.0) {
+                auto bra_dits = n2multiidx(i, dims_cols);
+                result.states.emplace_back(coeff, bra_dits);
+            }
+        }
+    }
+    // column vector (ket)
+    else if (is_col_vec) {
+        for (idx i = 0; i < D_rows; ++i) {
+            auto coeff = rA(i);
+            if (coeff != 0.0) {
+                auto ket_dits = n2multiidx(i, dims_rows);
+                result.states.emplace_back(coeff, ket_dits);
+            }
+        }
+    }
+    // matrix
+    else if (is_matrix) {
+        for (idx i = 0; i < D_rows; ++i) {
+            auto ket_dits = n2multiidx(i, dims_rows);
+            for (idx j = 0; j < D_cols; ++j) {
+                auto coeff = rA(i, j);
+                if (coeff != 0.0) {
+                    auto bra_dits = n2multiidx(j, dims_cols);
+                    auto mat_dits = ket_dits;
+                    mat_dits.insert(mat_dits.end(), bra_dits.begin(),
+                                    bra_dits.end());
+                    result.states.emplace_back(coeff, mat_dits);
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+/**
+ * \brief Converts \a A to Dirac (braket) representation. Assumes that \a A is
+ * either a row vector, a column vector, or a square matrix.
+ * \see qpp::zket2dits(), qpp::disp(), qpp::io_braket
+ *
+ * \param A Eigen expression
+ * \param d Subsystem dimensions
+ * \return Dirac representation of \a A, as a qpp::io_braket object
+ */
+template <typename Derived>
+io_braket<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
+                                          idx d = 2) {
+    const expr_t<Derived>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+
+    // check zero size
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize("qpp::dirac()", "A");
+    }
+    // check valid dims
+    if (d < 2)
+        throw exception::DimsInvalid("qpp::dirac()", "d");
+    // END EXCEPTION CHECKS
+
+    idx n_subsys_rows =
+        internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    idx n_subsys_cols =
+        internal::get_num_subsys(static_cast<idx>(rA.cols()), d);
+    std::vector<idx> dims_rows(n_subsys_rows, d); // local row dimensions vector
+    std::vector<idx> dims_cols(n_subsys_cols, d); // local col dimensions vector
+
+    return dirac(rA, dims_rows, dims_cols);
 }
 
 inline namespace literals {

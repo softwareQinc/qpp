@@ -24,43 +24,30 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#ifndef PYQPP_TYPES_BIND_HPP_
+#define PYQPP_TYPES_BIND_HPP_
 
-#include "constants_bind.hpp"
-#include "functions_bind.hpp"
-#include "instruments_bind.hpp"
-#include "random_bind.hpp"
-#include "types_bind.hpp"
+/* Types from types.hpp */
+inline void init_types(py::module_& m) {
+    using namespace qpp;
 
-#include "classes/gates_bind.hpp"
-#include "classes/reversible_bind.hpp"
-#include "classes/states_bind.hpp"
+    // supports only complex
+    using py_io_braket = io_braket<cplx>;
 
-#include "classes/circuits/circuits_bind.hpp"
-#include "classes/circuits/engines_bind.hpp"
-
-#include "qasm/qasm_bind.hpp"
-
-#include "pyqpp_specific_bind.hpp"
-
-PYBIND11_MODULE(pyqpp, m) {
-    m.doc() =
-        "Python 3 wrapper for Quantum++ (https://github.com/softwareQinc/qpp)";
-
-    init_constants(m);
-    init_functions(m);
-    init_instruments(m);
-    init_random(m);
-    init_types(m);
-
-    init_classes_gates(m);
-    init_classes_reversible(m);
-    init_classes_states(m);
-
-    init_classes_circuits_circuits(m);
-    init_classes_circuits_engines(m);
-
-    init_qasm_qasm(m);
-
-    init_pyqpp_specific(m);
+    /* qpp::io_braket */
+    auto pyio_braket =
+        py::class_<py_io_braket>(m, "io_braket")
+            .def(py::self == py::self)
+            .def(py::self != py::self)
+            .def("__copy__",
+                 [](const py_io_braket& self) { return io_braket(self); })
+            .def("__deepcopy__", [](const py_io_braket& self,
+                                    py::dict) { return io_braket(self); })
+            .def("__repr__", [](const py_io_braket& iob) {
+                std::ostringstream oss;
+                oss << disp(iob, false, "\n", " * ");
+                return oss.str();
+            });
 }
+
+#endif /* PYQPP_TYPES_BIND_HPP_ */

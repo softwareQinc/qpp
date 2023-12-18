@@ -150,7 +150,7 @@ using eval_t =
  * \brief Detect if the expression Derived is a bra at compile time
  */
 template <typename Derived>
-bool constexpr is_bra() {
+bool constexpr is_bra_t() {
     return (internal::eval_t<Derived>::RowsAtCompileTime == 1);
 }
 
@@ -158,7 +158,7 @@ bool constexpr is_bra() {
  * \brief Detect if the expression Derived is a ket at compile time
  */
 template <typename Derived>
-bool constexpr is_ket() {
+bool constexpr is_ket_t() {
     return (internal::eval_t<Derived>::ColsAtCompileTime == 1);
 }
 

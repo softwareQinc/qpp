@@ -34,7 +34,10 @@
 
 #include <complex>
 #include <cstddef>
+#include <tuple>
 #include <type_traits>
+#include <utility>
+#include <vector>
 
 #include <Eigen/Dense>
 
@@ -107,8 +110,8 @@ using realT = double;
 #endif
 static_assert(std::is_floating_point_v<realT>, "Type myst be floating-point");
 
-// The types below are dependent types, please do not change anything below this
-// line
+// The types below are dependent types, please do not change anything below
+// this line
 
 /**
  * \brief Unsigned big integer
@@ -180,12 +183,46 @@ using cmat = dyn_mat<cplx>;
 using rmat = dyn_mat<realT>;
 
 /**
+ * \brief Textual representation (Dirac notation) of a quantum state/matrix
+ */
+template <typename Scalar>
+struct io_braket {
+    std::vector<idx> dims_rows; ///< row dimensions
+    std::vector<idx> dims_cols; ///< column dimensions
+    std::vector<std::pair<Scalar, std::vector<idx>>>
+        states; ///< vector of (amplitude, dits)
+
+    /**
+     * \brief Equality operator
+     *
+     * \param rhs io_braket object against which the equality is being tested
+     * \return True if the io_braket objects are equal (component-wise), false
+     * otherwise
+     */
+    bool operator==(const io_braket& rhs) const {
+        return std::tie(dims_rows, dims_cols, states) ==
+               std::tie(rhs.dims_rows, rhs.dims_cols, rhs.states);
+    }
+
+    /**
+     * \brief Inequality operator
+     *
+     * \param rhs io_braket object against which the inequality is being tested
+     * \return True if the io_braket objects are not equal (component-wise),
+     * false otherwise
+     */
+
+    bool operator!=(const io_braket& rhs) const { return !(*this == rhs); }
+};
+
+/**
  * \brief Quantumly-accessible Random Access Memory (qRAM)
  */
 using qram = std::vector<idx>;
 
 /**
- * \brief Eigen type (ket/density matrix) deduced from the expression Derived
+ * \brief Eigen type (ket/density matrix) deduced from the expression
+ * Derived
  */
 // thanks @antoine-bussy for the suggestion
 // https://github.com/softwareQinc/qpp/issues/132#issuecomment-1258360069

@@ -12,6 +12,11 @@ Pre-release
       making the include statements look "uniform" in both non-installed
       (compiling without having Quantum++ installed) and installed (compiling
       with Quantum++ installed headers) modes.
+    - Implemented qpp::dirac() ["qpp/functions.hpp"] for converting states and
+      matrices to Dirac notation, and the corresponding std::ostream manipulator 
+      qpp::disp() ["qpp/input_output.hpp"]. The type returned by qpp::dirac() 
+      is type-defed as 'qpp::io_braket' in ["qpp/types.hpp"]. In addition, 
+      implemented dirac() in pyqpp.
 
 Version 4.3.4 - 14 August 2023
     - Docker update, see the ["docker"] directory

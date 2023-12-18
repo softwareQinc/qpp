@@ -34,10 +34,14 @@
 #define QPP_CLASSES_IDISPLAY_HPP_
 
 #include <cmath>
+#include <iomanip>
 #include <ostream>
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include "qpp/constants.hpp"
+#include "qpp/types.hpp"
 
 namespace qpp {
 /**

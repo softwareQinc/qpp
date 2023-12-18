@@ -32,6 +32,7 @@
 #ifndef QPP_INTERNAL_CLASSES_IOMANIP_HPP_
 #define QPP_INTERNAL_CLASSES_IOMANIP_HPP_
 
+#include <cmath>
 #include <string>
 #include <utility>
 
@@ -150,6 +151,114 @@ class IOManipEigen : public IDisplay, private Display_Impl_ {
         return display_impl_(A_, os, chop_);
     }
 }; /* class IOManipEigen */
+
+template <typename Scalar>
+class IOManipDirac : public IDisplay {
+    io_braket<Scalar> A_;
+    bool normal_form_;
+    std::string add_op_;
+    std::string mult_op_;
+    realT chop_;
+
+  public:
+    explicit IOManipDirac(const io_braket<Scalar>& A, bool normal_form,
+                          const std::string& add_op, const std::string& mult_op,
+                          realT chop = qpp::chop)
+        : A_{A}, normal_form_{normal_form}, add_op_{add_op}, mult_op_{mult_op},
+          chop_{chop} {}
+
+  private:
+    void display_ket_dits_(std::ostream& os,
+                           const std::vector<idx>& dits) const {
+        os << "|";
+        os << IOManipRange(dits.begin(), dits.end(), "", "", "");
+        os << ">";
+    }
+
+    void display_bra_dits_(std::ostream& os,
+                           const std::vector<idx>& dits) const {
+        os << "<";
+        os << IOManipRange(dits.begin(), dits.end(), "", "", "");
+        os << "|";
+    }
+
+    void display_mat_dits_(std::ostream& os, const std::vector<idx>& dits,
+                           idx n_subsys_rows) const {
+        auto split_it = std::next(dits.begin(), n_subsys_rows);
+        std::vector<idx> row_dits(dits.begin(), split_it);
+        std::vector<idx> col_dits(split_it, dits.end());
+        display_ket_dits_(os, row_dits);
+        display_bra_dits_(os, col_dits);
+    }
+
+    std::ostream& display(std::ostream& os) const override {
+        if (A_.states.empty())
+            return os << "0";
+
+        idx D_rows = prod(A_.dims_rows);
+        idx D_cols = prod(A_.dims_cols);
+
+        bool is_scalar = D_rows == 1 && D_cols == 1;
+        bool is_col_vec = D_rows > 1 && D_cols == 1;
+        bool is_row_vec = D_rows == 1 && D_cols > 1;
+        bool is_matrix = D_rows > 1 && D_cols > 1;
+
+        idx n_subsys_rows = A_.dims_rows.size();
+
+        // display the coefficient
+        auto display_coeff = [&](Scalar coeff) {
+            if (std::abs(std::real(coeff)) > chop_ &&
+                std::abs(std::imag(coeff)) > chop_) {
+                os << '(' << IOManipEigen(coeff, chop_) << ')';
+            } else {
+                os << IOManipEigen(coeff, chop_);
+            }
+        };
+
+        // display the dits
+        auto display_dits = [&](const std::vector<idx>& dits) {
+            // ket
+            if (is_col_vec) {
+                display_ket_dits_(os, dits);
+            }
+            // bra
+            else if (is_row_vec) {
+                display_bra_dits_(os, dits);
+            }
+            // density matrix
+            else if (is_matrix) {
+                display_mat_dits_(os, dits, n_subsys_rows);
+            }
+        };
+
+        if (is_scalar) {
+            display_coeff(A_.states[0].first);
+            return os;
+        }
+
+        bool first = true;
+        for (auto&& elem : A_.states) {
+            auto coeff = elem.first;
+            auto dits = elem.second;
+            if (!first) {
+                os << add_op_;
+            } else {
+                first = false;
+            }
+            if (normal_form_) {
+                display_coeff(coeff);
+                os << mult_op_;
+                display_dits(dits);
+            } else {
+                display_dits(dits);
+                os << mult_op_;
+                display_coeff(coeff);
+            }
+        }
+
+        return os;
+    }
+}; /* class IOManipDirac */
 
 } /* namespace qpp::internal */
 

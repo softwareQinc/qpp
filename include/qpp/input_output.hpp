@@ -41,6 +41,7 @@
 #include "qpp/constants.hpp"
 #include "qpp/types.hpp"
 
+#include "qpp/classes/exception.hpp"
 #include "qpp/internal/classes/iomanip.hpp"
 #include "qpp/internal/util.hpp"
 
@@ -129,6 +130,28 @@ disp(const PointerType* p, idx N, const std::string& separator,
      realT chop = qpp::chop) {
     return internal::IOManipPointer<PointerType>(p, N, separator, start, end,
                                                  chop);
+}
+
+/**
+ * \brief Dirac (braket) representation ostream manipulator
+ * manipulator
+ * \see qpp::dirac()
+ *
+ * \param A Eigen expression
+ * \param add_op String representing the addition operand
+ * \param mult_op String representing the multiplication operand
+ * \param normal_form Amplitudes are displayed first, bra/kets after, false by
+ * default
+ * \param chop Amplitudes with absolute value smaller than \a chop are
+ * discarded
+ */
+template <typename Scalar>
+internal::IOManipDirac<Scalar>
+disp(const io_braket<Scalar>& A, bool normal_form = false,
+     const std::string& add_op = "\n", const std::string& mult_op = "*",
+     realT chop = qpp::chop) {
+    return internal::IOManipDirac<Scalar>(A, normal_form, add_op, mult_op,
+                                          chop);
 }
 
 /**

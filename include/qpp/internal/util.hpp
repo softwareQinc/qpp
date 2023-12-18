@@ -34,7 +34,13 @@
 
 #include <cstddef>
 #include <iomanip>
+#include <numeric>
 #include <type_traits>
+
+#include <Eigen/Dense>
+
+#include "qpp/constants.hpp"
+#include "qpp/types.hpp"
 
 namespace qpp {
 /**
