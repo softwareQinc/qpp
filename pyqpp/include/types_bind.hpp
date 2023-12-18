@@ -45,7 +45,7 @@ inline void init_types(py::module_& m) {
                                     py::dict) { return io_braket(self); })
             .def("__repr__", [](const py_io_braket& iob) {
                 std::ostringstream oss;
-                oss << disp(iob, false, "\n", " * ");
+                oss << disp(iob);
                 return oss.str();
             });
 }
