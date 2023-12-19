@@ -103,7 +103,10 @@ inline void init_classes_circuits_engines(py::module_& m) {
                 const auto& stats = qe.get_stats();
                 for (auto&& elem : stats.data()) {
                     std::stringstream ss;
-                    ss << qpp::disp(elem.first, "", "", "");
+                    ss << qpp::disp(elem.first, IOManipContainerOpts{}
+                                                    .set_sep("")
+                                                    .set_left("")
+                                                    .set_right(""));
                     result[ss.str()] = elem.second;
                 }
                 return result;

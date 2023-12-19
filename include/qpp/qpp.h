@@ -79,6 +79,7 @@
 #include "qpp/instruments.hpp"
 #include "qpp/number_theory.hpp"
 #include "qpp/operations.hpp"
+#include "qpp/options.hpp"
 #include "qpp/random.hpp"
 #include "qpp/statistics.hpp"
 #include "qpp/traits.hpp"

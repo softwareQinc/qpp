@@ -41,6 +41,7 @@
 #include <Eigen/SVD>
 
 #include "qpp/constants.hpp"
+#include "qpp/options.hpp"
 #include "qpp/types.hpp"
 
 #include "qpp/functions.hpp"

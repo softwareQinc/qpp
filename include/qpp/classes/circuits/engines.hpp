@@ -54,10 +54,8 @@
 #include "qpp/types.hpp"
 
 #include "qpp/classes/circuits/circuits.hpp"
-#include "qpp/classes/gates.hpp"
 #include "qpp/classes/idisplay.hpp"
 #include "qpp/classes/states.hpp"
-#include "qpp/internal/util.hpp"
 
 namespace qpp {
 /**
@@ -135,8 +133,9 @@ class QEngine : public IDisplay, public IJSON {
         to_JSON(bool enclosed_in_curly_brackets = true) const override {
             std::string result;
 
-            if (enclosed_in_curly_brackets)
+            if (enclosed_in_curly_brackets) {
                 result += "{";
+            }
 
             std::ostringstream ss;
             ss << "\"num_reps\": " << get_num_reps() << ", ";
@@ -147,7 +146,9 @@ class QEngine : public IDisplay, public IJSON {
             ss << "\"outcomes\": ";
             ss << "{";
             for (auto&& [key, val] : stats_data_) {
-                ss << sep << "\"" << disp(key, ", ") << "\": " << val;
+                ss << sep << "\""
+                   << disp(key, IOManipContainerOpts{}.set_sep(", "))
+                   << "\": " << val;
                 if (is_first) {
                     is_first = false;
                     sep = ", ";
@@ -156,8 +157,9 @@ class QEngine : public IDisplay, public IJSON {
             ss << "}";
             result += ss.str();
 
-            if (enclosed_in_curly_brackets)
+            if (enclosed_in_curly_brackets) {
                 result += "}";
+            }
 
             return result;
         }
@@ -179,7 +181,9 @@ class QEngine : public IDisplay, public IJSON {
             bool is_first = true;
             std::string sep{};
             for (auto&& [key, val] : stats_data_) {
-                os << sep << '\t' << disp(key, " ") << ": " << val;
+                os << sep << '\t'
+                   << disp(key, IOManipContainerOpts{}.set_sep(" ")) << ": "
+                   << val;
                 if (is_first) {
                     is_first = false;
                     sep = '\n';
@@ -218,9 +222,10 @@ class QEngine : public IDisplay, public IJSON {
         explicit state_(const QCircuit* qc_ptr) : qc_ptr_{qc_ptr} {
             // EXCEPTION CHECKS
 
-            if (qc_ptr->get_nq() == 0)
+            if (qc_ptr->get_nq() == 0) {
                 throw exception::ZeroSize("qpp::QEngine::state_::reset()",
                                           "nq");
+            }
             // END EXCEPTION CHECKS
             reset();
         }
@@ -249,9 +254,10 @@ class QEngine : public IDisplay, public IJSON {
                 idx D = static_cast<idx>(std::llround(
                     std::pow(qc_ptr_->get_d(), qc_ptr_->get_nq())));
                 if (static_cast<idx>(psi.value().rows()) != D) {
-                    if (static_cast<idx>(psi.value().rows()) != D)
+                    if (static_cast<idx>(psi.value().rows()) != D) {
                         throw exception::DimsNotEqual(
                             "qpp::QEngine::state_::reset()", "psi");
+                    }
                 }
                 psi_ = psi.value();
             } else {
@@ -274,9 +280,10 @@ class QEngine : public IDisplay, public IJSON {
     void set_measured_(idx i) {
         // EXCEPTION CHECKS
 
-        if (was_measured(i))
+        if (was_measured(i)) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QEngine::set_measured_()", "i");
+        }
         // END EXCEPTION CHECKS
         st_.subsys_[i] =
             std::numeric_limits<idx>::max(); // set qudit i to measured state
@@ -301,9 +308,10 @@ class QEngine : public IDisplay, public IJSON {
         for (idx i = 0; i < vsize; ++i) {
             // EXCEPTION CHECKS
 
-            if (was_measured(v[i]))
+            if (was_measured(v[i])) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QEngine::get_relative_pos_()", "v[i]");
+            }
             // END EXCEPTION CHECKS
             v[i] = st_.subsys_[v[i]];
         }
@@ -389,8 +397,9 @@ class QEngine : public IDisplay, public IJSON {
     idx get_dit(idx i) const {
         // EXCEPTION CHECKS
 
-        if (i >= qc_ptr_->get_nc())
+        if (i >= qc_ptr_->get_nc()) {
             throw exception::OutOfRange("qpp::QEngine::get_dit()", "i");
+        }
         // END EXCEPTION CHECKS
 
         return st_.dits_[i];
@@ -439,8 +448,9 @@ class QEngine : public IDisplay, public IJSON {
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < qc_ptr_->get_nq(); ++i) {
-            if (was_measured(i))
+            if (was_measured(i)) {
                 result.emplace_back(i);
+            }
         }
 
         return result;
@@ -454,8 +464,9 @@ class QEngine : public IDisplay, public IJSON {
     std::vector<idx> get_non_measured() const {
         std::vector<idx> result;
         for (idx i = 0; i < qc_ptr_->get_nq(); ++i) {
-            if (!was_measured(i))
+            if (!was_measured(i)) {
                 result.emplace_back(i);
+            }
         }
 
         return result;
@@ -512,8 +523,9 @@ class QEngine : public IDisplay, public IJSON {
     QEngine& set_dit(idx i, idx value) {
         // EXCEPTION CHECKS
 
-        if (i >= qc_ptr_->get_nc())
+        if (i >= qc_ptr_->get_nc()) {
             throw exception::OutOfRange("qpp::QEngine::set_dit()", "i");
+        }
         // END EXCEPTION CHECKS
         st_.dits_[i] = value;
 
@@ -535,8 +547,9 @@ class QEngine : public IDisplay, public IJSON {
     QEngine& set_dits(std::vector<idx> dits) {
         // EXCEPTION CHECKS
 
-        if (dits.size() != st_.dits_.size())
+        if (dits.size() != st_.dits_.size()) {
             throw exception::SizeMismatch("qpp::QEngine::set_dits()", "dits");
+        }
         // END EXCEPTION CHECKS
         st_.dits_ = std::move(dits);
 
@@ -557,8 +570,9 @@ class QEngine : public IDisplay, public IJSON {
 
         idx n = get_non_measured().size();
         idx D = static_cast<idx>(std::llround(std::pow(qc_ptr_->get_d(), n)));
-        if (static_cast<idx>(psi.rows()) != D)
+        if (static_cast<idx>(psi.rows()) != D) {
             throw exception::DimsNotEqual("qpp::QEngine::set_psi()", "psi");
+        }
         // END EXCEPTION CHECKS
 
         st_.psi_ = psi;
@@ -591,8 +605,9 @@ class QEngine : public IDisplay, public IJSON {
     virtual QEngine& reset(bool reset_stats = true) {
         this->can_sample = false;
         st_.reset(st_.psi_);
-        if (reset_stats)
+        if (reset_stats) {
             this->reset_stats();
+        }
 
         return *this;
     }
@@ -610,10 +625,11 @@ class QEngine : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         // iterator must point to the same quantum circuit description
-        if (elem.get_qc_ptr() != qc_ptr_)
+        if (elem.get_qc_ptr() != qc_ptr_) {
             throw exception::InvalidIterator(
                 "qpp::QEngine::execute()",
                 "Iterator does not point to the same circuit description");
+        }
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
@@ -876,8 +892,9 @@ class QEngine : public IDisplay, public IJSON {
         auto steps = (reps > 1 && try_sampling)
                          ? internal::canonical_form(*qc_ptr_)
                          : internal::circuit_as_iterators(*qc_ptr_);
-        if (steps.empty())
+        if (steps.empty()) {
             return *this;
+        }
 
         idx num_steps = steps.size();
 
@@ -996,8 +1013,9 @@ class QEngine : public IDisplay, public IJSON {
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
 
-        if (enclosed_in_curly_brackets)
+        if (enclosed_in_curly_brackets) {
             result += "{";
+        }
 
         std::ostringstream ss;
         ss << "\"nq\": " << get_circuit().get_nq() << ", ";
@@ -1012,24 +1030,24 @@ class QEngine : public IDisplay, public IJSON {
         ss << ", ";
         ss << "\"sampling\": " << (this->can_sample ? "true" : "false") << ", ";
         ss << "\"measured/discarded (destructively)\": ";
-        ss << disp(get_measured(), ", ");
+        ss << disp(get_measured(), IOManipContainerOpts{}.set_sep(", "));
         result += ss.str() + ", ";
 
         ss.str("");
         ss.clear();
-        ss << disp(get_non_measured(), ", ");
+        ss << disp(get_non_measured(), IOManipContainerOpts{}.set_sep(", "));
         result += "\"non-measured (destructively)/non-discarded\": " + ss.str();
 
         ss.str("");
         ss.clear();
         result += ", \"last probs\": ";
-        ss << disp(get_probs(), ", ");
+        ss << disp(get_probs(), IOManipContainerOpts{}.set_sep(", "));
         result += ss.str();
 
         ss.str("");
         ss.clear();
         result += ", \"last dits\": ";
-        ss << disp(get_dits(), ", ");
+        ss << disp(get_dits(), IOManipContainerOpts{}.set_sep(", "));
         result += ss.str();
 
         ss.str("");
@@ -1041,8 +1059,9 @@ class QEngine : public IDisplay, public IJSON {
             result += stats_.to_JSON();
         }
 
-        if (enclosed_in_curly_brackets)
+        if (enclosed_in_curly_brackets) {
             result += "}";
+        }
 
         return result;
     }
@@ -1084,8 +1103,10 @@ class QEngine : public IDisplay, public IJSON {
         }
         os << ">\n";
 
-        os << "last probs: " << disp(get_probs(), ", ") << '\n';
-        os << "last dits: " << disp(get_dits(), ", ") << '\n';
+        os << "last probs: "
+           << disp(get_probs(), IOManipContainerOpts{}.set_sep(", ")) << '\n';
+        os << "last dits: "
+           << disp(get_dits(), IOManipContainerOpts{}.set_sep(", ")) << '\n';
 
         // compute the statistics
         if (!stats_.data().empty()) {
@@ -1124,9 +1145,10 @@ class QNoisyEngine : public QEngine {
         // EXCEPTION CHECKS
 
         // check noise has the correct dimensionality
-        if (qc.get_d() != noise.get_d())
+        if (qc.get_d() != noise.get_d()) {
             throw exception::DimsNotEqual("qpp::QNoisyEngine::QNoisyEngine()",
                                           "noise");
+        }
         // END EXCEPTION CHECKS
     }
 

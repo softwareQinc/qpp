@@ -1,22 +1,27 @@
 Pre-release
-    - Significant speedup in pyqpp's compilation time
-    - API changes in ["classes/circuits/circuits.hpp"]
-        [qpp::QCircuit::]
-        match_circuit_left()  -> add_circuit_inplace_left()
-        match_circuit_right() -> add_circuit_inplace_right()
-    - Added support for two qubit rotations by pi/2 (Molmer-Sorensen two qubit
-      gates).
     - All header files are moved into "[include/qpp]", so to include the header
       one now must #include "qpp/qpp.h" (and similarly for other header files
       in the internal implementation). This change was made for the sake of
       making the include statements look "uniform" in both non-installed
       (compiling without having Quantum++ installed) and installed (compiling
       with Quantum++ installed headers) modes.
+    - Refactored option-related types into a new header file ["qpp/options.hpp"]
+    - qpp::disp() refactoring, formatting options are now passed via
+      formatting option manipulator structures, all defined in 
+      ["qpp/options.hpp"]. See the ["examples"] directory for usage examples.
     - Implemented qpp::dirac() ["qpp/functions.hpp"] for converting states and
       matrices to Dirac notation, and the corresponding std::ostream manipulator 
       qpp::disp() ["qpp/input_output.hpp"]. The type returned by qpp::dirac() 
-      is type-defed as 'qpp::io_braket' in ["qpp/types.hpp"]. In addition, 
-      implemented dirac() in pyqpp.
+      is type-defed as 'qpp::dirac_t' in ["qpp/types.hpp"]. Options are passed
+      via the formatting option manipulator structure 'qpp::IOManipDiracOpts'.
+    - Implemented pyqpp.dirac() in pyqpp, see above.
+    - Significant speedup in pyqpp's compilation time
+    - Added support for two qubit rotations by pi/2 (Molmer-Sorensen two qubit
+      gates).
+    - API changes in ["classes/circuits/circuits.hpp"]
+        [qpp::QCircuit::]
+        match_circuit_left()  -> add_circuit_inplace_left()
+        match_circuit_right() -> add_circuit_inplace_right()
 
 Version 4.3.4 - 14 August 2023
     - Docker update, see the ["docker"] directory

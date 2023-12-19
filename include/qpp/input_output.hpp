@@ -33,12 +33,13 @@
 #define QPP_INPUT_OUTPUT_HPP_
 
 #include <iterator>
+#include <optional>
 #include <stdexcept>
 #include <string>
 
 #include <Eigen/Dense>
 
-#include "qpp/constants.hpp"
+#include "qpp/options.hpp"
 #include "qpp/types.hpp"
 
 #include "qpp/classes/exception.hpp"
@@ -50,86 +51,74 @@ namespace qpp {
  * \brief Eigen expression ostream manipulator
  *
  * \param A Eigen expression
- * \param chop Set to zero the elements smaller in absolute value than \a chop
+ * \param opts Display options
  * \return Instance of qpp::internal::IOManipEigen
  */
 template <typename Derived>
 internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
-                            realT chop = qpp::chop) {
-    return internal::IOManipEigen(A, chop);
+                            IOManipEigenOpts opts = {}) {
+    return internal::IOManipEigen(A, opts);
 }
 
 /**
  * \brief Complex number ostream manipulator
+ * \see qpp::IOManipEigenOpts
  *
  * \param z Complex number (or any other type implicitly cast-able to
  * std::complex<realT>)
- * \param chop Set to zero the elements smaller in absolute value than \a chop
+ * \param opts Formatting options
  * \return Instance of qpp::internal::IOManipEigen
  */
-inline internal::IOManipEigen disp(cplx z, realT chop = qpp::chop) {
-    return internal::IOManipEigen(z, chop);
+inline internal::IOManipEigen disp(cplx z, IOManipEigenOpts opts = {}) {
+    return internal::IOManipEigen(z, opts);
 }
 
 /**
  * \brief Range ostream manipulator
+ * \see qpp::IOManipRangeOpts
  *
  * \param first Iterator to the first element of the range
  * \param last  Iterator to the last element of the range
- * \param separator Separator
- * \param start Left marking
- * \param end Right marking
- * \param chop Set to zero the elements smaller in absolute value than \a chop
+ * \param opts Formatting options
  * \return Instance of qpp::internal::IOManipRange
  */
 template <typename InputIterator>
 internal::IOManipRange<InputIterator>
-disp(InputIterator first, InputIterator last, const std::string& separator,
-     const std::string& start = "[", const std::string& end = "]",
-     realT chop = qpp::chop) {
-    return internal::IOManipRange<InputIterator>(first, last, separator, start,
-                                                 end, chop);
+disp(InputIterator first, InputIterator last, IOManipRangeOpts opts = {}) {
+    return internal::IOManipRange<InputIterator>(first, last, opts);
 }
 
 /**
  * \brief Standard container ostream manipulator. The container must support
  * std::begin(), std::end() and forward iteration.
+ * \see qpp::IOManipContainerOpts
  *
  * \param c Container
- * \param separator Separator
- * \param start Left marking
- * \param end Right marking
- * \param chop Set to zero the elements smaller in absolute value than \a chop
+ * \param opts Formatting options
  * \return Instance of qpp::internal::IOManipRange
  */
 template <typename Container>
 internal::IOManipRange<typename Container::const_iterator>
-disp(const Container& c, const std::string& separator,
-     const std::string& start = "[", const std::string& end = "]",
-     realT chop = qpp::chop,
+disp(const Container& c, IOManipContainerOpts opts = {},
      typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
+
     return internal::IOManipRange<typename Container::const_iterator>(
-        std::begin(c), std::end(c), separator, start, end, chop);
+        std::begin(c), std::end(c), opts);
 }
 
 /**
  * \brief C-style pointer ostream manipulator
+ * \see qpp::IOManipPointerOpts
  *
  * \param p Pointer to the first element
  * \param N Number of elements to be displayed
- * \param separator Separator
- * \param start Left marking
- * \param end Right marking
- * \param chop Set to zero the elements smaller in absolute value than \a chop
+ * \param opts Formatting options
  * \return Instance of qpp::internal::IOManipPointer
  */
 template <typename PointerType>
-internal::IOManipPointer<PointerType>
-disp(const PointerType* p, idx N, const std::string& separator,
-     const std::string& start = "[", const std::string& end = "]",
-     realT chop = qpp::chop) {
-    return internal::IOManipPointer<PointerType>(p, N, separator, start, end,
-                                                 chop);
+internal::IOManipPointer<PointerType> disp(const PointerType* p, idx N,
+                                           IOManipPointerOpts opts) {
+    return internal::IOManipPointer<PointerType>(p, N, opts);
 }
 
 /**
@@ -138,20 +127,12 @@ disp(const PointerType* p, idx N, const std::string& separator,
  * \see qpp::dirac()
  *
  * \param A Eigen expression
- * \param add_op String representing the addition operand
- * \param mult_op String representing the multiplication operand
- * \param normal_form Amplitudes are displayed first, bra/kets after, false by
- * default
- * \param chop Amplitudes with absolute value smaller than \a chop are
- * discarded
+ * \param opts Optional qpp::dirac_t_disp_opts display options
  */
 template <typename Scalar>
-internal::IOManipDirac<Scalar>
-disp(const io_braket<Scalar>& A, bool normal_form = false,
-     const std::string& add_op = "\n", const std::string& mult_op = " * ",
-     realT chop = qpp::chop) {
-    return internal::IOManipDirac<Scalar>(A, normal_form, add_op, mult_op,
-                                          chop);
+internal::IOManipDirac<Scalar> disp(const dirac_t<Scalar>& A,
+                                    IOManipDiracOpts opts = {}) {
+    return internal::IOManipDirac<Scalar>(A, opts);
 }
 
 /**
@@ -177,8 +158,9 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::save()", "A");
+    }
 
     if (!os.good()) {
         throw std::runtime_error("qpp::save(): Error writing output stream!");
@@ -287,9 +269,11 @@ load(std::istream& is,
 
     dyn_mat<typename Derived::Scalar> A(rows, cols);
 
-    for (idx i = 0; i < rows; ++i)
-        for (idx j = 0; j < cols; ++j)
+    for (idx i = 0; i < rows; ++i) {
+        for (idx j = 0; j < cols; ++j) {
             is >> A(i, j);
+        }
+    }
 
     return A;
 }
@@ -320,8 +304,9 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::obsolete::save()", "A");
+    }
 
     if (!os.good()) {
         throw std::runtime_error(

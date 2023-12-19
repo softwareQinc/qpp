@@ -66,8 +66,9 @@ transpose(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::transpose()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.transpose();
@@ -88,8 +89,9 @@ conjugate(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::conjugate()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.conjugate();
@@ -109,8 +111,9 @@ dyn_mat<typename Derived::Scalar> adjoint(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::adjoint()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.adjoint();
@@ -130,12 +133,14 @@ dyn_mat<typename Derived::Scalar> inverse(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::inverse()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::inverse()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.inverse();
@@ -154,12 +159,14 @@ typename Derived::Scalar trace(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::trace()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::trace()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.trace();
@@ -179,12 +186,14 @@ typename Derived::Scalar det(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::det()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::det()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.determinant();
@@ -206,12 +215,14 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::logdet()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::logdet()", "A");
+    }
     // END EXCEPTION CHECKS
 
     Eigen::PartialPivLU<dyn_mat<typename Derived::Scalar>> lu(rA);
@@ -219,8 +230,9 @@ typename Derived::Scalar logdet(const Eigen::MatrixBase<Derived>& A) {
         lu.matrixLU().template triangularView<Eigen::Upper>();
     typename Derived::Scalar result = std::log(U(0, 0));
 
-    for (idx i = 1; i < static_cast<idx>(rA.rows()); ++i)
+    for (idx i = 1; i < static_cast<idx>(rA.rows()); ++i) {
         result += std::log(U(i, i));
+    }
 
     return result;
 }
@@ -239,8 +251,9 @@ typename Derived::Scalar sum(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::sum()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.sum();
@@ -260,8 +273,9 @@ typename Derived::Scalar prod(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::prod()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.prod();
@@ -280,8 +294,9 @@ realT norm(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::norm()", "A");
+    }
     // END EXCEPTION CHECKS
 
     // convert matrix to complex then return its norm
@@ -302,8 +317,9 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::normalize()", "A");
+    }
     // END EXCEPTION CHECKS
 
     expr_t<Derived> result;
@@ -320,8 +336,9 @@ normalize(const Eigen::MatrixBase<Derived>& A) {
             throw std::overflow_error("qpp::normalize(): Division by zero!");
         }
         result = rA / trace(rA);
-    } else
+    } else {
         throw exception::MatrixNotSquareNorVector("qpp::normalize()", "A");
+    }
 
     return result;
 }
@@ -342,12 +359,14 @@ eig(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::eig()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::eig()", "A");
+    }
     // END EXCEPTION CHECKS
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
@@ -369,12 +388,14 @@ dyn_col_vect<cplx> evals(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::evals()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::evals()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return eig(rA).first;
@@ -394,12 +415,14 @@ cmat evects(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::evects()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::evects()", "A");
+    }
     // END EXCEPTION CHECKS
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
@@ -423,12 +446,14 @@ heig(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::heig()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::heig()", "A");
+    }
     // END EXCEPTION CHECKS
 
     Eigen::SelfAdjointEigenSolver<cmat> es(rA.template cast<cplx>());
@@ -450,12 +475,14 @@ dyn_col_vect<realT> hevals(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::hevals()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::hevals()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return heig(rA).first;
@@ -475,12 +502,14 @@ cmat hevects(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::hevects()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::hevects()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return heig(rA).second;
@@ -503,8 +532,9 @@ svd(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::svd()", "A");
+    }
     // END EXCEPTION CHECKS
 
     auto const sv = rA.bdcSvd(Eigen::ComputeFullU | Eigen::ComputeFullV);
@@ -526,8 +556,9 @@ dyn_col_vect<realT> svals(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::svals()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.bdcSvd().singularValues();
@@ -547,8 +578,9 @@ template <typename Derived>
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::svdU()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.bdcSvd(Eigen::ComputeFullU).matrixU();
@@ -568,8 +600,9 @@ template <typename Derived>
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::svdV()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return rA.bdcSvd(Eigen::ComputeFullV).matrixV();
@@ -594,19 +627,22 @@ template <typename Derived>
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::funm()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::funm()", "A");
+    }
     // END EXCEPTION CHECKS
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
     const cmat& evects = es.eigenvectors();
     cmat evals = es.eigenvalues();
-    for (idx i = 0; i < static_cast<idx>(evals.rows()); ++i)
+    for (idx i = 0; i < static_cast<idx>(evals.rows()); ++i) {
         evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
+    }
 
     cmat evalsdiag = evals.asDiagonal();
 
@@ -626,12 +662,14 @@ cmat sqrtm(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::sqrtm()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::sqrtm()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return funm(rA, &std::sqrt);
@@ -650,12 +688,14 @@ cmat absm(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::absm()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::absm()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return sqrtm(adjoint(rA) * rA);
@@ -674,12 +714,14 @@ cmat expm(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::expm()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::expm()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return funm(rA, &std::exp);
@@ -698,12 +740,14 @@ cmat logm(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::logm()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::logm()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return funm(rA, &std::log);
@@ -722,12 +766,14 @@ cmat sinm(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::sinm()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::sinm()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return funm(rA, &std::sin);
@@ -746,12 +792,14 @@ cmat cosm(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::cosm()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::cosm()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return funm(rA, &std::cos);
@@ -775,23 +823,27 @@ cmat spectralpowm(const Eigen::MatrixBase<Derived>& A, const cplx z) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::spectralpowm()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::spectralpowm()", "A");
+    }
     // END EXCEPTION CHECKS
 
     // Define A^0 = Id, for z IDENTICALLY zero
-    if (real(z) == 0 && imag(z) == 0)
+    if (real(z) == 0 && imag(z) == 0) {
         return cmat::Identity(rA.rows(), rA.cols());
+    }
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
     const cmat& evects = es.eigenvectors();
     cmat evals = es.eigenvalues();
-    for (idx i = 0; i < static_cast<idx>(evals.rows()); ++i)
+    for (idx i = 0; i < static_cast<idx>(evals.rows()); ++i) {
         evals(i) = std::pow(evals(i), z);
+    }
 
     cmat evalsdiag = evals.asDiagonal();
 
@@ -816,31 +868,36 @@ dyn_mat<typename Derived::Scalar> powm(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(A))
+    if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::powm()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(A))
+    if (!internal::check_square_mat(A)) {
         throw exception::MatrixNotSquare("qpp::powm()", "A");
+    }
     // END EXCEPTION CHECKS
 
     // if n = 1, return the matrix unchanged
-    if (n == 1)
+    if (n == 1) {
         return A;
+    }
 
     dyn_mat<typename Derived::Scalar> result =
         dyn_mat<typename Derived::Scalar>::Identity(A.rows(), A.cols());
 
     // if n = 0, return the identity (as just prepared in result)
-    if (n == 0)
+    if (n == 0) {
         return result;
+    }
 
     dyn_mat<typename Derived::Scalar> cA = A.derived(); // copy
 
     // fast matrix power
     for (; n > 0; n /= 2) {
-        if (n % 2)
+        if (n % 2) {
             result = (result * cA).eval();
+        }
         cA = (cA * cA).eval();
     }
 
@@ -862,19 +919,23 @@ realT schatten(const Eigen::MatrixBase<Derived>& A, realT p) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::schatten()", "A");
-    if (p < 1)
+    }
+    if (p < 1) {
         throw exception::OutOfRange("qpp::schatten()", "p");
+    }
     // END EXCEPTION CHECKS
 
-    if (p == infty) // infinity norm (largest singular value)
+    if (p == infty) { // infinity norm (largest singular value)
         return svals(rA)(0);
+    }
 
     const dyn_col_vect<realT> sv = svals(rA);
     realT result = 0;
-    for (idx i = 0; i < static_cast<idx>(sv.rows()); ++i)
+    for (idx i = 0; i < static_cast<idx>(sv.rows()); ++i) {
         result += std::pow(sv[i], p);
+    }
 
     return std::pow(result, 1. / p);
 }
@@ -898,8 +959,9 @@ cwise(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::cwise()", "A");
+    }
     // END EXCEPTION CHECKS
 
     dyn_mat<OutputScalar> result(rA.rows(), rA.cols());
@@ -909,9 +971,11 @@ cwise(const Eigen::MatrixBase<Derived>& A,
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
     // column major order for speed
-    for (idx j = 0; j < static_cast<idx>(rA.cols()); ++j)
-        for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i)
+    for (idx j = 0; j < static_cast<idx>(rA.cols()); ++j) {
+        for (idx i = 0; i < static_cast<idx>(rA.rows()); ++i) {
             result(i, j) = (*f)(rA(i, j));
+        }
+    }
 
     return result;
 }
@@ -960,12 +1024,15 @@ template <typename Derived>
 kron(const std::vector<Derived>& As) {
     // EXCEPTION CHECKS
 
-    if (As.empty())
+    if (As.empty()) {
         throw exception::ZeroSize("qpp::kron()", "As");
+    }
 
-    for (auto&& elem : As)
-        if (!internal::check_nonzero_size(elem))
+    for (auto&& elem : As) {
+        if (!internal::check_nonzero_size(elem)) {
             throw exception::ZeroSize("qpp::kron()", "A");
+        }
+    }
     // END EXCEPTION CHECKS
 
     dyn_mat<typename Derived::Scalar> result = As[0].derived();
@@ -1010,12 +1077,14 @@ dyn_mat<typename Derived::Scalar> kronpow(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::kronpow()", "A");
+    }
 
     // check out of range
-    if (n == 0)
+    if (n == 0) {
         throw exception::OutOfRange("qpp::kronpow()", "n");
+    }
     // END EXCEPTION CHECKS
 
     std::vector<dyn_mat<typename Derived::Scalar>> As(n, rA);
@@ -1065,12 +1134,15 @@ template <typename Derived>
 dyn_mat<typename Derived::Scalar> dirsum(const std::vector<Derived>& As) {
     // EXCEPTION CHECKS
 
-    if (As.empty())
+    if (As.empty()) {
         throw exception::ZeroSize("qpp::dirsum()", "As");
+    }
 
-    for (auto&& elem : As)
-        if (!internal::check_nonzero_size(elem))
+    for (auto&& elem : As) {
+        if (!internal::check_nonzero_size(elem)) {
             throw exception::ZeroSize("qpp::dirsum()", "A");
+        }
+    }
     // END EXCEPTION CHECKS
 
     idx total_rows = 0, total_cols = 0;
@@ -1125,12 +1197,14 @@ dyn_mat<typename Derived::Scalar> dirsumpow(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::dirsumpow()", "A");
+    }
 
     // check out of range
-    if (n == 0)
+    if (n == 0) {
         throw exception::OutOfRange("qpp::dirsumpow()", "n");
+    }
     // END EXCEPTION CHECKS
 
     std::vector<dyn_mat<typename Derived::Scalar>> As(n, rA);
@@ -1160,11 +1234,13 @@ dyn_mat<typename Derived::Scalar> reshape(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::reshape()");
+    }
 
-    if (Arows * Acols != rows * cols)
+    if (Arows * Acols != rows * cols) {
         throw exception::SizeMismatch("qpp::reshape()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return Eigen::Map<dyn_mat<typename Derived::Scalar>>(
@@ -1193,24 +1269,30 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value)
+                      typename Derived2::Scalar>::value) {
         throw exception::TypeMismatch("qpp::comm()", "A/B");
+    }
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::comm()", "A");
-    if (!internal::check_nonzero_size(rB))
+    }
+    if (!internal::check_nonzero_size(rB)) {
         throw exception::ZeroSize("qpp::comm()", "B");
+    }
 
     // check square matrices
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::comm()", "A");
-    if (!internal::check_square_mat(rB))
+    }
+    if (!internal::check_square_mat(rB)) {
         throw exception::MatrixNotSquare("qpp::comm()", "B");
+    }
 
     // check equal dimensions
-    if (rA.rows() != rB.rows())
+    if (rA.rows() != rB.rows()) {
         throw exception::DimsNotEqual("qpp::comm()", "A/B");
+    }
     // END EXCEPTION CHECKS
 
     return rA * rB - rB * rA;
@@ -1239,24 +1321,30 @@ anticomm(const Eigen::MatrixBase<Derived1>& A,
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value)
+                      typename Derived2::Scalar>::value) {
         throw exception::TypeMismatch("qpp::anticomm()", "A/B");
+    }
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::anticomm()", "A");
-    if (!internal::check_nonzero_size(rB))
+    }
+    if (!internal::check_nonzero_size(rB)) {
         throw exception::ZeroSize("qpp::anticomm()", "B");
+    }
 
     // check square matrices
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::anticomm()", "A");
-    if (!internal::check_square_mat(rB))
+    }
+    if (!internal::check_square_mat(rB)) {
         throw exception::MatrixNotSquare("qpp::anticomm()", "B");
+    }
 
     // check equal dimensions
-    if (rA.rows() != rB.rows())
+    if (rA.rows() != rB.rows()) {
         throw exception::DimsNotEqual("qpp::anticomm()", "A/B");
+    }
     // END EXCEPTION CHECKS
 
     return rA * rB + rB * rA;
@@ -1278,19 +1366,22 @@ dyn_mat<typename Derived::Scalar> prj(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::prj()", "A");
+    }
 
     // check column vector
-    if (!internal::check_cvector(rA))
+    if (!internal::check_cvector(rA)) {
         throw exception::MatrixNotCvector("qpp::prj()", "A");
+    }
     // END EXCEPTION CHECKS
 
     realT normA = norm(rA);
-    if (normA > 0)
+    if (normA > 0) {
         return rA * adjoint(rA) / (normA * normA);
-    else
+    } else {
         return dyn_mat<typename Derived::Scalar>::Zero(rA.rows(), rA.rows());
+    }
 }
 
 /**
@@ -1305,21 +1396,27 @@ dyn_mat<typename Derived::Scalar> grams(const std::vector<Derived>& As) {
     // EXCEPTION CHECKS
 
     // check empty list
-    if (!internal::check_nonzero_size(As))
+    if (!internal::check_nonzero_size(As)) {
         throw exception::ZeroSize("qpp::grams()", "As");
+    }
 
-    for (auto&& elem : As)
-        if (!internal::check_nonzero_size(elem))
+    for (auto&& elem : As) {
+        if (!internal::check_nonzero_size(elem)) {
             throw exception::ZeroSize("qpp::grams()", "A");
+        }
+    }
 
     // check that As[0] is a column vector
-    if (!internal::check_cvector(As[0]))
+    if (!internal::check_cvector(As[0])) {
         throw exception::MatrixNotCvector("qpp::grams()", "As[0]");
+    }
 
     // now check that all the rest match the size of the first vector
-    for (auto&& elem : As)
-        if (elem.rows() != As[0].rows() || elem.cols() != 1)
+    for (auto&& elem : As) {
+        if (elem.rows() != As[0].rows() || elem.cols() != 1) {
             throw exception::DimsNotEqual("qpp::grams()", "A");
+        }
+    }
     // END EXCEPTION CHECKS
 
     dyn_mat<typename Derived::Scalar> cut =
@@ -1387,14 +1484,16 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
 
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::grams()", "A");
+    }
     // END EXCEPTION CHECKS
 
     std::vector<dyn_mat<typename Derived::Scalar>> input;
 
-    for (idx i = 0; i < static_cast<idx>(rA.cols()); ++i)
+    for (idx i = 0; i < static_cast<idx>(rA.cols()); ++i) {
         input.emplace_back(rA.col(i));
+    }
 
     return grams<dyn_mat<typename Derived::Scalar>>(input);
 }
@@ -1420,15 +1519,19 @@ template <typename T, typename U = T, typename V = T>
     static_assert(std::is_integral_v<U>, "U must be an integral value");
     static_assert(std::is_integral_v<V>, "V must be an integral value");
 
-    if (n < 0)
+    if (n < 0) {
         throw exception::OutOfRange("qpp::n2multiidx()", "n");
+    }
 
-    if (dims.size() > internal::maxn)
+    if (dims.size() > internal::maxn) {
         throw exception::OutOfRange("qpp::n2multiidx()", "dims/maxn");
+    }
 
-    for (auto val : dims)
-        if (val < 0)
+    for (auto val : dims) {
+        if (val < 0) {
             throw exception::OutOfRange("qpp::n2multiidx()", "dims");
+        }
+    }
 
     if (!internal::check_dims(dims)) {
         throw exception::DimsInvalid("qpp::n2multiidx()", "dims");
@@ -1469,22 +1572,29 @@ template <typename V, typename T = V, typename U = T>
     static_assert(std::is_integral_v<V>, "V must be an integral value");
 
     // EXCEPTION CHECKS
-    for (auto val : midx)
-        if (val < 0)
+    for (auto val : midx) {
+        if (val < 0) {
             throw exception::OutOfRange("qpp::multiidx2n()", "midx");
+        }
+    }
 
-    for (auto val : dims)
-        if (val < 0)
+    for (auto val : dims) {
+        if (val < 0) {
             throw exception::OutOfRange("qpp::multiidx2n()", "dims");
+        }
+    }
 
-    if (midx.size() != dims.size())
+    if (midx.size() != dims.size()) {
         throw exception::SizeMismatch("qpp::multiidx2n()", "dims/midx");
+    }
 
-    if (!internal::check_dims(dims))
+    if (!internal::check_dims(dims)) {
         throw exception::DimsInvalid("qpp::multiidx2n()", "dims");
+    }
 
-    if (dims.size() > internal::maxn)
+    if (dims.size() > internal::maxn) {
         throw exception::OutOfRange("qpp::multiidx2n()", "dims/maxn");
+    }
 
     for (idx i = 0; i < static_cast<idx>(dims.size()); ++i) {
         if (static_cast<idx>(midx[i]) >= dims[i]) {
@@ -1517,18 +1627,23 @@ inline ket mket(const std::vector<idx>& mask, const std::vector<idx>& dims) {
     // EXCEPTION CHECKS
 
     // check zero size
-    if (n == 0)
+    if (n == 0) {
         throw exception::ZeroSize("qpp::mket()", "mask");
+    }
     // check valid dims
-    if (!internal::check_dims(dims))
+    if (!internal::check_dims(dims)) {
         throw exception::DimsInvalid("qpp::mket()", "dims");
+    }
     // check mask and dims have the same size
-    if (mask.size() != dims.size())
+    if (mask.size() != dims.size()) {
         throw exception::SizeMismatch("qpp::mket()", "dims/mask");
+    }
     // check mask is a valid vector
-    for (idx i = 0; i < n; ++i)
-        if (mask[i] >= dims[i])
+    for (idx i = 0; i < n; ++i) {
+        if (mask[i] >= dims[i]) {
             throw exception::SubsysMismatchDims("qpp::mket()", "dims/mask");
+        }
+    }
     // END EXCEPTION CHECKS
 
     ket result = ket::Zero(D);
@@ -1558,17 +1673,21 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2) {
     // EXCEPTION CHECKS
 
     // check zero size
-    if (n == 0)
+    if (n == 0) {
         throw exception::ZeroSize("qpp::mket()", "mask");
+    }
 
     // check valid dims
-    if (d == 0)
+    if (d == 0) {
         throw exception::DimsInvalid("qpp::mket()", "d");
+    }
 
     // check mask is a valid vector
-    for (idx i = 0; i < n; ++i)
-        if (mask[i] >= d)
+    for (idx i = 0; i < n; ++i) {
+        if (mask[i] >= d) {
             throw exception::SubsysMismatchDims("qpp::mket()", "d/mask");
+        }
+    }
     // END EXCEPTION CHECKS
 
     ket result = ket::Zero(D);
@@ -1602,18 +1721,23 @@ inline cmat mprj(const std::vector<idx>& mask, const std::vector<idx>& dims) {
     // EXCEPTION CHECKS
 
     // check zero size
-    if (n == 0)
+    if (n == 0) {
         throw exception::ZeroSize("qpp::mprj()", "mask");
+    }
     // check valid dims
-    if (!internal::check_dims(dims))
+    if (!internal::check_dims(dims)) {
         throw exception::DimsInvalid("qpp::mprj()", "dims");
+    }
     // check mask and dims have the same size
-    if (mask.size() != dims.size())
+    if (mask.size() != dims.size()) {
         throw exception::SizeMismatch("qpp::mprj()", "dims/mask");
+    }
     // check mask is a valid vector
-    for (idx i = 0; i < n; ++i)
-        if (mask[i] >= dims[i])
+    for (idx i = 0; i < n; ++i) {
+        if (mask[i] >= dims[i]) {
             throw exception::SubsysMismatchDims("qpp::mprj()", "dims/mask");
+        }
+    }
     // END EXCEPTION CHECKS
 
     cmat result = cmat::Zero(D, D);
@@ -1644,17 +1768,21 @@ inline cmat mprj(const std::vector<idx>& mask, idx d = 2) {
     // EXCEPTION CHECKS
 
     // check zero size
-    if (n == 0)
+    if (n == 0) {
         throw exception::ZeroSize("qpp::mprj()", "mask");
+    }
 
     // check valid dims
-    if (d == 0)
+    if (d == 0) {
         throw exception::DimsInvalid("qpp::mprj()", "d");
+    }
 
     // check mask is a valid vector
-    for (idx i = 0; i < n; ++i)
-        if (mask[i] >= d)
+    for (idx i = 0; i < n; ++i) {
+        if (mask[i] >= d) {
             throw exception::SubsysMismatchDims("qpp::mprj()", "d/mask");
+        }
+    }
     // END EXCEPTION CHECKS
 
     cmat result = cmat::Zero(D, D);
@@ -1715,8 +1843,9 @@ std::vector<realT> abssq(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::abssq()", "A");
+    }
     // END EXCEPTION CHECKS
 
     return abssq(rA.data(), rA.data() + rA.size());
@@ -1734,12 +1863,14 @@ std::vector<realT> abssq(const Eigen::MatrixBase<Derived>& A) {
 template <typename InputIterator, typename value_type = std::decay_t<
                                       decltype(*std::declval<InputIterator>())>>
 value_type sum(InputIterator first, InputIterator last) {
-    if (first == last)
+    if (first == last) {
         return {};
+    }
 
     value_type result = *first;
-    while (++first != last)
+    while (++first != last) {
         result += *first;
+    }
 
     return result;
 }
@@ -1780,12 +1911,14 @@ T sum(const std::initializer_list<T>& Ts) {
 template <typename InputIterator, typename value_type = std::decay_t<
                                       decltype(*std::declval<InputIterator>())>>
 value_type prod(InputIterator first, InputIterator last) {
-    if (first == last)
+    if (first == last) {
         return {};
+    }
 
     value_type result = *first;
-    while (++first != last)
+    while (++first != last) {
         result *= *first;
+    }
 
     return result;
 }
@@ -1833,11 +1966,13 @@ rho2pure(const Eigen::MatrixBase<Derived>& A) {
 
     // EXCEPTION CHECKS
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::rho2pure()", "A");
+    }
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::rho2pure()", "A");
+    }
     // END EXCEPTION CHECKS
 
     dyn_col_vect<realT> tmp_evals = hevals(rA);
@@ -1867,11 +2002,14 @@ rho2pure(const Eigen::MatrixBase<Derived>& A) {
 inline std::vector<idx> complement(std::vector<idx> subsys, idx n) {
     // EXCEPTION CHECKS
 
-    if (n < static_cast<idx>(subsys.size()))
+    if (n < static_cast<idx>(subsys.size())) {
         throw exception::OutOfRange("qpp::complement()", "n");
-    for (idx s : subsys)
-        if (s >= n)
+    }
+    for (idx s : subsys) {
+        if (s >= n) {
             throw exception::OutOfRange("qpp::complement()", "n/subsys");
+        }
+    }
     // END EXCEPTION CHECKS
 
     std::vector<idx> all(n);
@@ -1902,8 +2040,9 @@ std::vector<realT> rho2bloch(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check qubit matrix
-    if (!internal::check_qubit_matrix(rA))
+    if (!internal::check_qubit_matrix(rA)) {
         throw exception::NotQubitMatrix("qpp::rho2bloch()", "A");
+    }
     // END EXCEPTION CHECKS
 
     std::vector<realT> result(3);
@@ -1930,9 +2069,10 @@ inline cmat bloch2rho(const std::vector<realT>& r) {
     // EXCEPTION CHECKS
 
     // check 3-dimensional vector
-    if (r.size() != 3)
+    if (r.size() != 3) {
         throw exception::CustomException("qpp::bloch2rho",
                                          "r is not a 3-dimensional vector");
+    }
     // END EXCEPTION CHECKS
 
     cmat X(2, 2), Y(2, 2), Z(2, 2), Id2(2, 2);
@@ -1972,20 +2112,24 @@ std::optional<std::vector<idx>> zket2dits(const Eigen::MatrixBase<Derived>& psi,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rpsi))
+    if (!internal::check_nonzero_size(rpsi)) {
         throw exception::ZeroSize("qpp::zket2dits()", "psi");
+    }
 
     // check column vector
-    if (!internal::check_cvector(rpsi))
+    if (!internal::check_cvector(rpsi)) {
         throw exception::MatrixNotCvector("qpp::zket2dits()", "psi");
+    }
 
     // check that dims is a valid dimension vector
-    if (!internal::check_dims(dims))
+    if (!internal::check_dims(dims)) {
         throw exception::DimsInvalid("qpp::zket2dits()", "dims");
+    }
 
     // check that dims match psi column vector
-    if (!internal::check_dims_match_cvect(dims, rpsi))
+    if (!internal::check_dims_match_cvect(dims, rpsi)) {
         throw exception::DimsMismatchCvector("qpp::zket2dits()", "dims/psi");
+    }
     // END EXCEPTION CHECKS
 
     auto N = static_cast<idx>(rpsi.size());
@@ -2032,8 +2176,9 @@ std::optional<std::vector<idx>> zket2dits(const Eigen::MatrixBase<Derived>& psi,
     }
 
     // check valid dims
-    if (d < 2)
+    if (d < 2) {
         throw exception::DimsInvalid("qpp::zket2dits()", "d");
+    }
 
     // END EXCEPTION CHECKS
 
@@ -2045,19 +2190,19 @@ std::optional<std::vector<idx>> zket2dits(const Eigen::MatrixBase<Derived>& psi,
 
 /**
  * \brief Converts \a A to Dirac (braket) representation
- * \see qpp::zket2dits(), qpp::disp(), qpp::io_braket
+ * \see qpp::zket2dits(), qpp::disp(), qpp::dirac_t
  *
  * \param A Eigen expression
  * \param dims_rows Dimensions of the multi-partite system (rows), empty if
  * \a A is a row vector
  * \param dims_cols Dimensions of the multi-partite system (columns), empty if
  * \a A is a column vector
- * \return Dirac representation of \a A, as a qpp::io_braket object
+ * \return Dirac representation of \a A, as a qpp::dirac_t object
  */
 template <typename Derived>
-io_braket<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
-                                          std::vector<idx> dims_rows,
-                                          std::vector<idx> dims_cols) {
+dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
+                                        std::vector<idx> dims_rows,
+                                        std::vector<idx> dims_cols) {
     const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -2071,8 +2216,9 @@ io_braket<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
     }
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::dirac()", "A");
+    }
 
     // check row subsystem dimensions
     if (!internal::check_dims(dims_rows)) {
@@ -2105,7 +2251,7 @@ io_braket<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
     bool is_row_vec = D_rows == 1 && D_cols > 1;
     bool is_matrix = D_rows > 1 && D_cols > 1;
 
-    io_braket<typename Derived::Scalar> result;
+    dirac_t<typename Derived::Scalar> result;
     result.dims_rows = dims_rows;
     result.dims_cols = dims_cols;
 
@@ -2156,15 +2302,15 @@ io_braket<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
 /**
  * \brief Converts \a A to Dirac (braket) representation. Assumes that \a A is
  * either a row vector, a column vector, or a square matrix.
- * \see qpp::zket2dits(), qpp::disp(), qpp::io_braket
+ * \see qpp::zket2dits(), qpp::disp(), qpp::dirac_t
  *
  * \param A Eigen expression
  * \param d Subsystem dimensions
- * \return Dirac representation of \a A, as a qpp::io_braket object
+ * \return Dirac representation of \a A, as a qpp::dirac_t object
  */
 template <typename Derived>
-io_braket<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
-                                          idx d = 2) {
+dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
+                                        idx d = 2) {
     const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -2174,8 +2320,9 @@ io_braket<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
         throw exception::ZeroSize("qpp::dirac()", "A");
     }
     // check valid dims
-    if (d < 2)
+    if (d < 2) {
         throw exception::DimsInvalid("qpp::dirac()", "d");
+    }
     // END EXCEPTION CHECKS
 
     idx n_subsys_rows =
@@ -2209,9 +2356,10 @@ ket operator"" _ket() {
 
     // check valid multi-partite qubit state
     for (idx i = 0; i < n; ++i) {
-        if (bits[i] != '0' && bits[i] != '1')
+        if (bits[i] != '0' && bits[i] != '1') {
             throw exception::OutOfRange(R"xxx(qpp::operator "" _ket())xxx",
                                         "Bits");
+        }
     }
     // END EXCEPTION CHECKS
 
@@ -2240,9 +2388,10 @@ bra operator"" _bra() {
 
     // check valid multi-partite qubit state
     for (idx i = 0; i < n; ++i) {
-        if (bits[i] != '0' && bits[i] != '1')
+        if (bits[i] != '0' && bits[i] != '1') {
             throw exception::OutOfRange(R"xxx(qpp::operator "" _bra())xxx",
                                         "Bits");
+        }
     }
     // END EXCEPTION CHECKS
 
@@ -2272,9 +2421,10 @@ cmat operator"" _prj() {
 
     // check valid multi-partite qubit state
     for (idx i = 0; i < n; ++i) {
-        if (bits[i] != '0' && bits[i] != '1')
+        if (bits[i] != '0' && bits[i] != '1') {
             throw exception::OutOfRange(R"xxx(qpp::operator "" _prj())xxx",
                                         "Bits");
+        }
     }
     // END EXCEPTION CHECKS
 
@@ -2315,8 +2465,9 @@ std::size_t hash_eigen(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::hash_eigen()", "A");
+    }
     // END EXCEPTION CHECKS
 
     auto* p = rA.data();
@@ -2354,10 +2505,11 @@ struct EqualEigen {
                     const Eigen::MatrixBase<Derived>& B) const {
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
         const dyn_mat<typename Derived::Scalar>& rB = B.derived();
-        if (rA.rows() == rB.rows() && rA.cols() == rB.cols())
+        if (rA.rows() == rB.rows() && rA.cols() == rB.cols()) {
             return rA == rB;
-        else
+        } else {
             return false;
+        }
     }
 };
 } /* namespace internal */

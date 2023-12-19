@@ -40,7 +40,7 @@
 #include <string>
 #include <vector>
 
-#include "qpp/constants.hpp"
+#include "qpp/options.hpp"
 #include "qpp/types.hpp"
 
 namespace qpp {
@@ -87,7 +87,7 @@ struct Display_Impl_ {
     template <typename T>
     // T must support rows(), cols(), operator()(idx, idx) const
     std::ostream& display_impl_(const T& A, std::ostream& os,
-                                realT chop = qpp::chop) const {
+                                IOManipEigenOpts opts) const {
         std::ostringstream ostr;
         ostr.copyfmt(os); // copy os' state
 
@@ -105,19 +105,19 @@ struct Display_Impl_ {
                 realT im = static_cast<cplx>(A(i, j)).imag();
 
                 // zero
-                if (std::abs(re) < chop && std::abs(im) < chop) {
+                if (std::abs(re) < opts.chop && std::abs(im) < opts.chop) {
                     ostr << "0"; // otherwise, segfault on destruction
                     // if using only vstr.emplace_back("0 ");
                     // bug in MATLAB libmx
                     vstr.emplace_back(ostr.str());
                 }
                 // pure imag
-                else if (std::abs(re) < chop) {
+                else if (std::abs(re) < opts.chop) {
                     ostr << im;
                     vstr.emplace_back(ostr.str() + "i");
                 }
                 // real
-                else if (std::abs(im) < chop) {
+                else if (std::abs(im) < opts.chop) {
                     ostr << re;
                     vstr.emplace_back(ostr.str());
                 }
@@ -126,7 +126,7 @@ struct Display_Impl_ {
                     ostr << re;
                     str = ostr.str();
 
-                    str += (im > 0 ? " + " : " - ");
+                    str += (im > 0 ? opts.plus_op : opts.minus_op);
                     ostr.clear();
                     ostr.str(std::string()); // clear
                     ostr << std::abs(im);
@@ -140,11 +140,14 @@ struct Display_Impl_ {
         // determine the maximum lenght of the entries in each column
         std::vector<idx> maxlengthcols(A.cols(), 0);
 
-        for (idx i = 0; i < static_cast<idx>(A.rows()); ++i)
-            for (idx j = 0; j < static_cast<idx>(A.cols()); ++j)
+        for (idx i = 0; i < static_cast<idx>(A.rows()); ++i) {
+            for (idx j = 0; j < static_cast<idx>(A.cols()); ++j) {
                 if (static_cast<idx>(vstr[i * A.cols() + j].size()) >
-                    maxlengthcols[j])
+                    maxlengthcols[j]) {
                     maxlengthcols[j] = vstr[i * A.cols() + j].size();
+                }
+            }
+        }
 
         // finally, display it!
         for (idx i = 0; i < static_cast<idx>(A.rows()); ++i) {
@@ -152,12 +155,14 @@ struct Display_Impl_ {
                << vstr[i * A.cols()]; // display first column
             // then the rest
             idx spacer = 2;
-            for (idx j = 1; j < static_cast<idx>(A.cols()); ++j)
+            for (idx j = 1; j < static_cast<idx>(A.cols()); ++j) {
                 os << std::setw(static_cast<int>(maxlengthcols[j] + spacer))
                    << std::right << vstr[i * A.cols() + j];
+            }
 
-            if (i < static_cast<idx>(A.rows()) - 1)
+            if (i < static_cast<idx>(A.rows()) - 1) {
                 os << '\n';
+            }
         }
 
         return os;

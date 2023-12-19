@@ -186,7 +186,7 @@ using rmat = dyn_mat<realT>;
  * \brief Textual representation (Dirac notation) of a quantum state/matrix
  */
 template <typename Scalar>
-struct io_braket {
+struct dirac_t {
     std::vector<idx> dims_rows; ///< row dimensions
     std::vector<idx> dims_cols; ///< column dimensions
     std::vector<std::pair<Scalar, std::vector<idx>>>
@@ -195,11 +195,11 @@ struct io_braket {
     /**
      * \brief Equality operator
      *
-     * \param rhs io_braket object against which the equality is being tested
-     * \return True if the io_braket objects are equal (component-wise), false
+     * \param rhs dirac_t object against which the equality is being tested
+     * \return True if the dirac_t objects are equal (component-wise), false
      * otherwise
      */
-    bool operator==(const io_braket& rhs) const {
+    bool operator==(const dirac_t& rhs) const {
         return std::tie(dims_rows, dims_cols, states) ==
                std::tie(rhs.dims_rows, rhs.dims_cols, rhs.states);
     }
@@ -207,12 +207,12 @@ struct io_braket {
     /**
      * \brief Inequality operator
      *
-     * \param rhs io_braket object against which the inequality is being tested
-     * \return True if the io_braket objects are not equal (component-wise),
+     * \param rhs dirac_t object against which the inequality is being tested
+     * \return True if the dirac_t objects are not equal (component-wise),
      * false otherwise
      */
 
-    bool operator!=(const io_braket& rhs) const { return !(*this == rhs); }
+    bool operator!=(const dirac_t& rhs) const { return !(*this == rhs); }
 };
 
 /**

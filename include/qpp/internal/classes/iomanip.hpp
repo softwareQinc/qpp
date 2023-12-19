@@ -33,10 +33,12 @@
 #define QPP_INTERNAL_CLASSES_IOMANIP_HPP_
 
 #include <cmath>
+#include <ostream>
 #include <string>
 #include <utility>
+#include <vector>
 
-#include "qpp/constants.hpp"
+#include "qpp/options.hpp"
 #include "qpp/types.hpp"
 
 #include "qpp/classes/idisplay.hpp"
@@ -49,15 +51,12 @@ namespace qpp::internal {
 template <typename InputIterator>
 class IOManipRange : public IDisplay {
     InputIterator first_, last_;
-    std::string separator_, start_, end_;
-    realT chop_;
+    IOManipRangeOpts opts_;
 
   public:
     explicit IOManipRange(InputIterator first, InputIterator last,
-                          std::string separator, std::string start = "[",
-                          std::string end = "]", realT chop = qpp::chop)
-        : first_{first}, last_{last}, separator_{std::move(separator)},
-          start_{std::move(start)}, end_{std::move(end)}, chop_{chop} {}
+                          IOManipRangeOpts opts)
+        : first_{first}, last_{last}, opts_{std::move(opts)} {}
 
     // to silence -Weffc++ warnings for classes that have pointer members
     // (whenever we have a pointer instantiation, i.e., iterator is a raw
@@ -68,14 +67,14 @@ class IOManipRange : public IDisplay {
 
   private:
     std::ostream& display(std::ostream& os) const override {
-        os << start_;
+        os << opts_.left;
 
         std::string sep;
         for (InputIterator it = first_; it != last_; ++it) {
-            os << sep << abs_chop(*it, chop_);
-            sep = separator_;
+            os << sep << abs_chop(*it, opts_.chop);
+            sep = opts_.sep;
         }
-        os << end_;
+        os << opts_.right;
 
         return os;
     }
@@ -85,15 +84,12 @@ template <typename PointerType>
 class IOManipPointer : public IDisplay {
     const PointerType* p_;
     idx N_;
-    std::string separator_, start_, end_;
-    realT chop_;
+    IOManipPointerOpts opts_;
 
   public:
-    explicit IOManipPointer(const PointerType* p, idx N, std::string separator,
-                            std::string start = "[", std::string end = "]",
-                            realT chop = qpp::chop)
-        : p_{p}, N_{N}, separator_{std::move(separator)},
-          start_{std::move(start)}, end_{std::move(end)}, chop_{chop} {}
+    explicit IOManipPointer(const PointerType* p, idx N,
+                            IOManipPointerOpts opts)
+        : p_{p}, N_{N}, opts_{std::move(opts)} {}
 
     // to silence -Weffc++ warnings for classes that have pointer members
     IOManipPointer(const IOManipPointer&) = default;
@@ -102,14 +98,16 @@ class IOManipPointer : public IDisplay {
 
   private:
     std::ostream& display(std::ostream& os) const override {
-        os << start_;
+        os << opts_.left;
 
-        for (idx i = 0; i < N_ - 1; ++i)
-            os << abs_chop(p_[i], chop_) << separator_;
-        if (N_ > 0)
-            os << abs_chop(p_[N_ - 1], chop_);
+        for (idx i = 0; i < N_ - 1; ++i) {
+            os << abs_chop(p_[i], opts_.chop) << opts_.sep;
+        }
+        if (N_ > 0) {
+            os << abs_chop(p_[N_ - 1], opts_.chop);
+        }
 
-        os << end_;
+        os << opts_.right;
 
         return os;
     }
@@ -129,56 +127,56 @@ class IOManipEigen : public IDisplay, private Display_Impl_ {
 #pragma GCC diagnostic pop
 #endif
     cmat A_;
-    realT chop_;
+    IOManipEigenOpts opts_;
 
   public:
     // Eigen matrices
     template <typename Derived>
     explicit IOManipEigen(const Eigen::MatrixBase<Derived>& A,
-                          realT chop = qpp::chop)
+                          IOManipEigenOpts opts)
         : A_{A.template cast<cplx>()}, // copy, so we can bind rvalues safely
-          chop_{chop} {}
+          opts_{std::move(opts)} {}
 
     // Complex numbers
-    explicit IOManipEigen(const cplx z, realT chop = qpp::chop)
-        : A_{cmat::Zero(1, 1)}, chop_{chop} {
+    explicit IOManipEigen(const cplx z, IOManipEigenOpts opts)
+        : A_{cmat::Zero(1, 1)}, opts_{std::move(opts)} {
         // put the complex number inside an Eigen matrix
         A_(0, 0) = z;
     }
 
   private:
     std::ostream& display(std::ostream& os) const override {
-        return display_impl_(A_, os, chop_);
+        return display_impl_(A_, os, opts_);
     }
 }; /* class IOManipEigen */
 
 template <typename Scalar>
 class IOManipDirac : public IDisplay {
-    io_braket<Scalar> A_;
-    bool normal_form_;
-    std::string add_op_;
-    std::string mult_op_;
-    realT chop_;
+    dirac_t<Scalar> A_;
+    IOManipDiracOpts opts_{};
 
   public:
-    explicit IOManipDirac(const io_braket<Scalar>& A, bool normal_form,
-                          const std::string& add_op, const std::string& mult_op,
-                          realT chop = qpp::chop)
-        : A_{A}, normal_form_{normal_form}, add_op_{add_op}, mult_op_{mult_op},
-          chop_{chop} {}
+    explicit IOManipDirac(const dirac_t<Scalar>& A, IOManipDiracOpts opts)
+        : A_{A}, opts_{std::move(opts)} {}
 
   private:
     void display_ket_dits_(std::ostream& os,
                            const std::vector<idx>& dits) const {
         os << "|";
-        os << IOManipRange(dits.begin(), dits.end(), "", "", "");
+        os << IOManipRange(
+            dits.begin(), dits.end(),
+            IOManipRangeOpts{}.set_sep("").set_left("").set_right("").set_chop(
+                opts_.chop));
         os << ">";
     }
 
     void display_bra_dits_(std::ostream& os,
                            const std::vector<idx>& dits) const {
         os << "<";
-        os << IOManipRange(dits.begin(), dits.end(), "", "", "");
+        os << IOManipRange(
+            dits.begin(), dits.end(),
+            IOManipRangeOpts{}.set_sep("").set_left("").set_right("").set_chop(
+                opts_.chop));
         os << "|";
     }
 
@@ -192,8 +190,9 @@ class IOManipDirac : public IDisplay {
     }
 
     std::ostream& display(std::ostream& os) const override {
-        if (A_.states.empty())
+        if (A_.states.empty()) {
             return os << "0";
+        }
 
         idx D_rows = prod(A_.dims_rows);
         idx D_cols = prod(A_.dims_cols);
@@ -207,11 +206,15 @@ class IOManipDirac : public IDisplay {
 
         // display the coefficient
         auto display_coeff = [&](Scalar coeff) {
-            if (std::abs(std::real(coeff)) > chop_ &&
-                std::abs(std::imag(coeff)) > chop_) {
-                os << '(' << IOManipEigen(coeff, chop_) << ')';
+            if (std::abs(std::real(coeff)) > opts_.chop &&
+                std::abs(std::imag(coeff)) > opts_.chop) {
+                os << '('
+                   << IOManipEigen(coeff,
+                                   IOManipEigenOpts{}.set_chop(opts_.chop))
+                   << ')';
             } else {
-                os << IOManipEigen(coeff, chop_);
+                os << IOManipEigen(coeff,
+                                   IOManipEigenOpts{}.set_chop(opts_.chop));
             }
         };
 
@@ -239,21 +242,27 @@ class IOManipDirac : public IDisplay {
         bool first = true;
         for (auto&& elem : A_.states) {
             auto coeff = elem.first;
+            if (opts_.discard_zeros && std::abs(coeff) < opts_.chop) {
+                continue;
+            }
             auto dits = elem.second;
             if (!first) {
-                os << add_op_;
+                os << opts_.plus_op;
             } else {
                 first = false;
             }
-            if (normal_form_) {
-                display_coeff(coeff);
-                os << mult_op_;
+            if (opts_.amplitudes_after) {
                 display_dits(dits);
+                os << opts_.mul_op;
+                display_coeff(coeff);
             } else {
-                display_dits(dits);
-                os << mult_op_;
                 display_coeff(coeff);
+                os << opts_.mul_op;
+                display_dits(dits);
             }
+        }
+        if (first) {
+            os << 0;
         }
 
         return os;

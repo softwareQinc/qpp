@@ -34,6 +34,7 @@
 
 #include <complex>
 #include <limits>
+#include <string>
 
 #include "qpp/types.hpp"
 
@@ -81,12 +82,6 @@ inline constexpr std::complex<float> operator"" _if(long double x) noexcept {
 } /* namespace literals */
 
 /**
- * \brief  Used in qpp::disp() for setting to zero  numbers that have their
- * absolute value smaller than qpp::chop
- */
-constexpr realT chop = 1e-14;
-
-/**
  * \brief \f$\pi\f$
  */
 constexpr realT pi = 3.141592653589793238462643383279502884;
@@ -124,15 +119,6 @@ enum {
     PROB = 1, ///< Probabilit(y)/(ies)
     ST = 2,   ///< Output state(s)
 };
-
-namespace internal {
-/**
- * \brief Maximum number of allowed qubits/qudits (subsystems)
- *
- * Used internally to allocate arrays on the stack (for performance reasons)
- */
-constexpr idx maxn = 64;
-} /* namespace internal */
 
 } /* namespace qpp */
 

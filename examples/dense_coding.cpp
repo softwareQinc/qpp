@@ -23,7 +23,7 @@ int main() {
     idx m_A = randidx(0, d * d - 1);
     std::vector<idx> midx = n2multiidx(m_A, {d, d});
     std::cout << ">> Alice sent: " << m_A << " -> ";
-    std::cout << disp(midx, " ") << '\n';
+    std::cout << disp(midx, IOManipContainerOpts{}.set_sep(" ")) << '\n';
 
     // Alice's operation
     cmat U_A = powm(gt.Zd(d), midx[0]) * powm(adjoint(gt.Xd(d)), midx[1]);
@@ -36,10 +36,15 @@ int main() {
 
     auto measured = measure(psi_AB, gt.Id(d * d));
     std::cout << ">> Bob's measurement probabilities: ";
-    std::cout << disp(std::get<PROB>(measured), ", ") << '\n';
+    std::cout << disp(std::get<PROB>(measured),
+                      IOManipContainerOpts{}.set_sep(", "))
+              << '\n';
 
     // Bob samples according to the measurement probabilities
     idx m_B = std::get<RES>(measured);
     std::cout << ">> Bob received: ";
-    std::cout << m_B << " -> " << disp(n2multiidx(m_B, {d, d}), " ") << '\n';
+    std::cout << m_B << " -> "
+              << disp(n2multiidx(m_B, {d, d}),
+                      IOManipContainerOpts{}.set_sep(" "))
+              << '\n';
 }

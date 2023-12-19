@@ -39,8 +39,10 @@
 
 #include <Eigen/Dense>
 
-#include "qpp/constants.hpp"
+#include "qpp/options.hpp"
 #include "qpp/types.hpp"
+
+#include "qpp/classes/exception.hpp"
 
 namespace qpp {
 /**

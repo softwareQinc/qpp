@@ -80,8 +80,9 @@ int main() {
         auto basis_A = Alice_bases_states[i].first;
         auto state_A = Alice_bases_states[i].second;
         ket psi = (state_A == 0) ? 0_ket : 1_ket;
-        if (basis_A != 0) // if X basis
+        if (basis_A != 0) { // if X basis
             psi = gt.H * psi;
+        }
 
         // Eve intercepts the qubit and randomly measures it in the Z or X
         // basis, then sends it to Bob
@@ -134,17 +135,29 @@ int main() {
     std::cout << ">> Established keys\n";
     // display the raw final_key on Alice's side
     auto raw_key_A = get_key(Alice_bases_states);
-    std::cout << "Alice's raw key: " << disp(raw_key_A, " ", "", "") << '\n';
+    std::cout << "Alice's raw key: "
+              << disp(
+                     raw_key_A,
+                     IOManipContainer{}.set_sep(" ").set_left("").set_right(""))
+              << '\n';
 
     // display the raw final_key on Bob's side
     auto raw_key_B = get_key(Bob_bases_states);
-    std::cout << "Bob's raw key:   " << disp(raw_key_B, " ", "", "") << '\n';
+    std::cout << "Bob's raw key:   "
+              << disp(
+                     raw_key_B,
+                     IOManipContainer{}.set_sep(" ").set_left("").set_right(""))
+              << '\n';
 
     // display the final final_key and the corresponding rate
     auto final_key = final(raw_key_A, raw_key_B);
     auto final_key_rate =
         static_cast<realT>(final_key.size()) / static_cast<realT>(n);
-    std::cout << "Final key:       " << disp(final_key, " ", "", "") << '\n';
+    std::cout << "Final key:       "
+              << disp(
+                     final_key,
+                     IOManipContainer{}.set_sep(" ").set_left("").set_right(""))
+              << '\n';
     std::cout << ">> Bits/keys sizes: " << n << '/' << sifted_key_size << '/'
               << raw_key_size << '/' << final_key.size() << '\n';
     std::cout << ">> Final key rate: " << final_key_rate << '\n';
@@ -158,28 +171,32 @@ void display(const bases_states_T& Alice_bases_states,
     std::cout << "Alice's states:  ";
     for (idx i = 0; i < n; ++i) {
         std::string state;
-        if (Alice_bases_states[i].first == 0) // Z basis
+        if (Alice_bases_states[i].first == 0) { // Z basis
             state = std::to_string(Alice_bases_states[i].second);
-        else // X basis
+        } else { // X basis
             state = Alice_bases_states[i].second == 0 ? "+" : "-";
+        }
         std::cout << state << ' ';
     }
     std::cout << '\n';
     std::cout << "Alice's bases:   ";
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < n; ++i) {
         std::cout << (Alice_bases_states[i].first == 0 ? 'Z' : 'X') << ' ';
+    }
     std::cout << '\n';
     std::cout << "Bob's bases:     ";
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < n; ++i) {
         std::cout << (Bob_bases_states[i].first == 0 ? 'Z' : 'X') << ' ';
+    }
     std::cout << '\n';
     std::cout << "Bob's states:    ";
     for (idx i = 0; i < n; ++i) {
         std::string state;
-        if (Bob_bases_states[i].first == 0) // Z basis
+        if (Bob_bases_states[i].first == 0) { // Z basis
             state = std::to_string(Bob_bases_states[i].second);
-        else // X basis
+        } else { // X basis
             state = Bob_bases_states[i].second == 0 ? "+" : "-";
+        }
         std::cout << state << ' ';
     }
     std::cout << '\n';
@@ -192,8 +209,9 @@ void sift(bases_states_T& Alice_bases_states,
     auto n = static_cast<idx>(Alice_bases_states.size());
     bases_states_T result_A, result_B;
     for (idx i = 0; i < n; ++i) {
-        if (Alice_bases_states[i].first != Bob_bases_states[i].first)
+        if (Alice_bases_states[i].first != Bob_bases_states[i].first) {
             continue;
+        }
         result_A.emplace_back(Alice_bases_states[i]);
         result_B.emplace_back(Bob_bases_states[i]);
     }
@@ -251,8 +269,9 @@ qpp::realT sample(bases_states_T& Alice_bases_states,
             auto measure_B = measure(psi_B, U);
             auto m_B = std::get<RES>(measure_B); // Bob's measurement result
 
-            if (m_A != m_B)
+            if (m_A != m_B) {
                 ++cnt;
+            }
         } else {
             result_A.emplace_back(Alice_bases_states[i]);
             result_B.emplace_back(Bob_bases_states[i]);
@@ -271,8 +290,9 @@ key_T final(const key_T& Alice_raw_key, const key_T& Bob_raw_key) {
     auto n = static_cast<idx>(Alice_raw_key.size());
     key_T result;
     for (idx i = 0; i < n; ++i) {
-        if (Alice_raw_key[i] != Bob_raw_key[i])
+        if (Alice_raw_key[i] != Bob_raw_key[i]) {
             continue;
+        }
         result.emplace_back(Alice_raw_key[i]);
     }
     return result;
@@ -283,7 +303,8 @@ key_T get_key(const bases_states_T& bases_states) {
     using namespace qpp;
     auto n = static_cast<idx>(bases_states.size());
     key_T result(n);
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < n; ++i) {
         result[i] = bases_states[i].second;
+    }
     return result;
 }

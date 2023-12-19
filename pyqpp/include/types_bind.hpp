@@ -32,20 +32,20 @@ inline void init_types(py::module_& m) {
     using namespace qpp;
 
     // supports only complex
-    using py_io_braket = io_braket<cplx>;
+    using py_dirac_t = dirac_t<cplx>;
 
-    /* qpp::io_braket */
-    auto pyio_braket =
-        py::class_<py_io_braket>(m, "io_braket")
+    /* qpp::dirac_t */
+    auto pydirac_t =
+        py::class_<py_dirac_t>(m, "dirac_t")
             .def(py::self == py::self)
             .def(py::self != py::self)
             .def("__copy__",
-                 [](const py_io_braket& self) { return io_braket(self); })
-            .def("__deepcopy__", [](const py_io_braket& self,
-                                    py::dict) { return io_braket(self); })
-            .def("__repr__", [](const py_io_braket& iob) {
+                 [](const py_dirac_t& self) { return py_dirac_t(self); })
+            .def("__deepcopy__", [](const py_dirac_t& self,
+                                    py::dict) { return py_dirac_t(self); })
+            .def("__repr__", [](const py_dirac_t& self) {
                 std::ostringstream oss;
-                oss << disp(iob);
+                oss << disp(self);
                 return oss.str();
             });
 }

@@ -75,12 +75,12 @@ TEST(qpp_cwise, AllTests) {}
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_det, AllTests) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> io_braket<typename Derived::Scalar>
+/// BEGIN template <typename Derived> dirac_t<typename Derived::Scalar>
 ///       dirac(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& dims_rows, const std::vector<idx>& dims_cols)
 TEST(qpp_dirac, Qudits) {}
 /******************************************************************************/
-/// BEGIN template <typename Derived> io_braket<typename Derived::Scalar>
+/// BEGIN template <typename Derived> dirac_t<typename Derived::Scalar>
 ///       dirac(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_dirac, Qubits) {}
 /******************************************************************************/

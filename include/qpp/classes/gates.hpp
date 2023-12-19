@@ -42,6 +42,7 @@
 #include "qpp/constants.hpp"
 #include "qpp/functions.hpp"
 #include "qpp/number_theory.hpp"
+#include "qpp/options.hpp"
 #include "qpp/types.hpp"
 
 #include "qpp/classes/exception.hpp"

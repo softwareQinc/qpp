@@ -8,3 +8,4 @@ UseTab: Never
 PointerAlignment: Left
 IndentCaseLabels: true
 AlwaysBreakTemplateDeclarations: Yes
+InsertBraces: True

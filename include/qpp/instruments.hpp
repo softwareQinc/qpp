@@ -38,7 +38,6 @@
 #include "qpp/constants.hpp"
 #include "qpp/functions.hpp"
 #include "qpp/operations.hpp"
-#include "qpp/random.hpp"
 #include "qpp/types.hpp"
 
 #include "qpp/classes/exception.hpp"
