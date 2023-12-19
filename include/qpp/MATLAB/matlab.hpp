@@ -79,20 +79,23 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
     }
 
     mxArray* pa = matGetVariable(pmat, var_name.c_str());
-    if (!pa)
+    if (!pa) {
         throw std::runtime_error(
             "qpp::load_MATLAB(): Can not load the variable " + var_name +
             " from MATLAB file " + mat_file + "!");
+    }
 
-    if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
+    if (mxGetNumberOfDimensions(pa) != 2) { // not a matrix
         throw std::runtime_error("qpp::load_MATLAB(): Loaded variable " +
                                  var_name + " is not 2-dimensional!");
+    }
 
-    if (!mxIsDouble(pa))
+    if (!mxIsDouble(pa)) {
         throw std::runtime_error("qpp::load_MATLAB(): Loaded variable " +
                                  var_name +
                                  " is not in double-precision format!");
-        // END EXCEPTION CHECKS
+    }
+    // END EXCEPTION CHECKS
 
 // populate the result
 #if MX_HAS_INTERLEAVED_COMPLEX
@@ -111,11 +114,12 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
     std::memcpy((void*)result_re.data(), (void*)mxGetPr(pa),
                 sizeof(double) * result_re.size());
 
-    if (mxIsComplex(pa)) // populate the imaginary part if exists
+    if (mxIsComplex(pa)) { // populate the imaginary part if exists
         std::memcpy((void*)result_im.data(), (void*)mxGetPi(pa),
                     sizeof(double) * result_im.size());
-    else // set to zero the imaginary part
+    } else { // set to zero the imaginary part
         std::memset(result_im.data(), 0, sizeof(double) * result_im.size());
+    }
 
     mxDestroyArray(pa);
     matClose(pmat);
@@ -159,19 +163,22 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
     }
 
     mxArray* pa = matGetVariable(pmat, var_name.c_str());
-    if (!pa)
+    if (!pa) {
         throw std::runtime_error(
             "qpp::load_MATLAB(): Can not load the variable " + var_name +
             " from MATLAB file " + mat_file + "!");
+    }
 
-    if (mxGetNumberOfDimensions(pa) != 2) // not a matrix
+    if (mxGetNumberOfDimensions(pa) != 2) { // not a matrix
         throw std::runtime_error("qpp::load_MATLAB(): Loaded variable " +
                                  var_name + " is not 2-dimensional!");
+    }
 
-    if (!mxIsDouble(pa))
+    if (!mxIsDouble(pa)) {
         throw std::runtime_error("qpp::load_MATLAB(): Loaded variable " +
                                  var_name +
                                  " is not in double-precision format!");
+    }
     // END EXCEPTION CHECKS
 
     dyn_mat<double> result(mxGetM(pa), mxGetN(pa));
@@ -214,14 +221,16 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::save_MATLAB()", "A");
+    }
 
     MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
-    if (!pmat)
+    if (!pmat) {
         throw std::runtime_error(
             "qpp::save_MATLAB(): Can not open/create MATLAB file " + mat_file +
             "!");
+    }
     mxArray* pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxCOMPLEX);
     if (!pa) {
         throw std::runtime_error(
@@ -248,10 +257,11 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
 #endif // MX_HAS_INTERLEAVED_COMPLEX
 
     // write it as a MATLAB variable
-    if (matPutVariable(pmat, var_name.c_str(), pa))
+    if (matPutVariable(pmat, var_name.c_str(), pa)) {
         throw std::runtime_error(
             "qpp::save_MATLAB(): Can not write the variable " + var_name +
             " to MATLAB file " + mat_file + "!");
+    }
 
     mxDestroyArray(pa);
     matClose(pmat);
@@ -281,14 +291,16 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::save_MATLAB()", "A");
+    }
 
     MATFile* pmat = matOpen(mat_file.c_str(), mode.c_str());
-    if (!pmat)
+    if (!pmat) {
         throw std::runtime_error(
             "qpp::save_MATLAB(): Can not open/create MATLAB file " + mat_file +
             "!");
+    }
     mxArray* pa = mxCreateDoubleMatrix(rA.rows(), rA.cols(), mxREAL);
     if (!pa) {
         throw std::runtime_error(
@@ -306,10 +318,11 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
 #endif // MX_HAS_INTERLEAVED_COMPLEX
 
     // write it as a MATLAB variable
-    if (matPutVariable(pmat, var_name.c_str(), pa))
+    if (matPutVariable(pmat, var_name.c_str(), pa)) {
         throw std::runtime_error(
             "qpp::save_MATLAB(): Can not write the variable " + var_name +
             " to MATLAB file " + mat_file + "!");
+    }
 
     mxDestroyArray(pa);
     matClose(pmat);

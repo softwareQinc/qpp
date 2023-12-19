@@ -437,15 +437,17 @@ TEST(qpp_randprob, AllTests) {
 
     N = 2;
     result = randprob(N);
-    for (idx i = 0; i < N; ++i)
+    for (idx i = 0; i < N; ++i) {
         EXPECT_GE(result[i], 0);
+    }
     EXPECT_EQ(2u, result.size());
     EXPECT_NEAR(1, sum(result), 1e-5);
 
     N = 10;
     result = randprob(N);
-    for (idx i = 0; i < N; ++i)
+    for (idx i = 0; i < N; ++i) {
         EXPECT_GE(result[i], 0);
+    }
     EXPECT_EQ(10u, result.size());
     EXPECT_NEAR(1, sum(result), 1e-5);
 }

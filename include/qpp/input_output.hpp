@@ -90,7 +90,8 @@ disp(InputIterator first, InputIterator last, IOManipRangeOpts opts = {}) {
 
 /**
  * \brief Standard container ostream manipulator. The container must support
- * std::begin(), std::end() and forward iteration.
+ * std::begin(), std::end() and forward iteration, and shouldn't be a matrix
+ * expression
  * \see qpp::IOManipContainerOpts
  *
  * \param c Container
@@ -100,7 +101,9 @@ disp(InputIterator first, InputIterator last, IOManipRangeOpts opts = {}) {
 template <typename Container>
 internal::IOManipRange<typename Container::const_iterator>
 disp(const Container& c, IOManipContainerOpts opts = {},
-     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
+     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr,
+     typename std::enable_if<!is_matrix_expression<Container>::value>::type* =
+         nullptr) {
 
     return internal::IOManipRange<typename Container::const_iterator>(
         std::begin(c), std::end(c), opts);

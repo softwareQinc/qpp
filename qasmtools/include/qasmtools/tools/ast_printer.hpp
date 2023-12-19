@@ -47,8 +47,9 @@ class ASTPrinter final : public ast::Visitor {
     // Variables
     void visit(ast::VarAccess& ap) {
         os_ << prefix_ << "|- Var(" << ap.var();
-        if (ap.offset())
+        if (ap.offset()) {
             os_ << "[" << *ap.offset() << "]";
+        }
         os_ << ")\n";
     }
 
@@ -153,14 +154,17 @@ class ASTPrinter final : public ast::Visitor {
     // Declarations
     void visit(ast::GateDecl& decl) {
         os_ << prefix_ << "|- Gate Decl(" << decl.id() << "(";
-        for (auto& param : decl.c_params())
+        for (auto& param : decl.c_params()) {
             os_ << param << ",";
+        }
         os_ << ")[";
-        for (auto& param : decl.q_params())
+        for (auto& param : decl.q_params()) {
             os_ << param << ",";
+        }
         os_ << "]";
-        if (decl.is_opaque())
+        if (decl.is_opaque()) {
             os_ << ", opaque";
+        }
         os_ << ")\n";
 
         prefix_ += "  ";
@@ -170,24 +174,27 @@ class ASTPrinter final : public ast::Visitor {
 
     void visit(ast::OracleDecl& decl) {
         os_ << prefix_ << "|- Oracle Decl(" << decl.id() << "[";
-        for (auto& param : decl.params())
+        for (auto& param : decl.params()) {
             os_ << param << ",";
+        }
         os_ << "] = " << decl.fname() << ")\n";
     }
 
     void visit(ast::RegisterDecl& decl) {
         os_ << prefix_ << "|- Register Decl(" << decl.id() << "[" << decl.size()
             << "]";
-        if (decl.is_quantum())
+        if (decl.is_quantum()) {
             os_ << ", quantum";
+        }
         os_ << ")\n";
     }
 
     void visit(ast::AncillaDecl& decl) {
         os_ << prefix_ << "|- Ancilla Decl(" << decl.id() << "[" << decl.size()
             << "]";
-        if (decl.is_dirty())
+        if (decl.is_dirty()) {
             os_ << ", dirty";
+        }
         os_ << ")\n";
     }
 

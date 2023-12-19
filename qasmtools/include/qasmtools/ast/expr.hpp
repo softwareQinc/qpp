@@ -200,8 +200,9 @@ class BExpr final : public Expr {
         auto lexp = lexp_->constant_eval();
         auto rexp = rexp_->constant_eval();
 
-        if (!lexp || !rexp)
+        if (!lexp || !rexp) {
             return std::nullopt;
+        }
 
         switch (op_) {
             case BinaryOp::Plus:
@@ -293,8 +294,9 @@ class UExpr final : public Expr {
     std::optional<double> constant_eval() const override {
         auto expr = exp_->constant_eval();
 
-        if (!expr)
+        if (!expr) {
             return std::nullopt;
+        }
 
         switch (op_) {
             case UnaryOp::Neg:
@@ -320,9 +322,9 @@ class UExpr final : public Expr {
         (void)ctx;
 
         os << op_;
-        if (op_ == UnaryOp::Neg)
+        if (op_ == UnaryOp::Neg) {
             exp_->pretty_print(os, true);
-        else {
+        } else {
             os << "(";
             exp_->pretty_print(os, false);
             os << ")";

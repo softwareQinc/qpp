@@ -84,12 +84,14 @@ class Parser {
     ast::ptr<ast::Program> parse(bool check = true) {
         // Parse the program
         auto result = parse_program();
-        if (error_)
+        if (error_) {
             throw ParseError();
+        }
 
         // Perform semantic analysis before returning
-        if (check)
+        if (check) {
             ast::check_source(*result);
+        }
 
         return result;
     }
@@ -102,8 +104,9 @@ class Parser {
      */
     void consume_token(bool reset = false) {
         current_token_ = pp_lexer_.next_token();
-        if (reset)
+        if (reset) {
             supress_errors_ = false;
+        }
     }
 
     /**

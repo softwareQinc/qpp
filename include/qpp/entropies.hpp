@@ -62,19 +62,23 @@ realT entropy(const Eigen::MatrixBase<Derived>& A) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::entropy()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::entropy()", "A");
+    }
     // END EXCEPTION CHECKS
 
     rmat ev = svals(rA); // get the singular values
     realT result = 0;
-    for (idx i = 0; i < static_cast<idx>(ev.rows()); ++i)
-        if (ev(i) != 0) // not identically zero
+    for (idx i = 0; i < static_cast<idx>(ev.rows()); ++i) {
+        if (ev(i) != 0) { // not identically zero
             result -= ev(i) * std::log2(ev(i));
+        }
+    }
 
     return result;
 }
@@ -89,14 +93,17 @@ inline realT entropy(const std::vector<realT>& prob) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(prob))
+    if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::entropy()", "prob");
+    }
     // END EXCEPTION CHECKS
 
     realT result = 0;
-    for (realT p : prob)
-        if (std::abs(p) != 0) // not identically zero
+    for (realT p : prob) {
+        if (std::abs(p) != 0) { // not identically zero
             result -= std::abs(p) * std::log2(std::abs(p));
+        }
+    }
 
     return result;
 }
@@ -120,31 +127,39 @@ realT renyi(const Eigen::MatrixBase<Derived>& A, realT alpha) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::renyi()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::renyi()", "A");
+    }
 
-    if (alpha < 0)
+    if (alpha < 0) {
         throw exception::OutOfRange("qpp::renyi()", "alpha");
+    }
     // END EXCEPTION CHECKS
 
-    if (alpha == 0) // H max
+    if (alpha == 0) { // H max
         return std::log2(rA.rows());
+    }
 
-    if (alpha == 1) // Shannon/von-Neumann
+    if (alpha == 1) { // Shannon/von-Neumann
         return entropy(rA);
+    }
 
-    if (alpha == infty) // H min
+    if (alpha == infty) { // H min
         return -std::log2(svals(rA)[0]);
+    }
 
     rmat sv = svals(rA); // get the singular values
     realT result = 0;
-    for (idx i = 0; i < static_cast<idx>(sv.rows()); ++i)
-        if (sv(i) != 0) // not identically zero
+    for (idx i = 0; i < static_cast<idx>(sv.rows()); ++i) {
+        if (sv(i) != 0) { // not identically zero
             result += std::pow(sv(i), alpha);
+        }
+    }
 
     return std::log2(result) / (1 - alpha);
 }
@@ -165,33 +180,41 @@ inline realT renyi(const std::vector<realT>& prob, realT alpha) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(prob))
+    if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::renyi()", "prob");
+    }
 
-    if (alpha < 0)
+    if (alpha < 0) {
         throw exception::OutOfRange("qpp::renyi()", "alpha");
+    }
 
-    if (alpha == 0) // H max
+    if (alpha == 0) { // H max
         return std::log2(prob.size());
+    }
 
-    if (alpha == 1) // Shannon/von-Neumann
+    if (alpha == 1) { // Shannon/von-Neumann
         return entropy(prob);
+    }
     // END EXCEPTION CHECKS
 
     if (alpha == infty) // H min
     {
         realT max = 0;
-        for (realT p : prob)
-            if (std::abs(p) > max)
+        for (realT p : prob) {
+            if (std::abs(p) > max) {
                 max = std::abs(p);
+            }
+        }
 
         return -std::log2(max);
     }
 
     realT result = 0;
-    for (realT p : prob)
-        if (std::abs(p) != 0) // not identically zero
+    for (realT p : prob) {
+        if (std::abs(p) != 0) { // not identically zero
             result += std::pow(std::abs(p), alpha);
+        }
+    }
 
     return std::log2(result) / (1 - alpha);
 }
@@ -213,25 +236,31 @@ realT tsallis(const Eigen::MatrixBase<Derived>& A, realT q) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::tsallis()", "A");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::tsallis()", "A");
+    }
 
-    if (q < 0)
+    if (q < 0) {
         throw exception::OutOfRange("qpp::tsallis()", "q");
+    }
     // END EXCEPTION CHECKS
 
-    if (q == 1) // Shannon/von-Neumann with base e logarithm
+    if (q == 1) { // Shannon/von-Neumann with base e logarithm
         return entropy(rA) * std::log(2);
+    }
 
     rmat ev = svals(rA); // get the singular values
     realT result = 0;
-    for (idx i = 0; i < static_cast<idx>(ev.rows()); ++i)
-        if (ev(i) != 0) // not identically zero
+    for (idx i = 0; i < static_cast<idx>(ev.rows()); ++i) {
+        if (ev(i) != 0) { // not identically zero
             result += std::pow(ev(i), q);
+        }
+    }
 
     return (result - 1) / (1 - q);
 }
@@ -251,20 +280,25 @@ inline realT tsallis(const std::vector<realT>& prob, realT q) {
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(prob))
+    if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::tsallis()", "prob");
+    }
 
-    if (q < 0)
+    if (q < 0) {
         throw exception::OutOfRange("qpp::tsallis()", "q");
+    }
     // END EXCEPTION CHECKS
 
-    if (q == 1) // Shannon/von-Neumann with base e logarithm
+    if (q == 1) { // Shannon/von-Neumann with base e logarithm
         return entropy(prob) * std::log(2);
+    }
 
     realT result = 0;
-    for (realT p : prob)
-        if (std::abs(p) != 0) // not identically zero
+    for (realT p : prob) {
+        if (std::abs(p) != 0) { // not identically zero
             result += std::pow(std::abs(p), q);
+        }
+    }
 
     return (result - 1) / (1 - q);
 }
@@ -288,26 +322,32 @@ realT qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::qmutualinfo()", "A");
+    }
 
     // check that dims is a valid dimension vector
-    if (!internal::check_dims(dims))
+    if (!internal::check_dims(dims)) {
         throw exception::DimsInvalid("qpp::qmutualinfo()", "dims");
+    }
 
     // check square matrix
-    if (!internal::check_square_mat(rA))
+    if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::qmutualinfo()", "A");
+    }
 
     // check that dims match the dimension of A
-    if (!internal::check_dims_match_mat(dims, rA))
+    if (!internal::check_dims_match_mat(dims, rA)) {
         throw exception::DimsMismatchMatrix("qpp::qmutualinfo()", "A/dims");
+    }
 
     // check that subsys are valid
-    if (!internal::check_subsys_match_dims(subsysA, dims))
+    if (!internal::check_subsys_match_dims(subsysA, dims)) {
         throw exception::SubsysMismatchDims("qpp::qmutualinfo()", "subsysA");
-    if (!internal::check_subsys_match_dims(subsysB, dims))
+    }
+    if (!internal::check_subsys_match_dims(subsysB, dims)) {
         throw exception::SubsysMismatchDims("qpp::qmutualinfo()", "subsysB");
+    }
     // END EXCEPTION CHECKS
 
     // The full system indexes {0,1,...,n-1}
@@ -358,12 +398,14 @@ realT qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::qmutualinfo()", "A");
+    }
 
     // check valid dims
-    if (d < 2)
+    if (d < 2) {
         throw exception::DimsInvalid("qpp::qmutualinfo()", "d");
+    }
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);

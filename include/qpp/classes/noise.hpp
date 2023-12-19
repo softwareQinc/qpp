@@ -99,14 +99,16 @@ class NoiseBase {
     void
     compute_probs_(const cmat& state, const std::vector<idx>& target,
                    std::optional<std::string> caller = std::nullopt) const {
-        if (!std::is_same<NoiseType::StateDependent, noise_type>::value)
+        if (!std::is_same<NoiseType::StateDependent, noise_type>::value) {
             return; // no-op
+        }
 
         // minimal EXCEPTION CHECKS
 
-        if (!internal::check_nonzero_size(state))
+        if (!internal::check_nonzero_size(state)) {
             throw exception::ZeroSize(caller.value_or(""),
                                       "qpp::NoiseBase::compute_probs_()/state");
+        }
         // END EXCEPTION CHECKS
 
         cmat rho_i;
@@ -141,9 +143,10 @@ class NoiseBase {
             result.resize(D, D);
         }
         //************ Exception: not ket nor density matrix ************//
-        else
+        else {
             throw exception::MatrixNotSquareNorCvector(
                 caller.value_or(""), "qpp::NoiseBase::compute_state_()/state");
+        }
 
         // now do the actual noise generation
         assert(probs_ != decltype(probs_)(probs_.size(), 0)); // not all zeros
@@ -172,17 +175,22 @@ class NoiseBase {
         : Ks_{Ks}, probs_(Ks.size()) {
         // EXCEPTION CHECKS
 
-        if (Ks.empty())
+        if (Ks.empty()) {
             throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()", "Ks");
-        if (!internal::check_nonzero_size(Ks[0]))
+        }
+        if (!internal::check_nonzero_size(Ks[0])) {
             throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()", "Ks[0]");
-        if (!internal::check_square_mat(Ks[0]))
+        }
+        if (!internal::check_square_mat(Ks[0])) {
             throw exception::MatrixNotSquare("qpp::NoiseBase::NoiseBase()",
                                              "Ks[0]");
-        for (auto&& elem : Ks)
-            if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
+        }
+        for (auto&& elem : Ks) {
+            if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows()) {
                 throw exception::DimsNotEqual("qpp::NoiseBase::NoiseBase()",
                                               "K");
+            }
+        }
         // END EXCEPTION CHECKS
 
         D_ = Ks[0].rows(); // set the local dimension
@@ -204,24 +212,32 @@ class NoiseBase {
         : Ks_{Ks}, probs_(probs) {
         // EXCEPTION CHECKS
 
-        if (Ks.empty())
+        if (Ks.empty()) {
             throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()", "Ks");
-        if (Ks.size() != probs.size())
+        }
+        if (Ks.size() != probs.size()) {
             throw exception::SizeMismatch("qpp::NoiseBase::NoiseBase",
                                           "Ks/probs");
-        if (!internal::check_nonzero_size(Ks[0]))
+        }
+        if (!internal::check_nonzero_size(Ks[0])) {
             throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()", "Ks[0]");
-        if (!internal::check_square_mat(Ks[0]))
+        }
+        if (!internal::check_square_mat(Ks[0])) {
             throw exception::MatrixNotSquare("qpp::NoiseBase::NoiseBase()",
                                              "Ks[0]");
-        for (auto&& elem : Ks)
-            if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows())
+        }
+        for (auto&& elem : Ks) {
+            if (elem.rows() != Ks[0].rows() || elem.cols() != Ks[0].rows()) {
                 throw exception::DimsNotEqual("qpp::NoiseBase::NoiseBase()",
                                               "K");
-        for (auto&& elem : probs)
-            if (elem < 0 || elem > 1)
+            }
+        }
+        for (auto&& elem : probs) {
+            if (elem < 0 || elem > 1) {
                 throw exception::OutOfRange("qpp::NoiseBase::NoiseBase",
                                             "probs");
+            }
+        }
         // END EXCEPTION CHECKS
 
         D_ = Ks[0].rows(); // set the local dimension
@@ -257,10 +273,11 @@ class NoiseBase {
         if (generated_ ||
             std::is_same<NoiseType::StateIndependent, noise_type>::value) {
             return probs_;
-        } else
+        } else {
             throw exception::CustomException(
                 "qpp::NoiseBase::get_probs()",
                 "NoiseBase::operator() was not yet invoked");
+        }
     }
 
     /**
@@ -271,10 +288,11 @@ class NoiseBase {
     idx get_last_idx() const {
         if (generated_) {
             return i_;
-        } else
+        } else {
             throw exception::CustomException(
                 "qpp::NoiseBase::get_last_idx()",
                 "NoiseBase::operator() was not yet invoked");
+        }
     }
 
     /**
@@ -285,10 +303,11 @@ class NoiseBase {
     realT get_last_p() const {
         if (generated_) {
             return probs_[i_];
-        } else
+        } else {
             throw exception::CustomException(
                 "qpp::NoiseBase::get_last_p()",
                 "NoiseBase::operator() was not yet invoked");
+        }
     }
 
     /**
@@ -299,10 +318,11 @@ class NoiseBase {
     cmat get_last_K() const {
         if (generated_) {
             return Ks_[i_];
-        } else
+        } else {
             throw exception::CustomException(
                 "qpp::NoiseBase::get_last_K()",
                 "NoiseBase::operator() was not yet invoked");
+        }
     }
     // end getters
 
@@ -382,9 +402,10 @@ class QubitDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
                     {1 - p, p / 3, p / 3, p / 3}) {
         // EXCEPTION CHECKS
 
-        if (p < 0 || p > 1)
+        if (p < 0 || p > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitDepolarizingNoise::QubitDepolarizingNoise()", "p");
+        }
         // END EXCEPTION CHECKS
     }
 }; /* class QubitDepolarizingNoise */
@@ -406,9 +427,10 @@ class QubitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
                     {1 - p, p}) {
         // EXCEPTION CHECKS
 
-        if (p < 0 || p > 1)
+        if (p < 0 || p > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitPhaseFlipNoise::QubitPhaseFlipNoise()", "p");
+        }
         // END EXCEPTION CHECKS
     }
 }; /* class QubitPhaseFlipNoise */
@@ -430,9 +452,10 @@ class QubitBitFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
                     {1 - p, p}) {
         // EXCEPTION CHECKS
 
-        if (p < 0 || p > 1)
+        if (p < 0 || p > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitBitFlipNoise::QubitBitFlipNoise()", "p");
+        }
         // END EXCEPTION CHECKS
     }
 }; /* class QubitBitFlipNoise */
@@ -454,9 +477,10 @@ class QubitBitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
                     {1 - p, p}) {
         // EXCEPTION CHECKS
 
-        if (p < 0 || p > 1)
+        if (p < 0 || p > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitBitPhaseFlipNoise::QubitBitPhaseFlipNoise()", "p");
+        }
         // END EXCEPTION CHECKS
     }
 }; /* class QubitBitPhaseFlipNoise */
@@ -478,10 +502,11 @@ class QubitAmplitudeDampingNoise : public NoiseBase<NoiseType::StateDependent> {
               ((cmat(2, 2)) << 0, std::sqrt(1 - gamma), 0, 0).finished()}) {
         // EXCEPTION CHECKS
 
-        if (gamma < 0 || gamma > 1)
+        if (gamma < 0 || gamma > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitAmplitudeDampingNoise::QubitAmplitudeDampingNoise()",
                 "gamma");
+        }
         // END EXCEPTION CHECKS
     }
 }; /* class QubitAmplitudeDampingNoise */
@@ -503,10 +528,11 @@ class QubitPhaseDampingNoise : public NoiseBase<NoiseType::StateDependent> {
               ((cmat(2, 2)) << 0, 0, 0, std::sqrt(lambda)).finished()}) {
         // EXCEPTION CHECKS
 
-        if (lambda < 0 || lambda > 1)
+        if (lambda < 0 || lambda > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitPhaseDampingNoise::QubitPhaseDampingNoise()",
                 "lambda");
+        }
         // END EXCEPTION CHECKS
     }
 }; /* class QubitPhaseDampingNoise */
@@ -527,11 +553,13 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
     static std::vector<cmat> fill_Ks_(idx D) {
         std::vector<cmat> Ks(D * D);
         idx tmp = 0;
-        for (idx i = 0; i < D; ++i)
-            for (idx j = 0; j < D; ++j)
+        for (idx i = 0; i < D; ++i) {
+            for (idx j = 0; j < D; ++j) {
                 Ks[tmp++] =
                     powm(Gates::get_no_thread_local_instance().Xd(D), i) *
                     powm(Gates::get_no_thread_local_instance().Zd(D), j);
+            }
+        }
 
         return Ks;
     }
@@ -546,9 +574,10 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
     static std::vector<realT> fill_probs_(realT p, idx D) {
         std::vector<realT> probs(D * D);
         probs[0] = 1 - p;
-        for (idx i = 1; i < D * D; ++i)
+        for (idx i = 1; i < D * D; ++i) {
             probs[i] =
                 p / static_cast<realT>(D - 1) * static_cast<realT>(D - 1);
+        }
 
         return probs;
     }
@@ -564,12 +593,14 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
         : NoiseBase(fill_Ks_(D), fill_probs_(p, D)) {
         // EXCEPTION CHECKS
 
-        if (D < 2)
+        if (D < 2) {
             throw exception::OutOfRange(
                 "qpp::QuditDepolarizingNoise::QuditDepolarizingNoise()", "D");
-        if (p < 0 || p > 1)
+        }
+        if (p < 0 || p > 1) {
             throw exception::OutOfRange(
                 "qpp::QuditDepolarizingNoise::QuditDepolarizingNoise()", "p");
+        }
         // END EXCEPTION CHECKS
     }
 }; /* class QuditDepolarizingNoise */

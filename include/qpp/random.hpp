@@ -113,10 +113,12 @@ template <>
 inline rmat rand(idx rows, idx cols, realT a, realT b) {
     // EXCEPTION CHECKS
 
-    if (rows == 0 || cols == 0)
+    if (rows == 0 || cols == 0) {
         throw exception::ZeroSize("qpp::rand()", "rows/cols");
-    if (a >= b)
+    }
+    if (a >= b) {
         throw exception::OutOfRange("qpp::rand()", "a/b");
+    }
     // END EXCEPTION CHECKS
 
     return rmat::Zero(rows, cols).unaryExpr([a, b](realT) {
@@ -128,10 +130,12 @@ template <>
 inline cmat rand(idx rows, idx cols, realT a, realT b) {
     // EXCEPTION CHECKS
 
-    if (rows == 0 || cols == 0)
+    if (rows == 0 || cols == 0) {
         throw exception::ZeroSize("qpp::rand()", "rows/cols");
-    if (a >= b)
+    }
+    if (a >= b) {
         throw exception::OutOfRange("qpp::rand()", "a/b");
+    }
     // END EXCEPTION CHECKS
 
     return rand<rmat>(rows, cols, a, b).cast<cplx>() +
@@ -199,8 +203,9 @@ template <>
 inline rmat randn(idx rows, idx cols, realT mean, realT sigma) {
     // EXCEPTION CHECKS
 
-    if (rows == 0 || cols == 0)
+    if (rows == 0 || cols == 0) {
         throw exception::ZeroSize("qpp::randn()", "rows/cols");
+    }
     // END EXCEPTION CHECKS
 
     std::normal_distribution<realT> nd(mean, sigma);
@@ -215,8 +220,9 @@ template <>
 inline cmat randn(idx rows, idx cols, realT mean, realT sigma) {
     // EXCEPTION CHECKS
 
-    if (rows == 0 || cols == 0)
+    if (rows == 0 || cols == 0) {
         throw exception::ZeroSize("qpp::randn()", "rows/cols");
+    }
     // END EXCEPTION CHECKS
 
     return randn<rmat>(rows, cols, mean, sigma).cast<cplx>() +
@@ -236,8 +242,9 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
                    idx b = std::numeric_limits<idx>::max()) {
     // EXCEPTION CHECKS
 
-    if (a > b)
+    if (a > b) {
         throw exception::OutOfRange("qpp::randidx()", "a/b");
+    }
     // END EXCEPTION CHECKS
 
     std::uniform_int_distribution<idx> uid(a, b);
@@ -258,8 +265,9 @@ inline cmat randU(idx D = 2)
 {
     // EXCEPTION CHECKS
 
-    if (D == 0)
+    if (D == 0) {
         throw exception::DimsInvalid("qpp::randU()", "D");
+    }
     // END EXCEPTION CHECKS
 
     cmat X = 1 / std::sqrt(2.) * randn<cmat>(D, D);
@@ -270,9 +278,10 @@ inline cmat randU(idx D = 2)
     // uniformly distributed according to the Haar measure
 
     dyn_col_vect<cplx> phases = (rand<rmat>(D, 1)).cast<cplx>();
-    for (idx i = 0; i < static_cast<idx>(phases.rows()); ++i)
+    for (idx i = 0; i < static_cast<idx>(phases.rows()); ++i) {
         phases(i) =
             std::exp(static_cast<cplx::value_type>(2 * pi) * 1_i * phases(i));
+    }
 
     Q = Q * phases.asDiagonal();
 
@@ -289,8 +298,9 @@ inline cmat randU(idx D = 2)
 inline cmat randV(idx Din, idx Dout) {
     // EXCEPTION CHECKS
 
-    if (Din == 0 || Dout == 0 || Din > Dout)
+    if (Din == 0 || Dout == 0 || Din > Dout) {
         throw exception::DimsInvalid("qpp::randV()", "Din/Dout");
+    }
     // END EXCEPTION CHECKS
 
     return randU(Dout).block(0, 0, Dout, Din);
@@ -314,18 +324,22 @@ inline cmat randV(idx Din, idx Dout) {
 [[qpp::parallel]] inline std::vector<cmat> randkraus(idx N, idx Din, idx Dout) {
     // EXCEPTION CHECKS
 
-    if (N == 0)
+    if (N == 0) {
         throw exception::OutOfRange("qpp::randkraus()", "N");
-    if (Din == 0 || Dout == 0)
+    }
+    if (Din == 0 || Dout == 0) {
         throw exception::DimsInvalid("qpp::randkraus()", "Din/Dout");
+    }
     idx Din_env = (N * Dout) / Din; // dimension of the input environment
-    if (Din_env * Din != Dout * N)
+    if (Din_env * Din != Dout * N) {
         throw exception::DimsInvalid("qpp::randkraus()", "Din/Dout");
+    }
     // END EXCEPTION CHECKS
 
     std::vector<cmat> result(N);
-    for (idx i = 0; i < N; ++i)
+    for (idx i = 0; i < N; ++i) {
         result[i] = cmat::Zero(Dout, Din);
+    }
 
     cmat Fk(Dout, Din);
     cmat U = randU(N * Dout);
@@ -334,10 +348,13 @@ inline cmat randV(idx Din, idx Dout) {
 // NOLINTNEXTLINE
 #pragma omp parallel for collapse(3)
 #endif // QPP_OPENMP
-    for (idx k = 0; k < N; ++k)
-        for (idx a = 0; a < Dout; ++a)
-            for (idx b = 0; b < Din; ++b)
+    for (idx k = 0; k < N; ++k) {
+        for (idx a = 0; a < Dout; ++a) {
+            for (idx b = 0; b < Din; ++b) {
                 result[k](a, b) = U(a * N + k, b * Din_env);
+            }
+        }
+    }
 
     return result;
 }
@@ -367,8 +384,9 @@ inline std::vector<cmat> randkraus(idx N, idx D = 2) {
 inline cmat randH(idx D = 2) {
     // EXCEPTION CHECKS
 
-    if (D == 0)
+    if (D == 0) {
         throw exception::DimsInvalid("qpp::randH()", "D");
+    }
     // END EXCEPTION CHECKS
 
     cmat H = 2 * rand<cmat>(D, D) -
@@ -386,8 +404,9 @@ inline cmat randH(idx D = 2) {
 inline ket randket(idx D = 2) {
     // EXCEPTION CHECKS
 
-    if (D == 0)
+    if (D == 0) {
         throw exception::DimsInvalid("qpp::randket()", "D");
+    }
     // END EXCEPTION CHECKS
 
     /* slow
@@ -411,8 +430,9 @@ inline ket randket(idx D = 2) {
 inline cmat randrho(idx D = 2) {
     // EXCEPTION CHECKS
 
-    if (D == 0)
+    if (D == 0) {
         throw exception::DimsInvalid("qpp::randrho()", "D");
+    }
     // END EXCEPTION CHECKS
 
     cmat result = 10 * randH(D);
@@ -433,8 +453,9 @@ inline cmat randrho(idx D = 2) {
 inline std::vector<idx> randperm(idx N) {
     // EXCEPTION CHECKS
 
-    if (N == 0)
+    if (N == 0) {
         throw exception::ZeroSize("qpp::randperm()", "N");
+    }
     // END EXCEPTION CHECKS
 
     std::vector<idx> result(N);
@@ -459,8 +480,9 @@ inline std::vector<idx> randperm(idx N) {
 inline std::vector<realT> randprob(idx N) {
     // EXCEPTION CHECKS
 
-    if (N == 0)
+    if (N == 0) {
         throw exception::ZeroSize("qpp::randprob()");
+    }
     // END EXCEPTION CHECKS
 
     std::vector<realT> result(N);
@@ -468,13 +490,15 @@ inline std::vector<realT> randprob(idx N) {
     // generate
     std::exponential_distribution<realT> ed(1);
     auto& gen = RandomDevices::get_instance().get_prng();
-    for (idx i = 0; i < N; ++i)
+    for (idx i = 0; i < N; ++i) {
         result[i] = ed(gen);
+    }
 
     // normalize
     realT sumprob = std::accumulate(result.begin(), result.end(), 0.0);
-    for (idx i = 0; i < N; ++i)
+    for (idx i = 0; i < N; ++i) {
         result[i] /= sumprob;
+    }
 
     return result;
 }

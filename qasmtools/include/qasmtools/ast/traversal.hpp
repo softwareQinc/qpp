@@ -83,27 +83,32 @@ class Traverse : public Visitor {
         gate.tgt().accept(*this);
     }
     void visit(BarrierGate& gate) override {
-        for (int i = 0; i < gate.num_args(); i++)
+        for (int i = 0; i < gate.num_args(); i++) {
             gate.arg(i).accept(*this);
+        }
     }
     void visit(DeclaredGate& gate) override {
-        for (int i = 0; i < gate.num_cargs(); i++)
+        for (int i = 0; i < gate.num_cargs(); i++) {
             gate.carg(i).accept(*this);
-        for (int i = 0; i < gate.num_qargs(); i++)
+        }
+        for (int i = 0; i < gate.num_qargs(); i++) {
             gate.qarg(i).accept(*this);
+        }
     }
 
     void visit(GateDecl& decl) override {
-        for (auto it = decl.begin(); it != decl.end(); it++)
+        for (auto it = decl.begin(); it != decl.end(); it++) {
             (**it).accept(*this);
+        }
     }
 
     void visit(OracleDecl& decl) override {}
     void visit(RegisterDecl& decl) override {}
     void visit(AncillaDecl& decl) override {}
     void visit(Program& prog) override {
-        for (auto it = prog.begin(); it != prog.end(); it++)
+        for (auto it = prog.begin(); it != prog.end(); it++) {
             (**it).accept(*this);
+        }
     }
 };
 

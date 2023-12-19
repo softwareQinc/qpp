@@ -99,8 +99,9 @@ class Program : public ASTNode {
      * \param f Void function accepting a reference to a statement
      */
     void foreach_stmt(std::function<void(Stmt&)> f) {
-        for (auto it = body_.begin(); it != body_.end(); it++)
+        for (auto it = body_.begin(); it != body_.end(); it++) {
             f(**it);
+        }
     }
 
     /**
@@ -120,8 +121,9 @@ class Program : public ASTNode {
     void accept(Visitor& visitor) override { visitor.visit(*this); }
     std::ostream& pretty_print(std::ostream& os) const override {
         os << "OPENQASM 2.0;\n";
-        if (std_include_)
+        if (std_include_) {
             os << "include \"qelib1.inc\";\n";
+        }
         os << "\n";
         for (auto it = body_.begin(); it != body_.end(); it++) {
             (*it)->pretty_print(os, std_include_);

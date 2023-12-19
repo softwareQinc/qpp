@@ -197,16 +197,19 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check valid dimension
-        if (D == 0)
+        if (D == 0) {
             throw exception::DimsInvalid("qpp::Gates::Zd()", "D");
+        }
         // END EXCEPTION CHECKS
 
-        if (D == 2)
+        if (D == 2) {
             return Z;
+        }
 
         cmat result = cmat::Zero(D, D);
-        for (idx i = 0; i < D; ++i)
+        for (idx i = 0; i < D; ++i) {
             result(i, i) = std::pow(omega(D), static_cast<realT>(i));
+        }
 
         return result;
     }
@@ -221,12 +224,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check valid dimension
-        if (D == 0)
+        if (D == 0) {
             throw exception::DimsInvalid("qpp::Gates::SWAPd()", "D");
+        }
         // END EXCEPTION CHECKS
 
-        if (D == 2)
+        if (D == 2) {
             return SWAP;
+        }
 
         cmat result = cmat::Zero(D * D, D * D);
 
@@ -235,9 +240,11 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
        // column major order for speed
-        for (idx j = 0; j < D; ++j)
-            for (idx i = 0; i < D; ++i)
+        for (idx j = 0; j < D; ++j) {
+            for (idx i = 0; i < D; ++i) {
                 result(D * i + j, i + D * j) = 1;
+            }
+        }
 
         return result;
     }
@@ -256,12 +263,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check valid dimension
-        if (D == 0)
+        if (D == 0) {
             throw exception::DimsInvalid("qpp::Gates::Fd()", "D");
+        }
         // END EXCEPTION CHECKS
 
-        if (D == 2)
+        if (D == 2) {
             return H;
+        }
 
         cmat result(D, D);
 
@@ -270,10 +279,12 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
        // column major order for speed
-        for (idx j = 0; j < D; ++j)
-            for (idx i = 0; i < D; ++i)
+        for (idx j = 0; j < D; ++j) {
+            for (idx i = 0; i < D; ++i) {
                 result(i, j) = 1 / static_cast<cplx::value_type>(std::sqrt(D)) *
                                std::pow(omega(D), static_cast<realT>(i * j));
+            }
+        }
 
         return result;
     }
@@ -319,20 +330,24 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
        // column major order for speed
-        for (idx j = 0; j < N; ++j)
-            for (idx i = 0; i < N; ++i)
+        for (idx j = 0; j < N; ++j) {
+            for (idx i = 0; i < N; ++i) {
                 if (static_cast<idx>(modmul(static_cast<bigint>(j),
                                             static_cast<bigint>(a),
-                                            static_cast<bigint>(N))) == i)
+                                            static_cast<bigint>(N))) == i) {
                     result(i, j) = 1;
+                }
+            }
+        }
 
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
        // complete the matrix
-        for (idx i = N; i < D; ++i)
+        for (idx i = N; i < D; ++i) {
             result(i, i) = 1;
+        }
 
         return result;
     }
@@ -350,12 +365,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check valid dimension
-        if (D == 0)
+        if (D == 0) {
             throw exception::DimsInvalid("qpp::Gates::Xd()", "D");
+        }
         // END EXCEPTION CHECKS
 
-        if (D == 2)
+        if (D == 2) {
             return X;
+        }
 
         return Fd(D).inverse() * Zd(D) * Fd(D);
     }
@@ -374,8 +391,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check valid dimension
-        if (D == 0)
+        if (D == 0) {
             throw exception::DimsInvalid("qpp::Gates::Id()", "D");
+        }
         // END EXCEPTION CHECKS
 
         return Derived::Identity(D, D);
@@ -402,36 +420,43 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check matrix zero-size
-        if (!internal::check_nonzero_size(rA))
+        if (!internal::check_nonzero_size(rA)) {
             throw exception::ZeroSize("qpp::Gates::GATE()", "A");
+        }
 
         // check square matrix
-        if (!internal::check_square_mat(rA))
+        if (!internal::check_square_mat(rA)) {
             throw exception::MatrixNotSquare("qpp::Gates::GATE()", "A");
+        }
 
         // check zero-size
-        if (target.empty())
+        if (target.empty()) {
             throw exception::ZeroSize("qpp::Gates::GATE()", "target");
+        }
 
         // check that dims is a valid dimension vector
-        if (!internal::check_dims(dims))
+        if (!internal::check_dims(dims)) {
             throw exception::DimsInvalid("qpp::Gates::GATE()", "dims");
+        }
 
         // check that target is valid w.r.t. dims
-        if (!internal::check_subsys_match_dims(target, dims))
+        if (!internal::check_subsys_match_dims(target, dims)) {
             throw exception::SubsysMismatchDims("qpp::Gates::GATE()",
                                                 "dims/target");
+        }
 
         // check that target list match the dimension of the matrix
         using Index = typename dyn_mat<typename Derived::Scalar>::Index;
 
         idx DA = 1;
-        for (idx elem : target)
+        for (idx elem : target) {
             DA *= dims[elem];
+        }
 
-        if (rA.rows() != static_cast<Index>(DA))
+        if (rA.rows() != static_cast<Index>(DA)) {
             throw exception::MatrixMismatchSubsys("qpp::Gates::GATE()",
                                                   "A/dims/target");
+        }
 
         // END EXCEPTION CHECKS
 
@@ -457,8 +482,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         idx D = prod(dims);
         idx Dsubsys_bar = 1;
-        for (idx elem : subsys_bar)
+        for (idx elem : subsys_bar) {
             Dsubsys_bar *= dims[elem];
+        }
 
         std::copy(subsys_bar.begin(), subsys_bar.end(),
                   std::begin(Csubsys_bar));
@@ -494,13 +520,15 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                 // construct the result row multi-index
 
                 // first the target part
-                for (idx k = 0; k < n_gate; ++k)
+                for (idx k = 0; k < n_gate; ++k) {
                     midx_row[target[k]] = midxA_row[k];
+                }
 
                 // then the complement part (equal for column)
-                for (idx k = 0; k < n_subsys_bar; ++k)
+                for (idx k = 0; k < n_subsys_bar; ++k) {
                     midx_row[Csubsys_bar[k]] = midx_col[Csubsys_bar[k]] =
                         midx_bar[k];
+                }
 
                 // run over the target column multi-index
                 for (idx b = 0; b < DA; ++b) {
@@ -508,8 +536,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                     internal::n2multiidx(b, n_gate, CdimsA, midxA_col);
 
                     // construct the result column multi-index
-                    for (idx k = 0; k < n_gate; ++k)
+                    for (idx k = 0; k < n_gate; ++k) {
                         midx_col[target[k]] = midxA_col[k];
+                    }
 
                     // finally write the values
                     result(internal::multiidx2n(midx_row, n, Cdims),
@@ -541,8 +570,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check valid local dimension
-        if (d == 0)
+        if (d == 0) {
             throw exception::DimsInvalid("qpp::Gates::GATE()", "d");
+        }
         // END EXCEPTION CHECKS
 
         return GATE(A, target, std::vector<idx>(n, d));
@@ -576,26 +606,32 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check matrix zero-size
-        if (!internal::check_nonzero_size(rA))
+        if (!internal::check_nonzero_size(rA)) {
             throw exception::ZeroSize("qpp::Gates::CTRL()", "A");
+        }
 
         // check square matrix
-        if (!internal::check_square_mat(rA))
+        if (!internal::check_square_mat(rA)) {
             throw exception::MatrixNotSquare("qpp::Gates::CTRL()", "A");
+        }
 
         // check lists zero-size
-        if (ctrl.empty())
+        if (ctrl.empty()) {
             throw exception::ZeroSize("qpp::Gates::CTRL()", "ctrl");
-        if (target.empty())
+        }
+        if (target.empty()) {
             throw exception::ZeroSize("qpp::Gates::CTRL()", "target");
+        }
 
         // check out of range
-        if (n == 0)
+        if (n == 0) {
             throw exception::OutOfRange("qpp::Gates::CTRL()", "n");
+        }
 
         // check valid local dimension
-        if (d == 0)
+        if (d == 0) {
             throw exception::DimsInvalid("qpp::Gates::CTRL()", "d");
+        }
 
         // ctrl + gate subsystem vector
         std::vector<idx> ctrlgate = ctrl;
@@ -605,38 +641,47 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // std::sort(ctrlgate.begin(), ctrlgate.end());
 
         // check ctrl and target don't share common elements
-        for (idx elem_ctrl : ctrl)
-            for (idx elem_target : target)
-                if (elem_ctrl == elem_target)
+        for (idx elem_ctrl : ctrl) {
+            for (idx elem_target : target) {
+                if (elem_ctrl == elem_target) {
                     throw exception::OutOfRange("qpp::Gates::CTRL()",
                                                 "ctrl/target");
+                }
+            }
+        }
 
         std::vector<idx> dims(n, d); // local dimensions vector
         // check that ctrl + gate subsystem is valid
         // with respect to local dimensions
-        if (!internal::check_subsys_match_dims(ctrlgate, dims))
+        if (!internal::check_subsys_match_dims(ctrlgate, dims)) {
             throw exception::SubsysMismatchDims("qpp::Gates::CTRL()",
                                                 "ctrl/dims");
+        }
 
         // check that target list match the dimension of the matrix
         idx DA = rA.rows();
-        if (DA != static_cast<idx>(std::llround(std::pow(d, target.size()))))
+        if (DA != static_cast<idx>(std::llround(std::pow(d, target.size())))) {
             throw exception::MatrixMismatchSubsys("qpp::Gates::CTRL()",
                                                   "A/d/target");
+        }
 
         // check shift
-        if (shift.has_value() && (shift.value().size() != ctrl.size()))
+        if (shift.has_value() && (shift.value().size() != ctrl.size())) {
             throw exception::SizeMismatch("qpp::Gates::CTRL()", "ctrl/shift");
-        if (shift.has_value())
+        }
+        if (shift.has_value()) {
             for (idx& elem : shift.value()) {
-                if (elem >= d)
+                if (elem >= d) {
                     throw exception::OutOfRange("qpp::Gates::CTRL()", "shift");
+                }
                 elem = d - elem;
             }
+        }
         // END EXCEPTION CHECKS
 
-        if (!shift.has_value())
+        if (!shift.has_value()) {
             shift = std::vector<idx>(ctrl.size(), 0);
+        }
 
         idx D = prod(dims);
         idx Dctrl = static_cast<idx>(std::llround(std::pow(d, ctrl.size())));
@@ -648,8 +693,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         std::vector<idx> ctrl_bar = complement(ctrlgate, n);
         std::vector<idx> ctrlgate_bar = complement(ctrlgate, n);
         idx Dctrlgate_bar = 1;
-        for (idx elem : ctrlgate_bar)
+        for (idx elem : ctrlgate_bar) {
             Dctrlgate_bar *= dims[elem];
+        }
 
         dyn_mat<typename Derived::Scalar> Id_ctrlgate_bar =
             dyn_mat<typename Derived::Scalar>::Identity(Dctrlgate_bar,
@@ -714,25 +760,30 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check zero-size
-        if (!internal::check_nonzero_size(rA))
+        if (!internal::check_nonzero_size(rA)) {
             throw exception::ZeroSize("qpp::Gates::expandout()", "A");
+        }
 
         // check that dims is a valid dimension vector
-        if (!internal::check_dims(dims))
+        if (!internal::check_dims(dims)) {
             throw exception::DimsInvalid("qpp::Gates::expandout()", "dims");
+        }
 
         // check square matrix
-        if (!internal::check_square_mat(rA))
+        if (!internal::check_square_mat(rA)) {
             throw exception::MatrixNotSquare("qpp::Gates::expandout()", "A");
+        }
 
         // check that position is valid
-        if (pos + 1 > static_cast<idx>(dims.size()))
+        if (pos + 1 > static_cast<idx>(dims.size())) {
             throw exception::OutOfRange("qpp::Gates::expandout()", "dims/pos");
+        }
 
         // check that dims[pos] match the dimension of A
-        if (static_cast<idx>(rA.rows()) != dims[pos])
+        if (static_cast<idx>(rA.rows()) != dims[pos]) {
             throw exception::DimsMismatchMatrix("qpp::Gates::expandout()",
                                                 "A/dims");
+        }
         // END EXCEPTION CHECKS
 
         return GATE(A, {pos}, dims);
@@ -789,12 +840,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check zero size
-        if (!internal::check_nonzero_size(A))
+        if (!internal::check_nonzero_size(A)) {
             throw exception::ZeroSize("qpp::Gates::expandout()", "A");
+        }
 
         // check valid dims
-        if (d == 0)
+        if (d == 0) {
             throw exception::DimsInvalid("qpp::Gates::expandout()", "d");
+        }
         // END EXCEPTION CHECKS
 
         return expandout(A, pos, std::vector<idx>(n, d));
@@ -815,12 +868,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // EXCEPTION CHECKS
 
         // check zero size
-        if (!internal::check_nonzero_size(U))
+        if (!internal::check_nonzero_size(U)) {
             throw exception::ZeroSize("qpp::Gates::get_name()", "U");
+        }
 
         // check square matrix
-        if (!internal::check_square_mat(U))
+        if (!internal::check_square_mat(U)) {
             return {};
+        }
 
         // END EXCEPTION CHECKS
 
@@ -829,46 +884,49 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         switch (D) {
                 // 1 qubit gates
             case 2:
-                if (U == Id2)
+                if (U == Id2) {
                     return "Id2";
-                else if (U == H)
+                } else if (U == H) {
                     return "H";
-                else if (U == X)
+                } else if (U == X) {
                     return "X";
-                else if (U == Y)
+                } else if (U == Y) {
                     return "Y";
-                else if (U == Z)
+                } else if (U == Z) {
                     return "Z";
-                else if (U == S)
+                } else if (U == S) {
                     return "S";
-                else if (U == adjoint(S))
+                } else if (U == adjoint(S)) {
                     return "S+";
-                else if (U == T)
+                } else if (U == T) {
                     return "T";
-                else if (U == adjoint(T))
+                } else if (U == adjoint(T)) {
                     return "T+";
-                else
+                } else {
                     return {};
+                }
                 // 2 qubit gates
             case 4:
-                if (U == CNOT)
+                if (U == CNOT) {
                     return "CNOT";
-                else if (U == CZ)
+                } else if (U == CZ) {
                     return "CZ";
-                else if (U == CNOTba)
+                } else if (U == CNOTba) {
                     return "CNOTba";
-                else if (U == SWAP)
+                } else if (U == SWAP) {
                     return "SWAP";
-                else
+                } else {
                     return {};
+                }
                 // 3 qubit gates
             case 8:
-                if (U == TOF)
+                if (U == TOF) {
                     return "TOF";
-                else if (U == FRED)
+                } else if (U == FRED) {
                     return "FRED";
-                else
+                } else {
                     return {};
+                }
 
             default:
                 return {};

@@ -64,8 +64,9 @@ template <typename T, typename U = T, typename V = T>
     if (numdims > 0) // numdims equal zero is a no-op
     {
         idx D = 1;
-        for (std::size_t i = 0; i < numdims; ++i)
+        for (std::size_t i = 0; i < numdims; ++i) {
             D *= dims[i];
+        }
         assert(static_cast<idx>(n) < D);
     }
 #endif
@@ -96,8 +97,9 @@ template <typename V, typename T = V, typename U = T>
     assert(numdims > 0);
     assert(numdims < internal::maxn);
 #ifndef NDEBUG
-    for (std::size_t i = 0; i < numdims; ++i)
+    for (std::size_t i = 0; i < numdims; ++i) {
         assert(static_cast<idx>(midx[i]) < dims[i]);
+    }
 #endif
     // no error checks in release version to improve speed
 
@@ -156,8 +158,9 @@ bool check_matching_sizes(const T1& lhs, const T2& rhs) noexcept {
 
 // check that dims is a valid dimension vector
 inline bool check_dims(const std::vector<idx>& dims) {
-    if (dims.empty())
+    if (dims.empty()) {
         return false;
+    }
 
     return std::find_if(dims.begin(), dims.end(), [dims](idx i) -> bool {
                return (i == 0);
@@ -221,10 +224,11 @@ inline bool check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept {
 // check that vector has no duplicates
 inline bool check_no_duplicates(std::vector<idx> v) {
     std::sort(v.begin(), v.end());
-    if (std::unique(v.begin(), v.end()) != v.end())
+    if (std::unique(v.begin(), v.end()) != v.end()) {
         return false;
-    else
+    } else {
         return true;
+    }
 }
 
 // check that subsys is valid with respect to valid dims
@@ -233,12 +237,14 @@ inline bool check_subsys_match_dims(const std::vector<idx>& subsys,
     // subsys can be empty
 
     // check valid number of subsystems
-    if (subsys.size() > dims.size())
+    if (subsys.size() > dims.size()) {
         return false;
+    }
 
     // check no duplicates
-    if (!check_no_duplicates(subsys))
+    if (!check_no_duplicates(subsys)) {
         return false;
+    }
 
     // check range of subsystems
     return std::find_if(subsys.begin(), subsys.end(), [dims](idx i) -> bool {
@@ -272,8 +278,9 @@ bool check_qubit_vector(const Eigen::MatrixBase<Derived>& A) noexcept {
 
 // check valid permutation
 inline bool check_perm(const std::vector<idx>& perm) {
-    if (perm.empty())
+    if (perm.empty()) {
         return false;
+    }
 
     std::vector<idx> ordered(perm.size());
     std::iota(ordered.begin(), ordered.end(), 0);
@@ -294,15 +301,18 @@ kron2(const Eigen::MatrixBase<Derived1>& A,
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value)
+                      typename Derived2::Scalar>::value) {
         throw exception::TypeMismatch("qpp::kron()", "A/B");
+    }
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::kron()", "A");
+    }
     // check zero-size
-    if (!internal::check_nonzero_size(rB))
+    if (!internal::check_nonzero_size(rB)) {
         throw exception::ZeroSize("qpp::kron()", "B");
+    }
     // END EXCEPTION CHECKS
 
     idx Acols = static_cast<idx>(rA.cols());
@@ -318,9 +328,11 @@ kron2(const Eigen::MatrixBase<Derived1>& A,
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
     // column major order for speed
-    for (idx j = 0; j < Acols; ++j)
-        for (idx i = 0; i < Arows; ++i)
+    for (idx j = 0; j < Acols; ++j) {
+        for (idx i = 0; i < Arows; ++i) {
             result.block(i * Brows, j * Bcols, Brows, Bcols) = rA(i, j) * rB;
+        }
+    }
 
     return result;
 }
@@ -338,15 +350,18 @@ dirsum2(const Eigen::MatrixBase<Derived1>& A,
 
     // check types
     if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value)
+                      typename Derived2::Scalar>::value) {
         throw exception::TypeMismatch("qpp::dirsum()", "A/B");
+    }
 
     // check zero-size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::dirsum()", "A");
+    }
     // check zero-size
-    if (!internal::check_nonzero_size(rB))
+    if (!internal::check_nonzero_size(rB)) {
         throw exception::ZeroSize("qpp::dirsum()", "B");
+    }
     // END EXCEPTION CHECKS
 
     idx Acols = static_cast<idx>(rA.cols());
@@ -407,8 +422,9 @@ template <typename T,
           typename std::enable_if<std::numeric_limits<T>::is_iec559 ||
                                   is_complex<T>::value>::type* = nullptr>
 T abs_chop(const T& x, realT chop = qpp::chop) {
-    if (std::abs(x) < chop)
+    if (std::abs(x) < chop) {
         return 0;
+    }
 
     return x;
 }

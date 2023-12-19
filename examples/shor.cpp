@@ -66,7 +66,9 @@ int main() {
     idx n1 = multiidx2n(vect_results1, std::vector<idx>(n, 2)); // binary to int
     auto x1 = static_cast<realT>(n1) / static_cast<realT>(D); // multiple of 1/r
 
-    std::cout << ">> First measurement:  " << disp(vect_results1, " ") << " ";
+    std::cout << ">> First measurement:  "
+              << disp(vect_results1, IOManipContainerOpts{}.set_sep(" "))
+              << " ";
     std::cout << "i.e., j = " << n1 << " with probability " << prob1;
     std::cout << '\n';
 
@@ -94,7 +96,9 @@ int main() {
     idx n2 = multiidx2n(vect_results2, std::vector<idx>(n, 2)); // binary to int
     auto x2 = static_cast<realT>(n2) / static_cast<realT>(D); // multiple of 1/r
 
-    std::cout << ">> Second measurement: " << disp(vect_results2, " ") << " ";
+    std::cout << ">> Second measurement: "
+              << disp(vect_results2, IOManipContainerOpts{}.set_sep(" "))
+              << " ";
     std::cout << "i.e., j = " << n2 << " with probability " << prob2;
     std::cout << '\n';
 
@@ -126,10 +130,12 @@ int main() {
         // at least one of those is a non-trivial factor
         bigint p = gcd(modpow(a, static_cast<bigint>(r / 2), N) - 1, N);
         bigint q = gcd(modpow(a, static_cast<bigint>(r / 2), N) + 1, N);
-        if (p == 1)
+        if (p == 1) {
             p = N / q;
-        if (q == 1)
+        }
+        if (q == 1) {
             q = N / p;
+        }
         std::cout << ">> Factors: " << p << " " << q << '\n';
     } else {
         std::cout << ">> Factoring failed at stage 3, please try again!\n";

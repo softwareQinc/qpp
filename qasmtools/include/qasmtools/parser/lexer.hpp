@@ -95,10 +95,11 @@ class Lexer {
         }
 
         pos_.advance_column(consumed);
-        if (consumed != 0)
+        if (consumed != 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     /**

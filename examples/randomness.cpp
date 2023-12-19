@@ -14,7 +14,8 @@ int main() {
     std::cout << disp(rket) << '\n';
 
     std::vector<realT> probs = abssq(rket);
-    std::cout << ">> Probabilities: " << disp(probs, ", ") << '\n';
+    std::cout << ">> Probabilities: "
+              << disp(probs, IOManipContainerOpts{}.set_sep(", ")) << '\n';
 
     std::cout << ">> Sum of the probabilities: ";
     std::cout << sum(probs.begin(), probs.end()) << '\n';

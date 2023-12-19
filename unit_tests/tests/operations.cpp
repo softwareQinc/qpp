@@ -109,8 +109,9 @@ TEST(qpp_applyCTRL, Qudits) {
     std::vector<idx> target{1, 3}; // target
 
     idx Dtarget = 1; // dimension of the target subsystems
-    for (auto i : target)
+    for (auto i : target) {
         Dtarget *= dims[i]; // compute it here
+    }
 
     // ket
     ket psi = mket({2, 1, 2, 1}, d);

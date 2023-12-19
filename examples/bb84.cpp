@@ -135,29 +135,29 @@ int main() {
     std::cout << ">> Established keys\n";
     // display the raw final_key on Alice's side
     auto raw_key_A = get_key(Alice_bases_states);
-    std::cout << "Alice's raw key: "
-              << disp(
-                     raw_key_A,
-                     IOManipContainer{}.set_sep(" ").set_left("").set_right(""))
-              << '\n';
+    std::cout
+        << "Alice's raw key: "
+        << disp(raw_key_A,
+                IOManipContainerOpts{}.set_sep(" ").set_left("").set_right(""))
+        << '\n';
 
     // display the raw final_key on Bob's side
     auto raw_key_B = get_key(Bob_bases_states);
-    std::cout << "Bob's raw key:   "
-              << disp(
-                     raw_key_B,
-                     IOManipContainer{}.set_sep(" ").set_left("").set_right(""))
-              << '\n';
+    std::cout
+        << "Bob's raw key:   "
+        << disp(raw_key_B,
+                IOManipContainerOpts{}.set_sep(" ").set_left("").set_right(""))
+        << '\n';
 
     // display the final final_key and the corresponding rate
     auto final_key = final(raw_key_A, raw_key_B);
     auto final_key_rate =
         static_cast<realT>(final_key.size()) / static_cast<realT>(n);
-    std::cout << "Final key:       "
-              << disp(
-                     final_key,
-                     IOManipContainer{}.set_sep(" ").set_left("").set_right(""))
-              << '\n';
+    std::cout
+        << "Final key:       "
+        << disp(final_key,
+                IOManipContainerOpts{}.set_sep(" ").set_left("").set_right(""))
+        << '\n';
     std::cout << ">> Bits/keys sizes: " << n << '/' << sifted_key_size << '/'
               << raw_key_size << '/' << final_key.size() << '\n';
     std::cout << ">> Final key rate: " << final_key_rate << '\n';

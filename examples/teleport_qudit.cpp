@@ -34,9 +34,12 @@ int main() {
 
     std::vector<idx> midx = n2multiidx(m, {d, d});
     std::cout << ">> Alice's measurement result: ";
-    std::cout << m << " -> " << disp(midx, " ") << '\n';
+    std::cout << m << " -> " << disp(midx, IOManipContainerOpts{}.set_sep(" "))
+              << '\n';
     std::cout << ">> Alice's measurement probabilities: ";
-    std::cout << disp(std::get<PROB>(measured_aA), ", ") << '\n';
+    std::cout << disp(std::get<PROB>(measured_aA),
+                      IOManipContainerOpts{}.set_sep(", "))
+              << '\n';
 
     // conditional result on B before correction
     ket output_m_B = std::get<ST>(measured_aA)[m];

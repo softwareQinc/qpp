@@ -21,7 +21,8 @@ int main() {
     std::cout << "**** qpp::ptrace() timing ****\n";
     std::vector<idx> subsys_ptrace = {0};
     std::cout << ">> Subsytem(s): ";
-    std::cout << disp(subsys_ptrace, ", ") << '\n';
+    std::cout << disp(subsys_ptrace, IOManipContainerOpts{}.set_sep(", "))
+              << '\n';
     Timer<> t;
     ptrace(randcmat, subsys_ptrace);
     std::cout << ">> It took " << t.toc() << " seconds.\n\n";
@@ -32,7 +33,8 @@ int main() {
     std::vector<idx> subsys_ptranspose(n - 1);
     std::iota(std::begin(subsys_ptranspose), std::end(subsys_ptranspose), 0);
     std::cout << ">> Subsytem(s): ";
-    std::cout << disp(subsys_ptranspose, ", ") << '\n';
+    std::cout << disp(subsys_ptranspose, IOManipContainerOpts{}.set_sep(", "))
+              << '\n';
     t.tic();
     ptranspose(randcmat, subsys_ptranspose);
     std::cout << ">> It took " << t.toc() << " seconds.\n\n";
@@ -40,10 +42,11 @@ int main() {
     // qpp::syspermute()
     std::cout << "**** qpp::syspermute() timing ****\n";
     std::vector<idx> perm(n); // left-shift all subsystems by 1
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < n; ++i) {
         perm[i] = (i + 1) % n;
+    }
     std::cout << ">> Subsytem(s): ";
-    std::cout << disp(perm, ", ") << '\n';
+    std::cout << disp(perm, IOManipContainerOpts{}.set_sep(", ")) << '\n';
     t.tic();
     syspermute(randcmat, perm);
     std::cout << ">> It took " << t.toc() << " seconds.\n";

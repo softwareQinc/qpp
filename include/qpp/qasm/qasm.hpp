@@ -318,8 +318,9 @@ class Context {
      * \return Index of a fresh classical bit
      */
     idx alloc_bit() {
-        if (max_bit_ == std::numeric_limits<idx>::max()) // safe wrap around
+        if (max_bit_ == std::numeric_limits<idx>::max()) { // safe wrap around
             max_bit_ = static_cast<idx>(-1);
+        }
         idx ret = ++max_bit_;
 
         // check if circuit has enough classical bits
@@ -336,8 +337,9 @@ class Context {
      * \return Index of a fresh qubit
      */
     idx alloc_qubit() {
-        if (max_qubit_ == std::numeric_limits<idx>::max()) // safe wrap around
+        if (max_qubit_ == std::numeric_limits<idx>::max()) { // safe wrap around
             max_qubit_ = static_cast<idx>(-1);
+        }
         idx ret = ++max_qubit_;
 
         // check if circuit has enough qubits
@@ -372,8 +374,9 @@ class Context {
     Value* lookup(const ast::symbol& id, const parser::Position& loc) {
         for (auto table = env_.rbegin(); table != env_.rend(); table++) {
             auto it = table->val_.find(id);
-            if (it != table->val_.end())
+            if (it != table->val_.end()) {
                 return it->second.get();
+            }
         }
 
         std::stringstream context;
@@ -391,8 +394,9 @@ class Context {
      * \param val Unique pointer to a value
      */
     void set(const ast::symbol& id, std::unique_ptr<Value> val) {
-        if (env_.empty())
+        if (env_.empty()) {
             env_.emplace_back();
+        }
         env_.back().val_[id] = std::move(val);
     }
 
@@ -561,8 +565,9 @@ class QCircuitBuilder final : public ast::Visitor {
         int tmp = stmt.cond();
         std::vector<idx> shift(creg->indices_.size(), 0);
         for (idx i = 0; i < static_cast<idx>(creg->indices_.size()); i++) {
-            if (tmp % 2 == 0)
+            if (tmp % 2 == 0) {
                 shift[i] = 1;
+            }
             tmp >>= 1;
         }
 
@@ -686,8 +691,9 @@ class QCircuitBuilder final : public ast::Visitor {
             dgate.carg(i).accept(*this);
             c_args[i] = temp_value;
         }
-        for (int i = 0; i < dgate.num_qargs(); i++)
+        for (int i = 0; i < dgate.num_qargs(); i++) {
             q_args[i] = var_access_as_qreg(dgate.qarg(i));
+        }
 
         // map gate across registers
         idx mapping_size = 1;

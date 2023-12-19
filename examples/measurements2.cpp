@@ -19,22 +19,26 @@ int main() {
     // measures the first subsystem of the Bell state (|00> + |11>) / sqrt(2)
     // in the X basis
     std::tie(result, probs, states) = measure(psi, gt.H, {0});
-    std::cout << ">> Measuring part " << disp(subsys, " ")
+    std::cout << ">> Measuring part "
+              << disp(subsys, IOManipContainerOpts{}.set_sep(" "))
               << " of the state:\n";
     std::cout << disp(psi) << '\n';
     std::cout << ">> Measurement result: " << result << '\n';
-    std::cout << ">> Probabilities: " << disp(probs, ", ") << '\n';
+    std::cout << ">> Probabilities: "
+              << disp(probs, IOManipContainerOpts{}.set_sep(", ")) << '\n';
     std::cout << ">> Resulting normalized post-measurement states:\n";
 
-    for (auto&& it : states)
+    for (auto&& it : states) {
         std::cout << disp(it) << "\n\n";
+    }
 
     // measure 2 subsystems out of a 4-qubit random density matrix
     cmat rho = randrho(16);
     subsys = {1, 2};
     cmat U = randU(4); // random basis on 2 qubits
 
-    std::cout << ">> Measuring qubits " << disp(subsys, " ")
+    std::cout << ">> Measuring qubits "
+              << disp(subsys, IOManipContainerOpts{}.set_sep(" "))
               << " of a 4-qubit random state in the random basis:\n";
     std::cout << disp(U) << '\n';
 
@@ -42,13 +46,15 @@ int main() {
 
     std::tie(result, probs, density_operators) = measure(rho, U, {1, 2});
     std::cout << ">> Measurement result: " << result << '\n';
-    std::cout << ">> Probabilities: " << disp(probs, ", ") << '\n';
+    std::cout << ">> Probabilities: "
+              << disp(probs, IOManipContainerOpts{}.set_sep(", ")) << '\n';
     std::cout << ">> Sum of the probabilities: "
               << sum(probs.begin(), probs.end()) << '\n';
     std::cout << ">> Resulting normalized post-measurement states:\n";
 
-    for (auto&& it : density_operators)
+    for (auto&& it : density_operators) {
         std::cout << disp(it) << "\n\n";
+    }
 
     // check now how the state after the measurement "looks"
     // on the leftover subsystems {0, 3}
@@ -61,8 +67,9 @@ int main() {
     cmat rho_out_bar = cmat::Zero(4, 4);
 
     // compute the resulting mixed state after the measurement
-    for (idx i = 0; i < static_cast<idx>(probs.size()); ++i)
+    for (idx i = 0; i < static_cast<idx>(probs.size()); ++i) {
         rho_out_bar += probs[i] * density_operators[i];
+    }
 
     // verification
     std::cout << ">> Norm difference: " << norm(rho_bar - rho_out_bar) << '\n';
@@ -88,8 +95,10 @@ int main() {
 
     // ket
     std::cout << ">> Ket, measuring subsystem(s) ";
-    std::cout << disp(subsys_ket, " ") << '\n';
-    std::cout << ">> Outcome(s): " << disp(std::get<RES>(measured_ket), " ")
+    std::cout << disp(subsys_ket, IOManipContainerOpts{}.set_sep(" ")) << '\n';
+    std::cout << ">> Outcome(s): "
+              << disp(std::get<RES>(measured_ket),
+                      IOManipContainerOpts{}.set_sep(" "))
               << '\n';
     std::cout << ">> Probability:  " << prod(std::get<PROB>(measured_ket))
               << '\n';
@@ -98,8 +107,10 @@ int main() {
 
     // density matrix
     std::cout << ">> Density matrix, measuring subsystem(s) ";
-    std::cout << disp(subsys_rho, " ") << '\n';
-    std::cout << ">> Outcome(s): " << disp(std::get<RES>(measured_rho), " ")
+    std::cout << disp(subsys_rho, IOManipContainerOpts{}.set_sep(" ")) << '\n';
+    std::cout << ">> Outcome(s): "
+              << disp(std::get<RES>(measured_rho),
+                      IOManipContainerOpts{}.set_sep(" "))
               << '\n';
     std::cout << ">> Probability:  " << prod(std::get<PROB>(measured_rho))
               << '\n';

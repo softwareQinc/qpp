@@ -80,28 +80,34 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     // EXCEPTION CHECKS
 
     // check zero-size
-    if (!internal::check_nonzero_size(cA))
+    if (!internal::check_nonzero_size(cA)) {
         throw exception::ZeroSize("qpp::measure_seq()", "A");
+    }
 
     // check that dimension is valid
-    if (!internal::check_dims(dims))
+    if (!internal::check_dims(dims)) {
         throw exception::DimsInvalid("qpp::measure_seq()", "dims");
+    }
 
     // check valid state and matching dimensions
     if (internal::check_cvector(cA)) {
-        if (!internal::check_dims_match_cvect(dims, cA))
+        if (!internal::check_dims_match_cvect(dims, cA)) {
             throw exception::DimsMismatchCvector("qpp::measure_seq()",
                                                  "A/dims");
+        }
     } else if (internal::check_square_mat(cA)) {
-        if (!internal::check_dims_match_mat(dims, cA))
+        if (!internal::check_dims_match_mat(dims, cA)) {
             throw exception::DimsMismatchMatrix("qpp::measure_seq()", "A/dims");
-    } else
+        }
+    } else {
         throw exception::MatrixNotSquareNorCvector("qpp::measure_seq()", "A");
+    }
 
     // check that target is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(target, dims))
+    if (!internal::check_subsys_match_dims(target, dims)) {
         throw exception::SubsysMismatchDims("qpp::measure_seq()",
                                             "dims/target");
+    }
     // END EXCEPTION CHECKS
 
     idx n = dims.size();                     // number of subsystems
@@ -126,8 +132,9 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
         pbs = qpp::abssq(cA);
     } else {
         pbs.resize(D);
-        for (idx i = 0; i < D; ++i)
+        for (idx i = 0; i < D; ++i) {
             pbs[i] = std::real(cA(i, i));
+        }
     }
 
     // sample
@@ -168,8 +175,9 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 #pragma omp parallel for
 #endif // QPP_OPENMP
         for (idx i = 0; i < D; ++i) {
-            if (pbs[i] == 0)
+            if (pbs[i] == 0) {
                 continue;
+            }
             std::vector<idx> ket_midx = n2multiidx(i, dims);
             if (overlap(ket_midx, measurement_midx, target)) {
                 ket current_ket;
@@ -202,8 +210,9 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 #pragma omp parallel for
 #endif // QPP_OPENMP
         for (idx i = 0; i < D; ++i) {
-            if (pbs[i] == 0)
+            if (pbs[i] == 0) {
                 continue;
+            }
             std::vector<idx> ket_midx = n2multiidx(i, dims);
             if (overlap(ket_midx, measurement_midx, target)) {
                 ket current_ket;
@@ -219,8 +228,9 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
                 // now run over all possible bras
                 for (idx j = 0; j < D; ++j) {
                     bra current_bra = bra::Zero(Dsubsys);
-                    if (cA(i, j) == cmat::Scalar{})
+                    if (cA(i, j) == cmat::Scalar{}) {
                         continue;
+                    }
                     std::vector<idx> bra_midx = n2multiidx(j, dims);
                     if (overlap(bra_midx, measurement_midx, target)) {
                         if (destructive) {
@@ -275,12 +285,14 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     // EXCEPTION CHECKS
 
     // check zero size
-    if (!internal::check_nonzero_size(rA))
+    if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure_seq()", "A");
+    }
 
     // check valid dims
-    if (d < 2)
+    if (d < 2) {
         throw exception::DimsInvalid("qpp::measure_seq()", "d");
+    }
     // END EXCEPTION CHECKS
 
     idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);

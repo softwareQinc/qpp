@@ -50,8 +50,9 @@ namespace qpp {
 inline std::vector<realT> uniform(idx N) {
     // EXCEPTION CHECKS
 
-    if (N == 0)
+    if (N == 0) {
         throw exception::ZeroSize("qpp::uniform()", "N");
+    }
     // END EXCEPTION CHECKS
 
     return {
@@ -69,8 +70,9 @@ inline std::vector<realT> uniform(idx N) {
 inline std::vector<realT> marginalX(const rmat& probXY) {
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(probXY))
+    if (!internal::check_nonzero_size(probXY)) {
         throw exception::ZeroSize("qpp::marginalX()", "probXY");
+    }
     // END EXCEPTION CHECKS
 
     std::vector<realT> result(probXY.rows(), 0);
@@ -94,8 +96,9 @@ inline std::vector<realT> marginalX(const rmat& probXY) {
 inline std::vector<realT> marginalY(const rmat& probXY) {
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(probXY))
+    if (!internal::check_nonzero_size(probXY)) {
         throw exception::ZeroSize("qpp::marginalY()", "probXY");
+    }
     // END EXCEPTION CHECKS
 
     return marginalX(probXY.transpose());
@@ -116,15 +119,18 @@ realT avg(
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(prob))
+    if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::avg()", "prob");
-    if (!internal::check_matching_sizes(prob, X))
+    }
+    if (!internal::check_matching_sizes(prob, X)) {
         throw exception::SizeMismatch("qpp::avg()", "prob/X");
+    }
     // END EXCEPTION CHECKS
 
     realT result = 0;
-    for (idx i = 0; i < static_cast<idx>(prob.size()); ++i)
+    for (idx i = 0; i < static_cast<idx>(prob.size()); ++i) {
         result += prob[i] * X[i];
+    }
 
     return result;
 }
@@ -145,14 +151,18 @@ realT cov(
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(X))
+    if (!internal::check_nonzero_size(X)) {
         throw exception::ZeroSize("qpp::cov()", "X");
-    if (!internal::check_nonzero_size(Y))
+    }
+    if (!internal::check_nonzero_size(Y)) {
         throw exception::ZeroSize("qpp::cov()", "Y");
-    if (static_cast<idx>(probXY.rows()) != static_cast<idx>(X.size()))
+    }
+    if (static_cast<idx>(probXY.rows()) != static_cast<idx>(X.size())) {
         throw exception::SizeMismatch("qpp::cov()", "probXY/X");
-    if (static_cast<idx>(probXY.cols()) != static_cast<idx>(Y.size()))
+    }
+    if (static_cast<idx>(probXY.cols()) != static_cast<idx>(Y.size())) {
         throw exception::SizeMismatch("qpp::cov()", "probXY/Y");
+    }
     // END EXCEPTION CHECKS
 
     std::vector<realT> probX = marginalX(probXY); // marginals
@@ -182,15 +192,18 @@ realT var(
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(prob))
+    if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::var()", "prob");
-    if (!internal::check_matching_sizes(prob, X))
+    }
+    if (!internal::check_matching_sizes(prob, X)) {
         throw exception::SizeMismatch("qpp::var()", "prob/X");
+    }
     // END EXCEPTION CHECKS
 
     dyn_col_vect<realT> diag(prob.size());
-    for (idx i = 0; i < static_cast<idx>(prob.size()); ++i)
+    for (idx i = 0; i < static_cast<idx>(prob.size()); ++i) {
         diag(i) = prob[i];
+    }
     rmat probXX = diag.asDiagonal();
 
     return cov(probXX, X, X);
@@ -210,10 +223,12 @@ realT sigma(
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(prob))
+    if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::sigma()", "prob");
-    if (!internal::check_matching_sizes(prob, X))
+    }
+    if (!internal::check_matching_sizes(prob, X)) {
         throw exception::SizeMismatch("qpp::sigma()", "prob/X");
+    }
     // END EXCEPTION CHECKS
 
     return std::sqrt(var(prob, X));
@@ -235,14 +250,18 @@ realT cor(
     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
     // EXCEPTION CHECKS
 
-    if (!internal::check_nonzero_size(X))
+    if (!internal::check_nonzero_size(X)) {
         throw exception::ZeroSize("qpp::cor()", "X");
-    if (!internal::check_nonzero_size(Y))
+    }
+    if (!internal::check_nonzero_size(Y)) {
         throw exception::ZeroSize("qpp::cor()", "Y");
-    if (static_cast<idx>(probXY.rows()) != X.size())
+    }
+    if (static_cast<idx>(probXY.rows()) != X.size()) {
         throw exception::SizeMismatch("qpp::cor()", "probXY/X");
-    if (static_cast<idx>(probXY.cols()) != Y.size())
+    }
+    if (static_cast<idx>(probXY.cols()) != Y.size()) {
         throw exception::SizeMismatch("qpp::cor()", "probXY/Y");
+    }
     // END EXCEPTION CHECKS
 
     return cov(probXY, X, Y) /

@@ -100,8 +100,9 @@ class Lattice : public ILayout {
     explicit Lattice(const std::vector<idx>& dims) : dims_{dims} {
         // EXCEPTION CHECKS
 
-        if (dims.empty())
+        if (dims.empty()) {
             throw exception::ZeroSize("qpp::Lattice::Lattice()", "dims");
+        }
         // END EXCEPTION CHECKS
     }
 
@@ -126,11 +127,14 @@ class Lattice : public ILayout {
     idx operator()(const std::vector<idx>& xs) const override {
         // EXCEPTION CHECKS
 
-        if (xs.size() != dims_.size())
+        if (xs.size() != dims_.size()) {
             throw exception::SizeMismatch("qpp::Lattice::operator()", "xs");
-        for (idx i = 0; i < static_cast<idx>(dims_.size()); ++i)
-            if (xs[i] >= dims_[i])
+        }
+        for (idx i = 0; i < static_cast<idx>(dims_.size()); ++i) {
+            if (xs[i] >= dims_[i]) {
                 throw exception::OutOfRange("qpp::Lattice::operator()", "xs");
+            }
+        }
         // END EXCEPTION CHECKS
 
         return internal::multiidx2n(xs.data(), dims_.size(), dims_.data());
@@ -159,8 +163,9 @@ class Lattice : public ILayout {
     std::vector<idx> to_coordinates(idx i) const override {
         // EXCEPTION CHECKS
 
-        if (i >= prod(dims_))
+        if (i >= prod(dims_)) {
             throw exception::OutOfRange("qpp::Lattice::to_coordinates()", "i");
+        }
         // END EXCEPTION CHECKS
 
         std::vector<idx> result(dims_.size());
@@ -199,13 +204,15 @@ class PeriodicBoundaryLattice : public Lattice {
     idx operator()(const std::vector<idx>& xs) const override {
         // EXCEPTION CHECKS
 
-        if (xs.size() != dims_.size())
+        if (xs.size() != dims_.size()) {
             throw exception::SizeMismatch("qpp::Lattice::operator()", "xs");
+        }
         // END EXCEPTION CHECKS
 
         std::vector<idx> xs_copy = xs;
-        for (idx i = 0; i < static_cast<idx>(dims_.size()); ++i)
+        for (idx i = 0; i < static_cast<idx>(dims_.size()); ++i) {
             xs_copy[i] = xs[i] % dims_[i];
+        }
         return Lattice::operator()(xs_copy);
     }
 }; /* class PeriodicBoundaryLattice */

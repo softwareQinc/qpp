@@ -154,8 +154,9 @@ class Dynamic_bitset : public IDisplay {
         idx result = 0;
         idx bitset_size = size();
         for (idx i = 0; i < bitset_size; ++i) {
-            if (get(i))
+            if (get(i)) {
                 ++result;
+            }
         }
 
         return result;
@@ -225,10 +226,11 @@ class Dynamic_bitset : public IDisplay {
     Dynamic_bitset& set(idx pos, bool value = true) {
         assert(pos < size());
 
-        if (value)
+        if (value) {
             v_[index_(pos)] |= (static_cast<value_type>(1) << offset_(pos));
-        else
+        } else {
             v_[index_(pos)] &= ~(static_cast<value_type>(1) << offset_(pos));
+        }
 
         //        v_[index_(pos)] &= ~(!value << offset_(pos));
 
@@ -384,8 +386,9 @@ class Dynamic_bitset : public IDisplay {
         assert(bitset_size == rhs.size());
 
         for (idx i = 0; i < bitset_size; ++i) {
-            if (get(i) != rhs.get(i))
+            if (get(i) != rhs.get(i)) {
                 ++result;
+            }
         }
 
         return result;
@@ -524,8 +527,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         ++count_[__FILE__ "__total__"];
 
         // compute the depth
-        if (count_["NOT"] == 1)
+        if (count_["NOT"] == 1) {
             depth_["NOT"] = 1;
+        }
         // apply the gate
         bNOT_.flip(i);
         // check whether gates overlap
@@ -538,8 +542,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         }
 
         // compute the total depth
-        if (count_[__FILE__ "__total__"] == 1)
+        if (count_[__FILE__ "__total__"] == 1) {
             depth_[__FILE__ "__total__"] = 1;
+        }
         // apply the gate
         btotal_.flip(i);
         // check whether gates overlap
@@ -573,8 +578,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         ++count_[__FILE__ "__total__"];
 
         // compute the depth
-        if (count_["CNOT"] == 1)
+        if (count_["CNOT"] == 1) {
             depth_["CNOT"] = 1;
+        }
         // apply the gate
         bCNOT_.flip(ctrl).flip(target);
         // check whether gates overlap
@@ -587,8 +593,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         }
 
         // compute the total depth
-        if (count_[__FILE__ "__total__"] == 1)
+        if (count_[__FILE__ "__total__"] == 1) {
             depth_[__FILE__ "__total__"] = 1;
+        }
         // apply the gate
         btotal_.flip(ctrl).flip(target);
         // check whether gates overlap
@@ -624,8 +631,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         ++count_[__FILE__ "__total__"];
 
         // compute the depth
-        if (count_["TOF"] == 1)
+        if (count_["TOF"] == 1) {
             depth_["TOF"] = 1;
+        }
         // apply the gate
         bTOF_.flip(i).flip(j).flip(k);
         // check whether gates overlap
@@ -638,8 +646,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         }
 
         // compute the total depth
-        if (count_[__FILE__ "__total__"] == 1)
+        if (count_[__FILE__ "__total__"] == 1) {
             depth_[__FILE__ "__total__"] = 1;
+        }
         // apply the gate
         btotal_.flip(i).flip(j).flip(k);
         // check whether gates overlap
@@ -674,8 +683,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         ++count_[__FILE__ "__total__"];
 
         // compute the depth
-        if (count_["SWAP"] == 1)
+        if (count_["SWAP"] == 1) {
             depth_["SWAP"] = 1;
+        }
         // apply the gate
         bSWAP_.flip(i).flip(j);
         // check whether gates overlap
@@ -688,8 +698,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         }
 
         // compute the total depth
-        if (count_[__FILE__ "__total__"] == 1)
+        if (count_[__FILE__ "__total__"] == 1) {
             depth_[__FILE__ "__total__"] = 1;
+        }
         // apply the gate
         btotal_.flip(i).flip(j);
         // check whether gates overlap
@@ -724,8 +735,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         ++count_[__FILE__ "__total__"];
 
         // compute the depth
-        if (count_["FRED"] == 1)
+        if (count_["FRED"] == 1) {
             depth_["FRED"] = 1;
+        }
         // apply the gate
         bFRED_.flip(i).flip(j).flip(k);
         // check whether gates overlap
@@ -738,8 +750,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         }
 
         // compute the total depth
-        if (count_[__FILE__ "__total__"] == 1)
+        if (count_[__FILE__ "__total__"] == 1) {
             depth_[__FILE__ "__total__"] = 1;
+        }
         // apply the gate
         btotal_.flip(i).flip(j).flip(k);
         // check whether gates overlap
@@ -838,8 +851,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
 
-        if (enclosed_in_curly_brackets)
+        if (enclosed_in_curly_brackets) {
             result += "{";
+        }
 
         result += "\"n\" : " + std::to_string(n_);
         result +=
@@ -849,8 +863,9 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         result += R"(, "bit state" : ")" + this->to_string() + '\"';
         result += ", \"Hamming weight\" : " + std::to_string(count());
 
-        if (enclosed_in_curly_brackets)
+        if (enclosed_in_curly_brackets) {
             result += "}";
+        }
 
         return result;
     }

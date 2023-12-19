@@ -369,10 +369,11 @@ class GateReplacer final : public Replacer {
     std::optional<std::list<ptr<Gate>>> replace_gate(Gate& gate) {
         auto it = replacements_.find(gate.uid());
 
-        if (it != replacements_.end())
+        if (it != replacements_.end()) {
             return std::move(it->second);
-        else
+        } else {
             return std::nullopt;
+        }
     }
 };
 

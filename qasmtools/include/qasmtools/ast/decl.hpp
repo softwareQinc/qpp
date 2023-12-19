@@ -162,8 +162,9 @@ class GateDecl final : public Stmt, public Decl {
      * \param f A void function taking a reference to a Gate
      */
     void foreach_stmt(std::function<void(Gate&)> f) {
-        for (auto it = body_.begin(); it != body_.end(); it++)
+        for (auto it = body_.begin(); it != body_.end(); it++) {
             f(**it);
+        }
     }
 
     /**
@@ -183,8 +184,9 @@ class GateDecl final : public Stmt, public Decl {
     void accept(Visitor& visitor) override { visitor.visit(*this); }
     std::ostream& pretty_print(std::ostream& os,
                                bool suppress_std) const override {
-        if (suppress_std && is_std_qelib(id_))
+        if (suppress_std && is_std_qelib(id_)) {
             return os;
+        }
 
         os << (opaque_ ? "opaque " : "gate ") << id_;
         if (c_params_.size() > 0) {
@@ -381,8 +383,9 @@ class AncillaDecl final : public Gate, public Decl {
 
     void accept(Visitor& visitor) override { visitor.visit(*this); }
     std::ostream& pretty_print(std::ostream& os, bool) const override {
-        if (dirty_)
+        if (dirty_) {
             os << "dirty ";
+        }
         os << "ancilla " << id_ << "[" << size_ << "];\n";
         return os;
     }
