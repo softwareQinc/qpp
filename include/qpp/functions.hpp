@@ -1912,7 +1912,8 @@ template <typename InputIterator, typename value_type = std::decay_t<
                                       decltype(*std::declval<InputIterator>())>>
 value_type prod(InputIterator first, InputIterator last) {
     if (first == last) {
-        return {};
+        return {}; // in principal, should return unity, but not straightforward
+                   // to implement the trait for arbitrary types
     }
 
     value_type result = *first;
