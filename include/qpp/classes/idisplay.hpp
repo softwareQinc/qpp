@@ -104,20 +104,24 @@ struct Display_Impl_ {
                 realT re = static_cast<cplx>(A(i, j)).real();
                 realT im = static_cast<cplx>(A(i, j)).imag();
 
+                realT abs_re = std::abs(re);
+                realT abs_im = std::abs(im);
+
                 // zero
-                if (std::abs(re) < opts.chop && std::abs(im) < opts.chop) {
+                if (abs_re < opts.cplx_opts.chop &&
+                    abs_im < opts.cplx_opts.chop) {
                     ostr << "0"; // otherwise, segfault on destruction
                     // if using only vstr.emplace_back("0 ");
                     // bug in MATLAB libmx
                     vstr.emplace_back(ostr.str());
                 }
                 // pure imag
-                else if (std::abs(re) < opts.chop) {
+                else if (abs_re < opts.cplx_opts.chop) {
                     ostr << im;
                     vstr.emplace_back(ostr.str() + "i");
                 }
                 // real
-                else if (std::abs(im) < opts.chop) {
+                else if (abs_im < opts.cplx_opts.chop) {
                     ostr << re;
                     vstr.emplace_back(ostr.str());
                 }
@@ -126,10 +130,11 @@ struct Display_Impl_ {
                     ostr << re;
                     str = ostr.str();
 
-                    str += (im > 0 ? opts.plus_op : opts.minus_op);
+                    str += (im > 0 ? opts.cplx_opts.plus_op
+                                   : opts.cplx_opts.minus_op);
                     ostr.clear();
                     ostr.str(std::string()); // clear
-                    ostr << std::abs(im);
+                    ostr << abs_im;
                     str += ostr.str();
                     str += "i";
                     vstr.emplace_back(str);

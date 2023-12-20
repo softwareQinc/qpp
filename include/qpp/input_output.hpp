@@ -69,8 +69,10 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
  * \param opts Formatting options
  * \return Instance of qpp::internal::IOManipEigen
  */
-inline internal::IOManipEigen disp(cplx z, IOManipEigenOpts opts = {}) {
-    return internal::IOManipEigen(z, opts);
+template <class Scalar>
+inline internal::IOManipComplex<Scalar> disp(std::complex<Scalar> z,
+                                             IOManipComplexOpts opts = {}) {
+    return internal::IOManipComplex<Scalar>{z, opts};
 }
 
 /**
@@ -120,7 +122,7 @@ disp(const Container& c, IOManipContainerOpts opts = {},
  */
 template <typename PointerType>
 internal::IOManipPointer<PointerType> disp(const PointerType* p, idx N,
-                                           IOManipPointerOpts opts) {
+                                           IOManipPointerOpts opts = {}) {
     return internal::IOManipPointer<PointerType>(p, N, opts);
 }
 

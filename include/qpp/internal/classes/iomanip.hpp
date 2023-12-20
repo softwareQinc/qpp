@@ -33,6 +33,7 @@
 #define QPP_INTERNAL_CLASSES_IOMANIP_HPP_
 
 #include <cmath>
+#include <complex>
 #include <ostream>
 #include <string>
 #include <utility>
@@ -45,9 +46,53 @@
 #include "qpp/internal/util.hpp"
 
 namespace qpp::internal {
-// ostream manipulators for nice formatting of
-// Eigen matrices and STL/C-style containers/vectors
 
+// std::ostream manipulators for formatting std::complex<> numbers
+template <typename Scalar>
+class IOManipComplex : public IDisplay {
+    std::complex<Scalar> z_;
+    IOManipComplexOpts opts_;
+
+  public:
+    IOManipComplex(std::complex<Scalar> z, IOManipComplexOpts opts)
+        : z_{z}, opts_{std::move(opts)} {}
+
+  private:
+    std::ostream& display(std::ostream& os) const override {
+        realT re = std::real(z_);
+        realT im = std::imag(z_);
+        realT abs_re = std::abs(re);
+        realT abs_im = std::abs(im);
+
+        os << opts_.left;
+        // zero
+        if (abs_re < opts_.chop && abs_im < opts_.chop) {
+            os << '0';
+        }
+
+        // pure imaginary
+        if (abs_re < opts_.chop && !(abs_im < opts_.chop)) {
+            os << im << opts_.im_suffix;
+        }
+
+        // pure real
+        if (!(abs_re < opts_.chop) && abs_im < opts_.chop) {
+            os << re;
+        }
+
+        // complex
+        if (!(abs_re < opts_.chop) && !(abs_im < opts_.chop)) {
+            os << re;
+            os << (im < 0 ? opts_.minus_op : opts_.plus_op);
+            os << abs_im << opts_.im_suffix;
+        }
+        os << opts_.right;
+
+        return os;
+    }
+}; /* class IOManipComplex */
+
+// std::ostream manipulator for formatting STL/C-style containers/vectors
 template <typename InputIterator>
 class IOManipRange : public IDisplay {
     InputIterator first_, last_;
@@ -80,6 +125,7 @@ class IOManipRange : public IDisplay {
     }
 }; /* class IOManipRange */
 
+// std::ostream manipulator for formatting C-style buffers
 template <typename PointerType>
 class IOManipPointer : public IDisplay {
     const PointerType* p_;
@@ -121,6 +167,7 @@ class IOManipPointer : public IDisplay {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
+// std::ostream manipulator for formatting Eigen expressions
 class IOManipEigen : public IDisplay, private Display_Impl_ {
 #if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
     (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
@@ -137,19 +184,13 @@ class IOManipEigen : public IDisplay, private Display_Impl_ {
         : A_{A.template cast<cplx>()}, // copy, so we can bind rvalues safely
           opts_{std::move(opts)} {}
 
-    // Complex numbers
-    explicit IOManipEigen(const cplx z, IOManipEigenOpts opts)
-        : A_{cmat::Zero(1, 1)}, opts_{std::move(opts)} {
-        // put the complex number inside an Eigen matrix
-        A_(0, 0) = z;
-    }
-
   private:
     std::ostream& display(std::ostream& os) const override {
         return display_impl_(A_, os, opts_);
     }
 }; /* class IOManipEigen */
 
+// std::ostream manipulator for formatting expressions in Dirac notation
 template <typename Scalar>
 class IOManipDirac : public IDisplay {
     dirac_t<Scalar> A_;
@@ -165,8 +206,7 @@ class IOManipDirac : public IDisplay {
         os << "|";
         os << IOManipRange(
             dits.begin(), dits.end(),
-            IOManipRangeOpts{}.set_sep("").set_left("").set_right("").set_chop(
-                opts_.chop));
+            IOManipRangeOpts{}.set_sep("").set_left("").set_right(""));
         os << ">";
     }
 
@@ -175,8 +215,7 @@ class IOManipDirac : public IDisplay {
         os << "<";
         os << IOManipRange(
             dits.begin(), dits.end(),
-            IOManipRangeOpts{}.set_sep("").set_left("").set_right("").set_chop(
-                opts_.chop));
+            IOManipRangeOpts{}.set_sep("").set_left("").set_right(""));
         os << "|";
     }
 
@@ -206,15 +245,20 @@ class IOManipDirac : public IDisplay {
 
         // display the coefficient
         auto display_coeff = [&](Scalar coeff) {
-            if (std::abs(std::real(coeff)) > opts_.chop &&
-                std::abs(std::imag(coeff)) > opts_.chop) {
-                os << '('
-                   << IOManipEigen(coeff,
-                                   IOManipEigenOpts{}.set_chop(opts_.chop))
-                   << ')';
-            } else {
-                os << IOManipEigen(coeff,
-                                   IOManipEigenOpts{}.set_chop(opts_.chop));
+            // display parenthesis when both real and imag parts are present
+            if (std::abs(std::real(coeff)) > opts_.cplx_opts.chop &&
+                std::abs(std::imag(coeff)) > opts_.cplx_opts.chop) {
+                os << IOManipComplex(
+                    coeff,
+                    IOManipComplexOpts{opts_.cplx_opts}.set_left("(").set_right(
+                        ")"));
+            }
+            // don't display parenthesis
+            else {
+                os << IOManipComplex(
+                    coeff,
+                    IOManipComplexOpts{opts_.cplx_opts}.set_left("").set_right(
+                        ""));
             }
         };
 
@@ -242,7 +286,10 @@ class IOManipDirac : public IDisplay {
         bool first = true;
         for (auto&& elem : A_.states) {
             auto coeff = elem.first;
-            if (opts_.discard_zeros && std::abs(coeff) < opts_.chop) {
+            auto abs_re = std::abs(std::real(coeff));
+            auto abs_im = std::abs(std::imag(coeff));
+            if (abs_re < opts_.cplx_opts.chop &&
+                abs_im < opts_.cplx_opts.chop && opts_.discard_zeros) {
                 continue;
             }
             auto dits = elem.second;

@@ -44,23 +44,36 @@ namespace qpp {
 constexpr realT chop = 1e-14;
 
 /*
- * \brief Formatting options for Eigen::MatrixBase<Derived>
+ * \brief Formatting options for std::complex<T>
  * \see qpp::disp()
  */
-struct IOManipEigenOpts {
+struct IOManipComplexOpts {
+    std::string im_suffix =
+        "i"; ///< imaginary symbol for the complex number "i"
     std::string plus_op = " + ";  ///< binary addition operator
     std::string minus_op = " - "; ///< binary subtraction operator
-    realT chop = qpp::chop;       ///<  sets to zero amplitudes smaller than
-                                  ///<  IOManipEigenOpts::chop in
-                                  ///< absolute value
+    std::string left = "";        ///< left delimiter
+    std::string right = "";       ///< right delimiter
+    realT chop = qpp::chop;       ///<  sets to zero coefficients (real or
+                                  ///<  imaginary) smaller than this
     // setters
+
+    /* \brief Sets imaginary symbol
+     *
+     * \param imaginary_suffix Imaginary symbol for the complex number "i"
+     * \return Reference to the current instance
+     */
+    IOManipComplexOpts& set_im_suffix(std::string imaginary_suffix) {
+        im_suffix = std::move(imaginary_suffix);
+        return *this;
+    }
 
     /* \brief Sets plus operator
      *
      * \param plus_operator Plus operator
      * \return Reference to the current instance
      */
-    IOManipEigenOpts& set_plus_op(std::string plus_operator) {
+    IOManipComplexOpts& set_plus_op(std::string plus_operator) {
         plus_op = std::move(plus_operator);
         return *this;
     }
@@ -70,19 +83,59 @@ struct IOManipEigenOpts {
      * \param minus_operator Minus operator
      * \return Reference to the current instance
      */
-    IOManipEigenOpts& set_minus_op(std::string minus_operator) {
+    IOManipComplexOpts& set_minus_op(std::string minus_operator) {
         minus_op = std::move(minus_operator);
+        return *this;
+    }
+
+    /* \brief Sets left delimiter
+     *
+     * \param left_delimiter Left delimiter
+     * \return Reference to the current instance
+     */
+    IOManipComplexOpts& set_left(std::string left_delimiter) {
+        left = std::move(left_delimiter);
+        return *this;
+    }
+
+    /* \brief Sets right delimiter
+     *
+     * \param right_delimiter Right delimiter
+     * \return Reference to the current instance
+     */
+    IOManipComplexOpts& set_right(std::string right_delimiter) {
+        right = std::move(right_delimiter);
         return *this;
     }
 
     /* \brief Sets chopping threshold
      *
-     * \param chop_at Chopping threshold (sets to zero amplitudes smaller than
-     * \a chop_at in absolute value)
+     * \param chop_at Chopping threshold, sets to zero coefficients (real or
+     * imaginary) smaller than this
      * \return Reference to the current instance
      */
-    IOManipEigenOpts& set_chop(realT chop_at) {
+    IOManipComplexOpts& set_chop(realT chop_at) {
         chop = chop_at;
+        return *this;
+    }
+};
+
+/*
+ * \brief Formatting options for Eigen::MatrixBase<Derived>
+ * \see qpp::disp()
+ */
+struct IOManipEigenOpts {
+    IOManipComplexOpts cplx_opts{};
+
+    // setters
+
+    /* \brief Sets std::complex<T> formatting options
+     *
+     * \param complex_opts Instance of qpp::IOManipComplexOpts
+     * \return Reference to the current instance
+     */
+    IOManipEigenOpts& set_complex_opts(IOManipComplexOpts complex_opts) {
+        cplx_opts = std::move(complex_opts);
         return *this;
     }
 };
@@ -95,8 +148,8 @@ struct IOManipRangeOpts {
     std::string sep = " ";   ///< separator
     std::string left = "[";  ///< left marking
     std::string right = "]"; ///< right marking
-    realT chop = qpp::chop;  ///< sets to zero amplitudes smaller than
-                             ///< IOManipRangeOpts::chop in absolute value
+    realT chop = qpp::chop;  ///<  sets to zero coefficients (real or imaginary)
+                             ///<  smaller than this
     // setters
 
     /* \brief Sets separator
@@ -131,8 +184,8 @@ struct IOManipRangeOpts {
 
     /* \brief Sets chopping threshold
      *
-     * \param chop_at Chopping threshold (sets to zero amplitudes smaller than
-     * \a chop_at in absolute value)
+     * \param chop_at Chopping threshold, sets to zero coefficients (real or
+     * imaginary) smaller than this
      * \return Reference to the current instance
      */
     IOManipRangeOpts& set_chop(realT chop_at) {
@@ -149,8 +202,8 @@ struct IOManipContainerOpts {
     std::string sep = " ";   ///< separator
     std::string left = "[";  ///< left marking
     std::string right = "]"; ///< right marking
-    realT chop = qpp::chop;  ///< sets to zero amplitudes smaller than
-                             ///< IOManipContainerOpts::chop in absolute value
+    realT chop = qpp::chop;  ///<  sets to zero coefficients (real or imaginary)
+                             ///<  smaller than this
 
     // setters
 
@@ -186,8 +239,8 @@ struct IOManipContainerOpts {
 
     /* \brief Sets chopping threshold
      *
-     * \param chop_at Chopping threshold (sets to zero amplitudes smaller than
-     * \a chop_at in absolute value)
+     * \param chop_at Chopping threshold, sets to zero coefficients (real or
+     * imaginary) smaller than this
      * \return Reference to the current instance
      */
     IOManipContainerOpts& set_chop(realT chop_at) {
@@ -217,8 +270,8 @@ struct IOManipPointerOpts {
     std::string sep = " ";   ///< separator
     std::string left = "[";  ///< left marking
     std::string right = "]"; ///< right marking
-    realT chop = qpp::chop;  ///< sets to zero amplitudes smaller than
-                             ///< IOManipPointerOpts::chop in absolute value
+    realT chop = qpp::chop;  ///<  sets to zero coefficients (real or imaginary)
+                             ///<  smaller than this
     // setters
 
     /* \brief Sets separator
@@ -253,8 +306,8 @@ struct IOManipPointerOpts {
 
     /* \brief Sets chopping threshold
      *
-     * \param chop_at Chopping threshold (sets to zero amplitudes smaller than
-     * \a chop_at in absolute value)
+     * \param chop_at Chopping threshold, sets to zero coefficients (real or
+     * imaginary) smaller than this
      * \return Reference to the current instance
      */
     IOManipPointerOpts& set_chop(realT chop_at) {
@@ -268,15 +321,24 @@ struct IOManipPointerOpts {
  * \see qpp::disp()
  */
 struct IOManipDiracOpts {
+    IOManipComplexOpts cplx_opts{};
     std::string plus_op = "\n";   ///< addition operator
     std::string mul_op = " * ";   ///< multiplication operator
                                   ///< absolute value
     bool amplitudes_after = true; ///< amplitudes are displayed after bra/kets
-    bool discard_zeros = true;    ///< do not display amplitudes smaller than
-                                  ///< IOManipDiracOpts::chop in absolute value
-    realT chop = qpp::chop; ///< sets to zero amplitudes smaller than chop in
+    bool discard_zeros = true;    ///< do not display zero coefficients
 
     // setters
+
+    /* \brief Sets std::complex<T> formatting options
+     *
+     * \param complex_opts Instance of qpp::IOManipComplexOpts
+     * \return Reference to the current instance
+     */
+    IOManipDiracOpts& set_complex_opts(IOManipComplexOpts complex_opts) {
+        cplx_opts = std::move(complex_opts);
+        return *this;
+    }
 
     /* \brief Sets plus operator
      *
@@ -300,8 +362,8 @@ struct IOManipDiracOpts {
 
     /* \brief Sets amplitudes after
      *
-     * \param show_amplitudes_after Amplitudes are displayed after bra/kets
-     * \return Reference to the current instance
+     * \param show_amplitudes_after If true, amplitudes are displayed after
+     * bra/kets \return Reference to the current instance
      */
 
     IOManipDiracOpts& set_amplitudes_after(bool show_amplitudes_after) {
@@ -309,23 +371,14 @@ struct IOManipDiracOpts {
         return *this;
     }
 
-    /* \brief Sets discarding zeroes
+    /* \brief Sets discarding zeros
      *
-     * \param discarding_zeros Do not display amplitudes smaller than
+     * \param discarding_zeros If true, do not display real/imag parts of the
+     * coefficients that are smaller than this->cplx_opts.chop
      * \return Reference to the current instance
      */
     IOManipDiracOpts& set_discard_zeros(bool discarding_zeros) {
         discard_zeros = discarding_zeros;
-        return *this;
-    }
-    /* \brief Sets chopping threshold
-     *
-     * \param chop_at Chopping threshold (sets to zero amplitudes smaller than
-     * \a chop_at in absolute value)
-     * \return Reference to the current instance
-     */
-    IOManipDiracOpts& set_chop(realT chop_at) {
-        chop = chop_at;
         return *this;
     }
 };
