@@ -130,9 +130,9 @@ inline void init_classes_circuits_engines(py::module_& m) {
              "Whether qudit i was already measured destructively", py::arg("i"))
 
         .def("__repr__",
-             [](const QEngine& qe) {
+             [](const QEngine& self) {
                  std::ostringstream oss;
-                 oss << qe;
+                 oss << self;
                  return oss.str();
              })
         .def("__copy__", [](const QEngine& self) { return QEngine(self); })

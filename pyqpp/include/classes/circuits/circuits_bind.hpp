@@ -413,9 +413,9 @@ inline void init_classes_circuits_circuits(py::module_& m) {
             .def(py::self == py::self)
             .def(py::self != py::self)
             .def("__repr__",
-                 [](const QCircuit& qc) {
+                 [](const QCircuit& self) {
                      std::ostringstream oss;
-                     oss << qc;
+                     oss << self;
                      return oss.str();
                  })
             .def("__copy__",
@@ -437,9 +437,9 @@ inline void init_classes_circuits_circuits(py::module_& m) {
         .def_readonly("measurement_depth",
                       &QCircuit::Resources::measurement_depth)
         .def_readonly("total_depth", &QCircuit::Resources::total_depth)
-        .def("__repr__", [](const QCircuit::Resources& r) {
+        .def("__repr__", [](const QCircuit::Resources& self) {
             std::ostringstream oss;
-            oss << r;
+            oss << self;
             return oss.str();
         });
 
