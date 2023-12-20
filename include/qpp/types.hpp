@@ -183,7 +183,8 @@ using cmat = dyn_mat<cplx>;
 using rmat = dyn_mat<realT>;
 
 /**
- * \brief Textual representation (Dirac notation) of a quantum state/matrix
+ * \brief Textual representation (Dirac notation) of a quantum state/matrix over
+ * the field specified by \a Scalar
  */
 template <typename Scalar>
 struct dirac_t {
