@@ -33,6 +33,7 @@
 #define QPP_OPTIONS_HPP_
 
 #include <string>
+#include <utility>
 
 #include "qpp/types.hpp"
 
