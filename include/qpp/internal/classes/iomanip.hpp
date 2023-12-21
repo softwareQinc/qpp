@@ -59,7 +59,11 @@ class IOManipScalar : public IDisplay {
 
   private:
     std::ostream& display(std::ostream& os) const override {
-        os << scalar_;
+        if (!(std::abs(scalar_) < opts_.chop)) {
+            os << scalar_;
+        } else {
+            os << 0;
+        }
 
         return os;
     }
@@ -135,7 +139,7 @@ class IOManipRange : public IDisplay {
 
         std::string sep;
         for (InputIterator it = first_; it != last_; ++it) {
-            os << sep << abs_chop(*it, opts_.chop);
+            os << sep << abs_float_or_cplx_chop(*it, opts_.chop);
             sep = opts_.sep;
         }
         os << opts_.right;
@@ -166,10 +170,10 @@ class IOManipPointer : public IDisplay {
         os << opts_.left;
 
         for (idx i = 0; i < N_ - 1; ++i) {
-            os << abs_chop(p_[i], opts_.chop) << opts_.sep;
+            os << abs_float_or_cplx_chop(p_[i], opts_.chop) << opts_.sep;
         }
         if (N_ > 0) {
-            os << abs_chop(p_[N_ - 1], opts_.chop);
+            os << abs_float_or_cplx_chop(p_[N_ - 1], opts_.chop);
         }
 
         os << opts_.right;

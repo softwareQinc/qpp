@@ -417,23 +417,15 @@ inline idx get_dim_subsys(idx D, idx n) {
     return d;
 }
 
-// chops a floating-point or complex number to zero
-template <typename T,
-          typename std::enable_if<std::numeric_limits<T>::is_iec559 ||
-                                  is_complex<T>::value>::type* = nullptr>
-T abs_chop(const T& x, realT chop = qpp::chop) {
-    if (std::abs(x) < chop) {
-        return 0;
+// chops a floating-point or complex number to zero, returns it unchanged
+// otherwise
+template <typename T>
+T abs_float_or_cplx_chop(const T& x, realT chop) {
+    if constexpr (std::numeric_limits<T>::is_iec559 || is_complex<T>::value) {
+        if (std::abs(x) < chop) {
+            return 0;
+        }
     }
-
-    return x;
-}
-
-// returns it unchanged otherwise
-template <typename T,
-          typename std::enable_if<!(std::numeric_limits<T>::is_iec559 ||
-                                    is_complex<T>::value)>::type* = nullptr>
-T abs_chop(const T& x, [[maybe_unused]] realT chop = qpp::chop) {
     return x;
 }
 
@@ -460,7 +452,8 @@ T text2real(const std::string& str) {
     return std::strtod(str.c_str(), nullptr);
 }
 
-// returns true if the index i as a multi-index contains the multi-index dits
+// returns true if the index i as a multi-index contains the multi-index
+// dits
 inline bool idx_contains_dits(idx i, const std::vector<idx>& dits,
                               const std::vector<idx>& subsys,
                               const std::vector<idx>& dims) {
