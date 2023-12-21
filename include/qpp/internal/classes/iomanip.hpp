@@ -47,14 +47,33 @@
 
 namespace qpp::internal {
 
-// std::ostream manipulators for formatting std::complex<> numbers
+// std::ostream manipulator for formatting scalars, default implementation
 template <typename Scalar>
-class IOManipComplex : public IDisplay {
-    std::complex<Scalar> z_;
+class IOManipScalar : public IDisplay {
+    Scalar scalar_;
+    IOManipScalarOpts opts_;
+
+  public:
+    IOManipScalar(Scalar scalar, IOManipScalarOpts opts)
+        : scalar_{scalar}, opts_{opts} {}
+
+  private:
+    std::ostream& display(std::ostream& os) const override {
+        os << scalar_;
+
+        return os;
+    }
+};
+
+// std::ostream manipulator for formatting std::complex<> numbers,
+// specialization of qpp::IOManipScalar<Scalar>
+template <typename T>
+class IOManipScalar<std::complex<T>> : public IDisplay {
+    std::complex<T> z_;
     IOManipComplexOpts opts_;
 
   public:
-    IOManipComplex(std::complex<Scalar> z, IOManipComplexOpts opts)
+    IOManipScalar(std::complex<T> z, IOManipComplexOpts opts)
         : z_{z}, opts_{std::move(opts)} {}
 
   private:
@@ -248,17 +267,17 @@ class IOManipDirac : public IDisplay {
             // display parenthesis when both real and imag parts are present
             if (std::abs(std::real(coeff)) > opts_.cplx_opts.chop &&
                 std::abs(std::imag(coeff)) > opts_.cplx_opts.chop) {
-                os << IOManipComplex(
+                os << IOManipScalar<Scalar>{
                     coeff,
                     IOManipComplexOpts{opts_.cplx_opts}.set_left("(").set_right(
-                        ")"));
+                        ")")};
             }
             // don't display parenthesis
             else {
-                os << IOManipComplex(
+                os << IOManipScalar<Scalar>{
                     coeff,
                     IOManipComplexOpts{opts_.cplx_opts}.set_left("").set_right(
-                        ""));
+                        "")};
             }
         };
 

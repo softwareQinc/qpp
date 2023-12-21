@@ -36,6 +36,7 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 
 #include <Eigen/Dense>
 
@@ -47,36 +48,40 @@
 #include "qpp/internal/util.hpp"
 
 namespace qpp {
-/**
- * \brief Eigen expression ostream manipulator
- *
- * \param A Eigen expression
- * \param opts Display options
- * \return Instance of qpp::internal::IOManipEigen
- */
-template <typename Derived>
-internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
-                            IOManipEigenOpts opts = {}) {
-    return internal::IOManipEigen(A, opts);
-}
 
 /**
- * \brief Complex number ostream manipulator
- * \see qpp::IOManipEigenOpts
+ * \brief Scalar std::ostream manipulator
+ * \see qpp::IOManipScalarOpts
+ *
+ * \param scalar Scalar, must satisfy the std::is_arithmetic<> type trait
+ * \param opts Formatting options
+ * \return Instance of qpp::internal::IOManipScalar
+ */
+template <
+    typename Scalar,
+    typename std::enable_if<std::is_arithmetic<Scalar>::value>::type* = nullptr>
+inline internal::IOManipScalar<Scalar> disp(Scalar scalar,
+                                            IOManipScalarOpts opts = {}) {
+    return internal::IOManipScalar<Scalar>{scalar, opts};
+};
+
+/**
+ * \brief Complex number std::ostream manipulator
+ * \see qpp::IOManipComplexOpts
  *
  * \param z Complex number (or any other type implicitly cast-able to
- * std::complex<realT>)
+ * std::complex<T>)
  * \param opts Formatting options
- * \return Instance of qpp::internal::IOManipEigen
+ * \return Instance of qpp::internal::IOManipScalar<std::complex<T>>
  */
-template <class Scalar>
-inline internal::IOManipComplex<Scalar> disp(std::complex<Scalar> z,
-                                             IOManipComplexOpts opts = {}) {
-    return internal::IOManipComplex<Scalar>{z, opts};
+template <typename T>
+inline internal::IOManipScalar<std::complex<T>>
+disp(std::complex<T> z, IOManipComplexOpts opts = {}) {
+    return internal::IOManipScalar<std::complex<T>>{z, opts};
 }
 
 /**
- * \brief Range ostream manipulator
+ * \brief Range std::ostream manipulator
  * \see qpp::IOManipRangeOpts
  *
  * \param first Iterator to the first element of the range
@@ -87,14 +92,13 @@ inline internal::IOManipComplex<Scalar> disp(std::complex<Scalar> z,
 template <typename InputIterator>
 internal::IOManipRange<InputIterator>
 disp(InputIterator first, InputIterator last, IOManipRangeOpts opts = {}) {
-    return internal::IOManipRange<InputIterator>(first, last, opts);
+    return internal::IOManipRange<InputIterator>{first, last, opts};
 }
 
 /**
- * \brief Standard container ostream manipulator. The container must support
- * std::begin(), std::end() and forward iteration, and shouldn't be a matrix
- * expression
- * \see qpp::IOManipContainerOpts
+ * \brief Standard container std::ostream manipulator. The container must
+ * support std::begin(), std::end() and forward iteration, and shouldn't be a
+ * matrix expression \see qpp::IOManipContainerOpts
  *
  * \param c Container
  * \param opts Formatting options
@@ -107,12 +111,12 @@ disp(const Container& c, IOManipContainerOpts opts = {},
      typename std::enable_if<!is_matrix_expression<Container>::value>::type* =
          nullptr) {
 
-    return internal::IOManipRange<typename Container::const_iterator>(
-        std::begin(c), std::end(c), opts);
+    return internal::IOManipRange<typename Container::const_iterator>{
+        std::begin(c), std::end(c), opts};
 }
 
 /**
- * \brief C-style pointer ostream manipulator
+ * \brief C-style pointer std::ostream manipulator
  * \see qpp::IOManipPointerOpts
  *
  * \param p Pointer to the first element
@@ -123,11 +127,24 @@ disp(const Container& c, IOManipContainerOpts opts = {},
 template <typename PointerType>
 internal::IOManipPointer<PointerType> disp(const PointerType* p, idx N,
                                            IOManipPointerOpts opts = {}) {
-    return internal::IOManipPointer<PointerType>(p, N, opts);
+    return internal::IOManipPointer<PointerType>{p, N, opts};
 }
 
 /**
- * \brief Dirac (braket) representation ostream manipulator
+ * \brief Eigen expression std::ostream manipulator
+ *
+ * \param A Eigen expression
+ * \param opts Display options
+ * \return Instance of qpp::internal::IOManipEigen
+ */
+template <typename Derived>
+internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
+                            IOManipEigenOpts opts = {}) {
+    return internal::IOManipEigen(A, opts);
+}
+
+/**
+ * \brief Dirac (braket) representation std::ostream manipulator
  * manipulator
  * \see qpp::dirac()
  *
@@ -137,7 +154,7 @@ internal::IOManipPointer<PointerType> disp(const PointerType* p, idx N,
 template <typename Scalar>
 internal::IOManipDirac<Scalar> disp(const dirac_t<Scalar>& A,
                                     IOManipDiracOpts opts = {}) {
-    return internal::IOManipDirac<Scalar>(A, opts);
+    return internal::IOManipDirac<Scalar>{A, opts};
 }
 
 /**

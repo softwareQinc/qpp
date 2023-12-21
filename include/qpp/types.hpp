@@ -185,6 +185,8 @@ using rmat = dyn_mat<realT>;
 /**
  * \brief Textual representation (Dirac notation) of a quantum state/matrix over
  * the field specified by \a Scalar
+ *
+ * \see qpp::dirac()
  */
 template <typename Scalar>
 struct dirac_t {

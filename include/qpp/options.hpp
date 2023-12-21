@@ -44,6 +44,49 @@ namespace qpp {
 constexpr realT chop = 1e-14;
 
 /*
+ * \brief Formatting options for scalars
+ * \see qpp::disp()
+ */
+struct IOManipScalarOpts {
+    std::string left = "";  ///< left delimiter
+    std::string right = ""; ///< right delimiter
+    realT chop = qpp::chop; ///<  sets to zero coefficients smaller than this
+                            ///<  w.r.t. some norm
+    // setters
+
+    /* \brief Sets left delimiter
+     *
+     * \param left_delimiter Left delimiter
+     * \return Reference to the current instance
+     */
+    IOManipScalarOpts& set_left(std::string left_delimiter) {
+        left = std::move(left_delimiter);
+        return *this;
+    }
+
+    /* \brief Sets right delimiter
+     *
+     * \param right_delimiter Right delimiter
+     * \return Reference to the current instance
+     */
+    IOManipScalarOpts& set_right(std::string right_delimiter) {
+        right = std::move(right_delimiter);
+        return *this;
+    }
+
+    /* \brief Sets chopping threshold
+     *
+     * \param chop_at Chopping threshold, sets to zero coefficients (real or
+     * imaginary) smaller than this
+     * \return Reference to the current instance
+     */
+    IOManipScalarOpts& set_chop(realT chop_at) {
+        chop = chop_at;
+        return *this;
+    }
+};
+
+/*
  * \brief Formatting options for std::complex<T>
  * \see qpp::disp()
  */
