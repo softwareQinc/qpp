@@ -139,7 +139,8 @@ struct is_complex<std::complex<T>> : std::true_type {};
 
 namespace internal {
 /**
- * \brief Eigen type (ket/density matrix) deduced from the expression Derived
+ * \brief Eigen type (ket/bra/density matrix) deduced from the expression
+ * Derived
  */
 template <typename Derived>
 using eval_t =
@@ -147,7 +148,7 @@ using eval_t =
 } /* namespace internal */
 
 /**
- * \brief Detect if the expression Derived is a bra at compile time
+ * \brief Detect if the expression Derived is a row vector (bra) at compile time
  */
 template <typename Derived>
 bool constexpr is_bra_t() {
@@ -155,7 +156,8 @@ bool constexpr is_bra_t() {
 }
 
 /**
- * \brief Detect if the expression Derived is a ket at compile time
+ * \brief Detect if the expression Derived is a column vector(ket) at compile
+ * time
  */
 template <typename Derived>
 bool constexpr is_ket_t() {
