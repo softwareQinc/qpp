@@ -190,10 +190,10 @@ using rmat = dyn_mat<realT>;
  */
 template <typename Scalar>
 struct dirac_t {
-    std::vector<idx> dims_rows; ///< row dimensions
-    std::vector<idx> dims_cols; ///< column dimensions
+    std::vector<idx> dims_rows{}; ///< row dimensions
+    std::vector<idx> dims_cols{}; ///< column dimensions
     std::vector<std::pair<Scalar, std::vector<idx>>>
-        states; ///< vector of (amplitude, dits)
+        states{}; ///< vector of (amplitude, dits)
 
     /**
      * \brief Equality operator
