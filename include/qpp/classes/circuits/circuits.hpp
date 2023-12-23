@@ -4023,8 +4023,8 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Appends (glues) a quantum circuit description to the end of
      * the current one
-     * \see qpp::QCircuit::add_circuit_inplace_left() and
-     * qpp::QCircuit::add_circuit_inplace_right()
+     * \see qpp::QCircuit::couple_circuit_left() and
+     * qpp::QCircuit::couple_circuit_right()
      *
      * \note If the qudit indexes of the added quantum circuit description
      * do not totally overlap with the indexes of the current quantum
@@ -4046,13 +4046,13 @@ class QCircuit : public IDisplay, public IJSON {
      * performed at the end.
      * \return Reference to the current instance
      */
-    QCircuit& add_circuit(QCircuit other, bigint pos_qudit,
-                          std::optional<idx> pos_dit = std::nullopt) {
+    QCircuit& compose_circuit(QCircuit other, bigint pos_qudit,
+                              std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 
         // check equal dimensions
         if (other.d_ != d_) {
-            throw exception::DimsNotEqual("qpp::QCircuit::add_circuit()",
+            throw exception::DimsNotEqual("qpp::QCircuit::compose_circuit()",
                                           "other");
         }
         // check classical dits
@@ -4061,7 +4061,7 @@ class QCircuit : public IDisplay, public IJSON {
         } else {
             if (internal::is_negative(pos_dit.value()) ||
                 pos_dit.value() > nc_) {
-                throw exception::OutOfRange("qpp::QCircuit::add_circuit()",
+                throw exception::OutOfRange("qpp::QCircuit::compose_circuit()",
                                             "pos_dit");
             }
         }
@@ -4076,7 +4076,7 @@ class QCircuit : public IDisplay, public IJSON {
                  ++i) {
                 if (was_measured(i)) {
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::add_circuit()",
+                        "qpp::QCircuit::compose_circuit()",
                         "Current qpp::QCircuit instance");
                 }
             }
@@ -4087,7 +4087,7 @@ class QCircuit : public IDisplay, public IJSON {
                  ++i) {
                 if (was_measured(pos_qudit + i)) {
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::add_circuit()",
+                        "qpp::QCircuit::compose_circuit()",
                         "Current qpp::QCircuit instance");
                 }
             }
@@ -4203,12 +4203,12 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Adds in-place a quantum circuit description to the current
+     * \brief Couples in-place a quantum circuit description to the current
      * quantum circuit description, with the to-be-added quantum circuit
      * description placed at the left (beginning) of the current quantum
      * circuit description
-     * \see qpp::QCircuit::add_circuit_inplace_right() and
-     * qpp::QCircuit::add_circuit()
+     * \see qpp::QCircuit::couple_circuit_right() and
+     * qpp::QCircuit::compose_circuit()
      *
      * \note The added quantum circuit description should not contain any
      * destructive  measurements and should not be larger than the current
@@ -4231,46 +4231,46 @@ class QCircuit : public IDisplay, public IJSON {
      * performed at the end.
      * \return Reference to the current instance
      */
-    QCircuit&
-    add_circuit_inplace_left(QCircuit other, const std::vector<idx>& target,
-                             std::optional<idx> pos_dit = std::nullopt) {
+    QCircuit& couple_circuit_left(QCircuit other,
+                                  const std::vector<idx>& target,
+                                  std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 
         // check equal dimensions
         if (other.d_ != d_) {
             throw exception::DimsNotEqual(
-                "qpp::QCircuit::add_circuit_inplace_left()", "other");
+                "qpp::QCircuit::couple_circuit_left()", "other");
         }
         // check classical dits
         if (!pos_dit.has_value()) {
             pos_dit = nc_;
         } else if (internal::is_negative(pos_dit.value()) ||
                    pos_dit.value() > nc_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_left()", "pos_dit");
+            throw exception::OutOfRange("qpp::QCircuit::couple_circuit_left()",
+                                        "pos_dit");
         }
         // check no measurement for the matched circuit
         if (!other.get_measured().empty()) {
             throw exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::add_circuit_inplace_left()", "other");
+                "qpp::QCircuit::couple_circuit_left()", "other");
         }
         // check valid target
         if (static_cast<idx>(target.size()) != other.nq_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_left()", "target");
+            throw exception::OutOfRange("qpp::QCircuit::couple_circuit_left()",
+                                        "target");
         }
         if (static_cast<idx>(target.size()) > nq_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_left()", "target");
+            throw exception::OutOfRange("qpp::QCircuit::couple_circuit_left()",
+                                        "target");
         }
         if (!internal::check_no_duplicates(target)) {
-            throw exception::Duplicates(
-                "qpp::QCircuit::add_circuit_inplace_left()", "target");
+            throw exception::Duplicates("qpp::QCircuit::couple_circuit_left()",
+                                        "target");
         }
         for (idx elem : target) {
             if (elem >= nq_) {
                 throw exception::OutOfRange(
-                    "qpp::QCircuit::add_circuit_inplace_left()", "target");
+                    "qpp::QCircuit::couple_circuit_left()", "target");
             }
         }
         // check matching qudits (in the current instance) were not already
@@ -4278,7 +4278,7 @@ class QCircuit : public IDisplay, public IJSON {
         for (idx elem : target) {
             if (was_measured(elem)) {
                 throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::add_circuit_inplace_left()", "target");
+                    "qpp::QCircuit::couple_circuit_left()", "target");
             }
         }
         // END EXCEPTION CHECKS
@@ -4375,12 +4375,12 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Adds in-place a quantum circuit description to the current
+     * \brief Couples in-place a quantum circuit description to the current
      * quantum circuit description, with the to-be-added quantum circuit
      * description placed at the right (end) of the current quantum circuit
      * description
-     * \see qpp::QCircuit::add_circuit_inplace_left() and
-     * qpp::QCircuit::add_circuit()
+     * \see qpp::QCircuit::couple_circuit_left() and
+     * qpp::QCircuit::compose_circuit()
      *
      * \note The added quantum circuit description cannot be larger than
      * the current quantum circuit description, i.e., all qudit indexes of
@@ -4402,41 +4402,41 @@ class QCircuit : public IDisplay, public IJSON {
      * performed at the end.
      * \return Reference to the current instance
      */
-    QCircuit&
-    add_circuit_inplace_right(QCircuit other, const std::vector<idx>& target,
-                              std::optional<idx> pos_dit = std::nullopt) {
+    QCircuit& couple_circuit_right(QCircuit other,
+                                   const std::vector<idx>& target,
+                                   std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 
         // check equal dimensions
         if (other.d_ != d_) {
             throw exception::DimsNotEqual(
-                "qpp::QCircuit::add_circuit_inplace_right()", "other");
+                "qpp::QCircuit::couple_circuit_right()", "other");
         }
         // check classical dits
         if (!pos_dit.has_value()) {
             pos_dit = nc_;
         } else if (internal::is_negative(pos_dit.value()) ||
                    pos_dit.value() > nc_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_right()", "pos_dit");
+            throw exception::OutOfRange("qpp::QCircuit::couple_circuit_right()",
+                                        "pos_dit");
         }
         // check valid target
         if (static_cast<idx>(target.size()) != other.nq_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_right()", "target");
+            throw exception::OutOfRange("qpp::QCircuit::couple_circuit_right()",
+                                        "target");
         }
         if (static_cast<idx>(target.size()) > nq_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_right()", "target");
+            throw exception::OutOfRange("qpp::QCircuit::couple_circuit_right()",
+                                        "target");
         }
         if (!internal::check_no_duplicates(target)) {
-            throw exception::Duplicates(
-                "qpp::QCircuit::add_circuit_inplace_right()", "target");
+            throw exception::Duplicates("qpp::QCircuit::couple_circuit_right()",
+                                        "target");
         }
         for (idx elem : target) {
             if (elem >= nq_) {
                 throw exception::OutOfRange(
-                    "qpp::QCircuit::add_circuit_inplace_right()", "target");
+                    "qpp::QCircuit::couple_circuit_right()", "target");
             }
         }
         // check matching qudits (in the current instance) were not already
@@ -4444,7 +4444,7 @@ class QCircuit : public IDisplay, public IJSON {
         for (idx elem : target) {
             if (was_measured(elem)) {
                 throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::add_circuit_inplace_right()", "target");
+                    "qpp::QCircuit::couple_circuit_right()", "target");
             }
         }
         // END EXCEPTION CHECKS
@@ -4543,8 +4543,7 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Appends (glues) a controlled quantum circuit description to the
      * end of the current one
-     * \see qpp::QCircuit::add_CTRL_circuit_inplace_left() and
-     * qpp::QCircuit::add_CTRL_circuit_inplace_right()
+     * \see qpp::QCircuit::compose_circuit()
      *
      * \note If the qudit indexes of the added quantum circuit description
      * do not totally overlap with the indexes of the current quantum
@@ -4567,14 +4566,15 @@ class QCircuit : public IDisplay, public IJSON {
      * performed at the end.
      * \return Reference to the current instance
      */
-    QCircuit& add_CTRL_circuit([[maybe_unused]] const std::vector<idx>& ctrl,
-                               QCircuit other, bigint pos_qudit,
-                               std::optional<idx> pos_dit = std::nullopt) {
+    QCircuit&
+    compose_CTRL_circuit([[maybe_unused]] const std::vector<idx>& ctrl,
+                         QCircuit other, bigint pos_qudit,
+                         std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 
         // check equal dimensions
         if (other.d_ != d_) {
-            throw exception::DimsNotEqual("qpp::QCircuit::add_circuit()",
+            throw exception::DimsNotEqual("qpp::QCircuit::compose_circuit()",
                                           "other");
         }
         // check classical dits
@@ -4583,7 +4583,7 @@ class QCircuit : public IDisplay, public IJSON {
         } else {
             if (internal::is_negative(pos_dit.value()) ||
                 pos_dit.value() > nc_) {
-                throw exception::OutOfRange("qpp::QCircuit::add_circuit()",
+                throw exception::OutOfRange("qpp::QCircuit::compose_circuit()",
                                             "pos_dit");
             }
         }
@@ -4598,7 +4598,7 @@ class QCircuit : public IDisplay, public IJSON {
                  ++i) {
                 if (was_measured(i)) {
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::add_circuit()",
+                        "qpp::QCircuit::compose_circuit()",
                         "Current qpp::QCircuit instance");
                 }
             }
@@ -4609,7 +4609,7 @@ class QCircuit : public IDisplay, public IJSON {
                  ++i) {
                 if (was_measured(pos_qudit + i)) {
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::add_circuit()",
+                        "qpp::QCircuit::compose_circuit()",
                         "Current qpp::QCircuit instance");
                 }
             }
@@ -4725,346 +4725,6 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Adds in-place a quantum circuit description to the current
-     * quantum circuit description, with the to-be-added quantum circuit
-     * description placed at the left (beginning) of the current quantum
-     * circuit description
-     * \see qpp::QCircuit::add_circuit_inplace_right() and
-     * qpp::QCircuit::add_circuit()
-     *
-     * \note The added quantum circuit description should not contain any
-     * destructive  measurements and should not be larger than the current
-     * quantum circuit description, i.e., all qudit indexes of the added
-     * quantum circuit description must match with qudits from the current
-     * quantum circuit description (and \a other should not contain any
-     * destructive measurements)
-     *
-     * \note The classical dits are not relabeled
-     *
-     * \param other Quantum circuit description
-     * \param target Qudit indexes of the current circuit description where
-     * the qudits of \a other are being matched, i.e., the first/top qudit
-     * of \a other quantum circuit description is matched with the target[0]
-     * qudit of the current circuit description, and so on
-     * \param pos_dit Optional, the first classical dit of \a other quantum
-     * circuit description is inserted before the \a pos_dit classical dit
-     * index of the current quantum circuit description (in the classical dits
-     * array), the rest following in order. If absent (default), insertion is
-     * performed at the end.
-     * \return Reference to the current instance
-     */
-    QCircuit&
-    add_CTRL_circuit_inplace_left(QCircuit other,
-                                  const std::vector<idx>& target,
-                                  std::optional<idx> pos_dit = std::nullopt) {
-        // EXCEPTION CHECKS
-
-        // check equal dimensions
-        if (other.d_ != d_) {
-            throw exception::DimsNotEqual(
-                "qpp::QCircuit::add_circuit_inplace_left()", "other");
-        }
-        // check classical dits
-        if (!pos_dit.has_value()) {
-            pos_dit = nc_;
-        } else if (internal::is_negative(pos_dit.value()) ||
-                   pos_dit.value() > nc_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_left()", "pos_dit");
-        }
-        // check no measurement for the matched circuit
-        if (!other.get_measured().empty()) {
-            throw exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::add_circuit_inplace_left()", "other");
-        }
-        // check valid target
-        if (static_cast<idx>(target.size()) != other.nq_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_left()", "target");
-        }
-        if (static_cast<idx>(target.size()) > nq_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_left()", "target");
-        }
-        if (!internal::check_no_duplicates(target)) {
-            throw exception::Duplicates(
-                "qpp::QCircuit::add_circuit_inplace_left()", "target");
-        }
-        for (idx elem : target) {
-            if (elem >= nq_) {
-                throw exception::OutOfRange(
-                    "qpp::QCircuit::add_circuit_inplace_left()", "target");
-            }
-        }
-        // check matching qudits (in the current instance) were not already
-        // measured destructively
-        for (idx elem : target) {
-            if (was_measured(elem)) {
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::add_circuit_inplace_left()", "target");
-            }
-        }
-        // END EXCEPTION CHECKS
-
-        // STEP 0: insert classical dits from the to-be-matched circuit
-        add_dit(other.nc_, pos_dit.value());
-
-        // STEP 1: update [c]ctrl and target indexes of other
-        for (auto& step : other.circuit_) {
-            std::visit(overloaded{
-                           // update gate_step indexes of other
-                           [&](GateStep& gate_step) {
-                               // update the cctrl indexes
-                               if (is_cCTRL(gate_step)) {
-                                   for (idx& dit : gate_step.ctrl_.value()) {
-                                       dit += pos_dit.value();
-                                   }
-                               }
-                               // update the ctrl indexes
-                               if (is_CTRL(gate_step)) {
-                                   for (idx& pos : gate_step.ctrl_.value()) {
-                                       pos = target[pos];
-                                   }
-                               }
-                               // update the target indexes
-                               for (idx& pos : gate_step.target_) {
-                                   pos = target[pos];
-                               }
-                           },
-                           // update measurement_step indexes of other
-                           [&](MeasurementStep& measurement_step) {
-                               measurement_step.c_reg_ += pos_dit.value();
-                               for (idx& pos : measurement_step.target_) {
-                                   pos = target[pos];
-                               }
-                           },
-                           [&](NOPStep&) {},
-                       },
-                       step);
-        } // end for
-
-        // TODO check this
-
-        // replace the corresponding elements of measured_, measured_nd_,
-        // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
-        // of other
-        for (idx i = 0; i < static_cast<idx>(other.measured_.size()); ++i) {
-            if (other.measured_[i]) {
-                measured_[target[i]] = true;
-            }
-        }
-        for (idx i = 0; i < static_cast<idx>(other.measured_nd_.size()); ++i) {
-            if (other.measured_nd_[i]) {
-                measured_nd_[target[i]] = true;
-            }
-        }
-        for (idx i = 0; i < static_cast<idx>(other.clean_qudits_.size()); ++i) {
-            if (!other.clean_qudits_[i]) {
-                clean_qudits_[target[i]] = false;
-            }
-        }
-
-        for (idx i = 0; i < static_cast<idx>(other.clean_dits_.size()); ++i) {
-            if (!other.clean_dits_[i]) {
-                clean_dits_[target[i]] = false;
-            }
-        }
-        for (idx i = 0; i < static_cast<idx>(other.measurement_dits_.size());
-             ++i) {
-            if (other.measurement_dits_[i]) {
-                measurement_dits_[target[i]] = true;
-            }
-        }
-
-        // STEP 2: append the copy of other to the current instance
-        circuit_.insert(circuit_.begin(), other.circuit_.begin(),
-                        other.circuit_.end());
-
-        // STEP 3: modify gate counts, hash tables etc. accordingly
-        // update matrix hash table
-        for (auto& elem : other.cmat_hash_tbl_) {
-            cmat_hash_tbl_[elem.first] = elem.second;
-        }
-        // update gate counts
-        for (auto& elem : other.gate_count_) {
-            gate_count_[elem.first] += elem.second;
-        }
-        // update measurement counts
-        for (auto& elem : other.measurement_count_) {
-            measurement_count_[elem.first] += elem.second;
-        }
-
-        return *this;
-    }
-
-    /**
-     * \brief Adds in-place a quantum circuit description to the current
-     * quantum circuit description, with the to-be-added quantum circuit
-     * description placed at the right (end) of the current quantum circuit
-     * description
-     * \see qpp::QCircuit::add_circuit_inplace_left() and
-     * qpp::QCircuit::add_circuit()
-     *
-     * \note The added quantum circuit description cannot be larger than
-     * the current quantum circuit description, i.e., all qudit indexes of
-     * the added quantum circuit description must match with qudits from the
-     * current quantum circuit description (and the latter should not
-     * contain any destructive measurements on the matched qudits)
-     *
-     * \note The classical dits are not relabeled
-     *
-     * \param other Quantum circuit description
-     * \param target Qudit indexes of the current circuit description where
-     * the qudits of \a other are being matched, i.e., the first/top qudit
-     * of \a other quantum circuit description is matched with the target[0]
-     * qudit of the current circuit description, and so on
-     * \param pos_dit Optional, the first classical dit of \a other quantum
-     * circuit description is inserted before the \a pos_dit classical dit
-     * index of the current quantum circuit description (in the classical dits
-     * array), the rest following in order. If absent (default), insertion is
-     * performed at the end.
-     * \return Reference to the current instance
-     */
-    QCircuit&
-    add_CTRL_circuit_inplace_right(QCircuit other,
-                                   const std::vector<idx>& target,
-                                   std::optional<idx> pos_dit = std::nullopt) {
-        // EXCEPTION CHECKS
-
-        // check equal dimensions
-        if (other.d_ != d_) {
-            throw exception::DimsNotEqual(
-                "qpp::QCircuit::add_circuit_inplace_right()", "other");
-        }
-        // check classical dits
-        if (!pos_dit.has_value()) {
-            pos_dit = nc_;
-        } else if (internal::is_negative(pos_dit.value()) ||
-                   pos_dit.value() > nc_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_right()", "pos_dit");
-        }
-        // check valid target
-        if (static_cast<idx>(target.size()) != other.nq_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_right()", "target");
-        }
-        if (static_cast<idx>(target.size()) > nq_) {
-            throw exception::OutOfRange(
-                "qpp::QCircuit::add_circuit_inplace_right()", "target");
-        }
-        if (!internal::check_no_duplicates(target)) {
-            throw exception::Duplicates(
-                "qpp::QCircuit::add_circuit_inplace_right()", "target");
-        }
-        for (idx elem : target) {
-            if (elem >= nq_) {
-                throw exception::OutOfRange(
-                    "qpp::QCircuit::add_circuit_inplace_right()", "target");
-            }
-        }
-        // check matching qudits (in the current instance) were not already
-        // measured destructively
-        for (idx elem : target) {
-            if (was_measured(elem)) {
-                throw exception::QuditAlreadyMeasured(
-                    "qpp::QCircuit::add_circuit_inplace_right()", "target");
-            }
-        }
-        // END EXCEPTION CHECKS
-
-        // STEP 0: insert classical dits from the to-be-matched circuit
-        add_dit(other.nc_, pos_dit.value());
-
-        // STEP 1: update [c]ctrl and target indexes of other
-        for (auto& gate_step : other.circuit_) {
-            if (std::holds_alternative<GateStep>(gate_step)) {
-                auto& gate = std::get<GateStep>(gate_step);
-                // update the cctrl indexes
-                if (is_cCTRL(gate)) {
-                    for (idx& dit : gate.ctrl_.value()) {
-                        dit += pos_dit.value();
-                    }
-                }
-                // update the ctrl indexes
-                if (is_CTRL(gate)) {
-                    for (idx& pos : gate.ctrl_.value()) {
-                        pos = target[pos];
-                    }
-                }
-                // update the target indexes
-                for (idx& pos : gate.target_) {
-                    pos = target[pos];
-                }
-            }
-        } // end for other.gates_
-
-        // update measurement indexes of other
-        for (auto& measurement_step : other.circuit_) {
-            if (std::holds_alternative<MeasurementStep>(measurement_step)) {
-                auto& measurement = std::get<MeasurementStep>(measurement_step);
-                measurement.c_reg_ += pos_dit.value();
-                for (idx& pos : measurement.target_) {
-                    pos = target[pos];
-                }
-            }
-        } // end for other.measurements_
-
-        // TODO check this
-
-        // replace the corresponding elements of measured_, measured_nd_,
-        // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
-        // of other
-        for (idx i = 0; i < static_cast<idx>(other.measured_.size()); ++i) {
-            if (other.measured_[i]) {
-                measured_[target[i]] = true;
-            }
-        }
-        for (idx i = 0; i < static_cast<idx>(other.measured_nd_.size()); ++i) {
-            if (other.measured_nd_[i]) {
-                measured_nd_[target[i]] = true;
-            }
-        }
-        for (idx i = 0; i < static_cast<idx>(other.clean_qudits_.size()); ++i) {
-            if (!other.clean_qudits_[i]) {
-                clean_qudits_[target[i]] = false;
-            }
-        }
-
-        for (idx i = 0; i < static_cast<idx>(other.clean_dits_.size()); ++i) {
-            if (!other.clean_dits_[i]) {
-                clean_dits_[target[i]] = false;
-            }
-        }
-        for (idx i = 0; i < static_cast<idx>(other.measurement_dits_.size());
-             ++i) {
-            if (other.measurement_dits_[i]) {
-                measurement_dits_[target[i]] = true;
-            }
-        }
-
-        // STEP 2: append the copy of other to the current instance
-        circuit_.insert(circuit_.end(), other.circuit_.begin(),
-                        other.circuit_.end());
-
-        // STEP 3: modify gate counts, hash tables etc. accordingly
-        // update matrix hash table
-        for (auto& elem : other.cmat_hash_tbl_) {
-            cmat_hash_tbl_[elem.first] = elem.second;
-        }
-        // update gate counts
-        for (auto& elem : other.gate_count_) {
-            gate_count_[elem.first] += elem.second;
-        }
-        // update measurement counts
-        for (auto& elem : other.measurement_count_) {
-            measurement_count_[elem.first] += elem.second;
-        }
-
-        return *this;
-    }
-
-    /**
      * \brief Kronecker product with another quantum circuit description, in
      * place
      *
@@ -5072,7 +4732,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& kron(QCircuit qc) {
-        add_circuit(std::move(qc), static_cast<bigint>(nq_));
+        compose_circuit(std::move(qc), static_cast<bigint>(nq_));
 
         return *this;
     }
@@ -5684,7 +5344,7 @@ class QCircuit : public IDisplay, public IJSON {
 
 /**
  * \brief Appends (glues) a quantum circuit description to another one
- * \see qpp::add_circuit_inplace_left() and qpp::add_circuit_inplace_right()
+ * \see qpp::couple_circuit_left() and qpp::couple_circuit_right()
  *
  * \note If qudit indexes of the second quantum circuit description do
  * not totally overlap with the indexes of the first quantum circuit
@@ -5706,16 +5366,18 @@ class QCircuit : public IDisplay, public IJSON {
  * \return Combined quantum circuit description, with \a qc2 added at the
  * end of \a qc1
  */
-inline QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2, bigint pos_qudit,
-                            std::optional<idx> pos_dit = std::nullopt) {
-    return qc1.add_circuit(qc2, pos_qudit, pos_dit);
+inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
+                                bigint pos_qudit,
+                                std::optional<idx> pos_dit = std::nullopt) {
+    return qc1.compose_circuit(qc2, pos_qudit, pos_dit);
 }
 
 /**
- * \brief Adds in-place a quantum circuit description \a qc2 to another quantum
- * circuit description \a qc1, with the \a qc2 quantum circuit description
- * placed at the left (beginning) of the first quantum circuit description
- * \see qpp::add_circuit_inplace_right() and qpp::add_circuit()
+ * \brief Couples in-place a quantum circuit description \a qc2 to another
+ * quantum circuit description \a qc1, with the \a qc2 quantum circuit
+ * description placed at the left (beginning) of the first quantum circuit
+ * description
+ * \see qpp::couple_circuit_right() and qpp::compose_circuit()
  *
  * \note The added quantum circuit description \a qc2 cannot be larger than
  * the \a qc1 quantum circuit description, i.e., all qudit indexes of the added
@@ -5737,19 +5399,18 @@ inline QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2, bigint pos_qudit,
  * following in order. If absent (default), insertion is performed at the end.
  * \return Combined quantum circuit description
  */
-inline QCircuit
-add_circuit_inplace_left(QCircuit qc1, const QCircuit& qc2,
-                         const std::vector<idx>& target,
-                         std::optional<idx> pos_dit = std::nullopt) {
-    return qc1.add_circuit_inplace_left(qc2, target, pos_dit);
+inline QCircuit couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
+                                    const std::vector<idx>& target,
+                                    std::optional<idx> pos_dit = std::nullopt) {
+    return qc1.couple_circuit_left(qc2, target, pos_dit);
 }
 
 /**
- * \brief Adds in-place a quantum circuit description \a qc2 to another quantum
- * circuit description \a qc1, with the \a qc2 quantum circuit description
- * placed at the right (end) of the first quantum circuit description
- * \see qpp::add_circuit_inplace_right() and qpp::add_circuit()
- * \see qpp::add_circuit_inplace_left() and qpp::add_circuit()
+ * \brief Couples in-place a quantum circuit description \a qc2 to another
+ * quantum circuit description \a qc1, with the \a qc2 quantum circuit
+ * description placed at the right (end) of the first quantum circuit
+ * description
+ * \see qpp::couple_circuit_left() and qpp::compose_circuit()
  *
  * \note The added quantum circuit description \a qc2 cannot be larger than
  * the \a qc1 quantum circuit description, i.e., all qudit indexes of the added
@@ -5772,23 +5433,24 @@ add_circuit_inplace_left(QCircuit qc1, const QCircuit& qc2,
  * \return Combined quantum circuit description
  */
 inline QCircuit
-add_circuit_inplace_right(QCircuit qc1, const QCircuit& qc2,
-                          const std::vector<idx>& target,
-                          std::optional<idx> pos_dit = std::nullopt) {
-    return qc1.add_circuit_inplace_right(qc2, target, pos_dit);
+couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
+                     const std::vector<idx>& target,
+                     std::optional<idx> pos_dit = std::nullopt) {
+    return qc1.couple_circuit_right(qc2, target, pos_dit);
 }
 
 /**
  * \brief Appends (glues) a quantum circuit description to another one
- * \see qpp::add_circuit_inplace_left() and qpp::add_circuit_inplace_right()
+ * \see qpp::couple_circuit_left() and qpp::couple_circuit_right()
  *
  * \note If qudit indexes of the second quantum circuit description do
  * not totally overlap with the indexes of the first quantum circuit
  * description, then the required number of additional qudits are
  * automatically added to the output quantum circuit description
  *
- * \param qc1 Quantum circuit description
- * \param qc2 Quantum circuit description
+ * \param qc1 Control quantum circuit description
+ * \paralm ctrl Control qubits
+ * \param qc2 Target quantum circuit description
  * \param pos_qudit The index of the first/top qudit of \a qc2 quantum
  * circuit description relative to the index of the first/top qudit of the
  * \a qc1 quantum circuit description, with the rest following in order.
@@ -5802,77 +5464,11 @@ add_circuit_inplace_right(QCircuit qc1, const QCircuit& qc2,
  * \return Combined quantum circuit description, with \a qc2 added at the
  * end of \a qc1
  */
-inline QCircuit add_CTRL_circuit(QCircuit qc1, const QCircuit& qc2,
-                                 bigint pos_qudit,
-                                 std::optional<idx> pos_dit = std::nullopt) {
-    return qc1.add_circuit(qc2, pos_qudit, pos_dit);
-}
-
-/**
- * \brief Adds in-place a quantum circuit description \a qc2 to another quantum
- * circuit description \a qc1, with the \a qc2 quantum circuit description
- * placed at the left (beginning) of the first quantum circuit description
- * \see qpp::add_circuit_inplace_right() and qpp::add_circuit()
- *
- * \note The added quantum circuit description \a qc2 cannot be larger than
- * the \a qc1 quantum circuit description, i.e., all qudit indexes of the added
- * quantum circuit description must match with qudits from the \a qc1 quantum
- * circuit description (and those matched of the latter must contain no
- * measurements)
- *
- * \note The classical dits are not relabeled
- *
- * \param qc1 Quantum circuit description
- * \param qc2 Quantum circuit description
- * \param target Qudit indexes of the \a qc1 circuit description where the
- * qudits of \a qc2 are being matched, i.e., the first/top qudit of
- * \a qc2 quantum circuit description is matched with the target[0] qudit
- * of the \a qc1 circuit description, and so on
- * \param pos_dit Optional, the first classical dit of \a qc2 quantum circuit
- * description is inserted before the \a pos_dit classical dit index of the
- * \a qc1 quantum circuit description (in the classical dits array), the rest
- * following in order. If absent (default), insertion is performed at the end.
- * \return Combined quantum circuit description
- */
 inline QCircuit
-add_CTRL_circuit_inplace_left(QCircuit qc1, const QCircuit& qc2,
-                              const std::vector<idx>& target,
-                              std::optional<idx> pos_dit = std::nullopt) {
-    return qc1.add_circuit_inplace_left(qc2, target, pos_dit);
-}
-
-/**
- * \brief Adds in-place a quantum circuit description \a qc2 to another quantum
- * circuit description \a qc1, with the \a qc2 quantum circuit description
- * placed at the right (end) of the first quantum circuit description
- * \see qpp::add_circuit_inplace_right() and qpp::add_circuit()
- * \see qpp::add_circuit_inplace_left() and qpp::add_circuit()
- *
- * \note The added quantum circuit description \a qc2 cannot be larger than
- * the \a qc1 quantum circuit description, i.e., all qudit indexes of the added
- * quantum circuit description must match with qudits from the \a qc1 quantum
- * circuit description (and those matched of the latter must contain no
- * measurements)
- *
- * \note The classical dits are not relabeled
- *
- * \param qc1 Quantum circuit description
- * \param qc2 Quantum circuit description
- * \param target Qudit indexes of the \a qc1 circuit description where the
- * qudits of \a qc2 are being matched, i.e., the first/top qudit of \a qc2
- * quantum circuit description is matched with the target[0] qudit of the
- * \a qc1 circuit description, and so on
- * \param pos_dit Optional, the first classical dit of \a qc2 quantum circuit
- * description is inserted before the \a pos_dit classical dit index of the
- * \a qc1 quantum circuit description (in the classical dits array), the rest
- * following in order. If absent (default), insertion is performed at the end.
- * \return Combined quantum circuit description
- */
-inline QCircuit
-add_CTRL_circuit_inplace_right(QCircuit qc1, const QCircuit& qc2,
-                               const std::vector<idx>& target,
-                               std::optional<idx> pos_dit = std::nullopt) {
-    return qc1.add_circuit_inplace_right(qc2, target, pos_dit);
+compose_CTRL_circuit(QCircuit qc1, const std::vector<idx>& ctrl,
+                     const QCircuit& qc2, bigint pos_qudit,
+                     std::optional<idx> pos_dit = std::nullopt) {
+    return qc1.compose_CTRL_circuit(ctrl, qc2, pos_qudit, pos_dit);
 }
 
 // TODO: check for reset/measured non-destructively etc.

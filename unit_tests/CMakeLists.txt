@@ -1,5 +1,6 @@
 include(GoogleTest)
 set(TARGET_NAME "unit_tests")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #### Link Google Test dynamically if using MSVC, and add bigobj option
 if (MSVC)

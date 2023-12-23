@@ -9,20 +9,6 @@ using namespace qpp;
 // Unit testing "classes/circuits/circuits.hpp"
 
 /******************************************************************************/
-/// BEGIN QCircuit& QCircuit::add_circuit(QCircuit other, bigint pos_qudit,
-///       std::optional<idx> pos_dit = std::nullopt)
-TEST(qpp_QCircuit_add_circuit, AllTests) {}
-/******************************************************************************/
-/// BEGIN QCircuit& QCircuit::add_circuit_inplace_left(QCircuit other,
-///       const std::vector<idx>& target,
-///       std::optional<idx> pos_dit = std::nullopt)
-TEST(qpp_QCircuit_add_circuit_inplace_left, AllTests) {}
-/******************************************************************************/
-/// BEGIN QCircuit& QCircuit::add_circuit_inplace_right(QCircuit other,
-///       const std::vector<idx>& target,
-///       std::optional<idx> pos_dit = std::nullopt)
-TEST(qpp_QCircuit_add_circuit_inplace_right, AllTests) {}
-/******************************************************************************/
 /// BEGIN QCircuit& QCircuit::add_dit(idx n = 1, idx i = -1)
 TEST(qpp_QCircuit_add_dit, AllTests) {}
 /******************************************************************************/
@@ -79,8 +65,27 @@ TEST(qpp_QCircuit_cCTRL_fan, SingleCtrlMultipleTargets) {}
 /// BEGIN const_iterator QCircuit::cend() const noexcept
 TEST(qpp_QCircuit_cend, AllTests) {}
 /******************************************************************************/
+/// BEGIN QCircuit& QCircuit::compose_circuit(QCircuit other, bigint pos_qudit,
+///       std::optional<idx> pos_dit = std::nullopt)
+TEST(qpp_QCircuit_compose_circuit, AllTests) {}
+/******************************************************************************/
+/// BEGIN QCircuit& compose_CTRL_circuit(const std::vector<idx>& ctrl,
+///       QCircuit other, bigint pos_qudit,
+///       std::optional<idx> pos_dit = std::nullopt)
+TEST(qpp_QCircuit_compose_CTRL_circuit, AllTests) {}
+/******************************************************************************/
 /// BEGIN QCircuit& QCircuit::compress()
 TEST(qpp_QCircuit_compress, AllTests) {}
+/******************************************************************************/
+/// BEGIN QCircuit& QCircuit::couple_circuit_left(QCircuit other,
+///       const std::vector<idx>& target,
+///       std::optional<idx> pos_dit = std::nullopt)
+TEST(qpp_QCircuit_couple_circuit_left, AllTests) {}
+/******************************************************************************/
+/// BEGIN QCircuit& QCircuit::couple_circuit_right(QCircuit other,
+///       const std::vector<idx>& target,
+///       std::optional<idx> pos_dit = std::nullopt)
+TEST(qpp_QCircuit_couple_circuit_right, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& QCircuit::CTRL(const cmat& U,
 ///       const std::vector<idx>& ctrl, const std::vector<idx>& target,
@@ -338,24 +343,27 @@ TEST(qpp_QCircuit_was_measured_nd, AllTests) {}
 
 // free functions
 /******************************************************************************/
-/// BEGIN inline QCircuit add_circuit(QCircuit qc1, const QCircuit& qc2,
-///       bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt)
-TEST(qpp_add_circuit, AllTests) {}
-/******************************************************************************/
-/// BEGIN inline QCircuit add_circuit_inplace_left(QCircuit qc1, const QCircuit&
-/// qc2,
-///       const std::vector<idx>& target,
-///       std::optional<idx> pos_dit = std::nullopt)
-TEST(qpp_add_circuit_inplace_left, AllTests) {}
-/******************************************************************************/
-/// BEGIN inline QCircuit add_circuit_inplace_right(QCircuit qc1, const
-/// QCircuit& qc2,
-///       const std::vector<idx>& target,
-///       std::optional<idx> pos_dit = std::nullopt)
-TEST(qpp_add_circuit_inplace_right, AllTests) {}
-/******************************************************************************/
 /// BEGIN inline QCircuit adjoint(QCircuit qc)
 TEST(qpp_adjoint, QCircuitAllTests) {}
+/******************************************************************************/
+/// BEGIN inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
+///       bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt)
+TEST(qpp_compose_circuit, AllTests) {}
+/******************************************************************************/
+/// BEGIN QCircuit& compose_CTRL_circuit( QCircuit qc1,
+///       const std::vector<idx>& ctrl, const QCircuit& qc2, bigint pos_qudit,
+///       std::optional<idx> pos_dit = std::nullopt)
+TEST(qpp_compose_CTRL_circuit, AllTests) {}
+/******************************************************************************/
+/// BEGIN inline QCircuit couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
+///       const std::vector<idx>& target,
+///       std::optional<idx> pos_dit = std::nullopt)
+TEST(qpp_couple_circuit_left, AllTests) {}
+/******************************************************************************/
+/// BEGIN inline QCircuit couple_circuit_right(QCircuit qc1,
+///       const QCircuit& qc2, const std::vector<idx>& target,
+///       std::optional<idx> pos_dit = std::nullopt)
+TEST(qpp_couple_circuit_right, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit kron(QCircuit qc1, const QCircuit& qc2)
 TEST(qpp_kron, QCircuitAllTests) {}

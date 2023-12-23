@@ -1,6 +1,6 @@
 Pre-release
     - All header files are moved into "[include/qpp]", so to include the header
-      one now must #include "qpp/qpp.h" (and similarly for other header files
+      one now must '#include "qpp/qpp.h"' (and similarly for other header files
       in the internal implementation). This change was made for the sake of
       making the include statements look "uniform" in both non-installed
       (compiling without having Quantum++ installed) and installed (compiling
@@ -18,10 +18,17 @@ Pre-release
     - Significant speedup in pyqpp's compilation time
     - Added support for two qubit rotations by pi/2 (Molmer-Sorensen two qubit
       gates).
-    - API changes in ["classes/circuits/circuits.hpp"]
+    - API changes in ["qpp/classes/circuits/circuits.hpp"]
         [qpp::QCircuit::]
-        match_circuit_left()  -> add_circuit_inplace_left()
-        match_circuit_right() -> add_circuit_inplace_right()
+        add_circuit()         -> compose_circuit()
+        match_circuit_left()  -> couple_circuit_left()
+        match_circuit_right() -> couple_circuit_right()
+    - Implemented ["qpp/classes/circuits/circuits.hpp"] control on another 
+      quantum circuit, 
+        qpp::QCircuit::compose_CTRL_circuit()
+      see https://github.com/softwareQinc/qpp/issues/165, and the corresponding 
+      standalone versions
+        qpp::compose_CTRL_circuit()
 
 Version 4.3.4 - 14 August 2023
     - Docker update, see the ["docker"] directory
