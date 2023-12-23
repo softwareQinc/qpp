@@ -4542,7 +4542,8 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Composes (appends) a controlled quantum circuit description to
-     * the end of the current one
+     * the end of the current one, with the current instance acting as the
+     * control
      * \see qpp::QCircuit::compose_circuit()
      *
      * \note If the qudit indexes of the added quantum circuit description
@@ -4551,15 +4552,15 @@ class QCircuit : public IDisplay, public IJSON {
      * are automatically added to the current quantum circuit description
      *
      * \param ctrl Control qubits
-     * \param other Quantum circuit description
-     * \param pos_qudit The index of the first/top qudit of \a other quantum
+     * \param qc_target Quantum circuit description
+     * \param pos_qudit The index of the first/top qudit of \a qc_target quantum
      * circuit description relative to the index of the first/top qudit of
      * the current quantum circuit description, with the rest following in
      * order. If negative or greater than the total number of qudits of the
      * current quantum circuit description, then the required number of
      * additional qudits are automatically added to the current quantum
      * circuit description.
-     * \param pos_dit Optional, the first classical dit of \a other quantum
+     * \param pos_dit Optional, the first classical dit of \a qc_target quantum
      * circuit description is inserted before the \a pos_dit classical dit
      * index of the current quantum circuit description (in the classical dits
      * array), the rest following in order. If absent (default), insertion is
@@ -4568,14 +4569,14 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit&
     compose_CTRL_circuit([[maybe_unused]] const std::vector<idx>& ctrl,
-                         QCircuit other, bigint pos_qudit,
+                         QCircuit qc_target, bigint pos_qudit,
                          std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 
         // check equal dimensions
-        if (other.d_ != d_) {
+        if (qc_target.d_ != d_) {
             throw exception::DimsNotEqual(
-                "qpp::QCircuit::compose_CTRL_circuit()", "other");
+                "qpp::QCircuit::compose_CTRL_circuit()", "qc_other");
         }
         // check classical dits
         if (!pos_dit.has_value()) {
@@ -4590,10 +4591,10 @@ class QCircuit : public IDisplay, public IJSON {
         // check that overlapping qudits (in the current instance) were not
         // already destructively measured
         if (pos_qudit < 0 &&
-            (pos_qudit + static_cast<bigint>(other.nq_)) >= 0) {
+            (pos_qudit + static_cast<bigint>(qc_target.nq_)) >= 0) {
             for (idx i = 0;
-                 i < std::min(static_cast<idx>(pos_qudit +
-                                               static_cast<bigint>(other.nq_)),
+                 i < std::min(static_cast<idx>(pos_qudit + static_cast<bigint>(
+                                                               qc_target.nq_)),
                               nq_);
                  ++i) {
                 if (was_measured(i)) {
@@ -4605,7 +4606,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         if (pos_qudit >= 0 && static_cast<idx>(pos_qudit) < nq_) {
             for (idx i = 0;
-                 i < std::min(static_cast<idx>(nq_ - pos_qudit), other.nq_);
+                 i < std::min(static_cast<idx>(nq_ - pos_qudit), qc_target.nq_);
                  ++i) {
                 if (was_measured(pos_qudit + i)) {
                     throw exception::QuditAlreadyMeasured(
@@ -4624,16 +4625,16 @@ class QCircuit : public IDisplay, public IJSON {
             add_qudit(extra_qudits, 0);
         } else if (pos_qudit >= 0) {
             // add qudits after beginning
-            idx tmp = pos_qudit + other.nq_;
+            idx tmp = pos_qudit + qc_target.nq_;
             if (tmp > nq_) {
                 idx extra_qudits = tmp - nq_;
                 add_qudit(extra_qudits);
             }
         }
-        add_dit(other.nc_, pos_dit.value());
+        add_dit(qc_target.nc_, pos_dit.value());
 
-        // STEP 1: update [c]ctrl and target indexes of other
-        for (auto& step : other.circuit_) {
+        // STEP 1: update [c]ctrl and target indexes of qc_other
+        for (auto& step : qc_target.circuit_) {
             std::visit(overloaded{
                            [&](GateStep& gate_step) {
                                // update the cctrl indexes
@@ -4672,52 +4673,56 @@ class QCircuit : public IDisplay, public IJSON {
 
         // STEP 2
         // replace the corresponding elements of measured_, measured_nd_,
-        // and clean_qudits_ with the ones of other
+        // and clean_qudits_ with the ones of qc_other
         if (pos_qudit < 0) {
-            std::copy_if(other.measured_.begin(), other.measured_.end(),
+            std::copy_if(qc_target.measured_.begin(), qc_target.measured_.end(),
                          measured_.begin(), [](bool val) { return val; });
-            std::copy_if(other.measured_nd_.begin(), other.measured_nd_.end(),
-                         measured_nd_.begin(), [](bool val) { return val; });
-            std::copy_if(other.clean_qudits_.begin(), other.clean_qudits_.end(),
-                         clean_qudits_.begin(), [](bool val) { return !val; });
+            std::copy_if(qc_target.measured_nd_.begin(),
+                         qc_target.measured_nd_.end(), measured_nd_.begin(),
+                         [](bool val) { return val; });
+            std::copy_if(qc_target.clean_qudits_.begin(),
+                         qc_target.clean_qudits_.end(), clean_qudits_.begin(),
+                         [](bool val) { return !val; });
         } else {
-            std::copy_if(other.measured_.begin(), other.measured_.end(),
+            std::copy_if(qc_target.measured_.begin(), qc_target.measured_.end(),
                          std::next(measured_.begin(), pos_qudit),
                          [](bool val) { return val; });
-            std::copy_if(other.measured_nd_.begin(), other.measured_nd_.end(),
+            std::copy_if(qc_target.measured_nd_.begin(),
+                         qc_target.measured_nd_.end(),
                          std::next(measured_nd_.begin(), pos_qudit),
                          [](bool val) { return val; });
-            std::copy_if(other.clean_qudits_.begin(), other.clean_qudits_.end(),
+            std::copy_if(qc_target.clean_qudits_.begin(),
+                         qc_target.clean_qudits_.end(),
                          std::next(clean_qudits_.begin(), pos_qudit),
                          [](bool val) { return !val; });
         }
 
         // STEP 3
         // replace the corresponding elements of clean_dits_ and
-        // measurement_dits_ with the ones of other
-        std::copy(other.clean_dits_.begin(), other.clean_dits_.end(),
+        // measurement_dits_ with the ones of qc_other
+        std::copy(qc_target.clean_dits_.begin(), qc_target.clean_dits_.end(),
                   std::next(clean_dits_.begin(),
                             static_cast<std::ptrdiff_t>(pos_dit.value())));
-        std::copy(other.measurement_dits_.begin(),
-                  other.measurement_dits_.end(),
+        std::copy(qc_target.measurement_dits_.begin(),
+                  qc_target.measurement_dits_.end(),
                   std::next(measurement_dits_.begin(),
                             static_cast<std::ptrdiff_t>(pos_dit.value())));
 
-        // STEP 4: append the copy of other to the current instance
-        circuit_.insert(circuit_.end(), other.circuit_.begin(),
-                        other.circuit_.end());
+        // STEP 4: append the copy of qc_target to the current instance
+        circuit_.insert(circuit_.end(), qc_target.circuit_.begin(),
+                        qc_target.circuit_.end());
 
         // STEP 5: modify gate counts, hash tables etc. accordingly
         // update matrix hash table
-        for (auto& elem : other.cmat_hash_tbl_) {
+        for (auto& elem : qc_target.cmat_hash_tbl_) {
             cmat_hash_tbl_[elem.first] = elem.second;
         }
         // update gate counts
-        for (auto& elem : other.gate_count_) {
+        for (auto& elem : qc_target.gate_count_) {
             gate_count_[elem.first] += elem.second;
         }
         // update measurement counts
-        for (auto& elem : other.measurement_count_) {
+        for (auto& elem : qc_target.measurement_count_) {
             measurement_count_[elem.first] += elem.second;
         }
 
@@ -5441,36 +5446,38 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
 }
 
 /**
- * \brief Composes (appends) a quantum circuit description to the end of
- * another one
- * \see qpp::couple_circuit_left() and qpp::couple_circuit_right()
+ * \brief Composes (appends) the \a qc_target controlled quantum circuit
+ * description to the end of the \a qc_ctrl quantum circuit description;
+ * \a qc_ctrl controls the \a qc_target.
+ * \see qpp::compose_circuit()
  *
  * \note If qudit indexes of the second quantum circuit description do
  * not totally overlap with the indexes of the first quantum circuit
  * description, then the required number of additional qudits are
  * automatically added to the output quantum circuit description
  *
- * \param qc1 Control quantum circuit description
+ * \param qc_ctrl Control quantum circuit description
  * \paralm ctrl Control qubits
- * \param qc2 Target quantum circuit description
- * \param pos_qudit The index of the first/top qudit of \a qc2 quantum
+ * \param qc_target Target quantum circuit description
+ * \param pos_qudit The index of the first/top qudit of \a qc_target quantum
  * circuit description relative to the index of the first/top qudit of the
- * \a qc1 quantum circuit description, with the rest following in order.
- * If negative or greater than the total number of qudits of \a qc1,
+ * \a qc_ctrl quantum circuit description, with the rest following in order.
+ * If negative or greater than the total number of qudits of \a qc_ctrl,
  * then the required number of additional qudits are automatically added
  * to the output quantum circuit description.
- * \param pos_dit Optional, the first classical dit of \a qc2 quantum circuit
- * description is inserted before the \a pos_dit classical dit index of the
- * \a qc1 quantum circuit description (in the classical dits array), the rest
- * following in order. If absent (default), insertion is performed at the end.
- * \return Combined quantum circuit description, with \a qc2 added at the
- * end of \a qc1
+ * \param pos_dit Optional, the first classical dit of \a qc_target quantum
+ * circuit description is inserted before the \a pos_dit classical dit index of
+ * the \a qc_ctrl quantum circuit description (in the classical dits array),
+ * the rest following in order. If absent (default), insertion is performed at
+ * the end.
+ * \return Combined quantum circuit description, with \a qc_target added at the
+ * end of \a qc_ctrl
  */
 inline QCircuit
-compose_CTRL_circuit(QCircuit qc1, const std::vector<idx>& ctrl,
-                     const QCircuit& qc2, bigint pos_qudit,
+compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
+                     const QCircuit& qc_target, bigint pos_qudit,
                      std::optional<idx> pos_dit = std::nullopt) {
-    return qc1.compose_CTRL_circuit(ctrl, qc2, pos_qudit, pos_dit);
+    return qc_ctrl.compose_CTRL_circuit(ctrl, qc_target, pos_qudit, pos_dit);
 }
 
 // TODO: check for reset/measured non-destructively etc.

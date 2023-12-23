@@ -70,7 +70,7 @@ TEST(qpp_QCircuit_cend, AllTests) {}
 TEST(qpp_QCircuit_compose_circuit, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& compose_CTRL_circuit(const std::vector<idx>& ctrl,
-///       QCircuit other, bigint pos_qudit,
+///       QCircuit qc_target, bigint pos_qudit,
 ///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_QCircuit_compose_CTRL_circuit, AllTests) {}
 /******************************************************************************/
@@ -350,9 +350,9 @@ TEST(qpp_adjoint, QCircuitAllTests) {}
 ///       bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_compose_circuit, AllTests) {}
 /******************************************************************************/
-/// BEGIN QCircuit& compose_CTRL_circuit( QCircuit qc1,
-///       const std::vector<idx>& ctrl, const QCircuit& qc2, bigint pos_qudit,
-///       std::optional<idx> pos_dit = std::nullopt)
+/// BEGIN QCircuit& compose_CTRL_circuit( QCircuit qc_ctrl,
+///       const std::vector<idx>& ctrl, const QCircuit& qc_target,
+///       bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_compose_CTRL_circuit, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit couple_circuit_left(QCircuit qc1, const QCircuit& qc2,

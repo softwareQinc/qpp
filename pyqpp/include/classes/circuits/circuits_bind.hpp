@@ -38,21 +38,26 @@ inline void init_classes_circuits_circuits(py::module_& m) {
                  py::arg("name") = std::nullopt)
             .def(py::init<const QCircuit&>())
 
-            .def("add_circuit", &QCircuit::add_circuit,
-                 "Appends (glues) a quantum circuit description to the current "
-                 "one",
+            .def("compose_circuit", &QCircuit::compose_circuit,
+                 "Composes (appends) a quantum circuit description to the end "
+                 "of the current one",
                  py::arg("other"), py::arg("pos_qudit"),
                  py::arg("pos_dit") = std::nullopt)
-            .def("add_circuit_inplace_left",
-                 &QCircuit::add_circuit_inplace_left,
-                 "Matches a quantum circuit description to the current one, "
-                 "placed at the left (beginning) of the current one",
+            .def("compose_CTRL_circuit", &QCircuit::compose_CTRL_circuit,
+                 "Composes (appends) a controlled quantum circuit description " 
+                 "to the end of the current one, with the current instance "
+                 "acting as the control", 
+                 py::arg("ctrl"), py::arg("qc_target"), py::arg("pos_qudit"), 
+                 py::arg("pos_dit") = std::nullopt))
+            .def("couple_circuit_left", &QCircuit::couple_circuit_left,
+                 "Couples (in place) a quantum circuit description to the "
+                 "current one, placed at the left (beginning) of the current "
+                 "one",
                  py::arg("other"), py::arg("target"),
                  py::arg("pos_dit") = std::nullopt)
-            .def("add_circuit_inplace_right",
-                 &QCircuit::add_circuit_inplace_right,
-                 "Matches a quantum circuit description to the current one, "
-                 "placed at the right (end) of the current one",
+            .def("couple_circuit_right", &QCircuit::couple_circuit_right,
+                 "Couples (in place) a quantum circuit description to the "
+                 "current one, placed at the right (end) of the current one",
                  py::arg("other"), py::arg("target"),
                  py::arg("pos_dit") = std::nullopt)
             .def("add_dit", py::overload_cast<idx>(&QCircuit::add_dit),
@@ -414,14 +419,16 @@ inline void init_classes_circuits_circuits(py::module_& m) {
             .def(py::self != py::self)
             .def("__repr__",
                  [](const QCircuit& self) {
-                     std::ostringstream oss;
-                     oss << self;
-                     return oss.str();
+        std::ostringstream oss;
+        oss << self;
+        return oss.str();
                  })
             .def("__copy__",
-                 [](const QCircuit& self) { return QCircuit(self); })
+                 [](const QCircuit& self) {
+        return QCircuit(self); })
             .def("__deepcopy__",
-                 [](const QCircuit& self, py::dict) { return QCircuit(self); });
+                 [](const QCircuit& self, py::dict) {
+        return QCircuit(self); });
 
     /* qpp::QCircuit::Resources */
     py::class_<QCircuit::Resources>(pyQCircuit, "Resources")
@@ -444,19 +451,24 @@ inline void init_classes_circuits_circuits(py::module_& m) {
         });
 
     /* qpp::QCircuit related free functions */
-    m.def("add_circuit", &qpp::add_circuit,
-          "Appends (glues) the second quantum circuit description to the first "
-          "one",
+    m.def("compose_circuit", &qpp::compose_circuit,
+          "Composes (appends) the second quantum circuit description to the "
+          "end of the first one; qc_ctrl controls the qc_target.",
           py::arg("qc1"), py::arg("qc2"), py::arg("pos_qudit"),
           py::arg("pos_dit") = std::nullopt);
-    m.def("add_circuit_inplace_left", &qpp::add_circuit_inplace_left,
-          "Matches the second quantum circuit description to the left "
-          "(beginning) of the first one",
+    m.def("compose_CTRL_circuit", &qpp::compose_CTRL_circuit,
+          "Composes (appends) the qc_target controlled quantum circuit "
+          "description to the end of the qc_ctrl quantum circuit description",
+          py::arg("qc_ctrl"), py::arg("ctrl"), py::arg("qc_target"),
+          py::arg("pos_qudit"), py::arg("pos_dit") = std::nullopt);
+    m.def("couple_circuit_left", &qpp::couple_circuit_left,
+          "Couples (in place) the second quantum circuit description to the "
+          "left (beginning) of the first one",
           py::arg("qc1"), py::arg("qc2"), py::arg("target"),
           py::arg("pos_dit") = std::nullopt);
-    m.def("add_circuit_inplace_right", &qpp::add_circuit_inplace_right,
-          "Matches the second quantum circuit description to the right (end) "
-          "of the first one",
+    m.def("couple_circuit_right", &qpp::couple_circuit_right,
+          "Couples (in place) the second quantum circuit description to the "
+          "right (end) of the first one",
           py::arg("qc1"), py::arg("qc2"), py::arg("target"),
           py::arg("pos_dit") = std::nullopt);
     m.def("adjoint", static_cast<QCircuit (*)(QCircuit)>(&qpp::adjoint),
