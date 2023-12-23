@@ -33,6 +33,7 @@
 #define QPP_INPUT_OUTPUT_HPP_
 
 #include <iterator>
+#include <memory>
 #include <optional>
 #include <stdexcept>
 #include <string>
