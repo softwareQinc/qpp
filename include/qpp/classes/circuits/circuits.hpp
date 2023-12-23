@@ -941,7 +941,7 @@ class QCircuit : public IDisplay, public IJSON {
      * default-constructible)
      * \param nc Number of classical dits
      * \param d Subsystem dimensions (default is qubit, i.e., \a d =2)
-     * \param name Circuit name (optional)
+     * \param name Optional circuit name
      */
     explicit QCircuit(idx nq = 1, idx nc = 0, idx d = 2,
                       std::optional<std::string> name = std::nullopt)
@@ -5347,6 +5347,8 @@ class QCircuit : public IDisplay, public IJSON {
 
 // free functions
 
+// TODO: consider setting result circuit names as optionals for free functions!
+
 /**
  * \brief Composes (appends) a quantum circuit description to the end of
  * another one
@@ -5365,6 +5367,7 @@ class QCircuit : public IDisplay, public IJSON {
  * If negative or greater than the total number of qudits of \a qc1,
  * then the required number of additional qudits are automatically added
  * to the output quantum circuit description.
+ * \param name Optional result's circuit name
  * \param pos_dit Optional, the first classical dit of \a qc2 quantum circuit
  * description is inserted before the \a pos_dit classical dit index of the
  * \a qc1 quantum circuit description (in the classical dits array), the rest
@@ -5374,7 +5377,12 @@ class QCircuit : public IDisplay, public IJSON {
  */
 inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
                                 bigint pos_qudit,
+                                std::optional<std::string> name = std::nullopt,
                                 std::optional<idx> pos_dit = std::nullopt) {
+    if (name.has_value()) {
+        qc1.set_name(name.value());
+    }
+
     return qc1.compose_circuit(qc2, pos_qudit, pos_dit);
 }
 
@@ -5399,15 +5407,22 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
  * qudits of \a qc2 are being matched, i.e., the first/top qudit of
  * \a qc2 quantum circuit description is matched with the target[0] qudit
  * of the \a qc1 circuit description, and so on
+ * \param name Optional result's circuit name
  * \param pos_dit Optional, the first classical dit of \a qc2 quantum circuit
  * description is inserted before the \a pos_dit classical dit index of the
  * \a qc1 quantum circuit description (in the classical dits array), the rest
  * following in order. If absent (default), insertion is performed at the end.
  * \return Combined quantum circuit description
  */
-inline QCircuit couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
-                                    const std::vector<idx>& target,
-                                    std::optional<idx> pos_dit = std::nullopt) {
+inline QCircuit
+couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
+                    const std::vector<idx>& target,
+                    std::optional<std::string> name = std::nullopt,
+                    std::optional<idx> pos_dit = std::nullopt) {
+    if (name.has_value()) {
+        qc1.set_name(name.value());
+    }
+
     return qc1.couple_circuit_left(qc2, target, pos_dit);
 }
 
@@ -5432,6 +5447,7 @@ inline QCircuit couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
  * qudits of \a qc2 are being matched, i.e., the first/top qudit of \a qc2
  * quantum circuit description is matched with the target[0] qudit of the
  * \a qc1 circuit description, and so on
+ * \param name Optional result's circuit name
  * \param pos_dit Optional, the first classical dit of \a qc2 quantum circuit
  * description is inserted before the \a pos_dit classical dit index of the
  * \a qc1 quantum circuit description (in the classical dits array), the rest
@@ -5441,7 +5457,12 @@ inline QCircuit couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
 inline QCircuit
 couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
                      const std::vector<idx>& target,
+                     std::optional<std::string> name = std::nullopt,
                      std::optional<idx> pos_dit = std::nullopt) {
+    if (name.has_value()) {
+        qc1.set_name(name.value());
+    }
+
     return qc1.couple_circuit_right(qc2, target, pos_dit);
 }
 
@@ -5465,6 +5486,7 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
  * If negative or greater than the total number of qudits of \a qc_ctrl,
  * then the required number of additional qudits are automatically added
  * to the output quantum circuit description.
+ * \param name Optional result's circuit name
  * \param pos_dit Optional, the first classical dit of \a qc_target quantum
  * circuit description is inserted before the \a pos_dit classical dit index of
  * the \a qc_ctrl quantum circuit description (in the classical dits array),
@@ -5476,7 +5498,12 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
 inline QCircuit
 compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
                      const QCircuit& qc_target, bigint pos_qudit,
+                     std::optional<std::string> name = std::nullopt,
                      std::optional<idx> pos_dit = std::nullopt) {
+    if (name.has_value()) {
+        qc_ctrl.set_name(name.value());
+    }
+
     return qc_ctrl.compose_CTRL_circuit(ctrl, qc_target, pos_qudit, pos_dit);
 }
 
@@ -5485,15 +5512,21 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
  * \brief Adjoint quantum circuit description
  *
  * \param qc Quantum circuit description
+ * \param name Optional result's circuit name
  * \return Adjoint quantum circuit description
  */
-inline QCircuit adjoint(QCircuit qc) {
+inline QCircuit adjoint(QCircuit qc,
+                        std::optional<std::string> name = nullptr) {
     // EXCEPTION CHECKS
 
     if (!qc.get_measured().empty()) {
         throw exception::QuditAlreadyMeasured("qpp::adjoint()", "qc");
     }
     // END EXCEPTION CHECKS
+
+    if (name.has_value()) {
+        qc.set_name(name.value());
+    }
 
     return qc.adjoint();
 }
@@ -5503,10 +5536,16 @@ inline QCircuit adjoint(QCircuit qc) {
  *
  * \param qc1 Quantum circuit description
  * \param qc2 Quantum circuit description
+ * \param name Optional result's circuit name
  * \return Quantum circuit description of the Kronecker product of \a qc1
  * with \a qc2
  */
-inline QCircuit kron(QCircuit qc1, const QCircuit& qc2) {
+inline QCircuit kron(QCircuit qc1, const QCircuit& qc2,
+                     std::optional<std::string> name = std::nullopt) {
+    if (name.has_value()) {
+        qc1.set_name(name.value());
+    }
+
     return qc1.kron(qc2);
 }
 
@@ -5517,9 +5556,15 @@ inline QCircuit kron(QCircuit qc1, const QCircuit& qc2) {
  * \param qc Quantum circuit description
  * \param n Number of repetitions. If \a n == 1, returns the original
  * circuit.
+ * \param n Optional result's circuit name
  * \return Replicated quantum circuit description
  */
-inline QCircuit replicate(QCircuit qc, idx n) {
+inline QCircuit replicate(QCircuit qc, idx n,
+                          std::optional<std::string> name = std::nullopt) {
+    if (name.has_value()) {
+        qc.set_name(name.value());
+    }
+
     // EXCEPTION CHECKS
 
     if (n == 0) {
@@ -5548,12 +5593,12 @@ inline QCircuit replicate(QCircuit qc, idx n) {
  * \param with_respect_to_gate Optional, if present, gate count is calculated
  * with respect to this particular gate (absent by default, so by default gate
  * count is calculated with respect to all gates in the circuit)
- * \param one_qudit_gate_set Set of one qudit gates (optional, must be
- * specified for \a d > 2)
- * \param two_qudit_gate_set Set of two qudit gates (optional, must be
- * specified for \a d > 2)
- * \param one_qudit_gate_names One qudit gate names (optional)
- * \param two_qudit_gate_names Two qudit gate names (optional)
+ * \param one_qudit_gate_set Optional set of one qudit gates, must be specified
+ * for \a d > 2
+ * \param two_qudit_gate_set Optional set of two qudit gates, must be specified
+ * for \a d > 2
+ * \param one_qudit_gate_names Optional one qudit gate names
+ * \param two_qudit_gate_names Optional two qudit gate names
  * \return Instance of random qpp::QCircuit for fixed gate count
  */
 inline QCircuit random_circuit_count(

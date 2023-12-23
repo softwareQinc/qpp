@@ -453,28 +453,30 @@ inline void init_classes_circuits_circuits(py::module_& m) {
           "Composes (appends) the second quantum circuit description to the "
           "end of the first one; qc_ctrl controls the qc_target.",
           py::arg("qc1"), py::arg("qc2"), py::arg("pos_qudit"),
-          py::arg("pos_dit") = std::nullopt);
+          py::arg("name") = std::nullopt, py::arg("pos_dit") = std::nullopt);
     m.def("compose_CTRL_circuit", &qpp::compose_CTRL_circuit,
           "Composes (appends) the qc_target controlled quantum circuit "
           "description to the end of the qc_ctrl quantum circuit description",
           py::arg("qc_ctrl"), py::arg("ctrl"), py::arg("qc_target"),
-          py::arg("pos_qudit"), py::arg("pos_dit") = std::nullopt);
+          py::arg("pos_qudit"), py::arg("name") = std::nullopt,
+          py::arg("pos_dit") = std::nullopt);
     m.def("couple_circuit_left", &qpp::couple_circuit_left,
           "Couples (in place) the second quantum circuit description to the "
           "left (beginning) of the first one",
           py::arg("qc1"), py::arg("qc2"), py::arg("target"),
-          py::arg("pos_dit") = std::nullopt);
+          py::arg("name") = std::nullopt, py::arg("pos_dit") = std::nullopt);
     m.def("couple_circuit_right", &qpp::couple_circuit_right,
           "Couples (in place) the second quantum circuit description to the "
           "right (end) of the first one",
           py::arg("qc1"), py::arg("qc2"), py::arg("target"),
-          py::arg("pos_dit") = std::nullopt);
+          py::arg("name") = std::nullopt, py::arg("pos_dit") = std::nullopt);
     m.def("adjoint", static_cast<QCircuit (*)(QCircuit)>(&qpp::adjoint),
-          "Adjoint quantum circuit description", py::arg("qc"));
+          "Adjoint quantum circuit description", py::arg("qc"),
+          py::arg("name") = std::nullopt);
     m.def("kron",
           static_cast<QCircuit (*)(QCircuit, const QCircuit&)>(&qpp::kron),
           "Kronecker product between two quantum circuit descriptions",
-          py::arg("qc1"), py::arg("qc2"));
+          py::arg("qc1"), py::arg("qc2"), py::arg("name") = std::nullopt);
     m.def("qpe_circuit", &qpp::qpe_circuit,
           "Quantum phase estimation circuit with n bits of precision",
           py::arg("U"), py::arg("n"), py::arg("omit_measurements") = true,
@@ -499,7 +501,7 @@ inline void init_classes_circuits_circuits(py::module_& m) {
           py::arg("two_qudit_gate_names") = std::nullopt);
     m.def("replicate", &qpp::replicate,
           "Replicates a quantum circuit description", py::arg("qc"),
-          py::arg("n"));
+          py::arg("n"), py::arg("name") = std::nullopt);
 }
 
 #endif /* PYQPP_CLASSES_CIRCUITS_CIRCUITS_BIND_HPP_ */

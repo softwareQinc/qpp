@@ -343,29 +343,35 @@ TEST(qpp_QCircuit_was_measured_nd, AllTests) {}
 
 // free functions
 /******************************************************************************/
-/// BEGIN inline QCircuit adjoint(QCircuit qc)
+/// BEGIN inline QCircuit adjoint(QCircuit qc,
+///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_adjoint, QCircuitAllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
-///       bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt)
+///       bigint pos_qudit, std::optional<std::string> name = std::nullopt,
+///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_compose_circuit, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& compose_CTRL_circuit( QCircuit qc_ctrl,
 ///       const std::vector<idx>& ctrl, const QCircuit& qc_target,
-///       bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt)
+///       bigint pos_qudit, std::optional<std::string> name = std::nullopt,
+///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_compose_CTRL_circuit, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
 ///       const std::vector<idx>& target,
+///       std::optional<std::string> name = std::nullopt,
 ///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_couple_circuit_left, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit couple_circuit_right(QCircuit qc1,
 ///       const QCircuit& qc2, const std::vector<idx>& target,
+///       std::optional<std::string> name = std::nullopt,
 ///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_couple_circuit_right, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline QCircuit kron(QCircuit qc1, const QCircuit& qc2)
+/// BEGIN inline QCircuit kron(QCircuit qc1, const QCircuit& qc2,
+///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_kron, QCircuitAllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit qpe_circuit(cmat U, qpp::idx n,
@@ -373,7 +379,8 @@ TEST(qpp_kron, QCircuitAllTests) {}
 ///       std::optional<std::string> name = "qpe")
 TEST(qpp_qpe_circuit, AllTests) {}
 /******************************************************************************/
-/// BEGIN inline QCircuit replicate(QCircuit qc, idx n)
+/// BEGIN inline QCircuit replicate(QCircuit qc, idx n,
+///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_replicate, AllTests) {}
 /******************************************************************************/
 /// BEGIN inline QCircuit random_circuit_count(idx nq, idx d, idx gate_count,
