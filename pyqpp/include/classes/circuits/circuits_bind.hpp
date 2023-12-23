@@ -470,11 +470,14 @@ inline void init_classes_circuits_circuits(py::module_& m) {
           "right (end) of the first one",
           py::arg("qc1"), py::arg("qc2"), py::arg("target"),
           py::arg("name") = std::nullopt, py::arg("pos_dit") = std::nullopt);
-    m.def("adjoint", static_cast<QCircuit (*)(QCircuit)>(&qpp::adjoint),
+    m.def("adjoint",
+          static_cast<QCircuit (*)(QCircuit, std::optional<std::string>)>(
+              &qpp::adjoint),
           "Adjoint quantum circuit description", py::arg("qc"),
           py::arg("name") = std::nullopt);
     m.def("kron",
-          static_cast<QCircuit (*)(QCircuit, const QCircuit&)>(&qpp::kron),
+          static_cast<QCircuit (*)(QCircuit, const QCircuit&,
+                                   std::optional<std::string>)>(&qpp::kron),
           "Kronecker product between two quantum circuit descriptions",
           py::arg("qc1"), py::arg("qc2"), py::arg("name") = std::nullopt);
     m.def("qpe_circuit", &qpp::qpe_circuit,
