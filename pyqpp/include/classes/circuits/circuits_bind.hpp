@@ -44,11 +44,11 @@ inline void init_classes_circuits_circuits(py::module_& m) {
                  py::arg("other"), py::arg("pos_qudit"),
                  py::arg("pos_dit") = std::nullopt)
             .def("compose_CTRL_circuit", &QCircuit::compose_CTRL_circuit,
-                 "Composes (appends) a controlled quantum circuit description " 
+                 "Composes (appends) a controlled quantum circuit description "
                  "to the end of the current one, with the current instance "
-                 "acting as the control", 
-                 py::arg("ctrl"), py::arg("qc_target"), py::arg("pos_qudit"), 
-                 py::arg("pos_dit") = std::nullopt))
+                 "acting as the control",
+                 py::arg("ctrl"), py::arg("qc_target"), py::arg("pos_qudit"),
+                 py::arg("pos_dit") = std::nullopt)
             .def("couple_circuit_left", &QCircuit::couple_circuit_left,
                  "Couples (in place) a quantum circuit description to the "
                  "current one, placed at the left (beginning) of the current "
@@ -419,16 +419,14 @@ inline void init_classes_circuits_circuits(py::module_& m) {
             .def(py::self != py::self)
             .def("__repr__",
                  [](const QCircuit& self) {
-        std::ostringstream oss;
-        oss << self;
-        return oss.str();
+                     std::ostringstream oss;
+                     oss << self;
+                     return oss.str();
                  })
             .def("__copy__",
-                 [](const QCircuit& self) {
-        return QCircuit(self); })
+                 [](const QCircuit& self) { return QCircuit(self); })
             .def("__deepcopy__",
-                 [](const QCircuit& self, py::dict) {
-        return QCircuit(self); });
+                 [](const QCircuit& self, py::dict) { return QCircuit(self); });
 
     /* qpp::QCircuit::Resources */
     py::class_<QCircuit::Resources>(pyQCircuit, "Resources")
