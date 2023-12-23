@@ -4021,7 +4021,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Appends (glues) a quantum circuit description to the end of
+     * \brief Composes (appends) a quantum circuit description to the end of
      * the current one
      * \see qpp::QCircuit::couple_circuit_left() and
      * qpp::QCircuit::couple_circuit_right()
@@ -4541,8 +4541,8 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Appends (glues) a controlled quantum circuit description to the
-     * end of the current one
+     * \brief Composes (appends) a controlled quantum circuit description to
+     * the end of the current one
      * \see qpp::QCircuit::compose_circuit()
      *
      * \note If the qudit indexes of the added quantum circuit description
@@ -4574,8 +4574,8 @@ class QCircuit : public IDisplay, public IJSON {
 
         // check equal dimensions
         if (other.d_ != d_) {
-            throw exception::DimsNotEqual("qpp::QCircuit::compose_circuit()",
-                                          "other");
+            throw exception::DimsNotEqual(
+                "qpp::QCircuit::compose_CTRL_circuit()", "other");
         }
         // check classical dits
         if (!pos_dit.has_value()) {
@@ -4583,8 +4583,8 @@ class QCircuit : public IDisplay, public IJSON {
         } else {
             if (internal::is_negative(pos_dit.value()) ||
                 pos_dit.value() > nc_) {
-                throw exception::OutOfRange("qpp::QCircuit::compose_circuit()",
-                                            "pos_dit");
+                throw exception::OutOfRange(
+                    "qpp::QCircuit::compose_CTRL_circuit()", "pos_dit");
             }
         }
         // check that overlapping qudits (in the current instance) were not
@@ -4598,7 +4598,7 @@ class QCircuit : public IDisplay, public IJSON {
                  ++i) {
                 if (was_measured(i)) {
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::compose_circuit()",
+                        "qpp::QCircuit::compose_CTRL_circuit()",
                         "Current qpp::QCircuit instance");
                 }
             }
@@ -4609,7 +4609,7 @@ class QCircuit : public IDisplay, public IJSON {
                  ++i) {
                 if (was_measured(pos_qudit + i)) {
                     throw exception::QuditAlreadyMeasured(
-                        "qpp::QCircuit::compose_circuit()",
+                        "qpp::QCircuit::compose_CTRL_circuit()",
                         "Current qpp::QCircuit instance");
                 }
             }
@@ -5343,7 +5343,8 @@ class QCircuit : public IDisplay, public IJSON {
 // free functions
 
 /**
- * \brief Appends (glues) a quantum circuit description to another one
+ * \brief Composes (appends) a quantum circuit description to the end of
+ * another one
  * \see qpp::couple_circuit_left() and qpp::couple_circuit_right()
  *
  * \note If qudit indexes of the second quantum circuit description do
@@ -5440,7 +5441,8 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
 }
 
 /**
- * \brief Appends (glues) a quantum circuit description to another one
+ * \brief Composes (appends) a quantum circuit description to the end of
+ * another one
  * \see qpp::couple_circuit_left() and qpp::couple_circuit_right()
  *
  * \note If qudit indexes of the second quantum circuit description do
