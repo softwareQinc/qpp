@@ -4576,7 +4576,7 @@ class QCircuit : public IDisplay, public IJSON {
         // check equal dimensions
         if (qc_target.d_ != d_) {
             throw exception::DimsNotEqual(
-                "qpp::QCircuit::compose_CTRL_circuit()", "qc_other");
+                "qpp::QCircuit::compose_CTRL_circuit()", "qc_target");
         }
         // check classical dits
         if (!pos_dit.has_value()) {
@@ -4633,7 +4633,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         add_dit(qc_target.nc_, pos_dit.value());
 
-        // STEP 1: update [c]ctrl and target indexes of qc_other
+        // STEP 1: update [c]ctrl and target indexes of qc_target
         for (auto& step : qc_target.circuit_) {
             std::visit(overloaded{
                            [&](GateStep& gate_step) {
@@ -4673,7 +4673,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         // STEP 2
         // replace the corresponding elements of measured_, measured_nd_,
-        // and clean_qudits_ with the ones of qc_other
+        // and clean_qudits_ with the ones of qc_target
         if (pos_qudit < 0) {
             std::copy_if(qc_target.measured_.begin(), qc_target.measured_.end(),
                          measured_.begin(), [](bool val) { return val; });
@@ -4699,7 +4699,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         // STEP 3
         // replace the corresponding elements of clean_dits_ and
-        // measurement_dits_ with the ones of qc_other
+        // measurement_dits_ with the ones of qc_target
         std::copy(qc_target.clean_dits_.begin(), qc_target.clean_dits_.end(),
                   std::next(clean_dits_.begin(),
                             static_cast<std::ptrdiff_t>(pos_dit.value())));

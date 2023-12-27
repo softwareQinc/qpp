@@ -29,6 +29,8 @@ Pre-release
       see https://github.com/softwareQinc/qpp/issues/165, and the corresponding 
       standalone versions
         qpp::compose_CTRL_circuit()
+    - qpp::measure_seq() now returns results in the same order as the order in 
+      which the qubits are being measured 
 
 Version 4.3.4 - 14 August 2023
     - Docker update, see the ["docker"] directory

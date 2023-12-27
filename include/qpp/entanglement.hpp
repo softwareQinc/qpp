@@ -711,9 +711,8 @@ realT concurrence(const Eigen::MatrixBase<Derived>& A) {
 
     std::sort(lambdas_sorted.begin(), lambdas_sorted.end(), std::greater<>());
     std::transform(lambdas_sorted.begin(), lambdas_sorted.end(),
-                   lambdas_sorted.begin(), [](realT elem) {
-                       return std::sqrt(std::abs(elem));
-                   }); // chop tiny negatives
+                   lambdas_sorted.begin(),
+                   [](realT elem) { return std::sqrt(std::abs(elem)); });
 
     return std::max<realT>(0., lambdas_sorted[0] - lambdas_sorted[1] -
                                    lambdas_sorted[2] - lambdas_sorted[3]);
