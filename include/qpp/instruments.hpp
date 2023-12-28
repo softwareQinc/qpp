@@ -835,14 +835,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
                   return target[lhs] < target[rhs];
               });
 
-    // std::cout << disp(idxs) << "\n";
-    // std::cout << "Starting:\n";
-    // if (rA.cols() == 1) {
-    //     std::cout << disp(dirac(rA, dims, {})) << '\n';
-    // } else {
-    //     std::cout << disp(dirac(rA, dims, dims)) << '\n';
-    // }
-
     //************ ket or density matrix ************//
     for (idx i = 0; i < target_size; ++i) {
         idx idx_i = idxs[i];
@@ -854,8 +846,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 
         idx curr_subsys_idx = target[idx_i];
 
-        // std::cout << "curr subsys idx: " << curr_subsys_idx << "\n";
-
         auto [m, probs, states] = measure(
             rA, Gates::get_no_thread_local_instance().Id(dims[curr_subsys_idx]),
             {curr_subsys_idx}, dims, destructive);
@@ -866,19 +856,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
         if (destructive) {
             // remove the lowest indexed subsystem from dims
             dims.erase(std::next(dims.begin(), curr_subsys_idx));
-            // decrement target subsystem indexes after curr_subsys_idx
-            // for (idx j = i + 1; j < target_size; ++j) {
-            //    --target[idxs[j]];
-            //}
         }
-
-        // std::cout << "m: " << m << " "
-        //           << "p: " << probs[m] << '\n';
-        // if (rA.cols() == 1) {
-        //     std::cout << disp(dirac(rA, dims, {})) << '\n';
-        // } else {
-        //     std::cout << disp(dirac(rA, dims, dims)) << '\n';
-        // }
     }
 
     return std::make_tuple(ms, ps, rA);
