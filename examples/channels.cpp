@@ -46,8 +46,9 @@ int main() {
     std::cout << disp(transpose(evalsupop)) << '\n';
 
     std::cout << ">> Their absolute values are:\n";
-    for (idx i = 0; i < (idx)evalsupop.size(); ++i)
+    for (idx i = 0; i < (idx)evalsupop.size(); ++i) {
         std::cout << std::abs(evalsupop(i)) << " ";
+    }
 
     // verification
     std::cout << "\n>> Norm difference for the superoperator action: ";

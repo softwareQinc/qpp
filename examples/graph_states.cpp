@@ -28,7 +28,7 @@ int main() {
     rhoG0 = (H3 * rhoG0 * adjoint(H3)).eval();
     rhoG1 = rhoG0;
     // apply pairwise Control-Phases
-    for (idx i = 0; i < 3; ++i)
+    for (idx i = 0; i < 3; ++i) {
         for (idx j = i + 1; j < 3; ++j) {
             if (Gamma[i][j]) {
                 G0 = apply(G0, gt.CZ, {i, j});
@@ -37,6 +37,7 @@ int main() {
                 rhoG1 = applyCTRL(rhoG1, gt.Z, {i}, {j});
             }
         }
+    }
     // end construction
 
     std::cout << ">> Resulting graph states:\n";

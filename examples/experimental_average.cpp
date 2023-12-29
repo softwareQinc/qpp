@@ -19,10 +19,11 @@ int main() {
     for (idx i = 0; i < N; ++i) {
         auto measured = measure(psi, evects);
         idx m = std::get<RES>(measured); // measurement result
-        if (evals[m] < 0)
+        if (evals[m] < 0) {
             --res; // -1
-        else
+        } else {
             ++res; // +1
+        }
     }
     std::cout << ">> N = " << N << " measurements\n";
     std::cout << ">> The experimental average of the observable X\n";
