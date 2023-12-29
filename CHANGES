@@ -31,6 +31,8 @@ Pre-release
         qpp::compose_CTRL_circuit()
     - qpp::measure_seq() now returns results in the same order as the order in 
       which the qubits are being measured 
+    - API changes in ["qpp/functions.hpp"], zket2dits() now returns 
+      std::optional<std::vector<idx>>
 
 Version 4.3.4 - 14 August 2023
     - Docker update, see the ["docker"] directory
