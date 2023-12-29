@@ -90,30 +90,24 @@ int main() {
     std::vector<idx> subsys_ket{0};
     std::vector<idx> subsys_rho{1};
 
-    auto measured_ket = measure_seq(psi, subsys_ket);
-    auto measured_rho = measure_seq(rho, subsys_rho);
+    auto [ms_ket, probs_ket, state_ket] = measure_seq(psi, subsys_ket);
+    auto [ms_rho, probs_rho, state_rho] = measure_seq(rho, subsys_rho);
 
     // ket
     std::cout << ">> Ket, measuring subsystem(s) ";
     std::cout << disp(subsys_ket, IOManipContainerOpts{}.set_sep(" ")) << '\n';
     std::cout << ">> Outcome(s): "
-              << disp(std::get<RES>(measured_ket),
-                      IOManipContainerOpts{}.set_sep(" "))
-              << '\n';
-    std::cout << ">> Probability:  " << prod(std::get<PROB>(measured_ket))
-              << '\n';
+              << disp(ms_ket, IOManipContainerOpts{}.set_sep(" ")) << '\n';
+    std::cout << ">> Probability:  " << prod(probs_ket) << '\n';
     std::cout << ">> Resulting state:\n";
-    std::cout << disp(std::get<ST>(measured_ket)) << '\n';
+    std::cout << disp(state_ket) << '\n';
 
     // density matrix
     std::cout << ">> Density matrix, measuring subsystem(s) ";
     std::cout << disp(subsys_rho, IOManipContainerOpts{}.set_sep(" ")) << '\n';
     std::cout << ">> Outcome(s): "
-              << disp(std::get<RES>(measured_rho),
-                      IOManipContainerOpts{}.set_sep(" "))
-              << '\n';
-    std::cout << ">> Probability:  " << prod(std::get<PROB>(measured_rho))
-              << '\n';
+              << disp(ms_rho, IOManipContainerOpts{}.set_sep(" ")) << '\n';
+    std::cout << ">> Probability:  " << prod(probs_rho) << '\n';
     std::cout << ">> Resulting state:\n";
-    std::cout << disp(std::get<ST>(measured_rho)) << '\n';
+    std::cout << disp(state_rho) << '\n';
 }

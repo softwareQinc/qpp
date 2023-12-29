@@ -22,14 +22,12 @@ int main() {
     std::cout << disp(result) << '\n';
 
     // measure the first qubit in the X basis
-    auto measured = measure(result, gt.H, {0});
-    std::cout << ">> Measurement result: " << std::get<RES>(measured) << '\n';
+    auto [m, probs, states] = measure(result, gt.H, {0});
+    std::cout << ">> Measurement result: " << m << '\n';
     std::cout << ">> Probabilities: ";
-    std::cout << disp(std::get<PROB>(measured),
-                      IOManipContainerOpts{}.set_sep(", "))
-              << '\n';
+    std::cout << disp(probs, IOManipContainerOpts{}.set_sep(", ")) << '\n';
     std::cout << ">> Resulting states:\n";
-    for (auto&& it : std::get<ST>(measured)) {
-        std::cout << disp(it) << "\n\n";
+    for (auto&& elem : states) {
+        std::cout << disp(elem) << "\n\n";
     }
 }
