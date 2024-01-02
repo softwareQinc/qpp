@@ -366,7 +366,7 @@ struct IOManipPointerOpts {
  */
 struct IOManipDiracOpts {
     IOManipComplexOpts cplx_opts{};
-    std::string plus_op = "\n";   ///< addition operator
+    std::string plus_op = " +\n"; ///< addition operator
     std::string mul_op = " * ";   ///< multiplication operator
                                   ///< absolute value
     bool amplitudes_after = true; ///< amplitudes are displayed after bra/kets
