@@ -1668,7 +1668,7 @@ inline ket mket(const std::vector<idx>& mask, const std::vector<idx>& dims) {
  */
 inline ket mket(const std::vector<idx>& mask, idx d = 2) {
     idx n = mask.size();
-    idx D = static_cast<idx>(std::llround(std::pow(d, n)));
+    idx D = internal::safe_pow(d, n);
 
     // EXCEPTION CHECKS
 
@@ -1763,7 +1763,7 @@ inline cmat mprj(const std::vector<idx>& mask, const std::vector<idx>& dims) {
  */
 inline cmat mprj(const std::vector<idx>& mask, idx d = 2) {
     idx n = mask.size();
-    idx D = static_cast<idx>(std::llround(std::pow(d, n)));
+    idx D = internal::safe_pow(d, n);
 
     // EXCEPTION CHECKS
 
@@ -2351,7 +2351,7 @@ template <char... Bits>
 ket operator"" _ket() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
-    qpp::ket q = qpp::ket::Zero(static_cast<idx>(std::llround(std::pow(2, n))));
+    qpp::ket q = qpp::ket::Zero(internal::safe_pow<idx>(2, n));
 
     // EXCEPTION CHECKS
 
@@ -2383,7 +2383,7 @@ template <char... Bits>
 bra operator"" _bra() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
-    qpp::bra q = qpp::ket::Zero(static_cast<idx>(std::llround(std::pow(2, n))));
+    qpp::bra q = qpp::ket::Zero(internal::safe_pow<idx>(2, n));
 
     // EXCEPTION CHECKS
 

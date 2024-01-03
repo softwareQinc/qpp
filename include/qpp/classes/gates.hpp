@@ -321,7 +321,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // END EXCEPTION CHECKS
 
         // minimum number of qubits required to implement the gate
-        idx D = static_cast<idx>(std::llround(std::pow(2, n)));
+        idx D = internal::safe_pow<idx>(2, n);
 
         cmat result = cmat::Zero(D, D);
 
@@ -660,7 +660,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check that target list match the dimension of the matrix
         idx DA = rA.rows();
-        if (DA != static_cast<idx>(std::llround(std::pow(d, target.size())))) {
+        if (DA != internal::safe_pow(d, target.size())) {
             throw exception::MatrixMismatchSubsys("qpp::Gates::CTRL()",
                                                   "A/d/target");
         }
@@ -684,7 +684,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         }
 
         idx D = prod(dims);
-        idx Dctrl = static_cast<idx>(std::llround(std::pow(d, ctrl.size())));
+        idx Dctrl = internal::safe_pow(d, ctrl.size());
         idx ctrl_size = ctrl.size();
 
         dyn_mat<typename Derived::Scalar> result =

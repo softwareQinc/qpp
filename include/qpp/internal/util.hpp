@@ -32,6 +32,7 @@
 #ifndef QPP_INTERNAL_UTIL_HPP_
 #define QPP_INTERNAL_UTIL_HPP_
 
+#include <cmath>
 #include <cstddef>
 #include <iomanip>
 #include <numeric>
@@ -415,6 +416,12 @@ inline idx get_dim_subsys(idx D, idx n) {
                             std::pow(D, 1. / static_cast<realT>(n))));
 
     return d;
+}
+
+// safe power of idx types, a^b
+template <typename T = idx>
+inline T safe_pow(T a, T b) {
+    return static_cast<T>(std::llround(std::pow(a, b)));
 }
 
 // chops a floating-point or complex number to zero, returns it unchanged

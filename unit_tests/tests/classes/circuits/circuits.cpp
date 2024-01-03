@@ -71,6 +71,7 @@ TEST(qpp_QCircuit_compose_circuit, AllTests) {}
 /******************************************************************************/
 /// BEGIN QCircuit& compose_CTRL_circuit(const std::vector<idx>& ctrl,
 ///       QCircuit qc_target, bigint pos_qudit,
+///       std::optional<std::vector<idx>> shift = std::nullopt,
 ///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_QCircuit_compose_CTRL_circuit, AllTests) {}
 /******************************************************************************/
@@ -352,11 +353,73 @@ TEST(qpp_adjoint, QCircuitAllTests) {}
 ///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_compose_circuit, AllTests) {}
 /******************************************************************************/
-/// BEGIN QCircuit& compose_CTRL_circuit( QCircuit qc_ctrl,
+/// BEGIN QCircuit& compose_CTRL_circuit(QCircuit qc_ctrl,
 ///       const std::vector<idx>& ctrl, const QCircuit& qc_target,
-///       bigint pos_qudit, std::optional<std::string> name = std::nullopt,
-///       std::optional<idx> pos_dit = std::nullopt)
-TEST(qpp_compose_CTRL_circuit, AllTests) {}
+///       bigint pos_qudit,
+///       std::optional<std::vector<idx>> shift = std::nullopt,
+///       bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt,
+///       std::optional<std::string> name = std::nullopt)
+TEST(qpp_compose_CTRL_circuit, AllTests) {
+    QCircuit qc_ctrl{5, 3, 2, "Control circuit"};
+    qc_ctrl.gate_fan(gt.H);
+
+    QCircuit qc_target{6, 4, 2, "Target circuit"};
+    qc_target.gate_fan(gt.Id2, {1, 2});
+    qc_target.gate(gt.X, 0);
+    qc_target.gate(gt.Y, 1);
+    qc_target.gate(gt.Z, 2);
+    qc_target.CTRL(gt.X, 1, 2);
+    qc_target.CTRL(gt.CNOT, {0, 2}, {1, 3}, std::vector<idx>{1, 0});
+
+    std::vector<idx> ctrl = {1, 2}, shift = {0, 1};
+
+    // compose at the end
+    QCircuit result1 =
+        QCircuit{qc_ctrl}.compose_CTRL_circuit(ctrl, qc_target, 5, shift);
+
+    // compose at the end, free function
+    QCircuit result1a =
+        compose_CTRL_circuit(qc_ctrl, ctrl, qc_target, 5, shift);
+
+    QCircuit expected_result1{11, 7};
+    expected_result1.gate_fan(gt.H, {0, 1, 2, 3, 4});
+    expected_result1.CTRL_fan(gt.Id2, {1, 2}, {6, 7}, std::vector<idx>{0, 1});
+    expected_result1.CTRL(gt.X, {1, 2}, 5, std::vector<idx>{0, 1});
+    expected_result1.CTRL(gt.Y, {1, 2}, 6, std::vector<idx>{0, 1});
+    expected_result1.CTRL(gt.Z, {1, 2}, 7, std::vector<idx>{0, 1});
+    expected_result1.CTRL(gt.X, {1, 2, 6}, 7, std::vector<idx>{0, 1, 0});
+    expected_result1.CTRL(gt.CNOT, {1, 2, 5, 7}, {6, 8},
+                          std::vector<idx>{0, 1, 1, 0});
+
+    EXPECT_EQ(result1, result1a);
+    EXPECT_EQ(expected_result1, result1);
+    EXPECT_EQ(expected_result1.get_nq(), 11);
+    EXPECT_EQ(expected_result1.get_nc(), 7);
+
+    // compose at the middle
+    ctrl = {1, 2}, shift = {1, 1};
+    QCircuit result2 =
+        QCircuit{qc_ctrl}.compose_CTRL_circuit(ctrl, qc_target, 3, shift);
+
+    // compose at the middle, free function
+    QCircuit result2a =
+        compose_CTRL_circuit(qc_ctrl, ctrl, qc_target, 3, shift);
+
+    QCircuit expected_result2{9, 7};
+    expected_result2.gate_fan(gt.H, {0, 1, 2, 3, 4});
+    expected_result2.CTRL_fan(gt.Id2, {1, 2}, {4, 5}, std::vector<idx>{1, 1});
+    expected_result2.CTRL(gt.X, {1, 2}, 3, std::vector<idx>{1, 1});
+    expected_result2.CTRL(gt.Y, {1, 2}, 4, std::vector<idx>{1, 1});
+    expected_result2.CTRL(gt.Z, {1, 2}, 5, std::vector<idx>{1, 1});
+    expected_result2.CTRL(gt.X, {1, 2, 4}, 5, std::vector<idx>{1, 1, 0});
+    expected_result2.CTRL(gt.CNOT, {1, 2, 3, 5}, {4, 6},
+                          std::vector<idx>{1, 1, 1, 0});
+
+    EXPECT_EQ(result2, result2a);
+    EXPECT_EQ(expected_result2, result2);
+    EXPECT_EQ(expected_result2.get_nq(), 9);
+    EXPECT_EQ(expected_result2.get_nc(), 7);
+}
 /******************************************************************************/
 /// BEGIN inline QCircuit couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
 ///       const std::vector<idx>& target,

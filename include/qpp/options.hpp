@@ -407,7 +407,8 @@ struct IOManipDiracOpts {
     /* \brief Sets amplitudes after
      *
      * \param show_amplitudes_after If true, amplitudes are displayed after
-     * bra/kets \return Reference to the current instance
+     * bra/kets
+     * \return Reference to the current instance
      */
 
     IOManipDiracOpts& set_amplitudes_after(bool show_amplitudes_after) {

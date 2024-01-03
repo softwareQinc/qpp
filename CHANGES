@@ -1,4 +1,4 @@
-Pre-release
+Version 5.0 - xx January 2024
     - All header files are moved into "[include/qpp]", so to include the header
       one now must '#include "qpp/qpp.h"' (and similarly for other header files
       in the internal implementation). This change was made for the sake of
@@ -33,6 +33,7 @@ Pre-release
       which the qubits are being measured 
     - API changes in ["qpp/functions.hpp"], zket2dits() now returns 
       std::optional<std::vector<idx>>
+    - Bugfix in qpp::QCircuit::compose_circuit()
 
 Version 4.3.4 - 14 August 2023
     - Docker update, see the ["docker"] directory
@@ -40,7 +41,7 @@ Version 4.3.4 - 14 August 2023
 
 Version 4.3.3 - 8 August 2023
     - Minor bugfix in pyqpp setup.py that prevented pip install from remote
-    - Bug fix in qpp::QEngine::execute() that prevented setting the initial
+    - Bugfix in qpp::QEngine::execute() that prevented setting the initial
       state of the engine to a custom state
 
 Version 4.3.2 - 12 June 2023
@@ -246,8 +247,8 @@ Version 4.0 - 20 March 2023
           qpp::prod(const std::initializer_list<T>&)
           qpp::sum(const std::initializer_list<T>&)
     - Enhanced qpp::prod() and qpp::sum() to allow list of matrices
-    - Fixed bug in qpp::measure() [https://github.com/softwareQinc/qpp/issues/132]
-    - Fixed bug in QCircuit::CTRL [https://github.com/softwareQinc/qpp/issues/130]
+    - Bugfix in qpp::measure() [https://github.com/softwareQinc/qpp/issues/132]
+    - Bugfix in QCircuit::CTRL [https://github.com/softwareQinc/qpp/issues/130]
     - Bumped GoogleTest version to 1.12.1
           https://github.com/google/googletest/commit/58d77fa8070e8cec2dc1ed015d66b454c8d78850
 
@@ -648,7 +649,7 @@ Version 1.0 - 3 July 2018
     - qpp::ket operator "" _ket(), qpp::ket operator "" _bra() and
       qpp::ket operator "" _prj() are now inside the newly introduced inline
       namespace qpp::literals
-    - Minor bug in qpp::Exception::what(), thanks Nick Lewycky for spotting it
+    - Minor bugfix in qpp::Exception::what(), thanks Nick Lewycky for spotting it
     - Updated the Wiki
 
 Version 1.0-rc4 - Release Candidate 4, 24 January 2018
@@ -696,7 +697,7 @@ Version 1.0.0-beta4 - 2 November 2016
           qpp::States::minus() - minus state of n qubits
     - Corrected qpp::is_matrix_expression<> type trait so now it works fine
           Thanks to @davidhigh https://stackoverflow.com/a/40293333/3093378
-    - Fixed bug in qpp::cor()
+    - Bugfix in qpp::cor()
     - Renamed qpp::loadMATLABmatrix() and saveMATLABmatrix() to
       qpp::loadMATLAB() and qpp::saveMATLAB(), respectively. Slightly changed
       their implementation so now one can load/save any Eigen type, similarly
@@ -732,8 +733,8 @@ Version 1.0.0-beta1 - 10 October 2016
     - Additional unit testing, added unit testing skeleton for all codebase
 
 Version 0.8.8.2 - 3 October 2016
-    - This is a bug-fix release
-    - Fixed compile bug in qpp::measure_seq() due to trying to modify a const
+    - This is a bugfix release
+    - Compile-time bugfix in qpp::measure_seq() due to trying to modify a const
       copy, which should have been non-const
 
 Version 0.8.8 - 30 September 2016
@@ -748,14 +749,14 @@ Version 0.8.8 - 30 September 2016
       @vasekp
     - Corrected code typo in qpp::internal::Singleton<T>, see Issue #35, thanks
       @titaschanda
-    - Fixed critical bug in qpp::lcm(const std::vector<bigint>&)
-    - Fixed critical bug in qpp::x2contfrac()
+    - Critical bugfix in qpp::lcm(const std::vector<bigint>&)
+    - Critical bugfix in qpp::x2contfrac()
     - Added new functions in "number_theory.h":
           qpp::egcd()   - extended greatest common divisor algorithm
           qpp::modinv() - modular inverse of a mod p
 
 Version 0.8.6 - 1 November 2015
-    - Fixed serious bug in qpp::applyCTRL(), which was failing before for
+    - Critical bugfix in qpp::applyCTRL(), which was failing before for
       control gates with 2 or more controls. Added unit test in
       "unit_tests/testing.cpp".
     - Removed "macros.h" preprocessor debug macros header added in v0.8.4
@@ -836,9 +837,9 @@ Version 0.6 - 16 April 2015
     - Minor cosmetic changes
 
 Version 0.5 - 19 March 2015
-    - Fixed a bug in class qpp::internal::Singleton<T> which allowed deleting
-      the instance via a pointer. Now static void operator delete(void*) is
-      marked private.
+    - Bugfix in class qpp::internal::Singleton<T> which allowed deleting the 
+      instance via a pointer. Now static void operator delete(void*) is marked 
+      private.
 
 Version 0.4 - 8 March 2015
     - Added noexcept specification where suitable

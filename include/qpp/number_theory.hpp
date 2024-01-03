@@ -554,9 +554,10 @@ inline bool isprime(bigint p, idx k = 80) {
     bigint u = 0, r;
 
     // write n - 1 as 2^u * r
-    for (bigint i = p - 1; i % 2 == 0; ++u, i /= 2)
+    for (bigint i = p - 1; i % 2 == 0; ++u, i /= 2) {
         ;
-    r = (p - 1) / static_cast<bigint>(std::llround(std::pow(2, u)));
+    }
+    r = (p - 1) / internal::safe_pow<bigint>(2, u);
 
     // repeat k times
     for (idx i = 0; i < k; ++i) {

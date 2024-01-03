@@ -99,7 +99,8 @@ disp(InputIterator first, InputIterator last, IOManipRangeOpts opts = {}) {
 /**
  * \brief Standard container std::ostream manipulator. The container must
  * support std::begin(), std::end() and forward iteration, and shouldn't be a
- * matrix expression \see qpp::IOManipContainerOpts
+ * matrix expression
+ * \see qpp::IOManipContainerOpts
  *
  * \param c Container
  * \param opts Formatting options

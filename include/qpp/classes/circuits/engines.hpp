@@ -251,8 +251,7 @@ class QEngine : public IDisplay, public IJSON {
          */
         void reset(std::optional<ket> psi = std::nullopt) {
             if (psi.has_value()) {
-                idx D = static_cast<idx>(std::llround(
-                    std::pow(qc_ptr_->get_d(), qc_ptr_->get_nq())));
+                idx D = internal::safe_pow(qc_ptr_->get_d(), qc_ptr_->get_nq());
                 if (static_cast<idx>(psi.value().rows()) != D) {
                     if (static_cast<idx>(psi.value().rows()) != D) {
                         throw exception::DimsNotEqual(
@@ -569,7 +568,7 @@ class QEngine : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         idx n = get_non_measured().size();
-        idx D = static_cast<idx>(std::llround(std::pow(qc_ptr_->get_d(), n)));
+        idx D = internal::safe_pow(qc_ptr_->get_d(), n);
         if (static_cast<idx>(psi.rows()) != D) {
             throw exception::DimsNotEqual("qpp::QEngine::set_psi()", "psi");
         }

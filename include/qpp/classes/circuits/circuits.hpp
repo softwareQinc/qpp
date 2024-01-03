@@ -203,13 +203,14 @@ class QCircuit : public IDisplay, public IJSON {
          *
          * \param gate_type Gate type
          * \param gate_hash Hash of the quantum gate
-         * \param ctrl Control qudit indexes
+         * \param ctrl Optional control qudit indexes
          * \param target Target qudit indexes
          * \param shift Optional gate shifts (for CTRL gates)
          * \param name Optional gate name
          */
         explicit GateStep(Type gate_type, std::size_t gate_hash,
-                          std::vector<idx> ctrl, std::vector<idx> target,
+                          std::optional<std::vector<idx>> ctrl,
+                          std::vector<idx> target,
                           std::optional<std::vector<idx>> shift = std::nullopt,
                           std::optional<std::string> name = std::nullopt)
             : gate_type_{gate_type}, gate_hash_{gate_hash},
@@ -254,6 +255,7 @@ class QCircuit : public IDisplay, public IJSON {
             os << gate_type_ << ", ";
             if (ctrl_.has_value()) {
                 if (gate_type_ == Type::CTRL || gate_type_ == Type::CTRL_FAN) {
+                    os << "ctrl = ";
                     os << disp(ctrl_.value(),
                                IOManipContainerOpts{}.set_sep(", "))
                        << ", ";
@@ -454,12 +456,12 @@ class QCircuit : public IDisplay, public IJSON {
         std::ostream& display(std::ostream& os) const override {
             os << measurement_type_ << ", ";
             os << "target = "
-               << disp(target_, IOManipContainerOpts{}.set_sep(", ")) << ", ";
+               << disp(target_, IOManipContainerOpts{}.set_sep(", "));
             if (measurement_type_ != Type::RESET &&
                 measurement_type_ != Type::RESET_MANY &&
                 measurement_type_ != Type::DISCARD &&
                 measurement_type_ != Type::DISCARD_MANY) {
-                os << "c_reg = " << c_reg_;
+                os << ", c_reg = " << c_reg_;
             }
             if (name_.has_value()) {
                 os << ", name = " << std::quoted(name_.value());
@@ -563,8 +565,8 @@ class QCircuit : public IDisplay, public IJSON {
         /**
          * \brief qpp::IDisplay::display() override
          *
-         * Writes to the output stream a textual representation of the
-         * quantum circuit resources
+         * Writes to the output stream a textual representation of the quantum
+         * circuit resources
          *
          * \param os Output stream passed by reference
          * \return Reference to the output stream
@@ -599,8 +601,7 @@ class QCircuit : public IDisplay, public IJSON {
   public:
     /**
      * \class qpp::QCircuit::iterator
-     * \brief Quantum circuit description bound-checking (safe) forward
-     * iterator
+     * \brief Quantum circuit description bound-checking (safe) forward iterator
      *
      * \note The iterator is a const_iterator by default
      */
@@ -1194,8 +1195,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = U.has_value() ? hash_eigen(U.value()) : 0;
         // iterate over all steps in the circuit
 
-        for (auto&& elem : *this) {
-            auto step = elem.get_step();
+        for (auto&& step : circuit_) {
             if (std::holds_alternative<GateStep>(step)) {
                 auto gate_step = std::get<GateStep>(step);
                 if (U.has_value() && gate_step.gate_hash_ != hashU) {
@@ -1272,8 +1272,7 @@ class QCircuit : public IDisplay, public IJSON {
         // TODO check this
 
         // iterate over all steps in the circuit
-        for (auto&& elem : *this) {
-            auto step = elem.get_step();
+        for (auto&& step : circuit_) {
             if (std::holds_alternative<MeasurementStep>(step)) {
                 auto measurement_step =
                     std::get<QCircuit::MeasurementStep>(step);
@@ -1476,7 +1475,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         for (auto& step : circuit_) {
             std::visit(overloaded{
-                           // update gate_step indexes
+                           // update gate indexes
                            [&](GateStep& gate_step) { // update ctrl indexes
                                if (is_CTRL(gate_step)) {
                                    for (idx& elem : gate_step.ctrl_.value()) {
@@ -1551,29 +1550,28 @@ class QCircuit : public IDisplay, public IJSON {
 
         nc_ += n;
 
-        // update gate indexes
-        for (auto& gate_step : circuit_) {
-            if (std::holds_alternative<GateStep>(gate_step)) {
-                auto& gate = std::get<GateStep>(gate_step);
-                // update cctrl indexes
-                if (is_cCTRL(gate)) {
-                    for (idx& elem : gate.ctrl_.value()) {
-                        if (elem >= pos) {
-                            elem += n;
-                        }
-                    }
-                }
-            }
-        }
-
-        // update measurement indexes
-        for (auto& measurement_step : circuit_) {
-            if (std::holds_alternative<MeasurementStep>(measurement_step)) {
-                auto& measurement = std::get<MeasurementStep>(measurement_step);
-                if (measurement.c_reg_ >= pos) {
-                    measurement.c_reg_ += n;
-                }
-            }
+        // update cCTRL gate indexes and measurement indexes
+        for (auto& step : circuit_) {
+            std::visit(overloaded{
+                           [&](GateStep& gate_step) {
+                               // update cCTRL indexes
+                               if (is_cCTRL(gate_step)) {
+                                   for (idx& elem : gate_step.ctrl_.value()) {
+                                       if (elem >= pos) {
+                                           elem += n;
+                                       }
+                                   }
+                               }
+                           },
+                           // update measurement indexes
+                           [&](MeasurementStep& measurement_step) {
+                               if (measurement_step.c_reg_ >= pos) {
+                                   measurement_step.c_reg_ += n;
+                               }
+                           },
+                           [&](NOPStep&) {},
+                       },
+                       step);
         }
 
         // update (enlarge) the clean dits vector
@@ -1641,7 +1639,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashU, U);
 
         circuit_.emplace_back(GateStep{GateStep::Type::SINGLE, hashU,
-                                       std::vector<idx>{}, std::vector<idx>{i},
+                                       std::nullopt, std::vector<idx>{i},
                                        std::nullopt, name});
 
         ++gate_count_[hashU];
@@ -1694,9 +1692,9 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(
-            GateStep{GateStep::Type::TWO, hashU, std::vector<idx>{},
-                     std::vector<idx>{i, j}, std::nullopt, name});
+        circuit_.emplace_back(GateStep{GateStep::Type::TWO, hashU, std::nullopt,
+                                       std::vector<idx>{i, j}, std::nullopt,
+                                       name});
 
         ++gate_count_[hashU];
 
@@ -1751,9 +1749,9 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(
-            GateStep{GateStep::Type::THREE, hashU, std::vector<idx>{},
-                     std::vector<idx>{i, j, k}, std::nullopt, name});
+        circuit_.emplace_back(GateStep{GateStep::Type::THREE, hashU,
+                                       std::nullopt, std::vector<idx>{i, j, k},
+                                       std::nullopt, name});
 
         ++gate_count_[hashU];
 
@@ -1818,9 +1816,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
 
-        circuit_.emplace_back(GateStep{GateStep::Type::FAN, hashU,
-                                       std::vector<idx>{}, target, std::nullopt,
-                                       name});
+        circuit_.emplace_back(GateStep{GateStep::Type::FAN, hashU, std::nullopt,
+                                       target, std::nullopt, name});
 
         gate_count_[hashU] += target.size();
 
@@ -1893,7 +1890,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         idx n = static_cast<idx>(target.size());
-        idx D = static_cast<idx>(std::llround(std::pow(d_, n)));
+        idx D = internal::safe_pow(d_, n);
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
@@ -1938,7 +1935,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashU, U);
 
         circuit_.emplace_back(GateStep{GateStep::Type::JOINT, hashU,
-                                       std::vector<idx>{}, target, std::nullopt,
+                                       std::nullopt, target, std::nullopt,
                                        name});
 
         ++gate_count_[hashU];
@@ -2235,7 +2232,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": target");
         }
 
-        // check that ctrl and target don't share common elements
+        // check that ctrl and target don't overlap
         for (idx elem : target) {
             if (elem == ctrl) {
                 throw exception::OutOfRange("qpp::QCircuit::CTRL_fan()",
@@ -2357,7 +2354,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": target");
         }
 
-        // check that ctrl and target don't share common elements
+        // check that ctrl and target don't overlap
         for (idx elem_ctrl : ctrl) {
             for (idx elem_target : target) {
                 if (elem_ctrl == elem_target) {
@@ -2391,7 +2388,6 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             }
         }
-
         // END EXCEPTION CHECKS
 
         if (!name.has_value()) {
@@ -2442,8 +2438,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        idx D_target =
-            static_cast<idx>(std::llround(std::pow(d_, target.size())));
+        idx D_target = internal::safe_pow(d_, target.size());
 
         // check valid ctrl
         if (ctrl.empty()) {
@@ -2484,7 +2479,7 @@ class QCircuit : public IDisplay, public IJSON {
             }
         }
 
-        // check that ctrl and target don't share common elements
+        // check that ctrl and target don't overlap
         for (idx elem_ctrl : ctrl) {
             for (idx elem_target : target) {
                 if (elem_ctrl == elem_target) {
@@ -2597,7 +2592,7 @@ class QCircuit : public IDisplay, public IJSON {
                                                   context + ": target");
         }
 
-        // check that ctrl and target don't share common elements
+        // check that ctrl and target don't overlap
         for (idx elem : ctrl) {
             if (elem == target) {
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
@@ -2674,8 +2669,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        idx D_target =
-            static_cast<idx>(std::llround(std::pow(d_, target.size())));
+        idx D_target = internal::safe_pow(d_, target.size());
 
         // check valid ctrl
         if (ctrl >= nq_) {
@@ -2709,7 +2703,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": target");
         }
 
-        // check that ctrl and target don't share common elements
+        // check that ctrl and target don't overlap
         for (idx elem : target) {
             if (elem == ctrl) {
                 throw exception::OutOfRange("qpp::QCircuit::CTRL()",
@@ -3067,8 +3061,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        idx D_target =
-            static_cast<idx>(std::llround(std::pow(d_, target.size())));
+        idx D_target = internal::safe_pow(d_, target.size());
 
         // check valid ctrl_dits
         if (ctrl_dits.empty()) {
@@ -3280,8 +3273,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        idx D_target =
-            static_cast<idx>(std::llround(std::pow(d_, target.size())));
+        idx D_target = internal::safe_pow(d_, target.size());
 
         // check valid ctrl_dit
         if (ctrl_dit >= nc_) {
@@ -4100,7 +4092,9 @@ class QCircuit : public IDisplay, public IJSON {
             // add qudits before beginning
             idx extra_qudits = std::abs(pos_qudit);
             add_qudit(extra_qudits, 0);
-        } else if (pos_qudit >= 0) {
+            pos_qudit = 0;
+        }
+        if (pos_qudit >= 0) {
             // add qudits after beginning
             idx tmp = pos_qudit + other.nq_;
             if (tmp > nq_) {
@@ -4452,39 +4446,41 @@ class QCircuit : public IDisplay, public IJSON {
         // STEP 0: insert classical dits from the to-be-matched circuit
         add_dit(other.nc_, pos_dit.value());
 
-        // STEP 1: update [c]ctrl and target indexes of other
-        for (auto& gate_step : other.circuit_) {
-            if (std::holds_alternative<GateStep>(gate_step)) {
-                auto& gate = std::get<GateStep>(gate_step);
-                // update the cctrl indexes
-                if (is_cCTRL(gate)) {
-                    for (idx& dit : gate.ctrl_.value()) {
-                        dit += pos_dit.value();
-                    }
-                }
-                // update the ctrl indexes
-                if (is_CTRL(gate)) {
-                    for (idx& pos : gate.ctrl_.value()) {
-                        pos = target[pos];
-                    }
-                }
-                // update the target indexes
-                for (idx& pos : gate.target_) {
-                    pos = target[pos];
-                }
-            }
-        } // end for other.gates_
-
-        // update measurement indexes of other
-        for (auto& measurement_step : other.circuit_) {
-            if (std::holds_alternative<MeasurementStep>(measurement_step)) {
-                auto& measurement = std::get<MeasurementStep>(measurement_step);
-                measurement.c_reg_ += pos_dit.value();
-                for (idx& pos : measurement.target_) {
-                    pos = target[pos];
-                }
-            }
-        } // end for other.measurements_
+        // STEP 1
+        //
+        // update [c]ctrl, target, and measurement indexes of other
+        for (auto& step : other.circuit_) {
+            std::visit(overloaded{
+                           // update gate indexes
+                           [&](GateStep& gate_step) {
+                               // update the cctrl indexes
+                               if (is_cCTRL(gate_step)) {
+                                   for (idx& dit : gate_step.ctrl_.value()) {
+                                       dit += pos_dit.value();
+                                   }
+                               }
+                               // update the ctrl indexes
+                               if (is_CTRL(gate_step)) {
+                                   for (idx& pos : gate_step.ctrl_.value()) {
+                                       pos = target[pos];
+                                   }
+                               }
+                               // update the target indexes
+                               for (idx& pos : gate_step.target_) {
+                                   pos = target[pos];
+                               }
+                           },
+                           // update measurement indexes
+                           [&](MeasurementStep& measurement_step) {
+                               measurement_step.c_reg_ += pos_dit.value();
+                               for (idx& pos : measurement_step.target_) {
+                                   pos = target[pos];
+                               }
+                           },
+                           [&](NOPStep&) {},
+                       },
+                       step);
+        }
 
         // TODO check this
 
@@ -4546,6 +4542,11 @@ class QCircuit : public IDisplay, public IJSON {
      * control
      * \see qpp::QCircuit::compose_circuit()
      *
+     * \note For each gate or controlled-gate in the target circuit description,
+     * a control is being added from the control circuit description control
+     * qudits. Classical control gates and measurements/resets/discards in the
+     * target circuit description are left unchanged.
+     *
      * \note If the qudit indexes of the added quantum circuit description
      * do not totally overlap with the indexes of the current quantum
      * circuit description, then the required number of additional qudits
@@ -4560,24 +4561,34 @@ class QCircuit : public IDisplay, public IJSON {
      * current quantum circuit description, then the required number of
      * additional qudits are automatically added to the current quantum
      * circuit description.
+     * \param shift Optional, performs the control as if the \a ctrl qudit state
+     * was \f$X\f$-incremented by \a shift
      * \param pos_dit Optional, the first classical dit of \a qc_target quantum
-     * circuit description is inserted before the \a pos_dit classical dit
-     * index of the current quantum circuit description (in the classical dits
-     * array), the rest following in order. If absent (default), insertion is
-     * performed at the end.
+     * circuit description is inserted before the \a pos_dit classical dit index
+     * of the current quantum circuit description (in the classical dits array),
+     * the rest following in order. If absent (default), insertion is performed
+     * at the end.
      * \return Reference to the current instance
      */
     QCircuit&
-    compose_CTRL_circuit([[maybe_unused]] const std::vector<idx>& ctrl,
-                         QCircuit qc_target, bigint pos_qudit,
+    compose_CTRL_circuit(const std::vector<idx>& ctrl, QCircuit qc_target,
+                         bigint pos_qudit,
+                         std::optional<std::vector<idx>> shift = std::nullopt,
                          std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
+
+        // check non-empty qc_target
+        if (qc_target.get_nq() == 0) {
+            throw exception::ZeroSize("qpp::QCircuit::compose_CTRL_circuit()",
+                                      "qc_target");
+        }
 
         // check equal dimensions
         if (qc_target.d_ != d_) {
             throw exception::DimsNotEqual(
                 "qpp::QCircuit::compose_CTRL_circuit()", "qc_target");
         }
+
         // check classical dits
         if (!pos_dit.has_value()) {
             pos_dit = nc_;
@@ -4588,6 +4599,7 @@ class QCircuit : public IDisplay, public IJSON {
                     "qpp::QCircuit::compose_CTRL_circuit()", "pos_dit");
             }
         }
+
         // check that overlapping qudits (in the current instance) were not
         // already destructively measured
         if (pos_qudit < 0 &&
@@ -4615,115 +4627,135 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             }
         }
-        // END EXCEPTION CHECKS
 
-        // STEP 0: add additional qudits (if needed) and classical dits from
-        // the to-be-matched circuit
-        if (pos_qudit < 0) {
-            // add qudits before beginning
-            idx extra_qudits = std::abs(pos_qudit);
-            add_qudit(extra_qudits, 0);
-        } else if (pos_qudit >= 0) {
-            // add qudits after beginning
-            idx tmp = pos_qudit + qc_target.nq_;
-            if (tmp > nq_) {
-                idx extra_qudits = tmp - nq_;
-                add_qudit(extra_qudits);
+        // check valid ctrl
+        if (ctrl.empty()) {
+            throw exception::ZeroSize("qpp::QCircuit::compose_CTRL_circuit()",
+                                      "ctrl");
+        }
+        for (idx elem : ctrl) {
+            if (elem >= nq_) {
+                throw exception::OutOfRange(
+                    "qpp::QCircuit::compose_CTRL_circuit()", "ctrl");
+            }
+            // check ctrl was not measured before
+            if (was_measured(elem)) {
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::compose_CTRL_circuit()", "ctrl");
             }
         }
-        add_dit(qc_target.nc_, pos_dit.value());
-
-        // STEP 1: update [c]ctrl and target indexes of qc_target
-        for (auto& step : qc_target.circuit_) {
-            std::visit(overloaded{
-                           [&](GateStep& gate_step) {
-                               // update the cctrl indexes
-                               if (is_cCTRL(gate_step)) {
-                                   for (idx& pos : gate_step.ctrl_.value()) {
-                                       pos += pos_dit.value();
-                                   }
-                               }
-                               // update the ctrl indexes
-                               if (is_CTRL(gate_step) && pos_qudit >= 0) {
-                                   for (idx& pos : gate_step.ctrl_.value()) {
-                                       pos += pos_qudit;
-                                   }
-                               }
-
-                               // update the target indexes
-                               if (pos_qudit >= 0) {
-                                   for (idx& pos : gate_step.target_) {
-                                       pos += pos_qudit;
-                                   }
-                               }
-                           },
-                           [&](MeasurementStep& measurement_step) {
-                               measurement_step.c_reg_ += pos_dit.value();
-                               if (pos_qudit >= 0) {
-                                   for (idx& pos : measurement_step.target_) {
-                                       pos += pos_qudit;
-                                   }
-                               }
-                           },
-                           [&](NOPStep&) {},
-                       },
-                       step);
-
-        } // end for
-
-        // STEP 2
-        // replace the corresponding elements of measured_, measured_nd_,
-        // and clean_qudits_ with the ones of qc_target
-        if (pos_qudit < 0) {
-            std::copy_if(qc_target.measured_.begin(), qc_target.measured_.end(),
-                         measured_.begin(), [](bool val) { return val; });
-            std::copy_if(qc_target.measured_nd_.begin(),
-                         qc_target.measured_nd_.end(), measured_nd_.begin(),
-                         [](bool val) { return val; });
-            std::copy_if(qc_target.clean_qudits_.begin(),
-                         qc_target.clean_qudits_.end(), clean_qudits_.begin(),
-                         [](bool val) { return !val; });
-        } else {
-            std::copy_if(qc_target.measured_.begin(), qc_target.measured_.end(),
-                         std::next(measured_.begin(), pos_qudit),
-                         [](bool val) { return val; });
-            std::copy_if(qc_target.measured_nd_.begin(),
-                         qc_target.measured_nd_.end(),
-                         std::next(measured_nd_.begin(), pos_qudit),
-                         [](bool val) { return val; });
-            std::copy_if(qc_target.clean_qudits_.begin(),
-                         qc_target.clean_qudits_.end(),
-                         std::next(clean_qudits_.begin(), pos_qudit),
-                         [](bool val) { return !val; });
+        // check no duplicates ctrl
+        if (!internal::check_no_duplicates(ctrl)) {
+            throw exception::Duplicates("qpp::QCircuit::compose_CTRL_circuit()",
+                                        "ctrl");
+        }
+        // check that ctrl and target do not overlap
+        idx target_begin = pos_qudit;                    // including it
+        idx target_end = pos_qudit + qc_target.get_nq(); // excluding it
+        for (idx elem : ctrl) {
+            if (elem >= target_begin && elem < target_end) {
+                throw exception::OutOfRange(
+                    "qpp::QCircuit::compose_CTRL_circuit()", "ctrl/qc_target");
+            }
         }
 
-        // STEP 3
-        // replace the corresponding elements of clean_dits_ and
-        // measurement_dits_ with the ones of qc_target
-        std::copy(qc_target.clean_dits_.begin(), qc_target.clean_dits_.end(),
-                  std::next(clean_dits_.begin(),
-                            static_cast<std::ptrdiff_t>(pos_dit.value())));
-        std::copy(qc_target.measurement_dits_.begin(),
-                  qc_target.measurement_dits_.end(),
-                  std::next(measurement_dits_.begin(),
-                            static_cast<std::ptrdiff_t>(pos_dit.value())));
-
-        // STEP 4: append the copy of qc_target to the current instance
-        circuit_.insert(circuit_.end(), qc_target.circuit_.begin(),
-                        qc_target.circuit_.end());
-
-        // STEP 5: modify gate counts, hash tables etc. accordingly
-        // update matrix hash table
-        for (auto& elem : qc_target.cmat_hash_tbl_) {
-            cmat_hash_tbl_[elem.first] = elem.second;
+        // check shift
+        if (shift.has_value() && (shift.value().size() != ctrl.size())) {
+            throw exception::SizeMismatch(
+                "qpp::QCircuit::compose_CTRL_circuit()", "ctrl/shift");
         }
-        // update gate counts
-        for (auto& elem : qc_target.gate_count_) {
-            gate_count_[elem.first] += elem.second;
+        if (shift.has_value()) {
+            for (idx elem : shift.value()) {
+                if (elem >= d_) {
+                    throw exception::OutOfRange(
+                        "qpp::QCircuit::compose_CTRL_circuit()", "shift");
+                }
+            }
         }
-        // update measurement counts
-        for (auto& elem : qc_target.measurement_count_) {
-            measurement_count_[elem.first] += elem.second;
+        // END EXCEPTION CHECKS
+
+        // compose the current instance with qc_target
+        idx end_ctrl_circuit = this->get_step_count();
+        this->compose_circuit(qc_target, pos_qudit, pos_dit);
+        idx end_composed_circuit = this->get_step_count();
+
+        // modify all gate steps to control gate steps in the added qc_target
+        // then enlarge ctrl and shift accordingly
+        for (idx i = end_ctrl_circuit; i < end_composed_circuit; ++i) {
+            std::visit(
+                overloaded{
+                    [&](GateStep& gate_step) {
+                        switch (gate_step.gate_type_) {
+                            // don't do anything to these gates and return
+                            case GateStep::Type::NONE:
+                            case GateStep::Type::cCTRL:
+                            case GateStep::Type::cCTRL_FAN:
+                                return;
+                            // change the type of these gates to CTRL
+                            case GateStep::Type::SINGLE:
+                            case GateStep::Type::TWO:
+                            case GateStep::Type::THREE:
+                            case GateStep::Type::JOINT:
+                                gate_step.gate_type_ = GateStep::Type::CTRL;
+                                break;
+                            // change the type of FAN gate to CTRL_FAN
+                            case GateStep::Type::FAN:
+                                gate_step.gate_type_ = GateStep::Type::CTRL_FAN;
+                                break;
+                                // don't do anything to these gates
+                            case GateStep::Type::CTRL:
+                            case GateStep::Type::CTRL_FAN:
+                                break;
+                        }
+
+                        // ctrl gate
+                        if (gate_step.ctrl_.has_value()) {
+                            // enlarge ctrl
+                            gate_step.ctrl_.value().insert(
+                                gate_step.ctrl_.value().begin(), ctrl.begin(),
+                                ctrl.end());
+                            // enlarge shifts
+                            // both shifts present
+                            if (shift.has_value() &&
+                                gate_step.shift_.has_value()) {
+                                gate_step.shift_.value().insert(
+                                    gate_step.shift_.value().begin(),
+                                    shift.value().begin(), shift.value().end());
+                            }
+                            // current shift present (ctrl circuit)
+                            else if (shift.has_value() &&
+                                     !gate_step.shift_.has_value()) {
+                                // fill with zero at the end
+                                gate_step.shift_ = std::vector<idx>(
+                                    gate_step.ctrl_.value().size(), 0);
+                                // copy shift at the beginning
+                                std::copy(shift.value().begin(),
+                                          shift.value().end(),
+                                          gate_step.shift_.value().begin());
+                            }
+                            // old shift present (qc_target)
+                            else if (!shift.has_value() &&
+                                     gate_step.shift_.has_value()) {
+                                gate_step.shift_.value().insert(
+                                    gate_step.shift_.value().begin(),
+                                    ctrl.size() -
+                                        gate_step.shift_.value().size(),
+                                    0);
+                            }
+                        }
+                        // regular gate
+                        else {
+                            gate_step.ctrl_ = ctrl;
+                            if (shift.has_value()) {
+                                gate_step.shift_ = shift;
+                            }
+                        }
+                    },
+                    // measurements are left unchanged
+                    [&](const MeasurementStep&) {},
+                    // NOPs are left unchanged
+                    [&](const NOPStep&) {}},
+                circuit_[i]);
         }
 
         return *this;
@@ -4750,49 +4782,37 @@ class QCircuit : public IDisplay, public IJSON {
      * measurements, false otherwise
      */
     bool has_measurements() const noexcept {
-        for (auto&& elem : *this) {
-            auto step = elem.get_step();
-            if (std::holds_alternative<MeasurementStep>(step)) {
-                return true;
-            }
-        }
-
-        return false;
+        return std::find_if(circuit_.begin(), circuit_.end(), [](auto&& arg) {
+                   return std::holds_alternative<MeasurementStep>(arg);
+               }) != circuit_.end();
     }
 
     /**
-     * \brief Returns true if the quantum circuit description contains any
-     * operations/measurements that remove qudits, false otherwise
+     * \brief Returns true if the quantum circuit description
+     * contains any operations/measurements that remove qudits,
+     * false otherwise
      *
      * \return True if the quantum circuit description contains any
      * operations/measurements that remove qudits, false otherwise
      */
     bool removes_qudits() const noexcept {
-        for (auto&& elem : *this) {
-            auto step = elem.get_step();
-            if (std::holds_alternative<MeasurementStep>(step)) {
-                auto measurement_step = std::get<MeasurementStep>(step);
-                switch (measurement_step.measurement_type_) {
-                    case MeasurementStep::Type::MEASURE:
-                    case MeasurementStep::Type::MEASURE_MANY:
-                    case MeasurementStep::Type::MEASURE_V:
-                    case MeasurementStep::Type::MEASURE_V_JOINT:
-                    case MeasurementStep::Type::DISCARD:
-                    case MeasurementStep::Type::DISCARD_MANY:
-                        return true;
-                    case MeasurementStep::Type::NONE:
-                    case MeasurementStep::Type::MEASURE_ND:
-                    case MeasurementStep::Type::MEASURE_MANY_ND:
-                    case MeasurementStep::Type::MEASURE_V_ND:
-                    case MeasurementStep::Type::MEASURE_V_JOINT_ND:
-                    case MeasurementStep::Type::RESET:
-                    case MeasurementStep::Type::RESET_MANY:
-                        return false;
-                } // end switch
-            }     // end if
-        }         // end for
-
-        return false;
+        return std::find_if(circuit_.begin(), circuit_.end(), [](auto&& arg) {
+                   if (std::holds_alternative<MeasurementStep>(arg)) {
+                       switch (
+                           std::get<MeasurementStep>(arg).measurement_type_) {
+                           case MeasurementStep::Type::MEASURE:
+                           case MeasurementStep::Type::MEASURE_MANY:
+                           case MeasurementStep::Type::MEASURE_V:
+                           case MeasurementStep::Type::MEASURE_V_JOINT:
+                           case MeasurementStep::Type::DISCARD:
+                           case MeasurementStep::Type::DISCARD_MANY:
+                               return true;
+                           default:
+                               return false;
+                       }
+                   }
+                   return false;
+               }) != circuit_.end();
     }
 
     /**
@@ -4817,7 +4837,8 @@ class QCircuit : public IDisplay, public IJSON {
         for (auto& step : circuit_) {
             std::visit(overloaded{
                            [&](QCircuit::GateStep& gate_step) {
-                               // get the gate and its corresponding hash
+                               // get the gate and its corresponding
+                               // hash
                                std::size_t hashU = gate_step.gate_hash_;
                                cmat U = htbl[hashU];
 
@@ -4842,13 +4863,14 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Checks whether a qudit in the circuit was used before or not
-     * \see qpp::QCircuit::get_clean_qudits(),
-     * qpp::QCircuit::get_dirty_qudits()
+     * \brief Checks whether a qudit in the circuit was used before
+     * or not
+     * \see qpp::QCircuit::get_clean_qudits(), qpp::QCircuit::get_dirty_qudits()
      *
      * \param i Qudit index
-     * \return True if the qudit \a i was used before (by a gate and/or
-     * measurement, either destructive or non-destructive), false otherwise
+     * \return True if the qudit \a i was used before (by a gate
+     * and/or measurement, either destructive or non-destructive),
+     * false otherwise
      */
     bool is_clean_qudit(idx i) const {
         // EXCEPTION CHECKS
@@ -4863,14 +4885,14 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Checks whether a classical dit in the circuit was used before
-     * or not
+     * \brief Checks whether a classical dit in the circuit was used before or
+     * not
      * \see qpp::QCircuit::get_clean_dits(), qpp::QCircuit::get_dirty_dits()
      *
      * \param i Classical dit index
-     * \return True if the classical dit \a i was used before (by a cCTRL
-     * gate and/or measurement, either destructive or non-destructive),
-     * false otherwise
+     * \return True if the classical dit \a i was used before (by a cCTRL gate
+     * and/or measurement, either destructive or non-destructive), false
+     * otherwise
      */
     bool is_clean_dit(idx i) const {
         // EXCEPTION CHECKS
@@ -4885,14 +4907,13 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Checks whether a classical dit in the circuit was used to
-     * store the result of a measurement (either destructive or
-     * non-destructive)
+     * \brief Checks whether a classical dit in the circuit was used to store
+     * the result of a measurement (either destructive or non-destructive)
      * \see qpp::QCircuit::get_measurement_dits()
      *
      * \param i Classical dit index
-     * \return True if the classical dit \a i was used before to store the
-     * result of a measurement, false otherwise
+     * \return True if the classical dit \a i was used before to
+     * store the result of a measurement, false otherwise
      */
     bool is_measurement_dit(idx i) const {
         // EXCEPTION CHECKS
@@ -4938,7 +4959,8 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Vector of clean classical dits
-     * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::get_dirty_dits()
+     * \see qpp::QCircuit::is_clean_dit(),
+     * qpp::QCircuit::get_dirty_dits()
      *
      * \return Vector of clean classical dits
      */
@@ -4955,7 +4977,8 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Vector of dirty classical dits
-     * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::get_clean_dits()
+     * \see qpp::QCircuit::is_clean_dit(),
+     * qpp::QCircuit::get_clean_dits()
      *
      * \return Vector of dirty classical dits
      */
@@ -4964,9 +4987,10 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Removes clean qudit from the quantum circuit description and
-     * relabels the rest of the qudits accordingly
-     * \see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::compress()
+     * \brief Removes clean qudit from the quantum circuit
+     * description and relabels the rest of the qudits accordingly
+     * \see qpp::QCircuit::is_clean_qudit(),
+     * qpp::QCircuit::compress()
      *
      * \param target Target clean qudit index that is removed
      * \return Reference to the current instance
@@ -4981,7 +5005,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        for (auto&& step : circuit_) {
+        for (auto& step : circuit_) {
             std::visit(overloaded{
                            [&](QCircuit::GateStep& gate_step) {
                                if (is_CTRL(gate_step)) {
@@ -5017,11 +5041,12 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Removes clean classical dit from the quantum circuit
-     * description and relabels the rest of the classical dits accordingly
+     * \brief Removes clean classical dit from the quantum circuit description
+     * and relabels the rest of the classical dits accordingly
      * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::compress()
      *
-     * \param target Target clean classical dit index that is removed
+     * \param target Target clean classical dit index that is
+     * removed
      * \return Reference to the current instance
      */
     QCircuit& remove_clean_dit(idx target) {
@@ -5034,7 +5059,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        for (auto&& step : circuit_) {
+        for (auto& step : circuit_) {
             std::visit(overloaded{
                            [&](QCircuit::GateStep& gate_step) {
                                if (is_cCTRL(gate_step)) {
@@ -5063,8 +5088,8 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Removes list of clean qudits from the quantum circuit
-     * description and relabels the rest of the qudits accordingly
+     * \brief Removes list of clean qudits from the quantum circuit description
+     * and relabels the rest of the qudits accordingly
      * \see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::compress()
      *
      * \param target Target clean qudit indexes that are removed
@@ -5097,9 +5122,11 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Removes list of clean classical dits from the quantum circuit
      * description and relabels the rest of the classical dits accordingly
+     *
      * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::compress()
      *
-     * \param target Target clean classical dit indexes that are removed
+     * \param target Target clean classical dit indexes that are
+     * removed
      * \return Reference to the current instance
      */
     QCircuit& remove_clean_dits(std::vector<idx> target) {
@@ -5127,13 +5154,13 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Removes all clean qudits form the quantum circuit description
-     * and relabels the rest of the qudits accordingly
+     * \brief Removes all clean qudits form the quantum circuit
+     * description and relabels the rest of the qudits accordingly
      * \see qpp::QCircuit::remove_clean_qudits(),
      * qpp::QCircuit::remove_clean_dits()
      *
-     * \param compress_dits If true, removes clean classical dits. Set to
-     * false by default.
+     * \param compress_dits If true, removes clean classical dits, false by
+     * default.
      * \return Reference to the current instance
      */
     QCircuit& compress(bool compress_dits = false) {
@@ -5147,15 +5174,16 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Equality operator
-     * \note Ignores names (e.g., circuit names, gate names etc.) and does
-     * not perform any circuit simplifications, in other words the circuits
-     * have to have the exact same number of qubits/classical dits and the
-     * exact same gates/measurements placed in the exact same order. For
-     * example, the circuit \f$X_1 Z_2\f$ is considered different from
-     * \f$Z_2 X_1\f$, although logically they are the same.
+     * \note Ignores names (e.g., circuit names, gate names etc.)
+     * and does not perform any circuit simplifications, in other
+     * words the circuits have to have the exact same number of
+     * qubits/classical dits and the exact same gates/measurements
+     * placed in the exact same order. For example, the circuit
+     * \f$X_1 Z_2\f$ is considered different from \f$Z_2 X_1\f$,
+     * although logically they are the same.
      *
-     * \param rhs Quantum circuit description against which the equality is
-     * being tested
+     * \param rhs Quantum circuit description against which the
+     * equality is being tested
      * \return True if the quantum circuit descriptions are equal, false
      * otherwise
      */
@@ -5168,8 +5196,8 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Inequality operator
      *
-     * \param rhs Quantum circuit description against which the inequality
-     * is being tested
+     * \param rhs Quantum circuit description against which the
+     * inequality is being tested
      * \return True if the quantum circuit descriptions are not equal, false
      * otherwise
      */
@@ -5182,10 +5210,10 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * Displays the quantum circuit description in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in
-     * curly brackets
-     * \return String containing the JSON representation of the quantum
-     * circuit description
+     * \param enclosed_in_curly_brackets If true, encloses the
+     * result in curly brackets
+     * \return String containing the JSON representation of the quantum circuit
+     * description
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
@@ -5296,7 +5324,7 @@ class QCircuit : public IDisplay, public IJSON {
         ss.str("");
         ss.clear();
         ss << disp(get_measured(), IOManipContainerOpts{}.set_sep(", "));
-        result += "\"measured/discarded (destructively)\": " + ss.str() + ", ";
+        result += "\"measured/discarded (destructive)\": " + ss.str() + ", ";
 
         ss.str("");
         ss.clear();
@@ -5320,8 +5348,8 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief qpp::IDisplay::display() override
      *
-     * Writes to the output stream a textual representation of the quantum
-     * circuit
+     * Writes to the output stream a textual representation of the
+     * quantum circuit
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
@@ -5336,7 +5364,7 @@ class QCircuit : public IDisplay, public IJSON {
         os << "]\n";
 
         std::string sep{};
-        for (auto elem : *this) {
+        for (auto&& elem : *this) {
             os << sep << elem;
             sep = '\n';
         }
@@ -5346,8 +5374,6 @@ class QCircuit : public IDisplay, public IJSON {
 }; /* class QCircuit */
 
 // free functions
-
-// TODO: consider setting result circuit names as optionals for free functions!
 
 /**
  * \brief Composes (appends) a quantum circuit description to the end of
@@ -5368,12 +5394,13 @@ class QCircuit : public IDisplay, public IJSON {
  * then the required number of additional qudits are automatically added
  * to the output quantum circuit description.
  * \param name Optional result's circuit name
- * \param pos_dit Optional, the first classical dit of \a qc2 quantum circuit
- * description is inserted before the \a pos_dit classical dit index of the
- * \a qc1 quantum circuit description (in the classical dits array), the rest
- * following in order. If absent (default), insertion is performed at the end.
- * \return Combined quantum circuit description, with \a qc2 added at the
- * end of \a qc1
+ * \param pos_dit Optional, the first classical dit of \a qc2 quantum
+ * circuit description is inserted before the \a pos_dit classical dit index
+ * of the \a qc1 quantum circuit description (in the classical dits array),
+ * the rest following in order. If absent (default), insertion is performed
+ * at the end.
+ * \return Combined quantum circuit description, with \a qc2 added at the end of
+ * \a qc1
  */
 inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
                                 bigint pos_qudit,
@@ -5394,10 +5421,10 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
  * \see qpp::couple_circuit_right() and qpp::compose_circuit()
  *
  * \note The added quantum circuit description \a qc2 cannot be larger than
- * the \a qc1 quantum circuit description, i.e., all qudit indexes of the added
- * quantum circuit description must match with qudits from the \a qc1 quantum
- * circuit description (and those matched of the latter must contain no
- * measurements)
+ * the \a qc1 quantum circuit description, i.e., all qudit indexes of the
+ * added quantum circuit description must match with qudits from the \a qc1
+ * quantum circuit description (and those matched of the latter must contain
+ * no measurements)
  *
  * \note The classical dits are not relabeled
  *
@@ -5408,10 +5435,11 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
  * \a qc2 quantum circuit description is matched with the target[0] qudit
  * of the \a qc1 circuit description, and so on
  * \param name Optional result's circuit name
- * \param pos_dit Optional, the first classical dit of \a qc2 quantum circuit
- * description is inserted before the \a pos_dit classical dit index of the
- * \a qc1 quantum circuit description (in the classical dits array), the rest
- * following in order. If absent (default), insertion is performed at the end.
+ * \param pos_dit Optional, the first classical dit of \a qc2 quantum
+ * circuit description is inserted before the \a pos_dit classical dit index
+ * of the \a qc1 quantum circuit description (in the classical dits array),
+ * the rest following in order. If absent (default), insertion is performed
+ * at the end.
  * \return Combined quantum circuit description
  */
 inline QCircuit
@@ -5434,10 +5462,10 @@ couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
  * \see qpp::couple_circuit_left() and qpp::compose_circuit()
  *
  * \note The added quantum circuit description \a qc2 cannot be larger than
- * the \a qc1 quantum circuit description, i.e., all qudit indexes of the added
- * quantum circuit description must match with qudits from the \a qc1 quantum
- * circuit description (and those matched of the latter must contain no
- * measurements)
+ * the \a qc1 quantum circuit description, i.e., all qudit indexes of the
+ * added quantum circuit description must match with qudits from the \a qc1
+ * quantum circuit description (and those matched of the latter must contain
+ * no measurements)
  *
  * \note The classical dits are not relabeled
  *
@@ -5448,10 +5476,11 @@ couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
  * quantum circuit description is matched with the target[0] qudit of the
  * \a qc1 circuit description, and so on
  * \param name Optional result's circuit name
- * \param pos_dit Optional, the first classical dit of \a qc2 quantum circuit
- * description is inserted before the \a pos_dit classical dit index of the
- * \a qc1 quantum circuit description (in the classical dits array), the rest
- * following in order. If absent (default), insertion is performed at the end.
+ * \param pos_dit Optional, the first classical dit of \a qc2 quantum
+ * circuit description is inserted before the \a pos_dit classical dit index
+ * of the \a qc1 quantum circuit description (in the classical dits array),
+ * the rest following in order. If absent (default), insertion is performed
+ * at the end.
  * \return Combined quantum circuit description
  */
 inline QCircuit
@@ -5472,6 +5501,11 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
  * \a qc_ctrl controls the \a qc_target.
  * \see qpp::compose_circuit()
  *
+ * \note For each gate or controlled-gate in the target circuit description,
+ * a control is being added from the control circuit description control
+ * qudits. Classical control gates and measurements/resets/discards in the
+ * target circuit description are left unchanged.
+ *
  * \note If qudit indexes of the second quantum circuit description do
  * not totally overlap with the indexes of the first quantum circuit
  * description, then the required number of additional qudits are
@@ -5486,25 +5520,29 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
  * If negative or greater than the total number of qudits of \a qc_ctrl,
  * then the required number of additional qudits are automatically added
  * to the output quantum circuit description.
- * \param name Optional result's circuit name
+ * \param shift Optional, performs the control as if the \a ctrl qudit state
+ * was \f$X\f$-incremented by \a shift
  * \param pos_dit Optional, the first classical dit of \a qc_target quantum
- * circuit description is inserted before the \a pos_dit classical dit index of
- * the \a qc_ctrl quantum circuit description (in the classical dits array),
- * the rest following in order. If absent (default), insertion is performed at
- * the end.
+ * circuit description is inserted before the \a pos_dit classical dit index
+ * of the \a qc_ctrl quantum circuit description (in the classical dits
+ * array), the rest following in order. If absent (default), insertion is
+ * performed at the end.
+ * \param name Optional result's circuit name
  * \return Combined quantum circuit description, with \a qc_target added at the
  * end of \a qc_ctrl
  */
 inline QCircuit
 compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
                      const QCircuit& qc_target, bigint pos_qudit,
-                     std::optional<std::string> name = std::nullopt,
-                     std::optional<idx> pos_dit = std::nullopt) {
+                     std::optional<std::vector<idx>> shift = std::nullopt,
+                     std::optional<idx> pos_dit = std::nullopt,
+                     std::optional<std::string> name = std::nullopt) {
     if (name.has_value()) {
         qc_ctrl.set_name(name.value());
     }
 
-    return qc_ctrl.compose_CTRL_circuit(ctrl, qc_target, pos_qudit, pos_dit);
+    return qc_ctrl.compose_CTRL_circuit(ctrl, qc_target, pos_qudit, shift,
+                                        pos_dit);
 }
 
 // TODO: check for reset/measured non-destructively etc.
@@ -5519,7 +5557,7 @@ inline QCircuit adjoint(QCircuit qc,
                         std::optional<std::string> name = nullptr) {
     // EXCEPTION CHECKS
 
-    if (!qc.get_measured().empty()) {
+    if (qc.has_measurements()) {
         throw exception::QuditAlreadyMeasured("qpp::adjoint()", "qc");
     }
     // END EXCEPTION CHECKS
@@ -5551,7 +5589,7 @@ inline QCircuit kron(QCircuit qc1, const QCircuit& qc2,
 
 /**
  * \brief Replicates a quantum circuit description
- * \note The circuit should not contain any measurement steps
+ * \note The circuit should not contain any steps that remove qudits
  *
  * \param qc Quantum circuit description
  * \param n Number of repetitions. If \a n == 1, returns the original
@@ -5587,14 +5625,14 @@ inline QCircuit replicate(QCircuit qc, idx n,
  * \param nq Number of qudits
  * \param d Subsystem dimensions
  * \param gate_count Circuit gate count
- * \param p_two Optional, probability of applying a two qudit gate, must belong
- * to the interval (0,1). If the two qudit gate set has more than one element,
- * then the gate is chosen at random from the set.
+ * \param p_two Optional, probability of applying a two qudit gate, must
+ * belong to the interval (0,1). If the two qudit gate set has more than one
+ * element, then the gate is chosen at random from the set.
  * \param with_respect_to_gate Optional, if present, gate count is calculated
  * with respect to this particular gate (absent by default, so by default gate
  * count is calculated with respect to all gates in the circuit)
- * \param one_qudit_gate_set Optional set of one qudit gates, must be specified
- * for \a d > 2
+ * \param one_qudit_gate_set Optional set of one qudit gates, must be
+ * specified for \a d > 2
  * \param two_qudit_gate_set Optional set of two qudit gates, must be specified
  * for \a d > 2
  * \param one_qudit_gate_names Optional one qudit gate names
@@ -5774,16 +5812,16 @@ inline QCircuit random_circuit_count(
  * \param nq Number of qudits
  * \param d Subsystem dimensions
  * \param gate_depth Circuit gate depth
- * \param p_two Optional, probability of applying a two qudit gate, must belong
- * to the interval (0,1). If the two qudit gate set has more than one element,
- * then the gate is chosen at random from the set.
+ * \param p_two Optional, probability of applying a two qudit gate, must
+ * belong to the interval (0,1). If the two qudit gate set has more than one
+ * element, then the gate is chosen at random from the set.
  * \param with_respect_to_gate Optional, if present, gate depth is calculated
- * with respect to this particular gate (absent by default, so by default
- * gate depth is calculated with respect to all gates in the circuit)
- * \param one_qudit_gate_set Set of one qudit gates (optional, must be
- * specified for \a d > 2)
- * \param two_qudit_gate_set Set of two qudit gates (optional, must be
- * specified for \a d > 2);
+ * with respect to this particular gate (absent by default, so by default gate
+ * depth is calculated with respect to all gates in the circuit)
+ * \param one_qudit_gate_set Set of one qudit gates (optional, must be specified
+ * for \a d > 2)
+ * \param two_qudit_gate_set Set of two qudit gates (optional, must be specified
+ * for \a d > 2);
  * \param one_qudit_gate_names One qudit gate names (optional)
  * \param two_qudit_gate_names Two qudit gate names (optional)
  * \return Instance of random qpp::QCircuit for fixed circuit gate depth
@@ -6003,7 +6041,8 @@ inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
         U = powm(U, 2);
     }
     qc.TFQ(counting_qubits); // inverse Fourier transform
-    // measure many qubits at once, store starting with the 0 classical dit
+    // measure many qubits at once, store starting with the 0
+    // classical dit
     if (!omit_measurements) {
         qc.measure(counting_qubits);
     }
@@ -6017,13 +6056,13 @@ namespace internal {
  * false otherwise
  *
  * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a projective measurement
- * step, false otherwise
+ * \return True if the quantum circuit step is a projective measurement step,
+ * false otherwise
  */
 inline bool
 is_projective_measurement(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-    bool result = false;
+
     if (std::holds_alternative<QCircuit::MeasurementStep>(step)) {
         auto measurement_step = std::get<QCircuit::MeasurementStep>(step);
         switch (measurement_step.measurement_type_) {
@@ -6031,13 +6070,13 @@ is_projective_measurement(const QCircuit::iterator::value_type& elem) {
             case QCircuit::MeasurementStep::Type::MEASURE_MANY:
             case QCircuit::MeasurementStep::Type::MEASURE_ND:
             case QCircuit::MeasurementStep::Type::MEASURE_MANY_ND:
-                result = true;
+                return true;
             default:
-                break;
+                return false;
         }
     }
 
-    return result;
+    return false;
 }
 
 /**
@@ -6045,24 +6084,24 @@ is_projective_measurement(const QCircuit::iterator::value_type& elem) {
  * false otherwise
  *
  * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a measurement
- * step, false otherwise
+ * \return True if the quantum circuit iterator points to a measurement step,
+ * false otherwise
  */
 inline bool is_projective_measurement(QCircuit::iterator it) {
     return is_projective_measurement(*it);
 }
 
 /**
- * \brief True if the quantum circuit step is a measurement step (projective
- * or not), false otherwise
+ * \brief True if the quantum circuit step is a measurement step (projective or
+ * not), false otherwise
  *
  * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a measurement step
- * (projective or not), false otherwise
+ * \return True if the quantum circuit step is a measurement step (projective or
+ * not), false otherwise
  */
 inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-    bool result = false;
+
     if (std::holds_alternative<QCircuit::MeasurementStep>(step)) {
         auto measurement_step = std::get<QCircuit::MeasurementStep>(step);
         switch (measurement_step.measurement_type_) {
@@ -6070,13 +6109,13 @@ inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
             case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT:
             case QCircuit::MeasurementStep::Type::MEASURE_V_ND:
             case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT_ND:
-                result = true;
+                return true;
             default:
-                break;
+                return is_projective_measurement(elem);
         }
     }
 
-    return result || is_projective_measurement(elem);
+    return false;
 }
 
 /**
@@ -6092,61 +6131,61 @@ inline bool is_measurement(QCircuit::iterator it) {
 }
 
 /**
- * \brief True if the quantum circuit step is a discard step, false
- * otherwise
+ * \brief True if the quantum circuit step is a discard step, false otherwise
  *
  * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a discard step, false
- * otherwise
+ * \return True if the quantum circuit step is a discard step, false otherwise
  */
 inline bool is_discard(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-    bool result = false;
+
     if (std::holds_alternative<QCircuit::MeasurementStep>(step)) {
         auto measurement_step = std::get<QCircuit::MeasurementStep>(step);
         switch (measurement_step.measurement_type_) {
             case QCircuit::MeasurementStep::Type::DISCARD:
             case QCircuit::MeasurementStep::Type::DISCARD_MANY:
-                result = true;
+                return true;
             default:
-                break;
+                return false;
         }
     }
 
-    return result;
+    return false;
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a discard step,
- * false otherwise
+ * \brief True if the quantum circuit iterator points to a discard step, false
+ * otherwise
  *
  * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a discard step,
- * false otherwise
+ * \return True if the quantum circuit iterator points to a discard step, false
+ * otherwise
  */
 inline bool is_discard(QCircuit::iterator it) { return is_discard(*it); }
 
 /**
- * \brief True if the quantum circuit step is a reset step, false otherwise
+ * \brief True if the quantum circuit step is a reset step,
+ * false otherwise
  *
  * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a reset step, false otherwise
+ * \return True if the quantum circuit step is a reset step,
+ * false otherwise
  */
 inline bool is_reset(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-    bool result = false;
+
     if (std::holds_alternative<QCircuit::MeasurementStep>(step)) {
         auto measurement_step = std::get<QCircuit::MeasurementStep>(step);
         switch (measurement_step.measurement_type_) {
             case QCircuit::MeasurementStep::Type::RESET:
             case QCircuit::MeasurementStep::Type::RESET_MANY:
-                result = true;
+                return true;
             default:
-                break;
+                return false;
         }
     }
 
-    return result;
+    return false;
 }
 
 /**
@@ -6154,37 +6193,37 @@ inline bool is_reset(const QCircuit::iterator::value_type& elem) {
  * otherwise
  *
  * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a reset step,
- * false otherwise
+ * \return True if the quantum circuit iterator points to a reset step, false
+ * otherwise
  */
 inline bool is_reset(QCircuit::iterator it) { return is_reset(*it); }
 
 /**
- * \brief True if the quantum circuit step is a classical CTRL step, false
- * otherwise
+ * \brief True if the quantum circuit step is a classical CTRL
+ * step, false otherwise
  *
  * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a classical CTRL step, false
- * otherwise
+ * \return True if the quantum circuit step is a classical CTRL
+ * step, false otherwise
  */
 inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-    bool result = false;
+
     if (std::holds_alternative<QCircuit::GateStep>(step)) {
         auto gate_step = std::get<QCircuit::GateStep>(step);
-        result = QCircuit::is_cCTRL(gate_step);
+        return QCircuit::is_cCTRL(gate_step);
     }
 
-    return result;
+    return false;
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a classical CTRL
- * step, false otherwise
+ * \brief True if the quantum circuit iterator points to a classical CTRL step,
+ * false otherwise
  *
  * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a classical CTRL
- * step, false otherwise
+ * \return True if the quantum circuit iterator points to a classical CTRL step,
+ * false otherwise
  */
 inline bool is_cCTRL(QCircuit::iterator it) { return is_cCTRL(*it); }
 
@@ -6193,8 +6232,8 @@ inline bool is_cCTRL(QCircuit::iterator it) { return is_cCTRL(*it); }
  * quantum circuit step, as a tuple
  *
  * \param elem Quantum circuit step
- * \return Tuple with vectors representing (in this order) ctrl, target, and
- * c_reg, respectively
+ * \return Tuple with vectors representing (in this order) ctrl,
+ * target, and c_reg, respectively
  */
 inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>>
 extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
@@ -6256,12 +6295,12 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief Extracts ctrl, target, and c_reg vectors (in this order) from a
- * quantum circuit iterator, as a tuple
+ * \brief Extracts ctrl, target, and c_reg vectors (in this
+ * order) from a quantum circuit iterator, as a tuple
  *
  * \param it Quantum circuit iterator
- * \return Tuple with vectors representing (in this order) ctrl, target, and
- * c_reg, respectively
+ * \return Tuple with vectors representing (in this order) ctrl,
+ * target, and c_reg, respectively
  */
 inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>>
 extract_ctrl_target_c_reg(QCircuit::iterator it) {
@@ -6269,12 +6308,13 @@ extract_ctrl_target_c_reg(QCircuit::iterator it) {
 }
 
 /**
- * \brief True if two quantum circuit steps (assumed added via the
- * qpp::QCircuit API) can be swapped, false otherwise
+ * \brief True if two quantum circuit steps (assumed added via the qpp::QCircuit
+ * API) can be swapped, false otherwise
  *
  * \param elem1 Quantum circuit step
  * \param elem2 Quantum circuit step
- * \return True if two quantum circuit steps can be swapped, false otherwise
+ * \return True if two quantum circuit steps can be swapped,
+ * false otherwise
  */
 inline bool can_swap(const QCircuit::iterator::value_type& elem1,
                      const QCircuit::iterator::value_type& elem2) {
@@ -6304,8 +6344,8 @@ inline bool can_swap(const QCircuit::iterator::value_type& elem1,
 }
 
 /**
- * \brief True if two quantum circuit steps (assumed added via the
- * qpp::QCircuit API) can be swapped, false otherwise
+ * \brief True if two quantum circuit steps (assumed added via the qpp::QCircuit
+ * API) can be swapped, false otherwise
  *
  * \param it1 Quantum circuit iterator pointing to a quantum circuit step
  * \param it2 Quantum circuit iterator pointing to a quantum circuit step
@@ -6316,8 +6356,8 @@ inline bool can_swap(QCircuit::iterator it1, QCircuit::iterator it2) {
 }
 
 /**
- * \brief Converts a quantum (sub)-circuit description to a vector of
- * quantum circuit iterators
+ * \brief Converts a quantum (sub)-circuit description to a vector of quantum
+ * circuit iterators
  *
  * \param start Quantum circuit iterator pointing to the first element
  * \param finish Quantum circuit iterator pointing to the last element (not
@@ -6335,8 +6375,8 @@ circuit_as_iterators(QCircuit::iterator start, QCircuit::iterator finish) {
 }
 
 /**
- * \brief Converts a quantum (sub)-circuit description to a vector of
- * quantum circuit iterators
+ * \brief Converts a quantum (sub)-circuit description to a vector of quantum
+ * circuit iterators
  *
  * \param qc Quantum circuit description
  * \return Vector of quantum circuit iterators
@@ -6347,10 +6387,9 @@ circuit_as_iterators(const QCircuit& qc) {
 }
 
 /**
- * \brief Puts a quantum (sub)-circuit description in the canonical form,
- * i.e., starting with the first measurement step from the circuit range
- * [start, finish), pushes all measurements and cCTRLs at the end of the
- * circuit
+ * \brief Puts a quantum (sub)-circuit description in the canonical form, i.e.,
+ * starting with the first measurement step from the circuit range [start,
+ * finish), pushes all measurements and cCTRLs at the end of the circuit
  *
  * \param start Quantum circuit iterator pointing to the first element
  * \param finish Quantum circuit iterator pointing to the last element (not
@@ -6408,9 +6447,9 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 }
 
 /**
- * \brief Puts a quantum (sub)-circuit description in the canonical form,
- * i.e., starting with the first measurement step of the quantum circuit,
- * pushes all measurements and cCTRLs at the end of the circuit
+ * \brief Puts a quantum (sub)-circuit description in the canonical form, i.e.,
+ * starting with the first measurement step of the quantum circuit, pushes all
+ * measurements and cCTRLs at the end of the circuit
  *
  * \param qc Quantum circuit description
  * \return Quantum circuit canonical form represented as a vector of quantum

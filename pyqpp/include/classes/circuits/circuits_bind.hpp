@@ -48,6 +48,7 @@ inline void init_classes_circuits_circuits(py::module_& m) {
                  "to the end of the current one, with the current instance "
                  "acting as the control",
                  py::arg("ctrl"), py::arg("qc_target"), py::arg("pos_qudit"),
+                 py::arg("shift") = std::nullopt,
                  py::arg("pos_dit") = std::nullopt)
             .def("couple_circuit_left", &QCircuit::couple_circuit_left,
                  "Couples (in place) a quantum circuit description to the "
@@ -458,8 +459,8 @@ inline void init_classes_circuits_circuits(py::module_& m) {
           "Composes (appends) the qc_target controlled quantum circuit "
           "description to the end of the qc_ctrl quantum circuit description",
           py::arg("qc_ctrl"), py::arg("ctrl"), py::arg("qc_target"),
-          py::arg("pos_qudit"), py::arg("name") = std::nullopt,
-          py::arg("pos_dit") = std::nullopt);
+          py::arg("pos_qudit"), py::arg("shift") = std::nullopt,
+          py::arg("pos_dit") = std::nullopt, py::arg("name") = std::nullopt);
     m.def("couple_circuit_left", &qpp::couple_circuit_left,
           "Couples (in place) the second quantum circuit description to the "
           "left (beginning) of the first one",

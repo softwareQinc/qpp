@@ -864,8 +864,8 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 
 /**
  * \brief Sequentially measures the part \a target of the multi-partite
- * state vector or density matrix \a A in the computational basis \see
- * qpp::measure(), qpp::sample()
+ * state vector or density matrix \a A in the computational basis
+ * \see qpp::measure(), qpp::sample()
  *
  * \note If \a destructive is set to true (by default), the measurement is
  * destructive, i.e., the measured subsystems are traced away.
@@ -1100,7 +1100,8 @@ sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
 
 /**
  * \brief Samples repeatedly from a quantum state (in the computational
- * basis) \see qpp::measure()
+ * basis)
+ * \see qpp::measure()
  *
  * \param num_samples Number of samples
  * \param A Eigen expression
