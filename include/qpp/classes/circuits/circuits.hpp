@@ -4087,7 +4087,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         // STEP 0: add additional qudits (if needed) and classical dits from
-        // the to-be-matched circuit
+        // the to-be-coupled circuit
         if (pos_qudit < 0) {
             // add qudits before beginning
             idx extra_qudits = std::abs(pos_qudit);
@@ -4215,8 +4215,8 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param other Quantum circuit description
      * \param target Qudit indexes of the current circuit description where
-     * the qudits of \a other are being matched, i.e., the first/top qudit
-     * of \a other quantum circuit description is matched with the target[0]
+     * the qudits of \a other are being coupled, i.e., the first/top qudit
+     * of \a other quantum circuit description is coupled with the target[0]
      * qudit of the current circuit description, and so on
      * \param pos_dit Optional, the first classical dit of \a other quantum
      * circuit description is inserted before the \a pos_dit classical dit
@@ -4243,7 +4243,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::couple_circuit_left()",
                                         "pos_dit");
         }
-        // check no measurement for the matched circuit
+        // check no measurement for the coupled circuit
         if (!other.get_measured().empty()) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::couple_circuit_left()", "other");
@@ -4277,7 +4277,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        // STEP 0: insert classical dits from the to-be-matched circuit
+        // STEP 0: insert classical dits from the to-be-coupled circuit
         add_dit(other.nc_, pos_dit.value());
 
         // STEP 1: update [c]ctrl and target indexes of other
@@ -4380,14 +4380,14 @@ class QCircuit : public IDisplay, public IJSON {
      * the current quantum circuit description, i.e., all qudit indexes of
      * the added quantum circuit description must match with qudits from the
      * current quantum circuit description (and the latter should not
-     * contain any destructive measurements on the matched qudits)
+     * contain any destructive measurements on the coupled qudits)
      *
      * \note The classical dits are not relabeled
      *
      * \param other Quantum circuit description
      * \param target Qudit indexes of the current circuit description where
-     * the qudits of \a other are being matched, i.e., the first/top qudit
-     * of \a other quantum circuit description is matched with the target[0]
+     * the qudits of \a other are being coupled, i.e., the first/top qudit
+     * of \a other quantum circuit description is coupled with the target[0]
      * qudit of the current circuit description, and so on
      * \param pos_dit Optional, the first classical dit of \a other quantum
      * circuit description is inserted before the \a pos_dit classical dit
@@ -4443,7 +4443,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        // STEP 0: insert classical dits from the to-be-matched circuit
+        // STEP 0: insert classical dits from the to-be-coupled circuit
         add_dit(other.nc_, pos_dit.value());
 
         // STEP 1
@@ -5406,6 +5406,47 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
                                 bigint pos_qudit,
                                 std::optional<std::string> name = std::nullopt,
                                 std::optional<idx> pos_dit = std::nullopt) {
+    // EXCEPTION CHECKS
+
+    // check equal dimensions
+    if (qc1.get_d() != qc2.get_d()) {
+        throw exception::DimsNotEqual("qpp::compose_circuit()", "other");
+    }
+    // check classical dits
+    if (!pos_dit.has_value()) {
+        pos_dit = qc1.get_nc();
+    } else {
+        if (internal::is_negative(pos_dit.value()) ||
+            pos_dit.value() > qc1.get_nc()) {
+            throw exception::OutOfRange("qpp::compose_circuit()", "pos_dit");
+        }
+    }
+    // check that overlapping qudits (in the current instance) were not
+    // already destructively measured
+    if (pos_qudit < 0 && (pos_qudit + static_cast<bigint>(qc2.get_nq())) >= 0) {
+        for (idx i = 0;
+             i < std::min(static_cast<idx>(pos_qudit +
+                                           static_cast<bigint>(qc2.get_nq())),
+                          qc1.get_nq());
+             ++i) {
+            if (qc1.was_measured(i)) {
+                throw exception::QuditAlreadyMeasured("qpp::compose_circuit()",
+                                                      "qc1");
+            }
+        }
+    }
+    if (pos_qudit >= 0 && static_cast<idx>(pos_qudit) < qc1.get_nq()) {
+        for (idx i = 0; i < std::min(static_cast<idx>(qc1.get_nq() - pos_qudit),
+                                     qc2.get_nq());
+             ++i) {
+            if (qc1.was_measured(pos_qudit + i)) {
+                throw exception::QuditAlreadyMeasured("qpp::compose_circuit()",
+                                                      "qc1");
+            }
+        }
+    }
+    // END EXCEPTION CHECKS
+
     if (name.has_value()) {
         qc1.set_name(name.value());
     }
@@ -5423,7 +5464,7 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
  * \note The added quantum circuit description \a qc2 cannot be larger than
  * the \a qc1 quantum circuit description, i.e., all qudit indexes of the
  * added quantum circuit description must match with qudits from the \a qc1
- * quantum circuit description (and those matched of the latter must contain
+ * quantum circuit description (and those coupled of the latter must contain
  * no measurements)
  *
  * \note The classical dits are not relabeled
@@ -5431,8 +5472,8 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
  * \param qc1 Quantum circuit description
  * \param qc2 Quantum circuit description
  * \param target Qudit indexes of the \a qc1 circuit description where the
- * qudits of \a qc2 are being matched, i.e., the first/top qudit of
- * \a qc2 quantum circuit description is matched with the target[0] qudit
+ * qudits of \a qc2 are being coupled, i.e., the first/top qudit of
+ * \a qc2 quantum circuit description is coupled with the target[0] qudit
  * of the \a qc1 circuit description, and so on
  * \param name Optional result's circuit name
  * \param pos_dit Optional, the first classical dit of \a qc2 quantum
@@ -5447,6 +5488,49 @@ couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
                     const std::vector<idx>& target,
                     std::optional<std::string> name = std::nullopt,
                     std::optional<idx> pos_dit = std::nullopt) {
+    // EXCEPTION CHECKS
+
+    // check equal dimensions
+    if (qc1.get_d() != qc2.get_d()) {
+        throw exception::DimsNotEqual("qpp::couple_circuit_left()", "qc1/qc2");
+    }
+    // check classical dits
+    if (!pos_dit.has_value()) {
+        pos_dit = qc1.get_nc();
+    } else if (internal::is_negative(pos_dit.value()) ||
+               pos_dit.value() > qc1.get_nc()) {
+        throw exception::OutOfRange("qpp::couple_circuit_left()", "pos_dit");
+    }
+    // check no measurement for the coupled circuit
+    if (!qc2.get_measured().empty()) {
+        throw exception::QuditAlreadyMeasured("qpp::couple_circuit_left()",
+                                              "qc2");
+    }
+    // check valid target
+    if (static_cast<idx>(target.size()) != qc1.get_nq()) {
+        throw exception::OutOfRange("qpp::couple_circuit_left()", "target");
+    }
+    if (static_cast<idx>(target.size()) > qc2.get_nq()) {
+        throw exception::OutOfRange("qpp::couple_circuit_left()", "target");
+    }
+    if (!internal::check_no_duplicates(target)) {
+        throw exception::Duplicates("qpp::couple_circuit_left()", "target");
+    }
+    for (idx elem : target) {
+        if (elem >= qc1.get_nq()) {
+            throw exception::OutOfRange("qpp::couple_circuit_left()", "target");
+        }
+    }
+    // check matching qudits (in the current instance) were not already
+    // measured destructively
+    for (idx elem : target) {
+        if (qc1.was_measured(elem)) {
+            throw exception::QuditAlreadyMeasured("qpp::couple_circuit_left()",
+                                                  "target");
+        }
+    }
+    // END EXCEPTION CHECKS
+
     if (name.has_value()) {
         qc1.set_name(name.value());
     }
@@ -5464,7 +5548,7 @@ couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
  * \note The added quantum circuit description \a qc2 cannot be larger than
  * the \a qc1 quantum circuit description, i.e., all qudit indexes of the
  * added quantum circuit description must match with qudits from the \a qc1
- * quantum circuit description (and those matched of the latter must contain
+ * quantum circuit description (and those coupled of the latter must contain
  * no measurements)
  *
  * \note The classical dits are not relabeled
@@ -5472,8 +5556,8 @@ couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
  * \param qc1 Quantum circuit description
  * \param qc2 Quantum circuit description
  * \param target Qudit indexes of the \a qc1 circuit description where the
- * qudits of \a qc2 are being matched, i.e., the first/top qudit of \a qc2
- * quantum circuit description is matched with the target[0] qudit of the
+ * qudits of \a qc2 are being coupled, i.e., the first/top qudit of \a qc2
+ * quantum circuit description is coupled with the target[0] qudit of the
  * \a qc1 circuit description, and so on
  * \param name Optional result's circuit name
  * \param pos_dit Optional, the first classical dit of \a qc2 quantum
@@ -5488,6 +5572,46 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
                      const std::vector<idx>& target,
                      std::optional<std::string> name = std::nullopt,
                      std::optional<idx> pos_dit = std::nullopt) {
+
+    // EXCEPTION CHECKS
+
+    // check equal dimensions
+    if (qc1.get_d() != qc2.get_d()) {
+        throw exception::DimsNotEqual("qpp::couple_circuit_right()", "qc1/qc2");
+    }
+    // check classical dits
+    if (!pos_dit.has_value()) {
+        pos_dit = qc1.get_nc();
+    } else if (internal::is_negative(pos_dit.value()) ||
+               pos_dit.value() > qc1.get_nc()) {
+        throw exception::OutOfRange("qpp::couple_circuit_right()", "pos_dit");
+    }
+    // check valid target
+    if (static_cast<idx>(target.size()) != qc1.get_nq()) {
+        throw exception::OutOfRange("qpp::couple_circuit_right()", "target");
+    }
+    if (static_cast<idx>(target.size()) > qc2.get_nq()) {
+        throw exception::OutOfRange("qpp::couple_circuit_right()", "target");
+    }
+    if (!internal::check_no_duplicates(target)) {
+        throw exception::Duplicates("qpp::couple_circuit_right()", "target");
+    }
+    for (idx elem : target) {
+        if (elem >= qc1.get_nq()) {
+            throw exception::OutOfRange("qpp::couple_circuit_right()",
+                                        "target");
+        }
+    }
+    // check matching qudits (in the current instance) were not already
+    // measured destructively
+    for (idx elem : target) {
+        if (qc1.was_measured(elem)) {
+            throw exception::QuditAlreadyMeasured("qpp::couple_circuit_right()",
+                                                  "target");
+        }
+    }
+    // END EXCEPTION CHECKS
+
     if (name.has_value()) {
         qc1.set_name(name.value());
     }
@@ -5537,6 +5661,104 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
                      std::optional<std::vector<idx>> shift = std::nullopt,
                      std::optional<idx> pos_dit = std::nullopt,
                      std::optional<std::string> name = std::nullopt) {
+
+    // EXCEPTION CHECKS
+
+    // check non-empty qc_ctrl and qc_target
+    if (qc_ctrl.get_nq() == 0) {
+        throw exception::ZeroSize("qpp::compose_CTRL_circuit()", "qc_ctrl");
+    }
+    if (qc_target.get_nq() == 0) {
+        throw exception::ZeroSize("qpp::compose_CTRL_circuit()", "qc_target");
+    }
+
+    // check equal dimensions
+    if (qc_ctrl.get_d() != qc_target.get_d()) {
+        throw exception::DimsNotEqual("qpp::compose_CTRL_circuit()",
+                                      "qc_ctrl/qc_target");
+    }
+
+    // check classical dits
+    if (!pos_dit.has_value()) {
+        pos_dit = qc_ctrl.get_nc();
+    } else {
+        if (internal::is_negative(pos_dit.value()) ||
+            pos_dit.value() > qc_ctrl.get_nc()) {
+            throw exception::OutOfRange("qpp::compose_CTRL_circuit()",
+                                        "pos_dit");
+        }
+    }
+
+    // check that overlapping qudits (in the current instance) were not
+    // already destructively measured
+    if (pos_qudit < 0 &&
+        (pos_qudit + static_cast<bigint>(qc_target.get_nq())) >= 0) {
+        for (idx i = 0;
+             i < std::min(static_cast<idx>(pos_qudit + static_cast<bigint>(
+                                                           qc_target.get_nq())),
+                          qc_ctrl.get_nq());
+             ++i) {
+            if (qc_ctrl.was_measured(i)) {
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::compose_CTRL_circuit()", "qc_ctrl");
+            }
+        }
+    }
+    if (pos_qudit >= 0 && static_cast<idx>(pos_qudit) < qc_ctrl.get_nq()) {
+        for (idx i = 0;
+             i < std::min(static_cast<idx>(qc_ctrl.get_nq() - pos_qudit),
+                          qc_target.get_nq());
+             ++i) {
+            if (qc_ctrl.was_measured(pos_qudit + i)) {
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::compose_CTRL_circuit()", "qc_ctrl");
+            }
+        }
+    }
+
+    // check valid ctrl
+    if (ctrl.empty()) {
+        throw exception::ZeroSize("qpp::compose_CTRL_circuit()", "ctrl");
+    }
+    for (idx elem : ctrl) {
+        if (elem >= qc_ctrl.get_nq()) {
+            throw exception::OutOfRange("qpp::compose_CTRL_circuit()", "ctrl");
+        }
+        // check ctrl was not measured before
+        if (qc_ctrl.was_measured(elem)) {
+            throw exception::QuditAlreadyMeasured("qpp::compose_CTRL_circuit()",
+                                                  "ctrl");
+        }
+    }
+    // check no duplicates ctrl
+    if (!internal::check_no_duplicates(ctrl)) {
+        throw exception::Duplicates("qpp::compose_CTRL_circuit()", "ctrl");
+    }
+    // check that ctrl and target do not overlap
+    idx target_begin = pos_qudit;                    // including it
+    idx target_end = pos_qudit + qc_target.get_nq(); // excluding it
+    for (idx elem : ctrl) {
+        if (elem >= target_begin && elem < target_end) {
+            throw exception::OutOfRange("qpp::compose_CTRL_circuit()",
+                                        "ctrl/qc_target");
+        }
+    }
+
+    // check shift
+    if (shift.has_value() && (shift.value().size() != ctrl.size())) {
+        throw exception::SizeMismatch("qpp::compose_CTRL_circuit()",
+                                      "ctrl/shift");
+    }
+    if (shift.has_value()) {
+        for (idx elem : shift.value()) {
+            if (elem >= qc_ctrl.get_d()) {
+                throw exception::OutOfRange("qpp::compose_CTRL_circuit()",
+                                            "shift");
+            }
+        }
+    }
+    // END EXCEPTION CHECKS
+
     if (name.has_value()) {
         qc_ctrl.set_name(name.value());
     }
