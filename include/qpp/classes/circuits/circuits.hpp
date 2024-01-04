@@ -5188,9 +5188,10 @@ class QCircuit : public IDisplay, public IJSON {
      * otherwise
      */
     bool operator==(const QCircuit& rhs) const noexcept {
-        return std::tie(rhs.circuit_, rhs.nq_, rhs.nc_, rhs.measured_, rhs.d_,
-                        rhs.cmat_hash_tbl_) ==
-               std::tie(circuit_, nq_, nc_, measured_, d_, cmat_hash_tbl_);
+        return std::tie(rhs.circuit_, rhs.nq_, rhs.nc_, rhs.measured_,
+                        rhs.measured_nd_, rhs.d_, rhs.cmat_hash_tbl_) ==
+               std::tie(circuit_, nq_, nc_, measured_, measured_nd_, d_,
+                        cmat_hash_tbl_);
     }
 
     /**
