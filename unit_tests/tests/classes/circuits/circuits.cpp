@@ -9,10 +9,16 @@ using namespace qpp;
 // Unit testing "classes/circuits/circuits.hpp"
 
 /// BEGIN QCircuit& QCircuit::add_dit(idx n = 1, idx i)
-TEST(qpp_QCircuit_add_dit, AllTests) {}
+TEST(qpp_QCircuit_add_dit, SpecificPosition) {}
+
+/// BEGIN QCircuit& QCircuit::add_dit(idx n = 1)
+TEST(qpp_QCircuit_add_dit, LastPosition) {}
 
 /// BEGIN QCircuit& QCircuit::add_qudit(idx n = 1, idx i)
-TEST(qpp_QCircuit_add_qudit, AllTests) {}
+TEST(qpp_QCircuit_add_qudit, SpecificPosition) {}
+///
+/// BEGIN QCircuit& QCircuit::add_qudit(idx n = 1)
+TEST(qpp_QCircuit_add_qudit, LastPosition) {}
 
 /// BEGIN QCircuit& QCircuit::adjoint()
 TEST(qpp_QCircuit_adjoint, AllTests) {}
