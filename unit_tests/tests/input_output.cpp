@@ -227,7 +227,6 @@ TEST(qpp_load_save, Vector) {
 }
 #endif // if (0)
 
-
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       load(std::istream& is)
 ///
@@ -444,4 +443,3 @@ TEST(qpp_load_save, Vector) {
     }
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-5);
 }
-

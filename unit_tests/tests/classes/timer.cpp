@@ -67,4 +67,3 @@ TEST(qpp_Timer_tic_tics_toc, AllTests) {
     t.toc();                          // get current time snap
     EXPECT_NEAR(t.tics(), 0.1, 0.05); // within 0.05s
 }
-

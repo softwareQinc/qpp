@@ -8,7 +8,6 @@ using namespace qpp;
 
 // Unit testing "qasm.hpp"
 
-
 /// BEGIN std::unique_ptr<QCircuit> qasm::read_from_file(
 ///       const std::string& fname)
 
@@ -167,4 +166,3 @@ TEST(qpp_qasm_read_from_file, SciNot) {
     // Check norm
     EXPECT_NEAR(1, norm(adjoint(psi) * phi), 1e-5);
 }
-
