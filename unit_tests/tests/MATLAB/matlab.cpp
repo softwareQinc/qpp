@@ -8,16 +8,15 @@ using namespace qpp;
 
 // Unit testing "MATLAB/matlab.hpp"
 
-/******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       load_MATLAB(const std::string& mat_file,
 ///                       const std::string& var_name)
 ///
 ///       template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       void save_MATLAB(const Eigen::MatrixBase <Derived>& A,
-///                            const std::string& mat_file,
-///                            const std::string& var_name,
-///                            const std::string& mode)
+///                        const std::string& mat_file,
+///                        const std::string& var_name,
+///                        const std::string& mode)
 TEST(qpp_MATLAB_load_save_MATLAB, Matrix) {
     // matrices, complex, real and integer
 
@@ -82,7 +81,7 @@ TEST(qpp_MATLAB_load_save_MATLAB, Matrix) {
     cmat load_expression = load_MATLAB<cmat>("out.mat", "expression");
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-5);
 }
-/******************************************************************************/
+
 TEST(qpp_MATLAB_load_save_MATLAB, Vector) {
     // kets/row vectors, complex, real and integer
 
@@ -130,4 +129,3 @@ TEST(qpp_MATLAB_load_save_MATLAB, Vector) {
         load_MATLAB<dyn_row_vect<int>>("out.mat", "expression");
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-5);
 }
-/******************************************************************************/
