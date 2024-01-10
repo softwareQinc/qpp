@@ -1,7 +1,7 @@
 /*
  * This file is part of qasmtools.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -95,10 +95,11 @@ class Lexer {
         }
 
         pos_.advance_column(consumed);
-        if (consumed != 0)
+        if (consumed != 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     /**

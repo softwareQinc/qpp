@@ -11,9 +11,9 @@ fi
 stress_test="$1"
 results_dir="$2"
 
-max_cores=8                                  # number of cores
-nq_start=2                                   # number of qubits to start with
-nq_end=24                                    # number of qubits to end with
+max_cores=8 # number of cores
+nq_start=2  # number of qubits to start with
+nq_end=24   # number of qubits to end with
 
 current_date=$(date '+%Y-%m-%d_%a_%H-%M-%S') # current date
 

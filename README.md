@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 4.3.4 - 14 August 2023
+## Version 5.0 - 10 January 2024
 
 [![GitHub actions](https://github.com/softwareqinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
 
@@ -42,7 +42,7 @@ see <https://eigen.tuxfamily.org/dox/>. For a simple
 [Eigen 3](https://eigen.tuxfamily.org) quick ASCII reference see
 <https://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
-Copyright (c) 2013 - 2023 softwareQ Inc. All rights reserved.
+Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
 
 ---
 

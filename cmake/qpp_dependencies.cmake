@@ -266,7 +266,6 @@ if (MSVC)
     # Disable spurious Eigen warnings with MSVC (warning STL4007)
     add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
     add_compile_options(-bigobj)
-    add_compile_definitions(NOMINMAX)
 endif ()
 
 #### MinGW or Cygwin have issues with object files that are too large
@@ -282,7 +281,6 @@ endif ()
 #### Force clang to use libc++
 if (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     add_compile_options(-stdlib=libc++)
-    list(APPEND QPP_LINK_DEPS c++)
 endif ()
 
 #### GNU gcc additional debug settings

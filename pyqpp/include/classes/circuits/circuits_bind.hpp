@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -38,10 +38,28 @@ inline void init_classes_circuits_circuits(py::module_& m) {
                  py::arg("name") = std::nullopt)
             .def(py::init<const QCircuit&>())
 
-            .def("add_circuit", &QCircuit::add_circuit,
-                 "Appends (glues) a quantum circuit description to the current "
-                 "one",
+            .def("compose_circuit", &QCircuit::compose_circuit,
+                 "Composes (appends) a quantum circuit description to the end "
+                 "of the current one",
                  py::arg("other"), py::arg("pos_qudit"),
+                 py::arg("pos_dit") = std::nullopt)
+            .def("compose_CTRL_circuit", &QCircuit::compose_CTRL_circuit,
+                 "Composes (appends) a controlled quantum circuit description "
+                 "to the end of the current one, with the current instance "
+                 "acting as the control",
+                 py::arg("ctrl"), py::arg("qc_target"), py::arg("pos_qudit"),
+                 py::arg("shift") = std::nullopt,
+                 py::arg("pos_dit") = std::nullopt)
+            .def("couple_circuit_left", &QCircuit::couple_circuit_left,
+                 "Couples (in place) a quantum circuit description to the "
+                 "current one, placed at the left (beginning) of the current "
+                 "one",
+                 py::arg("other"), py::arg("target"),
+                 py::arg("pos_dit") = std::nullopt)
+            .def("couple_circuit_right", &QCircuit::couple_circuit_right,
+                 "Couples (in place) a quantum circuit description to the "
+                 "current one, placed at the right (end) of the current one",
+                 py::arg("other"), py::arg("target"),
                  py::arg("pos_dit") = std::nullopt)
             .def("add_dit", py::overload_cast<idx>(&QCircuit::add_dit),
                  "Adds n additional classical dits after the last qudit",
@@ -302,16 +320,6 @@ inline void init_classes_circuits_circuits(py::module_& m) {
                  "Kronecker product with another quantum circuit description, "
                  "in place",
                  py::arg("qc"))
-            .def("match_circuit_left", &QCircuit::match_circuit_left,
-                 "Matches a quantum circuit description to the current one, "
-                 "placed at the left (beginning) of the current one",
-                 py::arg("other"), py::arg("target"),
-                 py::arg("pos_dit") = std::nullopt)
-            .def("match_circuit_right", &QCircuit::match_circuit_right,
-                 "Matches a quantum circuit description to the current one, "
-                 "placed at the right (end) of the current one",
-                 py::arg("other"), py::arg("target"),
-                 py::arg("pos_dit") = std::nullopt)
             .def("measure",
                  py::overload_cast<idx, idx, bool, std::optional<std::string>>(
                      &QCircuit::measure),
@@ -411,9 +419,9 @@ inline void init_classes_circuits_circuits(py::module_& m) {
             .def(py::self == py::self)
             .def(py::self != py::self)
             .def("__repr__",
-                 [](const QCircuit& qc) {
+                 [](const QCircuit& self) {
                      std::ostringstream oss;
-                     oss << qc;
+                     oss << self;
                      return oss.str();
                  })
             .def("__copy__",
@@ -435,34 +443,44 @@ inline void init_classes_circuits_circuits(py::module_& m) {
         .def_readonly("measurement_depth",
                       &QCircuit::Resources::measurement_depth)
         .def_readonly("total_depth", &QCircuit::Resources::total_depth)
-        .def("__repr__", [](const QCircuit::Resources& r) {
+        .def("__repr__", [](const QCircuit::Resources& self) {
             std::ostringstream oss;
-            oss << r;
+            oss << self;
             return oss.str();
         });
 
     /* qpp::QCircuit related free functions */
-    m.def("add_circuit", &qpp::add_circuit,
-          "Appends (glues) the second quantum circuit description to the first "
-          "one",
+    m.def("compose_circuit", &qpp::compose_circuit,
+          "Composes (appends) the second quantum circuit description to the "
+          "end of the first one; qc_ctrl controls the qc_target.",
           py::arg("qc1"), py::arg("qc2"), py::arg("pos_qudit"),
-          py::arg("pos_dit") = std::nullopt);
-    m.def("adjoint", static_cast<QCircuit (*)(QCircuit)>(&qpp::adjoint),
-          "Adjoint quantum circuit description", py::arg("qc"));
+          py::arg("name") = std::nullopt, py::arg("pos_dit") = std::nullopt);
+    m.def("compose_CTRL_circuit", &qpp::compose_CTRL_circuit,
+          "Composes (appends) the qc_target controlled quantum circuit "
+          "description to the end of the qc_ctrl quantum circuit description",
+          py::arg("qc_ctrl"), py::arg("ctrl"), py::arg("qc_target"),
+          py::arg("pos_qudit"), py::arg("shift") = std::nullopt,
+          py::arg("pos_dit") = std::nullopt, py::arg("name") = std::nullopt);
+    m.def("couple_circuit_left", &qpp::couple_circuit_left,
+          "Couples (in place) the second quantum circuit description to the "
+          "left (beginning) of the first one",
+          py::arg("qc1"), py::arg("qc2"), py::arg("target"),
+          py::arg("name") = std::nullopt, py::arg("pos_dit") = std::nullopt);
+    m.def("couple_circuit_right", &qpp::couple_circuit_right,
+          "Couples (in place) the second quantum circuit description to the "
+          "right (end) of the first one",
+          py::arg("qc1"), py::arg("qc2"), py::arg("target"),
+          py::arg("name") = std::nullopt, py::arg("pos_dit") = std::nullopt);
+    m.def("adjoint",
+          static_cast<QCircuit (*)(QCircuit, std::optional<std::string>)>(
+              &qpp::adjoint),
+          "Adjoint quantum circuit description", py::arg("qc"),
+          py::arg("name") = std::nullopt);
     m.def("kron",
-          static_cast<QCircuit (*)(QCircuit, const QCircuit&)>(&qpp::kron),
+          static_cast<QCircuit (*)(QCircuit, const QCircuit&,
+                                   std::optional<std::string>)>(&qpp::kron),
           "Kronecker product between two quantum circuit descriptions",
-          py::arg("qc1"), py::arg("qc2"));
-    m.def("match_circuit_left", &qpp::match_circuit_left,
-          "Matches the second quantum circuit description to the left "
-          "(beginning) of the first one",
-          py::arg("qc1"), py::arg("qc2"), py::arg("target"),
-          py::arg("pos_dit") = std::nullopt);
-    m.def("match_circuit_right", &qpp::match_circuit_right,
-          "Matches the second quantum circuit description to the right (end) "
-          "of the first one",
-          py::arg("qc1"), py::arg("qc2"), py::arg("target"),
-          py::arg("pos_dit") = std::nullopt);
+          py::arg("qc1"), py::arg("qc2"), py::arg("name") = std::nullopt);
     m.def("qpe_circuit", &qpp::qpe_circuit,
           "Quantum phase estimation circuit with n bits of precision",
           py::arg("U"), py::arg("n"), py::arg("omit_measurements") = true,
@@ -487,7 +505,7 @@ inline void init_classes_circuits_circuits(py::module_& m) {
           py::arg("two_qudit_gate_names") = std::nullopt);
     m.def("replicate", &qpp::replicate,
           "Replicates a quantum circuit description", py::arg("qc"),
-          py::arg("n"));
+          py::arg("n"), py::arg("name") = std::nullopt);
 }
 
 #endif /* PYQPP_CLASSES_CIRCUITS_CIRCUITS_BIND_HPP_ */

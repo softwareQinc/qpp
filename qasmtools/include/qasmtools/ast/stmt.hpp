@@ -1,7 +1,7 @@
 /*
  * This file is part of qasmtools.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -499,8 +499,9 @@ class BarrierGate final : public Gate {
      * \param f Void function accepting a reference to the argument
      */
     void foreach_arg(std::function<void(VarAccess&)> f) {
-        for (auto it = args_.begin(); it != args_.end(); it++)
+        for (auto it = args_.begin(); it != args_.end(); it++) {
             f(*it);
+        }
     }
 
     /**
@@ -612,8 +613,9 @@ class DeclaredGate final : public Gate {
      * \param f Void function accepting an expression reference
      */
     void foreach_carg(std::function<void(Expr&)> f) {
-        for (auto it = c_args_.begin(); it != c_args_.end(); it++)
+        for (auto it = c_args_.begin(); it != c_args_.end(); it++) {
             f(**it);
+        }
     }
 
     /**
@@ -622,8 +624,9 @@ class DeclaredGate final : public Gate {
      * \param f Void function accepting a reference to an argument
      */
     void foreach_qarg(std::function<void(VarAccess&)> f) {
-        for (auto it = q_args_.begin(); it != q_args_.end(); it++)
+        for (auto it = q_args_.begin(); it != q_args_.end(); it++) {
             f(*it);
+        }
     }
 
     /**

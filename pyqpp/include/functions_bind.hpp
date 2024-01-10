@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -73,6 +73,17 @@ inline void init_functions(py::module_& m) {
     m.def(
         "transpose", [](const cmat& A) { return qpp::transpose(A); },
         "Transpose", py::arg("A"));
+    m.def(
+        "dirac",
+        [](const cmat& A, std::vector<idx> dims_rows,
+           std::vector<idx> dims_cols) {
+            return qpp::dirac(A, dims_rows, dims_cols);
+        },
+        "Dirac notation", py::arg("A"), py::arg("dims_rows"),
+        py::arg("dims_cols"));
+    m.def(
+        "dirac", [](const cmat& A, idx d = 2) { return qpp::dirac(A, d); },
+        "Dirac notation", py::arg("A"), py::arg("d") = 2);
 }
 
 #endif /* PYQPP_FUNCTIONS_BIND_HPP_ */

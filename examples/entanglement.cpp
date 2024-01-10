@@ -1,8 +1,9 @@
 // Entanglement
 // Source: ./examples/entanglement.cpp
+
 #include <iostream>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;
@@ -33,7 +34,9 @@ int main() {
     std::cout << disp(schmidtcoeffs(psi, {2, 2})) << '\n';
 
     std::cout << ">> Schmidt probabilities of psi:\n";
-    std::cout << disp(schmidtprobs(psi, {2, 2}), ", ") << '\n';
+    std::cout << disp(schmidtprobs(psi, {2, 2}),
+                      IOManipContainerOpts{}.set_sep(", "))
+              << '\n';
 
     cmat UA = schmidtA(psi, {2, 2});
     cmat UB = schmidtB(psi, {2, 2});

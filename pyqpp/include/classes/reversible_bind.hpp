@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -83,9 +83,9 @@ inline void init_classes_reversible(py::module_& m) {
             .def("__deepcopy__", [](const Dynamic_bitset& self,
                                     py::dict) { return Dynamic_bitset(self); })
             .def("__repr__",
-                 [](const Dynamic_bitset& dbs) {
+                 [](const Dynamic_bitset& self) {
                      std::ostringstream oss;
-                     oss << dbs;
+                     oss << self;
                      return oss.str();
                  })
             .def("__sub__", &Dynamic_bitset::operator-,
@@ -131,9 +131,9 @@ inline void init_classes_reversible(py::module_& m) {
                  [](const Bit_circuit& self) { return Bit_circuit(self); })
             .def("__deepcopy__", [](const Bit_circuit& self,
                                     py::dict) { return Bit_circuit(self); })
-            .def("__repr__", [](const Bit_circuit& bc) {
+            .def("__repr__", [](const Bit_circuit& self) {
                 std::ostringstream oss;
-                oss << bc;
+                oss << self;
                 return oss.str();
             });
 }

@@ -253,7 +253,7 @@ the compiler and specifying the location to all required dependencies, like
 below (assumes UNIX/UNIX-like, adapt accordingly for Windows)
 
 ```shell
-c++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
+g++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
     -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
     -isystem $HOME/eigen3 -I $HOME/qpp/include -I $HOME/qpp/qasmtools/include \
      src/main.cpp -o my_qpp_app

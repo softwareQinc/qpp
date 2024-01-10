@@ -1,11 +1,12 @@
 // Qudit teleportation
 // Source: ./examples/teleport_qudit.cpp
 // See also: ./examples/teleport_qubit.cpp
+
 #include <iostream>
 #include <tuple>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;
@@ -28,24 +29,25 @@ int main() {
     ket output_aAB = apply(input_aAB, Bell_aA, {0, 1}, d);
 
     // measure on aA
-    auto measured_aA = measure(output_aAB, gt.Id(d * d), {0, 1}, d);
-    idx m = std::get<RES>(measured_aA); // measurement result
+    auto [m_aA, probs_aA, states_B] =
+        measure(output_aAB, gt.Id(d * d), {0, 1}, d);
 
-    std::vector<idx> midx = n2multiidx(m, {d, d});
+    std::vector<idx> midx = n2multiidx(m_aA, {d, d});
     std::cout << ">> Alice's measurement result: ";
-    std::cout << m << " -> " << disp(midx, " ") << '\n';
+    std::cout << m_aA << " -> "
+              << disp(midx, IOManipContainerOpts{}.set_sep(" ")) << '\n';
     std::cout << ">> Alice's measurement probabilities: ";
-    std::cout << disp(std::get<PROB>(measured_aA), ", ") << '\n';
+    std::cout << disp(probs_aA, IOManipContainerOpts{}.set_sep(", ")) << '\n';
 
     // conditional result on B before correction
-    ket output_m_B = std::get<ST>(measured_aA)[m];
+    ket output_B = states_B[m_aA];
 
     // perform the correction on B
     cmat correction_B =
         powm(gt.Zd(d), midx[0]) * powm(adjoint(gt.Xd(d)), midx[1]);
     std::cout << ">> Bob must apply the correction operator Z^" << midx[0]
               << " X^" << (d - midx[1]) % d << '\n';
-    ket psi_B = correction_B * output_m_B;
+    ket psi_B = correction_B * output_B;
 
     // display the output
     std::cout << ">> Bob's final state (after correction):\n";

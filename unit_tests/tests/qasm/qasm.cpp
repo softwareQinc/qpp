@@ -2,16 +2,15 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 using namespace qpp;
 
 // Unit testing "qasm.hpp"
 
-/******************************************************************************/
 /// BEGIN std::unique_ptr<QCircuit> qasm::read_from_file(
 ///       const std::string& fname)
-/******************************************************************************/
+
 TEST(qpp_qasm_read_from_file, StdCompliance) {
     // generic circuits
     EXPECT_NO_THROW(qasm::read_from_file(PROJECT_ROOT_DIR
@@ -57,7 +56,7 @@ TEST(qpp_qasm_read_from_file, StdCompliance) {
     EXPECT_NO_THROW(qasm::read_from_file(PROJECT_ROOT_DIR
                                          "/qasmtools/qasm/ibmqx2/W3test.qasm"));
 }
-/******************************************************************************/
+
 TEST(qpp_qasm_read_from_file, BuiltinGates) {
     QCircuit q_circuit = qasm::read_from_file(
         PROJECT_ROOT_DIR
@@ -82,7 +81,7 @@ TEST(qpp_qasm_read_from_file, BuiltinGates) {
     EXPECT_EQ(1, c0);
     EXPECT_EQ(1, c1);
 }
-/******************************************************************************/
+
 TEST(qpp_qasm_read_from_file, Teleportation) {
     QCircuit q_circuit = qasm::read_from_file(
         PROJECT_ROOT_DIR
@@ -96,7 +95,7 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
     // Check norm
     EXPECT_NEAR(0, norm(rho - prj(0_ket)), 1e-5);
 }
-/******************************************************************************/
+
 TEST(qpp_qasm_read_from_file, MappedGates) {
     QCircuit q_circuit = qasm::read_from_file(
         PROJECT_ROOT_DIR
@@ -115,7 +114,7 @@ TEST(qpp_qasm_read_from_file, MappedGates) {
     // Check norm
     EXPECT_NEAR(0, norm(psi1 - psi2), 1e-5);
 }
-/******************************************************************************/
+
 TEST(qpp_qasm_read_from_file, NonDestrMeas) {
     QCircuit q_circuit = qasm::read_from_file(
         PROJECT_ROOT_DIR
@@ -135,7 +134,7 @@ TEST(qpp_qasm_read_from_file, NonDestrMeas) {
     // Check norm
     EXPECT_NEAR(0, norm(psi - mres), 1e-5);
 }
-/******************************************************************************/
+
 TEST(qpp_qasm_read_from_file, Reset) {
     QCircuit q_circuit = qasm::read_from_file(
         PROJECT_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/reset.qasm");
@@ -151,7 +150,7 @@ TEST(qpp_qasm_read_from_file, Reset) {
     // Check norm
     EXPECT_NEAR(0, norm(psi - psi2), 1e-5);
 }
-/******************************************************************************/
+
 TEST(qpp_qasm_read_from_file, SciNot) {
     QCircuit q_circuit = qasm::read_from_file(
         PROJECT_ROOT_DIR "/unit_tests/tests/qasm/circuits/units/scinot.qasm");
@@ -167,4 +166,3 @@ TEST(qpp_qasm_read_from_file, SciNot) {
     // Check norm
     EXPECT_NEAR(1, norm(adjoint(psi) * phi), 1e-5);
 }
-/******************************************************************************/

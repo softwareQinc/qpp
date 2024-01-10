@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -45,6 +45,9 @@ inline void init_classes_gates(py::module_& m) {
     gates.attr("CZ") = qpp::gt.CZ;
     gates.attr("CNOTba") = qpp::gt.CNOTba;
     gates.attr("SWAP") = qpp::gt.SWAP;
+
+    gates.attr("RXX") = qpp::gt.RXX;
+    gates.attr("RYY") = qpp::gt.RYY;
 
     gates.attr("TOF") = qpp::gt.TOF;
     gates.attr("FRED") = qpp::gt.FRED;

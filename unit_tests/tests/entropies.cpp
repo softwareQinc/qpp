@@ -2,13 +2,12 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 using namespace qpp;
 
 // Unit testing "entropies.hpp"
 
-/******************************************************************************/
 /// BEGIN template <typename Derived> realT entropy(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_entropy, Matrix) {
@@ -49,7 +48,7 @@ TEST(qpp_entropy, Matrix) {
     U = randU(D);
     EXPECT_NEAR(std::log2(3), entropy(A), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN inline realT entropy(const std::vector<realT>& prob)
 TEST(qpp_entropy, Vector) {
     // 1 value
@@ -73,7 +72,7 @@ TEST(qpp_entropy, Vector) {
     idx D = v.size();
     EXPECT_NEAR(std::log2(D), entropy(v), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT qmutualinfo(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsysA,
 ///       const std::vector<idx>& subsysB, const std::vector<idx>& dims)
@@ -118,7 +117,7 @@ TEST(qpp_qmutualinfo, Qudits) {
     expected = entropy(rhoA) + entropy(rhoB) - entropy(rho);
     EXPECT_NEAR(result, expected, 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT qmutualinfo(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsysA,
 ///       const std::vector<idx>& subsysB, idx d = 2)
@@ -155,7 +154,7 @@ TEST(qpp_qmutualinfo, Qubits) {
     expected = entropy(rhoA) + entropy(rhoB) - entropy(rho);
     EXPECT_NEAR(result, expected, 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT renyi(
 ///       const Eigen::MatrixBase<Derived>& A, realT alpha)
 TEST(qpp_renyi, Matrix) {
@@ -219,7 +218,7 @@ TEST(qpp_renyi, Matrix) {
     EXPECT_NEAR(std::log2(D), renyi(A, 3), 1e-5);
     EXPECT_NEAR(std::log2(D), renyi(A, infty), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN inline realT renyi(const std::vector<realT>& prob, realT alpha)
 TEST(qpp_renyi, Vector) {
     // 1 value
@@ -266,7 +265,7 @@ TEST(qpp_renyi, Vector) {
     EXPECT_NEAR(std::log2(D), renyi(v, 3), 1e-5);
     EXPECT_NEAR(std::log2(D), renyi(v, infty), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT tsallis(
 ///       const Eigen::MatrixBase<Derived>& A, realT q)
 TEST(qpp_tsallis, Matrix) {
@@ -330,7 +329,7 @@ TEST(qpp_tsallis, Matrix) {
     EXPECT_NEAR(4 / 9., tsallis(A, 3), 1e-5);
     EXPECT_NEAR(0, tsallis(A, infty), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN inline realT tsallis(const std::vector<realT>& prob, realT q)
 TEST(qpp_tsallis, Vector) {
     // 1 value
@@ -376,4 +375,3 @@ TEST(qpp_tsallis, Vector) {
     EXPECT_NEAR(4 / 9., tsallis(v, 3), 1e-5);
     EXPECT_NEAR(0, tsallis(v, infty), 1e-5);
 }
-/******************************************************************************/

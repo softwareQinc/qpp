@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -30,6 +30,7 @@
 #include "functions_bind.hpp"
 #include "instruments_bind.hpp"
 #include "random_bind.hpp"
+#include "types_bind.hpp"
 
 #include "classes/gates_bind.hpp"
 #include "classes/reversible_bind.hpp"
@@ -50,6 +51,7 @@ PYBIND11_MODULE(pyqpp, m) {
     init_functions(m);
     init_instruments(m);
     init_random(m);
+    init_types(m);
 
     init_classes_gates(m);
     init_classes_reversible(m);

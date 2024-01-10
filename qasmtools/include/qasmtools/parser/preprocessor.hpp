@@ -1,7 +1,7 @@
 /*
  * This file is part of qasmtools.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -248,8 +248,9 @@ class Preprocessor {
         }
 
         auto target = token.as_string();
-        if (target == "qelib1.inc")
+        if (target == "qelib1.inc") {
             std_include_ = true;
+        }
 
         token = current_lexer_->next_token();
         if (token.is_not(Token::Kind::semicolon)) {

@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -103,7 +103,10 @@ inline void init_classes_circuits_engines(py::module_& m) {
                 const auto& stats = qe.get_stats();
                 for (auto&& elem : stats.data()) {
                     std::stringstream ss;
-                    ss << qpp::disp(elem.first, "", "", "");
+                    ss << qpp::disp(elem.first, IOManipContainerOpts{}
+                                                    .set_sep("")
+                                                    .set_left("")
+                                                    .set_right(""));
                     result[ss.str()] = elem.second;
                 }
                 return result;
@@ -127,9 +130,9 @@ inline void init_classes_circuits_engines(py::module_& m) {
              "Whether qudit i was already measured destructively", py::arg("i"))
 
         .def("__repr__",
-             [](const QEngine& qe) {
+             [](const QEngine& self) {
                  std::ostringstream oss;
-                 oss << qe;
+                 oss << self;
                  return oss.str();
              })
         .def("__copy__", [](const QEngine& self) { return QEngine(self); })

@@ -1,7 +1,7 @@
 /*
  * This file is part of qasmtools.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -178,19 +178,29 @@ class Replacer : public Visitor {
     void visit(IfStmt& stmt) override {
         stmt.then().accept(*this);
         if (replacement_stmts_) {
-            std::list<ptr<Stmt>> ret;
+            std::optional<std::list<ptr<Stmt>>> ret = std::nullopt;
             for (auto& rep : *replacement_stmts_) {
                 auto tmp = object::clone(stmt);
                 tmp->set_then(std::move(rep));
-                ret.emplace_back(std::move(tmp));
+                auto stmts = replace(*tmp);
+                if (!ret) {
+                    ret = std::move(stmts);
+                } else if (stmts) {
+                    ret->splice(ret->end(), *stmts);
+                }
             }
             replacement_stmts_ = std::move(ret);
         } else if (replacement_gates_) {
-            std::list<ptr<Stmt>> ret;
+            std::optional<std::list<ptr<Stmt>>> ret = std::nullopt;
             for (auto& rep : *replacement_gates_) {
                 auto tmp = object::clone(stmt);
                 tmp->set_then(std::move(rep));
-                ret.emplace_back(std::move(tmp));
+                auto stmts = replace(*tmp);
+                if (!ret) {
+                    ret = std::move(stmts);
+                } else if (stmts) {
+                    ret->splice(ret->end(), *stmts);
+                }
             }
             replacement_gates_ = std::nullopt;
             replacement_stmts_ = std::move(ret);
@@ -359,10 +369,11 @@ class GateReplacer final : public Replacer {
     std::optional<std::list<ptr<Gate>>> replace_gate(Gate& gate) {
         auto it = replacements_.find(gate.uid());
 
-        if (it != replacements_.end())
+        if (it != replacements_.end()) {
             return std::move(it->second);
-        else
+        } else {
             return std::nullopt;
+        }
     }
 };
 

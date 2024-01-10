@@ -1,8 +1,9 @@
 // Qudit teleportation circuit simulator
 // Source: ./examples/circuits/teleport_qudit_circuit.cpp
+
 #include <iostream>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;
@@ -48,6 +49,6 @@ int main() {
     ket psi_in = U * mket({0}, d);
     ket psi_out = engine.get_psi();
     std::cout << ">> Teleported state:\n";
-    std::cout << disp(psi_out) << '\n';
+    std::cout << disp(dirac(psi_out, d)) << '\n';
     std::cout << ">> Norm difference: " << norm(psi_out - psi_in) << '\n';
 }

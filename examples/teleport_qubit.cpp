@@ -1,10 +1,11 @@
 // Qubit teleportation
 // Source: ./examples/teleport_qubit.cpp
 // See also: ./examples/teleport_qudit.cpp
+
 #include <iostream>
 #include <tuple>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;
@@ -26,20 +27,19 @@ int main() {
     input_aAB = apply(input_aAB, gt.H, {0});
 
     // measure the aA part
-    auto measured = measure_seq(input_aAB, {0, 1});
+    auto [ms_aA, probs_aA, psi_B] = measure_seq(input_aAB, {0, 1});
 
     // measurement results
-    idx z = std::get<RES>(measured)[0];
-    idx x = std::get<RES>(measured)[1];
+    idx z = ms_aA[0];
+    idx x = ms_aA[1];
     std::cout << ">> Alice's measurement result: ";
     std::cout << "x = " << x << " and z = " << z;
 
     // probability of obtaining the measurement results x and z
-    realT p = prod(std::get<PROB>(measured));
+    realT p = prod(probs_aA);
     std::cout << ", obtained with probability: " << p << '\n';
 
     // the output state (before correction)
-    ket psi_B = std::get<ST>(measured);
     std::cout << ">> Bob's state (before correction):\n";
     std::cout << disp(psi_B) << '\n';
 

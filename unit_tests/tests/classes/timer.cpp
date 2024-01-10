@@ -3,7 +3,7 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 using namespace qpp;
 
@@ -13,7 +13,7 @@ using namespace qpp;
 // i.e Timer<T, CLOCK_T = std::chrono::steady_clock>
 
 // the precision should be at least within 0.05s <=> 50 ms <=> 50000 micros
-/******************************************************************************/
+
 /// BEGIN template <typename U = T> U Timer::get_duration() const noexcept
 TEST(qpp_Timer_get_duration, AllTests) {
     using namespace std::chrono;
@@ -37,7 +37,7 @@ TEST(qpp_Timer_get_duration, AllTests) {
     EXPECT_NEAR(static_cast<double>(duration_t2_micros.count()), 100000,
                 50000); // within 0.05s
 }
-/******************************************************************************/
+
 /// BEGIN Timer& Timer::tic() noexcept
 ///
 ///       double Timer::tics() const noexcept
@@ -67,4 +67,3 @@ TEST(qpp_Timer_tic_tics_toc, AllTests) {
     t.toc();                          // get current time snap
     EXPECT_NEAR(t.tics(), 0.1, 0.05); // within 0.05s
 }
-/******************************************************************************/

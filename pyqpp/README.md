@@ -13,9 +13,6 @@ detect the location of the Eigen3 matrix library, set the environment variable
 `EIGEN3_INSTALL_DIR` to point to the location of the Eigen3 library
 (include the `include/eigen3` part of the path).
 
-For more details, please see
-[pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md).
-
 ## Overview
 
 pyqpp includes `Bit_circuit`, `Dynamic_bitset`, `QCircuit`, `QEngine`, and

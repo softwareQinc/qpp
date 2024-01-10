@@ -3,13 +3,12 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 using namespace qpp;
 
 // Unit testing "classes/gates.hpp"
 
-/******************************************************************************/
 TEST(qpp_Gates_CTRL, Qudits) {
     idx d = 3; // qutrits
 
@@ -69,12 +68,12 @@ TEST(qpp_Gates_CTRL, Qudits) {
     ket res3 = mket({1, 2, 0, 2, 2, 2}, {d, d, d, d, d, d});
     EXPECT_NEAR(0, norm(CTRL3 * psi3 - res3), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       Gates::CTRL(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& ctrl, const std::vector<idx>& target, idx N,
 ///       idx d = 2) const
-/******************************************************************************/
+
 TEST(qpp_Gates_CTRL, Qubits) {
     // CNOT control-target on 2 qubits
     cmat CTRL1 = gt.CTRL(gt.X, {0}, {1}, 2);
@@ -102,7 +101,7 @@ TEST(qpp_Gates_CTRL, Qubits) {
     ket res2 = kron(st.z1, U * st.z1, st.z1);
     EXPECT_NEAR(0, norm(CTRL4 * psi2 - res2), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived>
 ///       dyn_mat<typename Derived::Scalar> Gates::expandout(
 ///       const Eigen::MatrixBase<Derived>& A, idx pos,
@@ -112,7 +111,7 @@ TEST(qpp_Gates_expandout, InitList) {
     cmat U = randU(3);
     EXPECT_EQ(gt.expandout(U, 0, {3}), U);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived>
 ///       dyn_mat<typename Derived::Scalar> Gates::expandout(
 ///       const Eigen::MatrixBase<Derived>& A, idx pos,
@@ -128,7 +127,7 @@ TEST(qpp_Gates_expandout, Qudits) {
     // 3 qubits, X on qubit 2 expansion
     EXPECT_EQ(gt.expandout(gt.X, 1, {2, 2, 2}), kron(gt.Id2, gt.X, gt.Id2));
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       expandout(const Eigen::MatrixBase<Derived>& A, idx pos, idx N,
 ///       idx d = 2) const
@@ -143,7 +142,7 @@ TEST(qpp_Gates_expandout, Qubits) {
     // 3 qubits, X on qubit 2 expansion
     EXPECT_EQ(gt.expandout(gt.X, 1, 3), kron(gt.Id2, gt.X, gt.Id2));
 }
-/******************************************************************************/
+
 /// BEGIN cmat Gates::Fd(idx D = 2) const
 TEST(qpp_Gates_Fd, AllTests) {
     EXPECT_NEAR(0, norm(gt.Fd(1) - gt.Id(1)), 1e-5);
@@ -163,7 +162,7 @@ TEST(qpp_Gates_Fd, AllTests) {
     F4 /= std::sqrt(4);
     EXPECT_NEAR(0, norm(gt.Fd(4) - F4), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       Gates::GATE(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& target, idx n,
@@ -187,7 +186,7 @@ TEST(qpp_Gates_GATE, Qudits) {
     res = gt.GATE(U, {3, 1}, dims);
     EXPECT_NE(0, norm(res * psi - apply(psi, U, {1, 3}, dims)));
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       Gates::GATE(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& target, idx n, idx d = 2) const
@@ -208,10 +207,10 @@ TEST(qpp_Gates_GATE, Qubits) {
     res = gt.GATE(U, {3, 1}, 4);
     EXPECT_NE(0, norm(res * psi - apply(psi, U, {1, 3})));
 }
-/******************************************************************************/
+
 /// BEGIN std::optional<std::string> Gates::get_name(const cmat& U) const
 TEST(qpp_Gates_get_name, AllTests) {}
-/******************************************************************************/
+
 /// BEGIN template <typename Derived = cmat>
 ///       Gates::Id(idx D = 2) const
 TEST(qpp_Gates_Id, AllTests) {
@@ -220,10 +219,10 @@ TEST(qpp_Gates_Id, AllTests) {
     EXPECT_EQ(gt.Id(3), cmat::Identity(3, 3));
     EXPECT_EQ(gt.Id(100), cmat::Identity(100, 100));
 }
-/******************************************************************************/
+
 /// BEGIN cmat Gates::MODMUL(idx a, idx N) const
 TEST(qpp_Gates_MODMUL, AllTests) {}
-/******************************************************************************/
+
 /// BEGIN cmat Gates::Rn(realT theta, const std::vector<realT>& n) const
 TEST(qpp_Gates_Rn, AllTests) {
     // |z0> stays invariant (up to a phase) if rotated by any angle
@@ -248,16 +247,16 @@ TEST(qpp_Gates_Rn, AllTests) {
     // rotate |y0> by pi around the Z axis, must obtain |y1> (up to a phase)
     EXPECT_NEAR(0, norm(st.py1 - prj(gt.Rn(pi, {0, 0, 1}) * st.y0)), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN cmat Gates::RX(realT theta) const
 TEST(qpp_Gates_RX, AllTests) {}
-/******************************************************************************/
+
 /// BEGIN cmat Gates::RY(realT theta) const
 TEST(qpp_Gates_RY, AllTests) {}
-/******************************************************************************/
+
 /// BEGIN cmat Gates::RZ(realT theta) const
 TEST(qpp_Gates_RZ, AllTests) {}
-/******************************************************************************/
+
 /// BEGIN cmat SWAPd(idx D = 2) const
 TEST(qpp_Gates_SWAPd, AllTests) {
     for (idx D = 1; D < 6; ++D) {
@@ -268,7 +267,7 @@ TEST(qpp_Gates_SWAPd, AllTests) {
         EXPECT_NEAR(0, norm(a - b), 1e-5);
     }
 }
-/******************************************************************************/
+
 /// BEGIN cmat Gates::Xd(idx D = 2) const
 TEST(qpp_Gates_Xd, AllTests) {
     for (idx D = 1; D < 10; ++D) {
@@ -280,7 +279,7 @@ TEST(qpp_Gates_Xd, AllTests) {
         }
     }
 }
-/******************************************************************************/
+
 /// BEGIN cmat Gates::Zd(idx D = 2) const
 TEST(qpp_Gates_Zd, AllTests) {
     for (idx D = 1; D < 10; ++D) {
@@ -293,4 +292,3 @@ TEST(qpp_Gates_Zd, AllTests) {
         }
     }
 }
-/******************************************************************************/

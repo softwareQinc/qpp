@@ -1,11 +1,12 @@
 // Classical reversible circuits
 // Source: ./examples/reversible2.cpp
+
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;
@@ -58,8 +59,9 @@ int main() {
     // apply again the same Toffoli gates in reverse order
     std::cout << ">> Applying again Toffoli gates to bits\n";
     for (idx i = num_trials; i-- > 0;) {
-        for (auto&& elem : indices[i])
+        for (auto&& elem : indices[i]) {
             std::cout << '\t' << elem << " ";
+        }
         std::cout << '\n';
         bc.TOF(indices[i][0], indices[i][1], indices[i][2]);
     }

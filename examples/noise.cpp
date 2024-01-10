@@ -1,8 +1,9 @@
 // Quantum noise
 // Source: ./examples/noise.cpp
+
 #include <iostream>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;

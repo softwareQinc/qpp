@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -54,7 +54,10 @@ inline void init_instruments(py::module_& m) {
             auto stats = qpp::sample(num_samples, A, target, dims);
             for (auto&& elem : stats) {
                 std::stringstream ss;
-                ss << qpp::disp(elem.first, "", "", "");
+                ss << qpp::disp(
+                    elem.first,
+                    IOManipContainerOpts{}.set_sep("").set_left("").set_right(
+                        ""));
                 result[ss.str()] = elem.second;
             }
             return result;
@@ -71,7 +74,10 @@ inline void init_instruments(py::module_& m) {
             auto stats = qpp::sample(num_samples, A, target, d);
             for (auto&& elem : stats) {
                 std::stringstream ss;
-                ss << qpp::disp(elem.first, "", "", "");
+                ss << qpp::disp(
+                    elem.first,
+                    IOManipContainerOpts{}.set_sep("").set_left("").set_right(
+                        ""));
                 result[ss.str()] = elem.second;
             }
             return result;

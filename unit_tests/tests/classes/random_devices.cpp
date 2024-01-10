@@ -2,16 +2,15 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 using namespace qpp;
 
 // Unit testing "classes/random_devices.hpp"
 
-/******************************************************************************/
 /// BEGIN std::mt19937& RandomDevices::get_prng()
 TEST(qpp_RandomDevices_get_prng, AllTests) {}
-/******************************************************************************/
+
 /// BEGIN RandomDevices::load(std::istream& is)
 ///
 ///       RandomDevices::save(std::ostream& os) const
@@ -48,4 +47,3 @@ TEST(qpp_RandomDevices_load_save, AllTests) {
     EXPECT_EQ(b1, b2);
     EXPECT_EQ(d1, d2);
 }
-/******************************************************************************/

@@ -3,13 +3,12 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 using namespace qpp;
 
 // Unit testing "entanglement.hpp"
 
-/******************************************************************************/
 /// BEGIN template <typename Derived> realT concurrence(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_concurrence, AllTests) {
@@ -26,7 +25,7 @@ TEST(qpp_concurrence, AllTests) {
         prj(kron(randU(), randU()) * (0.8 * mket({0, 0}) + 0.6 * mket({1, 1})));
     EXPECT_NEAR(2 * 0.8 * 0.6, concurrence(rho3), 1e-3);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT entanglement(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_entanglement, Qudits) {
@@ -46,7 +45,7 @@ TEST(qpp_entanglement, Qudits) {
     ket psi3 = kron(randU(3), randU(3)) * st.mes(3);
     EXPECT_NEAR(std::log2(3), entanglement(psi3, {3, 3}), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT entanglement(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_entanglement, Qubits) {
@@ -64,7 +63,7 @@ TEST(qpp_entanglement, Qubits) {
     EXPECT_NEAR(-0.64 * std::log2(0.64) - 0.36 * std::log2(0.36),
                 entanglement(psi3), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT gconcurrence(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_gconcurrence, AllTests) {
@@ -96,7 +95,7 @@ TEST(qpp_gconcurrence, AllTests) {
     ket psi6 = randket(4);
     EXPECT_NEAR(gconcurrence(psi6), concurrence(prj(psi6)), 1e-3);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT lognegativity(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_lognegativity, Qudits) {
@@ -127,7 +126,7 @@ TEST(qpp_lognegativity, Qudits) {
     rho = prj(kron(randU(d), randU(d)) * st.mes(d));
     EXPECT_NEAR(std::log2(d), lognegativity(rho, {d, d}), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT lognegativity(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_lognegativity, Qubits) {
@@ -147,7 +146,7 @@ TEST(qpp_lognegativity, Qubits) {
     rho = prj(kron(randU(d), randU(d)) * st.mes(d));
     EXPECT_NEAR(std::log2(d), lognegativity(rho), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT negativity(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_negativity, Qudits) {
@@ -187,7 +186,7 @@ TEST(qpp_negativity, Qudits) {
     rho = prj(kron(randU(d), randU(d)) * st.mes(d));
     EXPECT_NEAR((d - 1) / 2., negativity(rho, {d, d}), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> realT negativity(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_negativity, Qubits) {
@@ -209,7 +208,7 @@ TEST(qpp_negativity, Qubits) {
     rho = prj(psi);
     EXPECT_NEAR(0.5, negativity(rho), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived>
 ///       std::tuple<cmat, cmat, dyn_col_vect<realT>, dyn_col_vect<realT>>
 ///       schmidt(const Eigen::MatrixBase<Derived>& A,
@@ -239,7 +238,7 @@ TEST(qpp_schmidt, Qudits) {
         dyn_col_vect<realT>::Map(probs_ref_vect.data(), probs_ref_vect.size());
     EXPECT_NEAR(0, norm(probs - probs_ref), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived>
 ///       std::tuple<cmat, cmat, dyn_col_vect<realT>, dyn_col_vect<realT>>
 ///       schmidt(const Eigen::MatrixBase<Derived>& A, idx d = 2)
@@ -268,7 +267,7 @@ TEST(qpp_schmidt, Qubits) {
         dyn_col_vect<realT>::Map(probs_ref_vect.data(), probs_ref_vect.size());
     EXPECT_NEAR(0, norm(probs - probs_ref), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> cmat schmidtA/B(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_schmidtA_schmidtB, Qudits) {
@@ -342,7 +341,7 @@ TEST(qpp_schmidtA_schmidtB, Qudits) {
     }
     EXPECT_NEAR(0, norm(expected - psi), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> cmat schmidtA/B(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_schmidtA_schmidtB, Qubits) {
@@ -398,7 +397,7 @@ TEST(qpp_schmidtA_schmidtB, Qubits) {
     }
     EXPECT_NEAR(0, norm(expected - psi), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> dyn_col_vect<realT> schmidtcoeffs(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_schmidtcoeffs, Qudits) {
@@ -458,7 +457,7 @@ TEST(qpp_schmidtcoeffs, Qudits) {
     expected << c0, c1, c2;
     EXPECT_NEAR(0, norm(result - expected), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> dyn_col_vect<realT> schmidtcoeffs(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_schmidtcoeffs, Qubits) {
@@ -506,7 +505,7 @@ TEST(qpp_schmidtcoeffs, Qubits) {
     expected << c0, c1, c2;
     EXPECT_NEAR(0, norm(result - expected), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> std::vector<realT> schmidtprobs(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_schmidtprobs, Qudits) {
@@ -576,7 +575,7 @@ TEST(qpp_schmidtprobs, Qudits) {
     expected << c0 * c0, c1 * c1, c2 * c2;
     EXPECT_NEAR(0, norm(result - expected), 1e-5);
 }
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> std::vector<realT> schmidtprobs(
 ///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_schmidtprobs, Qubits) {
@@ -632,4 +631,3 @@ TEST(qpp_schmidtprobs, Qubits) {
     expected << c0 * c0, c1 * c1, c2 * c2;
     EXPECT_NEAR(0, norm(result - expected), 1e-5);
 }
-/******************************************************************************/

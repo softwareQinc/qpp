@@ -47,9 +47,9 @@ jobs:
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            cmake --build build --target install
+            cmake --install build
           else
-            sudo cmake --build build --target install
+            sudo cmake --install build
           fi
 
       - name: Configure standalone example
@@ -82,10 +82,19 @@ jobs:
       - name: Run unit tests
         run: ctest --test-dir build -E qpp_Timer
 
+      - name: Uninstall
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            cmake --build build --target uninstall
+          else
+            sudo cmake --build build --target uninstall
+          fi
+
       - name: Install pyqpp
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
             export EIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
           fi
-          pip3 install .
+          pip3 install --user .

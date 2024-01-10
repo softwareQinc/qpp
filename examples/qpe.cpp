@@ -23,7 +23,7 @@ execute simulation on the phase of U = diag(1, e^{2*pi*i*theta}).
 #include <tuple>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;
@@ -55,13 +55,15 @@ int main() {
     }
     // prepare |1>, the second eigenvector of U
     result = apply(result, gt.X, ancilla);
-    std::cout << "X" << disp(ancilla, ",") << '\n';
+    std::cout << "X" << disp(ancilla, IOManipContainerOpts{}.set_sep(","))
+              << '\n';
 
     // apply controlled unitary operations
     idx powerU = 1;
     for (idx i = 0; i < nq_c; ++i) {
-        std::cout << "CU(" << nq_c - i - 1 << ", " << disp(ancilla, ", ")
-                  << ")^" << powerU << '\n';
+        std::cout << "CU(" << nq_c - i - 1 << ", "
+                  << disp(ancilla, IOManipContainerOpts{}.set_sep(", ")) << ")^"
+                  << powerU << '\n';
         result =
             applyCTRL(result, U, {static_cast<idx>(nq_c - i - 1)}, ancilla);
         U = powm(U, 2);
@@ -71,12 +73,18 @@ int main() {
     // apply inverse quantum Fourier transform to convert state of the counting
     // register
     result = applyTFQ(result, counting_qubits);
-    std::cout << "QFT^{-1}" << disp(counting_qubits, ", ", "(", ")") << "\n";
+    std::cout
+        << "QFT^{-1}"
+        << disp(counting_qubits,
+                IOManipContainerOpts{}.set_sep(", ").set_left("(").set_right(
+                    ")"))
+        << "\n";
 
     // measure the counting register and readout probabilities
     auto measured = measure_seq(result, {counting_qubits});
     auto res = std::get<RES>(measured);
-    std::cout << ">> Measurement result [q0 q1 ... ]: " << disp(res, " ");
+    std::cout << ">> Measurement result [q0 q1 ... ]: "
+              << disp(res, IOManipContainerOpts{}.set_sep(" "));
     std::cout << '\n';
 
     // decimal representation of the measurement result

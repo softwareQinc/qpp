@@ -24,8 +24,9 @@ int main(int argc, char** argv) {
 
     ket randket = ket::Random(D);       // random ket
     std::vector<idx> subsys_syspermute; // partially syspermute reversed order
-    for (idx i = 0; i < n; ++i)
+    for (idx i = 0; i < n; ++i) {
         subsys_syspermute.push_back(i);
+    }
 
     Timer<> t; // start timing
     syspermute(randket, subsys_syspermute);

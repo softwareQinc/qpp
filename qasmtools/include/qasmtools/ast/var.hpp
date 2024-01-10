@@ -1,7 +1,7 @@
 /*
  * This file is part of qasmtools.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -113,10 +113,11 @@ class VarAccess final : public ASTNode {
      * Used to allow variable accesses as keys in ordered maps
      */
     bool operator<(const VarAccess& v) const {
-        if (var_ == v.var_)
+        if (var_ == v.var_) {
             return offset_ < v.offset_;
-        else
+        } else {
             return var_ < v.var_;
+        }
     }
 
     /**
@@ -130,10 +131,11 @@ class VarAccess final : public ASTNode {
      * \return true if the variable access contains v
      */
     bool contains(const VarAccess& v) const {
-        if (offset_)
+        if (offset_) {
             return *this == v;
-        else
+        } else {
             return v.var_ == var_;
+        }
     }
 
     /**
@@ -157,8 +159,9 @@ class VarAccess final : public ASTNode {
     void accept(Visitor& visitor) override { visitor.visit(*this); }
     std::ostream& pretty_print(std::ostream& os) const override {
         os << var_;
-        if (offset_)
+        if (offset_) {
             os << "[" << *offset_ << "]";
+        }
         return os;
     }
 

@@ -1,12 +1,13 @@
 // Grover's searching
 // Source: ./examples/grover.cpp
+
 #include <cmath>
 #include <iostream>
 #include <numeric>
 #include <tuple>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;
@@ -25,7 +26,9 @@ int main() {
     // mark an element randomly
     idx marked = randidx(0, N - 1);
     std::cout << ">> Marked state: " << marked << " -> ";
-    std::cout << disp(n2multiidx(marked, dims), " ") << '\n';
+    std::cout << disp(n2multiidx(marked, dims),
+                      IOManipContainerOpts{}.set_sep(" "))
+              << '\n';
 
     ket psi = mket(std::vector<idx>(n, 0)); // computational |0>^\otimes n
 
@@ -52,12 +55,13 @@ int main() {
     // sample
     std::cout << ">> Let's sample...\n";
     auto result = std::get<RES>(measured);
-    if (result == n2multiidx(marked, dims))
+    if (result == n2multiidx(marked, dims)) {
         std::cout << ">> Hooray, we obtained the correct result: ";
-    else
+    } else {
         std::cout << ">> Not there yet... we obtained: ";
+    }
     std::cout << multiidx2n(result, dims) << " -> ";
-    std::cout << disp(result, " ") << '\n';
+    std::cout << disp(result, IOManipContainerOpts{}.set_sep(" ")) << '\n';
 
     std::cout << ">> Run time: " << t.toc() << " seconds\n";
 }

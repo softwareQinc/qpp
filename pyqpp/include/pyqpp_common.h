@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -32,7 +32,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 namespace py = pybind11;
 

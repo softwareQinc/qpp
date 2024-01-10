@@ -1,7 +1,7 @@
 /*
  * This file is part of qasmtools.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -333,8 +333,9 @@ class SemanticChecker final : public Visitor {
      * \param typ The type of the symbol
      */
     void set(const ast::symbol& id, Type typ) {
-        if (symbol_table_.empty())
+        if (symbol_table_.empty()) {
             throw std::logic_error("No current symbol table!");
+        }
 
         symbol_table_.front()[id] = typ;
     }
@@ -467,8 +468,9 @@ class SemanticChecker final : public Visitor {
  */
 inline void check_source(Program& prog) {
     SemanticChecker analysis;
-    if (analysis.run(prog))
+    if (analysis.run(prog)) {
         throw SemanticError();
+    }
 }
 
 } /* namespace ast */

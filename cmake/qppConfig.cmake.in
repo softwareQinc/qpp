@@ -1,5 +1,6 @@
 @PACKAGE_INIT@
 
-include("${CMAKE_CURRENT_LIST_DIR}/qpp_targets.cmake")
+set(QPP_INSTALL_DIR "@QPP_INSTALL_DIR@")
 include("${CMAKE_CURRENT_LIST_DIR}/qpp_dependencies.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/qpp_targets.cmake")
 message(STATUS "Found Quantum++ in @QPP_INSTALL_DIR@")

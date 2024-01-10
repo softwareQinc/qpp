@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
 project(standalone)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# If the Quantum++ installation path was non-standard, i.e., specified by
+# If Quantum++'s installation path was non-standard, i.e., specified by
 #
 # cmake -B build -DCMAKE_INSTALL_PREFIX=/path/to/installed/qpp
 #

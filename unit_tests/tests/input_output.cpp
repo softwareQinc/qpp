@@ -2,14 +2,14 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 using namespace qpp;
 
 // Unit testing "input_output.hpp"
 
 #if (0)
-/******************************************************************************/
+
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       load(std::istream& is)
 ///
@@ -137,7 +137,7 @@ TEST(qpp_load_save, Matrix) {
     }
     EXPECT_NEAR(0, norm(load_expression - (A * A + A)), 1e-5);
 }
-/******************************************************************************/
+
 TEST(qpp_load_save, Vector) {
     // kets/row vectors, complex, real and integer
 
@@ -227,7 +227,6 @@ TEST(qpp_load_save, Vector) {
 }
 #endif // if (0)
 
-/******************************************************************************/
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       load(std::istream& is)
 ///
@@ -356,7 +355,7 @@ TEST(qpp_load_save, Matrix) {
     }
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-5);
 }
-/******************************************************************************/
+
 TEST(qpp_load_save, Vector) {
     // kets/row vectors, complex, real and integer
 
@@ -444,4 +443,3 @@ TEST(qpp_load_save, Vector) {
     }
     EXPECT_NEAR(0, norm(load_expression - expression), 1e-5);
 }
-/******************************************************************************/

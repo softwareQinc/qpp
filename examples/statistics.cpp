@@ -1,9 +1,10 @@
 // Statistics
 // Source: ./examples/statistics.cpp
+
 #include <iostream>
 #include <vector>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main() {
     using namespace qpp;
@@ -18,8 +19,12 @@ int main() {
     std::vector<realT> probX = marginalX(probXY);
     std::vector<realT> probY = marginalY(probXY);
 
-    std::cout << ">> ProbX: " << disp(marginalX(probXY), ", ") << '\n';
-    std::cout << ">> ProbY: " << disp(marginalY(probXY), ", ") << '\n';
+    std::cout << ">> ProbX: "
+              << disp(marginalX(probXY), IOManipContainerOpts{}.set_sep(", "))
+              << '\n';
+    std::cout << ">> ProbY: "
+              << disp(marginalY(probXY), IOManipContainerOpts{}.set_sep(", "))
+              << '\n';
 
     std::cout << "Mean (X/Y): " << avg(probX, X) << " " << avg(probY, Y)
               << '\n';
@@ -30,5 +35,6 @@ int main() {
     std::cout << "Covariance: " << cov(probXY, X, Y) << '\n';
 
     // display a uniform probability distribution
-    std::cout << "Uniform(5): " << disp(uniform(5), ", ") << '\n';
+    std::cout << "Uniform(5): "
+              << disp(uniform(5), IOManipContainerOpts{}.set_sep(", ")) << '\n';
 }

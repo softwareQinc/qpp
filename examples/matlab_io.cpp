@@ -1,9 +1,11 @@
 // MATLAB input/output
 // Source: ./examples/matlab_io.cpp
+
 #include <iostream>
 
-#include "MATLAB/matlab.hpp" // must be explicitly included
-#include "qpp.h"
+#include "qpp/qpp.h"
+
+#include "qpp/MATLAB/matlab.hpp" // must be explicitly included
 
 int main() {
     using namespace qpp;

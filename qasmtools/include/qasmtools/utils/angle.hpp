@@ -1,7 +1,7 @@
 /*
  * This file is part of qasmtools.
  *
- * Copyright (c) 2019 - 2023 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -66,16 +66,18 @@ class Angle {
 
   public:
     constexpr Angle(int n, int d) : value_(std::make_pair(n, d)) {
-        if (d == 0)
+        if (d == 0) {
             throw std::invalid_argument(
                 "Trying to construct angle with denominator 0");
+        }
 
         normalize();
     }
     constexpr Angle(fraction angle) : value_(angle) {
-        if (angle.second == 0)
+        if (angle.second == 0) {
             throw std::invalid_argument(
                 "Trying to construct angle with denominator 0");
+        }
 
         normalize();
     }
