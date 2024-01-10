@@ -31,7 +31,7 @@ Version 5.0 - 10 January 2024
         qpp::compose_CTRL_circuit()
     - qpp::measure_seq() now returns results in the same order as the order in 
       which the qubits are being measured 
-    - API changes in ["qpp/functions.hpp"], zket2dits() now returns 
+    - API changes in ["qpp/functions.hpp"], qpp::zket2dits() now returns 
       std::optional<std::vector<idx>>
     - Bugfix in qpp::QCircuit::compose_circuit()
 
