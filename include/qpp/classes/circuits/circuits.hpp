@@ -4577,6 +4577,12 @@ class QCircuit : public IDisplay, public IJSON {
                          std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
 
+        // check non-empty control circuit
+        if (this->get_nq() == 0) {
+            throw exception::ZeroSize("qpp::QCircuit::compose_CTRL_circuit()",
+                                      "Current qpp::QCircuit instance");
+        }
+
         // check non-empty qc_target
         if (qc_target.get_nq() == 0) {
             throw exception::ZeroSize("qpp::QCircuit::compose_CTRL_circuit()",
