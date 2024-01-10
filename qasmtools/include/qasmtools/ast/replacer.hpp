@@ -385,7 +385,8 @@ class GateReplacer final : public Replacer {
  * For replacement of other types of nodes, use the Replacer class.
  *
  * \param node Reference to the root of the AST in which replacement will take
- * place \param replacements Hash map from gate UID's to a list of gates which
+ * place
+ * \param replacements Hash map from gate UID's to a list of gates which
  * should replace it
  */
 inline void
