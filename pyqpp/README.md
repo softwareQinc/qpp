@@ -27,8 +27,8 @@ stubgen -p pyqpp -o ~/python_stubs
 ln -s ~/python_stubs/pyqpp ~/venv/lib/python3.11/site-packages
 ```
 
-In the above, we assumed that your platform is UNIX/UNIX-like, and that you 
-have pyqpp installed in a virtual environment under `~/venv`. Please modify 
+In the above, we assumed that your platform is UNIX/UNIX-like, and that you
+have pyqpp installed in a virtual environment under `~/venv`. Please modify
 accordingly for your system.
 
 ## Overview
@@ -36,7 +36,9 @@ accordingly for your system.
 pyqpp includes `Bit_circuit`, `Dynamic_bitset`, `QCircuit`, `QEngine`, and
 several `QNoisyEngine` classes from Quantum++. Additionally, pyqpp provides
 commonly used quantum `gates` and `states`, and some basic Eigen operations.
-***
+
+---
+
 Example:
 
 ```python3
@@ -105,7 +107,9 @@ module &def(const char *name_, Func &&f, const Extra&... extra)
 ```
 
 `Func` can be a plain C++ function, a function pointer, or a lambda function.
-***
+
+---
+
 For example, consider the `qpp::randU` method
 
 ```C++

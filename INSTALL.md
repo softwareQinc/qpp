@@ -14,14 +14,14 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 
 - [CMake](https://cmake.org/)
 - [Eigen 3](https://eigen.tuxfamily.org) linear algebra library
-    - Preferably install Eigen3 with a package manager,
-      e.g., `sudo apt install libeigen3-dev` to install on Ubuntu/Debian Linux,
-      so it is visible system-wide
-    - **Important**: If, when building with Quantum++, your system is unable to
-      detect the location of the Eigen3 matrix library, set the environment
-      variable `EIGEN3_INSTALL_DIR` to point to the location of the Eigen3
-      library (include the `include/eigen3` part of the path), or pass the
-      argument `-DEIGEN3_INSTALL_DIR=/path/to/eigen3` to CMake
+  - Preferably install Eigen3 with a package manager,
+    e.g., `sudo apt install libeigen3-dev` to install on Ubuntu/Debian Linux,
+    so it is visible system-wide
+  - **Important**: If, when building with Quantum++, your system is unable to
+    detect the location of the Eigen3 matrix library, set the environment
+    variable `EIGEN3_INSTALL_DIR` to point to the location of the Eigen3
+    library (include the `include/eigen3` part of the path), or pass the
+    argument `-DEIGEN3_INSTALL_DIR=/path/to/eigen3` to CMake
 - C++17 compliant compiler, e.g., [gcc](https://gcc.gnu.org/)
   , [clang](https://clang.llvm.org)
   , [MSVC](https://visualstudio.microsoft.com/vs/) etc.
@@ -102,10 +102,10 @@ propagate to subprojects that use Quantum++ in
 their corresponding `CMakeLists.txt` via `findpackage(qpp ...)`.
 
 | Optional argument       | Value                                  | Description                                                                                                                                                                                                                      |
-|-------------------------|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `CMAKE_INSTALL_PREFIX`  | `/path/to/install`                     | Installs Quantum++ header files in a non-standard location (e.g., due to lack of admin. rights)                                                                                                                                  |
 | `EIGEN3_INSTALL_DIR`    | `/path/to/eigen3`                      | Path to Eigen3 installation, if not automatically detected. This path can alternatively be enforced by setting the environment variable with the same name, e.g., via `export EIGEN3_INSTALL_DIR=/path/to/eigen3` in UNIX/Linux. |
-|                         |                                        |                                                                                                                                                                                                                                  | 
+|                         |                                        |                                                                                                                                                                                                                                  |
 | `QPP_MATLAB`            | `ON/OFF` [`OFF` by default]            | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load Quantum++ matrices and vectors to/from MATLAB.                  |
 | `QPP_OPENMP`            | `ON/OFF` [`ON` by default]             | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                                  |
 | `QASMTOOLS_QASM2_SPECS` | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications; see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                                      |
@@ -173,7 +173,7 @@ Quantum++ with
 
 ```shell
 sudo pkg install quantum++
-```    
+```
 
 and uninstall it with
 
@@ -231,7 +231,7 @@ to `target_link_libraries()`!** (last line of the
 Configure the application in an out-of-source directory by executing
 
 ```shell
-cmake -B build 
+cmake -B build
 ```
 
 followed by building the application with
@@ -335,6 +335,6 @@ For more details, please see
 The Python3 wrapper [pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp)
 doesn't compile under SunOS/OpenIndiana due to errors in `<cmath>` such as
 
-``` 
+```
 no member named 'llround' in the global namespace; did you mean 'lround'?
 ```
