@@ -16,7 +16,7 @@ detect the location of the Eigen3 matrix library, set the environment variable
 ## Creating python stubs for IDE autocompletion and static type checking
 
 In case autocompletion (or static type checking via [mypy](https://www.mypy-lang.org/))
-for your editor/IDE does not work properly, you may need to create python stubs
+does not work properly in your editor/IDE, you may need to create python stubs
 for the package. To do this, execute
 
 ```shell
@@ -27,9 +27,9 @@ stubgen -p pyqpp -o ~/python_stubs
 ln -s ~/python_stubs/pyqpp ~/venv/lib/python3.11/site-packages
 ```
 
-In the above, we assumed your platform is UNIX/UNIX-like, and have pyqpp 
-installed in a virtual environment under `~/venv`. Please modify accordingly
-for your system.
+In the above, we assumed that your platform is UNIX/UNIX-like, and that you 
+have pyqpp installed in a virtual environment under `~/venv`. Please modify 
+accordingly for your system.
 
 ## Overview
 
