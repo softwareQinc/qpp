@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+# $@ - List of directories
+
 # Code beautifier with clang-format
-# Recursively parses the folder(s) passed as command line argument(s)
+# Recursively parses the directories passed as command line arguments
 
 if test -z "$CLANG_FORMAT"; then
     echo "Please set the CLANG_FORMAT environment variable to point to the \
