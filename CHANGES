@@ -1,3 +1,6 @@
+Pre-release
+    - 
+
 Version 5.0 - 10 January 2024
     - All header files are moved into "[include/qpp]", so to include the header
       one now must '#include "qpp/qpp.h"' (and similarly for other header files
