@@ -8,4 +8,11 @@ UseTab: Never
 PointerAlignment: Left
 IndentCaseLabels: true
 AlwaysBreakTemplateDeclarations: Yes
-InsertBraces: True
+InsertBraces: true
+SortIncludes: true
+# system headers come first
+IncludeCategories:
+  - Regex: '^<.*\.(h|hpp)>'
+    Priority: 1
+  - Regex: '^".*\.(h|hpp)"'
+    Priority: 2
