@@ -114,9 +114,8 @@ inline std::vector<realT> marginalY(const rmat& probXY) {
  * \return Average of \a X
  */
 template <typename Container>
-realT avg(
-    const std::vector<realT>& prob, const Container& X,
-    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
+realT avg(const std::vector<realT>& prob, const Container& X,
+          std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob)) {
@@ -146,9 +145,8 @@ realT avg(
  * \return Covariance of \a X and \a Y
  */
 template <typename Container>
-realT cov(
-    const rmat& probXY, const Container& X, const Container& Y,
-    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
+realT cov(const rmat& probXY, const Container& X, const Container& Y,
+          std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(X)) {
@@ -187,9 +185,8 @@ realT cov(
  * \return Variance of \a X
  */
 template <typename Container>
-realT var(
-    const std::vector<realT>& prob, const Container& X,
-    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
+realT var(const std::vector<realT>& prob, const Container& X,
+          std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob)) {
@@ -218,9 +215,8 @@ realT var(
  * \return Standard deviation of \a X
  */
 template <typename Container>
-realT sigma(
-    const std::vector<realT>& prob, const Container& X,
-    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
+realT sigma(const std::vector<realT>& prob, const Container& X,
+            std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(prob)) {
@@ -245,9 +241,8 @@ realT sigma(
  * \return Correlation of \a X and \a Y
  */
 template <typename Container>
-realT cor(
-    const rmat& probXY, const Container& X, const Container& Y,
-    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
+realT cor(const rmat& probXY, const Container& X, const Container& Y,
+          std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!internal::check_nonzero_size(X)) {

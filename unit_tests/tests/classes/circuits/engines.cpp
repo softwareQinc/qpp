@@ -39,8 +39,8 @@ TEST(qpp_QEngine_get_non_measured, AllTests) {}
 /// BEGIN std::vector<realT> QEngine::get_probs() const
 TEST(qpp_QEngine_get_probs, AllTests) {}
 
-/// BEGIN ket QEngine::get_psi() const
-TEST(qpp_QEngine_get_psi, AllTests) {}
+/// BEGIN ket QEngine::get_state() const
+TEST(qpp_QEngine_get_state, AllTests) {}
 
 /// BEGIN std::map<std::string, idx, internal::EqualSameSizeStringDits>
 ///       QEngine::get_stats() const

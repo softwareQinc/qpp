@@ -58,9 +58,8 @@ namespace qpp {
  * \param opts Formatting options
  * \return Instance of qpp::internal::IOManipScalar
  */
-template <
-    typename Scalar,
-    typename std::enable_if<std::is_arithmetic<Scalar>::value>::type* = nullptr>
+template <typename Scalar,
+          typename std::enable_if_t<std::is_arithmetic_v<Scalar>>* = nullptr>
 inline internal::IOManipScalar<Scalar> disp(Scalar scalar,
                                             IOManipScalarOpts opts = {}) {
     return internal::IOManipScalar<Scalar>{scalar, opts};
@@ -109,9 +108,8 @@ disp(InputIterator first, InputIterator last, IOManipRangeOpts opts = {}) {
 template <typename Container>
 internal::IOManipRange<typename Container::const_iterator>
 disp(const Container& c, IOManipContainerOpts opts = {},
-     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr,
-     typename std::enable_if<!is_matrix_expression<Container>::value>::type* =
-         nullptr) {
+     typename std::enable_if_t<is_iterable_v<Container>>* = nullptr,
+     typename std::enable_if_t<!is_matrix_expression_v<Container>>* = nullptr) {
 
     return internal::IOManipRange<typename Container::const_iterator>{
         std::begin(c), std::end(c), opts};
@@ -195,12 +193,12 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
     idx cols = static_cast<idx>(rA.cols());
     os << rows << " " << cols << '\n';
 
-    bool is_complex = qpp::is_complex<typename Derived::Scalar>::value;
+    bool is_cplx = qpp::is_complex_v<typename Derived::Scalar>;
 
     for (idx i = 0; i < rows; ++i) {
         std::string sep;
         for (idx j = 0; j < cols; ++j) {
-            if (is_complex) {
+            if (is_cplx) {
                 os << sep << '(' << internal::real2text(std::real(rA(i, j)));
                 os << ',' << internal::real2text(std::imag(rA(i, j))) << ')';
             } else {
@@ -232,8 +230,7 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
 load(std::istream& is,
-     typename std::enable_if<
-         is_complex<typename Derived::Scalar>::value>::type* = nullptr) {
+     std::enable_if_t<is_complex_v<typename Derived::Scalar>>* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!is.good()) {
@@ -279,8 +276,7 @@ load(std::istream& is,
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
 load(std::istream& is,
-     typename std::enable_if<
-         !is_complex<typename Derived::Scalar>::value>::type* = nullptr) {
+     std::enable_if_t<!is_complex_v<typename Derived::Scalar>>* = nullptr) {
     // EXCEPTION CHECKS
 
     if (!is.good()) {

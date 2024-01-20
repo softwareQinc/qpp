@@ -44,6 +44,7 @@
 #include <sstream>
 #include <string>
 #include <tuple>
+#include <type_traits>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -59,6 +60,216 @@
 
 namespace qpp {
 /**
+ * \brief Sampling/measurement statistics
+ */
+class Statistics : public IDisplay, public IJSON {
+    /**
+     * \brief Measurement/sampling statistics
+     */
+    using stats_t_ = std::map<std::vector<idx>, idx>;
+    mutable stats_t_ stats_data_{}; ///< statistics data
+
+  public:
+    /**
+     * \brief Default constructor
+     */
+    Statistics() = default;
+
+    /**
+     * \brief Constructor
+     *
+     * \param stats Instance of qpp::QEngine::Statistics
+     */
+    explicit Statistics(stats_t_ stats) : stats_data_{std::move(stats)} {}
+
+    /**
+     * \brief Number of samples
+     *
+     * \return Number of samples
+     */
+    idx get_num_reps() const {
+        idx result = 0;
+        for (auto&& [_, val] : stats_data_) {
+            result += val;
+        }
+        return result;
+    }
+
+    /**
+     * \brief Number of distinct outcomes
+     *
+     * \return Number of distinct outcomes
+     */
+    idx get_num_outcomes() const { return stats_data_.size(); }
+
+    /**
+     * \brief Raw data structure representing the statistics
+     *
+     * \return Raw data structure representing the statistics
+     */
+    stats_t_& data() const& { return stats_data_; }
+
+    /**
+     * \brief qpp::IJSON::to_JSON() override
+     *
+     * Displays the statistics in JSON format
+     *
+     * \param enclosed_in_curly_brackets If true, encloses the result in
+     * curly brackets
+     * \return String containing the JSON representation of the statistics
+     */
+    std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
+        std::string result;
+
+        if (enclosed_in_curly_brackets) {
+            result += "{";
+        }
+
+        std::ostringstream ss;
+        ss << "\"num_reps\": " << get_num_reps() << ", ";
+        ss << "\"num_outcomes\": " << get_num_outcomes() << ", ";
+
+        bool is_first = true;
+        std::string sep{};
+        ss << "\"outcomes\": ";
+        ss << "{";
+        for (auto&& [key, val] : stats_data_) {
+            ss << sep << "\"" << disp(key, IOManipContainerOpts{}.set_sep(", "))
+               << "\": " << val;
+            if (is_first) {
+                is_first = false;
+                sep = ", ";
+            }
+        }
+        ss << "}";
+        result += ss.str();
+
+        if (enclosed_in_curly_brackets) {
+            result += "}";
+        }
+
+        return result;
+    }
+
+  private:
+    /**
+     * \brief qpp::IDisplay::display() override
+     *
+     * Writes to the output stream a textual representation of the
+     * statistics
+     *
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
+     */
+    std::ostream& display(std::ostream& os) const override {
+        os << "[Statistics]\n";
+        os << "\tnum_reps: " << get_num_reps() << '\n';
+        os << "\tnum_outcomes: " << get_num_outcomes() << '\n';
+        bool is_first = true;
+        std::string sep{};
+        for (auto&& [key, val] : stats_data_) {
+            os << sep << '\t' << disp(key, IOManipContainerOpts{}.set_sep(" "))
+               << ": " << val;
+            if (is_first) {
+                is_first = false;
+                sep = '\n';
+            }
+        }
+
+        return os;
+    };
+}; /* class Statistics */
+
+namespace internal {
+/**
+ * \class internal::State
+ * \tparam T State underlying type, qpp::ket or qpp::cmat
+ * \brief Current state of qpp::QEngine
+ */
+template <typename T>
+struct QEngineState {
+    static_assert(std::is_same_v<T, qpp::ket> || std::is_same_v<T, qpp::cmat>,
+                  "The underlying type must be qpp::ket or qpp::cmat");
+
+    const QCircuit* qc_ptr_;     ///< non-owning pointer to the parent
+                                 ///< const quantum circuit description
+    T state_{};                  ///< state vector or density matrix
+    std::vector<realT> probs_{}; ///< measurement probabilities
+    std::vector<idx> dits_{};    ///< classical dits (where measurement
+                                 ///< results are usually stored)
+    std::vector<idx> subsys_{};  ///< keeps track of the measured
+                                 ///< subsystems, re-label them after
+                                 ///< measurements
+
+    /**
+     * \brief Constructor
+     *
+     * \param qc_ptr Non-owning pointer to the parent const quantum circuit
+     * description
+     */
+    explicit QEngineState(const QCircuit* qc_ptr) : qc_ptr_{qc_ptr} {
+        // EXCEPTION CHECKS
+
+        if (qc_ptr->get_nq() == 0) {
+            throw exception::ZeroSize("qpp::internal::State::reset()", "nq");
+        }
+        // END EXCEPTION CHECKS
+        reset();
+    }
+
+    // silence -Weffc++ class has pointer data members
+    /**
+     * \brief Default copy constructor
+     */
+    QEngineState(const QEngineState&) = default;
+
+    // silence -Weffc++ class has pointer data members
+    /**
+     * \brief Default copy assignment operator
+     *
+     * \return Reference to the current instance
+     */
+    QEngineState& operator=(const QEngineState&) = default;
+
+    /**
+     * \brief Resets the engine state
+     *
+     * \param state Optional engine's initial quantum state
+     */
+    void reset(std::optional<T> state = std::nullopt) {
+        if (state.has_value()) {
+            idx D = internal::safe_pow(qc_ptr_->get_d(), qc_ptr_->get_nq());
+            if constexpr (std::is_same_v<T, ket>) {
+                if (static_cast<idx>(state.value().rows()) != D) {
+                    throw exception::DimsNotEqual(
+                        "qpp::internal::State::reset()", "state");
+                }
+            } else {
+                if (static_cast<idx>(state.value().rows()) != D ||
+                    static_cast<idx>(state.value().cols()) != D) {
+                    throw exception::DimsNotEqual(
+                        "qpp::internal::State::reset()", "state");
+                }
+            }
+            state_ = state.value();
+        } else {
+            if constexpr (std::is_same_v<T, ket>) {
+                state_ = States::get_no_thread_local_instance().zero(
+                    qc_ptr_->get_nq(), qc_ptr_->get_d());
+            } else {
+                state_ = prj(States::get_no_thread_local_instance().zero(
+                    qc_ptr_->get_nq(), qc_ptr_->get_d()));
+            }
+        }
+        probs_ = std::vector<realT>(qc_ptr_->get_nc(), 0);
+        dits_ = std::vector<idx>(qc_ptr_->get_nc(), 0);
+        subsys_ = std::vector<idx>(qc_ptr_->get_nq(), 0);
+        std::iota(subsys_.begin(), subsys_.end(), 0);
+    }
+}; /* class internal::State */
+} // namespace internal
+
+/**
  * \class qpp::QEngine
  * \brief Quantum circuit engine, executes qpp::QCircuit
  * \see qpp::QCircuit
@@ -68,207 +279,12 @@ namespace qpp {
  * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
  * See https://github.com/softwareQinc/qpp/issues/75 for more details.
  */
-class QEngine : public IDisplay, public IJSON {
-  public:
-    /**
-     * \brief Sampling/measurement statistics
-     */
-    class Statistics : public IDisplay, public IJSON {
-        /**
-         * \brief Measurement/sampling statistics
-         */
-        using stats_t_ = std::map<std::vector<idx>, idx>;
-        mutable stats_t_ stats_data_{}; ///< statistics data
-
-      public:
-        /**
-         * \brief Default constructor
-         */
-        Statistics() = default;
-
-        /**
-         * \brief Constructor
-         *
-         * \param stats Instance of qpp::QEngine::Statistics
-         */
-        explicit Statistics(stats_t_ stats) : stats_data_{std::move(stats)} {}
-
-        /**
-         * \brief Number of samples
-         *
-         * \return Number of samples
-         */
-        idx get_num_reps() const {
-            idx result = 0;
-            for (auto&& [_, val] : stats_data_) {
-                result += val;
-            }
-            return result;
-        }
-
-        /**
-         * \brief Number of distinct outcomes
-         *
-         * \return Number of distinct outcomes
-         */
-        idx get_num_outcomes() const { return stats_data_.size(); }
-
-        /**
-         * \brief Raw data structure representing the statistics
-         *
-         * \return Raw data structure representing the statistics
-         */
-        stats_t_& data() const& { return stats_data_; }
-
-        /**
-         * \brief qpp::IJSON::to_JSON() override
-         *
-         * Displays the statistics in JSON format
-         *
-         * \param enclosed_in_curly_brackets If true, encloses the result in
-         * curly brackets
-         * \return String containing the JSON representation of the statistics
-         */
-        std::string
-        to_JSON(bool enclosed_in_curly_brackets = true) const override {
-            std::string result;
-
-            if (enclosed_in_curly_brackets) {
-                result += "{";
-            }
-
-            std::ostringstream ss;
-            ss << "\"num_reps\": " << get_num_reps() << ", ";
-            ss << "\"num_outcomes\": " << get_num_outcomes() << ", ";
-
-            bool is_first = true;
-            std::string sep{};
-            ss << "\"outcomes\": ";
-            ss << "{";
-            for (auto&& [key, val] : stats_data_) {
-                ss << sep << "\""
-                   << disp(key, IOManipContainerOpts{}.set_sep(", "))
-                   << "\": " << val;
-                if (is_first) {
-                    is_first = false;
-                    sep = ", ";
-                }
-            }
-            ss << "}";
-            result += ss.str();
-
-            if (enclosed_in_curly_brackets) {
-                result += "}";
-            }
-
-            return result;
-        }
-
-      private:
-        /**
-         * \brief qpp::IDisplay::display() override
-         *
-         * Writes to the output stream a textual representation of the
-         * statistics
-         *
-         * \param os Output stream passed by reference
-         * \return Reference to the output stream
-         */
-        std::ostream& display(std::ostream& os) const override {
-            os << "[Statistics]\n";
-            os << "\tnum_reps: " << get_num_reps() << '\n';
-            os << "\tnum_outcomes: " << get_num_outcomes() << '\n';
-            bool is_first = true;
-            std::string sep{};
-            for (auto&& [key, val] : stats_data_) {
-                os << sep << '\t'
-                   << disp(key, IOManipContainerOpts{}.set_sep(" ")) << ": "
-                   << val;
-                if (is_first) {
-                    is_first = false;
-                    sep = '\n';
-                }
-            }
-
-            return os;
-        };
-    }; /* class QEngine::Statistics */
-
+template <typename T>
+class QEngineT : public IDisplay, public IJSON {
   protected:
     const QCircuit*
         qc_ptr_; ///< pointer to constant quantum circuit description
-
-    /**
-     * \class qpp::QEngine::state_
-     * \brief Current state of the engine
-     */
-    struct state_ {
-        const QCircuit* qc_ptr_;     ///< non-owning pointer to the parent
-                                     ///< const quantum circuit description
-        ket psi_{};                  ///< state vector
-        std::vector<realT> probs_{}; ///< measurement probabilities
-        std::vector<idx> dits_{};    ///< classical dits (where measurement
-                                     ///< results are usually stored)
-        std::vector<idx> subsys_{};  ///< keeps track of the measured
-                                     ///< subsystems, re-label them after
-                                     ///< measurements
-
-        /**
-         * \brief Constructor
-         *
-         * \param qc_ptr Non-owning pointer to the parent const quantum circuit
-         * description
-         */
-        explicit state_(const QCircuit* qc_ptr) : qc_ptr_{qc_ptr} {
-            // EXCEPTION CHECKS
-
-            if (qc_ptr->get_nq() == 0) {
-                throw exception::ZeroSize("qpp::QEngine::state_::reset()",
-                                          "nq");
-            }
-            // END EXCEPTION CHECKS
-            reset();
-        }
-
-        // silence -Weffc++ class has pointer data members
-        /**
-         * \brief Default copy constructor
-         */
-        state_(const state_&) = default;
-
-        // silence -Weffc++ class has pointer data members
-        /**
-         * \brief Default copy assignment operator
-         *
-         * \return Reference to the current instance
-         */
-        state_& operator=(const state_&) = default;
-
-        /**
-         * \brief Resets the engine state
-         *
-         * \param psi Optional engine's initial quantum state
-         */
-        void reset(std::optional<ket> psi = std::nullopt) {
-            if (psi.has_value()) {
-                idx D = internal::safe_pow(qc_ptr_->get_d(), qc_ptr_->get_nq());
-                if (static_cast<idx>(psi.value().rows()) != D) {
-                    if (static_cast<idx>(psi.value().rows()) != D) {
-                        throw exception::DimsNotEqual(
-                            "qpp::QEngine::state_::reset()", "psi");
-                    }
-                }
-                psi_ = psi.value();
-            } else {
-                psi_ = States::get_no_thread_local_instance().zero(
-                    qc_ptr_->get_nq(), qc_ptr_->get_d());
-            }
-            probs_ = std::vector<realT>(qc_ptr_->get_nc(), 0);
-            dits_ = std::vector<idx>(qc_ptr_->get_nc(), 0);
-            subsys_ = std::vector<idx>(qc_ptr_->get_nq(), 0);
-            std::iota(subsys_.begin(), subsys_.end(), 0);
-        }
-    } st_;               ///< current state of the engine
+    internal::QEngineState<T> qeng_st_; ///< current state of the engine
     Statistics stats_{}; ///< measurement statistics for multiple runs
 
     /**
@@ -284,11 +300,11 @@ class QEngine : public IDisplay, public IJSON {
                 "qpp::QEngine::set_measured_()", "i");
         }
         // END EXCEPTION CHECKS
-        st_.subsys_[i] =
+        qeng_st_.subsys_[i] =
             std::numeric_limits<idx>::max(); // set qudit i to measured state
         for (idx m = i; m < qc_ptr_->get_nq(); ++m) {
             if (!was_measured(m)) {
-                --st_.subsys_[m];
+                --qeng_st_.subsys_[m];
             }
         }
     }
@@ -312,7 +328,7 @@ class QEngine : public IDisplay, public IJSON {
                     "qpp::QEngine::get_relative_pos_()", "v[i]");
             }
             // END EXCEPTION CHECKS
-            v[i] = st_.subsys_[v[i]];
+            v[i] = qeng_st_.subsys_[v[i]];
         }
         return v;
     }
@@ -332,15 +348,15 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \param qc Quantum circuit description
      */
-    explicit QEngine(const QCircuit& qc)
-        : qc_ptr_{std::addressof(qc)}, st_{qc_ptr_}, stats_{},
+    explicit QEngineT(const QCircuit& qc)
+        : qc_ptr_{std::addressof(qc)}, qeng_st_{qc_ptr_}, stats_{},
           can_sample{false} {}
 
     // silence -Weffc++ class has pointer data members
     /**
      * \brief Default copy constructor
      */
-    QEngine(const QEngine&) = default;
+    QEngineT(const QEngineT&) = default;
 
     // silence -Weffc++ class has pointer data members
     /**
@@ -348,17 +364,17 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Reference to the current instance
      */
-    QEngine& operator=(const QEngine&) = default;
+    QEngineT& operator=(const QEngineT&) = default;
 
     /**
      * \brief Disables rvalue QCircuit
      */
-    QEngine(QCircuit&&) = delete;
+    QEngineT(QCircuit&&) = delete;
 
     /**
      * \brief Default virtual destructor
      */
-    ~QEngine() override = default;
+    ~QEngineT() override = default;
 
     // getters
     /**
@@ -366,7 +382,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Underlying quantum state
      */
-    ket get_psi() const { return st_.psi_; }
+    T get_state() const { return qeng_st_.state_; }
 
     /**
      * \brief Vector with the values of the underlying classical dits
@@ -379,7 +395,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Vector of underlying classical dits
      */
-    std::vector<idx> get_dits() const { return st_.dits_; }
+    std::vector<idx> get_dits() const { return qeng_st_.dits_; }
 
     /**
      * \brief Value of the classical dit at position \a i
@@ -401,7 +417,7 @@ class QEngine : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        return st_.dits_[i];
+        return qeng_st_.dits_[i];
     }
 
     /**
@@ -424,7 +440,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Vector of underlying measurement outcome probabilities
      */
-    std::vector<realT> get_probs() const { return st_.probs_; }
+    std::vector<realT> get_probs() const { return qeng_st_.probs_; }
 
     /**
      * \brief Check whether qudit \a i was already measured (destructively)
@@ -434,7 +450,7 @@ class QEngine : public IDisplay, public IJSON {
      * \return True if qudit \a i was already measured, false otherwise
      */
     bool was_measured(idx i) const {
-        return st_.subsys_[i] == std::numeric_limits<idx>::max();
+        return qeng_st_.subsys_[i] == std::numeric_limits<idx>::max();
     }
 
     /**
@@ -494,7 +510,7 @@ class QEngine : public IDisplay, public IJSON {
      * vector of measurement results), with the most significant bit located
      * at index 0 (i.e., top/left).
      */
-    QEngine::Statistics get_stats() const { return stats_; }
+    Statistics get_stats() const { return stats_; }
 
     /**
      * \brief Determines if engines derived from \a qpp::QEngine are noisy or
@@ -519,14 +535,14 @@ class QEngine : public IDisplay, public IJSON {
      * \param value Classical dit value
      * \return Reference to the current instance
      */
-    QEngine& set_dit(idx i, idx value) {
+    QEngineT& set_dit(idx i, idx value) {
         // EXCEPTION CHECKS
 
         if (i >= qc_ptr_->get_nc()) {
             throw exception::OutOfRange("qpp::QEngine::set_dit()", "i");
         }
         // END EXCEPTION CHECKS
-        st_.dits_[i] = value;
+        qeng_st_.dits_[i] = value;
 
         return *this;
     }
@@ -543,38 +559,38 @@ class QEngine : public IDisplay, public IJSON {
      * internal vector of classical dits returned by qpp::QEngine::get_dits()
      * \return Reference to the current instance
      */
-    QEngine& set_dits(std::vector<idx> dits) {
+    QEngineT& set_dits(std::vector<idx> dits) {
         // EXCEPTION CHECKS
 
-        if (dits.size() != st_.dits_.size()) {
+        if (dits.size() != qeng_st_.dits_.size()) {
             throw exception::SizeMismatch("qpp::QEngine::set_dits()", "dits");
         }
         // END EXCEPTION CHECKS
-        st_.dits_ = std::move(dits);
+        qeng_st_.dits_ = std::move(dits);
 
         return *this;
     }
 
     /**
-     * \brief Sets the underlying quantum state to \a psi
+     * \brief Sets the underlying quantum state to \a state
      *
      * \note The order is lexicographical with respect to the remaining
      * non-measured qudits
      *
-     * \param psi State vector
+     * \param state State vector
      * \return Reference to the current instance
      */
-    QEngine& set_psi(const ket& psi) {
+    QEngineT& set_state(const T& state) {
         // EXCEPTION CHECKS
 
         idx n = get_non_measured().size();
         idx D = internal::safe_pow(qc_ptr_->get_d(), n);
-        if (static_cast<idx>(psi.rows()) != D) {
-            throw exception::DimsNotEqual("qpp::QEngine::set_psi()", "psi");
+        if (static_cast<idx>(state.rows()) != D) {
+            throw exception::DimsNotEqual("qpp::QEngine::set_state()", "state");
         }
         // END EXCEPTION CHECKS
 
-        st_.psi_ = psi;
+        qeng_st_.state_ = state;
 
         return *this;
     }
@@ -585,7 +601,7 @@ class QEngine : public IDisplay, public IJSON {
      *
      * \return Reference to the current instance
      */
-    QEngine& reset_stats() {
+    QEngineT& reset_stats() {
         stats_ = {};
 
         return *this;
@@ -601,9 +617,9 @@ class QEngine : public IDisplay, public IJSON {
      * measurement statistics hash table
      * \return Reference to the current instance
      */
-    virtual QEngine& reset(bool reset_stats = true) {
+    virtual QEngineT& reset(bool reset_stats = true) {
         this->can_sample = false;
-        st_.reset(st_.psi_);
+        qeng_st_.reset(qeng_st_.state_);
         if (reset_stats) {
             this->reset_stats();
         }
@@ -620,7 +636,7 @@ class QEngine : public IDisplay, public IJSON {
      * \param elem Step to be executed
      * \return Reference to the current instance
      */
-    virtual QEngine& execute(const QCircuit::iterator::value_type& elem) {
+    virtual QEngineT& execute(const QCircuit::iterator::value_type& elem) {
         // EXCEPTION CHECKS
 
         // iterator must point to the same quantum circuit description
@@ -650,16 +666,17 @@ class QEngine : public IDisplay, public IJSON {
                         case QCircuit::GateStep::Type::TWO:
                         case QCircuit::GateStep::Type::THREE:
                         case QCircuit::GateStep::Type::JOINT:
-                            st_.psi_ =
-                                apply(st_.psi_, h_tbl[gate_step.gate_hash_],
-                                      target_rel_pos, d);
+                            qeng_st_.state_ = apply(qeng_st_.state_,
+                                                    h_tbl[gate_step.gate_hash_],
+                                                    target_rel_pos, d);
                             break;
                         case QCircuit::GateStep::Type::FAN:
                             for (idx m = 0;
                                  m < static_cast<idx>(gate_step.target_.size());
                                  ++m) {
-                                st_.psi_ =
-                                    apply(st_.psi_, h_tbl[gate_step.gate_hash_],
+                                qeng_st_.state_ =
+                                    apply(qeng_st_.state_,
+                                          h_tbl[gate_step.gate_hash_],
                                           {target_rel_pos[m]}, d);
                             }
                             break;
@@ -673,12 +690,12 @@ class QEngine : public IDisplay, public IJSON {
                             get_relative_pos_(gate_step.ctrl_.value());
                         bool is_fan = (gate_step.gate_type_ ==
                                        QCircuit::GateStep::Type::CTRL_FAN);
-                        st_.psi_ =
-                            is_fan ? applyCTRL_fan(st_.psi_,
+                        qeng_st_.state_ =
+                            is_fan ? applyCTRL_fan(qeng_st_.state_,
                                                    h_tbl[gate_step.gate_hash_],
                                                    ctrl_rel_pos, target_rel_pos,
                                                    d, gate_step.shift_)
-                                   : applyCTRL(st_.psi_,
+                                   : applyCTRL(qeng_st_.state_,
                                                h_tbl[gate_step.gate_hash_],
                                                ctrl_rel_pos, target_rel_pos, d,
                                                gate_step.shift_);
@@ -688,14 +705,14 @@ class QEngine : public IDisplay, public IJSON {
                     if (QCircuit::is_cCTRL(gate_step)) {
                         bool is_fan = (gate_step.gate_type_ ==
                                        QCircuit::GateStep::Type::cCTRL_FAN);
-                        if (!st_.dits_.empty()) {
+                        if (!qeng_st_.dits_.empty()) {
                             {
                                 bool should_apply = true;
                                 idx first_dit;
                                 // we have a shift
                                 if (gate_step.shift_.has_value()) {
                                     first_dit =
-                                        (st_.dits_[(
+                                        (qeng_st_.dits_[(
                                              gate_step.ctrl_.value())[0]] +
                                          gate_step.shift_.value()[0]) %
                                         d;
@@ -704,7 +721,7 @@ class QEngine : public IDisplay, public IJSON {
                                          static_cast<idx>(
                                              gate_step.ctrl_.value().size());
                                          ++m) {
-                                        if ((st_.dits_[(
+                                        if ((qeng_st_.dits_[(
                                                  gate_step.ctrl_.value())[m]] +
                                              gate_step.shift_.value()[m]) %
                                                 d !=
@@ -716,14 +733,14 @@ class QEngine : public IDisplay, public IJSON {
                                 }
                                 // no shift
                                 else {
-                                    first_dit =
-                                        st_.dits_[(gate_step.ctrl_.value())[0]];
+                                    first_dit = qeng_st_.dits_[(
+                                        gate_step.ctrl_.value())[0]];
                                     for (idx m = 1;
                                          m <
                                          static_cast<idx>(
                                              gate_step.ctrl_.value().size());
                                          ++m) {
-                                        if (st_.dits_[(
+                                        if (qeng_st_.dits_[(
                                                 gate_step.ctrl_.value())[m]] !=
                                             first_dit) {
                                             should_apply = false;
@@ -736,12 +753,12 @@ class QEngine : public IDisplay, public IJSON {
                                                   first_dit);
                                     if (is_fan) {
                                         for (idx qudit : target_rel_pos) {
-                                            st_.psi_ =
-                                                apply(st_.psi_, U, {qudit}, d);
+                                            qeng_st_.state_ = apply(
+                                                qeng_st_.state_, U, {qudit}, d);
                                         }
                                     } else {
-                                        st_.psi_ = apply(
-                                            st_.psi_,
+                                        qeng_st_.state_ = apply(
+                                            qeng_st_.state_,
                                             powm(h_tbl[gate_step.gate_hash_],
                                                  first_dit),
                                             target_rel_pos, d);
@@ -753,13 +770,15 @@ class QEngine : public IDisplay, public IJSON {
                         else {
                             if (is_fan) {
                                 for (idx qudit : target_rel_pos) {
-                                    st_.psi_ = apply(
-                                        st_.psi_, h_tbl[gate_step.gate_hash_],
-                                        {qudit}, d);
+                                    qeng_st_.state_ =
+                                        apply(qeng_st_.state_,
+                                              h_tbl[gate_step.gate_hash_],
+                                              {qudit}, d);
                                 }
                             } else {
-                                st_.psi_ =
-                                    apply(st_.psi_, h_tbl[gate_step.gate_hash_],
+                                qeng_st_.state_ =
+                                    apply(qeng_st_.state_,
+                                          h_tbl[gate_step.gate_hash_],
                                           target_rel_pos, d);
                             }
                         }
@@ -772,89 +791,97 @@ class QEngine : public IDisplay, public IJSON {
                     idx mres = 0;
                     std::vector<idx> results;
                     std::vector<realT> probs;
-                    std::vector<ket> states;
+                    std::vector<T> states;
 
                     switch (measure_step.measurement_type_) {
                         case QCircuit::MeasurementStep::Type::NONE:
                             break;
                         case QCircuit::MeasurementStep::Type::MEASURE:
-                            std::tie(results, probs, st_.psi_) =
-                                measure_seq(st_.psi_, target_rel_pos, d);
-                            st_.dits_[measure_step.c_reg_] = results[0];
-                            st_.probs_[measure_step.c_reg_] = probs[0];
+                            std::tie(results, probs, qeng_st_.state_) =
+                                measure_seq(qeng_st_.state_, target_rel_pos, d);
+                            qeng_st_.dits_[measure_step.c_reg_] = results[0];
+                            qeng_st_.probs_[measure_step.c_reg_] = probs[0];
                             set_measured_(measure_step.target_[0]);
                             break;
                         case QCircuit::MeasurementStep::Type::MEASURE_MANY:
-                            std::tie(results, probs, st_.psi_) =
-                                measure_seq(st_.psi_, target_rel_pos, d);
+                            std::tie(results, probs, qeng_st_.state_) =
+                                measure_seq(qeng_st_.state_, target_rel_pos, d);
                             std::copy(results.begin(), results.end(),
-                                      std::next(st_.dits_.begin(),
+                                      std::next(qeng_st_.dits_.begin(),
                                                 measure_step.c_reg_));
                             std::copy(probs.begin(), probs.end(),
-                                      std::next(st_.probs_.begin(),
+                                      std::next(qeng_st_.probs_.begin(),
                                                 measure_step.c_reg_));
                             for (idx target : measure_step.target_) {
                                 set_measured_(target);
                             }
                             break;
                         case QCircuit::MeasurementStep::Type::MEASURE_V:
-                            std::tie(mres, probs, states) = measure(
-                                st_.psi_, h_tbl[measure_step.mats_hash_[0]],
-                                target_rel_pos, d);
-                            st_.psi_ = states[mres];
-                            st_.dits_[measure_step.c_reg_] = mres;
-                            st_.probs_[measure_step.c_reg_] = probs[mres];
+                            std::tie(mres, probs, states) =
+                                measure(qeng_st_.state_,
+                                        h_tbl[measure_step.mats_hash_[0]],
+                                        target_rel_pos, d);
+                            qeng_st_.state_ = states[mres];
+                            qeng_st_.dits_[measure_step.c_reg_] = mres;
+                            qeng_st_.probs_[measure_step.c_reg_] = probs[mres];
                             set_measured_(measure_step.target_[0]);
                             break;
                         case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT:
-                            std::tie(mres, probs, states) = measure(
-                                st_.psi_, h_tbl[measure_step.mats_hash_[0]],
-                                target_rel_pos, d);
-                            st_.psi_ = states[mres];
-                            st_.dits_[measure_step.c_reg_] = mres;
-                            st_.probs_[measure_step.c_reg_] = probs[mres];
+                            std::tie(mres, probs, states) =
+                                measure(qeng_st_.state_,
+                                        h_tbl[measure_step.mats_hash_[0]],
+                                        target_rel_pos, d);
+                            qeng_st_.state_ = states[mres];
+                            qeng_st_.dits_[measure_step.c_reg_] = mres;
+                            qeng_st_.probs_[measure_step.c_reg_] = probs[mres];
                             for (idx target : measure_step.target_) {
                                 set_measured_(target);
                             }
                             break;
                         case QCircuit::MeasurementStep::Type::MEASURE_ND:
-                            std::tie(results, probs, st_.psi_) =
-                                measure_seq(st_.psi_, target_rel_pos, d, false);
-                            st_.dits_[measure_step.c_reg_] = results[0];
-                            st_.probs_[measure_step.c_reg_] = probs[0];
+                            std::tie(results, probs, qeng_st_.state_) =
+                                measure_seq(qeng_st_.state_, target_rel_pos, d,
+                                            false);
+                            qeng_st_.dits_[measure_step.c_reg_] = results[0];
+                            qeng_st_.probs_[measure_step.c_reg_] = probs[0];
                             break;
                         case QCircuit::MeasurementStep::Type::MEASURE_MANY_ND:
-                            std::tie(results, probs, st_.psi_) =
-                                measure_seq(st_.psi_, target_rel_pos, d, false);
+                            std::tie(results, probs, qeng_st_.state_) =
+                                measure_seq(qeng_st_.state_, target_rel_pos, d,
+                                            false);
                             std::copy(results.begin(), results.end(),
-                                      std::next(st_.dits_.begin(),
+                                      std::next(qeng_st_.dits_.begin(),
                                                 measure_step.c_reg_));
                             std::copy(probs.begin(), probs.end(),
-                                      std::next(st_.probs_.begin(),
+                                      std::next(qeng_st_.probs_.begin(),
                                                 measure_step.c_reg_));
                             break;
                         case QCircuit::MeasurementStep::Type::MEASURE_V_ND:
                         case QCircuit::MeasurementStep::Type::
                             MEASURE_V_JOINT_ND:
-                            std::tie(mres, probs, states) = measure(
-                                st_.psi_, h_tbl[measure_step.mats_hash_[0]],
-                                target_rel_pos, d, false);
-                            st_.psi_ = states[mres];
-                            st_.dits_[measure_step.c_reg_] = mres;
-                            st_.probs_[measure_step.c_reg_] = probs[mres];
+                            std::tie(mres, probs, states) =
+                                measure(qeng_st_.state_,
+                                        h_tbl[measure_step.mats_hash_[0]],
+                                        target_rel_pos, d, false);
+                            qeng_st_.state_ = states[mres];
+                            qeng_st_.dits_[measure_step.c_reg_] = mres;
+                            qeng_st_.probs_[measure_step.c_reg_] = probs[mres];
                             break;
                         case QCircuit::MeasurementStep::Type::RESET:
                         case QCircuit::MeasurementStep::Type::RESET_MANY:
-                            st_.psi_ = qpp::reset(st_.psi_, target_rel_pos, d);
+                            qeng_st_.state_ =
+                                qpp::reset(qeng_st_.state_, target_rel_pos, d);
                             break;
                         case QCircuit::MeasurementStep::Type::DISCARD:
-                            std::tie(std::ignore, std::ignore, st_.psi_) =
-                                measure_seq(st_.psi_, target_rel_pos, d);
+                            std::tie(std::ignore, std::ignore,
+                                     qeng_st_.state_) =
+                                measure_seq(qeng_st_.state_, target_rel_pos, d);
                             set_measured_(measure_step.target_[0]);
                             break;
                         case QCircuit::MeasurementStep::Type::DISCARD_MANY:
-                            std::tie(std::ignore, std::ignore, st_.psi_) =
-                                measure_seq(st_.psi_, target_rel_pos, d);
+                            std::tie(std::ignore, std::ignore,
+                                     qeng_st_.state_) =
+                                measure_seq(qeng_st_.state_, target_rel_pos, d);
                             for (idx target : measure_step.target_) {
                                 set_measured_(target);
                             }
@@ -876,7 +903,7 @@ class QEngine : public IDisplay, public IJSON {
      * \param it Iterator to the step to be executed
      * \return Reference to the current instance
      */
-    QEngine& execute(const QCircuit::iterator& it) { return execute(*it); }
+    QEngineT& execute(const QCircuit::iterator& it) { return execute(*it); }
 
     /**
      * \brief Executes the entire quantum circuit description
@@ -886,7 +913,7 @@ class QEngine : public IDisplay, public IJSON {
      * of measuring)
      * \return Reference to the current instance
      */
-    virtual QEngine& execute(idx reps = 1, bool try_sampling = true) {
+    virtual QEngineT& execute(idx reps = 1, bool try_sampling = true) {
         this->reset(false);
         auto steps = (reps > 1 && try_sampling)
                          ? internal::canonical_form(*qc_ptr_)
@@ -926,7 +953,7 @@ class QEngine : public IDisplay, public IJSON {
             execute(steps[i]);
         }
         // saves the state just before the first measurement
-        auto current_engine_state = st_;
+        auto current_engine_state = qeng_st_;
 
         // executes repeatedly everything in the remaining interval
         // [sampling_pos, num_steps)
@@ -956,7 +983,7 @@ class QEngine : public IDisplay, public IJSON {
                 }
                 for (idx rep = 0; rep < reps - 1; ++rep) {
                     std::vector<idx> sample_res_restricted_support =
-                        sample(current_engine_state.psi_, sample_from,
+                        sample(current_engine_state.state_, sample_from,
                                qc_ptr_->get_d());
                     // extend sample_res to full support
                     std::vector<idx> sample_res = this->get_dits();
@@ -966,7 +993,8 @@ class QEngine : public IDisplay, public IJSON {
                     }
                     ++stats_.data()[sample_res];
                 }
-                // execute the last repetition, so we can compute the state psi
+                // execute the last repetition, so we can compute the final
+                // state
                 for (idx i = first_measurement_discard_reset_pos; i < num_steps;
                      ++i) {
                     execute(steps[i]);
@@ -979,7 +1007,7 @@ class QEngine : public IDisplay, public IJSON {
         else {
             for (idx rep = 0; rep < reps; ++rep) {
                 // sets the state of the engine to the entry state
-                st_ = current_engine_state;
+                qeng_st_ = current_engine_state;
                 bool measured = false;
                 for (idx i = first_measurement_discard_reset_pos; i < num_steps;
                      ++i) {
@@ -1114,7 +1142,11 @@ class QEngine : public IDisplay, public IJSON {
 
         return os;
     }
-}; /* class QEngine */
+}; /* class QEngineT */
+
+using QEngine = QEngineT<ket>;
+using QKetEngine = QEngineT<ket>;
+using QDensityEngine = QEngineT<cmat>;
 
 /**
  * \class qpp::QNoisyEngine
@@ -1127,8 +1159,8 @@ class QEngine : public IDisplay, public IJSON {
  *
  * \tparam NoiseModel Quantum noise model, should be derived from qpp::NoiseBase
  */
-template <typename NoiseModel>
-class QNoisyEngine : public QEngine {
+template <typename T, typename NoiseModel>
+class QNoisyEngineT : public QEngineT<T> {
     NoiseModel noise_;                            ///< quantum noise model
     std::vector<std::vector<idx>> noise_results_; ///< noise results
   public:
@@ -1139,8 +1171,8 @@ class QNoisyEngine : public QEngine {
      * \param qc Quantum circuit description
      * \param noise Quantum noise model
      */
-    explicit QNoisyEngine(const QCircuit& qc, const NoiseModel& noise)
-        : QEngine{qc}, noise_{noise}, noise_results_(qc.get_step_count()) {
+    explicit QNoisyEngineT(const QCircuit& qc, const NoiseModel& noise)
+        : QEngineT<T>{qc}, noise_{noise}, noise_results_(qc.get_step_count()) {
         // EXCEPTION CHECKS
 
         // check noise has the correct dimensionality
@@ -1151,26 +1183,28 @@ class QNoisyEngine : public QEngine {
         // END EXCEPTION CHECKS
     }
 
-    using QEngine::execute;
+    using QEngineT<T>::execute;
 
     /**
      * \brief Executes one step in the quantum circuit description
      *
      * \param elem Step to be executed
      */
-    QNoisyEngine& execute(const QCircuit::iterator::value_type& elem) override {
+    QNoisyEngineT&
+    execute(const QCircuit::iterator::value_type& elem) override {
         // get the relative position of the target
-        std::vector<idx> target_rel_pos = get_relative_pos_(get_non_measured());
+        std::vector<idx> target_rel_pos =
+            this->get_relative_pos_(this->get_non_measured());
         // if (elem.type_ != QCircuit::StepType::MEASUREMENT) {
         // apply the noise
         for (idx i : target_rel_pos) {
-            st_.psi_ = noise_(st_.psi_, i);
+            this->qeng_st_.state_ = noise_(this->qeng_st_.state_, i);
             // record the Kraus operator that occurred
             noise_results_[elem.get_ip()].emplace_back(noise_.get_last_idx());
         }
         // }
         // execute the circuit step
-        (void)QEngine::execute(elem);
+        (void)QEngineT<T>::execute(elem);
 
         return *this;
     }
@@ -1181,21 +1215,22 @@ class QNoisyEngine : public QEngine {
      * \param reps Number of repetitions
      * \return Reference to the current instance
      */
-    QNoisyEngine& execute(idx reps = 1, bool = true) override {
-        auto initial_engine_state = st_; // saves the engine entry state
+    QNoisyEngineT& execute(idx reps = 1, bool = true) override {
+        auto initial_engine_state =
+            this->qeng_st_; // saves the engine entry state
 
         for (idx i = 0; i < reps; ++i) {
             // sets the state of the engine to the entry state
-            st_ = initial_engine_state;
+            this->qeng_st_ = initial_engine_state;
 
-            for (auto&& elem : *qc_ptr_) {
+            for (auto&& elem : *this->qc_ptr_) {
                 (void)execute(elem);
             }
 
             // we measured at least one qudit
-            if (qc_ptr_->get_measurement_count() > 0) {
-                std::vector<idx> m_res = get_dits();
-                ++stats_.data()[m_res];
+            if (this->qc_ptr_->get_measurement_count() > 0) {
+                std::vector<idx> m_res = this->get_dits();
+                ++this->stats_.data()[m_res];
             }
         }
 
@@ -1212,8 +1247,8 @@ class QNoisyEngine : public QEngine {
      * measurement statistics hash table
      * \return Reference to the current instance
      */
-    QNoisyEngine& reset(bool reset_stats = true) override {
-        QEngine::reset(reset_stats);
+    QNoisyEngineT& reset(bool reset_stats = true) override {
+        QEngineT<T>::reset(reset_stats);
         noise_results_ = {};
 
         return *this;
@@ -1244,6 +1279,30 @@ class QNoisyEngine : public QEngine {
     bool is_noisy() const override { return true; }
     // end getters
 }; /* class QNoisyEngine */
+
+template <typename NoiseModel>
+struct QNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
+    using QNoisyEngineT<ket, NoiseModel>::QNoisyEngineT;
+};
+template <class NoiseModel>
+QNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
+    -> QNoisyEngine<NoiseModel>;
+
+template <typename NoiseModel>
+struct QKetNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
+    using QNoisyEngineT<ket, NoiseModel>::QNoisyEngineT;
+};
+template <class NoiseModel>
+QKetNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
+    -> QKetNoisyEngine<NoiseModel>;
+
+template <typename NoiseModel>
+struct QDensityNoisyEngine : public QNoisyEngineT<cmat, NoiseModel> {
+    using QNoisyEngineT<cmat, NoiseModel>::QNoisyEngineT;
+};
+template <class NoiseModel>
+QDensityNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
+    -> QDensityNoisyEngine<NoiseModel>;
 
 } /* namespace qpp */
 

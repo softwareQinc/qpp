@@ -45,7 +45,7 @@ int main() {
 
     // verify how successful the teleportation was
     ket psi_in = U * 0_ket;
-    ket psi_out = noisy_engine.get_psi();
+    ket psi_out = noisy_engine.get_state();
     std::cout << ">> Initial state:\n";
     std::cout << disp(psi_in) << '\n';
     std::cout << ">> Teleported state:\n";

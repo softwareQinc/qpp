@@ -74,8 +74,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value) {
+    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::apply()", "A/state");
     }
 
@@ -1866,8 +1865,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value) {
+    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::applyCTRL()", "A/state");
     }
 
@@ -2178,8 +2176,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value) {
+    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::applyCTRL_fan()", "A/state");
     }
 

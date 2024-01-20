@@ -66,8 +66,8 @@ namespace qpp {
  * \return Eigen dynamic matrix
  */
 template <typename Derived> // complex
-typename std::enable_if<std::is_same<typename Derived::Scalar, cplx>::value,
-                        dyn_mat<cplx>>::type
+typename std::enable_if_t<std::is_same_v<typename Derived::Scalar, cplx>,
+                          dyn_mat<cplx>>
 load_MATLAB(const std::string& mat_file, const std::string& var_name) {
     MATFile* pmat = matOpen(mat_file.c_str(), "r");
 
@@ -150,8 +150,8 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
  * \return Eigen dynamic matrix
  */
 template <typename Derived> // real
-typename std::enable_if<!std::is_same<typename Derived::Scalar, cplx>::value,
-                        dyn_mat<typename Derived::Scalar>>::type
+typename std::enable_if_t<!std::is_same_v<typename Derived::Scalar, cplx>,
+                          dyn_mat<typename Derived::Scalar>>
 load_MATLAB(const std::string& mat_file, const std::string& var_name) {
     MATFile* pmat = matOpen(mat_file.c_str(), "r");
 
@@ -212,8 +212,7 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
  * documentation for details
  */
 template <typename Derived> // complex
-typename std::enable_if<
-    std::is_same<typename Derived::Scalar, cplx>::value>::type
+typename std::enable_if_t<std::is_same_v<typename Derived::Scalar, cplx>>
 save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
             const std::string& var_name, const std::string& mode) {
     const dyn_mat<cplx>& rA = A.derived();
@@ -281,8 +280,7 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
  * documentation for details
  */
 template <typename Derived> // real
-typename std::enable_if<
-    !std::is_same<typename Derived::Scalar, cplx>::value>::type
+typename std::enable_if_t<!std::is_same_v<typename Derived::Scalar, cplx>>
 save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
             const std::string& var_name, const std::string& mode) {
     // cast to double, since MATLAB does not work with other types

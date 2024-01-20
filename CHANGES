@@ -1,5 +1,5 @@
 Pre-release
-    - 
+    - qpp::QEngine::get_psi() -> qpp::QEngine::get_state()
 
 Version 5.0 - 10 January 2024
     - All header files are moved into "[include/qpp]", so to include the header

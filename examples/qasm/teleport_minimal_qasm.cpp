@@ -37,5 +37,5 @@ int main() {
 
     // displays the final output state
     std::cout << ">> Final state:\n";
-    std::cout << disp(q_engine.get_psi()) << '\n';
+    std::cout << disp(q_engine.get_state()) << '\n';
 }
