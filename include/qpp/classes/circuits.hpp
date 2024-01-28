@@ -25,12 +25,12 @@
  */
 
 /**
- * \file classes/circuits/circuits.hpp
+ * \file classes/circuits.hpp
  * \brief Qudit quantum circuits
  */
 
-#ifndef QPP_CLASSES_CIRCUITS_CIRCUITS_HPP_
-#define QPP_CLASSES_CIRCUITS_CIRCUITS_HPP_
+#ifndef QPP_CLASSES_CIRCUITS_HPP_
+#define QPP_CLASSES_CIRCUITS_HPP_
 
 #include <algorithm>
 #include <cstddef>
@@ -6692,4 +6692,4 @@ inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
 
 } /* namespace qpp */
 
-#endif /* QPP_CLASSES_CIRCUITS_CIRCUITS_HPP_ */
+#endif /* QPP_CLASSES_CIRCUITS_HPP_ */

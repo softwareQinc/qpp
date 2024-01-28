@@ -44,7 +44,7 @@
 #include "qpp/constants.hpp"
 #include "qpp/types.hpp"
 
-#include "qpp/classes/circuits/circuits.hpp"
+#include "qpp/classes/circuits.hpp"
 #include "qpp/classes/exception.hpp"
 #include "qpp/classes/gates.hpp"
 

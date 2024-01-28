@@ -6,7 +6,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/circuits/circuits.hpp"
+// Unit testing "classes/circuits.hpp"
 
 /// BEGIN QCircuit& QCircuit::add_dit(idx n = 1, idx i)
 TEST(qpp_QCircuit_add_dit, SpecificPosition) {}

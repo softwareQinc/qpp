@@ -97,8 +97,8 @@
 #include "qpp/classes/states.hpp"
 #include "qpp/classes/timer.hpp"
 
-#include "qpp/classes/circuits/circuits.hpp"
-#include "qpp/classes/circuits/engines.hpp"
+#include "qpp/classes/circuits.hpp"
+#include "qpp/classes/engines.hpp"
 
 #include "qpp/qasm/qasm.hpp"
 

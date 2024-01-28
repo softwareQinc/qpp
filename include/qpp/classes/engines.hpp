@@ -25,12 +25,12 @@
  */
 
 /**
- * \file classes/circuits/engines.hpp
+ * \file classes/engines.hpp
  * \brief Qudit quantum engines
  */
 
-#ifndef QPP_CLASSES_CIRCUITS_ENGINES_HPP_
-#define QPP_CLASSES_CIRCUITS_ENGINES_HPP_
+#ifndef QPP_CLASSES_ENGINES_HPP_
+#define QPP_CLASSES_ENGINES_HPP_
 
 #include <algorithm>
 #include <cmath>
@@ -54,15 +54,23 @@
 #include "qpp/operations.hpp"
 #include "qpp/types.hpp"
 
-#include "qpp/classes/circuits/circuits.hpp"
+#include "qpp/classes/circuits.hpp"
 #include "qpp/classes/idisplay.hpp"
 #include "qpp/classes/states.hpp"
 
 namespace qpp {
 /**
+ * \brief Engine properties
+ */
+struct QEngineTraits {
+    bool is_noisy = false;
+    std::string name{};
+};
+
+/**
  * \brief Sampling/measurement statistics
  */
-class Statistics : public IDisplay, public IJSON {
+class QEngineStatistics : public IDisplay, public IJSON {
     /**
      * \brief Measurement/sampling statistics
      */
@@ -73,14 +81,15 @@ class Statistics : public IDisplay, public IJSON {
     /**
      * \brief Default constructor
      */
-    Statistics() = default;
+    QEngineStatistics() = default;
 
     /**
      * \brief Constructor
      *
      * \param stats Instance of qpp::QEngine::Statistics
      */
-    explicit Statistics(stats_t_ stats) : stats_data_{std::move(stats)} {}
+    explicit QEngineStatistics(stats_t_ stats)
+        : stats_data_{std::move(stats)} {}
 
     /**
      * \brief Number of samples
@@ -178,11 +187,10 @@ class Statistics : public IDisplay, public IJSON {
 
         return os;
     };
-}; /* class Statistics */
+}; /* class QEngineStatistics */
 
-namespace internal {
 /**
- * \class internal::State
+ * \class QEngineState
  * \tparam T State underlying type, qpp::ket or qpp::cmat
  * \brief Current state of qpp::QEngine
  */
@@ -266,8 +274,7 @@ struct QEngineState {
         subsys_ = std::vector<idx>(qc_ptr_->get_nq(), 0);
         std::iota(subsys_.begin(), subsys_.end(), 0);
     }
-}; /* class internal::State */
-} // namespace internal
+}; /* struct QEngineState */
 
 /**
  * \class qpp::QEngine
@@ -284,8 +291,8 @@ class QEngineT : public IDisplay, public IJSON {
   protected:
     const QCircuit*
         qc_ptr_; ///< pointer to constant quantum circuit description
-    internal::QEngineState<T> qeng_st_; ///< current state of the engine
-    Statistics stats_{}; ///< measurement statistics for multiple runs
+    QEngineState<T> qeng_st_;   ///< current state of the engine
+    QEngineStatistics stats_{}; ///< measurement statistics for multiple runs
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -510,7 +517,7 @@ class QEngineT : public IDisplay, public IJSON {
      * vector of measurement results), with the most significant bit located
      * at index 0 (i.e., top/left).
      */
-    Statistics get_stats() const { return stats_; }
+    QEngineStatistics get_stats() const { return stats_; }
 
     /**
      * \brief Determines if engines derived from \a qpp::QEngine are noisy or
@@ -1306,4 +1313,4 @@ QDensityNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
 
 } /* namespace qpp */
 
-#endif /* QPP_CLASSES_CIRCUITS_ENGINES_HPP_ */
+#endif /* QPP_CLASSES_ENGINES_HPP_ */

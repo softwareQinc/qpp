@@ -24,8 +24,8 @@
  * SOFTWARE.
  */
 
-#ifndef PYQPP_CLASSES_CIRCUITS_ENGINES_BIND_HPP_
-#define PYQPP_CLASSES_CIRCUITS_ENGINES_BIND_HPP_
+#ifndef PYQPP_CLASSES_ENGINES_BIND_HPP_
+#define PYQPP_CLASSES_ENGINES_BIND_HPP_
 
 /* qpp::QNoisyEngine instantiator */
 template <typename NoiseModel, typename... CtorTypeList>
@@ -74,7 +74,7 @@ void declare_noisy_engine(py::module& m, const std::string& type) {
 }
 
 /* qpp::QEngine */
-inline void init_classes_circuits_engines(py::module_& m) {
+inline void init_classes_engines(py::module_& m) {
     using namespace qpp;
 
     py::class_<QEngine>(m, "QEngine")
@@ -95,7 +95,7 @@ inline void init_classes_circuits_engines(py::module_& m) {
              "Non-measured qudit indexes")
         .def("get_probs", &QEngine::get_probs,
              "Underlying measurement outcome probabilities")
-        .def("get_psi", &QEngine::get_psi, "Underlying quantum state")
+        .def("get_state", &QEngine::get_state, "Underlying quantum state")
         .def(
             "get_stats",
             [](const QEngine& qe) {
@@ -122,8 +122,8 @@ inline void init_classes_circuits_engines(py::module_& m) {
              py::arg("value"))
         .def("set_dits", &QEngine::set_dits, "Set the classical dits",
              py::arg("dits"))
-        .def("set_psi", &QEngine::set_psi, "Sets the underlying quantum state",
-             py::arg("psi"))
+        .def("set_state", &QEngine::set_state,
+             "Sets the underlying quantum state", py::arg("psi"))
         .def("to_JSON", &QEngine::to_JSON, "State of the engine in JSON format",
              py::arg("enclosed_in_curly_brackets") = true)
         .def("was_measured", &QEngine::was_measured,
@@ -151,4 +151,4 @@ inline void init_classes_circuits_engines(py::module_& m) {
         m, "QuditDepolarizingNoise");
 }
 
-#endif /* PYQPP_CLASSES_CIRCUITS_ENGINES_BIND_HPP_ */
+#endif /* PYQPP_CLASSES_ENGINES_BIND_HPP_ */

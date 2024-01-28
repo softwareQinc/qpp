@@ -36,8 +36,8 @@
 #include "classes/reversible_bind.hpp"
 #include "classes/states_bind.hpp"
 
-#include "classes/circuits/circuits_bind.hpp"
-#include "classes/circuits/engines_bind.hpp"
+#include "classes/circuits_bind.hpp"
+#include "classes/engines_bind.hpp"
 
 #include "qasm/qasm_bind.hpp"
 
@@ -57,8 +57,8 @@ PYBIND11_MODULE(pyqpp, m) {
     init_classes_reversible(m);
     init_classes_states(m);
 
-    init_classes_circuits_circuits(m);
-    init_classes_circuits_engines(m);
+    init_classes_circuits(m);
+    init_classes_engines(m);
 
     init_qasm_qasm(m);
 

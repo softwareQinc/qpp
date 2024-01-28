@@ -24,11 +24,11 @@
  * SOFTWARE.
  */
 
-#ifndef PYQPP_CLASSES_CIRCUITS_CIRCUITS_BIND_HPP_
-#define PYQPP_CLASSES_CIRCUITS_CIRCUITS_BIND_HPP_
+#ifndef PYQPP_CLASSES_CIRCUITS_BIND_HPP_
+#define PYQPP_CLASSES_CIRCUITS_BIND_HPP_
 
 /* qpp::QCircuit and related free functions */
-inline void init_classes_circuits_circuits(py::module_& m) {
+inline void init_classes_circuits(py::module_& m) {
     using namespace qpp;
 
     auto pyQCircuit =
@@ -508,4 +508,4 @@ inline void init_classes_circuits_circuits(py::module_& m) {
           py::arg("n"), py::arg("name") = std::nullopt);
 }
 
-#endif /* PYQPP_CLASSES_CIRCUITS_CIRCUITS_BIND_HPP_ */
+#endif /* PYQPP_CLASSES_CIRCUITS_BIND_HPP_ */
