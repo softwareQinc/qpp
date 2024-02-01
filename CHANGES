@@ -1,5 +1,31 @@
 Pre-release
-    - qpp::QEngine::get_psi() -> qpp::QEngine::get_state()
+    - Moved ["qpp/classes/circuits/circuits.hpp"] to 
+      ["qpp/classes/circuits.hpp"]
+    - Moved ["qpp/classes/circuits/engines.hpp"] to ["qpp/classes/engines.hpp"]
+    - API changes in ["qpp/engines.hpp"]
+        - Enabling mixed-state engines by refactoring 
+            qpp::QEngine      -> template<typename T> qpp::QEngineT<T>
+            qpp::QNoisyEngine -> template<typename T> qpp::QNoisyEngineT<T>
+          The template argument T is restricted to qpp::ket (pure state 
+          engines) and qpp::cmat (mixed states engines)
+        - All engines are now deriving from the trait class qpp::IQEngineTraits
+          ["qpp/classes/engines.hpp"]. The traits implements 
+          qpp::IQEngineTraits::
+            std::string traits_get_name() const - Engine's name
+            bool traits_is_mixed() const        - Operates on mixed states
+            bool traits_is_noisy() const        - Simulates noisy execution
+            bool traits_is_pure() const         - Operates on pure states
+        - The following additional engines are now available
+            qpp::QEngine             - pure state ideal engine, backwards 
+                                       compatibility
+            qpp::QKetEngine          - same as qpp::QEngine
+            qpp::QDensityEngine      - mixed state ideal engine
+            qpp::QNoisyEngine        - pure state noisy engine, backwards 
+                                       compatibility
+            qpp::QKetNoisyEngine     - same as qpp::QNoisyEngine
+            qpp::QDensityNoisyEngine - mixed state noisy engine
+        - Renamed qpp::QEngineT::get_psi() -> qpp::QEngineT::get_state()
+        - Removed qpp::QEngineT::is_noisy()
 
 Version 5.0 - 10 January 2024
     - All header files are moved into "[include/qpp]", so to include the header

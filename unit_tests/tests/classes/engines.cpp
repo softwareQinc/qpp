@@ -46,9 +46,6 @@ TEST(qpp_QEngine_get_state, AllTests) {}
 ///       QEngine::get_stats() const
 TEST(qpp_QEngine_get_stats, AllTests) {}
 
-/// BEGIN virtual bool QEngine::is_noisy() const
-TEST(qpp_QEngine_is_noisy, AllTests) {}
-
 /// BEGIN QEngine& QEngine::reset(bool reset_stats = true)
 TEST(qpp_QEngine_reset, AllTests) {}
 
@@ -68,6 +65,18 @@ TEST(qpp_QEngine_set_psi, AllTests) {}
 ///       bool enclosed_in_curly_brackets = true) const override
 TEST(qpp_QEngine_to_JSON, AllTests) {}
 
+/// BEGIN virtual std::string QEngine::traits_get_name() const
+TEST(qpp_QEngine_traits_get_name, AllTests) {}
+
+/// BEGIN virtual bool QEngine::traits_is_mixed() const
+TEST(qpp_QEngine_traits_is_mixed, AllTests) {}
+
+/// BEGIN virtual bool QEngine::traits_is_noisy() const
+TEST(qpp_QEngine_traits_is_noisy, AllTests) {}
+
+/// BEGIN virtual bool QEngine::traits_is_pure() const
+TEST(qpp_QEngine_traits_is_pure, AllTests) {}
+
 /// BEGIN std::vector<idx> QEngine::was_measured() const
 TEST(qpp_QEngine_was_measured, AllQudits) {}
 
@@ -82,8 +91,17 @@ TEST(qpp_QNoisyEngine_execute, AllCircuitWithRepetitions) {}
 ///       QNoisyEngine::get_noise_results() const
 TEST(qpp_QNoisyEngine_get_noise_results, AllTests) {}
 
-/// BEGIN virtual bool QNoisyEngine::is_noisy() const
-TEST(qpp_QNoisyEngine_is_noisy, AllTests) {}
-
 /// BEGIN QEngine& QNoisyEngine::reset(bool reset_stats = true)
-TEST(qpp_NoisyQEngine_reset, AllTests) {}
+TEST(qpp_QNoisyEngine_reset, AllTests) {}
+
+/// BEGIN virtual std::string QNoisyEngine::traits_get_name() const
+TEST(qpp_QNoisyEngine_traits_get_name, AllTests) {}
+
+/// BEGIN virtual bool QNoisyEngine::traits_is_mixed() const
+TEST(qpp_QNoisyEngine_traits_is_mixed, AllTests) {}
+
+/// BEGIN virtual bool QNoisyEngine::traits_is_noisy() const
+TEST(qpp_QNoisyEngine_traits_is_noisy, AllTests) {}
+
+/// BEGIN virtual bool QNoisyEngine::traits_is_pure() const
+TEST(qpp_QNoisyEngine_traits_is_pure, AllTests) {}

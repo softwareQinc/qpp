@@ -33,7 +33,6 @@
 #define QPP_CLASSES_ENGINES_HPP_
 
 #include <algorithm>
-#include <cmath>
 #include <iterator>
 #include <limits>
 #include <map>
@@ -62,11 +61,44 @@ namespace qpp {
 /**
  * \brief Engine properties
  */
-struct QEngineTraits {
-    bool is_noisy = false;
-    std::string name{};
+struct IQEngineTraits {
+    /**
+     * \brief Engine name
+     *
+     * \return Engine name
+     */
+    virtual std::string traits_get_name() const = 0;
+
+    /**
+     * \brief Determines if the engine is noisy or not
+     *
+     * \return True if the engine simulates noisy execution, false if not
+     */
+
+    virtual bool traits_is_noisy() const = 0;
+    /**
+     * \brief Determines if the engine operates on pure states
+     * \see qpp::IQEngineTraits::traits_is_mixed()
+     *
+     * \return True if the engine operates on pure states, false otherwise
+     */
+    virtual bool traits_is_pure() const = 0;
+
+    /**
+     * \brief Determines if the engine operates on mixed states
+     * \see qpp::IQEngineTraits::traits_is_pure()
+     *
+     * \return True if the engine operates on mixed states, false otherwise
+     */
+    virtual bool traits_is_mixed() const { return !this->traits_is_pure(); }
+
+    /**
+     * \brief Default virtual destructor
+     */
+    virtual ~IQEngineTraits() = default;
 };
 
+namespace internal {
 /**
  * \brief Sampling/measurement statistics
  */
@@ -275,6 +307,7 @@ struct QEngineState {
         std::iota(subsys_.begin(), subsys_.end(), 0);
     }
 }; /* struct QEngineState */
+} /* namespace internal */
 
 /**
  * \class qpp::QEngine
@@ -287,12 +320,13 @@ struct QEngineState {
  * See https://github.com/softwareQinc/qpp/issues/75 for more details.
  */
 template <typename T>
-class QEngineT : public IDisplay, public IJSON {
+class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
   protected:
     const QCircuit*
         qc_ptr_; ///< pointer to constant quantum circuit description
-    QEngineState<T> qeng_st_;   ///< current state of the engine
-    QEngineStatistics stats_{}; ///< measurement statistics for multiple runs
+    internal::QEngineState<T> qeng_st_; ///< current state of the engine
+    internal::QEngineStatistics
+        stats_{}; ///< measurement statistics for multiple runs
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -382,6 +416,31 @@ class QEngineT : public IDisplay, public IJSON {
      * \brief Default virtual destructor
      */
     ~QEngineT() override = default;
+
+    // traits
+    /**
+     * \brief qpp::IQEngineTraits::traits_get_name() override
+     */
+    virtual std::string traits_get_name() const override { return "QEngineT"; }
+
+    /**
+     * \brief qpp::IQEngineTraits::traits_is_noisy() override
+     */
+    virtual bool traits_is_noisy() const override { return false; }
+
+    /**
+     * \brief qpp::IQEngineTraits::traits_is_pure() override
+     */
+    virtual bool traits_is_pure() const override {
+        if constexpr (std::is_same_v<T, cmat>) {
+            return false;
+        } else if constexpr (std::is_same_v<T, ket>) {
+            return true;
+        }
+        // default, we assume pure states
+        return true;
+    }
+    // end traits
 
     // getters
     /**
@@ -517,15 +576,7 @@ class QEngineT : public IDisplay, public IJSON {
      * vector of measurement results), with the most significant bit located
      * at index 0 (i.e., top/left).
      */
-    QEngineStatistics get_stats() const { return stats_; }
-
-    /**
-     * \brief Determines if engines derived from \a qpp::QEngine are noisy or
-     * not at runtime
-     *
-     * \return True if the engine is noisy, false otherwise
-     */
-    virtual bool is_noisy() const { return false; }
+    internal::QEngineStatistics get_stats() const { return stats_; }
     // end getters
 
     // setters
@@ -1052,7 +1103,9 @@ class QEngineT : public IDisplay, public IJSON {
         }
 
         std::ostringstream ss;
-        ss << "\"nq\": " << get_circuit().get_nq() << ", ";
+        ss << "\"Engine type\": " << std::quoted(traits_get_name()) << ", ";
+        ss << "\"QCircuit\": ";
+        ss << "{\"nq\": " << get_circuit().get_nq() << ", ";
         ss << "\"nc\": " << get_circuit().get_nc() << ", ";
         ss << "\"d\": " << get_circuit().get_d() << ", ";
         ss << "\"name\": ";
@@ -1061,7 +1114,8 @@ class QEngineT : public IDisplay, public IJSON {
         } else {
             ss << "null";
         }
-        ss << ", ";
+        ss << "}, ";
+
         ss << "\"sampling\": " << (this->can_sample ? "true" : "false") << ", ";
         ss << "\"measured/discarded (destructively)\": ";
         ss << disp(get_measured(), IOManipContainerOpts{}.set_sep(", "));
@@ -1120,8 +1174,7 @@ class QEngineT : public IDisplay, public IJSON {
            << '\n';
         */
 
-        std::string engine_type = is_noisy() ? "[QNoisyEngine]" : "[QEngine]";
-        os << engine_type;
+        os << '[' << traits_get_name() << ']';
         if (this->can_sample) {
             os << " (Sampling)";
         }
@@ -1151,9 +1204,39 @@ class QEngineT : public IDisplay, public IJSON {
     }
 }; /* class QEngineT */
 
-using QEngine = QEngineT<ket>;
-using QKetEngine = QEngineT<ket>;
-using QDensityEngine = QEngineT<cmat>;
+struct QEngine : public QEngineT<ket> {
+    using QEngineT<ket>::QEngineT;
+    // traits
+    /**
+     * \brief qpp::IQEngineTraits::traits_get_name() override
+     */
+    virtual std::string traits_get_name() const override { return "QEngine"; }
+    // end traits
+};
+
+struct QKetEngine : public QEngineT<ket> {
+    using QEngineT<ket>::QEngineT;
+    // traits
+    /**
+     * \brief qpp::IQEngineTraits::traits_get_name() override
+     */
+    virtual std::string traits_get_name() const override {
+        return "QKetEngine";
+    }
+    // end traits
+};
+
+struct QDensityEngine : public QEngineT<cmat> {
+    using QEngineT<cmat>::QEngineT;
+    // traits
+    /**
+     * \brief qpp::IQEngineTraits::traits_get_name() override
+     */
+    virtual std::string traits_get_name() const override {
+        return "QDensityEngine";
+    }
+    // end traits
+};
 
 /**
  * \class qpp::QNoisyEngine
@@ -1191,6 +1274,20 @@ class QNoisyEngineT : public QEngineT<T> {
     }
 
     using QEngineT<T>::execute;
+
+    // over-ridden traits
+    /**
+     * \brief qpp::IQEngineTraits::traits_get_name() override
+     */
+    virtual std::string traits_get_name() const override {
+        return "QNoisyEngineT";
+    }
+
+    /**
+     * \brief qpp::IQEngineTraits::traits_is_noisy() override
+     */
+    virtual bool traits_is_noisy() const override { return true; }
+    // end traits
 
     /**
      * \brief Executes one step in the quantum circuit description
@@ -1277,20 +1374,22 @@ class QNoisyEngineT : public QEngineT<T> {
     std::vector<std::vector<idx>> get_noise_results() const {
         return noise_results_;
     }
-
-    /**
-     * \brief \a qpp::QEngine::is_noisy() override
-     *
-     * \return True
-     */
-    bool is_noisy() const override { return true; }
     // end getters
 }; /* class QNoisyEngine */
 
 template <typename NoiseModel>
 struct QNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
     using QNoisyEngineT<ket, NoiseModel>::QNoisyEngineT;
+    // traits
+    /**
+     * \brief qpp::IQEngineTraits::traits_get_name() override
+     */
+    virtual std::string traits_get_name() const override {
+        return "QNoisyEngine";
+    }
+    // end traits
 };
+// template deduction rule
 template <class NoiseModel>
 QNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
     -> QNoisyEngine<NoiseModel>;
@@ -1298,7 +1397,16 @@ QNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
 template <typename NoiseModel>
 struct QKetNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
     using QNoisyEngineT<ket, NoiseModel>::QNoisyEngineT;
+    // traits
+    /**
+     * \brief qpp::IQEngineTraits::traits_get_name() override
+     */
+    virtual std::string traits_get_name() const override {
+        return "QKetNoisyEngine";
+    }
+    // end traits
 };
+// template deduction rule
 template <class NoiseModel>
 QKetNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
     -> QKetNoisyEngine<NoiseModel>;
@@ -1306,7 +1414,16 @@ QKetNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
 template <typename NoiseModel>
 struct QDensityNoisyEngine : public QNoisyEngineT<cmat, NoiseModel> {
     using QNoisyEngineT<cmat, NoiseModel>::QNoisyEngineT;
+    // traits
+    /**
+     * \brief qpp::IQEngineTraits::traits_get_name() override
+     */
+    virtual std::string traits_get_name() const override {
+        return "QDensityNoisyEngine";
+    }
+    // end traits
 };
+// template deduction rule
 template <class NoiseModel>
 QDensityNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
     -> QDensityNoisyEngine<NoiseModel>;
