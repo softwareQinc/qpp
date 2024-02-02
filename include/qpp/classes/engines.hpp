@@ -228,7 +228,7 @@ class QEngineStatistics : public IDisplay, public IJSON {
  */
 template <typename T>
 struct QEngineState {
-    static_assert(std::is_same_v<T, qpp::ket> || std::is_same_v<T, qpp::cmat>,
+    static_assert(std::is_same_v<T, ket> || std::is_same_v<T, cmat>,
                   "The underlying type must be qpp::ket or qpp::cmat");
 
     const QCircuit* qc_ptr_;     ///< non-owning pointer to the parent
@@ -1103,7 +1103,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
         }
 
         std::ostringstream ss;
-        ss << "\"Engine type\": " << std::quoted(traits_get_name()) << ", ";
+        ss << "\"Engine name\": " << std::quoted(traits_get_name()) << ", ";
         ss << "\"QCircuit\": ";
         ss << "{\"nq\": " << get_circuit().get_nq() << ", ";
         ss << "\"nc\": " << get_circuit().get_nc() << ", ";
