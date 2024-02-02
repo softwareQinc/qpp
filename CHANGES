@@ -1,4 +1,4 @@
-Pre-release
+Version 5.1 -- xx February 2024
     - Moved ["qpp/classes/circuits/circuits.hpp"] to 
       ["qpp/classes/circuits.hpp"]
     - Moved ["qpp/classes/circuits/engines.hpp"] to ["qpp/classes/engines.hpp"]
@@ -12,7 +12,6 @@ Pre-release
           ["qpp/classes/engines.hpp"]. The traits implements 
           qpp::IQEngineTraits::
             std::string traits_get_name() const - Engine's name
-            bool traits_is_mixed() const        - Operates on mixed states
             bool traits_is_noisy() const        - Simulates noisy execution
             bool traits_is_pure() const         - Operates on pure states
         - The following additional engines are now available
@@ -36,7 +35,6 @@ Pre-release
                                           compatibility
             pyqpp.QKetNoisyEngine()     - same as pyqpp.QNoisyEngine()
             pyqpp.QDensityNoisyEngine() - muxed state noisy engine
-            
 
 Version 5.0 - 10 January 2024
     - All header files are moved into "[include/qpp]", so to include the header

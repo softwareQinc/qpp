@@ -95,8 +95,6 @@ void declare_ideal_engine(py::module& m) {
              "Whether qudit i was already measured destructively", py::arg("i"))
 
         .def("traits_get_name", &QEngineT<T>::traits_get_name, "Engine name")
-        .def("traits_is_mixed", &QEngineT<T>::traits_is_mixed,
-             "Mixed state engine?")
         .def("traits_is_noisy", &QEngineT<T>::traits_is_noisy, "Noisy engine?")
         .def("traits_is_pure", &QEngineT<T>::traits_is_pure,
              "Pure state engine?")

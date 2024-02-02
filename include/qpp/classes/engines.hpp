@@ -70,7 +70,7 @@ struct IQEngineTraits {
     virtual std::string traits_get_name() const = 0;
 
     /**
-     * \brief Determines if the engine is noisy or not
+     * \brief Determines if the engine is noisy
      *
      * \return True if the engine simulates noisy execution, false if not
      */
@@ -78,19 +78,10 @@ struct IQEngineTraits {
     virtual bool traits_is_noisy() const = 0;
     /**
      * \brief Determines if the engine operates on pure states
-     * \see qpp::IQEngineTraits::traits_is_mixed()
      *
      * \return True if the engine operates on pure states, false otherwise
      */
     virtual bool traits_is_pure() const = 0;
-
-    /**
-     * \brief Determines if the engine operates on mixed states
-     * \see qpp::IQEngineTraits::traits_is_pure()
-     *
-     * \return True if the engine operates on mixed states, false otherwise
-     */
-    virtual bool traits_is_mixed() const { return !this->traits_is_pure(); }
 
     /**
      * \brief Default virtual destructor

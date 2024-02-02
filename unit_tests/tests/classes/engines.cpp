@@ -59,7 +59,7 @@ TEST(qpp_QEngine_set_dit, AllTests) {}
 TEST(qpp_QEngine_set_dits, AllTests) {}
 
 /// BEGIN QEngine& QEngine::set_psi(const ket& psi)
-TEST(qpp_QEngine_set_psi, AllTests) {}
+TEST(qpp_QEngine_set_state, AllTests) {}
 
 /// BEGIN std::string QEngine::to_JSON(
 ///       bool enclosed_in_curly_brackets = true) const override
@@ -67,9 +67,6 @@ TEST(qpp_QEngine_to_JSON, AllTests) {}
 
 /// BEGIN virtual std::string QEngine::traits_get_name() const
 TEST(qpp_QEngine_traits_get_name, AllTests) {}
-
-/// BEGIN virtual bool QEngine::traits_is_mixed() const
-TEST(qpp_QEngine_traits_is_mixed, AllTests) {}
 
 /// BEGIN virtual bool QEngine::traits_is_noisy() const
 TEST(qpp_QEngine_traits_is_noisy, AllTests) {}
@@ -96,9 +93,6 @@ TEST(qpp_QNoisyEngine_reset, AllTests) {}
 
 /// BEGIN virtual std::string QNoisyEngine::traits_get_name() const
 TEST(qpp_QNoisyEngine_traits_get_name, AllTests) {}
-
-/// BEGIN virtual bool QNoisyEngine::traits_is_mixed() const
-TEST(qpp_QNoisyEngine_traits_is_mixed, AllTests) {}
 
 /// BEGIN virtual bool QNoisyEngine::traits_is_noisy() const
 TEST(qpp_QNoisyEngine_traits_is_noisy, AllTests) {}

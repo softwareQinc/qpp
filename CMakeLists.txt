@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-set(QPP_VERSION_NUM 5.0)
+set(QPP_VERSION_NUM 5.1)
 set(QPP_VERSION_STR "${QPP_VERSION_NUM}")
 project(
   qpp
