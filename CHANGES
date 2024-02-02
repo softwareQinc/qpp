@@ -26,6 +26,17 @@ Pre-release
             qpp::QDensityNoisyEngine - mixed state noisy engine
         - Renamed qpp::QEngineT::get_psi() -> qpp::QEngineT::get_state()
         - Removed qpp::QEngineT::is_noisy()
+        - Added the new engines to pyqpp, which now defines the following 
+          factory functions for instantiating engines
+            pyqpp.QEngine()             - pure state ideal engine, backwards 
+                                          compatibility
+            pyqpp.QKetEngine()          - same as pyqpp.QEngine()
+            pyqpp.QDensityEngine()      - mixed state ideal engine
+            pyqpp.QNoisyEngine()        - pure state noisy engine, backwared
+                                          compatibility
+            pyqpp.QKetNoisyEngine()     - same as pyqpp.QNoisyEngine()
+            pyqpp.QDensityNoisyEngine() - muxed state noisy engine
+            
 
 Version 5.0 - 10 January 2024
     - All header files are moved into "[include/qpp]", so to include the header

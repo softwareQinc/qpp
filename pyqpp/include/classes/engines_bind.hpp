@@ -36,9 +36,9 @@ void declare_ideal_engine(py::module& m) {
 
     std::string pyname;
     if constexpr (std::is_same_v<T, ket>) {
-        pyname = "QKetEngine";
+        pyname = "_QKetEngine";
     } else {
-        pyname = "QDensityEngine";
+        pyname = "_QDensityEngine";
     }
 
     py::class_<qpp::QEngineT<T>>(m, pyname.c_str())
@@ -112,8 +112,20 @@ void declare_ideal_engine(py::module& m) {
         .def("__deepcopy__", [](const QEngineT<T>& self, py::dict) {
             return QEngineT<T>(self);
         });
-    // backwards compatibility
-    m.attr("QEngine") = m.attr("QKetEngine");
+
+    if constexpr (std::is_same_v<T, ket>) {
+        m.def(
+            "QKetEngine",
+            [](const QCircuit& qc) { return qpp::QEngineT<T>(qc); },
+            py::keep_alive<0, 1>());
+        // backwards compatibility
+        m.attr("QEngine") = m.attr("QKetEngine");
+    } else {
+        m.def(
+            "QDensityEngine",
+            [](const QCircuit& qc) { return qpp::QEngineT<T>(qc); },
+            py::keep_alive<0, 1>());
+    }
 }
 
 /** Noise models instantiators */
@@ -166,6 +178,7 @@ void declare_noisy_engine(py::module& m, const std::string& type) {
              [](const qpp::QNoisyEngineT<T, NoiseModel>& self, py::dict) {
                  return qpp::QNoisyEngineT<T, NoiseModel>(self);
              });
+
     if constexpr (std::is_same_v<T, ket>) {
         m.def(
             "QKetNoisyEngine",
