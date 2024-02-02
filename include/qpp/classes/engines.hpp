@@ -1103,7 +1103,12 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
         }
 
         std::ostringstream ss;
-        ss << "\"Engine name\": " << std::quoted(traits_get_name()) << ", ";
+        ss << "\"Engine\": ";
+        ss << "{\"name\": " << std::quoted(traits_get_name()) << ", ";
+        ss << "\"is_noisy\": " << (traits_is_noisy() ? "true" : "false")
+           << ", ";
+        ss << "\"is_pure\": " << (traits_is_pure() ? "true" : "false");
+        ss << "}, ";
         ss << "\"QCircuit\": ";
         ss << "{\"nq\": " << get_circuit().get_nq() << ", ";
         ss << "\"nc\": " << get_circuit().get_nc() << ", ";
