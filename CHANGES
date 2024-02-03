@@ -3,7 +3,7 @@ Version 5.1 -- xx February 2024
       ["qpp/classes/circuits.hpp"]
     - Moved ["qpp/classes/circuits/engines.hpp"] to ["qpp/classes/engines.hpp"]
     - API changes in ["qpp/engines.hpp"]
-        - Enabling mixed-state engines by refactoring 
+        - Enabled mixed-state engines by refactoring 
             qpp::QEngine      -> template<typename T> qpp::QEngineT<T>
             qpp::QNoisyEngine -> template<typename T> qpp::QNoisyEngineT<T>
           The template argument T is restricted to qpp::ket (pure state 
