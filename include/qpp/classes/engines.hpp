@@ -59,7 +59,8 @@
 
 namespace qpp {
 /**
- * \brief Engine properties
+ * \brief Engine traits (properties)
+ * \note All engines must implement this trait (i.e., inherit from it)
  */
 struct IQEngineTraits {
     /**
