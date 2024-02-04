@@ -243,7 +243,8 @@ struct QEngineState {
         // EXCEPTION CHECKS
 
         if (qc_ptr->get_nq() == 0) {
-            throw exception::ZeroSize("qpp::internal::State::reset()", "nq");
+            throw exception::ZeroSize("qpp::internal::QEngineState::reset()",
+                                      "nq");
         }
         // END EXCEPTION CHECKS
         reset();
@@ -271,18 +272,24 @@ struct QEngineState {
     void reset(std::optional<T> state = std::nullopt) {
         if (state.has_value()) {
             idx D = internal::safe_pow(qc_ptr_->get_d(), qc_ptr_->get_nq());
+            // EXCEPTION CHECKS
+
             if constexpr (std::is_same_v<T, ket>) {
                 if (static_cast<idx>(state.value().rows()) != D) {
                     throw exception::DimsNotEqual(
-                        "qpp::internal::State::reset()", "state");
+                        "qpp::internal::QEngineState::reset()", "state");
                 }
             } else {
-                if (static_cast<idx>(state.value().rows()) != D ||
-                    static_cast<idx>(state.value().cols()) != D) {
-                    throw exception::DimsNotEqual(
-                        "qpp::internal::State::reset()", "state");
+                if (!internal::check_square_mat(state.value())) {
+                    throw exception::MatrixNotSquare("qpp::QEngineState::reset",
+                                                     "state");
+                }
+                if (static_cast<idx>(state.value().rows()) != D) {
+                    throw exception::DimsNotEqual("qpp::QEngineState::reset()",
+                                                  "state");
                 }
             }
+            // END EXCEPTION CHECKS
             state_ = state.value();
         } else {
             if constexpr (std::is_same_v<T, ket>) {
@@ -330,7 +337,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
 
         if (was_measured(i)) {
             throw exception::QuditAlreadyMeasured(
-                "qpp::QEngine::set_measured_()", "i");
+                "qpp::QEngineT::set_measured_()", "i");
         }
         // END EXCEPTION CHECKS
         qeng_st_.subsys_[i] =
@@ -358,7 +365,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
 
             if (was_measured(v[i])) {
                 throw exception::QuditAlreadyMeasured(
-                    "qpp::QEngine::get_relative_pos_()", "v[i]");
+                    "qpp::QEngineT::get_relative_pos_()", "v[i]");
             }
             // END EXCEPTION CHECKS
             v[i] = qeng_st_.subsys_[v[i]];
@@ -471,7 +478,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         if (i >= qc_ptr_->get_nc()) {
-            throw exception::OutOfRange("qpp::QEngine::get_dit()", "i");
+            throw exception::OutOfRange("qpp::QEngineT::get_dit()", "i");
         }
         // END EXCEPTION CHECKS
 
@@ -502,7 +509,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
 
     /**
      * \brief Check whether qudit \a i was already measured (destructively)
-     * at the current engine state
+     * w.r.t. the current engine state
      *
      * \param i Qudit index
      * \return True if qudit \a i was already measured, false otherwise
@@ -589,7 +596,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         if (i >= qc_ptr_->get_nc()) {
-            throw exception::OutOfRange("qpp::QEngine::set_dit()", "i");
+            throw exception::OutOfRange("qpp::QEngineT::set_dit()", "i");
         }
         // END EXCEPTION CHECKS
         qeng_st_.dits_[i] = value;
@@ -613,7 +620,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
         // EXCEPTION CHECKS
 
         if (dits.size() != qeng_st_.dits_.size()) {
-            throw exception::SizeMismatch("qpp::QEngine::set_dits()", "dits");
+            throw exception::SizeMismatch("qpp::QEngineT::set_dits()", "dits");
         }
         // END EXCEPTION CHECKS
         qeng_st_.dits_ = std::move(dits);
@@ -635,8 +642,19 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
 
         idx n = get_non_measured().size();
         idx D = internal::safe_pow(qc_ptr_->get_d(), n);
-        if (static_cast<idx>(state.rows()) != D) {
-            throw exception::DimsNotEqual("qpp::QEngine::set_state()", "state");
+        if constexpr (std::is_same_v<T, ket>) {
+            if (static_cast<idx>(state.rows()) != D) {
+                throw exception::DimsNotEqual("qpp::QEngineT::set_state()",
+                                              "state");
+            }
+        } else {
+            if (!internal::check_square_mat(state)) {
+                throw exception::MatrixNotSquare("qpp::QEngineT::set_state()");
+            }
+            if (static_cast<idx>(state.rows()) != D) {
+                throw exception::DimsNotEqual("qpp::QEngineT::set_state()",
+                                              "state");
+            }
         }
         // END EXCEPTION CHECKS
 
@@ -692,7 +710,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
         // iterator must point to the same quantum circuit description
         if (elem.get_qc_ptr() != qc_ptr_) {
             throw exception::InvalidIterator(
-                "qpp::QEngine::execute()",
+                "qpp::QEngineT::execute()",
                 "Iterator does not point to the same circuit description");
         }
         // the rest of exceptions are caught by the iterator::operator*()
@@ -959,9 +977,8 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
-     * \param try_sampling If possible, try to sample from the output (instead
-     * of measuring)
-     * \return Reference to the current instance
+     * \param try_sampling If possible, try to sample from the output
+     * (instead of measuring) \return Reference to the current instance
      */
     virtual QEngineT& execute(idx reps = 1, bool try_sampling = true) {
         this->reset(false);
@@ -986,8 +1003,8 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
         idx first_measurement_discard_reset_pos =
             std::distance(steps.begin(), first_measurement_discard_reset_it);
 
-        // decide if we can sample (every step after first_measurement_pos must
-        // be a projective measurement)
+        // decide if we can sample (every step after first_measurement_pos
+        // must be a projective measurement)
         this->can_sample = (reps > 1) && try_sampling;
         for (idx i = first_measurement_discard_reset_pos;
              i < num_steps && this->can_sample; ++i) {
@@ -998,7 +1015,8 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
             }
         }
 
-        // executes everything ONCE in the interval [0, first_measurement_pos)
+        // executes everything ONCE in the interval [0,
+        // first_measurement_pos)
         for (idx i = 0; i < first_measurement_discard_reset_pos; ++i) {
             execute(steps[i]);
         }
@@ -1025,7 +1043,8 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
             }
             // at least one qudit was measured
             if (measured) {
-                // build the vector of measured qudits that we must sample from
+                // build the vector of measured qudits that we must sample
+                // from
                 std::vector<idx> sample_from;
                 sample_from.reserve(this->get_dits().size());
                 for (auto [dit, qubit] : used_dits) {
@@ -1082,10 +1101,9 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
      *
      * Displays the state of the engine in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in curly
-     * brackets
-     * \return String containing the JSON representation of the state of the
-     * engine
+     * \param enclosed_in_curly_brackets If true, encloses the result in
+     * curly brackets \return String containing the JSON representation of
+     * the state of the engine
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
@@ -1155,8 +1173,8 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
     /**
      * \brief qpp::IDisplay::display() override
      *
-     * Writes to the output stream a textual representation of the state of the
-     * engine
+     * Writes to the output stream a textual representation of the state of
+     * the engine
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
@@ -1244,7 +1262,8 @@ struct QDensityEngine : public QEngineT<cmat> {
  * qubit before every non-measurement step in the logical circuit. To add
  * noise before a measurement, insert a no-op via qpp::QCircuit::nop().
  *
- * \tparam NoiseModel Quantum noise model, should be derived from qpp::NoiseBase
+ * \tparam NoiseModel Quantum noise model, should be derived from
+ * qpp::NoiseBase
  */
 template <typename T, typename NoiseModel>
 class QNoisyEngineT : public QEngineT<T> {
@@ -1264,7 +1283,7 @@ class QNoisyEngineT : public QEngineT<T> {
 
         // check noise has the correct dimensionality
         if (qc.get_d() != noise.get_d()) {
-            throw exception::DimsNotEqual("qpp::QNoisyEngine::QNoisyEngine()",
+            throw exception::DimsNotEqual("qpp::QNoisyEngineT::QNoisyEngineT()",
                                           "noise");
         }
         // END EXCEPTION CHECKS
@@ -1357,14 +1376,15 @@ class QNoisyEngineT : public QEngineT<T> {
 
     // getters
     /**
-     * \brief Vector of noise results obtained before every step in the circuit
+     * \brief Vector of noise results obtained before every step in the
+     * circuit
      *
      * \note The first vector contains the noise measurement results
      * obtained before applying the first step in the circuit, and so on,
      * ordered by non-measured qudits. That is, the first element in the
      * vector corresponding to noise obtained before a given step in the
-     * circuit represents the noise result obtained on the first non-measured
-     * qudit etc.
+     * circuit represents the noise result obtained on the first
+     * non-measured qudit etc.
      *
      * \return Vector of noise results
      */
