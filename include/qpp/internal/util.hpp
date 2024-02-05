@@ -32,6 +32,7 @@
 #ifndef QPP_INTERNAL_UTIL_HPP_
 #define QPP_INTERNAL_UTIL_HPP_
 
+#include <cassert>
 #include <cmath>
 #include <cstddef>
 #include <iomanip>
