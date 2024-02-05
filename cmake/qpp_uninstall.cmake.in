@@ -1,5 +1,7 @@
 if(NOT EXISTS "@CMAKE_BINARY_DIR@/install_manifest.txt")
-  message(FATAL_ERROR "Cannot find install manifest: @CMAKE_BINARY_DIR@/install_manifest.txt")
+  message(
+    FATAL_ERROR
+      "Cannot find install manifest: @CMAKE_BINARY_DIR@/install_manifest.txt")
 endif()
 
 file(READ "@CMAKE_BINARY_DIR@/install_manifest.txt" files)
@@ -10,8 +12,7 @@ foreach(file ${files})
     execute_process(
       COMMAND @CMAKE_COMMAND@ -E rm $ENV{DESTDIR}${file}
       OUTPUT_VARIABLE rm_out
-      RESULT_VARIABLE rm_retval
-      )
+      RESULT_VARIABLE rm_retval)
     if(NOT "${rm_retval}" STREQUAL 0)
       message(FATAL_ERROR "Problem when removing $ENV{DESTDIR}${file}")
     endif()
@@ -21,8 +22,8 @@ foreach(file ${files})
 endforeach()
 
 if(NOT "@MSVC@")
-    message(STATUS "Removing @CMAKE_INSTALL_PREFIX@/lib/cmake/@PROJECT_NAME@")
-    message(STATUS "Removing @QPP_INSTALL_DIR@")
+  message(STATUS "Removing @CMAKE_INSTALL_PREFIX@/lib/cmake/@PROJECT_NAME@")
+  message(STATUS "Removing @QPP_INSTALL_DIR@")
 else()
-    message(STATUS "Removing @CMAKE_INSTALL_PREFIX@")
+  message(STATUS "Removing @CMAKE_INSTALL_PREFIX@")
 endif()
