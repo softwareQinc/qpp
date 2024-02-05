@@ -27,6 +27,8 @@
 #ifndef PYQPP_CLASSES_GATES_BIND_HPP_
 #define PYQPP_CLASSES_GATES_BIND_HPP_
 
+#include "pyqpp_common.h"
+
 /* qpp::Gates */
 inline void init_classes_gates(py::module_& m) {
     using namespace qpp;

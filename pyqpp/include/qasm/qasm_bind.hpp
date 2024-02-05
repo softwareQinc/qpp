@@ -27,6 +27,8 @@
 #ifndef PYQPP_QASM_QASM_BIND_HPP_
 #define PYQPP_QASM_QASM_BIND_HPP_
 
+#include "pyqpp_common.h"
+
 /* OpenQASM interfacing */
 inline void init_qasm_qasm(py::module_& m) {
     using namespace qpp;

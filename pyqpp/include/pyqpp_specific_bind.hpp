@@ -27,6 +27,8 @@
 #ifndef PYQPP_PYQPP_SPECIFIC_BIND_HPP_
 #define PYQPP_PYQPP_SPECIFIC_BIND_HPP_
 
+#include "pyqpp_common.h"
+
 /* Python-specific functions only (not necessarily with an equivalent version in
  * qpp) */
 inline void init_pyqpp_specific(py::module_& m) {

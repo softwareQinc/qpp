@@ -27,6 +27,8 @@
 #ifndef PYQPP_CLASSES_CIRCUITS_BIND_HPP_
 #define PYQPP_CLASSES_CIRCUITS_BIND_HPP_
 
+#include "pyqpp_common.h"
+
 /* qpp::QCircuit and related free functions */
 inline void init_classes_circuits(py::module_& m) {
     using namespace qpp;

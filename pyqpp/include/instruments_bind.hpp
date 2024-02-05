@@ -27,6 +27,8 @@
 #ifndef PYQPP_INSTRUMENTS_BIND_HPP_
 #define PYQPP_INSTRUMENTS_BIND_HPP_
 
+#include "pyqpp_common.h"
+
 /* Some free functions (non-exhaustive list) from instruments.hpp */
 inline void init_instruments(py::module_& m) {
     using namespace qpp;
