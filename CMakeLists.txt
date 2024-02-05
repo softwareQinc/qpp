@@ -43,6 +43,12 @@ target_include_directories(
   INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/qasmtools/include/>
             $<INSTALL_INTERFACE:include/>)
 
+# pyqpp support for CMake
+find_package(Python3 QUIET COMPONENTS Interpreter Development)
+if(${Python3_FOUND})
+  include(cmake/pyqpp.cmake)
+endif()
+
 # BEGIN LOCAL stuff, you don't need those in standalone projects
 option(WITH_EXAMPLES "Enable example compilation" OFF)
 option(WITH_UNIT_TESTS "Enable unit testing" OFF)
