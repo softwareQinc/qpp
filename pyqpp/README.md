@@ -33,9 +33,10 @@ accordingly for your system.
 
 ## Overview
 
-pyqpp includes `Bit_circuit`, `Dynamic_bitset`, `QCircuit`, `QEngine`, and
-several `QNoisyEngine` classes from Quantum++. Additionally, pyqpp provides
-commonly used quantum `gates` and `states`, and some basic Eigen operations.
+pyqpp includes `Bit_circuit`, `Dynamic_bitset`, `QCircuitT`, `QEngineT`,
+`QNoisyEngineT`, and several other derived Engine classes. Additionally, pyqpp
+provides commonly used quantum `gates` and `states`, and some basic Eigen
+operations.
 
 ---
 
@@ -85,8 +86,9 @@ print()
 
 # verify that the teleportation was successful
 psi_in = np.matmul(U, states.z0)
-psi_out = engine.get_psi()
-print("Teleported state:\n", psi_out)
+psi_out = engine.get_state()
+print("Teleported state:")
+print(dirac(psi_out))
 print("Norm difference:\n", norm(psi_out - psi_in))
 ```
 

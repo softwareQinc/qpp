@@ -21,7 +21,7 @@ for line in p.stdout.read().decode("ascii").split("\n"):
 if eigen_path is None:
     raise Exception("Eigen3 not found!")
 
-source_files = ["pyqpp/qpp_wrapper.cpp"]
+source_files = ["pyqpp/src/qpp_wrapper.cpp"]
 ext_modules = [
     Pybind11Extension(
         "pyqpp",
