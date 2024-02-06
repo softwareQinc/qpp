@@ -35,7 +35,7 @@ target_compile_definitions(libqpp
                            INTERFACE -DQPP_VERSION_STR="${QPP_VERSION_STR}")
 target_include_directories(
   libqpp INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
-                   $<INSTALL_INTERFACE:include/qpp>)
+                   $<INSTALL_INTERFACE:include/qpp/>)
 
 # qasmtools library
 target_include_directories(
@@ -43,10 +43,10 @@ target_include_directories(
   INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/qasmtools/include/>
             $<INSTALL_INTERFACE:include/>)
 
-# pyqpp support for CMake
+# pyqpp (only if Python development kit is detected)
 find_package(Python3 QUIET COMPONENTS Interpreter Development)
 if(${Python3_FOUND})
-  include(cmake/pyqpp.cmake)
+  include(cmake/qpp_pyqpp.cmake)
 endif()
 
 # BEGIN LOCAL stuff, you don't need those in standalone projects
@@ -80,7 +80,7 @@ endif()
 
 # Examples
 if(${WITH_EXAMPLES})
-  include(cmake/examples.cmake)
+  include(cmake/qpp_examples.cmake)
 endif()
 # END LOCAL stuff
 

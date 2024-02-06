@@ -24,18 +24,18 @@
  * SOFTWARE.
  */
 
-#ifndef PYQPP_QASM_QASM_BIND_HPP_
-#define PYQPP_QASM_QASM_BIND_HPP_
+#ifndef PYQPP_CONSTANTS_BIND_HPP_
+#define PYQPP_CONSTANTS_BIND_HPP_
 
-#include "pyqpp_common.h"
+#include "pyqpp/pyqpp_common.h"
 
-/* OpenQASM interfacing */
-inline void init_qasm_qasm(py::module_& m) {
+/* Constants from constants.hpp */
+inline void init_constants(py::module_& m) {
     using namespace qpp;
 
-    auto py_qasm = m.def_submodule("qasm");
-    py_qasm.def("read_from_file", &qpp::qasm::read_from_file,
-                "Get QCircuit representation of OpenQASM circuit");
+    m.attr("ee") = qpp::ee;
+    m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
+    m.attr("pi") = qpp::pi;
 }
 
-#endif /* PYQPP_QASM_QASM_BIND_HPP_ */
+#endif /* PYQPP_CONSTANTS_BIND_HPP_ */

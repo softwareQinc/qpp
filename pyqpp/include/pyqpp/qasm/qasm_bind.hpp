@@ -24,17 +24,18 @@
  * SOFTWARE.
  */
 
-#ifndef PYQPP_RANDOM_BIND_HPP_
-#define PYQPP_RANDOM_BIND_HPP_
+#ifndef PYQPP_QASM_QASM_BIND_HPP_
+#define PYQPP_QASM_QASM_BIND_HPP_
 
-#include "pyqpp_common.h"
+#include "pyqpp/pyqpp_common.h"
 
-/* Some free functions (non-exhaustive list) from random.hpp */
-inline void init_random(py::module_& m) {
+/* OpenQASM interfacing */
+inline void init_qasm_qasm(py::module_& m) {
     using namespace qpp;
 
-    m.def("randU", &qpp::randU, "Generates a random unitary matrix",
-          py::arg("D") = 2);
+    auto py_qasm = m.def_submodule("qasm");
+    py_qasm.def("read_from_file", &qpp::qasm::read_from_file,
+                "Get QCircuit representation of OpenQASM circuit");
 }
 
-#endif /* PYQPP_RANDOM_BIND_HPP_ */
+#endif /* PYQPP_QASM_QASM_BIND_HPP_ */

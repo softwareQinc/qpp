@@ -24,32 +24,17 @@
  * SOFTWARE.
  */
 
-#ifndef PYQPP_TYPES_BIND_HPP_
-#define PYQPP_TYPES_BIND_HPP_
+#ifndef PYQPP_RANDOM_BIND_HPP_
+#define PYQPP_RANDOM_BIND_HPP_
 
-#include "pyqpp_common.h"
+#include "pyqpp/pyqpp_common.h"
 
-/* Types from types.hpp */
-inline void init_types(py::module_& m) {
+/* Some free functions (non-exhaustive list) from random.hpp */
+inline void init_random(py::module_& m) {
     using namespace qpp;
 
-    // supports only complex
-    using py_dirac_t = dirac_t<cplx>;
-
-    /* qpp::dirac_t */
-    auto pydirac_t =
-        py::class_<py_dirac_t>(m, "dirac_t")
-            .def(py::self == py::self)
-            .def(py::self != py::self)
-            .def("__copy__",
-                 [](const py_dirac_t& self) { return py_dirac_t(self); })
-            .def("__deepcopy__", [](const py_dirac_t& self,
-                                    py::dict) { return py_dirac_t(self); })
-            .def("__repr__", [](const py_dirac_t& self) {
-                std::ostringstream oss;
-                oss << disp(self);
-                return oss.str();
-            });
+    m.def("randU", &qpp::randU, "Generates a random unitary matrix",
+          py::arg("D") = 2);
 }
 
-#endif /* PYQPP_TYPES_BIND_HPP_ */
+#endif /* PYQPP_RANDOM_BIND_HPP_ */

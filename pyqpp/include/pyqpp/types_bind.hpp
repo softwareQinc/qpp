@@ -24,18 +24,32 @@
  * SOFTWARE.
  */
 
-#ifndef PYQPP_CONSTANTS_BIND_HPP_
-#define PYQPP_CONSTANTS_BIND_HPP_
+#ifndef PYQPP_TYPES_BIND_HPP_
+#define PYQPP_TYPES_BIND_HPP_
 
-#include "pyqpp_common.h"
+#include "pyqpp/pyqpp_common.h"
 
-/* Constants from constants.hpp */
-inline void init_constants(py::module_& m) {
+/* Types from types.hpp */
+inline void init_types(py::module_& m) {
     using namespace qpp;
 
-    m.attr("ee") = qpp::ee;
-    m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
-    m.attr("pi") = qpp::pi;
+    // supports only complex
+    using py_dirac_t = dirac_t<cplx>;
+
+    /* qpp::dirac_t */
+    auto pydirac_t =
+        py::class_<py_dirac_t>(m, "dirac_t")
+            .def(py::self == py::self)
+            .def(py::self != py::self)
+            .def("__copy__",
+                 [](const py_dirac_t& self) { return py_dirac_t(self); })
+            .def("__deepcopy__", [](const py_dirac_t& self,
+                                    py::dict) { return py_dirac_t(self); })
+            .def("__repr__", [](const py_dirac_t& self) {
+                std::ostringstream oss;
+                oss << disp(self);
+                return oss.str();
+            });
 }
 
-#endif /* PYQPP_CONSTANTS_BIND_HPP_ */
+#endif /* PYQPP_TYPES_BIND_HPP_ */

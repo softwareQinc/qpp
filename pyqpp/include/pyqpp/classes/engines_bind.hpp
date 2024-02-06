@@ -27,7 +27,7 @@
 #ifndef PYQPP_CLASSES_ENGINES_BIND_HPP_
 #define PYQPP_CLASSES_ENGINES_BIND_HPP_
 
-#include "pyqpp_common.h"
+#include "pyqpp/pyqpp_common.h"
 
 /* qpp::QEngineT instantiator */
 template <typename T>

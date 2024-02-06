@@ -24,23 +24,23 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#include "pyqpp/pyqpp_common.h"
 
-#include "constants_bind.hpp"
-#include "functions_bind.hpp"
-#include "instruments_bind.hpp"
-#include "random_bind.hpp"
-#include "types_bind.hpp"
+#include "pyqpp/constants_bind.hpp"
+#include "pyqpp/functions_bind.hpp"
+#include "pyqpp/instruments_bind.hpp"
+#include "pyqpp/random_bind.hpp"
+#include "pyqpp/types_bind.hpp"
 
-#include "classes/circuits_bind.hpp"
-#include "classes/engines_bind.hpp"
-#include "classes/gates_bind.hpp"
-#include "classes/reversible_bind.hpp"
-#include "classes/states_bind.hpp"
+#include "pyqpp/classes/circuits_bind.hpp"
+#include "pyqpp/classes/engines_bind.hpp"
+#include "pyqpp/classes/gates_bind.hpp"
+#include "pyqpp/classes/reversible_bind.hpp"
+#include "pyqpp/classes/states_bind.hpp"
 
-#include "qasm/qasm_bind.hpp"
+#include "pyqpp/qasm/qasm_bind.hpp"
 
-#include "pyqpp_specific_bind.hpp"
+#include "pyqpp/pyqpp_specific_bind.hpp"
 
 PYBIND11_MODULE(pyqpp, m) {
     m.doc() =
