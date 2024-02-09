@@ -35,6 +35,11 @@ Version 5.1 -- xx February 2024
                                           compatibility
             pyqpp.QKetNoisyEngine()     - same as pyqpp.QNoisyEngine()
             pyqpp.QDensityNoisyEngine() - muxed state noisy engine
+        - Removed the default argument "bool try_sampling = true" in 
+            qpp::QEngineT::execute(idx reps = 1, bool try_sampling = true) ->
+            qpp::QEngineT::execute(idx reps = 1)
+          so now qpp::QEngineT will away try to sample from the output when
+          the circuit is executed multiple times (i.e., when reps > 1)
 
 Version 5.0 - 10 January 2024
     - All header files are moved into "[include/qpp]", so to include the header
@@ -153,7 +158,7 @@ Version 4.1 - 2 May 2023
                                               remove qudits, false otherwise
     - Added new exception class ["classes/exception.hpp"]:
           qpp::exception::NotFound - Element not found
-    - Implemented ["pyqpp/qpp_wrapper_cpp"] (pyqpp Python wraper)
+    - Implemented ["pyqpp/qpp_wrapper.cpp"] (pyqpp Python wraper)
           set_prng_seed() - sets the seed of the PRNG to a specific value, or,
                             if invoked with no argument, to a random value
     - Migrated pyqpp installation method to pyproject.toml

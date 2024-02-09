@@ -59,7 +59,7 @@ namespace qpp {
 /**
  * \class qpp::QCircuit
  * \brief Quantum circuit description
- * \see qpp::QEngine
+ * \see qpp::QEngineT
  */
 class QCircuit : public IDisplay, public IJSON {
     idx nq_;                          ///< number of qudits
