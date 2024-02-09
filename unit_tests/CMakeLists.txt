@@ -10,7 +10,7 @@ if(MSVC)
       CACHE BOOL "" FORCE)
 endif()
 
-add_subdirectory(libs/googletest-release-1.12.1 EXCLUDE_FROM_ALL SYSTEM)
+add_subdirectory(libs/googletest-1.14.0 EXCLUDE_FROM_ALL SYSTEM)
 
 aux_source_directory(tests TEST_FILES)
 aux_source_directory(tests/MATLAB TEST_FILES)
