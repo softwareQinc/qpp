@@ -50,19 +50,13 @@ if(${Python3_FOUND})
 endif()
 
 # BEGIN LOCAL stuff, you don't need those in standalone projects
-option(WITH_EXAMPLES "Enable example compilation" OFF)
-option(WITH_UNIT_TESTS "Enable unit testing" OFF)
 option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)
 
 # Dependencies, do not modify unless you know what you're doing
-if(${WITH_EXAMPLES} OR ${WITH_UNIT_TESTS})
-  include(cmake/qpp_dependencies.cmake)
-endif()
+include(cmake/qpp_dependencies.cmake)
 
 # Unit testing
-if(${WITH_UNIT_TESTS})
-  add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/)
-endif()
+add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/)
 
 # Enable all warnings for GNU gcc and Clang/AppleClang
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
@@ -79,9 +73,7 @@ if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
 endif()
 
 # Examples
-if(${WITH_EXAMPLES})
-  include(cmake/qpp_examples.cmake)
-endif()
+include(cmake/qpp_examples.cmake)
 # END LOCAL stuff
 
 # Installation
