@@ -15,7 +15,6 @@ add_subdirectory(libs/googletest-release-1.12.1 EXCLUDE_FROM_ALL SYSTEM)
 aux_source_directory(tests TEST_FILES)
 aux_source_directory(tests/MATLAB TEST_FILES)
 aux_source_directory(tests/classes TEST_FILES)
-aux_source_directory(tests/classes/circuits TEST_FILES)
 aux_source_directory(tests/qasm TEST_FILES)
 
 add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL tests/main.cpp)
