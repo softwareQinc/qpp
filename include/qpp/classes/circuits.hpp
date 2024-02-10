@@ -26,7 +26,7 @@
 
 /**
  * \file classes/circuits.hpp
- * \brief Qudit quantum circuits
+ * \brief Quantum circuits
  */
 
 #ifndef QPP_CLASSES_CIRCUITS_HPP_

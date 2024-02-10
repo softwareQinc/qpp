@@ -26,7 +26,7 @@
 
 /**
  * \file classes/engines.hpp
- * \brief Qudit quantum engines
+ * \brief Quantum engines
  */
 
 #ifndef QPP_CLASSES_ENGINES_HPP_
@@ -59,6 +59,7 @@
 
 namespace qpp {
 /**
+ * \class qpp::IQEngineTraits
  * \brief Engine traits (properties)
  * \note All engines must implement this trait (i.e., inherit from it)
  */
@@ -92,6 +93,7 @@ struct IQEngineTraits {
 
 namespace internal {
 /**
+ * \class QEngineStatistics
  * \brief Sampling/measurement statistics
  */
 class QEngineStatistics : public IDisplay, public IJSON {
@@ -215,8 +217,9 @@ class QEngineStatistics : public IDisplay, public IJSON {
 
 /**
  * \class QEngineState
+ * \brief Current state of qpp::QEngineT and derived
+ *
  * \tparam T State underlying type, qpp::ket or qpp::cmat
- * \brief Current state of qpp::QEngine
  */
 template <typename T>
 struct QEngineState {
@@ -243,8 +246,8 @@ struct QEngineState {
         // EXCEPTION CHECKS
 
         if (qc_ptr->get_nq() == 0) {
-            throw exception::ZeroSize("qpp::internal::QEngineState::reset()",
-                                      "nq");
+            throw exception::ZeroSize(
+                "qpp::internal::QEngineState::QEngineState()", "nq");
         }
         // END EXCEPTION CHECKS
         reset();
@@ -309,20 +312,228 @@ struct QEngineState {
 } /* namespace internal */
 
 /**
- * \class qpp::QEngine
- * \brief Quantum circuit engine, executes qpp::QCircuit
- * \see qpp::QCircuit
+ * \class QBaseEngine
+ * \brief Base class for all quantum engines
+ *
+ * \tparam T Engine's state underlying type
+ * \tparam QCT Circuit underlying type, default is qpp::QCircuit
+ *
+ */
+template <typename T, typename QCT = qpp::QCircuit>
+class QBaseEngine : public IQEngineTraits, public IDisplay, public IJSON {
+  protected:
+    const QCT* qc_ptr_; ///< pointer to constant quantum circuit description
+  public:
+    /**
+     * \brief Constructs a quantum engine out of a quantum circuit description
+     *
+     * \note The quantum circuit description must be an lvalue
+     * \see qpp::QBaseEngineT(QCT&&)
+     *
+     * \param qc Quantum circuit description
+     */
+    explicit QBaseEngine(const QCT& qc) : qc_ptr_{std::addressof(qc)} {}
+
+    // silence -Weffc++ class has pointer data members
+    /**
+     * \brief Default copy constructor
+     */
+    QBaseEngine(const QBaseEngine&) = default;
+
+    // silence -Weffc++ class has pointer data members
+    /**
+     * \brief Default copy assignment operator
+     *
+     * \return Reference to the current instance
+     */
+    QBaseEngine& operator=(const QBaseEngine&) = default;
+
+    /**
+     * \brief Disables rvalue QCT
+     */
+    QBaseEngine(QCT&&) = delete;
+
+    /**
+     * \brief Default virtual destructor
+     */
+    virtual ~QBaseEngine() override = default;
+
+    // traits
+    /**
+     * \brief qpp::IQEngineTraits::traits_get_name() override
+     */
+    std::string traits_get_name() const override { return "QBaseEngine"; }
+
+    /**
+     * \brief qpp::IQEngineTraits::traits_is_noisy() override
+     */
+    bool traits_is_noisy() const override { return false; }
+
+    /**
+     * \brief qpp::IQEngineTraits::traits_is_pure() override
+     */
+    bool traits_is_pure() const override {
+        if (std::is_same_v<T, cmat>) {
+            return false;
+        } else if (std::is_same_v<T, ket>) {
+            return true;
+        }
+        // default, we assume pure states
+        return true;
+    }
+    // end traits
+
+    /**
+     * \brief Executes one step in the quantum circuit description
+     *
+     * \note This function is a no-op in qpp::QBaseEngine; override it in all
+     * derived classes to achieve the desired behaviour
+     *
+     * \param elem Step to be executed
+     * \return Reference to the current instance
+     */
+    virtual QBaseEngine&
+    execute([[maybe_unused]] const typename QCT::iterator::value_type& elem) {
+        return *this;
+    };
+
+    /**
+     * \brief Executes the entire quantum circuit description
+     * \note This function is a no-op in qpp::QBaseEngine; override it in all
+     * derived classes to achieve the desired behaviour
+     *
+     * \param reps Number of repetitions
+     * \return Reference to the current instance
+     */
+    virtual QBaseEngine& execute([[maybe_unused]] idx reps = 1) {
+        return *this;
+    };
+
+    /**
+     * \brief Underlying quantum state
+     * \note This function is a no-op in qpp::QBaseEngine; override it in all
+     * derived classes to achieve the desired behaviour
+     *
+     * \return Underlying quantum state
+     */
+    virtual T get_state() const { return T{}; }
+
+    /**
+     * \brief Sets the underlying quantum state to \a state
+     * \note This function is a no-op in qpp::QBaseEngine; override it in all
+     * derived classes to achieve the desired behaviour
+     *
+     * \param state Quantum state
+     * \return Reference to the current instance
+     */
+    virtual QBaseEngine& set_state([[maybe_unused]] const T& state) {
+        return *this;
+    }
+
+    /**
+     * \brief Executes one step in the quantum circuit description
+     *
+     * \note Do not override!
+     *
+     * \param it Iterator to the step to be executed
+     * \return Reference to the current instance
+     */
+    QBaseEngine& execute(const typename QCT::iterator& it) {
+        return this->execute(*it);
+    }
+
+    /**
+     * \brief Quantum circuit description, lvalue ref qualifier
+     *
+     * \return Const reference to the underlying quantum circuit description
+     */
+    const QCT& get_circuit() const& noexcept { return *qc_ptr_; }
+
+    /**
+     * \brief Quantum circuit description, rvalue ref qualifier
+     *
+     * \return Copy of the underlying quantum circuit description
+     */
+    QCT get_circuit() const&& noexcept { return *qc_ptr_; }
+
+    std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
+        std::string result;
+
+        if (enclosed_in_curly_brackets) {
+            result += "{";
+        }
+
+        std::ostringstream ss;
+        ss << "\"Engine\": ";
+        ss << "{\"name\": " << std::quoted(traits_get_name()) << ", ";
+        ss << "\"is_noisy\": " << (traits_is_noisy() ? "true" : "false")
+           << ", ";
+        ss << "\"is_pure\": " << (traits_is_pure() ? "true" : "false");
+        ss << "}, ";
+        ss << "\"Circuit\": ";
+        ss << "{\"nq\": " << get_circuit().get_nq() << ", ";
+        ss << "\"nc\": " << get_circuit().get_nc() << ", ";
+        ss << "\"d\": " << get_circuit().get_d() << ", ";
+        ss << "\"name\": ";
+        if (get_circuit().get_name().has_value()) {
+            ss << "\"" << get_circuit().get_name().value() << "\"";
+        } else {
+            ss << "null";
+        }
+        ss << "}";
+
+        result += ss.str();
+
+        if (enclosed_in_curly_brackets) {
+            result += "}";
+        }
+
+        return result;
+    }
+
+  private:
+    /**
+     * \brief qpp::IDisplay::display() override
+     *
+     * Writes to the output stream a textual representation of the state of
+     * the engine
+     *
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
+     */
+    std::ostream& display(std::ostream& os) const override {
+        os << '[' << traits_get_name() << ']';
+        os << '\n';
+
+        os << "<QCircuit nq: " << get_circuit().get_nq()
+           << ", nc: " << get_circuit().get_nc()
+           << ", d: " << get_circuit().get_d();
+
+        if (get_circuit().get_name().has_value()) {
+            os << ", name: ";
+            os << "\"" << get_circuit().get_name().value() << "\"";
+        }
+        os << ">\n";
+
+        return os;
+    }
+};
+
+/**
+ * \class qpp::QEngineT
+ * \brief Quantum engine, executes qpp::QCircuit
+ * \see qpp::QNoisyEngineT, qpp::QCircuit
  *
  * \note When interfacing with OpenQASM, the classical dits/registers are
  * evaluated in little-endian order, with  the least significant bit being
  * stored first. For example, [1,0,0] is interpreted as 1 (and not 4).
  * See https://github.com/softwareQinc/qpp/issues/75 for more details.
+ *
+ * \tparam T Engine's state underlying type, qpp::ket or qpp::cmat
  */
 template <typename T>
-class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
+class QEngineT : public QBaseEngine<T> {
   protected:
-    const QCircuit*
-        qc_ptr_; ///< pointer to constant quantum circuit description
     internal::QEngineState<T> qeng_st_; ///< current state of the engine
     internal::QEngineStatistics
         stats_{}; ///< measurement statistics for multiple runs
@@ -342,7 +553,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
         qeng_st_.subsys_[i] =
             std::numeric_limits<idx>::max(); // set qudit i to measured state
-        for (idx m = i; m < qc_ptr_->get_nq(); ++m) {
+        for (idx m = i; m < this->qc_ptr_->get_nq(); ++m) {
             if (!was_measured(m)) {
                 --qeng_st_.subsys_[m];
             }
@@ -377,6 +588,9 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
     bool can_sample; ///< can sample when executing with multiple repetitions
 
   public:
+    using QBaseEngine<T>::QBaseEngine;
+    using QBaseEngine<T>::execute;
+
     /**
      * \brief Constructs a quantum engine out of a quantum circuit description
      *
@@ -389,32 +603,8 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
      * \param qc Quantum circuit description
      */
     explicit QEngineT(const QCircuit& qc)
-        : qc_ptr_{std::addressof(qc)}, qeng_st_{qc_ptr_}, stats_{},
+        : QBaseEngine<T>{qc}, qeng_st_{this->qc_ptr_}, stats_{},
           can_sample{false} {}
-
-    // silence -Weffc++ class has pointer data members
-    /**
-     * \brief Default copy constructor
-     */
-    QEngineT(const QEngineT&) = default;
-
-    // silence -Weffc++ class has pointer data members
-    /**
-     * \brief Default copy assignment operator
-     *
-     * \return Reference to the current instance
-     */
-    QEngineT& operator=(const QEngineT&) = default;
-
-    /**
-     * \brief Disables rvalue QCircuit
-     */
-    QEngineT(QCircuit&&) = delete;
-
-    /**
-     * \brief Default virtual destructor
-     */
-    ~QEngineT() override = default;
 
     // traits
     /**
@@ -447,7 +637,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
      *
      * \return Underlying quantum state
      */
-    T get_state() const { return qeng_st_.state_; }
+    T get_state() const override { return qeng_st_.state_; }
 
     /**
      * \brief Vector with the values of the underlying classical dits
@@ -477,7 +667,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
     idx get_dit(idx i) const {
         // EXCEPTION CHECKS
 
-        if (i >= qc_ptr_->get_nc()) {
+        if (i >= this->qc_ptr_->get_nc()) {
             throw exception::OutOfRange("qpp::QEngineT::get_dit()", "i");
         }
         // END EXCEPTION CHECKS
@@ -527,7 +717,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
      */
     std::vector<idx> get_measured() const {
         std::vector<idx> result;
-        for (idx i = 0; i < qc_ptr_->get_nq(); ++i) {
+        for (idx i = 0; i < this->qc_ptr_->get_nq(); ++i) {
             if (was_measured(i)) {
                 result.emplace_back(i);
             }
@@ -543,7 +733,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
      */
     std::vector<idx> get_non_measured() const {
         std::vector<idx> result;
-        for (idx i = 0; i < qc_ptr_->get_nq(); ++i) {
+        for (idx i = 0; i < this->qc_ptr_->get_nq(); ++i) {
             if (!was_measured(i)) {
                 result.emplace_back(i);
             }
@@ -551,20 +741,6 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
 
         return result;
     }
-
-    /**
-     * \brief Quantum circuit description, lvalue ref qualifier
-     *
-     * \return Const reference to the underlying quantum circuit description
-     */
-    const QCircuit& get_circuit() const& noexcept { return *qc_ptr_; }
-
-    /**
-     * \brief Quantum circuit description, rvalue ref qualifier
-     *
-     * \return Copy of the underlying quantum circuit description
-     */
-    QCircuit get_circuit() const&& noexcept { return *qc_ptr_; }
 
     /**
      * \brief Measurement statistics for multiple runs
@@ -595,7 +771,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
     QEngineT& set_dit(idx i, idx value) {
         // EXCEPTION CHECKS
 
-        if (i >= qc_ptr_->get_nc()) {
+        if (i >= this->qc_ptr_->get_nc()) {
             throw exception::OutOfRange("qpp::QEngineT::set_dit()", "i");
         }
         // END EXCEPTION CHECKS
@@ -637,11 +813,11 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
      * \param state State vector
      * \return Reference to the current instance
      */
-    QEngineT& set_state(const T& state) {
+    QEngineT& set_state(const T& state) override {
         // EXCEPTION CHECKS
 
         idx n = get_non_measured().size();
-        idx D = internal::safe_pow(qc_ptr_->get_d(), n);
+        idx D = internal::safe_pow(this->qc_ptr_->get_d(), n);
         if constexpr (std::is_same_v<T, ket>) {
             if (static_cast<idx>(state.rows()) != D) {
                 throw exception::DimsNotEqual("qpp::QEngineT::set_state()",
@@ -704,11 +880,11 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
      * \param elem Step to be executed
      * \return Reference to the current instance
      */
-    virtual QEngineT& execute(const QCircuit::iterator::value_type& elem) {
+    QEngineT& execute(const QCircuit::iterator::value_type& elem) override {
         // EXCEPTION CHECKS
 
         // iterator must point to the same quantum circuit description
-        if (elem.get_qc_ptr() != qc_ptr_) {
+        if (elem.get_qc_ptr() != this->qc_ptr_) {
             throw exception::InvalidIterator(
                 "qpp::QEngineT::execute()",
                 "Iterator does not point to the same circuit description");
@@ -716,8 +892,8 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
-        auto h_tbl = qc_ptr_->get_cmat_hash_tbl();
-        idx d = qc_ptr_->get_d();
+        auto h_tbl = this->qc_ptr_->get_cmat_hash_tbl();
+        idx d = this->qc_ptr_->get_d();
 
         std::visit(
             overloaded{
@@ -964,27 +1140,15 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Executes one step in the quantum circuit description
-     *
-     * \note Do not override!
-     *
-     * \param it Iterator to the step to be executed
-     * \return Reference to the current instance
-     */
-    QEngineT& execute(const QCircuit::iterator& it) { return execute(*it); }
-
-    /**
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
-     * \param try_sampling If possible, try to sample from the output
-     * (instead of measuring) \return Reference to the current instance
+     * \return Reference to the current instance
      */
-    virtual QEngineT& execute(idx reps = 1, bool try_sampling = true) {
+    QEngineT& execute(idx reps = 1) override {
         this->reset(false);
-        auto steps = (reps > 1 && try_sampling)
-                         ? internal::canonical_form(*qc_ptr_)
-                         : internal::circuit_as_iterators(*qc_ptr_);
+        auto steps = reps > 1 ? internal::canonical_form(*this->qc_ptr_)
+                              : internal::circuit_as_iterators(*this->qc_ptr_);
         if (steps.empty()) {
             return *this;
         }
@@ -1005,7 +1169,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
 
         // decide if we can sample (every step after first_measurement_pos
         // must be a projective measurement)
-        this->can_sample = (reps > 1) && try_sampling;
+        this->can_sample = reps > 1;
         for (idx i = first_measurement_discard_reset_pos;
              i < num_steps && this->can_sample; ++i) {
             if (!(internal::is_projective_measurement(steps[i])) ||
@@ -1053,7 +1217,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
                 for (idx rep = 0; rep < reps - 1; ++rep) {
                     std::vector<idx> sample_res_restricted_support =
                         sample(current_engine_state.state_, sample_from,
-                               qc_ptr_->get_d());
+                               this->qc_ptr_->get_d());
                     // extend sample_res to full support
                     std::vector<idx> sample_res = this->get_dits();
                     idx i = 0;
@@ -1066,7 +1230,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
                 // state
                 for (idx i = first_measurement_discard_reset_pos; i < num_steps;
                      ++i) {
-                    execute(steps[i]);
+                    this->execute(steps[i]);
                 }
                 std::vector<idx> m_res = get_dits();
                 ++stats_.data()[m_res];
@@ -1083,7 +1247,7 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
                     if (internal::is_measurement(steps[i])) {
                         measured = true;
                     }
-                    execute(steps[i]);
+                    this->execute(steps[i]);
                 }
                 // at least one qudit was measured
                 if (measured) {
@@ -1102,8 +1266,9 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
      * Displays the state of the engine in JSON format
      *
      * \param enclosed_in_curly_brackets If true, encloses the result in
-     * curly brackets \return String containing the JSON representation of
-     * the state of the engine
+     * curly brackets
+     * \return String containing the JSON representation of the state of the
+     * engine
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
@@ -1112,24 +1277,10 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
             result += "{";
         }
 
+        QBaseEngine<T>::to_JSON(false);
+
         std::ostringstream ss;
-        ss << "\"Engine\": ";
-        ss << "{\"name\": " << std::quoted(traits_get_name()) << ", ";
-        ss << "\"is_noisy\": " << (traits_is_noisy() ? "true" : "false")
-           << ", ";
-        ss << "\"is_pure\": " << (traits_is_pure() ? "true" : "false");
-        ss << "}, ";
-        ss << "\"QCircuit\": ";
-        ss << "{\"nq\": " << get_circuit().get_nq() << ", ";
-        ss << "\"nc\": " << get_circuit().get_nc() << ", ";
-        ss << "\"d\": " << get_circuit().get_d() << ", ";
-        ss << "\"name\": ";
-        if (get_circuit().get_name().has_value()) {
-            ss << "\"" << get_circuit().get_name().value() << "\"";
-        } else {
-            ss << "null";
-        }
-        ss << "}, ";
+        ss << ", ";
 
         ss << "\"sampling\": " << (this->can_sample ? "true" : "false") << ", ";
         ss << "\"measured/discarded (destructively)\": ";
@@ -1195,13 +1346,13 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
         }
         os << '\n';
 
-        os << "<QCircuit nq: " << get_circuit().get_nq()
-           << ", nc: " << get_circuit().get_nc()
-           << ", d: " << get_circuit().get_d();
+        os << "<QCircuit nq: " << this->get_circuit().get_nq()
+           << ", nc: " << this->get_circuit().get_nc()
+           << ", d: " << this->get_circuit().get_d();
 
-        if (get_circuit().get_name().has_value()) {
+        if (this->get_circuit().get_name().has_value()) {
             os << ", name: ";
-            os << "\"" << get_circuit().get_name().value() << "\"";
+            os << "\"" << this->get_circuit().get_name().value() << "\"";
         }
         os << ">\n";
 
@@ -1219,49 +1370,62 @@ class QEngineT : public IQEngineTraits, public IDisplay, public IJSON {
     }
 }; /* class QEngineT */
 
+/**
+ * \class qpp::QEngine
+ * \brief Pure state quantum engine
+ * \note Kept for backwards compatibility, use qpp::QKetEngine
+ * \see qpp::QEngineT
+ */
 struct QEngine : public QEngineT<ket> {
     using QEngineT<ket>::QEngineT;
     // traits
     /**
      * \brief qpp::IQEngineTraits::traits_get_name() override
      */
-    virtual std::string traits_get_name() const override { return "QEngine"; }
+    std::string traits_get_name() const override { return "QEngine"; }
     // end traits
 };
 
+/**
+ * \class qpp::QKetEngine
+ * \brief Pure state quantum engine
+ * \see qpp::QEngineT
+ */
 struct QKetEngine : public QEngineT<ket> {
     using QEngineT<ket>::QEngineT;
     // traits
     /**
      * \brief qpp::IQEngineTraits::traits_get_name() override
      */
-    virtual std::string traits_get_name() const override {
-        return "QKetEngine";
-    }
+    std::string traits_get_name() const override { return "QKetEngine"; }
     // end traits
 };
 
+/**
+ * \class qpp::QDensityEngine
+ * \brief Mixed state quantum engine
+ * \see qpp::QEngineT
+ */
 struct QDensityEngine : public QEngineT<cmat> {
     using QEngineT<cmat>::QEngineT;
     // traits
     /**
      * \brief qpp::IQEngineTraits::traits_get_name() override
      */
-    virtual std::string traits_get_name() const override {
-        return "QDensityEngine";
-    }
+    std::string traits_get_name() const override { return "QDensityEngine"; }
     // end traits
 };
 
 /**
- * \class qpp::QNoisyEngine
+ * \class qpp::QNoisyEngineT
  * \brief Noisy quantum circuit engine, executes qpp::QCircuit
- * \see qpp::QEngine, qpp::QCircuit, qpp::NoiseBase
+ * \see qpp::QEngineT, qpp::NoiseBase, qpp::QCircuit
  *
  * Assumes an uncorrelated noise model that is applied to each non-measured
  * qubit before every non-measurement step in the logical circuit. To add
  * noise before a measurement, insert a no-op via qpp::QCircuit::nop().
  *
+ * \tparam T Engine's state underlying type, qpp::ket or qpp::cmat
  * \tparam NoiseModel Quantum noise model, should be derived from
  * qpp::NoiseBase
  */
@@ -1270,6 +1434,7 @@ class QNoisyEngineT : public QEngineT<T> {
     NoiseModel noise_;                            ///< quantum noise model
     std::vector<std::vector<idx>> noise_results_; ///< noise results
   public:
+    using QBaseEngine<T>::execute;
     /**
      * \brief Constructs a noisy quantum engine out of a quantum circuit
      * description
@@ -1289,20 +1454,16 @@ class QNoisyEngineT : public QEngineT<T> {
         // END EXCEPTION CHECKS
     }
 
-    using QEngineT<T>::execute;
-
-    // over-ridden traits
+    // traits
     /**
      * \brief qpp::IQEngineTraits::traits_get_name() override
      */
-    virtual std::string traits_get_name() const override {
-        return "QNoisyEngineT";
-    }
+    std::string traits_get_name() const override { return "QNoisyEngineT"; }
 
     /**
      * \brief qpp::IQEngineTraits::traits_is_noisy() override
      */
-    virtual bool traits_is_noisy() const override { return true; }
+    bool traits_is_noisy() const override { return true; }
     // end traits
 
     /**
@@ -1335,7 +1496,7 @@ class QNoisyEngineT : public QEngineT<T> {
      * \param reps Number of repetitions
      * \return Reference to the current instance
      */
-    QNoisyEngineT& execute(idx reps = 1, bool = true) override {
+    QNoisyEngineT& execute(idx reps = 1) override {
         auto initial_engine_state =
             this->qeng_st_; // saves the engine entry state
 
@@ -1392,8 +1553,14 @@ class QNoisyEngineT : public QEngineT<T> {
         return noise_results_;
     }
     // end getters
-}; /* class QNoisyEngine */
+}; /* class QNoisyEngineT */
 
+/**
+ * \class qpp::QNoisyEngine
+ * \brief Pure state noisy quantum engine
+ * \note Kept for backwards compatibility, use qpp::QKetNoisyEngine
+ * \see qpp::QNoisyEngineT
+ */
 template <typename NoiseModel>
 struct QNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
     using QNoisyEngineT<ket, NoiseModel>::QNoisyEngineT;
@@ -1401,9 +1568,7 @@ struct QNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
     /**
      * \brief qpp::IQEngineTraits::traits_get_name() override
      */
-    virtual std::string traits_get_name() const override {
-        return "QNoisyEngine";
-    }
+    std::string traits_get_name() const override { return "QNoisyEngine"; }
     // end traits
 };
 // template deduction rule
@@ -1411,6 +1576,11 @@ template <class NoiseModel>
 QNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
     -> QNoisyEngine<NoiseModel>;
 
+/**
+ * \class qpp::QKetNoisyEngine
+ * \brief Pure state noisy quantum engine
+ * \see qpp::QNoisyEngineT
+ */
 template <typename NoiseModel>
 struct QKetNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
     using QNoisyEngineT<ket, NoiseModel>::QNoisyEngineT;
@@ -1418,9 +1588,7 @@ struct QKetNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
     /**
      * \brief qpp::IQEngineTraits::traits_get_name() override
      */
-    virtual std::string traits_get_name() const override {
-        return "QKetNoisyEngine";
-    }
+    std::string traits_get_name() const override { return "QKetNoisyEngine"; }
     // end traits
 };
 // template deduction rule
@@ -1428,6 +1596,11 @@ template <class NoiseModel>
 QKetNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
     -> QKetNoisyEngine<NoiseModel>;
 
+/**
+ * \class qpp::QDensityNoisyEngine
+ * \brief Mixed state noisy quantum engine
+ * \see qpp::QNoisyEngineT
+ */
 template <typename NoiseModel>
 struct QDensityNoisyEngine : public QNoisyEngineT<cmat, NoiseModel> {
     using QNoisyEngineT<cmat, NoiseModel>::QNoisyEngineT;
@@ -1435,7 +1608,7 @@ struct QDensityNoisyEngine : public QNoisyEngineT<cmat, NoiseModel> {
     /**
      * \brief qpp::IQEngineTraits::traits_get_name() override
      */
-    virtual std::string traits_get_name() const override {
+    std::string traits_get_name() const override {
         return "QDensityNoisyEngine";
     }
     // end traits
