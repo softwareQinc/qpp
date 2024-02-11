@@ -1277,7 +1277,7 @@ class QEngineT : public QBaseEngine<T> {
             result += "{";
         }
 
-        QBaseEngine<T>::to_JSON(false);
+        result += QBaseEngine<T>::to_JSON(false);
 
         std::ostringstream ss;
         ss << ", ";
