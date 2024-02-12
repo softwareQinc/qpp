@@ -29,8 +29,8 @@
  * \brief Quantum circuits
  */
 
-#ifndef QPP_CLASSES_CIRCUITS_HPP_
-#define QPP_CLASSES_CIRCUITS_HPP_
+#ifndef QPP_CLASSES_QCIRCUIT_HPP_
+#define QPP_CLASSES_QCIRCUIT_HPP_
 
 #include <algorithm>
 #include <cstddef>
@@ -53,6 +53,7 @@
 #include "qpp/classes/exception.hpp"
 #include "qpp/classes/gates.hpp"
 #include "qpp/classes/idisplay.hpp"
+#include "qpp/classes/ijson.hpp"
 #include "qpp/internal/util.hpp"
 
 namespace qpp {
@@ -5380,7 +5381,24 @@ class QCircuit : public IDisplay, public IJSON {
     }
 }; /* class QCircuit */
 
-// free functions
+/**
+ * \class qpp::QCircuitTraits
+ * \brief Generic type traits for classes that describe quantum circuits
+ */
+template <typename T>
+struct QCircuitTraits;
+
+/**
+ * \class qpp::QCircuitTraits<QCircuit>
+ * \brief Specialization type traits for qpp::QCircuit
+ */
+template <>
+struct QCircuitTraits<QCircuit> {
+    using iterator_type = QCircuit::iterator;
+    using value_type = QCircuit::iterator::value_type;
+};
+
+// QCircuit free functions
 
 /**
  * \brief Composes (appends) a quantum circuit description to the end of
@@ -6692,4 +6710,4 @@ inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
 
 } /* namespace qpp */
 
-#endif /* QPP_CLASSES_CIRCUITS_HPP_ */
+#endif /* QPP_CLASSES_QCIRCUIT_HPP_ */

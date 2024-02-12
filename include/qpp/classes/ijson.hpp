@@ -1,5 +1,5 @@
 /*
- * This file is part of pyqpp.
+ * This file is part of Quantum++.
  *
  * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
  *
@@ -24,44 +24,41 @@
  * SOFTWARE.
  */
 
-#include "pyqpp/pyqpp_common.h"
+/**
+ * \file classes/ijson.hpp
+ * \brief Basic JSON serialization
+ */
 
-#include "pyqpp/constants_bind.hpp"
-#include "pyqpp/functions_bind.hpp"
-#include "pyqpp/instruments_bind.hpp"
-#include "pyqpp/random_bind.hpp"
-#include "pyqpp/types_bind.hpp"
+#ifndef QPP_CLASSES_IJSON_HPP_
+#define QPP_CLASSES_IJSON_HPP_
 
-#include "pyqpp/classes/gates_bind.hpp"
-#include "pyqpp/classes/qcircuit_bind.hpp"
-#include "pyqpp/classes/qengine_bind.hpp"
-#include "pyqpp/classes/qnoisy_engine_bind.hpp"
-#include "pyqpp/classes/reversible_bind.hpp"
-#include "pyqpp/classes/states_bind.hpp"
+#include <string>
 
-#include "pyqpp/qasm/qasm_bind.hpp"
+namespace qpp {
+/**
+ * \class qpp::IJSON
+ * \brief Abstract class (interface) that mandates the definition of
+ * very basic JSON serialization support
+ */
+class IJSON {
+  public:
+    /**
+     * \brief Default virtual destructor
+     */
+    virtual ~IJSON() = default;
 
-#include "pyqpp/pyqpp_specific_bind.hpp"
+    /**
+     * \brief JSON representation of the derived instance, must be overridden by
+     * all derived classes
+     *
+     * \param enclosed_in_curly_brackets If true, encloses the result in curly
+     * brackets
+     */
+    virtual std::string
+    to_JSON(bool enclosed_in_curly_brackets = true) const = 0;
 
-PYBIND11_MODULE(pyqpp, m) {
-    m.doc() =
-        "Python 3 wrapper for Quantum++ (https://github.com/softwareQinc/qpp)";
+}; /* class IJSON */
 
-    init_constants(m);
-    init_functions(m);
-    init_instruments(m);
-    init_random(m);
-    init_types(m);
+} /* namespace qpp */
 
-    init_classes_gates(m);
-    init_classes_reversible(m);
-    init_classes_states(m);
-
-    init_classes_qcircuit(m);
-    init_classes_qengine(m);
-    init_classes_qnoisy_engine(m);
-
-    init_qasm_qasm(m);
-
-    init_pyqpp_specific(m);
-}
+#endif /* QPP_CLASSES_IJSON_HPP_ */

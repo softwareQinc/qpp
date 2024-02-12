@@ -1,5 +1,5 @@
 /*
- * This file is part of pyqpp.
+ * This file is part of Quantum++.
  *
  * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
  *
@@ -24,44 +24,49 @@
  * SOFTWARE.
  */
 
-#include "pyqpp/pyqpp_common.h"
+/**
+ * \file classes/qengine_traits.hpp
+ * \brief Quantum engine traits (run-time)
+ */
 
-#include "pyqpp/constants_bind.hpp"
-#include "pyqpp/functions_bind.hpp"
-#include "pyqpp/instruments_bind.hpp"
-#include "pyqpp/random_bind.hpp"
-#include "pyqpp/types_bind.hpp"
+#ifndef QPP_CLASSES_QENGINE_TRAITS_HPP_
+#define QPP_CLASSES_QENGINE_TRAITS_HPP_
 
-#include "pyqpp/classes/gates_bind.hpp"
-#include "pyqpp/classes/qcircuit_bind.hpp"
-#include "pyqpp/classes/qengine_bind.hpp"
-#include "pyqpp/classes/qnoisy_engine_bind.hpp"
-#include "pyqpp/classes/reversible_bind.hpp"
-#include "pyqpp/classes/states_bind.hpp"
+#include <string>
 
-#include "pyqpp/qasm/qasm_bind.hpp"
+namespace qpp {
+/**
+ * \class qpp::IQEngineTraits
+ * \brief Traits for quantum engines, resolved at run-time
+ * \note All engines must implement this trait (i.e., inherit from it)
+ */
+struct IQEngineTraits {
+    /**
+     * \brief Engine name
+     *
+     * \return Engine name
+     */
+    virtual std::string traits_get_name() const = 0;
 
-#include "pyqpp/pyqpp_specific_bind.hpp"
+    /**
+     * \brief Determines if the engine is noisy
+     *
+     * \return True if the engine simulates noisy execution, false if not
+     */
 
-PYBIND11_MODULE(pyqpp, m) {
-    m.doc() =
-        "Python 3 wrapper for Quantum++ (https://github.com/softwareQinc/qpp)";
+    virtual bool traits_is_noisy() const = 0;
+    /**
+     * \brief Determines if the engine operates on pure states
+     *
+     * \return True if the engine operates on pure states, false otherwise
+     */
+    virtual bool traits_is_pure() const = 0;
 
-    init_constants(m);
-    init_functions(m);
-    init_instruments(m);
-    init_random(m);
-    init_types(m);
+    /**
+     * \brief Default virtual destructor
+     */
+    virtual ~IQEngineTraits() = default;
+};
+} /* namespace qpp */
 
-    init_classes_gates(m);
-    init_classes_reversible(m);
-    init_classes_states(m);
-
-    init_classes_qcircuit(m);
-    init_classes_qengine(m);
-    init_classes_qnoisy_engine(m);
-
-    init_qasm_qasm(m);
-
-    init_pyqpp_specific(m);
-}
+#endif /* QPP_CLASSES_QENGINE_TRAITS_HPP_ */

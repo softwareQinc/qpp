@@ -1,5 +1,5 @@
 /*
- * This file is part of pyqpp.
+ * This file is part of Quantum++.
  *
  * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
  *
@@ -24,44 +24,22 @@
  * SOFTWARE.
  */
 
-#include "pyqpp/pyqpp_common.h"
+/**
+ * \file classes/qcircuit_traits.hpp
+ * \brief Quantum circuit traits (compile-time)
+ */
 
-#include "pyqpp/constants_bind.hpp"
-#include "pyqpp/functions_bind.hpp"
-#include "pyqpp/instruments_bind.hpp"
-#include "pyqpp/random_bind.hpp"
-#include "pyqpp/types_bind.hpp"
+#ifndef QPP_CLASSES_QCIRCUIT_TRAITS_HPP_
+#define QPP_CLASSES_QCIRCUIT_TRAITS_HPP_
 
-#include "pyqpp/classes/gates_bind.hpp"
-#include "pyqpp/classes/qcircuit_bind.hpp"
-#include "pyqpp/classes/qengine_bind.hpp"
-#include "pyqpp/classes/qnoisy_engine_bind.hpp"
-#include "pyqpp/classes/reversible_bind.hpp"
-#include "pyqpp/classes/states_bind.hpp"
+namespace qpp {
+/**
+ * \class qpp::QCircuitTraits
+ * \brief Generic type traits for quantum circuits, resolved at compile-time
+ * \note All quantum circuit description classes should specialize this trait
+ */
+template <typename T>
+struct QCircuitTraits;
+} /* namespace qpp */
 
-#include "pyqpp/qasm/qasm_bind.hpp"
-
-#include "pyqpp/pyqpp_specific_bind.hpp"
-
-PYBIND11_MODULE(pyqpp, m) {
-    m.doc() =
-        "Python 3 wrapper for Quantum++ (https://github.com/softwareQinc/qpp)";
-
-    init_constants(m);
-    init_functions(m);
-    init_instruments(m);
-    init_random(m);
-    init_types(m);
-
-    init_classes_gates(m);
-    init_classes_reversible(m);
-    init_classes_states(m);
-
-    init_classes_qcircuit(m);
-    init_classes_qengine(m);
-    init_classes_qnoisy_engine(m);
-
-    init_qasm_qasm(m);
-
-    init_pyqpp_specific(m);
-}
+#endif /* QPP_CLASSES_QCIRCUIT_TRAITS_HPP_ */
