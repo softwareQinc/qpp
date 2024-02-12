@@ -2,46 +2,25 @@ name: GitHub actions
 
 on:
   push:
-    branches: [ "**" ]
+    branches: ["**"]
   pull_request:
-    branches: [ "**" ]
+    branches: ["**"]
 
 env:
   BUILD_TYPE: Debug
-  EIGEN3_WIN_INSTALL_DIR: C:/ProgramData/chocolatey/lib/eigen/include
 
 jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Eigen3
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            choco install eigen
-          elif [ "$RUNNER_OS" == "Linux" ]; then
-            sudo apt-get install -y libeigen3-dev
-          elif [ "$RUNNER_OS" == "macOS" ]; then
-            brew install eigen
-          else
-            echo "$RUNNER_OS not supported"
-            exit 1
-          fi
-
       - name: Configure Quantum++
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            export EIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
-          fi
-          cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
-            -DWITH_UNIT_TESTS=ON -DWITH_EXAMPLES=ON
+        run: cmake -B build
 
       - name: Install Quantum++
         shell: bash
@@ -53,16 +32,10 @@ jobs:
           fi
 
       - name: Configure standalone example
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            export EIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
-          fi
-          cmake -S examples/standalone -B examples/standalone/build
+        run: cmake -S examples/standalone -B examples/standalone/build
 
       - name: Build standalone example
-        run: |
-          cmake --build examples/standalone/build --target standalone
+        run: cmake --build examples/standalone/build --target standalone
 
       - name: Run standalone example
         shell: bash
@@ -92,9 +65,4 @@ jobs:
           fi
 
       - name: Install pyqpp
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            export EIGEN3_INSTALL_DIR="${{env.EIGEN3_WIN_INSTALL_DIR}}"
-          fi
-          pip3 install --user .
+        run: pip3 install --user .
