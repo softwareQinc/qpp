@@ -62,8 +62,6 @@ include(cmake/qpp_dependencies.cmake)
 # Dependencies, do not modify unless you know what you're doing
 include(cmake/qpp_MATLAB.cmake)
 
-# pybind11 include(cmake/pybind11.cmake)
-
 # Unit testing
 add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/ EXCLUDE_FROM_ALL SYSTEM)
 
