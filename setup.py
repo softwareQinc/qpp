@@ -5,21 +5,33 @@ from pybind11.setup_helpers import Pybind11Extension
 from setuptools import setup
 
 p = subprocess.Popen(
-    "cmake pyqpp", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    "cmake -S pyqpp -B pyqpp/build",
+    shell=True,
+    stdout=subprocess.PIPE,
+    stderr=subprocess.STDOUT,
 )
 
-prefix = "Detecting Eigen3 - done (in "
+prefix_eigen = "Detected Eigen3 in: "
+prefix_pybind11 = "Detected pybind11 in: "
 eigen_path = None
-print("Running cmake pyqpp")
-for line in p.stdout.read().decode("ascii").split("\n"):
+pybind11_path = None
+
+print("Running cmake -S pyqpp -B pyqpp/build")
+cmake_output = p.stdout.read().decode("ascii").split("\n")
+for line in cmake_output:
     print(line)
-    pos = line.find(prefix)
-    if pos != -1:
-        eigen_path = line[pos + len(prefix) : -1]
-        break
+    pos_eigen = line.find(prefix_eigen)
+    pos_pybind11 = line.find(prefix_pybind11)
+    if pos_eigen != -1:
+        eigen_path = line[pos_eigen + len(prefix_eigen) :]
+    if pos_pybind11 != -1:
+        pybind11_path = line[pos_pybind11 + len(prefix_pybind11) :]
 
 if eigen_path is None:
     raise Exception("Eigen3 not found!")
+
+if pybind11_path is None:
+    raise Exception("pybind11 not found!")
 
 source_files = ["pyqpp/src/qpp_wrapper.cpp"]
 ext_modules = [
@@ -27,11 +39,11 @@ ext_modules = [
         "pyqpp",
         source_files,
         extra_compile_args=[
-            "-Ilibs",
+            "-I" + pybind11_path + "/include",
+            "-I" + eigen_path,
             "-Iinclude",
             "-Iqasmtools/include",
             "-Ipyqpp/include",
-            "-I" + eigen_path,
             "-DQPP_IDX_DEFAULT",
             "-DQPP_BIGINT_DEFAULT",
             "-DQPP_FP_DEFAULT",

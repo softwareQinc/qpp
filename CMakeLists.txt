@@ -43,20 +43,29 @@ target_include_directories(
   INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/qasmtools/include/>
             $<INSTALL_INTERFACE:include/>)
 
-# pyqpp (only if Python development kit is detected)
+# pyqpp and pybind11 (only if the Python development kit is detected)
 find_package(Python3 QUIET COMPONENTS Interpreter Development)
 if(${Python3_FOUND})
-  include(cmake/qpp_pyqpp.cmake)
+  include(cmake/pybind11.cmake)
+  include(cmake/pyqpp.cmake)
 endif()
 
 # BEGIN LOCAL stuff, you don't need those in standalone projects
 option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)
 
 # Dependencies, do not modify unless you know what you're doing
+include(cmake/qpp_eigen3.cmake)
+
+# Dependencies, do not modify unless you know what you're doing
 include(cmake/qpp_dependencies.cmake)
 
+# Dependencies, do not modify unless you know what you're doing
+include(cmake/qpp_MATLAB.cmake)
+
+# pybind11 include(cmake/pybind11.cmake)
+
 # Unit testing
-add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/)
+add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/ EXCLUDE_FROM_ALL SYSTEM)
 
 # Enable all warnings for GNU gcc and Clang/AppleClang
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
@@ -73,7 +82,7 @@ if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
 endif()
 
 # Examples
-include(cmake/qpp_examples.cmake)
+include(cmake/examples.cmake)
 # END LOCAL stuff
 
 # Installation
@@ -89,6 +98,10 @@ configure_package_config_file(
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/qppConfig.cmake"
         DESTINATION "lib/cmake/${PROJECT_NAME}")
 install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_dependencies.cmake"
+        DESTINATION "lib/cmake/${PROJECT_NAME}")
+install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_eigen3.cmake"
+        DESTINATION "lib/cmake/${PROJECT_NAME}")
+install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_MATLAB.cmake"
         DESTINATION "lib/cmake/${PROJECT_NAME}")
 
 # Uninstall
