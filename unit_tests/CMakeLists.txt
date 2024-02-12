@@ -2,15 +2,24 @@ include(GoogleTest)
 set(TARGET_NAME "unit_tests")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Link Google Test dynamically if using MSVC, and add bigobj option
+# GoogleTest
+include(FetchContent)
+message(STATUS "Fetching GoogleTest...")
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG main
+  GIT_SHALLOW TRUE
+  GIT_PROGRESS TRUE)
+# For Windows: Prevent overriding the parent project's compiler/linker settings,
+# and add bigobj option
 if(MSVC)
   add_compile_options(-bigobj)
   set(gtest_force_shared_crt
       ON
       CACHE BOOL "" FORCE)
 endif()
-
-add_subdirectory(libs/googletest-1.14.0 EXCLUDE_FROM_ALL SYSTEM)
+FetchContent_MakeAvailable(googletest)
 
 aux_source_directory(tests TEST_FILES)
 aux_source_directory(tests/MATLAB TEST_FILES)

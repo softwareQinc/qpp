@@ -46,9 +46,13 @@ Version 5.1 -- xx February 2024
               qpp::QEngineT::execute(idx reps = 1)
           so now qpp::QEngineT will away try to sample from the output when
           the circuit is executed multiple times (i.e., when reps > 1)
-    - Bumped GoogleTest version to 1.14.0
     - Removed "-DWITH_EXAMPLES" and "-DWITH_UNIT_TESTS" CMake flags. Now both
       "examples" and "unit_tests" CMake targets are enabled.
+    - GoogleTest is now installed automatically via 
+      CMake's FetchContent_Declare()
+    - Bumped GoogleTest version to HEAD latest (as recommended by Google, 
+      https://github.com/google/googletest?tab=readme-ov-file#live-at-head)
+    - Eigen3 is now installed automatically via CMake's FetchContent_Declare()
 
 Version 5.0 - 10 January 2024
     - All header files are moved into "[include/qpp]", so to include the header

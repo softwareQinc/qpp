@@ -107,57 +107,26 @@ else()
 endif()
 
 # Eigen3
-message(STATUS "Detecting Eigen3")
-# Location specified via an environment variable
-set(LOCATION_SET_VIA_ENV FALSE)
-if(DEFINED ENV{EIGEN3_INSTALL_DIR})
-  set(EIGEN3_INSTALL_DIR_ENV $ENV{EIGEN3_INSTALL_DIR})
-  set(LOCATION_SET_VIA_ENV TRUE)
-endif()
-# Location set via CMake variable, trumps all other settings
-set(EIGEN3_INSTALL_DIR
-    ""
-    CACHE PATH "Path to Eigen3")
-if(NOT ${EIGEN3_INSTALL_DIR} STREQUAL "")
-  message(
-    STATUS
-      "Overriding automatic Eigen3 detection (EIGEN3_INSTALL_DIR CMake variable)"
-  )
-  if(IS_DIRECTORY ${EIGEN3_INSTALL_DIR})
-    message(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INSTALL_DIR})")
-    include_directories(SYSTEM "${EIGEN3_INSTALL_DIR}")
-  else()
-    message(FATAL_ERROR "Invalid path to Eigen3 installation")
-  endif()
-  # Location set via environment variable
-elseif(LOCATION_SET_VIA_ENV)
-  message(
-    STATUS
-      "Overriding automatic Eigen3 detection (EIGEN3_INSTALL_DIR environment variable)"
-  )
-  if(IS_DIRECTORY ${EIGEN3_INSTALL_DIR_ENV})
-    message(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INSTALL_DIR_ENV})")
-    include_directories(SYSTEM "${EIGEN3_INSTALL_DIR_ENV}")
-  else()
-    message(FATAL_ERROR "Invalid path to Eigen3 installation")
-  endif()
-  # Try to find the location automatically
-else()
-  find_package(Eigen3 3.0 QUIET NO_MODULE)
-  if(NOT TARGET Eigen3::Eigen) # did not find Eigen3 automatically
-    message(
-      FATAL_ERROR
-        "Eigen3 not detected! Please point EIGEN3_INSTALL_DIR to your Eigen3 location when building with CMake, for example
-    cmake --build build -DEIGEN3_INSTALL_DIR=$HOME/eigen3
-or set the EIGEN3_INSTALL_DIR environment variable to point to your Eigen3 installation, for example (UNIX/Linux)
-    export EIGEN3_INSTALL_DIR=$HOME/eigen3")
-    # Eigen3
-    message(STATUS "Detecting Eigen3")
-  endif()
-  message(STATUS "Detecting Eigen3 - done (in ${EIGEN3_INCLUDE_DIR})")
-  # Eigen3 header-only dependencies to be injected in the main CMakeLists.txt
-  set(QPP_EIGEN3_LINK_DEPS Eigen3::Eigen)
-endif()
+include(FetchContent)
+set(FETCHCONTENT_QUIET FALSE)
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+message(STATUS "Fetching Eigen3...")
+FetchContent_Declare(
+  Eigen
+  GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+  GIT_TAG master
+  GIT_SHALLOW TRUE
+  GIT_PROGRESS TRUE)
+# note: To disable eigen tests, you should put this code in a add_subdirectory
+# to avoid to change BUILD_TESTING for your own project too since variables are
+# directory scoped
+set(BUILD_TESTING OFF)
+set(EIGEN_BUILD_TESTING OFF)
+set(EIGEN_MPL2_ONLY ON)
+set(EIGEN_BUILD_PKGCONFIG OFF)
+set(EIGEN_BUILD_DOC OFF)
+FetchContent_MakeAvailable(Eigen)
+set(QPP_EIGEN3_LINK_DEPS Eigen3::Eigen)
 
 # OpenMP support
 option(QPP_OPENMP "OpenMP support" ON)
