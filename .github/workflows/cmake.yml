@@ -67,8 +67,6 @@ jobs:
       - name: Install pyqpp
         shell: cmd
         run: |
-          # echo %EIGEN3_INSTALL_DIR%
-          # dir %EIGEN3_INSTALL_DIR%
           echo %EIGEN3_INCLUDE_DIR%
           dir %EIGEN3_INCLUDE_DIR%
           pip3 install --user .
