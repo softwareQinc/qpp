@@ -65,4 +65,6 @@ jobs:
       #     fi
 
       - name: Install pyqpp
-        run: pip3 install --user .
+        run: |
+          dir D:/a/qpp/qpp/pyqpp/include/eigen3
+          pip3 install --user .
