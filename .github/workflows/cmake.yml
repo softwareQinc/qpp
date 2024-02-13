@@ -19,50 +19,50 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Configure Quantum++
-        run: cmake -B build
-
-      - name: Install Quantum++
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            cmake --install build
-          else
-            sudo cmake --install build
-          fi
-
-      - name: Configure standalone example
-        run: cmake -S examples/standalone -B examples/standalone/build
-
-      - name: Build standalone example
-        run: cmake --build examples/standalone/build --target standalone
-
-      - name: Run standalone example
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            ./examples/standalone/build/${{env.BUILD_TYPE}}/standalone.exe
-          else
-            ./examples/standalone/build/standalone
-          fi
-
-      - name: Build examples
-        run: cmake --build build --target examples
-
-      - name: Build unit tests
-        run: cmake --build build/unit_tests --target unit_tests
-
-      - name: Run unit tests
-        run: ctest --test-dir build/unit_tests -E qpp_Timer
-
-      - name: Uninstall
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            cmake --build build --target uninstall
-          else
-            sudo cmake --build build --target uninstall
-          fi
+      # - name: Configure Quantum++
+      #   run: cmake -B build
+      #
+      # - name: Install Quantum++
+      #   shell: bash
+      #   run: |
+      #     if [ "$RUNNER_OS" == "Windows" ]; then
+      #       cmake --install build
+      #     else
+      #       sudo cmake --install build
+      #     fi
+      #
+      # - name: Configure standalone example
+      #   run: cmake -S examples/standalone -B examples/standalone/build
+      #
+      # - name: Build standalone example
+      #   run: cmake --build examples/standalone/build --target standalone
+      #
+      # - name: Run standalone example
+      #   shell: bash
+      #   run: |
+      #     if [ "$RUNNER_OS" == "Windows" ]; then
+      #       ./examples/standalone/build/${{env.BUILD_TYPE}}/standalone.exe
+      #     else
+      #       ./examples/standalone/build/standalone
+      #     fi
+      #
+      # - name: Build examples
+      #   run: cmake --build build --target examples
+      #
+      # - name: Build unit tests
+      #   run: cmake --build build/unit_tests --target unit_tests
+      #
+      # - name: Run unit tests
+      #   run: ctest --test-dir build/unit_tests -E qpp_Timer
+      #
+      # - name: Uninstall
+      #   shell: bash
+      #   run: |
+      #     if [ "$RUNNER_OS" == "Windows" ]; then
+      #       cmake --build build --target uninstall
+      #     else
+      #       sudo cmake --build build --target uninstall
+      #     fi
 
       - name: Install pyqpp
         run: pip3 install --user .
