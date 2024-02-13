@@ -1,6 +1,6 @@
 message(STATUS "Detecting Eigen3...")
 find_package(Eigen3 NO_MODULE QUIET)
-if(NOT Eigen3_FOUND)
+if(NOT EIGEN3_INCLUDE_DIR)
   # Install Eigen3 on demand
   include(FetchContent)
   set(FETCHCONTENT_QUIET FALSE)

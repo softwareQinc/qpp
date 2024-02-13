@@ -8,11 +8,6 @@ can be installed using `pip`
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-**Important**: If the installation fails due to your system being unable to
-detect the location of the Eigen3 matrix library, set the environment variable
-`EIGEN3_INSTALL_DIR` to point to the location of the Eigen3 library
-(include the `include/eigen3` part of the path).
-
 ## Creating python stubs for IDE autocompletion and static type checking
 
 In case autocompletion (or static type checking via [mypy](https://www.mypy-lang.org/))
