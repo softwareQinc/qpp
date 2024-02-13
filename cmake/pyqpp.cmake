@@ -2,7 +2,6 @@
 
 # pybind11
 include_directories(SYSTEM ${PYBIND11_INCLUDE_DIRS})
-message(WARNING ${PYBIND11_INCLUDE_DIRS})
 target_include_directories(
   libqpp INTERFACE $<BUILD_INTERFACE:${PYBIND11_INCLUDE_DIRS}/include/>)
 
