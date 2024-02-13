@@ -33,7 +33,7 @@ if eigen_path is None:
 if pybind11_path is None:
     raise Exception("pybind11 not found!")
 
-source_files = ["pyqpp/src/qpp_wrapper.cpp"]
+source_files = ["pyqpp/qpp_wrapper.cpp"]
 ext_modules = [
     Pybind11Extension(
         "pyqpp",
