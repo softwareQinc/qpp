@@ -65,6 +65,7 @@ jobs:
       #     fi
       #
       - name: Install pyqpp
+        shell: cmd
         run: |
           # echo %EIGEN3_INSTALL_DIR%
           # dir %EIGEN3_INSTALL_DIR%
