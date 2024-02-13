@@ -63,8 +63,11 @@ jobs:
       #     else
       #       sudo cmake --build build --target uninstall
       #     fi
-
+      #
       - name: Install pyqpp
         run: |
+          echo %EIGEN3_INSTALL_DIR%
+          dir %EIGEN3_INSTALL_DIR%
+          echo %EIGEN3_INCLUDE_DIR%
+          dir %EIGEN3_INCLUDE_DIR%
           pip3 install --user .
-          dir D:/a/qpp/qpp/pyqpp/include/eigen3
