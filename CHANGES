@@ -1,4 +1,6 @@
 Version 5.1 -- xx February 2024
+    - Removed Eigen3 and pybind11 dependencies, if not detected they are 
+      installed automatically as dependencies via CMake FetchContent_Declare
     - Renamed ["qpp/classes/circuits/circuits.hpp"] to 
       ["qpp/classes/qcircuit.hpp"]
     - Introduced ["qpp/classes/qcircuit_traits.hpp"] that implement
