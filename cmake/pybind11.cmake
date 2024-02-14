@@ -5,7 +5,7 @@ if(NOT pybind11_FOUND)
   include(FetchContent)
   set(FETCHCONTENT_QUIET FALSE)
   set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
-  message(STATUS "Fetching pybind11...")
+  message(STATUS "pybind11 not detected, fetching pybind11...")
   FetchContent_Declare(
     pybind11
     GIT_REPOSITORY https://github.com/pybind/pybind11
