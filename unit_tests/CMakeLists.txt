@@ -29,9 +29,7 @@ aux_source_directory(tests/qasm TEST_FILES)
 add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL tests/main.cpp)
 add_dependencies(unit_tests ${TARGET_NAME})
 
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.13")
-  cmake_policy(SET CMP0076 NEW)
-endif()
+cmake_policy(SET CMP0076 NEW)
 
 # Build all tests in ${TEST_FILES}
 foreach(file ${TEST_FILES})
