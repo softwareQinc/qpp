@@ -65,6 +65,5 @@ jobs:
           fi
 
       - name: Install pyqpp
-        shell: cmd
         run: |
           pip3 install --user .
