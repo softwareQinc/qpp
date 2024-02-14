@@ -9,12 +9,12 @@
 
 #include <omp.h>
 
-#include "qpp.h"
+#include "qpp/qpp.h"
 
 int main(int argc, char** argv) {
     using namespace qpp;
     if (argc != 3) {
-        std::cerr << "Please specify the number of cores and qubits!\n";
+        std::cerr << "Usage: " << argv[0] << " <n_cores> <n_qubits>\n";
         exit(EXIT_FAILURE);
     }
 

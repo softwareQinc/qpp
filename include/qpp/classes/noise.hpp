@@ -75,8 +75,8 @@ template <typename T>
 class NoiseBase {
   public:
     using noise_type = T;
-    static_assert(std::is_same<NoiseType::StateDependent, noise_type>::value ||
-                  std::is_same<NoiseType::StateIndependent, noise_type>::value);
+    static_assert(std::is_same_v<NoiseType::StateDependent, noise_type> ||
+                  std::is_same_v<NoiseType::StateIndependent, noise_type>);
 
   protected:
     const std::vector<cmat> Ks_;       ///< Kraus operators
@@ -99,7 +99,7 @@ class NoiseBase {
     void
     compute_probs_(const cmat& state, const std::vector<idx>& target,
                    std::optional<std::string> caller = std::nullopt) const {
-        if (!std::is_same<NoiseType::StateDependent, noise_type>::value) {
+        if (!std::is_same_v<NoiseType::StateDependent, noise_type>) {
             return; // no-op
         }
 
@@ -170,8 +170,8 @@ class NoiseBase {
     template <typename U = noise_type>
     explicit NoiseBase(
         const std::vector<cmat>& Ks,
-        typename std::enable_if<
-            std::is_same<NoiseType::StateDependent, U>::value>::type* = nullptr)
+        typename std::enable_if_t<
+            std::is_same_v<NoiseType::StateDependent, U>>* = nullptr)
         : Ks_{Ks}, probs_(Ks.size()) {
         // EXCEPTION CHECKS
 
@@ -207,8 +207,8 @@ class NoiseBase {
     template <typename U = noise_type>
     explicit NoiseBase(
         const std::vector<cmat>& Ks, const std::vector<realT>& probs,
-        typename std::enable_if<std::is_same<NoiseType::StateIndependent,
-                                             U>::value>::type* = nullptr)
+        typename std::enable_if_t<
+            std::is_same_v<NoiseType::StateIndependent, U>>* = nullptr)
         : Ks_{Ks}, probs_(probs) {
         // EXCEPTION CHECKS
 
@@ -271,7 +271,7 @@ class NoiseBase {
      */
     std::vector<realT> get_probs() const {
         if (generated_ ||
-            std::is_same<NoiseType::StateIndependent, noise_type>::value) {
+            std::is_same_v<NoiseType::StateIndependent, noise_type>) {
             return probs_;
         } else {
             throw exception::CustomException(

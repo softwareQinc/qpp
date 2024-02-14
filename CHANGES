@@ -1,3 +1,58 @@
+Version 5.1 -- xx February 2024
+    - Removed Eigen3, pybind11, and GoogleTest dependencies; if not detected, 
+      they are installed automatically as dependencies by CMake 
+    - Bumped GoogleTest version to HEAD latest (as recommended by Google, 
+      https://github.com/google/googletest?tab=readme-ov-file#live-at-head)
+    - Removed "-DWITH_EXAMPLES" and "-DWITH_UNIT_TESTS" CMake flags. Now both
+      "examples" and "unit_tests" CMake targets are enabled.
+    - Renamed ["qpp/classes/circuits/circuits.hpp"] to 
+      ["qpp/classes/qcircuit.hpp"]
+    - Introduced ["qpp/classes/qcircuit_traits.hpp"] that implement
+      circuit traits at compile-time
+    - Renamed ["qpp/classes/circuits/engines.hpp"] to 
+      ["qpp/classes/qengine.hpp"], and refactored the latter into
+          ["qpp/classes/qbase_engine.hpp]  - base class for all engines
+          ["qpp/classes/qengine.hpp]       - ideal quantum engines
+          ["qpp/classes/qnoisy_engine.hpp] - noisy quantum engines
+    - Introduced ["qpp/classes/qengine_traits.hpp"] that implement
+      engine traits at run-time. All engines are now deriving from it.
+      The traits implements qpp::IQEngineTraits::
+          std::string traits_get_name() const - Engine's name
+          bool traits_is_noisy() const        - Simulates noisy execution
+          bool traits_is_pure() const         - Operates on pure states
+    - API changes in ["qpp/qengine.hpp"] and ["qpp/qnoisy_engine.hpp"]
+        - Enabled mixed-state engines by refactoring 
+              qpp::QEngine      -> template<typename T> qpp::QEngineT<T>
+              qpp::QNoisyEngine -> template<typename T> qpp::QNoisyEngineT<T>
+          The template argument T is restricted to qpp::ket (pure state 
+          engines) and qpp::cmat (mixed states engines)
+        - The following additional engines are now available
+              qpp::QEngine             - pure state ideal engine, backwards 
+                                         compatibility
+              qpp::QKetEngine          - same as qpp::QEngine
+              qpp::QDensityEngine      - mixed state ideal engine
+              qpp::QNoisyEngine        - pure state noisy engine, backwards 
+                                         compatibility
+              qpp::QKetNoisyEngine     - same as qpp::QNoisyEngine
+              qpp::QDensityNoisyEngine - mixed state noisy engine
+        - Renamed qpp::QEngineT::get_psi() -> qpp::QEngineT::get_state()
+        - Removed qpp::QEngineT::is_noisy()
+        - Added the new engines to pyqpp, which now defines the following 
+          factory functions for instantiating engines
+              pyqpp.QEngine()             - pure state ideal engine, backwards 
+                                            compatibility
+              pyqpp.QKetEngine()          - same as pyqpp.QEngine()
+              pyqpp.QDensityEngine()      - mixed state ideal engine
+              pyqpp.QNoisyEngine()        - pure state noisy engine, backwared
+                                            compatibility
+              pyqpp.QKetNoisyEngine()     - same as pyqpp.QNoisyEngine()
+              pyqpp.QDensityNoisyEngine() - muxed state noisy engine
+        - Removed the default argument "bool try_sampling = true" in 
+              qpp::QEngineT::execute(idx reps = 1, bool try_sampling = true) ->
+              qpp::QEngineT::execute(idx reps = 1)
+          so now qpp::QEngineT will away try to sample from the output when
+          the circuit is executed multiple times (i.e., when reps > 1)
+
 Version 5.0 - 10 January 2024
     - All header files are moved into "[include/qpp]", so to include the header
       one now must '#include "qpp/qpp.h"' (and similarly for other header files
@@ -19,16 +74,16 @@ Version 5.0 - 10 January 2024
     - Added support for two qubit rotations by pi/2 (Molmer-Sorensen two qubit
       gates).
     - API changes in ["qpp/classes/circuits/circuits.hpp"]
-        [qpp::QCircuit::]
-        add_circuit()         -> compose_circuit()
-        match_circuit_left()  -> couple_circuit_left()
-        match_circuit_right() -> couple_circuit_right()
+          [qpp::QCircuit::]
+          add_circuit()         -> compose_circuit()
+          match_circuit_left()  -> couple_circuit_left()
+          match_circuit_right() -> couple_circuit_right()
     - Implemented ["qpp/classes/circuits/circuits.hpp"] control on another 
       quantum circuit, 
-        qpp::QCircuit::compose_CTRL_circuit()
+          qpp::QCircuit::compose_CTRL_circuit()
       see https://github.com/softwareQinc/qpp/issues/165, and the corresponding 
       standalone versions
-        qpp::compose_CTRL_circuit()
+          qpp::compose_CTRL_circuit()
     - qpp::measure_seq() now returns results in the same order as the order in 
       which the qubits are being measured 
     - API changes in ["qpp/functions.hpp"], qpp::zket2dits() now returns 
@@ -115,7 +170,7 @@ Version 4.1 - 2 May 2023
                                               remove qudits, false otherwise
     - Added new exception class ["classes/exception.hpp"]:
           qpp::exception::NotFound - Element not found
-    - Implemented ["pyqpp/qpp_wrapper_cpp"] (pyqpp Python wraper)
+    - Implemented ["pyqpp/qpp_wrapper.cpp"] (pyqpp Python wraper)
           set_prng_seed() - sets the seed of the PRNG to a specific value, or,
                             if invoked with no argument, to a random value
     - Migrated pyqpp installation method to pyproject.toml

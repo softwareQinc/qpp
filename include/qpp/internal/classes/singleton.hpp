@@ -91,7 +91,7 @@ class Singleton {
     Singleton(const Singleton&) = delete;
     Singleton& operator=(const Singleton&) = delete;
     static T& get_no_thread_local_instance() noexcept(
-        std::is_nothrow_constructible<T>::value) {
+        std::is_nothrow_constructible_v<T>) {
         // Guaranteed to be destroyed.
         // Instantiated on first use.
         // Thread safe in C++11.
@@ -101,8 +101,8 @@ class Singleton {
     }
 
 #ifndef NO_THREAD_LOCAL_
-    static T& get_thread_local_instance() noexcept(
-        std::is_nothrow_constructible<T>::value) {
+    static T&
+    get_thread_local_instance() noexcept(std::is_nothrow_constructible_v<T>) {
         // Guaranteed to be destroyed.
         // Instantiated on first use.
         // Thread safe in C++11.
@@ -112,7 +112,7 @@ class Singleton {
     }
 #endif // NO_THREAD_LOCAL_
 
-    static T& get_instance() noexcept(std::is_nothrow_constructible<T>::value) {
+    static T& get_instance() noexcept(std::is_nothrow_constructible_v<T>) {
 #ifdef NO_THREAD_LOCAL_
         return get_no_thread_local_instance();
 #else

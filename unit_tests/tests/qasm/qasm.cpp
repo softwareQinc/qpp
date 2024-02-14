@@ -65,7 +65,7 @@ TEST(qpp_qasm_read_from_file, BuiltinGates) {
     engine.execute();
 
     // Final state
-    ket psi1 = engine.get_psi();
+    ket psi1 = engine.get_state();
     idx c0 = engine.get_dit(0);
     idx c1 = engine.get_dit(1);
     ket m = kron(mket({c0}), mket({c1}));
@@ -90,7 +90,7 @@ TEST(qpp_qasm_read_from_file, Teleportation) {
     engine.execute();
 
     // Final state, should be |0> according to the QASM circuit
-    auto rho = ptrace(engine.get_psi(), {0, 1}, {2, 2, 2});
+    auto rho = ptrace(engine.get_state(), {0, 1}, {2, 2, 2});
 
     // Check norm
     EXPECT_NEAR(0, norm(rho - prj(0_ket)), 1e-5);
@@ -104,7 +104,7 @@ TEST(qpp_qasm_read_from_file, MappedGates) {
     engine.execute();
 
     // Final state
-    ket psi1 = engine.get_psi();
+    ket psi1 = engine.get_state();
 
     // Reference state
     ket psi2 = QASMTOOLS_QASM2_SPECS
@@ -126,7 +126,7 @@ TEST(qpp_qasm_read_from_file, NonDestrMeas) {
     idx res = engine.get_dit(0);
 
     // Final state
-    ket psi = engine.get_psi();
+    ket psi = engine.get_state();
 
     // Reference state
     ket mres = QASMTOOLS_QASM2_SPECS ? mket({res}) * (-1_i) : mket({res});
@@ -142,7 +142,7 @@ TEST(qpp_qasm_read_from_file, Reset) {
     engine.execute();
 
     // Final state
-    ket psi = engine.get_psi();
+    ket psi = engine.get_state();
 
     // Reference state
     ket psi2 = QASMTOOLS_QASM2_SPECS ? 0_ket * (-1_i) : 0_ket;
@@ -158,7 +158,7 @@ TEST(qpp_qasm_read_from_file, SciNot) {
     engine.execute();
 
     // Final state
-    ket psi = engine.get_psi();
+    ket psi = engine.get_state();
 
     // Check against C++ scientific notation
     ket phi = gt.H * gt.RZ(1.0E-3) * gt.H * 0_ket;

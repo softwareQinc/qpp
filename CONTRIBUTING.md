@@ -1,4 +1,4 @@
-If you are interested in contributing to this project, feel free to contact us.
+If you are interested in contributing to this project, please contact us.
 Alternatively, fork the repository, create a custom branch, add your
 contribution, then finally create a pull request. If we accept the pull request,
 we will merge your custom branch with the latest main/development branch. The

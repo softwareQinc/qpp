@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2019 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -24,24 +24,24 @@
  * SOFTWARE.
  */
 
-#include "pyqpp_common.h"
+#include "pyqpp/pyqpp_common.h"
 
-#include "constants_bind.hpp"
-#include "functions_bind.hpp"
-#include "instruments_bind.hpp"
-#include "random_bind.hpp"
-#include "types_bind.hpp"
+#include "pyqpp/constants_bind.hpp"
+#include "pyqpp/functions_bind.hpp"
+#include "pyqpp/instruments_bind.hpp"
+#include "pyqpp/random_bind.hpp"
+#include "pyqpp/types_bind.hpp"
 
-#include "classes/gates_bind.hpp"
-#include "classes/reversible_bind.hpp"
-#include "classes/states_bind.hpp"
+#include "pyqpp/classes/gates_bind.hpp"
+#include "pyqpp/classes/qcircuit_bind.hpp"
+#include "pyqpp/classes/qengine_bind.hpp"
+#include "pyqpp/classes/qnoisy_engine_bind.hpp"
+#include "pyqpp/classes/reversible_bind.hpp"
+#include "pyqpp/classes/states_bind.hpp"
 
-#include "classes/circuits/circuits_bind.hpp"
-#include "classes/circuits/engines_bind.hpp"
+#include "pyqpp/qasm/qasm_bind.hpp"
 
-#include "qasm/qasm_bind.hpp"
-
-#include "pyqpp_specific_bind.hpp"
+#include "pyqpp/pyqpp_specific_bind.hpp"
 
 PYBIND11_MODULE(pyqpp, m) {
     m.doc() =
@@ -57,8 +57,9 @@ PYBIND11_MODULE(pyqpp, m) {
     init_classes_reversible(m);
     init_classes_states(m);
 
-    init_classes_circuits_circuits(m);
-    init_classes_circuits_engines(m);
+    init_classes_qcircuit(m);
+    init_classes_qengine(m);
+    init_classes_qnoisy_engine(m);
 
     init_qasm_qasm(m);
 

@@ -1268,8 +1268,7 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value) {
+    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::comm()", "A/B");
     }
 
@@ -1320,8 +1319,7 @@ anticomm(const Eigen::MatrixBase<Derived1>& A,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value) {
+    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::anticomm()", "A/B");
     }
 
@@ -1819,7 +1817,7 @@ std::vector<realT> abssq(InputIterator first, InputIterator last) {
 template <typename Container>
 std::vector<realT>
 abssq(const Container& c,
-      typename std::enable_if<is_iterable<Container>::value>::type* = nullptr)
+      typename std::enable_if_t<is_iterable_v<Container>>* = nullptr)
 // we need the std::enable_if to SFINAE out Eigen expressions
 // that will otherwise match, instead of matching
 // the overload below:
@@ -1884,7 +1882,7 @@ value_type sum(InputIterator first, InputIterator last) {
 template <typename Container>
 typename Container::value_type
 sum(const Container& c,
-    typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
+    typename std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     return sum(std::begin(c), std::end(c));
 }
 
@@ -1933,7 +1931,7 @@ value_type prod(InputIterator first, InputIterator last) {
 template <typename Container>
 typename Container::value_type
 prod(const Container& c,
-     typename std::enable_if<is_iterable<Container>::value>::type* = nullptr) {
+     typename std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     return prod(std::begin(c), std::end(c));
 }
 

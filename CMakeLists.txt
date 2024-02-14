@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-set(QPP_VERSION_NUM 5.0)
+set(QPP_VERSION_NUM 5.1)
 set(QPP_VERSION_STR "${QPP_VERSION_NUM}")
 project(
   qpp
@@ -22,8 +22,9 @@ add_compile_definitions(PROJECT_ROOT_DIR="${PROJECT_SOURCE_DIR}")
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
   message(
     FATAL_ERROR
-      "In-source builds not allowed. Please instruct CMake to use an out-of-source build, e.g.,
-    cmake --build build [...]
+      "In-source builds not allowed. Please instruct CMake to use an\
+      out-of-source build, e.g.,
+      cmake -B build && cmake --build build
 You may need to remove CMakeCache.txt.")
 endif()
 
@@ -35,7 +36,7 @@ target_compile_definitions(libqpp
                            INTERFACE -DQPP_VERSION_STR="${QPP_VERSION_STR}")
 target_include_directories(
   libqpp INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
-                   $<INSTALL_INTERFACE:include/qpp>)
+                   $<INSTALL_INTERFACE:include/qpp/>)
 
 # qasmtools library
 target_include_directories(
@@ -43,20 +44,27 @@ target_include_directories(
   INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/qasmtools/include/>
             $<INSTALL_INTERFACE:include/>)
 
+# pyqpp and pybind11 (only if the Python development kit is detected)
+find_package(Python3 QUIET COMPONENTS Interpreter Development)
+if(${Python3_FOUND})
+  include(cmake/pybind11.cmake)
+  include(cmake/pyqpp.cmake)
+endif()
+
 # BEGIN LOCAL stuff, you don't need those in standalone projects
-option(WITH_EXAMPLES "Enable example compilation" OFF)
-option(WITH_UNIT_TESTS "Enable unit testing" OFF)
 option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)
 
 # Dependencies, do not modify unless you know what you're doing
-if(${WITH_EXAMPLES} OR ${WITH_UNIT_TESTS})
-  include(cmake/qpp_dependencies.cmake)
-endif()
+include(cmake/qpp_eigen3.cmake)
+
+# Dependencies, do not modify unless you know what you're doing
+include(cmake/qpp_dependencies.cmake)
+
+# Dependencies, do not modify unless you know what you're doing
+include(cmake/qpp_MATLAB.cmake)
 
 # Unit testing
-if(${WITH_UNIT_TESTS})
-  add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/)
-endif()
+add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/ EXCLUDE_FROM_ALL SYSTEM)
 
 # Enable all warnings for GNU gcc and Clang/AppleClang
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
@@ -73,9 +81,7 @@ if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
 endif()
 
 # Examples
-if(${WITH_EXAMPLES})
-  include(cmake/examples.cmake)
-endif()
+include(cmake/examples.cmake)
 # END LOCAL stuff
 
 # Installation
@@ -91,6 +97,10 @@ configure_package_config_file(
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/qppConfig.cmake"
         DESTINATION "lib/cmake/${PROJECT_NAME}")
 install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_dependencies.cmake"
+        DESTINATION "lib/cmake/${PROJECT_NAME}")
+install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_eigen3.cmake"
+        DESTINATION "lib/cmake/${PROJECT_NAME}")
+install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_MATLAB.cmake"
         DESTINATION "lib/cmake/${PROJECT_NAME}")
 
 # Uninstall

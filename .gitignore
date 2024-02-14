@@ -65,6 +65,7 @@ Testing/
 mat.txt
 examples/_*.cpp
 out.tmp
+TODO.txt
 
 # pyqpp
 Makefile

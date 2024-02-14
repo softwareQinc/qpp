@@ -31,9 +31,9 @@ int main(int argc, char** argv) {
     // display the final state on demand
     if (argc == 3) {
         std::cout << ">> Final state (transpose):\n";
-        std::cout << disp(transpose(q_engine.get_psi())) << '\n';
+        std::cout << disp(transpose(q_engine.get_state())) << '\n';
     } else if (argc > 3) {
         std::cout << ">> Final density matrix:\n";
-        std::cout << disp(prj(q_engine.get_psi())) << '\n';
+        std::cout << disp(prj(q_engine.get_state())) << '\n';
     }
 }

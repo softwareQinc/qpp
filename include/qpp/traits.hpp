@@ -38,7 +38,9 @@
 
 namespace qpp {
 /**
- * \brief Checks whether \a T is compatible with an STL-like iterable container
+ * \brief Checks whether the type is compatible with an STL-like iterable
+ * container
+ * \see qpp::is_iterable_v
  *
  * Provides the constant member \a value which is equal to \a true, if \a T is
  * compatible with an iterable container, i.e., provides at least \a begin()
@@ -59,8 +61,8 @@ struct is_iterable : std::false_type {};
 #endif
 
 /**
- * \brief Checks whether \a T is compatible with an STL-like iterable container,
- * specialization for STL-like iterable containers
+ * \brief Checks whether the type is compatible with an STL-like iterable
+ * container, specialization for STL-like iterable containers
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
 #if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
@@ -79,7 +81,16 @@ struct is_iterable<T, std::void_t<decltype(std::declval<T>().begin()),
 #endif
 
 /**
+ * \brief Checks whether the type is compatible with an STL-like iterable
+ * container, helper variable template
+ * \see qpp::is_iterable
+ */
+template <typename T>
+inline constexpr bool is_iterable_v = is_iterable<T>::value;
+
+/**
  * \brief Checks whether the type is an Eigen matrix expression
+ * \see qpp::is_matrix_expression_v
  *
  * Provides the constant member \a value which is equal to \a true, if the type
  * is an Eigen matrix expression of type \a Eigen::MatrixBase<Derived>.
@@ -94,15 +105,24 @@ struct is_iterable<T, std::void_t<decltype(std::declval<T>().begin()),
 #endif
 template <typename Derived>
 struct is_matrix_expression
-    : std::is_base_of<Eigen::MatrixBase<typename std::decay<Derived>::type>,
-                      typename std::decay<Derived>::type> {};
+    : std::is_base_of<Eigen::MatrixBase<std::decay_t<Derived>>,
+                      std::decay_t<Derived>> {};
 #if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER) &&  \
     (__GNUC__ == 4) && (__GNUC_MINOR__ == 8)
 #pragma GCC diagnostic pop
 #endif
 
 /**
+ * \brief Checks whether the type is an Eigen matrix expression, helper variable
+ * template
+ * \see qpp::is_matrix_expression
+ */
+template <typename T>
+inline constexpr bool is_matrix_expression_v = is_matrix_expression<T>::value;
+
+/**
  * \brief Checks whether the type is a complex type
+ * \see qpp::is_complex_v
  *
  * Provides the constant member \a value which is equal to \a true, if the type
  * is a complex type, i.e., \a std::complex<T>
@@ -137,6 +157,14 @@ struct is_complex<std::complex<T>> : std::true_type {};
 #pragma GCC diagnostic pop
 #endif
 
+/**
+ * \brief Checks whether the type is a complex number type, helper variable
+ * template
+ * \see qpp::is_complex
+ */
+template <typename T>
+inline constexpr bool is_complex_v = is_complex<T>::value;
+
 namespace internal {
 /**
  * \brief Eigen type (ket/bra/density matrix) deduced from the expression
@@ -151,7 +179,7 @@ using eval_t =
  * \brief Detect if the expression Derived is a row vector (bra) at compile time
  */
 template <typename Derived>
-bool constexpr is_bra_t() {
+bool constexpr is_bra_v() {
     return (internal::eval_t<Derived>::RowsAtCompileTime == 1);
 }
 
@@ -160,7 +188,7 @@ bool constexpr is_bra_t() {
  * time
  */
 template <typename Derived>
-bool constexpr is_ket_t() {
+bool constexpr is_ket_v() {
     return (internal::eval_t<Derived>::ColsAtCompileTime == 1);
 }
 

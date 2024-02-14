@@ -32,6 +32,7 @@
 #ifndef QPP_INTERNAL_UTIL_HPP_
 #define QPP_INTERNAL_UTIL_HPP_
 
+#include <cassert>
 #include <cmath>
 #include <cstddef>
 #include <iomanip>
@@ -301,8 +302,7 @@ kron2(const Eigen::MatrixBase<Derived1>& A,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value) {
+    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::kron()", "A/B");
     }
 
@@ -350,8 +350,7 @@ dirsum2(const Eigen::MatrixBase<Derived1>& A,
     // EXCEPTION CHECKS
 
     // check types
-    if (!std::is_same<typename Derived1::Scalar,
-                      typename Derived2::Scalar>::value) {
+    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::dirsum()", "A/B");
     }
 
@@ -428,7 +427,7 @@ inline T safe_pow(T a, T b) {
 // otherwise
 template <typename T>
 T abs_float_or_cplx_chop(const T& x, realT chop) {
-    if constexpr (std::numeric_limits<T>::is_iec559 || is_complex<T>::value) {
+    if constexpr (std::numeric_limits<T>::is_iec559 || is_complex_v<T>) {
         if (std::abs(x) < chop) {
             return 0;
         }

@@ -8,17 +8,33 @@ can be installed using `pip`
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-**Important**: If the installation fails due to your system being unable to
-detect the location of the Eigen3 matrix library, set the environment variable
-`EIGEN3_INSTALL_DIR` to point to the location of the Eigen3 library
-(include the `include/eigen3` part of the path).
+## Creating python stubs for IDE autocompletion and static type checking
+
+In case autocompletion (or static type checking via [mypy](https://www.mypy-lang.org/))
+does not work properly in your editor/IDE, you may need to create python stubs
+for the package. To do this, execute
+
+```shell
+mkdir ~/python_stubs
+export MYPATH=$MYPATH:~/python_subs # put this in your .profile or .bashrc
+. ~/venv/bin/activate
+stubgen -p pyqpp -o ~/python_stubs
+ln -s ~/python_stubs/pyqpp ~/venv/lib/python3.11/site-packages
+```
+
+In the above, we assumed that your platform is UNIX/UNIX-like, and that you
+have pyqpp installed in a virtual environment under `~/venv`. Please modify
+accordingly for your system.
 
 ## Overview
 
-pyqpp includes `Bit_circuit`, `Dynamic_bitset`, `QCircuit`, `QEngine`, and
-several `QNoisyEngine` classes from Quantum++. Additionally, pyqpp provides
-commonly used quantum `gates` and `states`, and some basic Eigen operations.
-***
+pyqpp includes `Bit_circuit`, `Dynamic_bitset`, `QCircuitT`, `QEngineT`,
+`QNoisyEngineT`, and several other derived Engine classes. Additionally, pyqpp
+provides commonly used quantum `gates` and `states`, and some basic Eigen
+operations.
+
+---
+
 Example:
 
 ```python3
@@ -65,8 +81,9 @@ print()
 
 # verify that the teleportation was successful
 psi_in = np.matmul(U, states.z0)
-psi_out = engine.get_psi()
-print("Teleported state:\n", psi_out)
+psi_out = engine.get_state()
+print("Teleported state:")
+print(dirac(psi_out))
 print("Norm difference:\n", norm(psi_out - psi_in))
 ```
 
@@ -87,7 +104,9 @@ module &def(const char *name_, Func &&f, const Extra&... extra)
 ```
 
 `Func` can be a plain C++ function, a function pointer, or a lambda function.
-***
+
+---
+
 For example, consider the `qpp::randU` method
 
 ```C++

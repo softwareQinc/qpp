@@ -116,7 +116,7 @@ static_assert(std::is_floating_point_v<realT>, "Type myst be floating-point");
 /**
  * \brief Unsigned big integer
  */
-using ubigint = std::make_unsigned<bigint>::type;
+using ubigint = std::make_unsigned_t<bigint>;
 static_assert(std::is_integral_v<ubigint>, "Type must be integral");
 static_assert(std::is_unsigned_v<ubigint>, "Type must be unsigned");
 static_assert(sizeof(ubigint) > 1, "Type must be at least 2 bytes long");

@@ -41,6 +41,7 @@
 #include "qpp/types.hpp"
 
 #include "qpp/classes/idisplay.hpp"
+#include "qpp/classes/ijson.hpp"
 
 namespace qpp {
 /**
