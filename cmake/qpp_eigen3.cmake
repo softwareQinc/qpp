@@ -1,9 +1,8 @@
 message(STATUS "Detecting Eigen3...")
-find_package(Eigen3 3.0 QUIET MODULE)
+find_package(Eigen3 3.0 QUIET NO_MODULE)
 if(NOT TARGET Eigen3::Eigen)
   # Install Eigen3 on demand
   include(FetchContent)
-  # set(FETCHCONTENT_QUIET FALSE)
   set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
   message(STATUS "Eigen3 not detected, fetching Eigen3...")
   FetchContent_Declare(

@@ -3,7 +3,6 @@ find_package(pybind11 CONFIG)
 if(NOT pybind11_FOUND)
   # Install pybind11 on demand
   include(FetchContent)
-  set(FETCHCONTENT_QUIET FALSE)
   set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
   message(STATUS "pybind11 not detected, fetching pybind11...")
   FetchContent_Declare(

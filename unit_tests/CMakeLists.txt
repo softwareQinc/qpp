@@ -19,7 +19,6 @@ if(MSVC)
       ON
       CACHE BOOL "" FORCE)
 endif()
-# So that GoogleTest does not get installed with this project
 FetchContent_MakeAvailable(googletest)
 
 aux_source_directory(tests TEST_FILES)
