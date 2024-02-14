@@ -49,8 +49,8 @@ endif()
 aux_source_directory(${CMAKE_SOURCE_DIR}/src STRESS_TESTS)
 
 # Build all stress tests in ${STRESS_TESTS}
-foreach(FILE ${STRESS_TESTS})
-  get_filename_component(TARGET_NAME ${FILE} NAME_WE)
-  add_executable(${TARGET_NAME} ${FILE})
+foreach(file ${STRESS_TESTS})
+  get_filename_component(TARGET_NAME ${file} NAME_WE)
+  add_executable(${TARGET_NAME} ${file})
   target_link_libraries(${TARGET_NAME} PUBLIC ${QPP_LINK_DEPS} libqpp)
 endforeach()

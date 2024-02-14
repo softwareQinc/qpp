@@ -22,8 +22,9 @@ add_compile_definitions(PROJECT_ROOT_DIR="${PROJECT_SOURCE_DIR}")
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
   message(
     FATAL_ERROR
-      "In-source builds not allowed. Please instruct CMake to use an out-of-source build, e.g.,
-    cmake --build build [...]
+      "In-source builds not allowed. Please instruct CMake to use an\
+      out-of-source build, e.g.,
+      cmake -B build && cmake --build build
 You may need to remove CMakeCache.txt.")
 endif()
 
