@@ -12,14 +12,17 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 
 ## Pre-requisites
 
-- [CMake](https://cmake.org/)
 - C++17 compliant compiler, e.g., [gcc](https://gcc.gnu.org/)
   , [clang](https://clang.llvm.org)
   , [MSVC](https://visualstudio.microsoft.com/vs/) etc.
+- [CMake](https://cmake.org/)
+- [Eigen 3](https://eigen.tuxfamily.org) linear algebra library. If missing, it
+  will be installed automatically by CMake as a build dependency.
 
 ### Optional
 
-- [Python 3](https://www.python.org/) for running the `pyqpp` Python 3 wrapper
+- [Python 3](https://www.python.org/) for building and running the `pyqpp`
+  Python 3 wrapper
 - [MATLAB](https://www.mathworks.com/products/matlab/) compiler shared libraries
   and include header files, in case you want to enable interoperability with
   MATLAB. If enabled, allows applications build with Quantum++ to save/load

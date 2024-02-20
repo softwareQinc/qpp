@@ -1,6 +1,6 @@
 Version 5.1 -- xx February 2024
     - Removed Eigen3, pybind11, and GoogleTest dependencies; if not detected, 
-      they are installed automatically as dependencies by CMake 
+      they are installed automatically as build dependencies by CMake 
     - Bumped GoogleTest version to HEAD latest (as recommended by Google, 
       https://github.com/google/googletest?tab=readme-ov-file#live-at-head)
     - Removed "-DWITH_EXAMPLES" and "-DWITH_UNIT_TESTS" CMake flags. Now both
