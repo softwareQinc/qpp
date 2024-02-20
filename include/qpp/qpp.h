@@ -89,6 +89,7 @@
 #include "qpp/classes/exception.hpp"
 #include "qpp/classes/gates.hpp"
 #include "qpp/classes/idisplay.hpp"
+#include "qpp/classes/ijson.hpp"
 #include "qpp/classes/init.hpp"
 #include "qpp/classes/layouts.hpp"
 #include "qpp/classes/noise.hpp"
