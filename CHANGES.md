@@ -1,7 +1,8 @@
 # Version 5.1 -- xx February 2024
 
-- Replaced ["CHANGES"] by ["CHANGES.md"], we now use Markdown format to keep
-  track of changes in new releases
+- Replaced ["CHANGES"] by
+  ["CHANGES.md"](https://github.com/softwareQinc/qpp/blob/main/CHANGES.md),
+  as we now use Markdown format to keep track of changes in new releases
 - Removed Eigen3, pybind11, and GoogleTest dependencies; if not detected,
   they are installed automatically as build dependencies by CMake
 - Bumped GoogleTest version to HEAD latest, as
