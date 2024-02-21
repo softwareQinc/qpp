@@ -1,5 +1,7 @@
 # Version 5.1 -- xx February 2024
 
+- CHANGES -> CHANGES.md, we now use Markdown format to keep track of changes
+  and updates
 - Removed Eigen3, pybind11, and GoogleTest dependencies; if not detected,
   they are installed automatically as build dependencies by CMake
 - Bumped GoogleTest version to HEAD latest (as recommended by Google,
