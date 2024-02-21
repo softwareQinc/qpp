@@ -20,9 +20,9 @@
 - Introduced ["qpp/classes/qengine_traits.hpp"] that implement
   engine traits at run-time. All engines are now deriving from it.
   The traits implements qpp::IQEngineTraits::
-  - std::string traits_get_name() const - Engine's name
-  - bool traits_is_noisy() const - Simulates noisy execution
-  - bool traits_is_pure() const - Operates on pure states
+  - `std::string traits_get_name() const` - Engine's name
+  - `bool traits_is_noisy() const` - Simulates noisy execution
+  - `bool traits_is_pure() const` - Operates on pure states
 - API changes in ["qpp/qengine.hpp"] and ["qpp/qnoisy_engine.hpp"]
   - Enabled mixed-state engines by refactoring
     `qpp::QEngine` -> `template<typename T> qpp::QEngineT<T>`
@@ -51,8 +51,8 @@
     - `pyqpp.QKetNoisyEngine()` - same as `pyqpp.QNoisyEngine()`
     - `pyqpp.QDensityNoisyEngine()` - mixed state noisy engine
   - Removed the default argument `bool try_sampling = true` in
-    `qpp::QEngineT::execute(idx reps = 1, bool try_sampling = true) ->
-qpp::QEngineT::execute(idx reps = 1)`
+    `qpp::QEngineT::execute(idx reps = 1, bool try_sampling = true)` ->
+    `qpp::QEngineT::execute(idx reps = 1)`
     so now `qpp::QEngineT` will always try to sample from the output when
     the circuit is executed multiple times (i.e., when `reps > 1`)
 
