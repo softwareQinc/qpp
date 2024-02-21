@@ -94,9 +94,9 @@ OpenQASM 2.0 file.
 
 ## Custom Bindings
 
-**pyqpp** was created using pybind11, see
-["pyqpp/qpp_wrapper.cpp"](https://github.com/softwareQinc/qpp/blob/main/pyqpp/qpp_wrapper.cpp)
-. To wrap a custom function, use `pybind11::module::def`.
+**pyqpp** was created using [pybind11](https://github.com/pybind/pybind11), see
+["pyqpp/qpp_wrapper.cpp"](https://github.com/softwareQinc/qpp/blob/main/pyqpp/qpp_wrapper.cpp).
+To wrap a custom function, use `pybind11::module::def`.
 
 ```C++
 template<typename Func, typename ...Extra>
