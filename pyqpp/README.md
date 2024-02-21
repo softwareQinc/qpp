@@ -1,8 +1,8 @@
 # Installation instructions
 
-[pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
-wrapper for Quantum++. pyqpp requires the same dependencies as Quantum++, and
-can be installed using `pip`
+[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
+wrapper for Quantum++. **pyqpp** requires the same dependencies as Quantum++,
+and can be installed using `pip`
 
 ```
 pip install git+https://github.com/softwareQinc/qpp
@@ -10,9 +10,9 @@ pip install git+https://github.com/softwareQinc/qpp
 
 ## Creating python stubs for IDE autocompletion and static type checking
 
-In case autocompletion (or static type checking via [mypy](https://www.mypy-lang.org/))
-does not work properly in your editor/IDE, you may need to create python stubs
-for the package. To do this, execute
+In case autocompletion (or static type checking via
+[mypy](https://www.mypy-lang.org/)) does not work properly in your editor/IDE,
+you may need to create python stubs for the package. To do this, execute
 
 ```shell
 mkdir ~/python_stubs
@@ -23,15 +23,15 @@ ln -s ~/python_stubs/pyqpp ~/venv/lib/python3.11/site-packages
 ```
 
 In the above, we assumed that your platform is UNIX/UNIX-like, and that you
-have pyqpp installed in a virtual environment under `~/venv`. Please modify
+have **pyqpp** installed in a virtual environment under `~/venv`. Please modify
 accordingly for your system.
 
 ## Overview
 
-pyqpp includes `Bit_circuit`, `Dynamic_bitset`, `QCircuitT`, `QEngineT`,
-`QNoisyEngineT`, and several other derived Engine classes. Additionally, pyqpp
-provides commonly used quantum `gates` and `states`, and some basic Eigen
-operations.
+**pyqpp** includes `Bit_circuit`, `Dynamic_bitset`, `QCircuitT`, `QEngineT`,
+`QNoisyEngineT`, and several other derived Engine classes. Additionally,
+**pyqpp** provides commonly used quantum `gates` and `states`, and some basic
+Eigen operations.
 
 ---
 
@@ -94,8 +94,8 @@ OpenQASM 2.0 file.
 
 ## Custom Bindings
 
-pyqpp was created using pybind11 (
-see [`pyqpp/qpp_wrapper.cpp`](https://github.com/softwareQinc/qpp/blob/main/pyqpp/qpp_wrapper.cpp))
+**pyqpp** was created using pybind11, see
+["pyqpp/qpp_wrapper.cpp"](https://github.com/softwareQinc/qpp/blob/main/pyqpp/qpp_wrapper.cpp)
 . To wrap a custom function, use `pybind11::module::def`.
 
 ```C++

@@ -1,7 +1,7 @@
 # Installation instructions
 
-Quantum++ is a header-only library that uses [CMake](https://cmake.org/) as
-its build/install system. Quantum++ is platform-independent,
+**Quantum++** is a header-only library that uses [CMake](https://cmake.org/) as
+its build/install system. **Quantum++** is platform-independent,
 supporting [UNIX](https://www.opengroup.org/membership/forums/platform/unix)
 (including
 [macOS](https://www.apple.com/macos/)) and UNIX-like operating systems
@@ -21,14 +21,15 @@ as [Windows](https://www.microsoft.com/en-us/windows).
 
 ### Optional
 
-- [Python 3](https://www.python.org/) for building and running the `pyqpp`
+- [Python 3](https://www.python.org/) for building and running the **pyqpp**
   Python 3 wrapper
-- [MATLAB](https://www.mathworks.com/products/matlab/) compiler shared libraries
-  and include header files, in case you want to enable interoperability with
-  MATLAB. If enabled, allows applications build with Quantum++ to save/load
-  Quantum++ matrices and vectors to/from MATLAB. The locations of the MATLAB
-  compiler shared libraries and header files are platform-specific, e.g., under
-  Linux, they may be located under `/usr/local/MATLAB/R2021a/bin/glnxa64` and
+- [MATLAB](https://www.mathworks.com/products/matlab/) compiler shared
+  libraries and include header files, in case you want to enable
+  interoperability with MATLAB. If enabled, allows applications build with
+  **Quantum++** to save/load **Quantum++** matrices and vectors to/from MATLAB.
+  The locations of the MATLAB compiler shared libraries and header files are
+  platform-specific, e.g., under Linux, they may be located under
+  `/usr/local/MATLAB/R2021a/bin/glnxa64` and
   `/usr/local/MATLAB/R2021a/extern/include`, respectively. On your platform the
   locations may of course differ.
 
@@ -84,22 +85,22 @@ do not forget to configure the system with the `-DWITH_EXAMPLES=ON` flag.
 ## CMake optional arguments and flags
 
 Note that all CMake flags below that start with `QPP_` and `QASMTOOLS_`
-propagate to subprojects that use Quantum++ in
+propagate to subprojects that use **Quantum++** in
 their corresponding `CMakeLists.txt` via `findpackage(qpp ...)`.
 
-| Optional argument       | Value                                  | Description                                                                                                                                                                                                     |
-| ----------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `CMAKE_INSTALL_PREFIX`  | `/path/to/install`                     | Installs Quantum++ header files in a non-standard location (e.g., due to lack of admin. rights)                                                                                                                 |
-|                         |                                        |                                                                                                                                                                                                                 |
-| `QPP_MATLAB`            | `ON/OFF` [`OFF` by default]            | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load Quantum++ matrices and vectors to/from MATLAB. |
-| `QPP_OPENMP`            | `ON/OFF` [`ON` by default]             | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                 |
-| `QASMTOOLS_QASM2_SPECS` | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications; see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                     |
-|                         |                                        |                                                                                                                                                                                                                 |
-| `QPP_BIGINT`            | `default`, etc. [`default` by default] | Signed big integer type (`qpp::bigint`)                                                                                                                                                                         |
-| `QPP_FP`                | `default`, etc. [`default` by default] | Floating-point type (`qpp::realT`)                                                                                                                                                                              |
-| `QPP_IDX`               | `default`, etc. [`default` by default] | Integer index type (`qpp::idx`)                                                                                                                                                                                 |
-|                         |                                        |                                                                                                                                                                                                                 |
-| `SANITIZE`              | `ON/OFF` [`OFF` by default]            | Enable code sanitizing (only for gcc/clang)                                                                                                                                                                     |
+| Optional argument       | Value                                  | Description                                                                                                                                                                                                         |
+| ----------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CMAKE_INSTALL_PREFIX`  | `/path/to/install`                     | Installs **Quantum++** header files in a non-standard location (e.g., due to lack of admin. rights)                                                                                                                 |
+|                         |                                        |                                                                                                                                                                                                                     |
+| `QPP_MATLAB`            | `ON/OFF` [`OFF` by default]            | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load **Quantum++** matrices and vectors to/from MATLAB. |
+| `QPP_OPENMP`            | `ON/OFF` [`ON` by default]             | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                     |
+| `QASMTOOLS_QASM2_SPECS` | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications; see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                         |
+|                         |                                        |                                                                                                                                                                                                                     |
+| `QPP_BIGINT`            | `default`, etc. [`default` by default] | Signed big integer type (`qpp::bigint`)                                                                                                                                                                             |
+| `QPP_FP`                | `default`, etc. [`default` by default] | Floating-point type (`qpp::realT`)                                                                                                                                                                                  |
+| `QPP_IDX`               | `default`, etc. [`default` by default] | Integer index type (`qpp::idx`)                                                                                                                                                                                     |
+|                         |                                        |                                                                                                                                                                                                                     |
+| `SANITIZE`              | `ON/OFF` [`OFF` by default]            | Enable code sanitizing (only for gcc/clang)                                                                                                                                                                         |
 
 If `QPP_MATLAB=ON` and the system could not detect your MATLAB installation,
 you can manually specify the path to MATLAB's installation directory via the
@@ -107,8 +108,8 @@ additional CMake argument
 
     MATLAB_INSTALL_DIR=/path/to/MATLAB
 
-If you are still receiving errors, you can manually specify the path to MATLAB's
-required libraries and header files via the additional arguments
+If you are still receiving errors, you can manually specify the path to
+MATLAB's required libraries and header files via the additional arguments
 
     MATLAB_LIB_DIR=/path/to/MATLAB/libs
     MATLAB_INCLUDE_DIR=/path/to/MATLAB/headers
@@ -119,8 +120,9 @@ required libraries and header files via the additional arguments
 
 ### UNIX/UNIX-like/Windows
 
-To install Quantum++ (after [Configuring the system](#configuring-the-system)),
-execute in a terminal/console (UNIX/UNIX-like systems)
+To install **Quantum++** (after
+[Configuring the system](#configuring-the-system)), execute in a
+terminal/console (UNIX/UNIX-like systems)
 
 ```shell
 sudo cmake --build build --target install
@@ -132,7 +134,7 @@ or in an Administrator Command Prompt (Windows)
 cmake --build build --target install
 ```
 
-The above commands install Quantum++ in `/usr/local/include/qpp` on
+The above commands install **Quantum++** in `/usr/local/include/qpp` on
 UNIX/UNIX-like platforms, and in `C:\Program Files (x86)\qpp` on Windows
 platforms.
 
@@ -152,7 +154,7 @@ cmake --build build --target uninstall
 
 We are proud to be part of the [FreeBSD](https://www.freebsd.org/) operating
 system as an official package. If you are running FreeBSD, you can install
-Quantum++ with
+**Quantum++** with
 
 ```shell
 sudo pkg install quantum++
@@ -166,7 +168,7 @@ sudo pkg remove quantum++
 
 ### macOS/Linux
 
-If you are running macOS or Linux, you can install Quantum++ via
+If you are running macOS or Linux, you can install **Quantum++** via
 [Homebrew](https://brew.sh) with
 
 ```shell
@@ -184,9 +186,9 @@ brew uninstall quantum++
 ## Building and running a standalone application that uses Quantum++
 
 Below is a minimal `CMakeLists.txt` of a standalone application that uses
-Quantum++. For simplicity, we assume that the whole application is located in a
-single file `src/main.cpp`, and the `CMakeLists.txt` is located in the project's
-root directory.
+**Quantum++**. For simplicity, we assume that the whole application is located
+in a single file `src/main.cpp`, and the `CMakeLists.txt` is located in the
+project's root directory.
 
 ```cmake
 cmake_minimum_required(VERSION 3.15)
@@ -230,14 +232,14 @@ directory.
 
 ## Building and running a standalone application that uses Quantum++ without a build system
 
-Quantum++ is a header-only library. Hence, you can technically build an
-application that uses Quantum++ without using a building system, by simply using
-the compiler and specifying the location to all required dependencies, like
-below (assumes UNIX/UNIX-like, adapt accordingly for Windows)
+**Quantum++** is a header-only library. Hence, you can technically build an
+application that uses **Quantum++** without using a building system, by simply
+using the compiler and specifying the location to all required dependencies,
+like below (assumes UNIX/UNIX-like, adapt accordingly for Windows)
 
 ```shell
 g++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
-    -O3 -DNDEBUG -DEIGEN_NO_DEBUG \
+    -O3 -DNDEBUG -DEIGEN_NO_DEBUG
     -isystem $HOME/eigen3 -I $HOME/qpp/include -I $HOME/qpp/qasmtools/include \
      src/main.cpp -o my_qpp_app
 ```
@@ -255,8 +257,8 @@ does.
 - We highly recommend installing [clang](https://clang.llvm.org/)
   via [Homebrew](https://brew.sh/), since the native AppleClang does not offer
   OpenMP support.
-- In case you get any compiler or linker errors when OpenMP is enabled, you need
-  to install the `libomp` package, e.g., execute
+- In case you get any compiler or linker errors when OpenMP is enabled, you
+  need to install the `libomp` package, e.g., execute
 
 ```shell
 brew install libomp
@@ -276,9 +278,9 @@ under `C:\Program Files\MATLAB\R2021a\bin\win64`.
 
 ## Python 3 wrapper
 
-[pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
-wrapper for Quantum++. pyqpp requires the same dependencies as Quantum++, and
-can be installed using `pip`
+[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
+wrapper for **Quantum++**. **pyqpp** requires the same dependencies as
+**Quantum++**, and can be installed using `pip`
 
 ```shell
 pip install git+https://github.com/softwareQinc/qpp
@@ -293,8 +295,9 @@ For more details, please see
 
 ### SunOS/OpenIndiana
 
-The Python3 wrapper [pyqpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp)
-doesn't compile under SunOS/OpenIndiana due to errors in `<cmath>` such as
+The Python3 wrapper
+[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) doesn't
+compile under SunOS/OpenIndiana due to errors in `<cmath>` such as
 
 ```
 no member named 'llround' in the global namespace; did you mean 'lround'?
