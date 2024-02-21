@@ -98,7 +98,7 @@ OpenQASM 2.0 file.
 [pyqpp/qpp_wrapper.cpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp/qpp_wrapper.cpp).
 To wrap a custom function, use `pybind11::module::def`.
 
-```C++
+```cpp
 template<typename Func, typename ...Extra>
 module &def(const char *name_, Func &&f, const Extra&... extra)
 ```
@@ -109,13 +109,13 @@ module &def(const char *name_, Func &&f, const Extra&... extra)
 
 For example, consider the `qpp::randU` method
 
-```C++
+```cpp
 cmat randU(idx D = 2);
 ```
 
 which is wrapped as
 
-```C++
+```cpp
 PYBIND11_MODULE(pyqpp, m) {
     ...
 
@@ -131,14 +131,14 @@ PYBIND11_MODULE(pyqpp, m) {
 We cannot wrap templated functions; instead, we must explicitly instantiate
 them. For example, consider the `qpp::norm` method
 
-```C++
+```cpp
 template <typename Derived>
 double norm(const Eigen::MatrixBase<Derived>& A);
 ```
 
 One way to wrap this is
 
-```C++
+```cpp
 PYBIND11_MODULE(pyqpp, m) {
     ...
 
@@ -153,7 +153,7 @@ This creates the overloaded `pyqpp.norm` function, which can accept `cmat`
 or `ket` types. To avoid repetition of boilerplate code, we can templatize the
 binding:
 
-```C++
+```cpp
 template<typename T>
 void def_norm(pybind11::module &m) {
     m.def("norm", [](const T& A) { return qpp::norm(A); }, "Frobenius norm");
