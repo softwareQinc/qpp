@@ -41,7 +41,7 @@
     - `qpp::QDensityNoisyEngine` - mixed state noisy engine
   - Renamed `qpp::QEngineT::get_psi()` -> `qpp::QEngineT::get_state()`
   - Removed `qpp::QEngineT::is_noisy()`
-  - Added the new engines to pyqpp, which now defines the following
+  - Added the new engines to **pyqpp**, which now defines the following
     factory functions for instantiating engines
     - `pyqpp.QEngine()` - pure state ideal engine, backwards
       compatibility
@@ -50,7 +50,7 @@
     - `pyqpp.QNoisyEngine()` - pure state noisy engine, backwards
       compatibility
     - `pyqpp.QKetNoisyEngine()` - same as `pyqpp.QNoisyEngine()`
-    - `pyqpp.QDensityNoisyEngine()` - muxed state noisy engine
+    - `pyqpp.QDensityNoisyEngine()` - mixed state noisy engine
   - Removed the default argument `bool try_sampling = true` in
     `qpp::QEngineT::execute(idx reps = 1, bool try_sampling = true) ->
 qpp::QEngineT::execute(idx reps = 1)`
@@ -74,8 +74,8 @@ qpp::QEngineT::execute(idx reps = 1)`
   `qpp::disp()` ["qpp/input_output.hpp"]. The type returned by `qpp::dirac()`
   is type-defed as `qpp::dirac_t` in ["qpp/types.hpp"]. Options are passed
   via the formatting option manipulator structure `qpp::IOManipDiracOpts`.
-- Implemented `pyqpp.dirac()` in pyqpp, see above.
-- Significant speedup in pyqpp's compilation time
+- Implemented `pyqpp.dirac()` in **pyqpp**, see above.
+- Significant speedup in **pyqpp**'s compilation time
 - Added support for two qubit rotations by pi/2 (Molmer-Sorensen two qubit
   gates).
 - API changes in ["qpp/classes/circuits/circuits.hpp"]
@@ -102,7 +102,7 @@ qpp::QEngineT::execute(idx reps = 1)`
 
 # Version 4.3.3 - 8 August 2023
 
-- Minor bugfix in pyqpp setup.py that prevented pip install from remote
+- Minor bugfix in **pyqpp** ["setup.py"] that prevented pip install from remote
 - Bugfix in `qpp::QEngine::execute()` that prevented setting the initial
   state of the engine to a custom state
 
@@ -127,7 +127,7 @@ qpp::QEngineT::execute(idx reps = 1)`
 # Version 4.3 - 26 May 2023
 
 - This is a maintenance release
-- Fixed pyqpp installation on Windows under MSVC
+- Fixed **pyqpp** installation on Windows under MSVC
 - Migrated all continuous integration to GitHub actions
 - Minor updates in qasmtools
 
@@ -184,10 +184,10 @@ qpp::QEngineT::execute(idx reps = 1)`
     false otherwise
 - Added new exception class ["classes/exception.hpp"]:
   - `qpp::exception::NotFound` - Element not found
-- Implemented ["pyqpp/qpp_wrapper.cpp"] (pyqpp Python wrapper)
+- Implemented ["pyqpp/qpp_wrapper.cpp"] (**pyqpp** Python wrapper)
   - `set_prng_seed()` - sets the seed of the PRNG to a specific value, or,
     if invoked with no argument, to a random value
-- Migrated pyqpp installation method to pyproject.toml
+- Migrated **pyqpp** installation method to ["pyproject.toml"]
 - Extensive code refactoring, transitioned `qpp::QCircuit` logic to
   `std::visit()` over `std::variant`
 - API changes in ["classes/circuits/circuits.hpp"], all functions with
@@ -226,7 +226,7 @@ qpp::QEngineT::execute(idx reps = 1)`
   now take their argument underlying type (number, array) as template
   (must be an integral type)
 - Removed `qpp::QCircuit::is_non_CTRL()`
-- Refactored pyqpp, organized the source code in separate
+- Refactored **pyqpp**, organized the source code in separate
   ["src"]/["include"] directory structure that mirrors the qpp source code
   structure
 
@@ -286,7 +286,7 @@ qpp::QEngineT::execute(idx reps = 1)`
     state, but interested only in statistics; it is
     significantly faster than its `qpp::measure()`-type
     functions.
-- Added copy/deepcopy support for all pyqpp classes:
+- Added copy/deepcopy support for all **pyqpp** classes:
   - `QCircuit`, `QEngine`, `QNoisyEngine<>`, `Dynamic_Bitset`, `Bit_circuit`
 - Added `context` to exception throwing, so now it is obvious which argument
   triggers an exception
@@ -313,14 +313,14 @@ qpp::QEngineT::execute(idx reps = 1)`
 - Enhanced `qpp::prod()` and `qpp::sum()` to allow list of matrices
 - Bugfix in `qpp::measure()` [https://github.com/softwareQinc/qpp/issues/132]
 - Bugfix in `QCircuit::CTRL` [https://github.com/softwareQinc/qpp/issues/130]
-- Bumped GoogleTest version to 1.12.1
-  [https://github.com/google/googletest/commit/58d77fa8070e8cec2dc1ed015d66b454c8d78850]
+- Bumped
+  [GoogleTest version to 1.12.1](https://github.com/google/googletest/commit/58d77fa8070e8cec2dc1ed015d66b454c8d78850)
 
 # Version 3.1 - 11 January 2022
 
-- Added pyqpp, a Python wrapper around **Quantum++**. See
-  [pyqpp documentation](https://github.com/softwareQinc/qpp/wiki/8.-pyqpp) for
-  more details.
+- Added **pyqpp**, a Python wrapper around **Quantum++**. See
+  [**pyqpp** documentation](https://github.com/softwareQinc/qpp/wiki/8.-pyqpp)
+  for more details.
 - Minor update of Shor's algorithm example ["examples/shor.cpp"]
 - Renamed ["examples/qasm/qasm.cpp"] to ["examples/qasm/qpp_qasm.cpp"]
 - Due to phase discrepancies, by default the parser now uses Qiskit
