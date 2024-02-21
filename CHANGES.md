@@ -62,8 +62,8 @@ qpp::QEngineT::execute(idx reps = 1)`
   one now must `#include "qpp/qpp.h"` (and similarly for other header files
   in the internal implementation). This change was made for the sake of
   making the include statements look "uniform" in both non-installed
-  (compiling without having Quantum++ installed) and installed (compiling
-  with Quantum++ installed headers) modes.
+  (compiling without having **Quantum++** installed) and installed (compiling
+  with **Quantum++** installed headers) modes.
 - Refactored option-related types into a new header file ["qpp/options.hpp"]
 - `qpp::disp()` refactoring, formatting options are now passed via
   formatting option manipulator structures, all defined in
@@ -85,8 +85,8 @@ qpp::QEngineT::execute(idx reps = 1)`
 - Implemented ["qpp/classes/circuits/circuits.hpp"] control on another
   quantum circuit,
   - `qpp::QCircuit::compose_CTRL_circuit()`
-    see [GitHub Issue #165](https://github.com/softwareQinc/qpp/issues/165), and
-    the corresponding standalone versions
+    see [GitHub Issue #165](https://github.com/softwareQinc/qpp/issues/165),
+    and the corresponding standalone versions
   - `qpp::compose_CTRL_circuit()`
 - `qpp::measure_seq()` now returns results in the same order as the order in
   which the qubits are being measured
@@ -132,7 +132,7 @@ qpp::QEngineT::execute(idx reps = 1)`
 
 # Version 4.2 - 13 May 2023
 
-- Quantum++ is now available on Homebrew (macOS/Linux), and can be
+- **Quantum++** is now available on Homebrew (macOS/Linux), and can be
   installed with `brew install quantum++`
 - New types in ["types.hpp"]
   - `realT` - floating point type, replaces `double` in the source code
@@ -162,12 +162,14 @@ qpp::QEngineT::execute(idx reps = 1)`
   ```cpp
   template<typename T, std::enable_if...> qpp::rand(T a, T b)
   ```
-  enabled only on arithmetic types by `typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr`
+  enabled only on arithmetic types by
+  `typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr`
 - Refactored qpp::randn(mean, sigma) ["random.hpp"] to a template function
   ```cpp
    template<typename T, std::enable_if...> qpp::random(T a, T b)
   ```
-  enabled only on arithmetic types by `typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr`
+  enabled only on arithmetic types by
+  `typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr`
 - CMake minimum required version bumped to 3.15
 
 # Version 4.1 - 2 May 2023
@@ -261,8 +263,9 @@ qpp::QEngineT::execute(idx reps = 1)`
 - API changes for
   - `qpp::Q[Noisy]Circuit::execute()`
     removed `bool reset_stats = true` parameter as it was confusing, suffices
-    to invoke `Q[Noisy]Engine::reset(bool reset_stats = true)` for resetting the
-    measurement statistics; added `bool try_sampling = true` argument, see above
+    to invoke `Q[Noisy]Engine::reset(bool reset_stats = true)` for resetting
+    the measurement statistics; added `bool try_sampling = true` argument, see
+    above
 - Noise is now added before measurements as well when running with a
   `qpp::QNoisyEngine<>`
 - Implemented ["classes/circuits/circuits.hpp"]:
@@ -297,7 +300,8 @@ qpp::QEngineT::execute(idx reps = 1)`
   custom attributes). Warnings are explicitly disabled for
   clang/gcc/MSVC/icc. If your compiler emits a warning, please disable it
   with the corresponding `#pragma` directive at the beginning of ["qpp.h"]
-- Added from-string constructor for `qpp::Bit_circuit` and `qpp::Dynamic_bitset`
+- Added from-string constructor for `qpp::Bit_circuit` and
+  `qpp::Dynamic_bitset`
 - When building with CMake, the new `QPP_VERSION_NUM` (numeric) and
   `QPP_VERSION_STR` (string) preprocessor definitions are automatically
   injected in the code
@@ -313,7 +317,7 @@ qpp::QEngineT::execute(idx reps = 1)`
 
 # Version 3.1 - 11 January 2022
 
-- Added pyqpp, a Python wrapper around Quantum++. See
+- Added pyqpp, a Python wrapper around **Quantum++**. See
   [pyqpp documentation](https://github.com/softwareQinc/qpp/wiki/8.-pyqpp) for
   more details.
 - Minor update of Shor's algorithm example ["examples/shor.cpp"]
@@ -341,10 +345,12 @@ qpp::QEngineT::execute(idx reps = 1)`
 
 - Major release, bumped up C++ standard to C++17
 - Decoupled the OpenQASM parser from the main codebase. A hard copy of
-  qasmtools ([https://github.com/softwareQinc/qasmtools](https://github.com/softwareQinc/qasmtools))
-  is now common to both staq and Quantum++, and by default uses standard
-  OpenQASM 2.0 gate definitions. To switch to Qiskit definitions (which are also
-  the usual ones used in QC textbooks), configure the project with
+  qasmtools
+  ([https://github.com/softwareQinc/qasmtools](https://github.com/softwareQinc/qasmtools))
+  is now common to both **staq** and **Quantum++**, and by default uses
+  standard OpenQASM 2.0 gate definitions. To switch to Qiskit definitions
+  (which are also the usual ones used in QC textbooks), configure the project
+  with
   `cmake -DUSE_QISKIT_SPECS=ON`.
 - Refactored `qpp::internal::Singleton` ["internal/classes/singleton.hpp"]
   so that `qpp::internal::Singleton::get_instance()` returns a thread local
@@ -421,7 +427,8 @@ qpp::QEngineT::execute(idx reps = 1)`
   [GitHub Pull Request #91](https://github.com/softwareQinc/qpp/pull/91)
 - Added Quantum Phase Estimation high-level API example in
   "examples/circuits/quantum_phase_estimation.cpp", thanks @DevelopDaily for
-  the suggestion, [GitHub Issue #96](https://github.com/softwareQinc/qpp/issues/96)
+  the suggestion,
+  [GitHub Issue #96](https://github.com/softwareQinc/qpp/issues/96)
 - `qpp::load()` and `qpp::save()` ["input_output.hpp"] now use C++ I/O streams
   instead of file names, and load/save in text format (instead of
   binary format), while preserving the required precision. The old load/save
@@ -534,14 +541,16 @@ qpp::QEngineT::execute(idx reps = 1)`
   versions >= R2018a, see
   [MATLAB Support for Interleaved Complex](https://www.mathworks.com/help/matlab/matlab_external/matlab-support-for-interleaved-complex.html),
   but also continues to work with older MATLAB versions < R2018a
-- Changed the CMake flag `EIGEN3_INCLUDE_DIR` to `EIGEN3_INSTALL_DIR`
-  so it is consistent with the `MATLAB_INSTALL_DIR` CMake flag
+- Changed the CMake flag `EIGEN3_INCLUDE_DIR` to `EIGEN3_INSTALL_DIR` so it is
+  consistent with the `MATLAB_INSTALL_DIR` CMake flag
 
 # Version 2.1 - 14 March 2020 (3.14.2020 Pi day release)
 
-- Migrated the repository to [https://github.com/softwareQinc/qpp](https://github.com/softwareQinc/qpp)
+- Migrated the repository to
+  [https://github.com/softwareQinc/qpp](https://github.com/softwareQinc/qpp)
 - Changed gate definitions in "qasm/preprocessor.h" so they agree with
-  Qiskit, see [https://github.com/softwareQinc/qpp/issues/65](https://github.com/softwareQinc/qpp/issues/65)
+  Qiskit, see
+  [https://github.com/softwareQinc/qpp/issues/65](https://github.com/softwareQinc/qpp/issues/65)
   and
   [https://github.com/softwareQinc/qpp/issues/70](https://github.com/softwareQinc/qpp/issues/70)
 - Minor API change in the `QEngine::execute()`, `reset()`, `reset_stats()`, now
@@ -576,9 +585,9 @@ qpp::QEngineT::execute(idx reps = 1)`
   - `qpp::replicate()` - replicates (repeats) a quantum circuit description
   - `qpp::add_circuit()` - adds two quantum circuit descriptions
 - Implemented qudit resetting and discarding functions qpp::QCircuit::
-  - `reset()` - resets qudits in a quantum circuit description by measuring them
-    non-destructively in the computational basis followed by shifting them back
-    to the |0> state
+  - `reset()` - resets qudits in a quantum circuit description by measuring
+    them non-destructively in the computational basis followed by shifting them
+    back to the |0> state
   - `discard()` - discards qudits in a quantum circuit description by measuring
     them destructively and ignoring the result of the measurement
 - Implemented the corresponding free functions in "instruments.h":
@@ -594,8 +603,8 @@ qpp::QEngineT::execute(idx reps = 1)`
 - Split `qpp::QCircuit::get_depth()` into `qpp::QCircuit::get_gate_depth()` -
   gate depth and `qpp::QCircuit::get_measurement_depth()` - measurement depth
   for finer control over depth computations
-- Added support for non-destructive measurements in "instruments.h" by modifying
-  the API for:
+- Added support for non-destructive measurements in "instruments.h" by
+  modifying the API for:
   - `qpp::measure()`
   - `qpp::measure_seq()`
 - Added "classes/layouts.h" header file for representing different physical
@@ -625,7 +634,8 @@ qpp::QEngineT::execute(idx reps = 1)`
   - `add_qudit()` - adds qudit(s) on the fly
   - `add_dit()` - adds classical dit(s) on the fly
   - `add_circuit()` - adds a quantum circuit description to the current one
-  - `replicate()` - replicates (repeats) the current quantum circuit description
+  - `replicate()` - replicates (repeats) the current quantum circuit
+    description
 - Implemented `qpp::Bit_circuit::`:
   - `get_gate_count()` - classical reversible circuit gate count
   - `get_depth()` - classical reversible circuit gate depth
@@ -637,7 +647,8 @@ qpp::QEngineT::execute(idx reps = 1)`
     matrix
 - Added new functions in "number_theory.h":
   - `qpp::convergents()` - overloads that compute the convergents from a
-    continued fraction or a real number, see https://mathworld.wolfram.com/Convergent.html
+    continued fraction or a real number, see
+    https://mathworld.wolfram.com/Convergent.html
 - Added new functions in "operations.h":
   - `qpp::TFQ()` - inverse qudit quantum Fourier transform (includes qubit QFT
     as a special case) on an entire quantum state (state vector or density
@@ -665,8 +676,8 @@ qpp::QEngineT::execute(idx reps = 1)`
   `qpp::QEngine::to_JSON()`
 - Added new classes in the new header file "classes/circuits.h" for simulating
   qudit quantum circuits:
-  - `qpp::QCircuit` - Quantum circuit description, does not effectively perform
-    any operations
+  - `qpp::QCircuit` - Quantum circuit description, does not effectively
+    perform any operations
   - `qpp::QEngine` - Quantum engine for simulation of quantum circuits
 - Added new circuit simulator examples in "examples/circuits":
   - `teleport_qubit_circuit.cpp` - qubit teleportation circuit example
@@ -675,15 +686,16 @@ qpp::QEngineT::execute(idx reps = 1)`
   direct comparison with 0 when dealing with small doubles
 - Added support for hashing Eigen matrices/vectors/expressions via
   `qpp::hash_eigen()` in "functions.h"; code based on `boost::hash_combine()`,
-  see https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
+  see
+  https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
 
 # Version 1.1 - 26 November 2018
 
 - Added new functions in "operations.h":
   - `qpp::QFT()` - qudit quantum Fourier transform (includes qubit QFT as a
     special case) on an entire quantum state (state vector or density matrix)
-  - `qpp::applyQFT()` - apply the qudit quantum Fourier transform on a subset of
-    qudits of a state vector or density matrix
+  - `qpp::applyQFT()` - apply the qudit quantum Fourier transform on a subset
+    of qudits of a state vector or density matrix
 - Added Quantum Fourier transform example in "examples/qft.cpp"
 - Added new member functions for `qpp::Gates`:
   - `qpp::Gates::RX()` - rotation around X
@@ -744,8 +756,8 @@ qpp::QEngineT::execute(idx reps = 1)`
 
 - Slight performance improvements (lambda workers do not capture by value
   anymore)
-- API change in "classes/exception.h": now all Quantum++ exceptions have their
-  own type, being derived from the base exception class
+- API change in "classes/exception.h": now all **Quantum++** exceptions have
+  their own type, being derived from the base exception class
   `qpp::exception::Exception`. All exception classes are now in their separate
   namespace `qpp::exception`.
 
