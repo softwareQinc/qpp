@@ -49,19 +49,23 @@ cmake -B build
 
 ## Building the examples and/or unit tests
 
-To build
-the [examples](https://github.com/softwareQinc/qpp/tree/main/examples) and/or
-the [unit tests](https://github.com/softwareQinc/qpp/tree/main/unit_tests),
-execute
+To build the
+[examples](https://github.com/softwareQinc/qpp/tree/main/examples), execute
 
 ```shell
-cmake --build build --target=examples --target=unit_tests --parallel 8
+cmake --build build --target=examples --parallel 8
 ```
 
-The above command builds all examples as executables in `./build`,
-followed by building the unit tests executable in
-`./build/unit_tests/unit_tests`. The `--parallel 8` instructs CMake to build
-in parallel using 8 threads, modify accordingly.
+The above command builds all examples as executables in `./build`. The
+`--parallel 8` flag instructs CMake to build in parallel using 8 threads,
+modify accordingly.
+
+To build the
+[unit tests](https://github.com/softwareQinc/qpp/tree/main/unit_tests), execute
+
+```shell
+cmake --build build/unit_tests --parallel 8
+```
 
 Tu run the unit tests, execute
 
@@ -75,10 +79,9 @@ To build **only** a specific target, execute, e.g.,
 cmake --build build --target=bb84
 ```
 
-The command above only builds the example
+The command above builds only the example
 [examples/bb84](https://github.com/softwareQinc/qpp/tree/main/examples/bb84)
-and outputs the executable `./build/bb84[.exe]`. Reminder: for this to work,
-do not forget to configure the system with the `-DWITH_EXAMPLES=ON` flag.
+and outputs the executable `./build/bb84[.exe]`.
 
 ---
 

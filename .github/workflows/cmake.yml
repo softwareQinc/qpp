@@ -50,7 +50,7 @@ jobs:
         run: cmake --build build --target examples
 
       - name: Build unit tests
-        run: cmake --build build/unit_tests --target unit_tests
+        run: cmake --build build/unit_tests
 
       - name: Run unit tests
         run: ctest --test-dir build/unit_tests -E qpp_Timer
