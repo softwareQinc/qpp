@@ -64,7 +64,7 @@ To build the
 [unit tests](https://github.com/softwareQinc/qpp/tree/main/unit_tests), execute
 
 ```shell
-cmake --build build/unit_tests --parallel 8
+cmake --build build/unit_tests --target unit_tests --parallel 8
 ```
 
 Tu run the unit tests, execute
