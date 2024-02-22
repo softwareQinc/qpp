@@ -70,7 +70,7 @@ cmake --build build/unit_tests --target unit_tests --parallel 8
 Tu run the unit tests, execute
 
 ```shell
-ctest --test-dir build/unit_tests
+ctest --test-dir build
 ```
 
 To build **only** a specific target, execute, e.g.,
