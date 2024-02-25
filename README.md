@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 5.1 - xx February 2024
+## Version 5.1 - 1 March 2024
 
 [![GitHub actions](https://github.com/softwareqinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
 

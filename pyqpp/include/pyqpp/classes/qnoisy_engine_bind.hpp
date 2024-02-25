@@ -61,30 +61,29 @@ void declare_QNoisyEngineT(py::module& m, const std::string& type) {
     } else {
         pyname = "_QDensityNoisyEngine_" + type;
     }
-    py::class_<qpp::QNoisyEngineT<T, NoiseModel>, QEngineT<T>>(m,
-                                                               pyname.c_str())
+    py::class_<QNoisyEngineT<T, NoiseModel>, QEngineT<T>>(m, pyname.c_str())
         .def(py::init<const QCircuit&, const NoiseModel&>(),
              py::keep_alive<1, 2>())
 
         .def(
             "get_noise_results",
-            &qpp::QNoisyEngineT<T, NoiseModel>::get_noise_results,
+            &QNoisyEngineT<T, NoiseModel>::get_noise_results,
             "Vector of noise results obtained before every step in the circuit")
 
         .def("__copy__",
-             [](const qpp::QNoisyEngineT<T, NoiseModel>& self) {
-                 return qpp::QNoisyEngineT<T, NoiseModel>(self);
+             [](const QNoisyEngineT<T, NoiseModel>& self) {
+                 return QNoisyEngineT<T, NoiseModel>(self);
              })
         .def("__deepcopy__",
-             [](const qpp::QNoisyEngineT<T, NoiseModel>& self, py::dict) {
-                 return qpp::QNoisyEngineT<T, NoiseModel>(self);
+             [](const QNoisyEngineT<T, NoiseModel>& self, py::dict) {
+                 return QNoisyEngineT<T, NoiseModel>(self);
              });
 
     if constexpr (std::is_same_v<T, ket>) {
         m.def(
             "QKetNoisyEngine",
             [](const QCircuit& qc, const NoiseModel& nm) {
-                return qpp::QNoisyEngineT<T, NoiseModel>(qc, nm);
+                return QNoisyEngineT<T, NoiseModel>(qc, nm);
             },
             py::keep_alive<0, 1>());
         // backwards compatibility
@@ -93,7 +92,7 @@ void declare_QNoisyEngineT(py::module& m, const std::string& type) {
         m.def(
             "QDensityNoisyEngine",
             [](const QCircuit& qc, const NoiseModel& nm) {
-                return qpp::QNoisyEngineT<T, NoiseModel>(qc, nm);
+                return QNoisyEngineT<T, NoiseModel>(qc, nm);
             },
             py::keep_alive<0, 1>());
     }
@@ -104,50 +103,45 @@ inline void init_classes_qnoisy_engine(py::module_& m) {
     using namespace qpp;
 
     /* Noise models instantiators */
-    declare_noise_model<qpp::QubitBitFlipNoise, realT>(m, "QubitBitFlipNoise");
-    declare_noise_model<qpp::QubitPhaseFlipNoise, realT>(m,
-                                                         "QubitPhaseFlipNoise");
-    declare_noise_model<qpp::QubitBitPhaseFlipNoise, realT>(
+    declare_noise_model<QubitBitFlipNoise, realT>(m, "QubitBitFlipNoise");
+    declare_noise_model<QubitPhaseFlipNoise, realT>(m, "QubitPhaseFlipNoise");
+    declare_noise_model<QubitBitPhaseFlipNoise, realT>(
         m, "QubitBitPhaseFlipNoise");
-    declare_noise_model<qpp::QubitDepolarizingNoise, realT>(
+    declare_noise_model<QubitDepolarizingNoise, realT>(
         m, "QubitDepolarizingNoise");
-    declare_noise_model<qpp::QubitAmplitudeDampingNoise, realT>(
+    declare_noise_model<QubitAmplitudeDampingNoise, realT>(
         m, "QubitAmplitudeDampingNoise");
-    declare_noise_model<qpp::QubitPhaseDampingNoise, realT>(
+    declare_noise_model<QubitPhaseDampingNoise, realT>(
         m, "QubitPhaseDampingNoise");
-    declare_noise_model<qpp::QuditDepolarizingNoise, realT, idx>(
+    declare_noise_model<QuditDepolarizingNoise, realT, idx>(
         m, "QuditDepolarizingNoise");
 
     /* qpp::QNoisyEngineT instantiations with different noise models, pure */
-    declare_QNoisyEngineT<qpp::ket, qpp::QubitBitFlipNoise>(
-        m, "QubitBitFlipNoise");
-    declare_QNoisyEngineT<qpp::ket, qpp::QubitBitPhaseFlipNoise>(
+    declare_QNoisyEngineT<ket, QubitBitFlipNoise>(m, "QubitBitFlipNoise");
+    declare_QNoisyEngineT<ket, QubitBitPhaseFlipNoise>(
         m, "QubitBitPhaseFlipNoise");
-    declare_QNoisyEngineT<qpp::ket, qpp::QubitDepolarizingNoise>(
+    declare_QNoisyEngineT<ket, QubitDepolarizingNoise>(
         m, "QubitDepolarizingNoise");
-    declare_QNoisyEngineT<qpp::ket, qpp::QubitPhaseFlipNoise>(
-        m, "QubitPhaseFlipNoise");
-    declare_QNoisyEngineT<qpp::ket, qpp::QubitAmplitudeDampingNoise>(
+    declare_QNoisyEngineT<ket, QubitPhaseFlipNoise>(m, "QubitPhaseFlipNoise");
+    declare_QNoisyEngineT<ket, QubitAmplitudeDampingNoise>(
         m, "QubitAmplitudeDampingNoise");
-    declare_QNoisyEngineT<qpp::ket, qpp::QubitPhaseDampingNoise>(
+    declare_QNoisyEngineT<ket, QubitPhaseDampingNoise>(
         m, "QubitPhaseDampingNoise");
-    declare_QNoisyEngineT<qpp::ket, qpp::QuditDepolarizingNoise>(
+    declare_QNoisyEngineT<ket, QuditDepolarizingNoise>(
         m, "QuditDepolarizingNoise");
 
     /* qpp::QNoisyEngineT instantiations with different noise models, mixed */
-    declare_QNoisyEngineT<qpp::cmat, qpp::QubitBitFlipNoise>(
-        m, "QubitBitFlipNoise");
-    declare_QNoisyEngineT<qpp::cmat, qpp::QubitBitPhaseFlipNoise>(
+    declare_QNoisyEngineT<cmat, QubitBitFlipNoise>(m, "QubitBitFlipNoise");
+    declare_QNoisyEngineT<cmat, QubitBitPhaseFlipNoise>(
         m, "QubitBitPhaseFlipNoise");
-    declare_QNoisyEngineT<qpp::cmat, qpp::QubitDepolarizingNoise>(
+    declare_QNoisyEngineT<cmat, QubitDepolarizingNoise>(
         m, "QubitDepolarizingNoise");
-    declare_QNoisyEngineT<qpp::cmat, qpp::QubitPhaseFlipNoise>(
-        m, "QubitPhaseFlipNoise");
-    declare_QNoisyEngineT<qpp::cmat, qpp::QubitAmplitudeDampingNoise>(
+    declare_QNoisyEngineT<cmat, QubitPhaseFlipNoise>(m, "QubitPhaseFlipNoise");
+    declare_QNoisyEngineT<cmat, QubitAmplitudeDampingNoise>(
         m, "QubitAmplitudeDampingNoise");
-    declare_QNoisyEngineT<qpp::cmat, qpp::QubitPhaseDampingNoise>(
+    declare_QNoisyEngineT<cmat, QubitPhaseDampingNoise>(
         m, "QubitPhaseDampingNoise");
-    declare_QNoisyEngineT<qpp::cmat, qpp::QuditDepolarizingNoise>(
+    declare_QNoisyEngineT<cmat, QuditDepolarizingNoise>(
         m, "QuditDepolarizingNoise");
 }
 
