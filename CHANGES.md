@@ -23,7 +23,8 @@
   - `std::string traits_get_name() const` - Engine's name
   - `bool traits_is_noisy() const` - Simulates noisy execution
   - `bool traits_is_pure() const` - Operates on pure states
-- API changes in ["qpp/qengine.hpp"] and ["qpp/qnoisy_engine.hpp"]
+- API changes in ["qpp/classes/qengine.hpp"] and
+  ["qpp/classes/qnoisy_engine.hpp"]
   - Enabled mixed-state engines by refactoring
     `qpp::QEngine` -> `template<typename T> qpp::QEngineT<T>`
     `qpp::QNoisyEngine` -> `template<typename T> qpp::QNoisyEngineT<T>`
@@ -55,6 +56,15 @@
     `qpp::QEngineT::execute(idx reps = 1)`
     so now `qpp::QEngineT` will always try to sample from the output when
     the circuit is executed multiple times (i.e., when `reps > 1`)
+- Introduced no-op (dummy) quantum engines in ["qpp/classes/qdummy_engine.hpp"]
+  that provides
+  - `template<typename T, typename QCT> qpp::QDummyEngine<T, QCT>`
+  - `qpp::QKetDummyEngine` - specialization of `qpp::QDummyEngine<>` with
+    `T = qpp::ket`, `QCT = qpp::QCircuit`
+  - `qpp::QDensityDummyEngine` - specialization of `qpp::QDummyEngine<>` with
+    `T=qpp::cmat`, `QCT=qpp::QCircuit`
+- Introduced corresponding `pyqpp.QKetDummyEngine` and
+  `pyqpp.QDensityDummyEngine` in **pyqpp**
 
 # Version 5.0 - 10 January 2024
 
