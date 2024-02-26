@@ -43,7 +43,9 @@ void declare_QDummyEngine(py::module& m) {
         pyname = "_QDensityDummyEngine";
     }
 
-    using DummyEngineType = QDummyEngine<T, QCircuit>;
+    using DummyEngineType =
+        std::conditional_t<std::is_same_v<T, ket>, QKetDummyEngine,
+                           QDensityDummyEngine>;
     py::class_<DummyEngineType>(m, pyname.c_str())
         .def(py::init<const QCircuit&>(), py::keep_alive<1, 2>())
         .def("execute", py::overload_cast<idx>(&DummyEngineType::execute),

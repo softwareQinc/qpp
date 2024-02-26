@@ -52,6 +52,7 @@ namespace qpp {
  *
  * \tparam T Engine's state underlying type
  * \tparam QCT Circuit underlying type
+ *
  */
 template <typename T, typename QCT>
 class QBaseEngine : public IQEngineTraits, public IDisplay, public IJSON {
@@ -252,7 +253,7 @@ class QBaseEngine : public IQEngineTraits, public IDisplay, public IJSON {
 
         return os;
     }
-}; /* class QBaseEngine */
+};
 } /* namespace qpp */
 
 #endif /* QPP_CLASSES_QBASE_ENGINE_HPP_ */
