@@ -34,6 +34,7 @@
 
 #include "pyqpp/classes/gates_bind.hpp"
 #include "pyqpp/classes/qcircuit_bind.hpp"
+#include "pyqpp/classes/qdummy_engine_bind.hpp"
 #include "pyqpp/classes/qengine_bind.hpp"
 #include "pyqpp/classes/qnoisy_engine_bind.hpp"
 #include "pyqpp/classes/reversible_bind.hpp"
@@ -59,6 +60,7 @@ PYBIND11_MODULE(pyqpp, m) {
 
     init_classes_qcircuit(m);
     init_classes_qengine(m);
+    init_classes_qdummy_engine(m);
     init_classes_qnoisy_engine(m);
 
     init_qasm_qasm(m);

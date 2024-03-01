@@ -6,7 +6,7 @@ RUN apt-get update && \
     ln -fs /usr/share/zoneinfo/America/Toronto /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
-RUN apt-get install -y build-essential python3.10 python3-pip python3-dev \
+RUN apt-get install -y build-essential python3 python3-pip python3-dev \
     libeigen3-dev cmake sudo git vim
 
 # Install pyqpp

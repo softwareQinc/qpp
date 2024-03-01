@@ -43,7 +43,7 @@ void declare_QEngineT(py::module& m) {
         pyname = "_QDensityEngine";
     }
 
-    py::class_<qpp::QEngineT<T>>(m, pyname.c_str())
+    py::class_<QEngineT<T>>(m, pyname.c_str())
         .def(py::init<const QCircuit&>(), py::keep_alive<1, 2>())
 
         .def("execute", py::overload_cast<idx>(&QEngineT<T>::execute),
@@ -70,10 +70,10 @@ void declare_QEngineT(py::module& m) {
                 const auto& stats = qe.get_stats();
                 for (auto&& elem : stats.data()) {
                     std::stringstream ss;
-                    ss << qpp::disp(elem.first, IOManipContainerOpts{}
-                                                    .set_sep("")
-                                                    .set_left("")
-                                                    .set_right(""));
+                    ss << disp(elem.first, IOManipContainerOpts{}
+                                               .set_sep("")
+                                               .set_left("")
+                                               .set_right(""));
                     result[ss.str()] = elem.second;
                 }
                 return result;
@@ -89,7 +89,7 @@ void declare_QEngineT(py::module& m) {
         .def("set_dits", &QEngineT<T>::set_dits, "Set the classical dits",
              py::arg("dits"))
         .def("set_state", &QEngineT<T>::set_state,
-             "Sets the underlying quantum state", py::arg("psi"))
+             "Sets the underlying quantum state", py::arg("state"))
         .def("to_JSON", &QEngineT<T>::to_JSON,
              "State of the engine in JSON format",
              py::arg("enclosed_in_curly_brackets") = true)
@@ -115,15 +115,14 @@ void declare_QEngineT(py::module& m) {
 
     if constexpr (std::is_same_v<T, ket>) {
         m.def(
-            "QKetEngine",
-            [](const QCircuit& qc) { return qpp::QEngineT<T>(qc); },
+            "QKetEngine", [](const QCircuit& qc) { return QEngineT<T>(qc); },
             py::keep_alive<0, 1>());
         // backwards compatibility
         m.attr("QEngine") = m.attr("QKetEngine");
     } else {
         m.def(
             "QDensityEngine",
-            [](const QCircuit& qc) { return qpp::QEngineT<T>(qc); },
+            [](const QCircuit& qc) { return QEngineT<T>(qc); },
             py::keep_alive<0, 1>());
     }
 }
@@ -132,9 +131,9 @@ inline void init_classes_qengine(py::module_& m) {
     using namespace qpp;
 
     /* qpp::QEngineT instantiation, pure */
-    declare_QEngineT<qpp::ket>(m);
+    declare_QEngineT<ket>(m);
     /* qpp::QEngineT instantiation, mixed */
-    declare_QEngineT<qpp::cmat>(m);
+    declare_QEngineT<cmat>(m);
 }
 
 #endif /* PYQPP_CLASSES_QENGINE_BIND_HPP_ */

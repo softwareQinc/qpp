@@ -98,8 +98,8 @@ class QNoisyEngineT : public QEngineT<T> {
      *
      * \param elem Step to be executed
      */
-    QNoisyEngineT&
-    execute(const QCircuit::iterator::value_type& elem) override {
+    QNoisyEngineT& execute(
+        const typename QCircuitTraits<QCircuit>::value_type& elem) override {
         // get the relative position of the target
         std::vector<idx> target_rel_pos =
             this->get_relative_pos_(this->get_non_measured());

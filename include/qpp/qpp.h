@@ -89,6 +89,7 @@
 #include "qpp/classes/exception.hpp"
 #include "qpp/classes/gates.hpp"
 #include "qpp/classes/idisplay.hpp"
+#include "qpp/classes/ijson.hpp"
 #include "qpp/classes/init.hpp"
 #include "qpp/classes/layouts.hpp"
 #include "qpp/classes/noise.hpp"
@@ -98,6 +99,7 @@
 #include "qpp/classes/timer.hpp"
 
 #include "qpp/classes/qbase_engine.hpp"
+#include "qpp/classes/qdummy_engine.hpp"
 #include "qpp/classes/qengine.hpp"
 #include "qpp/classes/qengine_traits.hpp"
 #include "qpp/classes/qnoisy_engine.hpp"

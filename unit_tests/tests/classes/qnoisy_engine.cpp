@@ -6,14 +6,15 @@ using namespace qpp;
 
 // Unit testing "classes/qnoisy_engine.hpp"
 
-/// BEGIN QNoisyEngineT& QNoisyEngineT::execute(const QCircuit::iterator& it)
+/// BEGIN QBaseEngine& QNoisyEngineT::execute(
+///       const typename QCircuitTraits<QCT>::iterator_type& it)
 TEST(qpp_QNoisyEngineT_execute, Iterator) {}
 
 /// BEGIN QNoisyEngineT& QNoisyEngineT::execute(
-///       const QCircuit::iterator::value_type& elem) override
+///       const typename QCircuitTraits<QCircuit>::value_type& elem) override
 TEST(qpp_QNoisyEngineT_execute, ValueType) {}
 
-/// BEGIN QEngineT& QNoisyEngineT::execute(idx reps = 1) override
+/// BEGIN QNoisyEngineT& QNoisyEngineT::execute(idx reps = 1) override
 TEST(qpp_QNoisyEngineT_execute, AllCircuitWithRepetitions) {}
 
 /// BEGIN std::vector<std::vector<idx>>
@@ -23,11 +24,11 @@ TEST(qpp_QNoisyEngineT_get_noise_results, AllTests) {}
 /// BEGIN QEngineT& QNoisyEngineT::reset(bool reset_stats = true)
 TEST(qpp_QNoisyEngineT_reset, AllTests) {}
 
-/// BEGIN virtual std::string QNoisyEngineT::traits_get_name() const
+/// BEGIN std::string QNoisyEngineT::traits_get_name() const override
 TEST(qpp_QNoisyEngineT_traits_get_name, AllTests) {}
 
-/// BEGIN virtual bool QNoisyEngineT::traits_is_noisy() const
+/// BEGIN bool QNoisyEngineT::traits_is_noisy() const override
 TEST(qpp_QNoisyEngineT_traits_is_noisy, AllTests) {}
 
-/// BEGIN virtual bool QNoisyEngineT::traits_is_pure() const
+/// BEGIN bool QNoisyEngineT::traits_is_pure() const override
 TEST(qpp_QNoisyEngineT_traits_is_pure, AllTests) {}

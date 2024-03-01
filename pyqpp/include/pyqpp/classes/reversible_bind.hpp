@@ -34,64 +34,60 @@ inline void init_classes_reversible(py::module_& m) {
     using namespace qpp;
 
     /* qpp::Dynamic_bitset */
-    auto pyDynamic_bitset =
-        py::class_<Dynamic_bitset>(m, "Dynamic_bitset")
-            .def(py::init<idx>(), py::arg("n"))
-            .def(py::init<std::string, char, char>(), py::arg("str"),
-                 py::arg("zero") = '0', py::arg("one") = '1')
+    py::class_<Dynamic_bitset>(m, "Dynamic_bitset")
+        .def(py::init<idx>(), py::arg("n"))
+        .def(py::init<std::string, char, char>(), py::arg("str"),
+             py::arg("zero") = '0', py::arg("one") = '1')
 
-            .def("all", &Dynamic_bitset::all, "True if all of the bits are set")
-            .def("any", &Dynamic_bitset::any, "True if any of the bits is set")
-            .def("count", &Dynamic_bitset::count,
-                 "Number of bits set to one in the bitset (Hamming weight)")
-            .def("flip", py::overload_cast<>(&Dynamic_bitset::flip),
-                 "Flips all bits")
-            .def("flip", py::overload_cast<idx>(&Dynamic_bitset::flip),
-                 "Flips the bit at position pos", py::arg("pos"))
-            .def("get", &Dynamic_bitset::get,
-                 "The value of the bit at position pos", py::arg("pos"))
-            .def("none", &Dynamic_bitset::none,
-                 "True if none of the bits are set")
-            .def("rand", py::overload_cast<realT>(&Dynamic_bitset::rand),
-                 "Sets all bits according to a Bernoulli(p) distribution",
-                 py::arg("p") = 0.5)
-            .def("rand", py::overload_cast<idx, realT>(&Dynamic_bitset::rand),
-                 "Sets the bit at position pos according to a Bernoulli(p) "
-                 "distribution",
-                 py::arg("pos"), py::arg("p") = 0.5)
-            .def("reset", py::overload_cast<>(&Dynamic_bitset::reset),
-                 "Sets all bits to false")
-            .def("reset", py::overload_cast<idx>(&Dynamic_bitset::reset),
-                 "Sets the bit at position pos to false", py::arg("pos"))
-            .def("set", py::overload_cast<>(&Dynamic_bitset::set),
-                 "Sets all bits to true")
-            .def("set", py::overload_cast<idx, bool>(&Dynamic_bitset::set),
-                 "Sets the bit at position pos", py::arg("pos"),
-                 py::arg("value") = true)
-            .def("size", &Dynamic_bitset::size,
-                 "Number of bits stored in the bitset")
-            .def("storage_size", &Dynamic_bitset::storage_size,
-                 "Size of the underlying storage space (in units of "
-                 "qpp::Dynamic_bitset::value_type, unsigned int by default)")
-            .def("to_string", &Dynamic_bitset::to_string,
-                 "String representation", py::arg("zero") = '0',
-                 py::arg("one") = '1')
+        .def("all", &Dynamic_bitset::all, "True if all of the bits are set")
+        .def("any", &Dynamic_bitset::any, "True if any of the bits is set")
+        .def("count", &Dynamic_bitset::count,
+             "Number of bits set to one in the bitset (Hamming weight)")
+        .def("flip", py::overload_cast<>(&Dynamic_bitset::flip),
+             "Flips all bits")
+        .def("flip", py::overload_cast<idx>(&Dynamic_bitset::flip),
+             "Flips the bit at position pos", py::arg("pos"))
+        .def("get", &Dynamic_bitset::get,
+             "The value of the bit at position pos", py::arg("pos"))
+        .def("none", &Dynamic_bitset::none, "True if none of the bits are set")
+        .def("rand", py::overload_cast<realT>(&Dynamic_bitset::rand),
+             "Sets all bits according to a Bernoulli(p) distribution",
+             py::arg("p") = 0.5)
+        .def("rand", py::overload_cast<idx, realT>(&Dynamic_bitset::rand),
+             "Sets the bit at position pos according to a Bernoulli(p) "
+             "distribution",
+             py::arg("pos"), py::arg("p") = 0.5)
+        .def("reset", py::overload_cast<>(&Dynamic_bitset::reset),
+             "Sets all bits to false")
+        .def("reset", py::overload_cast<idx>(&Dynamic_bitset::reset),
+             "Sets the bit at position pos to false", py::arg("pos"))
+        .def("set", py::overload_cast<>(&Dynamic_bitset::set),
+             "Sets all bits to true")
+        .def("set", py::overload_cast<idx, bool>(&Dynamic_bitset::set),
+             "Sets the bit at position pos", py::arg("pos"),
+             py::arg("value") = true)
+        .def("size", &Dynamic_bitset::size,
+             "Number of bits stored in the bitset")
+        .def("storage_size", &Dynamic_bitset::storage_size,
+             "Size of the underlying storage space (in units of "
+             "qpp::Dynamic_bitset::value_type, unsigned int by default)")
+        .def("to_string", &Dynamic_bitset::to_string, "String representation",
+             py::arg("zero") = '0', py::arg("one") = '1')
 
-            .def(py::self == py::self)
-            .def(py::self != py::self)
-            .def(
-                "__copy__",
-                [](const Dynamic_bitset& self) { return Dynamic_bitset(self); })
-            .def("__deepcopy__", [](const Dynamic_bitset& self,
-                                    py::dict) { return Dynamic_bitset(self); })
-            .def("__repr__",
-                 [](const Dynamic_bitset& self) {
-                     std::ostringstream oss;
-                     oss << self;
-                     return oss.str();
-                 })
-            .def("__sub__", &Dynamic_bitset::operator-,
-                 "Number of places the two bitsets differ (Hamming distance)");
+        .def(py::self == py::self)
+        .def(py::self != py::self)
+        .def("__copy__",
+             [](const Dynamic_bitset& self) { return Dynamic_bitset(self); })
+        .def("__deepcopy__", [](const Dynamic_bitset& self,
+                                py::dict) { return Dynamic_bitset(self); })
+        .def("__repr__",
+             [](const Dynamic_bitset& self) {
+                 std::ostringstream oss;
+                 oss << self;
+                 return oss.str();
+             })
+        .def("__sub__", &Dynamic_bitset::operator-,
+             "Number of places the two bitsets differ (Hamming distance)");
 
     /* qpp::Bit_circuit */
     auto pyBit_circuit =

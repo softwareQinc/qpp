@@ -1586,9 +1586,17 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
                 std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
             }
 
+// silence g++12 bogus warning -Wmaybe-uninitialized in qpp::multiidx2n()
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
             /* writes the result */
             return rA(internal::multiidx2n(midxrow, n, Cdims),
                       internal::multiidx2n(midxcoltmp, n, Cdims));
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
+#pragma GCC diagnostic pop
+#endif
         }; /* end worker */
 
         for (idx j = 0; j < D; ++j) {
