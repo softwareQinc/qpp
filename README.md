@@ -97,10 +97,5 @@ wrapper for **Quantum++**. **pyqpp** requires the same dependencies as
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-**Important**: If the installation fails due to your system being unable to
-detect the location of the Eigen3 matrix library, set the environment variable
-`EIGEN3_INSTALL_DIR` to point to the location of the Eigen3 library
-(include the `include/eigen3` part of the path).
-
 For more details, please see
 [pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md).
