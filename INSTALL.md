@@ -80,7 +80,7 @@ cmake --build build --target=bb84
 ```
 
 The command above builds only the example
-[examples/bb84](https://github.com/softwareQinc/qpp/tree/main/examples/bb84)
+[examples/bb84](https://github.com/softwareQinc/qpp/tree/main/examples/bb84.cpp)
 and outputs the executable `./build/bb84[.exe]`.
 
 ---
