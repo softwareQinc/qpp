@@ -34,7 +34,7 @@ cmake_policy(SET CMP0076 NEW)
 # Build all tests in ${TEST_FILES}
 foreach(file ${TEST_FILES})
   # Do not build "tests/MATLAB/matlab.cpp" if there's no MATLAB support
-  if(${file} STREQUAL "tests/MATLAB/matlab.cpp" AND NOT BUILD_WITH_MATLAB)
+  if(${file} STREQUAL "tests/MATLAB/matlab.cpp" AND NOT MATLAB_FOUND)
     continue()
   endif()
   target_sources(${TARGET_NAME} PUBLIC ${file})

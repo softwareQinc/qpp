@@ -58,10 +58,10 @@ option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)
 include(cmake/qpp_eigen3.cmake)
 
 # Dependencies, do not modify unless you know what you're doing
-include(cmake/qpp_dependencies.cmake)
+include(cmake/qpp_MATLAB.cmake)
 
 # Dependencies, do not modify unless you know what you're doing
-include(cmake/qpp_MATLAB.cmake)
+include(cmake/qpp_dependencies.cmake)
 
 # Unit testing
 add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/ EXCLUDE_FROM_ALL SYSTEM)

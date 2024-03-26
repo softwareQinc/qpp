@@ -25,13 +25,8 @@ as [Windows](https://www.microsoft.com/en-us/windows).
   Python 3 wrapper
 - [MATLAB](https://www.mathworks.com/products/matlab/) compiler shared
   libraries and include header files, in case you want to enable
-  interoperability with MATLAB. If enabled, allows applications build with
+  interoperability with MATLAB. If enabled, allows applications built with
   **Quantum++** to save/load **Quantum++** matrices and vectors to/from MATLAB.
-  The locations of the MATLAB compiler shared libraries and header files are
-  platform-specific, e.g., under Linux, they may be located under
-  `/usr/local/MATLAB/R2021a/bin/glnxa64` and
-  `/usr/local/MATLAB/R2021a/extern/include`, respectively. On your platform the
-  locations may of course differ.
 
 ---
 
@@ -104,18 +99,6 @@ their corresponding `CMakeLists.txt` via `findpackage(qpp ...)`.
 | `QPP_IDX`               | `default`, etc. [`default` by default] | Integer index type (`qpp::idx`)                                                                                                                                                                                     |
 |                         |                                        |                                                                                                                                                                                                                     |
 | `SANITIZE`              | `ON/OFF` [`OFF` by default]            | Enable code sanitizing (only for gcc/clang)                                                                                                                                                                         |
-
-If `QPP_MATLAB=ON` and the system could not detect your MATLAB installation,
-you can manually specify the path to MATLAB's installation directory via the
-additional CMake argument
-
-    MATLAB_INSTALL_DIR=/path/to/MATLAB
-
-If you are still receiving errors, you can manually specify the path to
-MATLAB's required libraries and header files via the additional arguments
-
-    MATLAB_LIB_DIR=/path/to/MATLAB/libs
-    MATLAB_INCLUDE_DIR=/path/to/MATLAB/headers
 
 ---
 
@@ -274,7 +257,7 @@ with [MATLAB](https://www.mathworks.com/products/matlab/) support, please add
 the
 location of
 `libmx.dll` and `libmat.dll` (the `.dll` **and not** the `.lib` files) to
-your `PATH` environment variable. In our case they are located
+your `PATH` environment variable. For example, on our platform they are located
 under `C:\Program Files\MATLAB\R2021a\bin\win64`.
 
 ---
