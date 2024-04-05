@@ -1,12 +1,11 @@
 # Installation instructions
 
 **Quantum++** is a header-only library that uses [CMake](https://cmake.org/) as
-its build/install system. **Quantum++** is platform-independent,
-supporting [UNIX](https://www.opengroup.org/membership/forums/platform/unix)
-(including
-[macOS](https://www.apple.com/macos/)) and UNIX-like operating systems
-(e.g., [Linux](https://www.linux.org)), as well
-as [Windows](https://www.microsoft.com/en-us/windows).
+its build/install system. **Quantum++** is platform-independent, supporting
+[UNIX](https://www.opengroup.org/membership/forums/platform/unix) (including
+[macOS](https://www.apple.com/macos/)) and UNIX-like operating systems (e.g.,
+[Linux](https://www.linux.org)), as well as
+[Windows](https://www.microsoft.com/en-us/windows).
 
 ---
 
@@ -256,8 +255,8 @@ If building under Windows
 with [MATLAB](https://www.mathworks.com/products/matlab/) support, please add
 the
 location of
-`libmx.dll` and `libmat.dll` (the `.dll` **and not** the `.lib` files) to
-your `PATH` environment variable. For example, on our platform they are located
+`libmx.dll` and `libmat.dll` (the `.dll` **and not** the `.lib` files) to your
+`PATH` environment variable. For example, on our platform they are located
 under `C:\Program Files\MATLAB\R2021a\bin\win64`.
 
 ---
