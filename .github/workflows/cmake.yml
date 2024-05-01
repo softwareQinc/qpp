@@ -65,5 +65,12 @@ jobs:
           fi
 
       - name: Install pyqpp
+        shell: bash
         run: |
-          pip3 install --user .
+          python3 -m venv venv
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            .\venv\Scripts\activate
+          else
+            . venv/bin/activate
+          fi
+          pip3 install .
