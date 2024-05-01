@@ -51,8 +51,8 @@ Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
 
 [Quantum++](https://github.com/softwareQinc/qpp) is distributed under the MIT
 license. Please see the
-[`LICENSE`](https://github.com/softwareQinc/qpp/blob/main/LICENSE) file for
-more details.
+[`LICENSE.txt`](https://github.com/softwareQinc/qpp/blob/main/LICENSE.txt)
+file for more details.
 
 ---
 
