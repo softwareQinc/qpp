@@ -105,8 +105,6 @@ template <typename V, typename T = V, typename U = T>
 #endif
     // no error checks in release version to improve speed
 
-    // static allocation for speed!
-    // allocate twice the size for matrices reshaped as vectors
     T part_prod = 1;
     T result = 0;
     for (std::size_t i = 1; i < numdims; ++i) {
