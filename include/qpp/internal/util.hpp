@@ -107,13 +107,11 @@ template <typename V, typename T = V, typename U = T>
 
     // static allocation for speed!
     // allocate twice the size for matrices reshaped as vectors
-    T part_prod[2 * internal::maxn];
-
+    T part_prod = 1;
     T result = 0;
-    part_prod[numdims - 1] = 1;
     for (std::size_t i = 1; i < numdims; ++i) {
-        part_prod[numdims - i - 1] = part_prod[numdims - i] * dims[numdims - i];
-        result += midx[numdims - i - 1] * part_prod[numdims - i - 1];
+        part_prod = part_prod * dims[numdims - i];
+        result += midx[numdims - i - 1] * part_prod;
     }
 
     return result + midx[numdims - 1];
