@@ -86,7 +86,7 @@ struct Display_Impl_ {
     template <typename T>
     // T must support rows(), cols(), operator()(idx, idx) const
     std::ostream& display_impl_(const T& A, std::ostream& os,
-                                IOManipEigenOpts opts) const {
+                                const IOManipEigenOpts& opts) const {
         std::ostringstream ostr;
         ostr.copyfmt(os); // copy os' state
 

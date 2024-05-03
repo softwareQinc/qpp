@@ -552,14 +552,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * internal vector of classical dits returned by qpp::QEngine::get_dits()
      * \return Reference to the current instance
      */
-    QEngineT& set_dits(std::vector<idx> dits) {
+    QEngineT& set_dits(const std::vector<idx>& dits) {
         // EXCEPTION CHECKS
 
         if (dits.size() != qeng_st_.dits_.size()) {
             throw exception::SizeMismatch("qpp::QEngineT::set_dits()", "dits");
         }
         // END EXCEPTION CHECKS
-        qeng_st_.dits_ = std::move(dits);
+        qeng_st_.dits_ = dits;
 
         return *this;
     }
@@ -713,7 +713,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                         if (!qeng_st_.dits_.empty()) {
                             {
                                 bool should_apply = true;
-                                idx first_dit;
+                                idx first_dit = 0;
                                 // we have a shift
                                 if (gate_step.shift_.has_value()) {
                                     first_dit =

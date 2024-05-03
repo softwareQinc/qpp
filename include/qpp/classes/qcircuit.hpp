@@ -3821,7 +3821,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         circuit_.emplace_back(MeasurementStep{
             MeasurementStep::Type::DISCARD, std::vector<std::size_t>{m_hash},
-            std::vector<idx>{target}, static_cast<idx>(-1), name});
+            std::vector<idx>{target}, static_cast<idx>(-1), std::move(name)});
         //++measurement_count_[m_hash];
 
         clean_qudits_[target] = false;
@@ -3872,7 +3872,7 @@ class QCircuit : public IDisplay, public IJSON {
         circuit_.emplace_back(
             MeasurementStep{MeasurementStep::Type::DISCARD_MANY,
                             std::vector<std::size_t>{m_hash}, target,
-                            static_cast<idx>(-1), name});
+                            static_cast<idx>(-1), std::move(name)});
         //++measurement_count_[m_hash];
 
         for (idx elem : target) {
@@ -3927,7 +3927,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         circuit_.emplace_back(MeasurementStep{
             MeasurementStep::Type::RESET, std::vector<std::size_t>{m_hash},
-            std::vector<idx>{target}, static_cast<idx>(-1), name});
+            std::vector<idx>{target}, static_cast<idx>(-1), std::move(name)});
         //++measurement_count_[m_hash];
 
         return *this;
@@ -3973,7 +3973,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         circuit_.emplace_back(MeasurementStep{
             MeasurementStep::Type::RESET_MANY, std::vector<std::size_t>{m_hash},
-            target, static_cast<idx>(-1), name});
+            target, static_cast<idx>(-1), std::move(name)});
         //++measurement_count_[m_hash];
 
         return *this;
@@ -4572,7 +4572,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit&
-    compose_CTRL_circuit(const std::vector<idx>& ctrl, QCircuit qc_target,
+    compose_CTRL_circuit(const std::vector<idx>& ctrl, const QCircuit& qc_target,
                          bigint pos_qudit,
                          std::optional<std::vector<idx>> shift = std::nullopt,
                          std::optional<idx> pos_dit = std::nullopt) {
@@ -4775,8 +4775,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \param qc Quantum circuit description
      * \return Reference to the current instance
      */
-    QCircuit& kron(QCircuit qc) {
-        compose_circuit(std::move(qc), static_cast<bigint>(nq_));
+    QCircuit& kron(const QCircuit& qc) {
+        compose_circuit(qc, static_cast<bigint>(nq_));
 
         return *this;
     }
@@ -6272,7 +6272,7 @@ inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
     }
     // END EXCEPTION CHECK
 
-    QCircuit qc{static_cast<idx>(n + m), n, d, name};
+    QCircuit qc{static_cast<idx>(n + m), n, d, std::move(name)};
     std::vector<idx> counting_qubits(n);
     std::iota(counting_qubits.begin(), counting_qubits.end(), 0);
     std::vector<idx> ancilla(m);

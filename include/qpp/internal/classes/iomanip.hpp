@@ -55,7 +55,7 @@ class IOManipScalar : public IDisplay {
 
   public:
     IOManipScalar(Scalar scalar, IOManipScalarOpts opts)
-        : scalar_{scalar}, opts_{opts} {}
+        : scalar_{scalar}, opts_{std::move(opts)} {}
 
   private:
     std::ostream& display(std::ostream& os) const override {
