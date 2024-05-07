@@ -108,7 +108,7 @@ template <typename V, typename T = V, typename U = T>
     T part_prod = 1;
     T result = 0;
     for (std::size_t i = 1; i < numdims; ++i) {
-        part_prod = part_prod * dims[numdims - i];
+        part_prod *= dims[numdims - i];
         result += midx[numdims - i - 1] * part_prod;
     }
 
