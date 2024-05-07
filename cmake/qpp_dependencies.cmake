@@ -150,6 +150,7 @@ endif()
 # Force clang to use libc++
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
   add_compile_options(-stdlib=libc++)
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
 endif()
 
 # GNU gcc additional debug settings

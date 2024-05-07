@@ -575,8 +575,8 @@ class QCircuit : public IDisplay, public IJSON {
         std::ostream& display(std::ostream& os) const override {
             os << "[Resources]\n";
 
-            os << "<QCircuit "
-               << "nq: " << nq << ", nc: " << nc << ", d: " << d;
+            os << "<QCircuit " << "nq: " << nq << ", nc: " << nc
+               << ", d: " << d;
 
             if (name.has_value()) {
                 os << ", name: " << std::quoted(name.value());
@@ -1251,7 +1251,7 @@ class QCircuit : public IDisplay, public IJSON {
                     }
                 }
             } // end if
-        }     // end for
+        } // end for
 
         return found ? *std::max_element(heights.begin(), heights.end()) : 0;
     }
@@ -1353,8 +1353,8 @@ class QCircuit : public IDisplay, public IJSON {
                         }
                         break;
                 } // end switch
-            }     // end if
-        }         // end for
+            } // end if
+        } // end for
 
         return found ? *std::max_element(heights.begin(), heights.end()) : 0;
     }
@@ -4572,8 +4572,8 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit&
-    compose_CTRL_circuit(const std::vector<idx>& ctrl, const QCircuit& qc_target,
-                         bigint pos_qudit,
+    compose_CTRL_circuit(const std::vector<idx>& ctrl,
+                         const QCircuit& qc_target, bigint pos_qudit,
                          std::optional<std::vector<idx>> shift = std::nullopt,
                          std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
@@ -5324,7 +5324,7 @@ class QCircuit : public IDisplay, public IJSON {
                     },
                 },
                 elem.get_step());
-        }                // end for
+        } // end for
         result += "], "; // end steps
 
         result += get_resources().to_JSON(false) + ", ";
