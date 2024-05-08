@@ -71,6 +71,7 @@ int main() {
     result = applyCTRL(result, adjoint(sqrtx), {1}, {2});
     result = applyCTRL(result, gt.X, {0}, {1});
     result = applyCTRL(result, sqrtx, {0}, {2});
-    std::cout << ">> Sleator Weinfurter construction output state:\n";
+    std::cout
+        << ">> Barenco et. al. [quant-ph/9503016] construction output state:\n";
     std::cout << disp(dirac(result)) << "\n\n";
 }
