@@ -1,5 +1,5 @@
 // Toffoli gate simulation
-// Source: ./examples/circuits/toffoli.cpp
+// Source: ./examples/toffoli.cpp
 
 #include <iostream>
 
@@ -55,7 +55,7 @@ int main() {
     std::cout << disp(dirac(result)) << "\n\n";
 
     /**
-     * Sleator weinfurter construction
+     * Sleator Weinfurter construction
      * V * V = X
      *
      *  -----+-------+---+---
@@ -71,6 +71,6 @@ int main() {
     result = applyCTRL(result, adjoint(sqrtx), {1}, {2});
     result = applyCTRL(result, gt.X, {0}, {1});
     result = applyCTRL(result, sqrtx, {0}, {2});
-    std::cout << ">> sleator weinfurter construction output state:\n";
+    std::cout << ">> Sleator Weinfurter construction output state:\n";
     std::cout << disp(dirac(result)) << "\n\n";
 }
