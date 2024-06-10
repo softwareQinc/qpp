@@ -39,19 +39,19 @@
 #ifndef QPP_QPP_H_
 #define QPP_QPP_H_
 
-// ignore warnings for unknown C++17 attributes (we use such "custom" attributes
-// internally, the compiler is supposed to ignore them according to the C++17
-// standard)
+// Ignore warnings for unknown C++17 attributes (we use such "custom"
+// attributes internally, the compiler is supposed to ignore them according to
+// the C++17 standard)
 
-// Intel icc
+// Intel
 #if defined(__INTEL_COMPILER)
 #pragma warning(disable : 3924)
 
-// clang
+// Clang
 #elif defined(__clang__)
 #pragma clang diagnostic ignored "-Wunknown-attributes"
 
-// gcc
+// GCC
 #elif defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma GCC diagnostic ignored "-Wattributes"
 

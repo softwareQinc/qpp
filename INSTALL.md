@@ -11,8 +11,8 @@ its build/install system. **Quantum++** is platform-independent, supporting
 
 ## Pre-requisites
 
-- C++17 compliant compiler, e.g., [gcc](https://gcc.gnu.org/)
-  , [clang](https://clang.llvm.org)
+- C++17 compliant compiler, e.g., [GCC](https://gcc.gnu.org/)
+  , [Clang](https://clang.llvm.org)
   , [MSVC](https://visualstudio.microsoft.com/vs/) etc.
 - [CMake](https://cmake.org/)
 - [Eigen 3](https://eigen.tuxfamily.org) linear algebra library. If missing, it
@@ -97,7 +97,7 @@ their corresponding `CMakeLists.txt` via `findpackage(qpp ...)`.
 | `QPP_FP`                | `default`, etc. [`default` by default] | Floating-point type (`qpp::realT`)                                                                                                                                                                                  |
 | `QPP_IDX`               | `default`, etc. [`default` by default] | Integer index type (`qpp::idx`)                                                                                                                                                                                     |
 |                         |                                        |                                                                                                                                                                                                                     |
-| `SANITIZE`              | `ON/OFF` [`OFF` by default]            | Enable code sanitizing (only for gcc/clang)                                                                                                                                                                         |
+| `SANITIZE`              | `ON/OFF` [`OFF` by default]            | Enable code sanitizing (only for GCC/Clang)                                                                                                                                                                         |
 
 ---
 
