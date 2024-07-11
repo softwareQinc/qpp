@@ -25,8 +25,8 @@
  */
 
 /**
- * \file classes/engines.hpp
- * \brief Quantum engines
+ * \file classes/qnoisy_engine.hpp
+ * \brief Noisy quantum engines
  */
 
 #ifndef QPP_CLASSES_ENGINES_HPP_
@@ -200,8 +200,8 @@ struct QNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
 };
 // template deduction rule
 template <class NoiseModel>
-QNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
-    -> QNoisyEngine<NoiseModel>;
+QNoisyEngine(const qpp::QCircuit& qc,
+             const NoiseModel& noise) -> QNoisyEngine<NoiseModel>;
 
 /**
  * \class qpp::QKetNoisyEngine
@@ -220,8 +220,8 @@ struct QKetNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
 };
 // template deduction rule
 template <class NoiseModel>
-QKetNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
-    -> QKetNoisyEngine<NoiseModel>;
+QKetNoisyEngine(const qpp::QCircuit& qc,
+                const NoiseModel& noise) -> QKetNoisyEngine<NoiseModel>;
 
 /**
  * \class qpp::QDensityNoisyEngine
@@ -242,8 +242,8 @@ struct QDensityNoisyEngine : public QNoisyEngineT<cmat, NoiseModel> {
 };
 // template deduction rule
 template <class NoiseModel>
-QDensityNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
-    -> QDensityNoisyEngine<NoiseModel>;
+QDensityNoisyEngine(const qpp::QCircuit& qc,
+                    const NoiseModel& noise) -> QDensityNoisyEngine<NoiseModel>;
 
 } /* namespace qpp */
 

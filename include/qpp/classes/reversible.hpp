@@ -861,7 +861,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
             ", \"total gate count\" : " + std::to_string(get_gate_count());
         result +=
             ", \"total gate depth\" : " + std::to_string(get_gate_depth());
-        result += R"(, "bit state" : ")" + this->to_string() + '\"';
+        result += ", \"bit state\" : \"" + this->to_string() + '\"';
         result += ", \"Hamming weight\" : " + std::to_string(count());
 
         if (enclosed_in_curly_brackets) {
