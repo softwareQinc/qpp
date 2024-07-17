@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/layouts.hpp
+ * \file qpp/classes/layouts.hpp
  * \see qpp::ILayout
  * \brief Various qudit placement layouts, all must implement the interface
  * \a qpp::ILayout

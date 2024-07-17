@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/qdummy_engine.hpp
+ * \file qpp/classes/qdummy_engine.hpp
  * \brief No-op (dummy) quantum engines
  */
 

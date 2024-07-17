@@ -25,7 +25,7 @@
  */
 
 /**
- * \file statistics.hpp
+ * \file qpp/statistics.hpp
  * \brief Statistics functions
  */
 

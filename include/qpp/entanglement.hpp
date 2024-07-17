@@ -25,7 +25,7 @@
  */
 
 /**
- * \file entanglement.hpp
+ * \file qpp/entanglement.hpp
  * \brief Entanglement functions
  */
 

@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/exception.hpp
+ * \file qpp/classes/exception.hpp
  * \brief Exceptions
  */
 

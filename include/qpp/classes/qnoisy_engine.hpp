@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/qnoisy_engine.hpp
+ * \file qpp/classes/qnoisy_engine.hpp
  * \brief Noisy quantum engines
  */
 

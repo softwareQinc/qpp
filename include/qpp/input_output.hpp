@@ -25,7 +25,7 @@
  */
 
 /**
- * \file input_output.hpp
+ * \file qpp/input_output.hpp
  * \brief Input/output functions
  */
 

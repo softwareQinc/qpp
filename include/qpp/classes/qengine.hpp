@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/qengine.hpp
+ * \file qpp/classes/qengine.hpp
  * \brief Quantum engines
  */
 

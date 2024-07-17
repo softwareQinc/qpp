@@ -25,7 +25,7 @@
  */
 
 /**
- * \file number_theory.hpp
+ * \file qpp/number_theory.hpp
  * \brief Number theory functions
  */
 

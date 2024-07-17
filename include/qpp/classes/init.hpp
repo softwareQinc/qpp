@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/init.hpp
+ * \file qpp/classes/init.hpp
  * \brief Initialization
  */
 

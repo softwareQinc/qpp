@@ -25,7 +25,7 @@
  */
 
 /**
- * \file functions.hpp
+ * \file qpp/functions.hpp
  * \brief Generic quantum computing functions
  */
 

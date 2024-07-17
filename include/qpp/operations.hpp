@@ -25,7 +25,7 @@
  */
 
 /**
- * \file operations.hpp
+ * \file qpp/operations.hpp
  * \brief Quantum operation functions
  */
 

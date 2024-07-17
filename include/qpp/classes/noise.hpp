@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/noise.hpp
+ * \file qpp/classes/noise.hpp
  * \brief Noise models
  */
 

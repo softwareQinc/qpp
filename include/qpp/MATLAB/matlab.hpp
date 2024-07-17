@@ -25,7 +25,7 @@
  */
 
 /**
- * \file MATLAB/matlab.hpp
+ * \file qpp/MATLAB/matlab.hpp
  * \brief Input/output interfacing with MATLAB
  */
 

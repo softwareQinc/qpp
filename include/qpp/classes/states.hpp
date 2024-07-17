@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/states.hpp
+ * \file qpp/classes/states.hpp
  * \brief Quantum states
  */
 

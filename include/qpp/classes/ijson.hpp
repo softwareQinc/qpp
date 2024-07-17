@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/ijson.hpp
+ * \file qpp/classes/ijson.hpp
  * \brief Basic JSON serialization
  */
 

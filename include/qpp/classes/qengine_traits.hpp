@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/qengine_traits.hpp
+ * \file qpp/classes/qengine_traits.hpp
  * \brief Quantum engine traits (run-time)
  */
 

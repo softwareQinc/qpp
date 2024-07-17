@@ -25,7 +25,7 @@
  */
 
 /**
- * \file instruments.hpp
+ * \file qpp/instruments.hpp
  * \brief Measurement functions
  */
 

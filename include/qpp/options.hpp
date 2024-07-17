@@ -25,7 +25,7 @@
  */
 
 /**
- * \file options.hpp
+ * \file qpp/options.hpp
  * \brief Options
  */
 

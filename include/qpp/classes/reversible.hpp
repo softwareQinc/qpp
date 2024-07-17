@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/reversible.hpp
+ * \file qpp/classes/reversible.hpp
  * \brief Support for classical reversible circuits
  */
 

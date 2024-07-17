@@ -25,7 +25,7 @@
  */
 
 /**
- * \file entropies.hpp
+ * \file qpp/entropies.hpp
  * \brief Entropy functions
  */
 

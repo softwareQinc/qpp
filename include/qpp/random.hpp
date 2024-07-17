@@ -25,7 +25,7 @@
  */
 
 /**
- * \file random.hpp
+ * \file qpp/random.hpp
  * \brief Randomness-related functions
  */
 

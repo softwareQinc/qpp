@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/gates.hpp
+ * \file qpp/classes/gates.hpp
  * \brief Quantum gates
  */
 

@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/qcircuit_traits.hpp
+ * \file qpp/classes/qcircuit_traits.hpp
  * \brief Quantum circuit traits (compile-time)
  */
 

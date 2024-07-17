@@ -25,7 +25,7 @@
  */
 
 /**
- * \file internal/util.hpp
+ * \file qpp/internal/util.hpp
  * \brief Internal utility functions
  */
 

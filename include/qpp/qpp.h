@@ -32,7 +32,7 @@
 // ALWAYS include it in main.cpp
 
 /**
- * \file qpp.h
+ * \file qpp/qpp.h
  * \brief Quantum++ main header file, includes all other required headers
  */
 

@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/codes.hpp
+ * \file qpp/classes/codes.hpp
  * \brief Quantum error correcting codes
  */
 
