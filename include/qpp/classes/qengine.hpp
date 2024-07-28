@@ -60,6 +60,9 @@
 #include "qpp/classes/qcircuit.hpp"
 #include "qpp/classes/states.hpp"
 
+#include "qpp/internal/classes/qcircuit_gate_step.hpp"
+#include "qpp/internal/classes/qcircuit_measurement_step.hpp"
+
 namespace qpp {
 namespace internal {
 /**
@@ -669,24 +672,24 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         std::visit(
             overloaded{
-                [&](const QCircuit::GateStep& gate_step) {
+                [&](const internal::QCircuitGateStep& gate_step) {
                     std::vector<idx> ctrl_rel_pos;
                     std::vector<idx> target_rel_pos =
                         get_relative_pos_(gate_step.target_);
 
                     // regular gate
                     switch (gate_step.gate_type_) {
-                        case QCircuit::GateStep::Type::NONE:
+                        case internal::QCircuitGateStep::Type::NONE:
                             break;
-                        case QCircuit::GateStep::Type::SINGLE:
-                        case QCircuit::GateStep::Type::TWO:
-                        case QCircuit::GateStep::Type::THREE:
-                        case QCircuit::GateStep::Type::JOINT:
+                        case internal::QCircuitGateStep::Type::SINGLE:
+                        case internal::QCircuitGateStep::Type::TWO:
+                        case internal::QCircuitGateStep::Type::THREE:
+                        case internal::QCircuitGateStep::Type::JOINT:
                             qeng_st_.qstate_ = apply(
                                 qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
                                 target_rel_pos, d);
                             break;
-                        case QCircuit::GateStep::Type::FAN:
+                        case internal::QCircuitGateStep::Type::FAN:
                             for (idx m = 0;
                                  m < static_cast<idx>(gate_step.target_.size());
                                  ++m) {
@@ -704,8 +707,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     if (QCircuit::is_CTRL(gate_step)) {
                         ctrl_rel_pos =
                             get_relative_pos_(gate_step.ctrl_.value());
-                        bool is_fan = (gate_step.gate_type_ ==
-                                       QCircuit::GateStep::Type::CTRL_FAN);
+                        bool is_fan =
+                            (gate_step.gate_type_ ==
+                             internal::QCircuitGateStep::Type::CTRL_FAN);
                         qeng_st_.qstate_ =
                             is_fan ? applyCTRL_fan(qeng_st_.qstate_,
                                                    h_tbl[gate_step.gate_hash_],
@@ -719,8 +723,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
                     // classically-controlled gate
                     if (QCircuit::is_cCTRL(gate_step)) {
-                        bool is_fan = (gate_step.gate_type_ ==
-                                       QCircuit::GateStep::Type::cCTRL_FAN);
+                        bool is_fan =
+                            (gate_step.gate_type_ ==
+                             internal::QCircuitGateStep::Type::cCTRL_FAN);
                         if (!qeng_st_.dits_.empty()) {
                             {
                                 bool should_apply = true;
@@ -801,7 +806,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                         }
                     } // end if classically-controlled gate
                 },
-                [&](const QCircuit::MeasurementStep& measure_step) {
+                [&](const internal::QCircuitMeasurementStep& measure_step) {
                     std::vector<idx> target_rel_pos =
                         get_relative_pos_(measure_step.target_);
 
@@ -811,9 +816,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     std::vector<T> states;
 
                     switch (measure_step.measurement_type_) {
-                        case QCircuit::MeasurementStep::Type::NONE:
+                        case internal::QCircuitMeasurementStep::Type::NONE:
                             break;
-                        case QCircuit::MeasurementStep::Type::MEASURE:
+                        case internal::QCircuitMeasurementStep::Type::MEASURE:
                             std::tie(results, probs, qeng_st_.qstate_) =
                                 measure_seq(qeng_st_.qstate_, target_rel_pos,
                                             d);
@@ -821,7 +826,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                             qeng_st_.probs_[measure_step.c_reg_] = probs[0];
                             set_measured_(measure_step.target_[0]);
                             break;
-                        case QCircuit::MeasurementStep::Type::POST_SELECT:
+                        case internal::QCircuitMeasurementStep::Type::
+                            POST_SELECT:
                             std::tie(results, probs, qeng_st_.qstate_) =
                                 measure_seq(qeng_st_.qstate_, target_rel_pos,
                                             d);
@@ -835,7 +841,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                                 std::cerr << "ps failed!" << std::endl;
                             }
                             break;
-                        case QCircuit::MeasurementStep::Type::MEASURE_MANY:
+                        case internal::QCircuitMeasurementStep::Type::
+                            MEASURE_MANY:
                             std::tie(results, probs, qeng_st_.qstate_) =
                                 measure_seq(qeng_st_.qstate_, target_rel_pos,
                                             d);
@@ -849,7 +856,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                                 set_measured_(target);
                             }
                             break;
-                        case QCircuit::MeasurementStep::Type::MEASURE_V:
+                        case internal::QCircuitMeasurementStep::Type::MEASURE_V:
                             std::tie(mres, probs, states) =
                                 measure(qeng_st_.qstate_,
                                         h_tbl[measure_step.mats_hash_[0]],
@@ -859,7 +866,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                             qeng_st_.probs_[measure_step.c_reg_] = probs[mres];
                             set_measured_(measure_step.target_[0]);
                             break;
-                        case QCircuit::MeasurementStep::Type::MEASURE_V_JOINT:
+                        case internal::QCircuitMeasurementStep::Type::
+                            MEASURE_V_JOINT:
                             std::tie(mres, probs, states) =
                                 measure(qeng_st_.qstate_,
                                         h_tbl[measure_step.mats_hash_[0]],
@@ -871,14 +879,16 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                                 set_measured_(target);
                             }
                             break;
-                        case QCircuit::MeasurementStep::Type::MEASURE_ND:
+                        case internal::QCircuitMeasurementStep::Type::
+                            MEASURE_ND:
                             std::tie(results, probs, qeng_st_.qstate_) =
                                 measure_seq(qeng_st_.qstate_, target_rel_pos, d,
                                             false);
                             qeng_st_.dits_[measure_step.c_reg_] = results[0];
                             qeng_st_.probs_[measure_step.c_reg_] = probs[0];
                             break;
-                        case QCircuit::MeasurementStep::Type::MEASURE_MANY_ND:
+                        case internal::QCircuitMeasurementStep::Type::
+                            MEASURE_MANY_ND:
                             std::tie(results, probs, qeng_st_.qstate_) =
                                 measure_seq(qeng_st_.qstate_, target_rel_pos, d,
                                             false);
@@ -889,8 +899,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                                       std::next(qeng_st_.probs_.begin(),
                                                 measure_step.c_reg_));
                             break;
-                        case QCircuit::MeasurementStep::Type::MEASURE_V_ND:
-                        case QCircuit::MeasurementStep::Type::
+                        case internal::QCircuitMeasurementStep::Type::
+                            MEASURE_V_ND:
+                        case internal::QCircuitMeasurementStep::Type::
                             MEASURE_V_JOINT_ND:
                             std::tie(mres, probs, states) =
                                 measure(qeng_st_.qstate_,
@@ -900,19 +911,21 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                             qeng_st_.dits_[measure_step.c_reg_] = mres;
                             qeng_st_.probs_[measure_step.c_reg_] = probs[mres];
                             break;
-                        case QCircuit::MeasurementStep::Type::RESET:
-                        case QCircuit::MeasurementStep::Type::RESET_MANY:
+                        case internal::QCircuitMeasurementStep::Type::RESET:
+                        case internal::QCircuitMeasurementStep::Type::
+                            RESET_MANY:
                             qeng_st_.qstate_ =
                                 qpp::reset(qeng_st_.qstate_, target_rel_pos, d);
                             break;
-                        case QCircuit::MeasurementStep::Type::DISCARD:
+                        case internal::QCircuitMeasurementStep::Type::DISCARD:
                             std::tie(std::ignore, std::ignore,
                                      qeng_st_.qstate_) =
                                 measure_seq(qeng_st_.qstate_, target_rel_pos,
                                             d);
                             set_measured_(measure_step.target_[0]);
                             break;
-                        case QCircuit::MeasurementStep::Type::DISCARD_MANY:
+                        case internal::QCircuitMeasurementStep::Type::
+                            DISCARD_MANY:
                             std::tie(std::ignore, std::ignore,
                                      qeng_st_.qstate_) =
                                 measure_seq(qeng_st_.qstate_, target_rel_pos,
@@ -923,7 +936,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                             break;
                     } // end switch on measurement type
                 },
-                [&](const QCircuit::NOPStep&) {},
+                [&](const internal::QCircuitNOPStep&) {},
             },
             elem.get_step());
 
@@ -1206,6 +1219,7 @@ struct QDensityEngine : public QEngineT<cmat> {
     std::string traits_get_name() const override { return "QDensityEngine"; }
     // end traits
 };
+
 } /* namespace qpp */
 
 #endif /* QPP_CLASSES_QENGINE_HPP_ */
