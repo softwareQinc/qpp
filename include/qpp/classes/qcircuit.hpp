@@ -62,6 +62,7 @@
 #include "qpp/internal/util.hpp"
 
 namespace qpp {
+// forward declaration
 namespace internal {
 class QCircuitIterator;
 }
@@ -4597,15 +4598,15 @@ class QCircuit : public IDisplay, public IJSON {
 
 namespace internal {
 /**
- * \class qpp::QCircuitIterator
+ * \class qpp::internal::QCircuitIterator
  * \brief Quantum circuit description bound-checking (safe) forward iterator
  *
  * \note The iterator is a const_iterator by default
  */
 class QCircuitIterator {
     /**
-     * \class qpp::QCircuitIterator::value_type_
-     * \brief Value type class for qpp::QCircuitIterator
+     * \class qpp::internal::QCircuitIterator::value_type_
+     * \brief Value type class for qpp::internal::QCircuitIterator
      */
     class value_type_ : public IDisplay /*, IJSON*/ {
         ///< non-owning pointer to the grand-parent const quantum circuit
@@ -4816,7 +4817,7 @@ class QCircuitIterator {
         // protects against incrementing invalid iterators
         if (qc_ptr_ == nullptr) {
             throw exception::InvalidIterator(
-                "qpp::QCircuitIterator::operator++()",
+                "qpp::internal::QCircuitIterator::operator++()",
                 "No qpp::QCircuit assigned");
         }
 
@@ -4824,14 +4825,14 @@ class QCircuitIterator {
         // protects against incrementing an empty circuit iterator
         if (num_steps == 0) {
             throw exception::InvalidIterator(
-                "qpp::QCircuitIterator::operator++()",
+                "qpp::internal::QCircuitIterator::operator++()",
                 "Zero-sized qpp::QCircuit");
         }
 
         // protects against incrementing past the end
         if (ip_ == num_steps) {
             throw exception::InvalidIterator(
-                "qpp::QCircuitIterator::operator++()",
+                "qpp::internal::QCircuitIterator::operator++()",
                 "Incrementing past the end");
         }
         // END EXCEPTION CHECKS
@@ -4887,17 +4888,17 @@ class QCircuitIterator {
         idx num_steps = qc_ptr_->get_step_count();
         if (qc_ptr_ == nullptr) {
             throw exception::InvalidIterator(
-                "qpp::QCircuitIterator::operator*()",
+                "qpp::internal::QCircuitIterator::operator*()",
                 "No qpp::QCircuit assigned");
         }
         if (num_steps == 0) {
             throw exception::InvalidIterator(
-                "qpp::QCircuitIterator::operator*()",
+                "qpp::internal::QCircuitIterator::operator*()",
                 "Zero-sized qpp::QCircuit");
         }
         if (ip_ == num_steps) {
             throw exception::InvalidIterator(
-                "qpp::QCircuitIterator::operator*()",
+                "qpp::internal::QCircuitIterator::operator*()",
                 "Dereferencing past the end");
         }
         // END EXCEPTION CHECKS
