@@ -775,7 +775,7 @@ class QCircuit : public IDisplay, public IJSON {
         nq_ += n;
 
         // update gate indexes
-        auto visit_gate_step_fn =
+        auto gate_step_visitor =
             [&](internal::QCircuitGateStep& gate_step) { // update ctrl indexes
                 if (is_CTRL(gate_step)) {
                     for (idx& elem : gate_step.ctrl_.value()) {
@@ -792,7 +792,7 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         // update measurement indexes
-        auto visit_measurement_step_fn =
+        auto measurement_step_visitor =
             [&](internal::QCircuitMeasurementStep& measurement_step) {
                 for (idx& elem : measurement_step.target_) {
                     if (elem >= pos) {
@@ -800,10 +800,10 @@ class QCircuit : public IDisplay, public IJSON {
                     }
                 }
             };
-        auto visit_nop_step_fn = [&](internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
 
-        visit_circuit_(circuit_, visit_gate_step_fn, visit_measurement_step_fn,
-                       visit_nop_step_fn);
+        visit_circuit_(circuit_, gate_step_visitor, measurement_step_visitor,
+                       nop_step_visitor);
 
         // update the destructively measured qudits
         measured_.insert(
@@ -852,7 +852,7 @@ class QCircuit : public IDisplay, public IJSON {
         nc_ += n;
 
         // update cCTRL gate indexes
-        auto visit_gate_step_fn = [&](internal::QCircuitGateStep& gate_step) {
+        auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             if (is_cCTRL(gate_step)) {
                 for (idx& elem : gate_step.ctrl_.value()) {
                     if (elem >= pos) {
@@ -862,16 +862,16 @@ class QCircuit : public IDisplay, public IJSON {
             }
         };
         // update measurement indexes
-        auto visit_measurement_step_fn =
+        auto measurement_step_visitor =
             [&](internal::QCircuitMeasurementStep& measurement_step) {
                 if (measurement_step.c_reg_ >= pos) {
                     measurement_step.c_reg_ += n;
                 }
             };
-        auto visit_nop_step_fn = [&](internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
 
-        visit_circuit_(circuit_, visit_gate_step_fn, visit_measurement_step_fn,
-                       visit_nop_step_fn);
+        visit_circuit_(circuit_, gate_step_visitor, measurement_step_visitor,
+                       nop_step_visitor);
 
         // update (enlarge) the clean dits vector
         clean_dits_.insert(
@@ -3483,7 +3483,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_dit(other.nc_, pos_dit.value());
 
         // STEP 1: update [c]ctrl and target indexes of other
-        auto visit_gate_step_fn = [&](internal::QCircuitGateStep& gate_step) {
+        auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             // update the cctrl indexes
             if (is_cCTRL(gate_step)) {
                 for (idx& pos : gate_step.ctrl_.value()) {
@@ -3504,7 +3504,7 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             }
         };
-        auto visit_measurement_step_fn =
+        auto measurement_step_visitor =
             [&](internal::QCircuitMeasurementStep& measurement_step) {
                 measurement_step.c_reg_ += pos_dit.value();
                 if (pos_qudit >= 0) {
@@ -3513,10 +3513,10 @@ class QCircuit : public IDisplay, public IJSON {
                     }
                 }
             };
-        auto visit_nop_step_fn = [&](internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
 
-        visit_circuit_(other.circuit_, visit_gate_step_fn,
-                       visit_measurement_step_fn, visit_nop_step_fn);
+        visit_circuit_(other.circuit_, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor);
 
         // STEP 2
         // replace the corresponding elements of measured_, measured_nd_,
@@ -3658,7 +3658,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         // STEP 1: update [c]ctrl and target indexes of other
         // update gate_step indexes of other
-        auto visit_gate_step_fn = [&](internal::QCircuitGateStep& gate_step) {
+        auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             // update the cctrl indexes
             if (is_cCTRL(gate_step)) {
                 for (idx& dit : gate_step.ctrl_.value()) {
@@ -3677,17 +3677,17 @@ class QCircuit : public IDisplay, public IJSON {
             }
         };
         // update measurement_step indexes of other
-        auto visit_measurement_step_fn =
+        auto measurement_step_visitor =
             [&](internal::QCircuitMeasurementStep& measurement_step) {
                 measurement_step.c_reg_ += pos_dit.value();
                 for (idx& pos : measurement_step.target_) {
                     pos = target[pos];
                 }
             };
-        auto visit_nop_step_fn = [&](internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
 
-        visit_circuit_(other.circuit_, visit_gate_step_fn,
-                       visit_measurement_step_fn, visit_nop_step_fn);
+        visit_circuit_(other.circuit_, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor);
 
         // TODO check this
 
@@ -3825,7 +3825,7 @@ class QCircuit : public IDisplay, public IJSON {
         //
         // update [c]ctrl, target, and measurement indexes of other
         // update gate indexes
-        auto visit_gate_step_fn = [&](internal::QCircuitGateStep& gate_step) {
+        auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             // update the cctrl indexes
             if (is_cCTRL(gate_step)) {
                 for (idx& dit : gate_step.ctrl_.value()) {
@@ -3844,17 +3844,17 @@ class QCircuit : public IDisplay, public IJSON {
             }
         };
         // update measurement indexes
-        auto visit_measurement_step_fn =
+        auto measurement_step_visitor =
             [&](internal::QCircuitMeasurementStep& measurement_step) {
                 measurement_step.c_reg_ += pos_dit.value();
                 for (idx& pos : measurement_step.target_) {
                     pos = target[pos];
                 }
             };
-        auto visit_nop_step_fn = [&](internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
 
-        visit_circuit_(other.circuit_, visit_gate_step_fn,
-                       visit_measurement_step_fn, visit_nop_step_fn);
+        visit_circuit_(other.circuit_, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor);
 
         // TODO check this
 
@@ -4061,7 +4061,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         // modify all gate steps to control gate steps in the added
         // qc_target then enlarge ctrl and shift accordingly
-        auto visit_gate_step_fn = [&](internal::QCircuitGateStep& gate_step) {
+        auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             switch (gate_step.gate_type_) {
                 // don't do anything to these gates and return
                 case internal::QCircuitGateStep::Type::NONE:
@@ -4124,13 +4124,13 @@ class QCircuit : public IDisplay, public IJSON {
             }
         };
         // measurements are left unchanged
-        auto visit_measurement_step_fn =
+        auto measurement_step_visitor =
             [&](const internal::QCircuitMeasurementStep&) {};
         // NOPs are left unchanged
-        auto visit_nop_step_fn = [&](const internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
         for (idx i = end_ctrl_circuit; i < end_composed_circuit; ++i) {
-            visit_circuit_step_(circuit_[i], visit_gate_step_fn,
-                                visit_measurement_step_fn, visit_nop_step_fn);
+            visit_circuit_step_(circuit_[i], gate_step_visitor,
+                                measurement_step_visitor, nop_step_visitor);
         }
 
         return *this;
@@ -4218,7 +4218,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::reverse(circuit_.begin(), circuit_.end());
 
-        auto visit_gate_step_fn = [&](internal::QCircuitGateStep& gate_step) {
+        auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             // get the gate and its corresponding
             // hash
             std::size_t hashU = gate_step.gate_hash_;
@@ -4235,12 +4235,12 @@ class QCircuit : public IDisplay, public IJSON {
             }
             add_hash_(hashUdagger, Udagger);
         };
-        auto visit_measurement_step_fn =
+        auto measurement_step_visitor =
             [&](const internal::QCircuitMeasurementStep&) {};
-        auto visit_nop_step_fn = [&](const internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
 
-        visit_circuit_(circuit_, visit_gate_step_fn, visit_measurement_step_fn,
-                       visit_nop_step_fn);
+        visit_circuit_(circuit_, gate_step_visitor, measurement_step_visitor,
+                       nop_step_visitor);
 
         return *this;
     }
@@ -4389,7 +4389,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        auto visit_gate_step_fn = [&](internal::QCircuitGateStep& gate_step) {
+        auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             if (is_CTRL(gate_step)) {
                 for (idx& pos : gate_step.ctrl_.value()) {
                     if (pos > target) {
@@ -4403,7 +4403,7 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             }
         };
-        auto visit_measurement_step_fn =
+        auto measurement_step_visitor =
             [&](internal::QCircuitMeasurementStep& measurement_step) {
                 for (idx& pos : measurement_step.target_) {
                     if (pos > target) {
@@ -4411,10 +4411,10 @@ class QCircuit : public IDisplay, public IJSON {
                     }
                 }
             };
-        auto visit_nop_step_fn = [&](const internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
 
-        visit_circuit_(circuit_, visit_gate_step_fn, visit_measurement_step_fn,
-                       visit_nop_step_fn);
+        visit_circuit_(circuit_, gate_step_visitor, measurement_step_visitor,
+                       nop_step_visitor);
 
         clean_qudits_.erase(std::next(clean_qudits_.begin(),
                                       static_cast<std::ptrdiff_t>(target)));
@@ -4442,7 +4442,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        auto visit_gate_step_fn = [&](internal::QCircuitGateStep& gate_step) {
+        auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             if (is_cCTRL(gate_step)) {
                 for (idx& pos : gate_step.ctrl_.value()) {
                     if (pos > target) {
@@ -4451,16 +4451,16 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             }
         };
-        auto visit_measurement_step_fn =
+        auto measurement_step_visitor =
             [&](internal::QCircuitMeasurementStep& measurement_step) {
                 if (measurement_step.c_reg_ > target) {
                     --measurement_step.c_reg_;
                 }
             };
-        auto visit_nop_step_fn = [&](const internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
 
-        visit_circuit_(circuit_, visit_gate_step_fn, visit_measurement_step_fn,
-                       visit_nop_step_fn);
+        visit_circuit_(circuit_, gate_step_visitor, measurement_step_visitor,
+                       nop_step_visitor);
 
         clean_dits_.erase(std::next(clean_dits_.begin(),
                                     static_cast<std::ptrdiff_t>(target)));
@@ -4735,13 +4735,13 @@ class QCircuitIterator {
             os << std::setw(static_cast<int>(text_width)) << ip_ << ": ";
             os << std::right;
 
-            auto visit_gate_step_fn =
+            auto gate_step_visitor =
                 [&](const internal::QCircuitGateStep& gate_step) {
                     os << gate_step;
                 };
-            auto visit_measurement_step_fn = [&](const internal::
-                                                     QCircuitMeasurementStep&
-                                                         measurement_step) {
+            auto measurement_step_visitor = [&](const internal::
+                                                    QCircuitMeasurementStep&
+                                                        measurement_step) {
                 switch (measurement_step.measurement_type_) {
                     case internal::QCircuitMeasurementStep::Type::NONE:
                         break;
@@ -4789,14 +4789,14 @@ class QCircuitIterator {
                 } /* end switch */
                 os << measurement_step;
             };
-            auto visit_nop_step_fn =
+            auto nop_step_visitor =
                 [&](const internal::QCircuitNOPStep& nop_step) {
                     os << nop_step;
                 };
 
             qc_ptr_->visit_circuit_step_(
-                qc_ptr_->circuit_[ip_], visit_gate_step_fn,
-                visit_measurement_step_fn, visit_nop_step_fn);
+                qc_ptr_->circuit_[ip_], gate_step_visitor,
+                measurement_step_visitor, nop_step_visitor);
 
             return os;
         }
@@ -5016,7 +5016,7 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
         result += "{\"step\": " + std::to_string(elem.get_ip()) + ", ";
         result += "\"type\": ";
 
-        auto visit_gate_step_fn =
+        auto gate_step_visitor =
             [&](const internal::QCircuitGateStep& gate_step) {
                 ss.str("");
                 ss.clear();
@@ -5061,7 +5061,7 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
                 }
                 result += "}";
             };
-        auto visit_measurement_step_fn =
+        auto measurement_step_visitor =
             [&](const internal::QCircuitMeasurementStep& measurement_step) {
                 ss.str("");
                 ss.clear();
@@ -5099,12 +5099,12 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
                 }
                 result += "}";
             };
-        auto visit_nop_step_fn = [&](const internal::QCircuitNOPStep&) {
+        auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {
             result += std::string{"\"NOP\""} + "}";
         };
 
-        visit_circuit_step_(elem.get_step(), visit_gate_step_fn,
-                            visit_measurement_step_fn, visit_nop_step_fn);
+        visit_circuit_step_(elem.get_step(), gate_step_visitor,
+                            measurement_step_visitor, nop_step_visitor);
     } // end for
     result += "], "; // end steps
 
