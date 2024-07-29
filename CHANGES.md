@@ -11,6 +11,7 @@
 - Refactored qpp::internal::QEngineState and qpp::internal::QEngineStatistics
   in separate files, ["qpp/internal/classes/qengine_state.hpp"] and
   ["qpp/internal/classes/qengine_statistics.hpp"], respectively
+- Significant code refactoring
 - Introduced post-selection
 
 # Version 5.1 - 1 March 2024

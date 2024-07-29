@@ -76,6 +76,7 @@ namespace qpp {
  */
 template <typename T>
 class QEngineT : public QBaseEngine<T, QCircuit> {
+    bool can_sample; ///< can sample when executing with multiple repetitions
   protected:
     internal::QEngineState<T> qeng_st_; ///< current state of the engine
     internal::QEngineStatistics
@@ -127,8 +128,254 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         return v;
     }
 
-  private:
-    bool can_sample; ///< can sample when executing with multiple repetitions
+    /**
+     * \brief Executes qpp::internal::QCircuitGateStep
+     * \param gate_step Instance of qpp::internal::QCircuitGateStep
+     */
+    virtual void
+    execute_gate_step_(const internal::QCircuitGateStep& gate_step) {
+        std::vector<idx> ctrl_rel_pos;
+        std::vector<idx> target_rel_pos = get_relative_pos_(gate_step.target_);
+
+        auto h_tbl = this->qc_ptr_->get_cmat_hash_tbl();
+        idx d = this->qc_ptr_->get_d();
+
+        // regular gate
+        switch (gate_step.gate_type_) {
+            case internal::QCircuitGateStep::Type::NONE:
+                break;
+            case internal::QCircuitGateStep::Type::SINGLE:
+            case internal::QCircuitGateStep::Type::TWO:
+            case internal::QCircuitGateStep::Type::THREE:
+            case internal::QCircuitGateStep::Type::JOINT:
+                qeng_st_.qstate_ =
+                    apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
+                          target_rel_pos, d);
+                break;
+            case internal::QCircuitGateStep::Type::FAN:
+                for (idx m = 0; m < static_cast<idx>(gate_step.target_.size());
+                     ++m) {
+                    qeng_st_.qstate_ =
+                        apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
+                              {target_rel_pos[m]}, d);
+                }
+                break;
+            default:
+                break;
+        }
+
+        // controlled gate
+        if (QCircuit::is_CTRL(gate_step)) {
+            ctrl_rel_pos = get_relative_pos_(gate_step.ctrl_.value());
+            bool is_fan = (gate_step.gate_type_ ==
+                           internal::QCircuitGateStep::Type::CTRL_FAN);
+            qeng_st_.qstate_ =
+                is_fan
+                    ? applyCTRL_fan(qeng_st_.qstate_,
+                                    h_tbl[gate_step.gate_hash_], ctrl_rel_pos,
+                                    target_rel_pos, d, gate_step.shift_)
+                    : applyCTRL(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
+                                ctrl_rel_pos, target_rel_pos, d,
+                                gate_step.shift_);
+        }
+
+        // classically-controlled gate
+        if (QCircuit::is_cCTRL(gate_step)) {
+            bool is_fan = (gate_step.gate_type_ ==
+                           internal::QCircuitGateStep::Type::cCTRL_FAN);
+            if (!qeng_st_.dits_.empty()) {
+                {
+                    bool should_apply = true;
+                    idx first_dit;
+                    // we have a shift
+                    if (gate_step.shift_.has_value()) {
+                        first_dit =
+                            (qeng_st_.dits_[(gate_step.ctrl_.value())[0]] +
+                             gate_step.shift_.value()[0]) %
+                            d;
+                        for (idx m = 1; m < static_cast<idx>(
+                                                gate_step.ctrl_.value().size());
+                             ++m) {
+                            if ((qeng_st_.dits_[(gate_step.ctrl_.value())[m]] +
+                                 gate_step.shift_.value()[m]) %
+                                    d !=
+                                first_dit) {
+                                should_apply = false;
+                                break;
+                            }
+                        }
+                    }
+                    // no shift
+                    else {
+                        first_dit =
+                            qeng_st_.dits_[(gate_step.ctrl_.value())[0]];
+                        for (idx m = 1; m < static_cast<idx>(
+                                                gate_step.ctrl_.value().size());
+                             ++m) {
+                            if (qeng_st_.dits_[(gate_step.ctrl_.value())[m]] !=
+                                first_dit) {
+                                should_apply = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (should_apply) {
+                        cmat U = powm(h_tbl[gate_step.gate_hash_], first_dit);
+                        if (is_fan) {
+                            for (idx qudit : target_rel_pos) {
+                                qeng_st_.qstate_ =
+                                    apply(qeng_st_.qstate_, U, {qudit}, d);
+                            }
+                        } else {
+                            qeng_st_.qstate_ = apply(
+                                qeng_st_.qstate_,
+                                powm(h_tbl[gate_step.gate_hash_], first_dit),
+                                target_rel_pos, d);
+                        }
+                    }
+                }
+            }
+            // TODO check if this can happen (st_.dits_.empty())
+            else {
+                if (is_fan) {
+                    for (idx qudit : target_rel_pos) {
+                        qeng_st_.qstate_ =
+                            apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
+                                  {qudit}, d);
+                    }
+                } else {
+                    qeng_st_.qstate_ =
+                        apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
+                              target_rel_pos, d);
+                }
+            }
+        } // end if classically-controlled gate
+    }
+
+    /**
+     * \brief Executes qpp::internal::QCircuitMeasurementStep
+     * \param measurement_step Instance of
+     * qpp::internal::QCircuitMeasurementStep
+     */
+    virtual void execute_measurement_step_(
+        const internal::QCircuitMeasurementStep& measurement_step) {
+        std::vector<idx> target_rel_pos =
+            get_relative_pos_(measurement_step.target_);
+
+        idx mres = 0;
+        std::vector<idx> results;
+        std::vector<realT> probs;
+        std::vector<T> states;
+
+        auto h_tbl = this->qc_ptr_->get_cmat_hash_tbl();
+        idx d = this->qc_ptr_->get_d();
+
+        switch (measurement_step.measurement_type_) {
+            case internal::QCircuitMeasurementStep::Type::NONE:
+                break;
+            case internal::QCircuitMeasurementStep::Type::MEASURE:
+                std::tie(results, probs, qeng_st_.qstate_) =
+                    measure_seq(qeng_st_.qstate_, target_rel_pos, d);
+                qeng_st_.dits_[measurement_step.c_reg_] = results[0];
+                qeng_st_.probs_[measurement_step.c_reg_] = probs[0];
+                set_measured_(measurement_step.target_[0]);
+                break;
+            case internal::QCircuitMeasurementStep::Type::POST_SELECT:
+                std::tie(results, probs, qeng_st_.qstate_) =
+                    measure_seq(qeng_st_.qstate_, target_rel_pos, d);
+                qeng_st_.dits_[measurement_step.c_reg_] = results[0];
+                qeng_st_.probs_[measurement_step.c_reg_] = probs[0];
+                set_measured_(measurement_step.target_[0]);
+                // post-selection failed
+                if (results[0] != measurement_step.ps_vals_.value()[0]) {
+                    qeng_st_.post_select_ok_ = false;
+                    std::cerr << "ps failed!" << std::endl;
+                }
+                break;
+            case internal::QCircuitMeasurementStep::Type::MEASURE_MANY:
+                std::tie(results, probs, qeng_st_.qstate_) =
+                    measure_seq(qeng_st_.qstate_, target_rel_pos, d);
+                std::copy(
+                    results.begin(), results.end(),
+                    std::next(qeng_st_.dits_.begin(), measurement_step.c_reg_));
+                std::copy(probs.begin(), probs.end(),
+                          std::next(qeng_st_.probs_.begin(),
+                                    measurement_step.c_reg_));
+                for (idx target : measurement_step.target_) {
+                    set_measured_(target);
+                }
+                break;
+            case internal::QCircuitMeasurementStep::Type::MEASURE_V:
+                std::tie(mres, probs, states) = measure(
+                    qeng_st_.qstate_, h_tbl[measurement_step.mats_hash_[0]],
+                    target_rel_pos, d);
+                qeng_st_.qstate_ = states[mres];
+                qeng_st_.dits_[measurement_step.c_reg_] = mres;
+                qeng_st_.probs_[measurement_step.c_reg_] = probs[mres];
+                set_measured_(measurement_step.target_[0]);
+                break;
+            case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT:
+                std::tie(mres, probs, states) = measure(
+                    qeng_st_.qstate_, h_tbl[measurement_step.mats_hash_[0]],
+                    target_rel_pos, d);
+                qeng_st_.qstate_ = states[mres];
+                qeng_st_.dits_[measurement_step.c_reg_] = mres;
+                qeng_st_.probs_[measurement_step.c_reg_] = probs[mres];
+                for (idx target : measurement_step.target_) {
+                    set_measured_(target);
+                }
+                break;
+            case internal::QCircuitMeasurementStep::Type::MEASURE_ND:
+                std::tie(results, probs, qeng_st_.qstate_) =
+                    measure_seq(qeng_st_.qstate_, target_rel_pos, d, false);
+                qeng_st_.dits_[measurement_step.c_reg_] = results[0];
+                qeng_st_.probs_[measurement_step.c_reg_] = probs[0];
+                break;
+            case internal::QCircuitMeasurementStep::Type::MEASURE_MANY_ND:
+                std::tie(results, probs, qeng_st_.qstate_) =
+                    measure_seq(qeng_st_.qstate_, target_rel_pos, d, false);
+                std::copy(
+                    results.begin(), results.end(),
+                    std::next(qeng_st_.dits_.begin(), measurement_step.c_reg_));
+                std::copy(probs.begin(), probs.end(),
+                          std::next(qeng_st_.probs_.begin(),
+                                    measurement_step.c_reg_));
+                break;
+            case internal::QCircuitMeasurementStep::Type::MEASURE_V_ND:
+            case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT_ND:
+                std::tie(mres, probs, states) = measure(
+                    qeng_st_.qstate_, h_tbl[measurement_step.mats_hash_[0]],
+                    target_rel_pos, d, false);
+                qeng_st_.qstate_ = states[mres];
+                qeng_st_.dits_[measurement_step.c_reg_] = mres;
+                qeng_st_.probs_[measurement_step.c_reg_] = probs[mres];
+                break;
+            case internal::QCircuitMeasurementStep::Type::RESET:
+            case internal::QCircuitMeasurementStep::Type::RESET_MANY:
+                qeng_st_.qstate_ =
+                    qpp::reset(qeng_st_.qstate_, target_rel_pos, d);
+                break;
+            case internal::QCircuitMeasurementStep::Type::DISCARD:
+                std::tie(std::ignore, std::ignore, qeng_st_.qstate_) =
+                    measure_seq(qeng_st_.qstate_, target_rel_pos, d);
+                set_measured_(measurement_step.target_[0]);
+                break;
+            case internal::QCircuitMeasurementStep::Type::DISCARD_MANY:
+                std::tie(std::ignore, std::ignore, qeng_st_.qstate_) =
+                    measure_seq(qeng_st_.qstate_, target_rel_pos, d);
+                for (idx target : measurement_step.target_) {
+                    set_measured_(target);
+                }
+                break;
+        } // end switch on measurement type
+    };
+
+    /**
+     * \brief Executes qpp::internal::QCircuitNOPStep
+     * \param nop_step Instance of qpp::internal::QCircuitNOPStep
+     */
+    virtual void execute_nop_step_(
+        [[maybe_unused]] const internal::QCircuitNOPStep& nop_step) {}
 
   public:
     using QBaseEngine<T, QCircuit>::QBaseEngine;
@@ -146,8 +393,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param qc Quantum circuit description
      */
     explicit QEngineT(const QCircuit& qc)
-        : QBaseEngine<T, QCircuit>{qc}, qeng_st_{this->qc_ptr_}, stats_{},
-          can_sample{false} {}
+        : QBaseEngine<T, QCircuit>{qc}, can_sample{false},
+          qeng_st_{this->qc_ptr_}, stats_{} {}
 
     // traits
     /**
@@ -442,250 +689,18 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
 
-        auto h_tbl = this->qc_ptr_->get_cmat_hash_tbl();
-        idx d = this->qc_ptr_->get_d();
-
-        auto gate_step_fn = [&](const internal::QCircuitGateStep& gate_step) {
-            std::vector<idx> ctrl_rel_pos;
-            std::vector<idx> target_rel_pos =
-                get_relative_pos_(gate_step.target_);
-
-            // regular gate
-            switch (gate_step.gate_type_) {
-                case internal::QCircuitGateStep::Type::NONE:
-                    break;
-                case internal::QCircuitGateStep::Type::SINGLE:
-                case internal::QCircuitGateStep::Type::TWO:
-                case internal::QCircuitGateStep::Type::THREE:
-                case internal::QCircuitGateStep::Type::JOINT:
-                    qeng_st_.qstate_ =
-                        apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
-                              target_rel_pos, d);
-                    break;
-                case internal::QCircuitGateStep::Type::FAN:
-                    for (idx m = 0;
-                         m < static_cast<idx>(gate_step.target_.size()); ++m) {
-                        qeng_st_.qstate_ =
-                            apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
-                                  {target_rel_pos[m]}, d);
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            // controlled gate
-            if (QCircuit::is_CTRL(gate_step)) {
-                ctrl_rel_pos = get_relative_pos_(gate_step.ctrl_.value());
-                bool is_fan = (gate_step.gate_type_ ==
-                               internal::QCircuitGateStep::Type::CTRL_FAN);
-                qeng_st_.qstate_ =
-                    is_fan
-                        ? applyCTRL_fan(
-                              qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
-                              ctrl_rel_pos, target_rel_pos, d, gate_step.shift_)
-                        : applyCTRL(qeng_st_.qstate_,
-                                    h_tbl[gate_step.gate_hash_], ctrl_rel_pos,
-                                    target_rel_pos, d, gate_step.shift_);
-            }
-
-            // classically-controlled gate
-            if (QCircuit::is_cCTRL(gate_step)) {
-                bool is_fan = (gate_step.gate_type_ ==
-                               internal::QCircuitGateStep::Type::cCTRL_FAN);
-                if (!qeng_st_.dits_.empty()) {
-                    {
-                        bool should_apply = true;
-                        idx first_dit;
-                        // we have a shift
-                        if (gate_step.shift_.has_value()) {
-                            first_dit =
-                                (qeng_st_.dits_[(gate_step.ctrl_.value())[0]] +
-                                 gate_step.shift_.value()[0]) %
-                                d;
-                            for (idx m = 1;
-                                 m < static_cast<idx>(
-                                         gate_step.ctrl_.value().size());
-                                 ++m) {
-                                if ((qeng_st_
-                                         .dits_[(gate_step.ctrl_.value())[m]] +
-                                     gate_step.shift_.value()[m]) %
-                                        d !=
-                                    first_dit) {
-                                    should_apply = false;
-                                    break;
-                                }
-                            }
-                        }
-                        // no shift
-                        else {
-                            first_dit =
-                                qeng_st_.dits_[(gate_step.ctrl_.value())[0]];
-                            for (idx m = 1;
-                                 m < static_cast<idx>(
-                                         gate_step.ctrl_.value().size());
-                                 ++m) {
-                                if (qeng_st_
-                                        .dits_[(gate_step.ctrl_.value())[m]] !=
-                                    first_dit) {
-                                    should_apply = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (should_apply) {
-                            cmat U =
-                                powm(h_tbl[gate_step.gate_hash_], first_dit);
-                            if (is_fan) {
-                                for (idx qudit : target_rel_pos) {
-                                    qeng_st_.qstate_ =
-                                        apply(qeng_st_.qstate_, U, {qudit}, d);
-                                }
-                            } else {
-                                qeng_st_.qstate_ =
-                                    apply(qeng_st_.qstate_,
-                                          powm(h_tbl[gate_step.gate_hash_],
-                                               first_dit),
-                                          target_rel_pos, d);
-                            }
-                        }
-                    }
-                }
-                // TODO check if this can happen (st_.dits_.empty())
-                else {
-                    if (is_fan) {
-                        for (idx qudit : target_rel_pos) {
-                            qeng_st_.qstate_ =
-                                apply(qeng_st_.qstate_,
-                                      h_tbl[gate_step.gate_hash_], {qudit}, d);
-                        }
-                    } else {
-                        qeng_st_.qstate_ =
-                            apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
-                                  target_rel_pos, d);
-                    }
-                }
-            } // end if classically-controlled gate
-        };
-
-        auto measurement_step_fn = [&](const internal::QCircuitMeasurementStep&
-                                           measure_step) {
-            std::vector<idx> target_rel_pos =
-                get_relative_pos_(measure_step.target_);
-
-            idx mres = 0;
-            std::vector<idx> results;
-            std::vector<realT> probs;
-            std::vector<T> states;
-
-            switch (measure_step.measurement_type_) {
-                case internal::QCircuitMeasurementStep::Type::NONE:
-                    break;
-                case internal::QCircuitMeasurementStep::Type::MEASURE:
-                    std::tie(results, probs, qeng_st_.qstate_) =
-                        measure_seq(qeng_st_.qstate_, target_rel_pos, d);
-                    qeng_st_.dits_[measure_step.c_reg_] = results[0];
-                    qeng_st_.probs_[measure_step.c_reg_] = probs[0];
-                    set_measured_(measure_step.target_[0]);
-                    break;
-                case internal::QCircuitMeasurementStep::Type::POST_SELECT:
-                    std::tie(results, probs, qeng_st_.qstate_) =
-                        measure_seq(qeng_st_.qstate_, target_rel_pos, d);
-                    qeng_st_.dits_[measure_step.c_reg_] = results[0];
-                    qeng_st_.probs_[measure_step.c_reg_] = probs[0];
-                    set_measured_(measure_step.target_[0]);
-                    // post-selection failed
-                    if (results[0] != measure_step.ps_vals_.value()[0]) {
-                        qeng_st_.post_select_ok_ = false;
-                        std::cerr << "ps failed!" << std::endl;
-                    }
-                    break;
-                case internal::QCircuitMeasurementStep::Type::MEASURE_MANY:
-                    std::tie(results, probs, qeng_st_.qstate_) =
-                        measure_seq(qeng_st_.qstate_, target_rel_pos, d);
-                    std::copy(
-                        results.begin(), results.end(),
-                        std::next(qeng_st_.dits_.begin(), measure_step.c_reg_));
-                    std::copy(probs.begin(), probs.end(),
-                              std::next(qeng_st_.probs_.begin(),
-                                        measure_step.c_reg_));
-                    for (idx target : measure_step.target_) {
-                        set_measured_(target);
-                    }
-                    break;
-                case internal::QCircuitMeasurementStep::Type::MEASURE_V:
-                    std::tie(mres, probs, states) = measure(
-                        qeng_st_.qstate_, h_tbl[measure_step.mats_hash_[0]],
-                        target_rel_pos, d);
-                    qeng_st_.qstate_ = states[mres];
-                    qeng_st_.dits_[measure_step.c_reg_] = mres;
-                    qeng_st_.probs_[measure_step.c_reg_] = probs[mres];
-                    set_measured_(measure_step.target_[0]);
-                    break;
-                case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT:
-                    std::tie(mres, probs, states) = measure(
-                        qeng_st_.qstate_, h_tbl[measure_step.mats_hash_[0]],
-                        target_rel_pos, d);
-                    qeng_st_.qstate_ = states[mres];
-                    qeng_st_.dits_[measure_step.c_reg_] = mres;
-                    qeng_st_.probs_[measure_step.c_reg_] = probs[mres];
-                    for (idx target : measure_step.target_) {
-                        set_measured_(target);
-                    }
-                    break;
-                case internal::QCircuitMeasurementStep::Type::MEASURE_ND:
-                    std::tie(results, probs, qeng_st_.qstate_) =
-                        measure_seq(qeng_st_.qstate_, target_rel_pos, d, false);
-                    qeng_st_.dits_[measure_step.c_reg_] = results[0];
-                    qeng_st_.probs_[measure_step.c_reg_] = probs[0];
-                    break;
-                case internal::QCircuitMeasurementStep::Type::MEASURE_MANY_ND:
-                    std::tie(results, probs, qeng_st_.qstate_) =
-                        measure_seq(qeng_st_.qstate_, target_rel_pos, d, false);
-                    std::copy(
-                        results.begin(), results.end(),
-                        std::next(qeng_st_.dits_.begin(), measure_step.c_reg_));
-                    std::copy(probs.begin(), probs.end(),
-                              std::next(qeng_st_.probs_.begin(),
-                                        measure_step.c_reg_));
-                    break;
-                case internal::QCircuitMeasurementStep::Type::MEASURE_V_ND:
-                case internal::QCircuitMeasurementStep::Type::
-                    MEASURE_V_JOINT_ND:
-                    std::tie(mres, probs, states) = measure(
-                        qeng_st_.qstate_, h_tbl[measure_step.mats_hash_[0]],
-                        target_rel_pos, d, false);
-                    qeng_st_.qstate_ = states[mres];
-                    qeng_st_.dits_[measure_step.c_reg_] = mres;
-                    qeng_st_.probs_[measure_step.c_reg_] = probs[mres];
-                    break;
-                case internal::QCircuitMeasurementStep::Type::RESET:
-                case internal::QCircuitMeasurementStep::Type::RESET_MANY:
-                    qeng_st_.qstate_ =
-                        qpp::reset(qeng_st_.qstate_, target_rel_pos, d);
-                    break;
-                case internal::QCircuitMeasurementStep::Type::DISCARD:
-                    std::tie(std::ignore, std::ignore, qeng_st_.qstate_) =
-                        measure_seq(qeng_st_.qstate_, target_rel_pos, d);
-                    set_measured_(measure_step.target_[0]);
-                    break;
-                case internal::QCircuitMeasurementStep::Type::DISCARD_MANY:
-                    std::tie(std::ignore, std::ignore, qeng_st_.qstate_) =
-                        measure_seq(qeng_st_.qstate_, target_rel_pos, d);
-                    for (idx target : measure_step.target_) {
-                        set_measured_(target);
-                    }
-                    break;
-            } // end switch on measurement type
-        };
-
-        auto nop_step_fn = [&](const internal::QCircuitNOPStep&) {};
-
         std::visit(
             overloaded{
-                gate_step_fn,
-                measurement_step_fn,
-                nop_step_fn,
+                [this](const internal::QCircuitGateStep& gate_step) {
+                    this->execute_gate_step_(gate_step);
+                },
+                [this](
+                    const internal::QCircuitMeasurementStep& measurement_step) {
+                    this->execute_measurement_step_(measurement_step);
+                },
+                [this](const internal::QCircuitNOPStep& nop_step) {
+                    this->execute_nop_step_(nop_step);
+                },
             },
             elem.get_step());
 
