@@ -63,7 +63,7 @@ struct QEngineState {
                                  ///< subsystems, re-label them after
                                  ///< measurements
     bool post_select_ok_ =
-        true; ///< flag that becomes false when post-selection fails
+        true; ///< flag that becomes false if/when post-selection fails
 
     /**
      * \brief Constructor

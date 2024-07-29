@@ -3165,6 +3165,252 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Post-selects multiple qudits in the computational basis (Z-basis)
+     *
+     * \param target Target qudit indexes that are post-selected
+     * \param ps_vals Post-election values
+     * \param c_reg Classical register where the value of the measurement is
+     * being stored
+     * \param destructive Destructive measurement, true by default
+     * \param name Optional post-selection name, default is "pZ"
+     * \return Reference to the current instance
+     */
+    QCircuit& post_select(const std::vector<idx>& target,
+                          const std::vector<idx>& ps_vals, idx c_reg,
+                          bool destructive = true,
+                          std::optional<std::string> name = "pZ") {
+        // EXCEPTION CHECKS
+
+        std::string context{"Step " + std::to_string(get_step_count())};
+
+        // post-selecting non-existing qudit
+        if (target >= nq_) {
+            throw exception::OutOfRange("qpp::QCircuit::post_select()",
+                                        context + ": target");
+        }
+        // post-selection value out of range
+        if (ps_vals >= d_) {
+            throw exception::OutOfRange("qpp::QCircuit::post_select()",
+                                        context + ": ps_vals");
+        }
+        // trying to put the result into a non-existing classical slot
+        if (c_reg >= nc_) {
+            throw exception::OutOfRange("qpp::QCircuit::post_select()",
+                                        context + ": c_reg");
+        }
+        // qudit was measured before
+        if (was_measured(target)) {
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::post_select()", context + ": target");
+        }
+        // END EXCEPTION CHECKS
+
+        std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
+
+        if (destructive) {
+            measured_[target] = true;
+
+            circuit_.emplace_back(internal::QCircuitMeasurementStep{
+                internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY,
+                std::vector<std::size_t>{m_hash}, std::vector<idx>{target},
+                c_reg, name, std::vector<idx>{ps_val}});
+
+        } else {
+            measured_nd_[target] = true;
+
+            circuit_.emplace_back(internal::QCircuitMeasurementStep{
+                internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY_ND,
+                std::vector<std::size_t>{m_hash}, std::vector<idx>{target},
+                c_reg, name, std::vector<idx>{ps_val}});
+        }
+        ++measurement_count_[m_hash];
+
+        clean_qudits_[target] = false;
+
+        clean_dits_[c_reg] = false;
+        measurement_dits_[c_reg] = true;
+
+        return *this;
+    }
+
+    // post-selection of single qudit in the orthonormal basis or rank-1
+    // projectors specified by the columns of matrix V
+    /**
+     * \brief Post-selects single qudit in the orthonormal basis or rank-1
+     * projectors specified by the columns of matrix \a V
+     *
+     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * columns of matrix \a V
+     * \param target Target qudit index that is post-selected
+     * \param ps_val Post-election value
+     * \param c_reg Classical register where the value of the measurement is
+     * stored
+     * \param destructive Destructive measurement, true by default
+     * \param name Optional measurement name
+     * \return Reference to the current instance
+     */
+    QCircuit& post_selectV(const cmat& V, idx target, idx ps_val, idx c_reg,
+                           bool destructive = true,
+                           std::optional<std::string> name = std::nullopt) {
+        // EXCEPTION CHECKS
+
+        std::string context{"Step " + std::to_string(get_step_count())};
+
+        // measuring non-existing qudit
+        if (target >= nq_) {
+            throw exception::OutOfRange("qpp::QCircuit::post_selectV()",
+                                        context + ": target");
+        }
+        // post-selection value out of range
+        if (ps_val >= d_) {
+            throw exception::OutOfRange("qpp::QCircuit::post_select()",
+                                        context + ": ps_val");
+        }
+        // trying to put the result into a non-existing classical slot
+        if (c_reg >= nc_) {
+            throw exception::OutOfRange("qpp::QCircuit::post_selectV()",
+                                        context + ": c_reg");
+        }
+        // qudit was measured before
+        if (was_measured(target)) {
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::post_selectV()", context + ": target");
+        }
+        // check matrix V
+        if (V.cols() == 0) {
+            throw exception::ZeroSize("qpp::QCircuit::post_selectV()",
+                                      context + ": V");
+        }
+        if (static_cast<idx>(V.rows()) != d_) {
+            throw exception::DimsNotEqual("qpp::QCircuit::post_selectV()",
+                                          context + ": V");
+        }
+        // END EXCEPTION CHECKS
+
+        if (!name.has_value()) {
+            auto gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(V);
+            name = gate_name.has_value() ? "pV-" + gate_name.value() : "pV";
+        }
+
+        std::size_t hashV = hash_eigen(V);
+        add_hash_(hashV, V);
+
+        if (destructive) {
+            measured_[target] = true;
+
+            circuit_.emplace_back(internal::QCircuitMeasurementStep{
+                internal::QCircuitMeasurementStep::Type::POST_SELECT_V,
+                std::vector<std::size_t>{hashV}, std::vector<idx>{target},
+                c_reg, name, std::vector<idx>{ps_val}});
+        } else {
+            measured_nd_[target] = true;
+
+            circuit_.emplace_back(internal::QCircuitMeasurementStep{
+                internal::QCircuitMeasurementStep::Type::POST_SELECT_V_ND,
+                std::vector<std::size_t>{hashV}, std::vector<idx>{target},
+                c_reg, name, std::vector<idx>{ps_val}});
+        }
+        ++measurement_count_[hashV];
+
+        clean_qudits_[target] = false;
+
+        clean_dits_[c_reg] = false;
+        measurement_dits_[c_reg] = true;
+
+        return *this;
+    }
+
+    // post-selection of multiple qudits in the orthonormal basis or rank-1
+    // projectors specified by the columns of matrix V
+    /**
+     * \brief Jointly post-select multiple qudits in the orthonormal basis or
+     * rank-1 projectors specified by the columns of matrix \a V
+     *
+     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * columns of matrix \a V
+     * \param target Target qudit indexes that are jointly post-selected
+     * \param ps_vals Post-election values
+     * \param c_reg Classical register where the value of the measurement is
+     * stored
+     * \param destructive Destructive measurement, true by default
+     * \param name Optional post-selection name
+     * \return Reference to the current instance
+     */
+    QCircuit& post_selectV(const cmat& V, const std::vector<idx>& target,
+                           const std::vector<idx>& ps_vals, idx c_reg,
+                           bool destructive = true,
+                           std::optional<std::string> name = std::nullopt) {
+        // EXCEPTION CHECKS
+
+        std::string context{"Step " + std::to_string(get_step_count())};
+
+        // measuring non-existing qudit
+        if (target >= nq_) {
+            throw exception::OutOfRange("qpp::QCircuit::post_selectV()",
+                                        context + ": target");
+        }
+        // post-selection value out of range
+        if (ps_val >= d_) {
+            throw exception::OutOfRange("qpp::QCircuit::post_select()",
+                                        context + ": ps_vals");
+        }
+        // trying to put the result into a non-existing classical slot
+        if (c_reg >= nc_) {
+            throw exception::OutOfRange("qpp::QCircuit::post_selectV()",
+                                        context + ": c_reg");
+        }
+        // qudit was measured before
+        if (was_measured(target)) {
+            throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::post_selectV()", context + ": target");
+        }
+        // check matrix V
+        if (V.cols() == 0) {
+            throw exception::ZeroSize("qpp::QCircuit::post_selectV()",
+                                      context + ": V");
+        }
+        if (static_cast<idx>(V.rows()) != d_) {
+            throw exception::DimsNotEqual("qpp::QCircuit::post_selectV()",
+                                          context + ": V");
+        }
+        // END EXCEPTION CHECKS
+
+        if (!name.has_value()) {
+            auto gate_name =
+                qpp::Gates::get_no_thread_local_instance().get_name(V);
+            name = gate_name.has_value() ? "pV-" + gate_name.value() : "pV";
+        }
+
+        std::size_t hashV = hash_eigen(V);
+        add_hash_(hashV, V);
+
+        if (destructive) {
+            measured_[target] = true;
+
+            circuit_.emplace_back(internal::QCircuitMeasurementStep{
+                internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT,
+                std::vector<std::size_t>{hashV}, std::vector<idx>{target},
+                c_reg, name, std::vector<idx>{ps_val}});
+        } else {
+            measured_nd_[target] = true;
+
+            circuit_.emplace_back(internal::QCircuitMeasurementStep{
+                internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT_ND,
+                std::vector<std::size_t>{hashV}, std::vector<idx>{target},
+                c_reg, name, std::vector<idx>{ps_val}});
+        }
+        ++measurement_count_[hashV];
+
+        clean_qudits_[target] = false;
+
+        clean_dits_[c_reg] = false;
+        measurement_dits_[c_reg] = true;
+
+        return *this;
+    }
+
+    /**
      * \brief Discards single qudit by measuring it destructively in the
      * computational basis (Z-basis) and discarding the measurement result
      *
