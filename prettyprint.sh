@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # $@ - List of directories
 
@@ -14,11 +14,11 @@ else
         echo "Error: $CLANG_FORMAT executable not found." >&2
         exit 1
     fi
-    echo "Code formatting with '$CLANG_FORMAT' the folders:"
+    echo "Code formatting with '$CLANG_FORMAT' the directories:"
 fi
 
-for folder in "$@"; do
-    echo "$folder"
-    find "$folder" \( -iname '*.cpp' -o -iname '*.c' -o -iname '*.h' \
+for directory in "$@"; do
+    echo "$directory"
+    find "$directory" \( -iname '*.cpp' -o -iname '*.c' -o -iname '*.h' \
         -o -iname '*.hpp' \) -exec "$CLANG_FORMAT" -style=file -i {} +
 done

@@ -52,21 +52,21 @@ if(${Python3_FOUND})
 endif()
 
 # BEGIN LOCAL stuff, you don't need those in standalone projects
-option(SANITIZE "Enable code sanitizing (only for gcc/clang)" OFF)
+option(SANITIZE "Enable code sanitizing (only for GCC/Clang)" OFF)
 
 # Dependencies, do not modify unless you know what you're doing
 include(cmake/qpp_eigen3.cmake)
 
 # Dependencies, do not modify unless you know what you're doing
-include(cmake/qpp_dependencies.cmake)
+include(cmake/qpp_MATLAB.cmake)
 
 # Dependencies, do not modify unless you know what you're doing
-include(cmake/qpp_MATLAB.cmake)
+include(cmake/qpp_dependencies.cmake)
 
 # Unit testing
 add_subdirectory(${CMAKE_SOURCE_DIR}/unit_tests/ EXCLUDE_FROM_ALL SYSTEM)
 
-# Enable all warnings for GNU gcc and Clang/AppleClang
+# Enable all warnings for GCC and Clang/AppleClang
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
                                                STREQUAL "GNU")
   add_compile_options("-pedantic" "-Wall" "-Wextra" "-Weffc++")

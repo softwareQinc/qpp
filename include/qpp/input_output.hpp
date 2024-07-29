@@ -63,7 +63,7 @@ template <typename Scalar,
 inline internal::IOManipScalar<Scalar> disp(Scalar scalar,
                                             IOManipScalarOpts opts = {}) {
     return internal::IOManipScalar<Scalar>{scalar, opts};
-};
+}
 
 /**
  * \brief Complex number std::ostream manipulator

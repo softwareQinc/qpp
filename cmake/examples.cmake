@@ -8,7 +8,7 @@ add_custom_target(examples COMMENT "Examples")
 foreach(file ${EXAMPLE_FILES})
   get_filename_component(TARGET_NAME ${file} NAME_WE)
   # Do not build "examples/matlab_io.cpp" if there's no MATLAB support
-  if(${TARGET_NAME} STREQUAL "matlab_io" AND NOT BUILD_WITH_MATLAB)
+  if(${TARGET_NAME} STREQUAL "matlab_io" AND NOT MATLAB_FOUND)
     continue()
   endif()
   add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL ${file})

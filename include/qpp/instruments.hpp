@@ -36,8 +36,6 @@
 
 #include <Eigen/Dense>
 
-// #include <iostream>
-
 #include "qpp/functions.hpp"
 #include "qpp/operations.hpp"
 #include "qpp/types.hpp"

@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Configure Quantum++
         run: cmake -B build
@@ -55,7 +55,7 @@ jobs:
       - name: Run unit tests
         run: ctest --test-dir build -E qpp_Timer
 
-      - name: Uninstall
+      - name: Uninstall Quantum++
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
@@ -65,5 +65,12 @@ jobs:
           fi
 
       - name: Install pyqpp
+        shell: bash
         run: |
-          pip3 install --user .
+          python3 -m venv venv
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            venv/Scripts/activate
+          else
+            . venv/bin/activate
+          fi
+          pip3 install .
