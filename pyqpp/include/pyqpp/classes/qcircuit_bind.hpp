@@ -431,21 +431,21 @@ inline void init_classes_qcircuit(py::module_& m) {
             .def("__deepcopy__",
                  [](const QCircuit& self, py::dict) { return QCircuit(self); });
 
-    /* qpp::QCircuit::Resources */
-    py::class_<QCircuit::Resources>(pyQCircuit, "Resources")
-        .def_readonly("nq", &QCircuit::Resources::nq)
-        .def_readonly("nc", &QCircuit::Resources::nc)
-        .def_readonly("d", &QCircuit::Resources::d)
-        .def_readonly("name", &QCircuit::Resources::name)
-        .def_readonly("step_count", &QCircuit::Resources::step_count)
-        .def_readonly("gate_count", &QCircuit::Resources::gate_count)
-        .def_readonly("gate_depth", &QCircuit::Resources::gate_depth)
+    /* qpp::internal::QCircuitResources */
+    py::class_<internal::QCircuitResources>(pyQCircuit, "Resources")
+        .def_readonly("nq", &internal::QCircuitResources::nq)
+        .def_readonly("nc", &internal::QCircuitResources::nc)
+        .def_readonly("d", &internal::QCircuitResources::d)
+        .def_readonly("name", &internal::QCircuitResources::name)
+        .def_readonly("step_count", &internal::QCircuitResources::step_count)
+        .def_readonly("gate_count", &internal::QCircuitResources::gate_count)
+        .def_readonly("gate_depth", &internal::QCircuitResources::gate_depth)
         .def_readonly("measurement_count",
-                      &QCircuit::Resources::measurement_count)
+                      &internal::QCircuitResources::measurement_count)
         .def_readonly("measurement_depth",
-                      &QCircuit::Resources::measurement_depth)
-        .def_readonly("total_depth", &QCircuit::Resources::total_depth)
-        .def("__repr__", [](const QCircuit::Resources& self) {
+                      &internal::QCircuitResources::measurement_depth)
+        .def_readonly("total_depth", &internal::QCircuitResources::total_depth)
+        .def("__repr__", [](const internal::QCircuitResources& self) {
             std::ostringstream oss;
             oss << self;
             return oss.str();

@@ -106,7 +106,7 @@ class QNoisyEngineT : public QEngineT<T> {
         // if (elem.type_ != QCircuit::StepType::MEASUREMENT) {
         // apply the noise
         for (idx i : target_rel_pos) {
-            this->qeng_st_.state_ = noise_(this->qeng_st_.state_, i);
+            this->qeng_st_.qstate_ = noise_(this->qeng_st_.qstate_, i);
             // record the Kraus operator that occurred
             noise_results_[elem.get_ip()].emplace_back(noise_.get_last_idx());
         }

@@ -1,3 +1,18 @@
+# Pre-release
+
+- Refactored qpp::QCircuit::GateStep/MeasurementStep/NOPStep into separate
+  files ["qpp/internal/classes/qcircuit_gate_step.hpp"],
+  ["qpp/internal/classes/qcircuit_measurement_step.hpp"], and
+  ["qpp/internal/classes/qcircuit_nop_step.hpp"], respectively
+- Refactored qpp::QCircuit::Resources into an independent class in a separate
+  file ["qpp/internal/classes/qcircuit_resources.hpp"]
+- Refactored qpp::QCircuit::iterator class into an independent class, defined
+  outside qpp::QCircuit in ["qpp/classes/qcircuit.hpp"]
+- Refactored qpp::internal::QEngineState and qpp::internal::QEngineStatistics
+  in separate files, ["qpp/internal/classes/qengine_state.hpp"] and
+  ["qpp/internal/classes/qengine_statistics.hpp"], respectively
+- Introduced post-selection
+
 # Version 5.1 - 1 March 2024
 
 - Replaced ["CHANGES"] by ["CHANGES.md"],
