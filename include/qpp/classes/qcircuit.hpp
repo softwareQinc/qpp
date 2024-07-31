@@ -2846,7 +2846,6 @@ class QCircuit : public IDisplay, public IJSON {
             for (idx elem : target) {
                 measured_[elem] = true;
             }
-
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::MEASURE_MANY,
                 std::vector<std::size_t>{m_hash}, target, c_reg, name});
@@ -2854,7 +2853,6 @@ class QCircuit : public IDisplay, public IJSON {
             for (idx elem : target) {
                 measured_nd_[elem] = true;
             }
-
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::MEASURE_MANY_ND,
                 std::vector<std::size_t>{m_hash}, target, c_reg, name});
@@ -3169,8 +3167,10 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \param target Target qudit indexes that are post-selected
      * \param ps_vals Post-election values
-     * \param c_reg Classical register where the value of the measurement is
-     * being stored
+     * \param c_reg Classical register where the values of the measurements
+     * are being stored in order, that is, the measurement result
+     * corresponding to target[0] is stored in \a c_reg, the one
+     * corresponding to target[1] is stored in \a c_reg + 1 and so on
      * \param destructive Destructive measurement, true by default
      * \param name Optional post-selection name, default is "pZ"
      * \return Reference to the current instance
@@ -3183,52 +3183,73 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        // post-selecting non-existing qudit
-        if (target >= nq_) {
-            throw exception::OutOfRange("qpp::QCircuit::post_select()",
+        // check valid target
+        if (target.empty()) {
+            throw exception::ZeroSize("qpp::QCircuit::post_select()",
+                                      context + ": target");
+        }
+        for (idx elem : target) {
+            // post-selecting non-existing qudit
+            if (elem >= nq_) {
+                throw exception::OutOfRange("qpp::QCircuit::post_select()",
+                                            context + ": target");
+            }
+            // qudit was measured before
+            if (was_measured(elem)) {
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::post_select()", context + ": target");
+            }
+        }
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target)) {
+            throw exception::Duplicates("qpp::QCircuit::post_select()",
                                         context + ": target");
         }
+        // not enough dits to store the result
+        if (static_cast<idx>(target.size()) > nc_ ||
+            c_reg > static_cast<idx>(nc_ - target.size())) {
+            throw exception::OutOfRange("qpp::QCircuit::post_select()",
+                                        context + ": c_reg, target");
+        }
         // post-selection value out of range
-        if (ps_vals >= d_) {
-            throw exception::OutOfRange("qpp::QCircuit::post_select()",
-                                        context + ": ps_vals");
-        }
-        // trying to put the result into a non-existing classical slot
-        if (c_reg >= nc_) {
-            throw exception::OutOfRange("qpp::QCircuit::post_select()",
-                                        context + ": c_reg");
-        }
-        // qudit was measured before
-        if (was_measured(target)) {
-            throw exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::post_select()", context + ": target");
+        for (idx elem : ps_vals) {
+            if (elem >= d_) {
+                throw exception::OutOfRange("qpp::QCircuit::post_select()",
+                                            context + ": ps_vals");
+            }
         }
         // END EXCEPTION CHECKS
 
         std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
 
         if (destructive) {
-            measured_[target] = true;
-
+            for (idx elem : target) {
+                measured_[elem] = true;
+            }
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY,
                 std::vector<std::size_t>{m_hash}, std::vector<idx>{target},
-                c_reg, name, std::vector<idx>{ps_val}});
+                c_reg, name, ps_vals});
 
         } else {
-            measured_nd_[target] = true;
-
+            for (idx elem : target) {
+                measured_nd_[elem] = true;
+            }
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY_ND,
                 std::vector<std::size_t>{m_hash}, std::vector<idx>{target},
-                c_reg, name, std::vector<idx>{ps_val}});
+                c_reg, name, ps_vals});
         }
         ++measurement_count_[m_hash];
 
-        clean_qudits_[target] = false;
+        for (idx elem : target) {
+            clean_qudits_[elem] = false;
+        }
 
-        clean_dits_[c_reg] = false;
-        measurement_dits_[c_reg] = true;
+        for (idx i = 0; i < static_cast<idx>(target.size()); ++i) {
+            clean_dits_[c_reg + i] = false;
+            measurement_dits_[c_reg + i] = true;
+        }
 
         return *this;
     }
@@ -3345,15 +3366,26 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        // measuring non-existing qudit
-        if (target >= nq_) {
-            throw exception::OutOfRange("qpp::QCircuit::post_selectV()",
-                                        context + ": target");
+        // check valid target
+        if (target.empty()) {
+            throw exception::ZeroSize("qpp::QCircuit::post_selectV()",
+                                      context + ": target");
         }
-        // post-selection value out of range
-        if (ps_val >= d_) {
-            throw exception::OutOfRange("qpp::QCircuit::post_select()",
-                                        context + ": ps_vals");
+        for (idx elem : target) {
+            if (elem >= nq_) {
+                throw exception::OutOfRange("qpp::QCircuit::post_selectV()",
+                                            context + ": target");
+            }
+            // check target was not measured before
+            if (was_measured(elem)) {
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::post_selectV()", context + ": target");
+            }
+        }
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target)) {
+            throw exception::Duplicates("qpp::QCircuit::post_selectV()",
+                                        context + ": target");
         }
         // trying to put the result into a non-existing classical slot
         if (c_reg >= nc_) {
@@ -3361,9 +3393,23 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": c_reg");
         }
         // qudit was measured before
-        if (was_measured(target)) {
-            throw exception::QuditAlreadyMeasured(
-                "qpp::QCircuit::post_selectV()", context + ": target");
+        for (idx elem : target) {
+            if (was_measured(elem)) {
+                throw exception::QuditAlreadyMeasured(
+                    "qpp::QCircuit::post_selectV()", context + ": target");
+            }
+        }
+        // post-selection value out of range
+        for (idx elem : ps_vals) {
+            if (elem >= d_) {
+                throw exception::OutOfRange("qpp::QCircuit::post_selectV()",
+                                            context + ": ps_vals");
+            }
+        }
+        // trying to put the result into a non-existing classical slot
+        if (c_reg >= nc_) {
+            throw exception::OutOfRange("qpp::QCircuit::post_selectV()",
+                                        context + ": c_reg");
         }
         // check matrix V
         if (V.cols() == 0) {
@@ -3386,23 +3432,27 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashV, V);
 
         if (destructive) {
-            measured_[target] = true;
-
+            for (idx elem : target) {
+                measured_[elem] = true;
+            }
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT,
                 std::vector<std::size_t>{hashV}, std::vector<idx>{target},
-                c_reg, name, std::vector<idx>{ps_val}});
+                c_reg, name, ps_vals});
         } else {
-            measured_nd_[target] = true;
-
+            for (idx elem : target) {
+                measured_nd_[elem] = true;
+            }
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT_ND,
                 std::vector<std::size_t>{hashV}, std::vector<idx>{target},
-                c_reg, name, std::vector<idx>{ps_val}});
+                c_reg, name, ps_vals});
         }
         ++measurement_count_[hashV];
 
-        clean_qudits_[target] = false;
+        for (idx elem : target) {
+            clean_qudits_[elem] = false;
+        }
 
         clean_dits_[c_reg] = false;
         measurement_dits_[c_reg] = true;
