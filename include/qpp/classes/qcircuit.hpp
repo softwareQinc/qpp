@@ -6344,6 +6344,27 @@ inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
 
 namespace internal {
 /**
+ * \brief True if the qpp::internal::QCircuitMeasurementStep is a projective
+ * measurement step, false otherwise
+ *
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a projective
+ * measurement step, false otherwise
+ */
+inline bool is_projective_measurement(
+    const internal::QCircuitMeasurementStep& measurement_step) {
+    switch (measurement_step.measurement_type_) {
+        case internal::QCircuitMeasurementStep::Type::MEASURE:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_MANY:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_ND:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_MANY_ND:
+            return true;
+        default:
+            return false;
+    }
+}
+
+/**
  * \brief True if the quantum circuit step is a projective measurement step,
  * false otherwise
  *
@@ -6354,19 +6375,10 @@ namespace internal {
 inline bool
 is_projective_measurement(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
         auto measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
-        switch (measurement_step.measurement_type_) {
-            case internal::QCircuitMeasurementStep::Type::MEASURE:
-            case internal::QCircuitMeasurementStep::Type::MEASURE_MANY:
-            case internal::QCircuitMeasurementStep::Type::MEASURE_ND:
-            case internal::QCircuitMeasurementStep::Type::MEASURE_MANY_ND:
-                return true;
-            default:
-                return false;
-        }
+        return is_projective_measurement(measurement_step);
     }
 
     return false;
@@ -6385,6 +6397,27 @@ inline bool is_projective_measurement(QCircuit::iterator it) {
 }
 
 /**
+ * \brief True if the qpp::internal::QCircuitMeasurementStep is a measurement
+ * step (projective or not), false otherwise
+ *
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a measurement
+ * step (projective or not), false otherwise
+ */
+inline bool
+is_measurement(const internal::QCircuitMeasurementStep& measurement_step) {
+    switch (measurement_step.measurement_type_) {
+        case internal::QCircuitMeasurementStep::Type::MEASURE_V:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_V_ND:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT_ND:
+            return true;
+        default:
+            return is_projective_measurement(measurement_step);
+    }
+}
+
+/**
  * \brief True if the quantum circuit step is a measurement step (projective
  * or not), false otherwise
  *
@@ -6394,19 +6427,10 @@ inline bool is_projective_measurement(QCircuit::iterator it) {
  */
 inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
         auto measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
-        switch (measurement_step.measurement_type_) {
-            case internal::QCircuitMeasurementStep::Type::MEASURE_V:
-            case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT:
-            case internal::QCircuitMeasurementStep::Type::MEASURE_V_ND:
-            case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT_ND:
-                return true;
-            default:
-                return is_projective_measurement(elem);
-        }
+        return is_measurement(measurement_step);
     }
 
     return false;
@@ -6425,6 +6449,81 @@ inline bool is_measurement(QCircuit::iterator it) {
 }
 
 /**
+ * \brief True if the qpp::internal::QCircuitMeasurementStep performs a
+ * destructive measurement of any kind, false otherwise
+ *
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep performs a
+ * destructive measurement of any kind, false otherwise
+ */
+inline bool is_destructive_measurement(
+    const internal::QCircuitMeasurementStep& measurement_step) {
+    switch (measurement_step.measurement_type_) {
+        case internal::QCircuitMeasurementStep::Type::MEASURE_ND:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_MANY_ND:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_V_ND:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT_ND:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_ND:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY_ND:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_ND:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT_ND:
+            return false;
+        default:
+            return true;
+    }
+}
+
+/**
+ * \brief True if the quantum circuit step performs a destructive measurement
+ * of any kind, false otherwise
+ *
+ * \param elem Quantum circuit step
+ * \return True if the quantum circuit step performs a destructive measurement
+ * of any kind, false otherwise
+ */
+inline bool
+is_destructive_measurement(const QCircuit::iterator::value_type& elem) {
+    auto step = elem.get_step();
+    if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
+        auto measurement_step =
+            std::get<internal::QCircuitMeasurementStep>(step);
+        return is_destructive_measurement(measurement_step);
+    }
+    return false;
+}
+
+/**
+ * \brief True if the quantum circuit iterator points to a destructive
+ * measurement step of any kind, false otherwise
+ *
+ * \param it Quantum circuit iterator
+ * \return True if the quantum circuit iterator points to a destructive
+ * measurement step of any kind, false otherwise
+ */
+inline bool is_destructive_measurement(QCircuit::iterator it) {
+    return is_destructive_measurement(*it);
+}
+
+/**
+ * \brief True if the qpp::internal::QCircuitMeasurementStep is a discard step,
+ * false otherwise
+ *
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a discard step,
+ * false otherwise
+ */
+inline bool
+is_discard(const internal::QCircuitMeasurementStep& measurement_step) {
+    switch (measurement_step.measurement_type_) {
+        case internal::QCircuitMeasurementStep::Type::DISCARD:
+        case internal::QCircuitMeasurementStep::Type::DISCARD_MANY:
+            return true;
+        default:
+            return false;
+    }
+}
+
+/**
  * \brief True if the quantum circuit step is a discard step, false
  * otherwise
  *
@@ -6434,17 +6533,10 @@ inline bool is_measurement(QCircuit::iterator it) {
  */
 inline bool is_discard(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
         auto measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
-        switch (measurement_step.measurement_type_) {
-            case internal::QCircuitMeasurementStep::Type::DISCARD:
-            case internal::QCircuitMeasurementStep::Type::DISCARD_MANY:
-                return true;
-            default:
-                return false;
-        }
+        return is_discard(measurement_step);
     }
 
     return false;
@@ -6461,6 +6553,25 @@ inline bool is_discard(const QCircuit::iterator::value_type& elem) {
 inline bool is_discard(QCircuit::iterator it) { return is_discard(*it); }
 
 /**
+ * \brief True if the qpp::internal::QCircuitMeasurementStep is a reset step,
+ * false otherwise
+ *
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a reset step,
+ * false otherwise
+ */
+inline bool
+is_reset(const internal::QCircuitMeasurementStep& measurement_step) {
+    switch (measurement_step.measurement_type_) {
+        case internal::QCircuitMeasurementStep::Type::RESET:
+        case internal::QCircuitMeasurementStep::Type::RESET_MANY:
+            return true;
+        default:
+            return false;
+    }
+}
+
+/**
  * \brief True if the quantum circuit step is a reset step,
  * false otherwise
  *
@@ -6470,17 +6581,10 @@ inline bool is_discard(QCircuit::iterator it) { return is_discard(*it); }
  */
 inline bool is_reset(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
         auto measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
-        switch (measurement_step.measurement_type_) {
-            case internal::QCircuitMeasurementStep::Type::RESET:
-            case internal::QCircuitMeasurementStep::Type::RESET_MANY:
-                return true;
-            default:
-                return false;
-        }
+        return is_reset(measurement_step);
     }
 
     return false;
@@ -6496,20 +6600,29 @@ inline bool is_reset(const QCircuit::iterator::value_type& elem) {
  */
 inline bool is_reset(QCircuit::iterator it) { return is_reset(*it); }
 
-/**
- * \brief True if the quantum circuit step is a classical CTRL
+/** \brief True if the qpp::internal::QCircuitGateStep is a classical CTRL
  * step, false otherwise
  *
- * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a classical CTRL
+ * \param gate_step Instance of qpp::internal::QCircuitGateStep
+ * \return True if the qpp::internal::QCircuitGateStep is a classical CTRL
  * step, false otherwise
+ */
+inline bool is_cCTRL(const internal::QCircuitGateStep& gate_step) {
+    return QCircuit::is_cCTRL(gate_step);
+}
+
+/** \brief True if the quantum circuit step is a classical CTRL step, false
+ * otherwise
+ *
+ * \param elem Quantum circuit step
+ * \return True if the quantum circuit step is a classical CTRL step, false
+ * otherwise
  */
 inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-
     if (std::holds_alternative<internal::QCircuitGateStep>(step)) {
         auto gate_step = std::get<internal::QCircuitGateStep>(step);
-        return QCircuit::is_cCTRL(gate_step);
+        return is_cCTRL(gate_step);
     }
 
     return false;

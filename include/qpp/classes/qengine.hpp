@@ -140,19 +140,22 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         auto h_tbl = this->qc_ptr_->get_cmat_hash_tbl();
         idx d = this->qc_ptr_->get_d();
 
+        using GType = internal::QCircuitGateStep::Type;
+        GType gstep_type_ = gate_step.gate_type_;
+
         // regular gate
-        switch (gate_step.gate_type_) {
-            case internal::QCircuitGateStep::Type::NONE:
+        switch (gstep_type_) {
+            case GType::NONE:
                 break;
-            case internal::QCircuitGateStep::Type::SINGLE:
-            case internal::QCircuitGateStep::Type::TWO:
-            case internal::QCircuitGateStep::Type::THREE:
-            case internal::QCircuitGateStep::Type::JOINT:
+            case GType::SINGLE:
+            case GType::TWO:
+            case GType::THREE:
+            case GType::JOINT:
                 qeng_st_.qstate_ =
                     apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
                           target_rel_pos, d);
                 break;
-            case internal::QCircuitGateStep::Type::FAN:
+            case GType::FAN:
                 for (idx m = 0; m < static_cast<idx>(gate_step.target_.size());
                      ++m) {
                     qeng_st_.qstate_ =
@@ -167,8 +170,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // controlled gate
         if (QCircuit::is_CTRL(gate_step)) {
             ctrl_rel_pos = get_relative_pos_(gate_step.ctrl_.value());
-            bool is_fan = (gate_step.gate_type_ ==
-                           internal::QCircuitGateStep::Type::CTRL_FAN);
+            bool is_fan = (gate_step.gate_type_ == GType::CTRL_FAN);
             qeng_st_.qstate_ =
                 is_fan
                     ? applyCTRL_fan(qeng_st_.qstate_,
@@ -181,8 +183,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         // classically-controlled gate
         if (QCircuit::is_cCTRL(gate_step)) {
-            bool is_fan = (gate_step.gate_type_ ==
-                           internal::QCircuitGateStep::Type::cCTRL_FAN);
+            bool is_fan = (gate_step.gate_type_ == GType::cCTRL_FAN);
             if (!qeng_st_.dits_.empty()) {
                 {
                     bool should_apply = true;
@@ -270,121 +271,119 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         auto h_tbl = this->qc_ptr_->get_cmat_hash_tbl();
         idx d = this->qc_ptr_->get_d();
 
-        switch (measurement_step.measurement_type_) {
-            case internal::QCircuitMeasurementStep::Type::NONE:
+        bool destructive =
+            internal::is_destructive_measurement(measurement_step);
+
+        using MType = internal::QCircuitMeasurementStep::Type;
+        MType mstep_type_ = measurement_step.measurement_type_;
+
+        switch (mstep_type_) {
+            case MType::NONE:
                 break;
 
-            case internal::QCircuitMeasurementStep::Type::MEASURE:
-                std::tie(results, probs, qeng_st_.qstate_) =
-                    measure_seq(qeng_st_.qstate_, target_rel_pos, d);
+            case MType::MEASURE:
+            case MType::MEASURE_ND:
+            case MType::POST_SELECT:
+            case MType::POST_SELECT_ND:
+                std::tie(results, probs, qeng_st_.qstate_) = measure_seq(
+                    qeng_st_.qstate_, target_rel_pos, d, destructive);
                 qeng_st_.dits_[measurement_step.c_reg_] = results[0];
                 qeng_st_.probs_[measurement_step.c_reg_] = probs[0];
-                set_measured_(measurement_step.target_[0]);
-                break;
-            case internal::QCircuitMeasurementStep::Type::POST_SELECT:
-                std::tie(results, probs, qeng_st_.qstate_) =
-                    measure_seq(qeng_st_.qstate_, target_rel_pos, d);
-                qeng_st_.dits_[measurement_step.c_reg_] = results[0];
-                qeng_st_.probs_[measurement_step.c_reg_] = probs[0];
-                set_measured_(measurement_step.target_[0]);
-                // post-selection failed
-                if (results[0] != measurement_step.ps_vals_.value()[0]) {
-                    qeng_st_.post_select_ok_ = false;
-                    std::cerr << "ps failed!" << std::endl;
+                if (destructive) {
+                    set_measured_(measurement_step.target_[0]);
+                }
+                // POST_SELECT(_ND)
+                if (mstep_type_ == MType::POST_SELECT ||
+                    mstep_type_ == MType::POST_SELECT_ND) {
+                    // post-selection failed
+                    if (results[0] != measurement_step.ps_vals_.value()[0]) {
+                        qeng_st_.post_select_ok_ = false;
+                        std::cerr << "POST_SELECT failed!" << std::endl;
+                    }
                 }
                 break;
 
-            case internal::QCircuitMeasurementStep::Type::MEASURE_MANY:
-                std::tie(results, probs, qeng_st_.qstate_) =
-                    measure_seq(qeng_st_.qstate_, target_rel_pos, d);
+            case MType::MEASURE_MANY:
+            case MType::MEASURE_MANY_ND:
+            case MType::POST_SELECT_MANY:
+            case MType::POST_SELECT_MANY_ND:
+                std::tie(results, probs, qeng_st_.qstate_) = measure_seq(
+                    qeng_st_.qstate_, target_rel_pos, d, destructive);
                 std::copy(
                     results.begin(), results.end(),
                     std::next(qeng_st_.dits_.begin(), measurement_step.c_reg_));
                 std::copy(probs.begin(), probs.end(),
                           std::next(qeng_st_.probs_.begin(),
                                     measurement_step.c_reg_));
-                for (idx target : measurement_step.target_) {
-                    set_measured_(target);
+                if (destructive) {
+                    for (idx target : measurement_step.target_) {
+                        set_measured_(target);
+                    }
+                }
+                // POST_SELECT_MANY(_ND)
+                if (mstep_type_ == MType::POST_SELECT_MANY ||
+                    mstep_type_ == MType::POST_SELECT_MANY_ND) {
+                    // post-selection failed
+                    if (results != measurement_step.ps_vals_.value()) {
+                        qeng_st_.post_select_ok_ = false;
+                        std::cerr << "POST_SELECT_MANY failed!" << std::endl;
+                    }
                 }
                 break;
-            case internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY:
-                break;
 
-            case internal::QCircuitMeasurementStep::Type::MEASURE_V:
+            case MType::MEASURE_V:
+            case MType::MEASURE_V_ND:
+            case MType::POST_SELECT_V:
+            case MType::POST_SELECT_V_ND:
                 std::tie(mres, probs, states) = measure(
                     qeng_st_.qstate_, h_tbl[measurement_step.mats_hash_[0]],
-                    target_rel_pos, d);
+                    target_rel_pos, d, destructive);
                 qeng_st_.qstate_ = states[mres];
                 qeng_st_.dits_[measurement_step.c_reg_] = mres;
                 qeng_st_.probs_[measurement_step.c_reg_] = probs[mres];
-                set_measured_(measurement_step.target_[0]);
-                break;
-            case internal::QCircuitMeasurementStep::Type::POST_SELECT_V:
-                break;
-
-            case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT:
-                std::tie(mres, probs, states) = measure(
-                    qeng_st_.qstate_, h_tbl[measurement_step.mats_hash_[0]],
-                    target_rel_pos, d);
-                qeng_st_.qstate_ = states[mres];
-                qeng_st_.dits_[measurement_step.c_reg_] = mres;
-                qeng_st_.probs_[measurement_step.c_reg_] = probs[mres];
-                for (idx target : measurement_step.target_) {
-                    set_measured_(target);
+                if (destructive) {
+                    set_measured_(measurement_step.target_[0]);
+                }
+                // POST_SELECT_V(_ND)
+                if (mstep_type_ == MType::POST_SELECT_V ||
+                    mstep_type_ == MType::POST_SELECT_V_ND) {
+                    // post-selection failed
+                    if (mres != measurement_step.ps_vals_.value()[0]) {
+                        qeng_st_.post_select_ok_ = false;
+                        std::cerr << "POST_SELECT_V failed!" << std::endl;
+                    }
                 }
                 break;
-            case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT:
-                break;
 
-            case internal::QCircuitMeasurementStep::Type::MEASURE_ND:
-                std::tie(results, probs, qeng_st_.qstate_) =
-                    measure_seq(qeng_st_.qstate_, target_rel_pos, d, false);
-                qeng_st_.dits_[measurement_step.c_reg_] = results[0];
-                qeng_st_.probs_[measurement_step.c_reg_] = probs[0];
-                break;
-            case internal::QCircuitMeasurementStep::Type::POST_SELECT_ND:
-                break;
-
-            case internal::QCircuitMeasurementStep::Type::MEASURE_MANY_ND:
-                std::tie(results, probs, qeng_st_.qstate_) =
-                    measure_seq(qeng_st_.qstate_, target_rel_pos, d, false);
-                std::copy(
-                    results.begin(), results.end(),
-                    std::next(qeng_st_.dits_.begin(), measurement_step.c_reg_));
-                std::copy(probs.begin(), probs.end(),
-                          std::next(qeng_st_.probs_.begin(),
-                                    measurement_step.c_reg_));
-                break;
-            case internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY_ND:
-                break;
-
-            case internal::QCircuitMeasurementStep::Type::MEASURE_V_ND:
-            case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_ND:
-
-            case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT_ND:
+            case MType::MEASURE_V_JOINT:
+            case MType::MEASURE_V_JOINT_ND:
+            case MType::POST_SELECT_V_JOINT:
+            case MType::POST_SELECT_V_JOINT_ND:
                 std::tie(mres, probs, states) = measure(
                     qeng_st_.qstate_, h_tbl[measurement_step.mats_hash_[0]],
-                    target_rel_pos, d, false);
+                    target_rel_pos, d, destructive);
                 qeng_st_.qstate_ = states[mres];
                 qeng_st_.dits_[measurement_step.c_reg_] = mres;
                 qeng_st_.probs_[measurement_step.c_reg_] = probs[mres];
-                break;
-            case internal::QCircuitMeasurementStep::Type::
-                POST_SELECT_V_JOINT_ND:
+                if (destructive) {
+                    for (idx target : measurement_step.target_) {
+                        set_measured_(target);
+                    }
+                }
                 break;
 
-            case internal::QCircuitMeasurementStep::Type::RESET:
-            case internal::QCircuitMeasurementStep::Type::RESET_MANY:
+            case MType::RESET:
+            case MType::RESET_MANY:
                 qeng_st_.qstate_ =
                     qpp::reset(qeng_st_.qstate_, target_rel_pos, d);
                 break;
 
-            case internal::QCircuitMeasurementStep::Type::DISCARD:
+            case MType::DISCARD:
                 std::tie(std::ignore, std::ignore, qeng_st_.qstate_) =
                     measure_seq(qeng_st_.qstate_, target_rel_pos, d);
                 set_measured_(measurement_step.target_[0]);
                 break;
-            case internal::QCircuitMeasurementStep::Type::DISCARD_MANY:
+            case MType::DISCARD_MANY:
                 std::tie(std::ignore, std::ignore, qeng_st_.qstate_) =
                     measure_seq(qeng_st_.qstate_, target_rel_pos, d);
                 for (idx target : measurement_step.target_) {
