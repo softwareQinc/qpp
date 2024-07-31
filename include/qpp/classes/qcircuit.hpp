@@ -6345,19 +6345,23 @@ inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
 namespace internal {
 /**
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a projective
- * measurement step, false otherwise
+ * measurement step (including post-selection), false otherwise
  *
  * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
  * \return True if the qpp::internal::QCircuitMeasurementStep is a projective
- * measurement step, false otherwise
+ * measurement step (including post-selection), false otherwise
  */
 inline bool is_projective_measurement(
     const internal::QCircuitMeasurementStep& measurement_step) {
     switch (measurement_step.measurement_type_) {
         case internal::QCircuitMeasurementStep::Type::MEASURE:
-        case internal::QCircuitMeasurementStep::Type::MEASURE_MANY:
         case internal::QCircuitMeasurementStep::Type::MEASURE_ND:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_MANY:
         case internal::QCircuitMeasurementStep::Type::MEASURE_MANY_ND:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_ND:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY_ND:
             return true;
         default:
             return false;
@@ -6365,12 +6369,12 @@ inline bool is_projective_measurement(
 }
 
 /**
- * \brief True if the quantum circuit step is a projective measurement step,
- * false otherwise
+ * \brief True if the quantum circuit step is a projective measurement step
+ * (including post-selection), false otherwise
  *
  * \param elem Quantum circuit step
  * \return True if the quantum circuit step is a projective measurement
- * step, false otherwise
+ * step (including post-selection), false otherwise
  */
 inline bool
 is_projective_measurement(const QCircuit::iterator::value_type& elem) {
@@ -6385,12 +6389,12 @@ is_projective_measurement(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a measurement step,
- * false otherwise
+ * \brief True if the quantum circuit iterator points to a projective
+ * measurement step (including post-selection), false otherwise
  *
  * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a measurement
- * step, false otherwise
+ * \return True if the quantum circuit iterator points to a projective
+ * measurement step (including post-selection), false otherwise
  */
 inline bool is_projective_measurement(QCircuit::iterator it) {
     return is_projective_measurement(*it);
@@ -6398,19 +6402,23 @@ inline bool is_projective_measurement(QCircuit::iterator it) {
 
 /**
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a measurement
- * step (projective or not), false otherwise
+ * step (projective or not, including post-selection), false otherwise
  *
  * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
  * \return True if the qpp::internal::QCircuitMeasurementStep is a measurement
- * step (projective or not), false otherwise
+ * step (projective or not, including post-selection), false otherwise
  */
 inline bool
 is_measurement(const internal::QCircuitMeasurementStep& measurement_step) {
     switch (measurement_step.measurement_type_) {
         case internal::QCircuitMeasurementStep::Type::MEASURE_V:
-        case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT:
         case internal::QCircuitMeasurementStep::Type::MEASURE_V_ND:
+        case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT:
         case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT_ND:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_V:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_ND:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT_ND:
             return true;
         default:
             return is_projective_measurement(measurement_step);
@@ -6419,11 +6427,11 @@ is_measurement(const internal::QCircuitMeasurementStep& measurement_step) {
 
 /**
  * \brief True if the quantum circuit step is a measurement step (projective
- * or not), false otherwise
+ * or not, including post-selection), false otherwise
  *
  * \param elem Quantum circuit step
  * \return True if the quantum circuit step is a measurement step
- * (projective or not), false otherwise
+ * (projective or not, including post-selection), false otherwise
  */
 inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
@@ -6438,11 +6446,11 @@ inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
 
 /**
  * \brief True if the quantum circuit iterator points to a measurement step
- * (projective or not), false otherwise
+ * (projective or not, including post-selection), false otherwise
  *
  * \param it Quantum circuit iterator
  * \return True if the quantum circuit iterator points to a measurement step
- * (projective or not), false otherwise
+ * (projective or not, including post-selection), false otherwise
  */
 inline bool is_measurement(QCircuit::iterator it) {
     return is_measurement(*it);
@@ -6450,11 +6458,13 @@ inline bool is_measurement(QCircuit::iterator it) {
 
 /**
  * \brief True if the qpp::internal::QCircuitMeasurementStep performs a
- * destructive measurement of any kind, false otherwise
+ * destructive measurement of any kind (including post-selection), false
+ * otherwise
  *
  * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
  * \return True if the qpp::internal::QCircuitMeasurementStep performs a
- * destructive measurement of any kind, false otherwise
+ * destructive measurement of any kind (including post-selection), false
+ * otherwise
  */
 inline bool is_destructive_measurement(
     const internal::QCircuitMeasurementStep& measurement_step) {
