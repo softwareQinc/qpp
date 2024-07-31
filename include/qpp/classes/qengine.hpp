@@ -776,8 +776,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             }
         }
 
-        // executes everything ONCE in the interval [0,
-        // first_measurement_pos)
+        // executes everything ONCE in the interval
+        // [0, first_measurement_discard_reset_pos)
         for (idx i = 0; i < first_measurement_discard_reset_pos; ++i) {
             execute(steps[i]);
         }
@@ -785,9 +785,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         auto current_engine_state = qeng_st_;
 
         // executes repeatedly everything in the remaining interval
-        // [sampling_pos, num_steps)
 
-        // can sample (every step must be a projective measurement)
+        // can sample (every step from now on must be a projective measurement)
         if (this->can_sample) {
             std::map<idx, idx> used_dits; // records the c <- q map
             bool measured = false;
