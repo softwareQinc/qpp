@@ -66,4 +66,4 @@ jobs:
 
       - name: Install pyqpp
         run: |
-          pip3 install --user .
+          pip3 install .
