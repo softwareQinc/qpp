@@ -785,15 +785,17 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 break;
             }
         }
-        // executes everything ONCE in the interval
+
+        // execute everything ONCE in the interval
         // [0, first_measurement_discard_reset_pos)
         for (idx i = 0; i < first_measurement_discard_reset_pos; ++i) {
             execute(steps[i]);
         }
-        // saves the state just before the first measurement
+
+        // save the state just before the first measurement
         auto current_engine_state = qeng_st_;
 
-        // executes repeatedly everything in the remaining interval
+        // execute repeatedly everything in the remaining interval
 
         // can sample (every step from now on must be a projective measurement)
         if (this->can_sample) {

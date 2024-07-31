@@ -73,4 +73,4 @@ jobs:
           else
             source venv/bin/activate
           fi
-          pip3 install --user .
+          pip3 install .
