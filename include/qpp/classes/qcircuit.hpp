@@ -6653,8 +6653,8 @@ inline bool is_cCTRL(QCircuit::iterator it) { return is_cCTRL(*it); }
  * quantum circuit step, as a tuple
  *
  * \param elem Quantum circuit step
- * \return Tuple with vectors representing (in this order) ctrl,
- * target, and c_reg, respectively
+ * \return Tuple with vectors representing (in this order) ctrl, target, and
+ * c_reg, respectively
  */
 inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>>
 extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
@@ -6674,6 +6674,10 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
             case internal::QCircuitMeasurementStep::Type::MEASURE_ND:
             case internal::QCircuitMeasurementStep::Type::MEASURE_MANY:
             case internal::QCircuitMeasurementStep::Type::MEASURE_MANY_ND:
+            case internal::QCircuitMeasurementStep::Type::POST_SELECT:
+            case internal::QCircuitMeasurementStep::Type::POST_SELECT_ND:
+            case internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY:
+            case internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY_ND:
                 c_reg.resize(target.size());
                 std::iota(c_reg.begin(), c_reg.end(),
                           current_measurement_step.c_reg_);
@@ -6683,6 +6687,11 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
             case internal::QCircuitMeasurementStep::Type::MEASURE_V_ND:
             case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT:
             case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT_ND:
+            case internal::QCircuitMeasurementStep::Type::POST_SELECT_V:
+            case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_ND:
+            case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT:
+            case internal::QCircuitMeasurementStep::Type::
+                POST_SELECT_V_JOINT_ND:
                 c_reg.resize(1);
                 c_reg[0] = current_measurement_step.c_reg_;
                 break;
@@ -6717,12 +6726,12 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief Extracts ctrl, target, and c_reg vectors (in this
- * order) from a quantum circuit iterator, as a tuple
+ * \brief Extracts ctrl, target, and c_reg vectors (in this order) from a
+ * quantum circuit iterator, as a tuple
  *
  * \param it Quantum circuit iterator
- * \return Tuple with vectors representing (in this order) ctrl,
- * target, and c_reg, respectively
+ * \return Tuple with vectors representing (in this order) ctrl, target, and
+ * c_reg, respectively
  */
 inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>>
 extract_ctrl_target_c_reg(QCircuit::iterator it) {

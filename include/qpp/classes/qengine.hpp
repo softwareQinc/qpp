@@ -298,7 +298,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     // post-selection failed
                     if (results[0] != measurement_step.ps_vals_.value()[0]) {
                         qeng_st_.post_select_ok_ = false;
-                        std::cerr << "POST_SELECT failed!" << std::endl;
+                        // std::cerr << "POST_SELECT failed!" << std::endl;
                     }
                 }
                 break;
@@ -326,7 +326,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     // post-selection failed
                     if (results != measurement_step.ps_vals_.value()) {
                         qeng_st_.post_select_ok_ = false;
-                        std::cerr << "POST_SELECT_MANY failed!" << std::endl;
+                        // std::cerr << "POST_SELECT_MANY failed!" << std::endl;
                     }
                 }
                 break;
@@ -350,7 +350,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     // post-selection failed
                     if (mres != measurement_step.ps_vals_.value()[0]) {
                         qeng_st_.post_select_ok_ = false;
-                        std::cerr << "POST_SELECT_V failed!" << std::endl;
+                        // std::cerr << "POST_SELECT_V failed!" << std::endl;
                     }
                 }
                 break;
@@ -368,6 +368,16 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 if (destructive) {
                     for (idx target : measurement_step.target_) {
                         set_measured_(target);
+                    }
+                }
+                // POST_SELECT_V(_ND)
+                if (mstep_type_ == MType::POST_SELECT_V_JOINT ||
+                    mstep_type_ == MType::POST_SELECT_V_JOINT_ND) {
+                    // post-selection failed
+                    if (mres != measurement_step.ps_vals_.value()[0]) {
+                        qeng_st_.post_select_ok_ = false;
+                        // std::cerr << "POST_SELECT_V_JOINT failed!" <<
+                        // std::endl;
                     }
                 }
                 break;
@@ -764,8 +774,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         idx first_measurement_discard_reset_pos =
             std::distance(steps.begin(), first_measurement_discard_reset_it);
 
-        // decide if we can sample (every step after first_measurement_pos
-        // must be a projective measurement)
+        // decide if we can sample (every step after
+        // first_measurement_discard_reset_pos must be a projective measurement)
         this->can_sample = reps > 1;
         for (idx i = first_measurement_discard_reset_pos;
              i < num_steps && this->can_sample; ++i) {
@@ -775,7 +785,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 break;
             }
         }
-
         // executes everything ONCE in the interval
         // [0, first_measurement_discard_reset_pos)
         for (idx i = 0; i < first_measurement_discard_reset_pos; ++i) {
