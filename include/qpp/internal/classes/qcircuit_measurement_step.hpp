@@ -200,7 +200,7 @@ struct QCircuitMeasurementStep : IDisplay {
     std::vector<idx> target_{}; ///< target where the measurement is applied
     idx c_reg_{};               ///< index of the classical register where the
                                 ///< measurement result is being stored
-    std::optional<std::vector<idx>> ps_vals_{}; ///< post-selection values
+    std::optional<std::vector<idx>> ps_vals_{}; ///< post-selection value(s)
     std::optional<std::string> name_{}; ///< custom name of the measurement(s)
 
     /**
