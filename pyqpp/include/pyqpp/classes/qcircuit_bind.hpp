@@ -355,6 +355,40 @@ inline void init_classes_qcircuit(py::module_& m) {
                  py::arg("V"), py::arg("target"), py::arg("c_reg"),
                  py::arg("destructive") = true, py::arg("name") = std::nullopt)
             .def("nop", &QCircuit::nop, "No operation (no-op)")
+            .def("post_select",
+                 py::overload_cast<idx, idx, idx, bool,
+                                   std::optional<std::string>>(
+                     &QCircuit::post_select),
+                 "Z post-selection of single qudit", py::arg("target"),
+                 py::arg("ps_val"), py::arg("c_reg"),
+                 py::arg("destructive") = true, py::arg("name") = std::nullopt)
+            .def("post_select",
+                 py::overload_cast<const std::vector<idx>&,
+                                   const std::vector<idx>&, idx, bool,
+                                   std::optional<std::string>>(
+                     &QCircuit::post_select),
+                 "Z post-selection of multiple qudits", py::arg("target"),
+                 py::arg("ps_vals"), py::arg("c_reg"),
+                 py::arg("destructive") = true, py::arg("name") = std::nullopt)
+            .def("post_selectV",
+                 py::overload_cast<const cmat&, idx, idx, idx, bool,
+                                   std::optional<std::string>>(
+                     &QCircuit::post_selectV),
+                 "Post-selection of single qudit in the orthonormal basis "
+                 "specified by the columns of matrix V",
+                 py::arg("V"), py::arg("target"), py::arg("ps_val"),
+                 py::arg("c_reg"), py::arg("destructive") = true,
+                 py::arg("name") = std::nullopt)
+            .def("post_selectV",
+                 py::overload_cast<const cmat&, const std::vector<idx>&,
+                                   const std::vector<idx>&, idx, bool,
+                                   std::optional<std::string>>(
+                     &QCircuit::post_selectV),
+                 "Post-selection of multiple qudits in the orthonormal basis "
+                 "specified by the columns of matrix V",
+                 py::arg("V"), py::arg("target"), py::arg("ps_vals"),
+                 py::arg("c_reg"), py::arg("destructive") = true,
+                 py::arg("name") = std::nullopt)
             .def("QFT",
                  py::overload_cast<const std::vector<idx>&, bool>(
                      &QCircuit::QFT),
