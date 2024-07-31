@@ -293,6 +293,26 @@ TEST(qpp_QCircuit_operator_noneq, AllTests) {}
 /// BEGIN bool QCircuit::operator==(const QCircuit& rhs) const noexcept
 TEST(qpp_QCircuit_operator_eq, AllTests) {}
 
+/// BEGIN QCircuit& QCircuit::post_select(const std::vector<idx>& target,
+///       const std::vector<idx>& ps_vals, idx c_reg, bool destructive = true,
+///       std::optional<std::string> name = "pZ")
+TEST(qpp_QCircuit_postselect, MultipleTargets) {}
+
+/// BEGIN QCircuit& QCircuit::post_select(idx target, idx ps_val, idx c_reg,
+///       bool destructive = true, std::optional<std::string> name = "pZ")
+TEST(qpp_QCircuit_postselect, SingleTarget) {}
+
+/// BEGIN QCircuit& QCircuit::post_select(const cmat& V,
+///       const std::vector<idx>& target, const std::vector<idx>& ps_vals, idx
+///       c_reg, bool destructive = true,
+///       std::optional<std::string> name = std::nullopt)
+TEST(qpp_QCircuit_postselectV, MultipleTargets) {}
+
+/// BEGIN QCircuit& QCircuit::post_select(const cmat& V, idx target,
+///       idx ps_val, idx c_reg, bool destructive = true,
+///       std::optional<std::string> name = std::nullopt)
+TEST(qpp_QCircuit_postselectV, SingleTarget) {}
+
 /// BEGIN QCircuit& QCircuit::QFT(bool swap = true)
 TEST(qpp_QCircuit_QFT, AllQudits) {}
 
