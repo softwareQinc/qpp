@@ -6515,6 +6515,111 @@ inline bool is_destructive_measurement(QCircuit::iterator it) {
 }
 
 /**
+ * \brief True if the qpp::internal::QCircuitMeasurementStep is a projective
+ * post-selection step, false otherwise
+ *
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a projective
+ * post-selection step, false otherwise
+ */
+inline bool is_projective_post_selection(
+    const internal::QCircuitMeasurementStep& measurement_step) {
+    switch (measurement_step.measurement_type_) {
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_ND:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY_ND:
+            return true;
+        default:
+            return false;
+    }
+}
+
+/**
+ * \brief True if the quantum circuit step is a projective post-selection step,
+ * false otherwise
+ *
+ * \param elem Quantum circuit step
+ * \return True if the quantum circuit step is a projective post-selection
+ * step, false otherwise
+ */
+inline bool
+is_projective_post_selection(const QCircuit::iterator::value_type& elem) {
+    auto step = elem.get_step();
+    if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
+        auto measurement_step =
+            std::get<internal::QCircuitMeasurementStep>(step);
+        return is_projective_post_selection(measurement_step);
+    }
+
+    return false;
+}
+
+/**
+ * \brief True if the quantum circuit iterator points to a projective
+ * post-selection step, false otherwise
+ *
+ * \param it Quantum circuit iterator
+ * \return True if the quantum circuit iterator points to a projective
+ * post-selection step, false otherwise
+ */
+inline bool is_projective_post_selection(QCircuit::iterator it) {
+    return is_projective_post_selection(*it);
+}
+
+/**
+ * \brief True if the qpp::internal::QCircuitMeasurementStep is a
+ * post-selection step (projective or not), false otherwise
+ *
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a
+ * post-selection step (projective or not), false otherwise
+ */
+inline bool
+is_post_selection(const internal::QCircuitMeasurementStep& measurement_step) {
+    switch (measurement_step.measurement_type_) {
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_V:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_ND:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT:
+        case internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT_ND:
+            return true;
+        default:
+            return is_projective_post_selection(measurement_step);
+    }
+}
+
+/**
+ * \brief True if the quantum circuit step is a post-selection step (projective
+ * or not), false otherwise
+ *
+ * \param elem Quantum circuit step
+ * \return True if the quantum circuit step is a post-selection step
+ * (projective or not), false otherwise
+ */
+inline bool is_post_selection(const QCircuit::iterator::value_type& elem) {
+    auto step = elem.get_step();
+    if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
+        auto measurement_step =
+            std::get<internal::QCircuitMeasurementStep>(step);
+        return is_post_selection(measurement_step);
+    }
+
+    return false;
+}
+
+/**
+ * \brief True if the quantum circuit iterator points to a post-selection step
+ * (projective or not), false otherwise
+ *
+ * \param it Quantum circuit iterator
+ * \return True if the quantum circuit iterator points to a post-selection step
+ * (projective or not), false otherwise
+ */
+inline bool is_post_selection(QCircuit::iterator it) {
+    return is_post_selection(*it);
+}
+
+/**
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a discard step,
  * false otherwise
  *
@@ -6649,16 +6754,17 @@ inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
 inline bool is_cCTRL(QCircuit::iterator it) { return is_cCTRL(*it); }
 
 /**
- * \brief Extracts ctrl, target, and c_reg vectors (in this order) from a
- * quantum circuit step, as a tuple
+ * \brief Extracts ctrl, target, ps_vals, and c_reg vectors (in this order)
+ * from a quantum circuit step, as a tuple
  *
  * \param elem Quantum circuit step
  * \return Tuple with vectors representing (in this order) ctrl, target, and
  * c_reg, respectively
  */
-inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>>
-extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
-    std::vector<idx> ctrl, target, c_reg;
+inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>,
+                  std::vector<idx>>
+extract_ctrl_target_ps_vals_c_reg(const QCircuit::iterator::value_type& elem) {
+    std::vector<idx> ctrl, target, ps_vals, c_reg;
 
     // measurement
     if (is_measurement(elem)) {
@@ -6667,9 +6773,12 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
 
         ctrl = {};
         target = current_measurement_step.target_;
+        if (current_measurement_step.ps_vals_.has_value()) {
+            ps_vals = current_measurement_step.ps_vals_.value();
+        }
 
         switch (current_measurement_step.measurement_type_) {
-            // measure
+            // measure()/post-select()
             case internal::QCircuitMeasurementStep::Type::MEASURE:
             case internal::QCircuitMeasurementStep::Type::MEASURE_ND:
             case internal::QCircuitMeasurementStep::Type::MEASURE_MANY:
@@ -6682,7 +6791,7 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
                 std::iota(c_reg.begin(), c_reg.end(),
                           current_measurement_step.c_reg_);
                 break;
-            // measureV
+            // measureV()/post-selectV()
             case internal::QCircuitMeasurementStep::Type::MEASURE_V:
             case internal::QCircuitMeasurementStep::Type::MEASURE_V_ND:
             case internal::QCircuitMeasurementStep::Type::MEASURE_V_JOINT:
@@ -6722,7 +6831,7 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
         }
     }
 
-    return {ctrl, target, c_reg};
+    return {ctrl, target, ps_vals, c_reg};
 }
 
 /**
@@ -6733,9 +6842,10 @@ extract_ctrl_target_c_reg(const QCircuit::iterator::value_type& elem) {
  * \return Tuple with vectors representing (in this order) ctrl, target, and
  * c_reg, respectively
  */
-inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>>
-extract_ctrl_target_c_reg(QCircuit::iterator it) {
-    return extract_ctrl_target_c_reg(*it);
+inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>,
+                  std::vector<idx>>
+extract_ctrl_target_ps_vals_c_reg(QCircuit::iterator it) {
+    return extract_ctrl_target_ps_vals_c_reg(*it);
 }
 
 /**
@@ -6750,8 +6860,10 @@ extract_ctrl_target_c_reg(QCircuit::iterator it) {
 inline bool can_swap(const QCircuit::iterator::value_type& elem1,
                      const QCircuit::iterator::value_type& elem2) {
 
-    auto [ctrl1, target1, c_reg1] = extract_ctrl_target_c_reg(elem1);
-    auto [ctrl2, target2, c_reg2] = extract_ctrl_target_c_reg(elem2);
+    auto [ctrl1, target1, ps_vals1, c_reg1] =
+        extract_ctrl_target_ps_vals_c_reg(elem1);
+    auto [ctrl2, target2, ps_vals2, c_reg2] =
+        extract_ctrl_target_ps_vals_c_reg(elem2);
 
     // if ctrls overlap, return false
     if (std::find_first_of(ctrl1.begin(), ctrl1.end(), ctrl2.begin(),
