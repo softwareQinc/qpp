@@ -795,30 +795,43 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // save the state just before the first measurement
         auto current_engine_state = qeng_st_;
 
-        // execute repeatedly everything in the remaining interval
 
-        // can sample (every step from now on must be a projective measurement)
+        // execute repeatedly everything in the remaining interval
+        // can sample: every step from now on is a projective measurement
         if (this->can_sample) {
-            std::map<idx, idx> used_dits; // records the c <- q map
+            std::map<idx, idx> meas_dits_map; // records the c <- q map
+            std::map<idx, std::pair<idx, idx>>
+                ps_dits_map; // records the c <- (q, ps_val) map
             bool measured = false;
             for (idx i = first_measurement_discard_reset_pos; i < num_steps;
                  ++i) {
-                if (internal::is_projective_measurement(steps[i])) {
+                if (internal::is_projective_post_selection(steps[i])) {
                     measured = true;
-                    auto [_, target, c_regs] =
-                        internal::extract_ctrl_target_c_reg(steps[i]);
+                    auto [_, target, ps_vals, c_regs] =
+                        internal::extract_ctrl_target_ps_vals_c_reg(steps[i]);
                     for (idx q = 0; q < static_cast<idx>(target.size()); ++q) {
-                        used_dits[c_regs[q]] = target[q];
+                        idx key = c_regs[q];
+                        std::pair<idx, idx> val = {target[q], ps_vals[q]};
+                        ps_dits_map[key] = val;
+                    }
+                } else if (internal::is_projective_measurement(steps[i])) {
+                    measured = true;
+                    auto [_, target, ps_vals_, c_regs] =
+                        internal::extract_ctrl_target_ps_vals_c_reg(steps[i]);
+                    for (idx q = 0; q < static_cast<idx>(target.size()); ++q) {
+                        idx key = c_regs[q];
+                        idx val = target[q];
+                        meas_dits_map[key] = val;
                     }
                 }
             }
-            // at least one qudit was measured
+            // at least one qudit was measured, add it to stats_
             if (measured) {
                 // build the vector of measured qudits that we must sample
                 // from
                 std::vector<idx> sample_from;
                 sample_from.reserve(this->get_dits().size());
-                for (auto [dit, qubit] : used_dits) {
+                for (auto [dit, qubit] : meas_dits_map) {
                     sample_from.emplace_back(qubit);
                 }
                 for (idx rep = 0; rep < reps - 1; ++rep) {
@@ -828,7 +841,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     // extend sample_res to full support
                     std::vector<idx> sample_res = this->get_dits();
                     idx i = 0;
-                    for (auto [dit, qubit] : used_dits) {
+                    for (auto [dit, qubit] : meas_dits_map) {
                         sample_res[dit] = sample_res_restricted_support[i++];
                     }
                     ++stats_.data()[sample_res];
@@ -855,9 +868,15 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                         measured = true;
                     }
                     this->execute(steps[i]);
+                    if (!qeng_st_.post_select_ok_) {
+                        break;
+                    }
                 }
                 // at least one qudit was measured
                 if (measured) {
+                    if (!qeng_st_.post_select_ok_) {
+                        continue;
+                    }
                     std::vector<idx> m_res = get_dits();
                     ++stats_.data()[m_res];
                 }

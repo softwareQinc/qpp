@@ -6624,8 +6624,8 @@ inline bool is_post_selection(QCircuit::iterator it) {
  * false otherwise
  *
  * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a discard step,
- * false otherwise
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a discard
+ * step, false otherwise
  */
 inline bool
 is_discard(const internal::QCircuitMeasurementStep& measurement_step) {
