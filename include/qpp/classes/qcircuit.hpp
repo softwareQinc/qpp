@@ -5070,7 +5070,7 @@ class QCircuitIterator {
                     case internal::QCircuitMeasurementStep::Type::POST_SELECT_V:
                     case internal::QCircuitMeasurementStep::Type::
                         POST_SELECT_V_JOINT:
-                        os << "=> ";
+                        os << "<| ";
                         break;
                     case internal::QCircuitMeasurementStep::Type::
                         POST_SELECT_ND:
@@ -5080,7 +5080,7 @@ class QCircuitIterator {
                         POST_SELECT_V_ND:
                     case internal::QCircuitMeasurementStep::Type::
                         POST_SELECT_V_JOINT_ND:
-                        os << "=] ";
+                        os << "[| ";
                         break;
                 } /* end switch */
                 os << measurement_step;
