@@ -72,7 +72,6 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
     MATFile* pmat = matOpen(mat_file.c_str(), "r");
 
     // EXCEPTION CHECKS
-
     if (!pmat) {
         throw std::runtime_error(
             "qpp::load_MATLAB(): Can not open MATLAB file " + mat_file + "!");
@@ -156,7 +155,6 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
     MATFile* pmat = matOpen(mat_file.c_str(), "r");
 
     // EXCEPTION CHECKS
-
     if (!pmat) {
         throw std::runtime_error(
             "qpp::load_MATLAB(): Can not open MATLAB file " + mat_file + "!");
@@ -218,7 +216,6 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
     const dyn_mat<cplx>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::save_MATLAB()", "A");
@@ -287,7 +284,6 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
     const dyn_mat<double>& rA = A.template cast<double>();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::save_MATLAB()", "A");

@@ -59,7 +59,7 @@ struct QEngineState {
     std::vector<realT> probs_{}; ///< measurement probabilities
     std::vector<idx> dits_{};    ///< classical dits (where measurement
                                  ///< results are usually stored)
-    std::vector<idx> subsys_{};  ///< keeps track of the measured
+    std::vector<idx> subsys_{};  ///< keeps track of the destructively measured
                                  ///< subsystems, re-label them after
                                  ///< measurements
     bool post_select_ok_ =
@@ -73,7 +73,6 @@ struct QEngineState {
      */
     explicit QEngineState(const QCircuit* qc_ptr) : qc_ptr_{qc_ptr} {
         // EXCEPTION CHECKS
-
         if (qc_ptr->get_nq() == 0) {
             throw exception::ZeroSize(
                 "qpp::internal::QEngineState::QEngineState()", "nq");
@@ -105,7 +104,6 @@ struct QEngineState {
         if (qstate.has_value()) {
             idx D = internal::safe_pow(qc_ptr_->get_d(), qc_ptr_->get_nq());
             // EXCEPTION CHECKS
-
             if constexpr (std::is_same_v<T, ket>) {
                 if (static_cast<idx>(qstate.value().rows()) != D) {
                     throw exception::DimsNotEqual(

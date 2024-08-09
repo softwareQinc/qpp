@@ -78,7 +78,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     expr_t<Derived> cA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(cA)) {
         throw exception::ZeroSize("qpp::measure_seq()", "A");
@@ -283,7 +282,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure_seq()", "A");

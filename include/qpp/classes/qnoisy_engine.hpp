@@ -72,7 +72,6 @@ class QNoisyEngineT : public QEngineT<T> {
     explicit QNoisyEngineT(const QCircuit& qc, const NoiseModel& noise)
         : QEngineT<T>{qc}, noise_{noise}, noise_results_(qc.get_step_count()) {
         // EXCEPTION CHECKS
-
         // check noise has the correct dimensionality
         if (qc.get_d() != noise.get_d()) {
             throw exception::DimsNotEqual("qpp::QNoisyEngineT::QNoisyEngineT()",
@@ -133,9 +132,17 @@ class QNoisyEngineT : public QEngineT<T> {
 
             for (auto&& elem : *this->qc_ptr_) {
                 (void)execute(elem);
+                // post-selection failed, stop executing
+                if (!this->qeng_st_.post_select_ok_) {
+                    break;
+                }
+            }
+            // post-selection failed, skip this run
+            if (!this->qeng_st_.post_select_ok_) {
+                continue;
             }
 
-            // we measured at least one qudit
+            // at least one qudit was measured
             if (this->qc_ptr_->get_measurement_count() > 0) {
                 std::vector<idx> m_res = this->get_dits();
                 ++this->stats_.data()[m_res];

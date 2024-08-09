@@ -78,6 +78,49 @@ namespace qpp {
 template <typename T>
 class QEngineT : public QBaseEngine<T, QCircuit> {
     bool can_sample; ///< can sample when executing with multiple repetitions
+
+    /**
+     * \brief Executes a contiguous series of projective measurement steps
+     *
+     * \param engine_state Instance of qpp::internal::QEngineState<T>
+     * \param steps Vector of qpp::QCircuit::iterator
+     * \idx pos Index from where the execution starts
+     * \idx reps Number of repetitions
+     * \return Reference to the current instance
+     */
+    QEngineT& execute_no_sample_(internal::QEngineState<T> engine_state,
+                                 const std::vector<QCircuit::iterator>& steps,
+                                 idx pos, idx reps) {
+        std::cout << "4" << std::endl;
+        for (idx rep = 0; rep < reps; ++rep) {
+            // sets the state of the engine to the entry state
+            qeng_st_ = engine_state;
+            bool measured = false;
+            for (idx i = pos; i < steps.size(); ++i) {
+                if (internal::is_measurement(steps[i])) {
+                    measured = true;
+                }
+                this->execute(steps[i]);
+                // post-selection failed, stop executing
+                if (!qeng_st_.post_select_ok_) {
+                    break;
+                }
+            }
+            // post-selection failed, skip this run
+            if (!qeng_st_.post_select_ok_) {
+                continue;
+            }
+
+            // at least one qudit was measured
+            if (measured) {
+                std::vector<idx> m_res = get_dits();
+                ++stats_.data()[m_res];
+            }
+        }
+
+        return *this;
+    }
+
   protected:
     internal::QEngineState<T> qeng_st_; ///< current state of the engine
     internal::QEngineStatistics
@@ -86,12 +129,12 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
      * remaining non-measured qudits
+     *
      * \param i Qudit index
      */
-    void set_measured_(idx i) {
+    void set_measured_destructively_(idx i) {
         // EXCEPTION CHECKS
-
-        if (was_measured(i)) {
+        if (was_measured_destructively(i)) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QEngineT::set_measured_()", "i");
         }
@@ -99,14 +142,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         qeng_st_.subsys_[i] =
             std::numeric_limits<idx>::max(); // set qudit i to measured state
         for (idx m = i; m < this->qc_ptr_->get_nq(); ++m) {
-            if (!was_measured(m)) {
+            if (!was_measured_destructively(m)) {
                 --qeng_st_.subsys_[m];
             }
         }
     }
 
-    // giving a vector of non-measured qudits, get their relative position wrt
-    // the measured qudits
+    // giving a vector of non-measured qudits, get their relative position
+    // w.r.t. the measured qudits
     /**
      * \brief Giving a vector \a v of non-measured qudits, gets their relative
      * position with respect to the measured qudits
@@ -118,8 +161,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         idx vsize = v.size();
         for (idx i = 0; i < vsize; ++i) {
             // EXCEPTION CHECKS
-
-            if (was_measured(v[i])) {
+            if (was_measured_destructively(v[i])) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QEngineT::get_relative_pos_()", "v[i]");
             }
@@ -131,6 +173,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
     /**
      * \brief Executes qpp::internal::QCircuitGateStep
+     *
      * \param gate_step Instance of qpp::internal::QCircuitGateStep
      */
     virtual void
@@ -256,6 +299,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
     /**
      * \brief Executes qpp::internal::QCircuitMeasurementStep
+     *
      * \param measurement_step Instance of
      * qpp::internal::QCircuitMeasurementStep
      */
@@ -291,7 +335,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 qeng_st_.dits_[measurement_step.c_reg_] = results[0];
                 qeng_st_.probs_[measurement_step.c_reg_] = probs[0];
                 if (destructive) {
-                    set_measured_(measurement_step.target_[0]);
+                    set_measured_destructively_(measurement_step.target_[0]);
                 }
                 // POST_SELECT(_ND)
                 if (mstep_type_ == MType::POST_SELECT ||
@@ -318,7 +362,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                                     measurement_step.c_reg_));
                 if (destructive) {
                     for (idx target : measurement_step.target_) {
-                        set_measured_(target);
+                        set_measured_destructively_(target);
                     }
                 }
                 // POST_SELECT_MANY(_ND)
@@ -327,7 +371,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     // post-selection failed
                     if (results != measurement_step.ps_vals_.value()) {
                         qeng_st_.post_select_ok_ = false;
-                        // std::cerr << "POST_SELECT_MANY failed!" << std::endl;
                     }
                 }
                 break;
@@ -343,7 +386,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 qeng_st_.dits_[measurement_step.c_reg_] = mres;
                 qeng_st_.probs_[measurement_step.c_reg_] = probs[mres];
                 if (destructive) {
-                    set_measured_(measurement_step.target_[0]);
+                    set_measured_destructively_(measurement_step.target_[0]);
                 }
                 // POST_SELECT_V(_ND)
                 if (mstep_type_ == MType::POST_SELECT_V ||
@@ -351,7 +394,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     // post-selection failed
                     if (mres != measurement_step.ps_vals_.value()[0]) {
                         qeng_st_.post_select_ok_ = false;
-                        // std::cerr << "POST_SELECT_V failed!" << std::endl;
                     }
                 }
                 break;
@@ -368,7 +410,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 qeng_st_.probs_[measurement_step.c_reg_] = probs[mres];
                 if (destructive) {
                     for (idx target : measurement_step.target_) {
-                        set_measured_(target);
+                        set_measured_destructively_(target);
                     }
                 }
                 // POST_SELECT_V(_ND)
@@ -392,13 +434,13 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             case MType::DISCARD:
                 std::tie(std::ignore, std::ignore, qeng_st_.qstate_) =
                     measure_seq(qeng_st_.qstate_, target_rel_pos, d);
-                set_measured_(measurement_step.target_[0]);
+                set_measured_destructively_(measurement_step.target_[0]);
                 break;
             case MType::DISCARD_MANY:
                 std::tie(std::ignore, std::ignore, qeng_st_.qstate_) =
                     measure_seq(qeng_st_.qstate_, target_rel_pos, d);
                 for (idx target : measurement_step.target_) {
-                    set_measured_(target);
+                    set_measured_destructively_(target);
                 }
                 break;
         } // end switch on measurement type
@@ -406,10 +448,137 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
     /**
      * \brief Executes qpp::internal::QCircuitNOPStep
+     *
      * \param nop_step Instance of qpp::internal::QCircuitNOPStep
      */
     virtual void execute_nop_step_(
         [[maybe_unused]] const internal::QCircuitNOPStep& nop_step) {}
+
+    /**
+     * \brief Executes a contiguous series of projective measurement steps via
+     * sampling
+     *
+     * \param engine_state Instance of qpp::internal::QEngineState<T>
+     * \param steps Vector of qpp::QCircuit::iterator
+     * \idx pos Index from where the execution starts; from this index further,
+     * all steps are assumed to be a projective measurement (including
+     * post-selection)
+     * \idx reps Number of repetitions
+     * \return Reference to the current instance
+     */
+    QEngineT& execute_sample_(const internal::QEngineState<T>& engine_state,
+                              const std::vector<QCircuit::iterator>& steps,
+                              idx pos, idx reps) {
+        std::map<idx, std::pair<idx, std::optional<idx>>>
+            c_q; // records the c <- (q, [OPTIONAL ps_val]) map
+        std::map<idx, idx> q_ps_val; // records the q <- ps_val map
+        std::set<idx> q_m;           // qubits that were measured (projectively,
+                                     // including post-selected)
+        bool measured = false;
+        for (idx i = pos; i < steps.size(); ++i) {
+            // post-selection
+            if (internal::is_projective_post_selection(steps[i])) {
+                measured = true;
+                auto [_, target, ps_vals, c_regs] =
+                    internal::extract_ctrl_target_ps_vals_c_reg(steps[i]);
+                for (idx q = 0; q < static_cast<idx>(target.size()); ++q) {
+                    q_m.emplace(target[q]);
+                    c_q[c_regs[q]] = {target[q], ps_vals[q]};
+                    // build the q <- ps_val map
+                    // insert if not exists
+                    if (auto it = q_ps_val.find(target[q]);
+                        it == q_ps_val.end()) {
+                        q_ps_val[target[q]] = ps_vals[q];
+                    } else
+                    // element already exists, make sure that
+                    // post-selection is consistent
+                    {
+                        // post-selection is incompatible
+                        if (auto ps_val = it->second; ps_val != ps_vals[q]) {
+                            qeng_st_.post_select_ok_ = false;
+                            std::cout << "fails here" << std::endl;
+                            std::cout << "sample? " << can_sample << std::endl;
+                            return *this;
+                        }
+                    }
+                }
+                std::cout << "1" << std::endl;
+            }
+            // projective measurement
+            else if (internal::is_projective_measurement(steps[i])) {
+                measured = true;
+                auto [_, target, ps_vals_, c_regs] =
+                    internal::extract_ctrl_target_ps_vals_c_reg(steps[i]);
+                for (idx q = 0; q < static_cast<idx>(target.size()); ++q) {
+                    q_m.emplace(target[q]);
+                    c_q[c_regs[q]] = {target[q], {}};
+                }
+                std::cout << "2" << std::endl;
+            }
+        }
+        // at least one qudit was measured, add it to stats_
+        if (measured) {
+            std::cout << "----------" << std::endl;
+            for (auto elem : q_m) {
+                std::cout << elem << " ";
+            }
+            std::cout << "\n-------" << std::endl;
+            // build the vector of measured qudits that we must sample
+            // from
+            std::cout << "3" << std::endl;
+            std::set<idx> sample_from_set;
+            for (auto [dit, qubit_ps_val] : c_q) {
+                sample_from_set.emplace(qubit_ps_val.first);
+                std::cout << "1" << std::endl;
+            }
+            // insert the post-selected qubits into the sample_from_set
+            for (auto [post_selected_qubit, _] : q_ps_val) {
+                sample_from_set.emplace(post_selected_qubit);
+            }
+            std::vector<idx> sample_from(sample_from_set.begin(),
+                                         sample_from_set.end());
+            for (idx rep = 0; rep < reps; ++rep) {
+                // sample from the quantum state
+                std::vector<idx> sample_result_restricted_support = sample(
+                    engine_state.qstate_, sample_from, this->qc_ptr_->get_d());
+                // make sure post-selected qubits agree on their values
+                bool post_selection_failed = false;
+                for (idx q = 0; q < sample_from.size(); ++q) {
+                    // qubit sample_from[i] is a post-selected qubit
+                    if (auto it = q_ps_val.find(sample_from[q]);
+                        it != q_ps_val.end()) {
+                        if (sample_result_restricted_support[q] != it->second) {
+                            post_selection_failed = true;
+                            break;
+                        }
+                    }
+                }
+                if (post_selection_failed) {
+                    continue;
+                }
+                // extend sample_result to full support
+                std::vector<idx> sample_result = this->get_dits();
+                idx i = 0;
+                for (auto [dit, qubit_ps_val] : c_q) {
+                    sample_result[dit] = sample_result_restricted_support[i++];
+                }
+                ++stats_.data()[sample_result];
+            }
+            // compute the final state
+            auto qstate = engine_state.qstate_;
+            // build the projector onto the post-selected part
+            // |...x...y...z...><...x...y...z...|
+            std::vector<idx> prj_ps(qeng_st_.qc_ptr_->get_nq());
+            for (auto elem : q_ps_val) {
+                prj_ps[elem.first] = elem.second;
+            }
+            std::cout << "BEGIN prj_ps\n";
+            std::cout << disp(prj_ps) << std::endl;
+            std::cout << "END prj_ps\n";
+        }
+
+        return *this;
+    };
 
   public:
     using QBaseEngine<T, QCircuit>::QBaseEngine;
@@ -490,7 +659,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      */
     idx get_dit(idx i) const {
         // EXCEPTION CHECKS
-
         if (i >= this->qc_ptr_->get_nc()) {
             throw exception::OutOfRange("qpp::QEngineT::get_dit()", "i");
         }
@@ -528,7 +696,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param i Qudit index
      * \return True if qudit \a i was already measured, false otherwise
      */
-    bool was_measured(idx i) const {
+    bool was_measured_destructively(idx i) const {
         return qeng_st_.subsys_[i] == std::numeric_limits<idx>::max();
     }
 
@@ -539,10 +707,10 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \return Vector of already measured qudit (destructively) indexes at
      * the current engine state
      */
-    std::vector<idx> get_measured() const {
+    std::vector<idx> get_measured_destructively() const {
         std::vector<idx> result;
         for (idx i = 0; i < this->qc_ptr_->get_nq(); ++i) {
-            if (was_measured(i)) {
+            if (was_measured_destructively(i)) {
                 result.emplace_back(i);
             }
         }
@@ -551,14 +719,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     }
 
     /**
-     * \brief Vector of non-measured qudit indexes
+     * \brief Vector of non-measured (destructively) qudit indexes
      *
-     * \return Vector of non-measured qudit indexes
+     * \return Vector of non-measured (destructively) qudit indexes
      */
-    std::vector<idx> get_non_measured() const {
+    std::vector<idx> get_non_measured_destructively() const {
         std::vector<idx> result;
         for (idx i = 0; i < this->qc_ptr_->get_nq(); ++i) {
-            if (!was_measured(i)) {
+            if (!was_measured_destructively(i)) {
                 result.emplace_back(i);
             }
         }
@@ -600,7 +768,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      */
     QEngineT& set_dit(idx i, idx value) {
         // EXCEPTION CHECKS
-
         if (i >= this->qc_ptr_->get_nc()) {
             throw exception::OutOfRange("qpp::QEngineT::set_dit()", "i");
         }
@@ -624,7 +791,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      */
     QEngineT& set_dits(std::vector<idx> dits) {
         // EXCEPTION CHECKS
-
         if (dits.size() != qeng_st_.dits_.size()) {
             throw exception::SizeMismatch("qpp::QEngineT::set_dits()", "dits");
         }
@@ -645,8 +811,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      */
     QEngineT& set_state(const T& state) override {
         // EXCEPTION CHECKS
-
-        idx n = get_non_measured().size();
+        idx n = get_non_measured_destructively().size();
         idx D = internal::safe_pow(this->qc_ptr_->get_d(), n);
         if constexpr (std::is_same_v<T, ket>) {
             if (static_cast<idx>(state.rows()) != D) {
@@ -713,7 +878,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     QEngineT& execute(
         const typename QCircuitTraits<QCircuit>::value_type& elem) override {
         // EXCEPTION CHECKS
-
         // iterator must point to the same quantum circuit description
         if (elem.get_qc_ptr() != this->qc_ptr_) {
             throw exception::InvalidIterator(
@@ -761,8 +925,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             return *this;
         }
 
-        idx num_steps = steps.size();
-
         // in the following, we will partition the circuit as
         // [0 ... first_measurement_discard_reset_pos ... end)
 
@@ -779,7 +941,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // first_measurement_discard_reset_pos must be a projective measurement)
         this->can_sample = reps > 1;
         for (idx i = first_measurement_discard_reset_pos;
-             i < num_steps && this->can_sample; ++i) {
+             i < steps.size() && this->can_sample; ++i) {
             if (!(internal::is_projective_measurement(steps[i])) ||
                 internal::is_discard(steps[i])) {
                 this->can_sample = false;
@@ -794,143 +956,21 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
 
         // save the state just before the first measurement
-        auto current_engine_state = qeng_st_;
+        // auto current_engine_state = qeng_st_;
 
         // TODO: toggle it to off after debugging!
-        // this->can_sample = false;
+        this->can_sample = false;
 
         // execute repeatedly everything in the remaining interval
         // can sample: every step from now on is a projective measurement
         if (this->can_sample) {
-            std::map<idx, std::pair<idx, std::optional<idx>>>
-                c_q; // records the c <- (q, [OPTIONAL ps_val]) map
-            std::map<idx, idx> q_ps_val; // records the q <- ps_val map
-            bool measured = false;
-            for (idx i = first_measurement_discard_reset_pos; i < num_steps;
-                 ++i) {
-                // post-selection
-                if (internal::is_projective_post_selection(steps[i])) {
-                    measured = true;
-                    auto [_, target, ps_vals, c_regs] =
-                        internal::extract_ctrl_target_ps_vals_c_reg(steps[i]);
-                    for (idx q = 0; q < static_cast<idx>(target.size()); ++q) {
-                        c_q[c_regs[q]] = {target[q], ps_vals[q]};
-                        // build the q <- ps_val map
-                        // insert if not exists
-                        if (auto it = q_ps_val.find(target[q]);
-                            it == q_ps_val.end()) {
-                            q_ps_val[target[q]] = ps_vals[q];
-                        } else
-                        // element already exists, make sure that post-selection
-                        // is consistent
-                        {
-                            // post-selection is incompatible
-                            if (auto ps_val = it->second;
-                                ps_val != ps_vals[q]) {
-                                qeng_st_.post_select_ok_ = false;
-                                std::cout << "fails here" << std::endl;
-                                std::cout << "sample? " << can_sample
-                                          << std::endl;
-                                return *this;
-                            }
-                        }
-                    }
-                    std::cout << "1" << std::endl;
-                }
-                // projective measurement
-                else if (internal::is_projective_measurement(steps[i])) {
-                    measured = true;
-                    auto [_, target, ps_vals_, c_regs] =
-                        internal::extract_ctrl_target_ps_vals_c_reg(steps[i]);
-                    for (idx q = 0; q < static_cast<idx>(target.size()); ++q) {
-                        c_q[c_regs[q]] = {target[q], {}};
-                    }
-                    std::cout << "2" << std::endl;
-                }
-            }
-            // at least one qudit was measured, add it to stats_
-            if (measured) {
-                // build the vector of measured qudits that we must sample
-                // from
-                std::cout << "3" << std::endl;
-                std::set<idx> sample_from_set;
-                for (auto [dit, qubit_ps_val] : c_q) {
-                    sample_from_set.insert(qubit_ps_val.first);
-                    std::cout << "1" << std::endl;
-                }
-                // insert the post-selected qubits into the sample_from_set
-                for (auto [post_selected_qubit, _] : q_ps_val) {
-                    sample_from_set.insert(post_selected_qubit);
-                }
-                std::vector<idx> sample_from(sample_from_set.begin(),
-                                             sample_from_set.end());
-                for (idx rep = 0; rep < reps - 1; ++rep) {
-                    // sample from the quantum state
-                    std::vector<idx> sample_result_restricted_support =
-                        sample(current_engine_state.qstate_, sample_from,
-                               this->qc_ptr_->get_d());
-                    // make sure post-selected qubits agree on their values
-                    bool post_selection_failed = false;
-                    for (idx i = 0; i < sample_from.size(); ++i) {
-                        // qubit sample_from[i] is a post-selected qubit
-                        if (auto it = q_ps_val.find(sample_from[i]);
-                            it != q_ps_val.end()) {
-                            if (sample_result_restricted_support[i] !=
-                                it->second) {
-                                post_selection_failed = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (post_selection_failed) {
-                        continue;
-                    }
-                    // extend sample_result to full support
-                    std::vector<idx> sample_result = this->get_dits();
-                    idx i = 0;
-                    for (auto [dit, qubit_ps_val] : c_q) {
-                        sample_result[dit] =
-                            sample_result_restricted_support[i++];
-                    }
-                    ++stats_.data()[sample_result];
-                }
-                // compute the final state
-                // execute the last repetition, so we can compute the final
-                // state
-                for (idx i = first_measurement_discard_reset_pos; i < num_steps;
-                     ++i) {
-                    this->execute(steps[i]);
-                }
-                std::vector<idx> m_res = get_dits();
-                ++stats_.data()[m_res];
-            }
+            execute_sample_(qeng_st_, steps,
+                            first_measurement_discard_reset_pos, reps);
         }
         // cannot sample
         else {
-            std::cout << "4" << std::endl;
-            for (idx rep = 0; rep < reps; ++rep) {
-                // sets the state of the engine to the entry state
-                qeng_st_ = current_engine_state;
-                bool measured = false;
-                for (idx i = first_measurement_discard_reset_pos; i < num_steps;
-                     ++i) {
-                    if (internal::is_measurement(steps[i])) {
-                        measured = true;
-                    }
-                    this->execute(steps[i]);
-                    if (!qeng_st_.post_select_ok_) {
-                        break;
-                    }
-                }
-                // at least one qudit was measured
-                if (measured) {
-                    if (!qeng_st_.post_select_ok_) {
-                        continue;
-                    }
-                    std::vector<idx> m_res = get_dits();
-                    ++stats_.data()[m_res];
-                }
-            }
+            execute_no_sample_(qeng_st_, steps,
+                               first_measurement_discard_reset_pos, reps);
         }
 
         return *this;
@@ -960,12 +1000,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         ss << "\"sampling\": " << (this->can_sample ? "true" : "false") << ", ";
         ss << "\"measured/discarded (destructively)\": ";
-        ss << disp(get_measured(), IOManipContainerOpts{}.set_sep(", "));
+        ss << disp(get_measured_destructively(),
+                   IOManipContainerOpts{}.set_sep(", "));
         result += ss.str() + ", ";
 
         ss.str("");
         ss.clear();
-        ss << disp(get_non_measured(), IOManipContainerOpts{}.set_sep(", "));
+        ss << disp(get_non_measured_destructively(),
+                   IOManipContainerOpts{}.set_sep(", "));
         result += "\"non-measured (destructively)/non-discarded\": " + ss.str();
 
         ss.str("");

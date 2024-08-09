@@ -106,7 +106,6 @@ class States final : public internal::Singleton<const States> // const Singleton
      */
     ket mes(idx d = 2) const {
         // EXCEPTION CHECKS
-
         // check valid dims
         if (d == 0) {
             throw exception::DimsInvalid("qpp::States::mes()", "d");
@@ -131,7 +130,6 @@ class States final : public internal::Singleton<const States> // const Singleton
      */
     ket zero(idx n = 1, idx d = 2) const {
         // EXCEPTION CHECKS
-
         // check out of range
         if (n == 0) {
             throw exception::OutOfRange("qpp::States::zero()", "n");
@@ -159,7 +157,6 @@ class States final : public internal::Singleton<const States> // const Singleton
      */
     ket one(idx n = 1, idx d = 2) const {
         // EXCEPTION CHECKS
-
         // check out of range
         if (n == 0) {
             throw exception::OutOfRange("qpp::States::one()", "n");
@@ -187,7 +184,6 @@ class States final : public internal::Singleton<const States> // const Singleton
      */
     ket jn(idx j, idx n = 1, idx d = 2) const {
         // EXCEPTION CHECKS
-
         // check out of range
         if (n == 0) {
             throw exception::OutOfRange("qpp::States::jn()", "n");
@@ -218,7 +214,6 @@ class States final : public internal::Singleton<const States> // const Singleton
      */
     ket j(idx j, idx D = 2) const {
         // EXCEPTION CHECKS
-
         // check valid subsystem
         if (j >= D) {
             throw exception::SubsysMismatchDims("qpp::States::j()", "D/j");
@@ -244,7 +239,6 @@ class States final : public internal::Singleton<const States> // const Singleton
      */
     ket plus(idx n = 1) const {
         // EXCEPTION CHECKS
-
         // check out of range
         if (n == 0) {
             throw exception::OutOfRange("qpp::States::plus()", "n");
@@ -266,7 +260,6 @@ class States final : public internal::Singleton<const States> // const Singleton
      */
     ket minus(idx n = 1) const {
         // EXCEPTION CHECKS
-
         // check out of range
         if (n == 0) {
             throw exception::OutOfRange("qpp::States::minus()", "n");

@@ -60,7 +60,6 @@ realT entropy(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::entropy()", "A");
@@ -91,7 +90,6 @@ realT entropy(const Eigen::MatrixBase<Derived>& A) {
  */
 inline realT entropy(const std::vector<realT>& prob) {
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::entropy()", "prob");
@@ -125,7 +123,6 @@ realT renyi(const Eigen::MatrixBase<Derived>& A, realT alpha) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::renyi()", "A");
@@ -178,7 +175,6 @@ realT renyi(const Eigen::MatrixBase<Derived>& A, realT alpha) {
  */
 inline realT renyi(const std::vector<realT>& prob, realT alpha) {
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::renyi()", "prob");
@@ -234,7 +230,6 @@ realT tsallis(const Eigen::MatrixBase<Derived>& A, realT q) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::tsallis()", "A");
@@ -278,7 +273,6 @@ realT tsallis(const Eigen::MatrixBase<Derived>& A, realT q) {
  */
 inline realT tsallis(const std::vector<realT>& prob, realT q) {
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::tsallis()", "prob");
@@ -320,7 +314,6 @@ realT qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::qmutualinfo()", "A");
@@ -396,7 +389,6 @@ realT qmutualinfo(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::qmutualinfo()", "A");

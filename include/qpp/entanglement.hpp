@@ -67,7 +67,6 @@ dyn_col_vect<realT> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::schmidtcoeffs()", "A");
@@ -106,7 +105,6 @@ dyn_col_vect<realT> schmidtcoeffs(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::schmidtcoeffs()", "A");
@@ -138,7 +136,6 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::schmidtA()", "A");
@@ -173,7 +170,6 @@ cmat schmidtA(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::schmidtA()", "A");
@@ -205,7 +201,6 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::schmidtB()", "A");
@@ -242,7 +237,6 @@ cmat schmidtB(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::schmidtB()", "A");
@@ -278,7 +272,6 @@ std::vector<realT> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::schmidtprobs()", "A");
@@ -324,7 +317,6 @@ std::vector<realT> schmidtprobs(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::schmidtprobs()", "A");
@@ -366,7 +358,6 @@ schmidt(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::schmidt()", "A");
@@ -413,7 +404,6 @@ template <typename Derived>
 std::tuple<cmat, cmat, dyn_col_vect<realT>, dyn_col_vect<realT>>
 schmidt(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::schmidt()", "A");
@@ -448,7 +438,6 @@ realT entanglement(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::entanglement()", "A");
@@ -486,7 +475,6 @@ realT entanglement(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::entanglement()", "A");
@@ -521,7 +509,6 @@ realT gconcurrence(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::gconcurrence()", "A");
@@ -558,7 +545,6 @@ realT negativity(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::negativity()", "A");
@@ -592,7 +578,6 @@ realT negativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::negativity()", "A");
@@ -623,7 +608,6 @@ realT lognegativity(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::lognegativity()", "A");
@@ -657,7 +641,6 @@ realT lognegativity(const Eigen::MatrixBase<Derived>& A, idx d = 2) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::lognegativity()", "A");
@@ -686,7 +669,6 @@ realT concurrence(const Eigen::MatrixBase<Derived>& A) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::concurrence()", "A");

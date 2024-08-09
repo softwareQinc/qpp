@@ -29,11 +29,11 @@ TEST(qpp_QEngineT_get_dit, AllTests) {}
 /// BEGIN std::vector<idx> QEngineT::get_dits() const
 TEST(qpp_QEngineT_get_dits, AllTests) {}
 
-/// BEGIN bool QEngineT::get_measured(idx i) const
-TEST(qpp_QEngineT_get_measured, SpecificQudit) {}
+/// BEGIN bool QEngineT::get_measured_destructively() const
+TEST(qpp_QEngineT_get_measured_destructively, AllTests) {}
 
-/// BEGIN std::vector<idx> QEngineT::get_non_measured() const
-TEST(qpp_QEngineT_get_non_measured, AllTests) {}
+/// BEGIN std::vector<idx> QEngineT::get_non_measured_destructively() const
+TEST(qpp_QEngineT_get_non_measured_destructively, AllTests) {}
 
 /// BEGIN std::vector<realT> QEngineT::get_probs() const
 TEST(qpp_QEngineT_get_probs, AllTests) {}
@@ -43,6 +43,9 @@ TEST(qpp_QEngineT_get_state, AllTests) {}
 
 /// BEGIN internal::QEngineStatistics QEngineT::get_stats() const
 TEST(qpp_QEngineT_get_stats, AllTests) {}
+
+/// BEGIN bool QEngineT::post_select_ok() const
+TEST(qpp_QEngineT_post_select_ok, AllTests) {}
 
 /// BEGIN QEngineT& QEngineT::reset(bool reset_stats = true)
 TEST(qpp_QEngineT_reset, AllTests) {}
@@ -72,5 +75,5 @@ TEST(qpp_QEngineT_traits_is_noisy, AllTests) {}
 /// BEGIN bool QEngineT::traits_is_pure() const override
 TEST(qpp_QEngineT_traits_is_pure, AllTests) {}
 
-/// BEGIN std::vector<idx> QEngineT::was_measured() const
-TEST(qpp_QEngineT_was_measured, AllQudits) {}
+/// BEGIN std::vector<idx> QEngineT::was_measured_destructively(idx i) const
+TEST(qpp_QEngineT_was_measured_destructively, AllTests) {}

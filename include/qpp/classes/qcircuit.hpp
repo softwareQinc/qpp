@@ -107,7 +107,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     void add_hash_(std::size_t hashU, const cmat& U) {
         // EXCEPTION CHECKS
-
         auto search = cmat_hash_tbl_.find(hashU);
         static internal::EqualEigen equal_eigen;
         if (search != cmat_hash_tbl_.end()) { // found the hash in the table
@@ -230,7 +229,6 @@ class QCircuit : public IDisplay, public IJSON {
           measured_nd_(nq, false), clean_qudits_(nq_, true),
           clean_dits_(nc_, true), measurement_dits_(nc_, false), circuit_{} {
         // EXCEPTION CHECKS
-
         // if (nq == 0)
         //    throw exception::ZeroSize("qpp::QCircuit::QCircuit()", "nq");
         if (d < 2) {
@@ -324,7 +322,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     bool was_measured(idx i) const {
         // EXCEPTION CHECKS
-
         if (i >= nq_) {
             throw exception::OutOfRange("qpp::QCircuit::was_measured()", "i");
         }
@@ -358,7 +355,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     bool was_measured_nd(idx i) const {
         // EXCEPTION CHECKS
-
         if (i >= nq_) {
             throw exception::OutOfRange("qpp::QCircuit::was_measured_nd()",
                                         "i");
@@ -426,7 +422,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     idx get_gate_count(std::optional<cmat> U = std::nullopt) const {
         // EXCEPTION CHECKS
-
         // square matrix
         if (U.has_value()) {
             if (!internal::check_square_mat(U.value())) {
@@ -464,7 +459,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     idx get_gate_depth(std::optional<cmat> U = std::nullopt) const {
         // EXCEPTION CHECKS
-
         // square matrix
         if (U.has_value() && !internal::check_square_mat(U.value())) {
             throw exception::MatrixNotSquare("qpp::get_gate_depth()", "U");
@@ -678,7 +672,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     idx get_measurement_count(std::optional<cmat> V = std::nullopt) const {
         // EXCEPTION CHECKS
-
         if (V.has_value()) {
             idx result = 0;
             std::size_t hashV = hash_eigen(V.value());
@@ -766,7 +759,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& add_qudit(idx n, idx pos) {
         // EXCEPTION CHECKS
-
         if (pos > nq_) {
             throw exception::OutOfRange("qpp::QCircuit::add_qudit()", "pos");
         }
@@ -843,7 +835,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& add_dit(idx n, idx pos) {
         // EXCEPTION CHECKS
-
         if (pos > nc_) {
             throw exception::OutOfRange("qpp::QCircuit::add_dit()", "pos");
         }
@@ -905,7 +896,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& gate(const cmat& U, idx i,
                    std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -960,7 +950,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& gate(const cmat& U, idx i, idx j,
                    std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -1016,7 +1005,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& gate(const cmat& U, idx i, idx j, idx k,
                    std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -1072,7 +1060,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& gate_fan(const cmat& U, const std::vector<idx>& target,
                        std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -1157,7 +1144,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& gate_fan(const cmat& U,
                        std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check non-empty target
@@ -1188,7 +1174,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& gate(const cmat& U, const std::vector<idx>& target,
                    std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         idx n = static_cast<idx>(target.size());
         idx D = internal::safe_pow(d_, n);
 
@@ -1258,7 +1243,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& QFT(const std::vector<idx>& target, bool swap = true) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -1374,7 +1358,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& TFQ(const std::vector<idx>& target,
                   [[maybe_unused]] bool swap = true) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -1497,7 +1480,6 @@ class QCircuit : public IDisplay, public IJSON {
                        std::optional<idx> shift = std::nullopt,
                        std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid ctrl
@@ -1607,7 +1589,6 @@ class QCircuit : public IDisplay, public IJSON {
                        std::optional<std::vector<idx>> shift = std::nullopt,
                        std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid ctrl
@@ -1736,7 +1717,6 @@ class QCircuit : public IDisplay, public IJSON {
                    std::optional<std::vector<idx>> shift = std::nullopt,
                    std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         idx D_target = internal::safe_pow(d_, target.size());
@@ -1859,7 +1839,6 @@ class QCircuit : public IDisplay, public IJSON {
                    std::optional<std::vector<idx>> shift = std::nullopt,
                    std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid ctrl
@@ -1969,7 +1948,6 @@ class QCircuit : public IDisplay, public IJSON {
                    std::optional<idx> shift = std::nullopt,
                    std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         idx D_target = internal::safe_pow(d_, target.size());
@@ -2075,7 +2053,6 @@ class QCircuit : public IDisplay, public IJSON {
                    std::optional<idx> shift = std::nullopt,
                    std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid ctrl and target
@@ -2150,7 +2127,6 @@ class QCircuit : public IDisplay, public IJSON {
                         std::optional<idx> shift = std::nullopt,
                         std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid ctrl_dit
@@ -2247,7 +2223,6 @@ class QCircuit : public IDisplay, public IJSON {
                         std::optional<std::vector<idx>> shift = std::nullopt,
                         std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid ctrl_dits
@@ -2361,7 +2336,6 @@ class QCircuit : public IDisplay, public IJSON {
                     std::optional<std::vector<idx>> shift = std::nullopt,
                     std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         idx D_target = internal::safe_pow(d_, target.size());
@@ -2476,7 +2450,6 @@ class QCircuit : public IDisplay, public IJSON {
                     std::optional<std::vector<idx>> shift = std::nullopt,
                     std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid ctrl_dits
@@ -2575,7 +2548,6 @@ class QCircuit : public IDisplay, public IJSON {
                     std::optional<idx> shift = std::nullopt,
                     std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         idx D_target = internal::safe_pow(d_, target.size());
@@ -2670,7 +2642,6 @@ class QCircuit : public IDisplay, public IJSON {
                     std::optional<idx> shift = std::nullopt,
                     std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid ctrl_dit and target
@@ -2742,7 +2713,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& measure(idx target, idx c_reg, bool destructive = true,
                       std::optional<std::string> name = "mZ") {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // measuring non-existing qudit
@@ -2807,7 +2777,6 @@ class QCircuit : public IDisplay, public IJSON {
                       bool destructive = true,
                       std::optional<std::string> name = "mZ") {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -2887,7 +2856,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& measure_all(idx c_reg = 0, bool destructive = true,
                           std::optional<std::string> name = "mZ") {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         std::vector<idx> non_measured = get_non_measured();
@@ -2925,7 +2893,6 @@ class QCircuit : public IDisplay, public IJSON {
                        bool destructive = true,
                        std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // measuring non-existing qudit
@@ -3007,7 +2974,6 @@ class QCircuit : public IDisplay, public IJSON {
                        bool destructive = true,
                        std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -3109,7 +3075,6 @@ class QCircuit : public IDisplay, public IJSON {
                           bool destructive = true,
                           std::optional<std::string> name = "pZ") {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // post-selecting non-existing qudit
@@ -3180,7 +3145,6 @@ class QCircuit : public IDisplay, public IJSON {
                           bool destructive = true,
                           std::optional<std::string> name = "pZ") {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -3274,7 +3238,6 @@ class QCircuit : public IDisplay, public IJSON {
                            bool destructive = true,
                            std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // measuring non-existing qudit
@@ -3363,7 +3326,6 @@ class QCircuit : public IDisplay, public IJSON {
                            bool destructive = true,
                            std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -3470,7 +3432,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& discard(idx target, std::optional<std::string> name = "discard") {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // discarding non-existing qudit
@@ -3512,7 +3473,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& discard(const std::vector<idx>& target,
                       std::optional<std::string> name = "discard") {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -3579,7 +3539,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& reset(idx target, std::optional<std::string> name = "reset") {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // resetting non-existing qudit
@@ -3619,7 +3578,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& reset(const std::vector<idx>& target,
                     std::optional<std::string> name = "reset") {
         // EXCEPTION CHECKS
-
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check valid target
@@ -3662,7 +3620,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& replicate(idx n) {
         // EXCEPTION CHECKS
-
         if (n == 0) {
             throw exception::OutOfRange("qpp::QCircuit::replicate()", "n");
         }
@@ -3715,7 +3672,6 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& compose_circuit(QCircuit other, bigint pos_qudit,
                               std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
-
         // check equal dimensions
         if (other.d_ != d_) {
             throw exception::DimsNotEqual("qpp::QCircuit::compose_circuit()",
@@ -3901,7 +3857,6 @@ class QCircuit : public IDisplay, public IJSON {
                                   const std::vector<idx>& target,
                                   std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
-
         // check equal dimensions
         if (other.d_ != d_) {
             throw exception::DimsNotEqual(
@@ -4071,7 +4026,6 @@ class QCircuit : public IDisplay, public IJSON {
                                    const std::vector<idx>& target,
                                    std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
-
         // check equal dimensions
         if (other.d_ != d_) {
             throw exception::DimsNotEqual(
@@ -4246,7 +4200,6 @@ class QCircuit : public IDisplay, public IJSON {
                          std::optional<std::vector<idx>> shift = std::nullopt,
                          std::optional<idx> pos_dit = std::nullopt) {
         // EXCEPTION CHECKS
-
         // check non-empty control circuit
         if (this->get_nq() == 0) {
             throw exception::ZeroSize("qpp::QCircuit::compose_CTRL_circuit()",
@@ -4502,7 +4455,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& adjoint() {
         // EXCEPTION CHECKS
-
         if (this->has_measurements()) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::adjoint()", "Current qpp::QCircuit instance");
@@ -4554,7 +4506,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     bool is_clean_qudit(idx i) const {
         // EXCEPTION CHECKS
-
         // check valid target
         if (i >= nq_) {
             throw exception::OutOfRange("qpp::QCircuit::is_clean_qudit()", "i");
@@ -4576,7 +4527,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     bool is_clean_dit(idx i) const {
         // EXCEPTION CHECKS
-
         // check valid target
         if (i >= nc_) {
             throw exception::OutOfRange("qpp::QCircuit::is_clean_dit()", "i");
@@ -4597,7 +4547,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     bool is_measurement_dit(idx i) const {
         // EXCEPTION CHECKS
-
         // check valid target
         if (i >= nc_) {
             throw exception::OutOfRange("qpp::QCircuit::is_measurement_dit()",
@@ -4677,7 +4626,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& remove_clean_qudit(idx target) {
         // EXCEPTION CHECKS
-
         // check valid target and clean qudit
         if (target >= nq_ || !is_clean_qudit(target)) {
             throw exception::OutOfRange("qpp::QCircuit::remove_clean_qudit()",
@@ -4730,7 +4678,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& remove_clean_dit(idx target) {
         // EXCEPTION CHECKS
-
         // check valid target and clean dit
         if (target >= nc_ || !is_clean_dit(target)) {
             throw exception::OutOfRange("qpp::QCircuit::remove_clean_dit()",
@@ -4775,7 +4722,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& remove_clean_qudits(std::vector<idx> target) {
         // EXCEPTION CHECKS
-
         // check valid target
         for (idx elem : target) {
             // removing non-existing or non-clean qudit
@@ -4809,7 +4755,6 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& remove_clean_dits(std::vector<idx> target) {
         // EXCEPTION CHECKS
-
         // check valid target
         for (idx elem : target) {
             // removing non-existing or non-clean dit
@@ -5147,7 +5092,6 @@ class QCircuitIterator {
      */
     QCircuitIterator& operator++() {
         // EXCEPTION CHECKS
-
         // protects against incrementing invalid iterators
         if (qc_ptr_ == nullptr) {
             throw exception::InvalidIterator(
@@ -5216,7 +5160,6 @@ class QCircuitIterator {
      */
     value_type operator*() const {
         // EXCEPTION CHECKS
-
         // protects against de-referencing past the last element or
         // against de-referencing invalid iterators
         idx num_steps = qc_ptr_->get_step_count();
@@ -5479,7 +5422,6 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
                                 std::optional<std::string> name = std::nullopt,
                                 std::optional<idx> pos_dit = std::nullopt) {
     // EXCEPTION CHECKS
-
     // check equal dimensions
     if (qc1.get_d() != qc2.get_d()) {
         throw exception::DimsNotEqual("qpp::compose_circuit()", "other");
@@ -5561,7 +5503,6 @@ couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
                     std::optional<std::string> name = std::nullopt,
                     std::optional<idx> pos_dit = std::nullopt) {
     // EXCEPTION CHECKS
-
     // check equal dimensions
     if (qc1.get_d() != qc2.get_d()) {
         throw exception::DimsNotEqual("qpp::couple_circuit_left()", "qc1/qc2");
@@ -5646,7 +5587,6 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
                      std::optional<idx> pos_dit = std::nullopt) {
 
     // EXCEPTION CHECKS
-
     // check equal dimensions
     if (qc1.get_d() != qc2.get_d()) {
         throw exception::DimsNotEqual("qpp::couple_circuit_right()", "qc1/qc2");
@@ -5735,7 +5675,6 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
                      std::optional<std::string> name = std::nullopt) {
 
     // EXCEPTION CHECKS
-
     // check non-empty qc_ctrl and qc_target
     if (qc_ctrl.get_nq() == 0) {
         throw exception::ZeroSize("qpp::compose_CTRL_circuit()", "qc_ctrl");
@@ -5850,7 +5789,6 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
 inline QCircuit adjoint(QCircuit qc,
                         std::optional<std::string> name = nullptr) {
     // EXCEPTION CHECKS
-
     if (qc.has_measurements()) {
         throw exception::QuditAlreadyMeasured("qpp::adjoint()", "qc");
     }
@@ -5898,7 +5836,6 @@ inline QCircuit replicate(QCircuit qc, idx n,
     }
 
     // EXCEPTION CHECKS
-
     if (n == 0) {
         throw exception::OutOfRange("qpp::replicate()", "n");
     }
@@ -5941,7 +5878,6 @@ inline QCircuit random_circuit_count(
     std::optional<std::vector<std::string>> two_qudit_gate_names =
         std::nullopt) {
     // EXCEPTION CHECKS
-
     // check valid dimension
     if (d < 2) {
         throw exception::DimsInvalid("qpp::random_circuit_count()", "d");
@@ -6127,7 +6063,6 @@ inline QCircuit random_circuit_depth(
     std::optional<std::vector<std::string>> two_qudit_gate_names =
         std::nullopt) {
     // EXCEPTION CHECKS
-
     // check valid dimension
     if (d < 2) {
         throw exception::DimsInvalid("qpp::random_circuit_depth()", "d");
@@ -6304,7 +6239,6 @@ inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
                             idx d = 2,
                             std::optional<std::string> name = "qpe") {
     // EXCEPTION CHECKS
-
     // check square matrix for the gate
     if (!internal::check_square_mat(U)) {
         throw exception::MatrixNotSquare("qpp::qpe_circuit()", "U");

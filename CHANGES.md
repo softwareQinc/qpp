@@ -11,8 +11,14 @@
 - Refactored qpp::internal::QEngineState and qpp::internal::QEngineStatistics
   in separate files, ["qpp/internal/classes/qengine_state.hpp"] and
   ["qpp/internal/classes/qengine_statistics.hpp"], respectively
-- Significant code refactoring
-- Introduced post-selection
+- API changes in ["qpp/classes/qengine.hpp"]
+  - `qpp::QEngine::get_measured()` ->
+    `qpp::QEngine::get_measured_destructively()`
+  - `qpp::QEngine::get_non_measured()` ->
+    `qpp::QEngine::get_non_measured_destructively()`
+  - `qpp::QEngine::was_measured()` ->
+    `qpp::QEngine::was_measured_destructively()`
+- Introduced post-selection in ["qpp/classes/qengine.hpp"]
 
 # Version 5.1 - 1 March 2024
 
@@ -42,10 +48,10 @@
 - API changes in ["qpp/classes/qengine.hpp"] and
   ["qpp/classes/qnoisy_engine.hpp"]
   - Enabled mixed-state engines by refactoring
-    `qpp::QEngine` -> `template<typename T> qpp::QEngineT<T>`
-    `qpp::QNoisyEngine` -> `template<typename T> qpp::QNoisyEngineT<T>`
-    The template argument T is restricted to `qpp::ket` (pure state
-    engines) and `qpp::cmat` (mixed states engines)
+    - `qpp::QEngine` -> `template<typename T> qpp::QEngineT<T>`
+    - `qpp::QNoisyEngine` -> `template<typename T> qpp::QNoisyEngineT<T>`
+      The template argument T is restricted to `qpp::ket` (pure state
+      engines) and `qpp::cmat` (mixed states engines)
   - The following additional engines are now available
     - `qpp::QEngine` - pure state ideal engine, backwards
       compatibility
