@@ -101,7 +101,7 @@ class QNoisyEngineT : public QEngineT<T> {
         const typename QCircuitTraits<QCircuit>::value_type& elem) override {
         // get the relative position of the target
         std::vector<idx> target_rel_pos =
-            this->get_relative_pos_(this->get_non_measured());
+            this->get_relative_pos_(this->get_non_measured_destructively());
         // if (elem.type_ != QCircuit::StepType::MEASUREMENT) {
         // apply the noise
         for (idx i : target_rel_pos) {

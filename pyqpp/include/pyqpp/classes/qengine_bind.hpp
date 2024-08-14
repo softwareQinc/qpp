@@ -56,10 +56,12 @@ void declare_QEngineT(py::module& m) {
         .def("get_dit", &QEngineT<T>::get_dit,
              "Underlying classical dit at position i", py::arg("i"))
         .def("get_dits", &QEngineT<T>::get_dits, "Underlying classical dits")
-        .def("get_measured", &QEngineT<T>::get_measured,
-             "Vector of already measured qudit indexes")
-        .def("get_non_measured", &QEngineT<T>::get_non_measured,
-             "Non-measured qudit indexes")
+        .def("get_measured_destructively",
+             &QEngineT<T>::get_measured_destructively,
+             "Vector of already destructively measured qudit indexes")
+        .def("get_non_measured_destructively",
+             &QEngineT<T>::get_non_measured_destructively,
+             "Vector of qudit indexes that were not measured destructively")
         .def("get_probs", &QEngineT<T>::get_probs,
              "Underlying measurement outcome probabilities")
         .def("get_state", &QEngineT<T>::get_state, "Underlying quantum state")
@@ -95,7 +97,8 @@ void declare_QEngineT(py::module& m) {
         .def("to_JSON", &QEngineT<T>::to_JSON,
              "State of the engine in JSON format",
              py::arg("enclosed_in_curly_brackets") = true)
-        .def("was_measured", &QEngineT<T>::was_measured,
+        .def("was_measured_destructively",
+             &QEngineT<T>::was_measured_destructively,
              "Whether qudit i was already measured destructively", py::arg("i"))
 
         .def("traits_get_name", &QEngineT<T>::traits_get_name, "Engine name")

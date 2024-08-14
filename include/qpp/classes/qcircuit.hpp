@@ -131,7 +131,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Visits a qpp::QCircuit::VarStep variant
      *
      * \tparam Fns Callable(s) matching the variant
+     *
      * \param circuit_step qpp::QCircuit::VarStep variant
+     * \param fns Callable(s) matching the variant
      */
     template <class... Fns>
     void visit_circuit_step_(VarStep& circuit_step, Fns&&... fns);
@@ -140,16 +142,19 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Visits a qpp::QCircuit::VarStep variant
      *
      * \tparam Fns Callable(s) matching the variant
+     *
      * \param circuit_step qpp::QCircuit::VarStep variant
+     * \param fns Callable(s) matching the variant
      */
     template <class... Fns>
-
     void visit_circuit_step_(const VarStep& circuit_step, Fns&&... fns) const;
     /**
      * \brief Visits a vector of qpp::QCircuit::VarStep variants
      *
      * \tparam Fns Callable(s) matching the variant
+     *
      * \param circuit Vector of qpp::QCircuit::VarStep variants
+     * \param fns Callable(s) matching the variant
      */
     template <class... Fns>
     void visit_circuit_(std::vector<VarStep>& circuit, Fns&&... fns);
@@ -158,7 +163,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Visits a vector of qpp::QCircuit::VarStep variants
      *
      * \tparam Fns Callable(s) matching the variant
+     *
      * \param circuit Vector of qpp::QCircuit::VarStep variants
+     * \param fns Callable(s) matching the variant
      */
     template <class... Fns>
     void visit_circuit_(const std::vector<VarStep>& circuit,
@@ -4187,7 +4194,8 @@ class QCircuit : public IDisplay, public IJSON {
      * number of additional qudits are automatically added to the current
      * quantum circuit description. \param shift Optional, performs the
      * control as if the \a ctrl qudit state was \f$X\f$-incremented by \a
-     * shift \param pos_dit Optional, the first classical dit of \a
+     * shift
+     * \param pos_dit Optional, the first classical dit of \a
      * qc_target quantum circuit description is inserted before the \a
      * pos_dit classical dit index of the current quantum circuit
      * description (in the classical dits array), the rest following in
@@ -5648,7 +5656,7 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
  * automatically added to the output quantum circuit description
  *
  * \param qc_ctrl Control quantum circuit description
- * \paralm ctrl Control qubits
+ * \param ctrl Control qubits
  * \param qc_target Target quantum circuit description
  * \param pos_qudit The index of the first/top qudit of \a qc_target quantum
  * circuit description relative to the index of the first/top qudit of the
@@ -5826,7 +5834,7 @@ inline QCircuit kron(QCircuit qc1, const QCircuit& qc2,
  * \param qc Quantum circuit description
  * \param n Number of repetitions. If \a n == 1, returns the original
  * circuit.
- * \param n Optional result's circuit name
+ * \param name Optional result's circuit name
  * \return Replicated quantum circuit description
  */
 inline QCircuit replicate(QCircuit qc, idx n,
