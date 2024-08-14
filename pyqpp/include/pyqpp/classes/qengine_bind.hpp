@@ -84,7 +84,8 @@ void declare_QEngineT(py::module& m) {
         .def("post_select_ok", &QEngineT<T>::post_select_ok,
              "Successful post-selection")
         .def("reset", &QEngineT<T>::reset, "Resets the engine",
-             py::arg("reset_stats") = true)
+             py::arg("reset_stats") = true,
+             py::arg("ensure_post_selection") = true)
         .def("reset_stats", &QEngineT<T>::reset_stats,
              "Resets the collected measurement statistics hash table")
         .def("set_dit", &QEngineT<T>::set_dit,

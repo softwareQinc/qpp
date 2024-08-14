@@ -64,6 +64,12 @@ struct QEngineState {
                                  ///< measurements
     bool post_select_ok_ =
         true; ///< flag that becomes false if/when post-selection fails
+    bool ensure_post_selection_; ///< if true, executes a measurement step
+                                 ///< repeatedly until the post-selection
+                                 ///< result(s) agree
+
+    bool can_sample_; ///< if true, can sample when executing with multiple
+                      ///< repetitions
 
     /**
      * \brief Constructor
@@ -130,11 +136,16 @@ struct QEngineState {
                     qc_ptr_->get_nq(), qc_ptr_->get_d()));
             }
         }
+
         probs_ = std::vector<realT>(qc_ptr_->get_nc(), 0);
         dits_ = std::vector<idx>(qc_ptr_->get_nc(), 0);
         subsys_ = std::vector<idx>(qc_ptr_->get_nq(), 0);
         std::iota(subsys_.begin(), subsys_.end(), 0);
+
         post_select_ok_ = true;
+        ensure_post_selection_ = false;
+
+        can_sample_ = false;
     }
 }; /* struct QEngineState */
 

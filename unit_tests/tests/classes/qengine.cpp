@@ -47,7 +47,8 @@ TEST(qpp_QEngineT_get_stats, AllTests) {}
 /// BEGIN bool QEngineT::post_select_ok() const
 TEST(qpp_QEngineT_post_select_ok, AllTests) {}
 
-/// BEGIN QEngineT& QEngineT::reset(bool reset_stats = true)
+/// BEGIN QEngineT& QEngineT::reset(bool reset_stats = true,
+///       bool ensure_post_selection = false)
 TEST(qpp_QEngineT_reset, AllTests) {}
 
 /// BEGIN QEngineT& QEngineT::reset_stats()

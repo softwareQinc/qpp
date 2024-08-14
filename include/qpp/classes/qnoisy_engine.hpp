@@ -102,14 +102,14 @@ class QNoisyEngineT : public QEngineT<T> {
         // get the relative position of the target
         std::vector<idx> target_rel_pos =
             this->get_relative_pos_(this->get_non_measured_destructively());
-        // if (elem.type_ != QCircuit::StepType::MEASUREMENT) {
+
         // apply the noise
         for (idx i : target_rel_pos) {
             this->qeng_st_.qstate_ = noise_(this->qeng_st_.qstate_, i);
             // record the Kraus operator that occurred
             noise_results_[elem.get_ip()].emplace_back(noise_.get_last_idx());
         }
-        // }
+
         // execute the circuit step
         (void)QEngineT<T>::execute(elem);
 
@@ -160,10 +160,14 @@ class QNoisyEngineT : public QEngineT<T> {
      *
      * \param reset_stats Optional (true by default), resets the collected
      * measurement statistics hash table
+     * \param ensure_post_selection Optional (false by default). If true,
+     * executes a measurement step repeatedly until the post-selection result(s)
+     * agree
      * \return Reference to the current instance
      */
-    QNoisyEngineT& reset(bool reset_stats = true) override {
-        QEngineT<T>::reset(reset_stats);
+    QNoisyEngineT& reset(bool reset_stats = true,
+                         bool ensure_post_selection = false) override {
+        QEngineT<T>::reset(reset_stats, ensure_post_selection);
         noise_results_ = {};
 
         return *this;
