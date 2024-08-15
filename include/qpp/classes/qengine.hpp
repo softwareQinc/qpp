@@ -32,7 +32,15 @@
 #ifndef QPP_CLASSES_QENGINE_HPP_
 #define QPP_CLASSES_QENGINE_HPP_
 
+#define DEBUGGING
 #include <iostream>
+// clang-format off
+#ifdef DEBUGGING
+#define LOG std::cout
+#else
+#define LOG if (false) std::cout
+#endif
+// clang-format on
 
 #include <algorithm>
 #include <iterator>
@@ -89,7 +97,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     QEngineT& execute_no_sample_(internal::QEngineState<T> engine_state,
                                  const std::vector<QCircuit::iterator>& steps,
                                  idx pos, idx reps) {
-        std::cout << "4" << std::endl;
+        // TODO: add enforcing post-selection logic!
+        LOG << "4" << std::endl;
         for (idx rep = 0; rep < reps; ++rep) {
             // sets the state of the engine to the entry state
             qeng_st_ = engine_state;
@@ -237,14 +246,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                         // post-selection is incompatible
                         if (auto ps_val = it->second; ps_val != ps_vals[q]) {
                             qeng_st_.post_select_ok_ = false;
-                            std::cout << "fails here" << std::endl;
-                            std::cout << "sample? " << qeng_st_.can_sample_
-                                      << std::endl;
+                            LOG << "fails here" << std::endl;
+                            LOG << "sample? " << qeng_st_.can_sample_
+                                << std::endl;
                             return {measured, false};
                         }
                     }
                 }
-                std::cout << "1" << std::endl;
+                LOG << "1" << std::endl;
             }
             // projective measurement
             else if (internal::is_projective_measurement(steps[i])) {
@@ -255,7 +264,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     q_m.emplace(target[q]);
                     c_q[c_regs[q]] = {target[q], {}};
                 }
-                std::cout << "2" << std::endl;
+                LOG << "2" << std::endl;
             }
         }
 
@@ -277,6 +286,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     QEngineT& execute_sample_(const internal::QEngineState<T>& engine_state,
                               const std::vector<QCircuit::iterator>& steps,
                               idx pos, idx reps) {
+        // TODO: add enforcing post-selection logic!
         std::map<idx, std::pair<idx, std::optional<idx>>>
             c_q; // records the c <- (q, [OPTIONAL ps_val]) map
         std::map<idx, idx> q_ps_val; // records the q <- ps_val map
@@ -296,45 +306,45 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
 
         // display sampling maps
-        std::cout << "\nSAMPLING MAPS etc.\n\n";
-        std::cout << "c_q:\n";
+        LOG << "\nSAMPLING MAPS etc.\n\n";
+        LOG << "c_q:\n";
         for (auto elem : c_q) {
-            std::cout << elem.first << " - " << elem.second.first << " "
-                      << (elem.second.second.has_value()
-                              ? std::to_string(elem.second.second.value())
-                              : "")
-                      << std::endl;
+            LOG << elem.first << " - " << elem.second.first << " "
+                << (elem.second.second.has_value()
+                        ? std::to_string(elem.second.second.value())
+                        : "")
+                << std::endl;
         }
-        std::cout << std::endl;
+        LOG << std::endl;
 
-        std::cout << "q_ps_val:\n";
+        LOG << "q_ps_val:\n";
         for (auto elem : q_ps_val) {
-            std::cout << elem.first << " - " << elem.second << std::endl;
+            LOG << elem.first << " - " << elem.second << std::endl;
         }
-        std::cout << std::endl;
+        LOG << std::endl;
 
-        std::cout << "q_m:" << std::endl;
+        LOG << "q_m:" << std::endl;
         for (auto elem : q_m) {
-            std::cout << elem << " ";
+            LOG << elem << " ";
         }
-        std::cout << std::endl << std::endl;
+        LOG << std::endl << std::endl;
 
         // at least one qudit was measured, add it to stats_
 
         // build the vector of measured qudits that we must sample
         // from
-        std::cout << "SAMPLE FROM SET 1:" << std::endl;
+        LOG << "SAMPLE FROM SET 1:" << std::endl;
         std::set<idx> sample_from_set;
         for (auto [dit, qudit_ps_val] : c_q) {
             sample_from_set.emplace(qudit_ps_val.first);
-            std::cout << qudit_ps_val.first << std::endl;
+            LOG << qudit_ps_val.first << std::endl;
         }
-        std::cout << std::endl;
+        LOG << std::endl;
 
         std::vector<idx> sample_from(sample_from_set.begin(),
                                      sample_from_set.end());
 
-        std::cout << "CORRECT 'TILL HERE\n" << std::endl;
+        LOG << "CORRECT 'TILL HERE\n" << std::endl;
 
         for (idx rep = 0; rep < reps - 1; ++rep) {
             // sample from the quantum state
@@ -342,7 +352,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 engine_state.qstate_, sample_from, this->qc_ptr_->get_d());
             // make sure post-selected qudits agree on their values
             bool post_selection_failed = false;
-            // std::cout << disp(sample_result_restricted_support,
+            // LOG << disp(sample_result_restricted_support,
             //                   IOManipContainerOpts{})
             //           << std::endl;
 
@@ -1099,9 +1109,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             return *this;
         }
 
-        std::cout << "Circuit in canonical form" << std::endl;
+        LOG << "Circuit in canonical form" << std::endl;
         for (auto elem : steps) {
-            std::cout << "---> " << *elem << std::endl;
+            LOG << "---> " << *elem << std::endl;
         }
 
         auto [can_sample, first_measurement_discard_reset_pos] =
