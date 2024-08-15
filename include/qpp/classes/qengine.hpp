@@ -179,14 +179,16 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     }
 
     /**
-     * \brief Computes the final state after sampling
+     * \brief Executes a final repetition after sampling, to computes the final
+     * quantum state
      * \param steps Vector of qpp::QCircuit::iterator
-     * \param pos Index from where the execution starts; from this index
+     * \param pos Index from where the execution starts; from this index on, all
+     * steps (including post-selections) are projective measurements
      */
-    void compute_final_state_after_sampling_(
+    void execute_last_rep_after_sampling_(
         const std::vector<QCircuit::iterator>& steps, idx pos) {
         bool ensure_post_selection = qeng_st_.ensure_post_selection_;
-        qeng_st_.qensure_post_selection_ = true;
+        qeng_st_.ensure_post_selection_ = true;
         execute_no_sample_(qeng_st_, steps, pos, 1);
         qeng_st_.ensure_post_selection_ = ensure_post_selection;
     }
@@ -293,28 +295,46 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             return *this;
         }
 
-        // at least one qudit was measured, add it to stats_
-        std::cout << "----------" << std::endl;
+        // display sampling maps
+        std::cout << "\nSAMPLING MAPS etc.\n\n";
+        std::cout << "c_q:\n";
+        for (auto elem : c_q) {
+            std::cout << elem.first << " - " << elem.second.first << " "
+                      << (elem.second.second.has_value()
+                              ? std::to_string(elem.second.second.value())
+                              : "")
+                      << std::endl;
+        }
+        std::cout << std::endl;
+
+        std::cout << "q_ps_val:\n";
+        for (auto elem : q_ps_val) {
+            std::cout << elem.first << " - " << elem.second << std::endl;
+        }
+        std::cout << std::endl;
+
+        std::cout << "q_m:" << std::endl;
         for (auto elem : q_m) {
             std::cout << elem << " ";
         }
-        std::cout << "\n-------" << std::endl;
+        std::cout << std::endl << std::endl;
+
+        // at least one qudit was measured, add it to stats_
+
         // build the vector of measured qudits that we must sample
         // from
-        std::cout << "3" << std::endl;
-
+        std::cout << "SAMPLE FROM SET 1:" << std::endl;
         std::set<idx> sample_from_set;
         for (auto [dit, qudit_ps_val] : c_q) {
             sample_from_set.emplace(qudit_ps_val.first);
-            std::cout << "1" << std::endl;
+            std::cout << qudit_ps_val.first << std::endl;
         }
+        std::cout << std::endl;
 
-        // insert the post-selected qudits into the sample_from_set
-        for (auto [post_selected_qudit, _] : q_ps_val) {
-            sample_from_set.emplace(post_selected_qudit);
-        }
         std::vector<idx> sample_from(sample_from_set.begin(),
                                      sample_from_set.end());
+
+        std::cout << "CORRECT 'TILL HERE\n" << std::endl;
 
         for (idx rep = 0; rep < reps - 1; ++rep) {
             // sample from the quantum state
@@ -322,6 +342,10 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 engine_state.qstate_, sample_from, this->qc_ptr_->get_d());
             // make sure post-selected qudits agree on their values
             bool post_selection_failed = false;
+            // std::cout << disp(sample_result_restricted_support,
+            //                   IOManipContainerOpts{})
+            //           << std::endl;
+
             for (idx q = 0; q < sample_from.size(); ++q) {
                 // qudit sample_from[i] is a post-selected qudit
                 if (auto it = q_ps_val.find(sample_from[q]);
@@ -332,28 +356,22 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     }
                 }
             }
+
             if (post_selection_failed) {
                 continue;
             }
+
             // extend sample_result to full support
             std::vector<idx> sample_result = this->get_dits();
             idx i = 0;
             for (auto [dit, qudit_ps_val] : c_q) {
                 sample_result[dit] = sample_result_restricted_support[i++];
             }
+
             ++stats_.data()[sample_result];
         }
 
-        // auto qstate = engine_state.qstate_;
-        // // build the projector onto the post-selected part
-        // // |...x...y...z...><...x...y...z...|
-        // std::vector<idx> prj_ps(qeng_st_.qc_ptr_->get_nq());
-        // for (auto elem : q_ps_val) {
-        //     prj_ps[elem.first] = elem.second;
-        // }
-        // std::cout << "BEGIN prj_ps\n";
-        // std::cout << disp(prj_ps) << std::endl;
-        // std::cout << "END prj_ps\n";
+        execute_last_rep_after_sampling_(steps, omp_ipr_first);
 
         return *this;
     }
