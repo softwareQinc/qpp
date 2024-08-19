@@ -6,6 +6,9 @@ using namespace qpp;
 
 // Unit testing "classes/qengine.hpp"
 
+/// BEGIN bool QEngineT::ensure_post_selection() const
+TEST(qpp_QEngineT_ensure_post_selection, AllTests) {}
+
 /// BEGIN QBaseEngine& QEngineT::execute(
 ///       const typename QCircuitTraits<QCT>::iterator_type& it)
 TEST(qpp_QEngineT_execute, Iterator) {}
