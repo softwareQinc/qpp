@@ -62,6 +62,7 @@ struct QEngineState {
     std::vector<idx> subsys_{};  ///< keeps track of the destructively measured
                                  ///< subsystems, re-label them after
                                  ///< measurements
+
     bool post_select_ok_ =
         true; ///< flag that becomes false if/when post-selection fails
     bool ensure_post_selection_; ///< if true, executes a measurement step

@@ -347,15 +347,13 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         LOG << "CORRECT 'TILL HERE\n" << std::endl;
 
         for (idx rep = 0; rep < reps - 1; ++rep) {
+        REPEAT_POST_SELECT:
             // sample from the quantum state
             std::vector<idx> sample_result_restricted_support = sample(
                 engine_state.qstate_, sample_from, this->qc_ptr_->get_d());
+
             // make sure post-selected qudits agree on their values
             bool post_selection_failed = false;
-            // LOG << disp(sample_result_restricted_support,
-            //                   IOManipContainerOpts{})
-            //           << std::endl;
-
             for (idx q = 0; q < sample_from.size(); ++q) {
                 // qudit sample_from[i] is a post-selected qudit
                 if (auto it = q_ps_val.find(sample_from[q]);
@@ -368,7 +366,11 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             }
 
             if (post_selection_failed) {
-                continue;
+                if (qeng_st_.ensure_post_selection_) {
+                    goto REPEAT_POST_SELECT;
+                } else {
+                    continue;
+                }
             }
 
             // extend sample_result to full support
@@ -381,7 +383,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             ++stats_.data()[sample_result];
         }
 
-        execute_last_rep_after_sampling_(steps, omp_ipr_first);
+        execute_last_rep_after_sampling_(steps, pos);
 
         return *this;
     }
@@ -1102,7 +1104,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
         // END EXCEPTION CHECKS
 
-        this->reset(false);
+        this->reset(false, qeng_st_.ensure_post_selection_);
         auto steps = reps > 1 ? internal::canonical_form(*this->qc_ptr_)
                               : internal::circuit_as_iterators(*this->qc_ptr_);
         if (steps.empty()) {
