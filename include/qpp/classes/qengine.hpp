@@ -93,14 +93,16 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param engine_state Instance of qpp::internal::QEngineState<T>
      * \param steps Vector of qpp::QCircuit::iterator
-     * \idx pos Index from where the execution starts
-     * \idx reps Number of repetitions
-     * \return Reference to the current instance
+     * \param pos Index from where the execution starts
+     * \param reps Number of repetitions
+     * \param last_rep When last_rep is true, the last repetion is executed
+     * repeatedly until the post-selection succeeds \return Reference to the
+     * current instance
      */
     // IMPORTANT: ALWAYS pass engine_state by value!
     QEngineT& execute_no_sample_(internal::QEngineState<T> engine_state,
                                  const std::vector<QCircuit::iterator>& steps,
-                                 idx pos, idx reps) {
+                                 idx pos, idx reps, bool last_rep = false) {
         auto worker = [&](bool last_rep) {
             // sets the state of the engine to the entry state
             qeng_st_ = engine_state;
@@ -136,10 +138,11 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         for (idx rep = 0; rep < reps - 1; ++rep) {
             worker(false);
         }
+
         if (reps > 1) {
             worker(true); // ensure post-selection for >1 reps
         } else {
-            worker(qeng_st_.ensure_post_selection_);
+            worker(last_rep || qeng_st_.ensure_post_selection_);
         }
 
         return *this;
@@ -385,7 +388,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
 
         // the last state is always computed with ensure_post_selection = true
-        execute_no_sample_(qeng_st_, steps, pos, 1);
+        execute_no_sample_(qeng_st_, steps, pos, 1, true);
 
         return *this;
     }
