@@ -1137,7 +1137,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
 
         // TODO: remove this after debugging
-        qeng_st_.can_sample_ = false;
+        // qeng_st_.can_sample_ = false;
 
         // execute repeatedly everything in the remaining interval
         // can sample: every step from now on is a projective measurement
