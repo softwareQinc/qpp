@@ -24,7 +24,7 @@
  * SOFTWARE.
  */
 
-#include "pyqpp/pyqpp_common.h"
+#include "pyqpp/pyqpp_common.hpp"
 
 #include "pyqpp/constants_bind.hpp"
 #include "pyqpp/functions_bind.hpp"

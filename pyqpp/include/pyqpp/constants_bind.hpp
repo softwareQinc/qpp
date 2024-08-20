@@ -27,7 +27,7 @@
 #ifndef PYQPP_CONSTANTS_BIND_HPP_
 #define PYQPP_CONSTANTS_BIND_HPP_
 
-#include "pyqpp/pyqpp_common.h"
+#include "pyqpp/pyqpp_common.hpp"
 
 /* Constants from constants.hpp */
 inline void init_constants(py::module_& m) {

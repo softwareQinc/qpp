@@ -4,7 +4,7 @@
 #include <iostream>
 #include <tuple>
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 int main() {
     using namespace qpp;

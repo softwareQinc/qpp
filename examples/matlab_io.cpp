@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 #include "qpp/MATLAB/matlab.hpp" // must be explicitly included
 
