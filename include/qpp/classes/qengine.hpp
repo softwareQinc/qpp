@@ -85,6 +85,54 @@ namespace qpp {
  */
 template <typename T>
 class QEngineT : public QBaseEngine<T, QCircuit> {
+
+    /**
+     * \brief Executes a contiguous series of projective measurement steps
+     *
+     * \note When \a reps > 1, the last repetition is executed repeatedly until
+     * the post-selection succeeds, so one can retrieve the quantum state
+     *
+     * \param engine_state Instance of qpp::internal::QEngineState<T>
+     * \param steps Vector of qpp::QCircuit::iterator
+     * \param pos Index from where the execution starts
+     * \param enforce_post_selection When \a enforce_post_selection is true, the
+     * last repetition is executed repeatedly until the post-selection succeeds
+     */
+    // IMPORTANT: ALWAYS pass engine_state by value, DO NOT pass by reference!
+    void
+    execute_circuit_steps_once_(internal::QEngineState<T> engine_state,
+                                const std::vector<QCircuit::iterator>& steps,
+                                idx pos, bool enforce_post_selection) {
+        // sets the state of the engine to the entry state
+        qeng_st_ = engine_state;
+        if (enforce_post_selection) {
+            qeng_st_.ensure_post_selection_ = true;
+        }
+
+        bool measured = false;
+        for (idx i = pos; i < steps.size(); ++i) {
+            if (internal::is_measurement(steps[i])) {
+                measured = true;
+            }
+            this->execute(steps[i]);
+            // post-selection failed, stop executing
+            if (!qeng_st_.post_select_ok_) {
+                return;
+            }
+        }
+
+        // at least one qudit was measured
+        if (measured) {
+            ++stats_.data()[get_dits()];
+        }
+
+        // restores qeng_st_.ensure_post_selection_ flag
+        if (enforce_post_selection) {
+            qeng_st_.ensure_post_selection_ =
+                engine_state.ensure_post_selection_;
+        }
+    }
+
     /**
      * \brief Executes a contiguous series of projective measurement steps
      *
@@ -95,55 +143,18 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param steps Vector of qpp::QCircuit::iterator
      * \param pos Index from where the execution starts
      * \param reps Number of repetitions
-     * \param last_rep When last_rep is true, the last repetion is executed
-     * repeatedly until the post-selection succeeds \return Reference to the
-     * current instance
      */
-    // IMPORTANT: ALWAYS pass engine_state by value!
-    QEngineT& execute_no_sample_(internal::QEngineState<T> engine_state,
+    QEngineT& execute_no_sample_(const internal::QEngineState<T>& engine_state,
                                  const std::vector<QCircuit::iterator>& steps,
-                                 idx pos, idx reps, bool last_rep = false) {
-        auto worker = [&](bool last_rep) {
-            // sets the state of the engine to the entry state
-            qeng_st_ = engine_state;
-            if (last_rep) {
-                qeng_st_.ensure_post_selection_ = true;
-            }
-
-            bool measured = false;
-            for (idx i = pos; i < steps.size(); ++i) {
-                if (internal::is_measurement(steps[i])) {
-                    measured = true;
-                }
-                this->execute(steps[i]);
-                // post-selection failed, stop executing
-                if (!qeng_st_.post_select_ok_) {
-                    return;
-                }
-            }
-
-            // at least one qudit was measured
-            if (measured) {
-                std::vector<idx> m_res = get_dits();
-                ++stats_.data()[m_res];
-            }
-
-            // restores qeng_st_.ensure_post_selection_ flag
-            if (last_rep) {
-                qeng_st_.ensure_post_selection_ =
-                    engine_state.ensure_post_selection_;
-            }
-        };
-
+                                 idx pos, idx reps) {
         for (idx rep = 0; rep < reps - 1; ++rep) {
-            worker(false);
+            execute_circuit_steps_once_(engine_state, steps, pos, false);
         }
 
-        if (reps > 1) {
-            worker(true); // ensure post-selection for >1 reps
-        } else {
-            worker(last_rep || qeng_st_.ensure_post_selection_);
-        }
+        // executes the last repetition, enforcing post-selection
+        execute_circuit_steps_once_(engine_state, steps, pos,
+                                    reps > 1 ? true
+                                             : qeng_st_.ensure_post_selection_);
 
         return *this;
     }
@@ -387,8 +398,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             ++stats_.data()[sample_result];
         }
 
-        // the last state is always computed with ensure_post_selection = true
-        execute_no_sample_(qeng_st_, steps, pos, 1, true);
+        // the last state is always computed with ensuring post-selection
+        // succeeds
+        execute_circuit_steps_once_(qeng_st_, steps, pos, true);
 
         return *this;
     }
