@@ -183,7 +183,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     /**
      * \brief Returns pair of (bool, idx), first true if the canonical form of
      * the circuit can be sampled from, second denoting the position of the
-     * first measurement/reset/discard step \see qpp::internal::canonical_form()
+     * first measurement/reset/discard step
+     * \see qpp::internal::canonical_form()
      *
      * \note A circuit can be sampled from if and only if it its canonical form
      * have only projective measurements (including post-selection) after the

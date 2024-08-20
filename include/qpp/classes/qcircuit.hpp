@@ -3643,7 +3643,13 @@ class QCircuit : public IDisplay, public IJSON {
         }
         circuit_ = std::move(result);
 
+        // update gate counts
         for (auto& elem : gate_count_) {
+            elem.second *= n;
+        }
+
+        // update measurement counts
+        for (auto& elem : measurement_count_) {
             elem.second *= n;
         }
 
@@ -3673,8 +3679,8 @@ class QCircuit : public IDisplay, public IJSON {
      * circuit description is inserted before the \a pos_dit classical dit
      * index of the current quantum circuit description (in the classical
      * dits array), the rest following in order. If absent (default),
-     * insertion is performed at the end. \return Reference to the current
-     * instance
+     * insertion is performed at the end.
+     * \return Reference to the current instance
      */
     QCircuit& compose_circuit(QCircuit other, bigint pos_qudit,
                               std::optional<idx> pos_dit = std::nullopt) {
@@ -3857,8 +3863,8 @@ class QCircuit : public IDisplay, public IJSON {
      * circuit description is inserted before the \a pos_dit classical dit
      * index of the current quantum circuit description (in the classical
      * dits array), the rest following in order. If absent (default),
-     * insertion is performed at the end. \return Reference to the current
-     * instance
+     * insertion is performed at the end.
+     * \return Reference to the current instance
      */
     QCircuit& couple_circuit_left(QCircuit other,
                                   const std::vector<idx>& target,
@@ -4026,8 +4032,8 @@ class QCircuit : public IDisplay, public IJSON {
      * circuit description is inserted before the \a pos_dit classical dit
      * index of the current quantum circuit description (in the classical
      * dits array), the rest following in order. If absent (default),
-     * insertion is performed at the end. \return Reference to the current
-     * instance
+     * insertion is performed at the end.
+     * \return Reference to the current instance
      */
     QCircuit& couple_circuit_right(QCircuit other,
                                    const std::vector<idx>& target,
@@ -4192,9 +4198,9 @@ class QCircuit : public IDisplay, public IJSON {
      * following in order. If negative or greater than the total number of
      * qudits of the current quantum circuit description, then the required
      * number of additional qudits are automatically added to the current
-     * quantum circuit description. \param shift Optional, performs the
-     * control as if the \a ctrl qudit state was \f$X\f$-incremented by \a
-     * shift
+     * quantum circuit description.
+     * \param shift Optional, performs the control as if the \a ctrl qudit state
+     * was \f$X\f$-incremented by \a shift
      * \param pos_dit Optional, the first classical dit of \a
      * qc_target quantum circuit description is inserted before the \a
      * pos_dit classical dit index of the current quantum circuit
@@ -4446,6 +4452,14 @@ class QCircuit : public IDisplay, public IJSON {
                                DISCARD:
                            case internal::QCircuitMeasurementStep::Type::
                                DISCARD_MANY:
+                           case internal::QCircuitMeasurementStep::Type::
+                               POST_SELECT:
+                           case internal::QCircuitMeasurementStep::Type::
+                               POST_SELECT_MANY:
+                           case internal::QCircuitMeasurementStep::Type::
+                               POST_SELECT_V:
+                           case internal::QCircuitMeasurementStep::Type::
+                               POST_SELECT_V_JOINT:
                                return true;
                            default:
                                return false;
@@ -4525,8 +4539,8 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Checks whether a classical dit in the circuit was used before
-     * or not \see qpp::QCircuit::get_clean_dits(),
-     * qpp::QCircuit::get_dirty_dits()
+     * or not
+     * \see qpp::QCircuit::get_clean_dits(), qpp::QCircuit::get_dirty_dits()
      *
      * \param i Classical dit index
      * \return True if the classical dit \a i was used before (by a cCTRL
@@ -4547,7 +4561,8 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Checks whether a classical dit in the circuit was used to
      * store the result of a measurement (either destructive or
-     * non-destructive) \see qpp::QCircuit::get_measurement_dits()
+     * non-destructive)
+     * \see qpp::QCircuit::get_measurement_dits()
      *
      * \param i Classical dit index
      * \return True if the classical dit \a i was used before to
@@ -4722,8 +4737,8 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Removes list of clean qudits from the quantum circuit
-     * description and relabels the rest of the qudits accordingly \see
-     * qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::compress()
+     * description and relabels the rest of the qudits accordingly
+     * \see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::compress()
      *
      * \param target Target clean qudit indexes that are removed
      * \return Reference to the current instance
@@ -5864,18 +5879,19 @@ inline QCircuit replicate(QCircuit qc, idx n,
  * \param nq Number of qudits
  * \param d Subsystem dimensions
  * \param gate_count Circuit gate count
- * \param p_two Optional, probability of applying a two qudit gate, must
- * belong to the interval (0,1). If the two qudit gate set has more than one
- * element, then the gate is chosen at random from the set.
- * \param with_respect_to_gate Optional, if present, gate count is
- * calculated with respect to this particular gate (absent by default, so by
- * default gate count is calculated with respect to all gates in the
- * circuit) \param one_qudit_gate_set Optional set of one qudit gates, must
- * be specified for \a d > 2 \param two_qudit_gate_set Optional set of two
- * qudit gates, must be specified for \a d > 2 \param one_qudit_gate_names
- * Optional one qudit gate names \param two_qudit_gate_names Optional two
- * qudit gate names \return Instance of random qpp::QCircuit for fixed gate
- * count
+ * \param p_two Optional, probability of applying a two qudit gate, must belong
+ * to the interval (0,1). If the two qudit gate set has more than one element,
+ * then the gate is chosen at random from the set.
+ * \param with_respect_to_gate Optional, if present, gate count is calculated
+ * with respect to this particular gate (absent by default, so by default gate
+ * count is calculated with respect to all gates in the circuit)
+ * \param one_qudit_gate_set Optional set of one qudit gates, must be specified
+ * for \a d > 2
+ * \param two_qudit_gate_set Optional set of two qudit gates, must be specified
+ * for \a d > 2
+ * \param one_qudit_gate_names Optional one qudit gate names
+ * \param two_qudit_gate_names Optional two qudit gate names
+ * \return Instance of random qpp::QCircuit for fixed gate count
  */
 inline QCircuit random_circuit_count(
     idx nq, idx d, idx gate_count, std::optional<realT> p_two,
@@ -6049,18 +6065,19 @@ inline QCircuit random_circuit_count(
  * \param nq Number of qudits
  * \param d Subsystem dimensions
  * \param gate_depth Circuit gate depth
- * \param p_two Optional, probability of applying a two qudit gate, must
- * belong to the interval (0,1). If the two qudit gate set has more than one
- * element, then the gate is chosen at random from the set.
- * \param with_respect_to_gate Optional, if present, gate depth is
- * calculated with respect to this particular gate (absent by default, so by
- * default gate depth is calculated with respect to all gates in the
- * circuit) \param one_qudit_gate_set Set of one qudit gates (optional, must
- * be specified for \a d > 2) \param two_qudit_gate_set Set of two qudit
- * gates (optional, must be specified for \a d > 2); \param
- * one_qudit_gate_names One qudit gate names (optional) \param
- * two_qudit_gate_names Two qudit gate names (optional) \return Instance of
- * random qpp::QCircuit for fixed circuit gate depth
+ * \param p_two Optional, probability of applying a two qudit gate, must belong
+ * to the interval (0,1). If the two qudit gate set has more than one element,
+ * then the gate is chosen at random from the set.
+ * \param with_respect_to_gate Optional, if present, gate depth is calculated
+ * with respect to this particular gate (absent by default, so by default gate
+ * depth is calculated with respect to all gates in the circuit)
+ * \param one_qudit_gate_set Set of one qudit gates (optional, must be specified
+ * for \a d > 2)
+ * \param two_qudit_gate_set Set of two qudit gates (optional, must be specified
+ * for \a d > 2);
+ * \param one_qudit_gate_names One qudit gate names (optional)
+ * \param two_qudit_gate_names Two qudit gate names (optional)
+ * \return Instance of random qpp::QCircuit for fixed circuit gate depth
  */
 inline QCircuit random_circuit_depth(
     idx nq, idx d, idx gate_depth, std::optional<realT> p_two,
