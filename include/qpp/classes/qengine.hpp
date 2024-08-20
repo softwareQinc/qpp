@@ -98,9 +98,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param enforce_post_selection When \a enforce_post_selection is true, the
      * last repetition is executed repeatedly until the post-selection succeeds
      */
-    // IMPORTANT: ALWAYS pass engine_state by value, DO NOT pass by reference!
     void
-    execute_circuit_steps_once_(internal::QEngineState<T> engine_state,
+    execute_circuit_steps_once_(const internal::QEngineState<T>& engine_state,
                                 const std::vector<QCircuit::iterator>& steps,
                                 idx pos, bool enforce_post_selection) {
         // sets the state of the engine to the entry state
@@ -144,9 +143,12 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param pos Index from where the execution starts
      * \param reps Number of repetitions
      */
-    QEngineT& execute_no_sample_(const internal::QEngineState<T>& engine_state,
-                                 const std::vector<QCircuit::iterator>& steps,
-                                 idx pos, idx reps) {
+    // IMPORTANT: ALWAYS pass engine_state by value, DO NOT pass by reference!
+    // We need to create a copy of the current engine state that doesn't change
+    // across the loop over reps.
+    void execute_no_sample_(internal::QEngineState<T> engine_state,
+                            const std::vector<QCircuit::iterator>& steps,
+                            idx pos, idx reps) {
         for (idx rep = 0; rep < reps - 1; ++rep) {
             execute_circuit_steps_once_(engine_state, steps, pos, false);
         }
@@ -155,8 +157,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         execute_circuit_steps_once_(engine_state, steps, pos,
                                     reps > 1 ? true
                                              : qeng_st_.ensure_post_selection_);
-
-        return *this;
     }
 
     /**
@@ -297,11 +297,10 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * further, all steps are assumed to be a projective measurement (including
      * post-selection)
      * \param reps Number of repetitions
-     * \return Reference to the current instance
      */
-    QEngineT& execute_sample_(const internal::QEngineState<T>& engine_state,
-                              const std::vector<QCircuit::iterator>& steps,
-                              idx pos, idx reps) {
+    void execute_sample_(const internal::QEngineState<T>& engine_state,
+                         const std::vector<QCircuit::iterator>& steps, idx pos,
+                         idx reps) {
         std::map<idx, std::pair<idx, std::optional<idx>>>
             c_q; // records the c <- (q, [OPTIONAL ps_val]) map
         std::map<idx, idx> q_ps_val; // records the q <- ps_val map
@@ -313,11 +312,11 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         if (!post_select_compatible) {
             qeng_st_.post_select_ok_ = false;
-            return *this;
+            return;
         }
 
         if (!measured) {
-            return *this;
+            return;
         }
 
         // display sampling maps
@@ -401,8 +400,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // the last state is always computed with ensuring post-selection
         // succeeds
         execute_circuit_steps_once_(qeng_st_, steps, pos, true);
-
-        return *this;
     }
 
   protected:
