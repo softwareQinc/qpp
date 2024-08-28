@@ -1,5 +1,8 @@
 # Pre-release
 
+- Bugfix in qpp::internal::canonical_form(), the re-ordering is now stable, so
+  qpp::QCircuit measurement probabilities are not displayed in reversed order
+  w.r.t. target
 - Breaking change: renamed ["qpp/qpp.h"] to ["qpp/qpp.hpp"]
 - Refactored `qpp::QCircuit::GateStep/MeasurementStep/NOPStep` into separate
   files ["qpp/internal/classes/qcircuit_gate_step.hpp"],

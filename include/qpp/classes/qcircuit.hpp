@@ -6891,8 +6891,11 @@ circuit_as_iterators(const QCircuit& qc) {
 /**
  * \brief Puts a quantum (sub)-circuit description in the canonical form,
  * i.e., starting with the first measurement step from the circuit range
- * [start, finish), pushes all measurements and cCTRLs at the end of the
+ * [start, finish), pushes all measurements and cCTRLs to the end of the
  * circuit
+ *
+ * \note This function does not interchange measurements, i.e., the re-ordering
+ * is stable
  *
  * \param start Quantum circuit iterator pointing to the first element
  * \param finish Quantum circuit iterator pointing to the last element (not
@@ -6902,6 +6905,7 @@ circuit_as_iterators(const QCircuit& qc) {
  */
 inline std::vector<QCircuit::iterator>
 canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
+
     auto first_measurement_it = std::find_if(
         start, finish, [](auto&& elem) { return is_measurement(elem); });
 
@@ -6915,11 +6919,12 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
     for (auto&& rit = steps.rbegin(); rit != steps.rend(); ++rit) {
         if (internal::is_cCTRL(*rit)) {
             // try to push it to the end
-            for (auto&& next_it = rit.base(); next_it != steps.end();
-                 ++next_it) {
-                auto cur_it = std::prev(next_it);
-                if (internal::can_swap(*cur_it, *next_it)) {
-                    std::swap(*cur_it, *next_it);
+            for (auto&& after_it = rit.base(); after_it != steps.end();
+                 ++after_it) {
+                auto cur_it = std::prev(after_it);
+                if (internal::can_swap(*cur_it, *after_it) &&
+                    !internal::is_cCTRL(*after_it)) {
+                    std::swap(*cur_it, *after_it);
                 } else {
                     break;
                 }
@@ -6931,11 +6936,12 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
     for (auto&& rit = steps.rbegin(); rit != steps.rend(); ++rit) {
         if (internal::is_measurement(*rit)) {
             // try to push it to the end
-            for (auto&& next_it = rit.base(); next_it != steps.end();
-                 ++next_it) {
-                auto cur_it = std::prev(next_it);
-                if (internal::can_swap(*cur_it, *next_it)) {
-                    std::swap(*cur_it, *next_it);
+            for (auto&& after_it = rit.base(); after_it != steps.end();
+                 ++after_it) {
+                auto cur_it = std::prev(after_it);
+                if (internal::can_swap(*cur_it, *after_it) &&
+                    !internal::is_measurement(*after_it)) {
+                    std::swap(*cur_it, *after_it);
                 } else {
                     break;
                 }

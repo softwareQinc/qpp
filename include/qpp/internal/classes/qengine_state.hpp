@@ -65,9 +65,13 @@ struct QEngineState {
 
     bool post_select_ok_ =
         true; ///< flag that becomes false if/when post-selection fails
-    bool ensure_post_selection_; ///< if true, executes a measurement step
-                                 ///< repeatedly until the post-selection
-                                 ///< result(s) agree
+    bool ensure_post_selection_ = false; ///< if true, executes a measurement
+                                         ///< step repeatedly until the
+                                         ///< post-selection result(s) agree
+    idx max_post_selection_reps_ =
+        std::numeric_limits<idx>::max(); ///< maximum number of executions of a
+                                         ///< circuit post-selection step until
+                                         ///< success
 
     bool can_sample_; ///< if true, can sample when executing with multiple
                       ///< repetitions
@@ -145,6 +149,7 @@ struct QEngineState {
 
         post_select_ok_ = true;
         ensure_post_selection_ = false;
+        max_post_selection_reps_ = std::numeric_limits<idx>::max();
 
         can_sample_ = false;
     }

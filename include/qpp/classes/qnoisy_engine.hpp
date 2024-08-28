@@ -161,13 +161,18 @@ class QNoisyEngineT : public QEngineT<T> {
      * \param reset_stats Optional (true by default), resets the collected
      * measurement statistics hash table
      * \param ensure_post_selection Optional (false by default). If true,
-     * executes a measurement step repeatedly until the post-selection result(s)
-     * agree
+     * executes a measurement step repeatedly until the post-selection
+     * result(s) agree
+     * \param max_post_selection_reps Maximum number of executions of a
+     * post-selection step until success
      * \return Reference to the current instance
      */
     QNoisyEngineT& reset(bool reset_stats = true,
-                         bool ensure_post_selection = false) override {
-        QEngineT<T>::reset(reset_stats, ensure_post_selection);
+                         bool ensure_post_selection = false,
+                         idx max_post_selection_reps =
+                             std::numeric_limits<idx>::max()) override {
+        QEngineT<T>::reset(reset_stats, ensure_post_selection,
+                           max_post_selection_reps);
         noise_results_ = {};
 
         return *this;

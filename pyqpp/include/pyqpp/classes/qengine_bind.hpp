@@ -56,6 +56,10 @@ void declare_QEngineT(py::module& m) {
         .def("get_dit", &QEngineT<T>::get_dit,
              "Underlying classical dit at position i", py::arg("i"))
         .def("get_dits", &QEngineT<T>::get_dits, "Underlying classical dits")
+        .def("get_max_post_selection_reps",
+             &QEngineT<T>::get_max_post_selection_reps,
+             "Maximum number of repetitions of a post-selection step until "
+             "success")
         .def("get_measured_destructively",
              &QEngineT<T>::get_measured_destructively,
              "Vector of already destructively measured qudit indexes")
@@ -85,7 +89,9 @@ void declare_QEngineT(py::module& m) {
              "Successful post-selection")
         .def("reset", &QEngineT<T>::reset, "Resets the engine",
              py::arg("reset_stats") = true,
-             py::arg("ensure_post_selection") = true)
+             py::arg("ensure_post_selection") = true,
+             py::arg("max_post_selection_reps") =
+                 std::numeric_limits<idx>::max())
         .def("reset_stats", &QEngineT<T>::reset_stats,
              "Resets the collected measurement statistics hash table")
         .def("set_dit", &QEngineT<T>::set_dit,
@@ -93,6 +99,11 @@ void declare_QEngineT(py::module& m) {
              py::arg("value"))
         .def("set_dits", &QEngineT<T>::set_dits, "Set the classical dits",
              py::arg("dits"))
+        .def("set_max_post_selection_reps",
+             &QEngineT<T>::set_max_post_selection_reps,
+             py::arg("max_post_selection_reps"),
+             "Sets the maximum number of repetitions of a post-selection step "
+             "until success")
         .def("set_state", &QEngineT<T>::set_state,
              "Sets the underlying quantum state", py::arg("state"))
         .def("to_JSON", &QEngineT<T>::to_JSON,
