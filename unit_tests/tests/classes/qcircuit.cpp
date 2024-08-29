@@ -300,12 +300,14 @@ TEST(qpp_QCircuit_postselect, MultipleTargets) {
     QCircuit qc{2, 2};
     qc.gate_fan(gt.H, {0, 1});
     qc.post_select({0, 1}, {0, 1}, 0, false);
-    QEngine qe{qc};
+
+    QEngine qe{qc, true}; // enforce post-selection
     qe.execute(2);
     auto dits = qe.get_dits();
     ket state = qe.get_state();
     std::vector<idx> expected_dits{0, 1};
     ket expected_state = 01_ket;
+
     ASSERT_EQ(dits, expected_dits);
     ASSERT_EQ(state, expected_state);
 }
@@ -317,12 +319,14 @@ TEST(qpp_QCircuit_postselect, SingleTarget) {
     qc.gate_fan(gt.H, {0, 1});
     qc.post_select(0, 1, 0, false);
     qc.post_select(1, 1, 1, false);
-    QEngine qe{qc};
+
+    QEngine qe{qc, true}; // enforce post-selection
     qe.execute(2);
     auto dits = qe.get_dits();
     ket state = qe.get_state();
     std::vector<idx> expected_dits{1, 1};
     ket expected_state = 11_ket;
+
     ASSERT_EQ(dits, expected_dits);
     ASSERT_EQ(state, expected_state);
 }
