@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/qengine.hpp"
+// Unit testing "qpp/classes/qengine.hpp"
 
 /// BEGIN bool QEngineT::ensure_post_selection() const
 TEST(qpp_QEngineT_ensure_post_selection, AllTests) {}

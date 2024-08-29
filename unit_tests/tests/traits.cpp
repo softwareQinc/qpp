@@ -8,7 +8,7 @@
 
 using namespace qpp;
 
-// Unit testing "traits.hpp"
+// Unit testing "qpp/traits.hpp"
 
 /// BEGIN template<typename T> struct is_complex
 TEST(qpp_is_complex, AllTests) {

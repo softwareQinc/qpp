@@ -7,7 +7,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/gates.hpp"
+// Unit testing "qpp/classes/gates.hpp"
 
 TEST(qpp_Gates_CTRL, Qudits) {
     idx d = 3; // qutrits

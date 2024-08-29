@@ -6,7 +6,7 @@
 
 using namespace qpp;
 
-// Unit testing "input_output.hpp"
+// Unit testing "qpp/input_output.hpp"
 
 #if (0)
 

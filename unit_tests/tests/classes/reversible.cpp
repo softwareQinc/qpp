@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/reversible.hpp"
+// Unit testing "qpp/classes/reversible.hpp"
 
 /// BEGIN Bit_circuit& Bit_circuit::CNOT(const std::vector<idx>& pos)
 TEST(qpp_Bit_circuit_CNOT, AllTests) {}

@@ -6,7 +6,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/random_devices.hpp"
+// Unit testing "qpp/classes/random_devices.hpp"
 
 /// BEGIN std::mt19937& RandomDevices::get_prng()
 TEST(qpp_RandomDevices_get_prng, AllTests) {}

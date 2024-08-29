@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "qasm/qasm.hpp"
+// Unit testing "qpp/qasm/qasm.hpp"
 
 /// BEGIN inline QCircuit qasm::read_from_file(const std::string& fname)
 

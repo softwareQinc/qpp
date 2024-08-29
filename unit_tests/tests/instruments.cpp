@@ -4,7 +4,7 @@
 
 using namespace qpp;
 
-// Unit testing "instruments.hpp"
+// Unit testing "qpp/instruments.hpp"
 
 /// BEGIN template <typename Derived>
 ///       dyn_mat<typename Derived::Scalar> discard(

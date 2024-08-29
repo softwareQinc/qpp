@@ -5,7 +5,7 @@
 
 using namespace qpp;
 
-// Unit testing "statistics.hpp"
+// Unit testing "qpp/statistics.hpp"
 
 /// BEGIN template<typename Container> realT avg(
 ///       const std::vector<realT>& prob, const Container& X,

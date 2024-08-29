@@ -6,7 +6,7 @@
 
 using namespace qpp;
 
-// Unit testing "random.hpp"
+// Unit testing "qpp/random.hpp"
 
 /// BEGIN inline bool bernoulli(realT p = 0.5)
 TEST(qpp_bernoulli, AllTests) {}

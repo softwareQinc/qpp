@@ -7,7 +7,7 @@
 
 using namespace qpp;
 
-// Unit testing "entanglement.hpp"
+// Unit testing "qpp/entanglement.hpp"
 
 /// BEGIN template <typename Derived> realT concurrence(
 ///       const Eigen::MatrixBase<Derived>& A)

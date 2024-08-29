@@ -6,7 +6,7 @@
 
 using namespace qpp;
 
-// Unit testing "classes/states.hpp"
+// Unit testing "qpp/classes/states.hpp"
 
 /// BEGIN ket States::j(idx j, idx D = 2) const
 TEST(qpp_States_j, AllTests) {}
