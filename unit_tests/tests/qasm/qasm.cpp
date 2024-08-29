@@ -1,15 +1,12 @@
-#include <iostream>
-
 #include "gtest/gtest.h"
 
 #include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "qasm.hpp"
+// Unit testing "qasm/qasm.hpp"
 
-/// BEGIN std::unique_ptr<QCircuit> qasm::read_from_file(
-///       const std::string& fname)
+/// BEGIN inline QCircuit qasm::read_from_file(const std::string& fname)
 
 TEST(qpp_qasm_read_from_file, StdCompliance) {
     // generic circuits
