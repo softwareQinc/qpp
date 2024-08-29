@@ -1190,9 +1190,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             can_sample_from_(steps_as_iterators);
         qeng_st_.can_sample_ = reps > 1 && can_sample;
 
-        // TODO: remove this after debugging
-        qeng_st_.can_sample_ = false;
-
         // execute everything ONCE in the interval
         // [0, first_measurement_discard_reset_pos)
         for (idx i = 0; i < first_measurement_discard_reset_pos; ++i) {
