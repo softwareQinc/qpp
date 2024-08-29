@@ -46,6 +46,9 @@ void declare_QEngineT(py::module& m) {
     py::class_<QEngineT<T>>(m, pyname.c_str())
         .def(py::init<const QCircuit&>(), py::keep_alive<1, 2>())
 
+        .def("ensure_post_selection", &QEngineT<T>::ensure_post_selection,
+             "True if post-selection is enforced (must succeed), false "
+             "otherwise")
         .def("execute", py::overload_cast<idx>(&QEngineT<T>::execute),
              "Executes the entire quantum circuit description",
              py::arg("reps") = 1)
@@ -58,8 +61,8 @@ void declare_QEngineT(py::module& m) {
         .def("get_dits", &QEngineT<T>::get_dits, "Underlying classical dits")
         .def("get_max_post_selection_reps",
              &QEngineT<T>::get_max_post_selection_reps,
-             "Maximum number of repetitions of a post-selection step until "
-             "success")
+             "Maximum number of repetitions of a cirucit post-selection step "
+             "until success")
         .def("get_measured_destructively",
              &QEngineT<T>::get_measured_destructively,
              "Vector of already destructively measured qudit indexes")
@@ -86,7 +89,8 @@ void declare_QEngineT(py::module& m) {
             },
             "Measurement statistics for multiple runs")
         .def("post_select_ok", &QEngineT<T>::post_select_ok,
-             "Successful post-selection")
+             "True if post-selection was successful (or absent), false "
+             "otherwise")
         .def("reset", &QEngineT<T>::reset, "Resets the engine",
              py::arg("reset_stats") = true,
              py::arg("ensure_post_selection") = true,
@@ -102,8 +106,8 @@ void declare_QEngineT(py::module& m) {
         .def("set_max_post_selection_reps",
              &QEngineT<T>::set_max_post_selection_reps,
              py::arg("max_post_selection_reps"),
-             "Sets the maximum number of repetitions of a post-selection step "
-             "until success")
+             "Sets the maximum number of repetitions of a circuit "
+             "post-selection step until success")
         .def("set_state", &QEngineT<T>::set_state,
              "Sets the underlying quantum state", py::arg("state"))
         .def("to_JSON", &QEngineT<T>::to_JSON,

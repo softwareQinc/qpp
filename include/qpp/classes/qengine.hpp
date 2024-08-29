@@ -963,7 +963,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     bool post_select_ok() const { return qeng_st_.post_select_ok_; }
 
     /**
-     * \brief Returns true if post-selection is ensured to succeed, false
+     * \brief Returns true if post-selection is enforced (must succeed), false
      * otherwise
      */
     bool ensure_post_selection() const {

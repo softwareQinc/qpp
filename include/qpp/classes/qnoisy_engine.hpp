@@ -116,6 +116,7 @@ class QNoisyEngineT : public QEngineT<T> {
         return *this;
     }
 
+    // TODO: check this!!!
     /**
      * \brief Executes the entire quantum circuit description
      *

@@ -81,7 +81,7 @@ inline void init_classes_qcircuit(py::module_& m) {
                 "cCTRL",
                 py::overload_cast<const cmat&, idx, idx, std::optional<idx>,
                                   std::optional<std::string>>(&QCircuit::cCTRL),
-                "Applies the single qubit controlled gate U with classical "
+                "Applies the single qudit controlled gate U with classical "
                 "control dit ctrl and target qudit target, i.e., cCTRL-U",
                 py::arg("U"), py::arg("ctrl_dit"), py::arg("target"),
                 py::arg("shift") = std::nullopt, py::arg("name") = std::nullopt)
