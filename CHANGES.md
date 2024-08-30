@@ -41,6 +41,9 @@
     executions of a circuit post-selection step until success
   - `bool post_select_ok() const` - True if post-selection was successful (or
     absent), false otherwise
+- Added
+  [["examples/circuits/post_selection.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/post_selection.cpp)]
+  example
 
 # Version 5.1 - 1 March 2024
 
