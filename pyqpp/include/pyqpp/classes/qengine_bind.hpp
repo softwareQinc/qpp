@@ -46,9 +46,6 @@ void declare_QEngineT(py::module& m) {
     py::class_<QEngineT<T>>(m, pyname.c_str())
         .def(py::init<const QCircuit&>(), py::keep_alive<1, 2>())
 
-        .def("ensure_post_selection", &QEngineT<T>::ensure_post_selection,
-             "True if post-selection is enforced (must succeed), false "
-             "otherwise")
         .def("execute", py::overload_cast<idx>(&QEngineT<T>::execute),
              "Executes the entire quantum circuit description",
              py::arg("reps") = 1)
@@ -59,6 +56,10 @@ void declare_QEngineT(py::module& m) {
         .def("get_dit", &QEngineT<T>::get_dit,
              "Underlying classical dit at position i", py::arg("i"))
         .def("get_dits", &QEngineT<T>::get_dits, "Underlying classical dits")
+        .def("get_ensure_post_selection",
+             &QEngineT<T>::get_ensure_post_selection,
+             "True if post-selection is enforced (must succeed), false "
+             "otherwise")
         .def("get_max_post_selection_reps",
              &QEngineT<T>::get_max_post_selection_reps,
              "Maximum number of repetitions of a cirucit post-selection step "
@@ -103,6 +104,9 @@ void declare_QEngineT(py::module& m) {
              py::arg("value"))
         .def("set_dits", &QEngineT<T>::set_dits, "Set the classical dits",
              py::arg("dits"))
+        .def("set_ensure_post_selection",
+             &QEngineT<T>::set_ensure_post_selection,
+             "Enforces post-selection (must succeed)", py::arg("val"))
         .def("set_max_post_selection_reps",
              &QEngineT<T>::set_max_post_selection_reps,
              py::arg("max_post_selection_reps"),

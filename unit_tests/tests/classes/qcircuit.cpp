@@ -301,7 +301,8 @@ TEST(qpp_QCircuit_postselect, MultipleTargets) {
     qc.gate_fan(gt.H, {0, 1});
     qc.post_select({0, 1}, {0, 1}, 0, false);
 
-    QEngine qe{qc, true}; // enforce post-selection
+    QEngine qe{qc};
+    qe.set_ensure_post_selection(true); // enforce post-selection
     qe.execute(2);
     auto dits = qe.get_dits();
     ket state = qe.get_state();
@@ -320,7 +321,8 @@ TEST(qpp_QCircuit_postselect, SingleTarget) {
     qc.post_select(0, 1, 0, false);
     qc.post_select(1, 1, 1, false);
 
-    QEngine qe{qc, true}; // enforce post-selection
+    QEngine qe{qc};
+    qe.set_ensure_post_selection(true); // enforce post-selection
     qe.execute(2);
     auto dits = qe.get_dits();
     ket state = qe.get_state();

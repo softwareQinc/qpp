@@ -73,8 +73,8 @@ struct QEngineState {
                                          ///< circuit post-selection step until
                                          ///< success
 
-    bool can_sample_{}; ///< if true, can sample when executing with multiple
-                        ///< repetitions
+    bool can_sample_ = false; ///< if true, can sample when executing with
+                              ///< multiple repetitions
 
     /**
      * \brief Constructor

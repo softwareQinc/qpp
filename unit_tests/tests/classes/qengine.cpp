@@ -6,9 +6,6 @@ using namespace qpp;
 
 // Unit testing "qpp/classes/qengine.hpp"
 
-/// BEGIN bool QEngineT::ensure_post_selection() const
-TEST(qpp_QEngineT_ensure_post_selection, AllTests) {}
-
 /// BEGIN QBaseEngine& QEngineT::execute(
 ///       const typename QCircuitTraits<QCT>::iterator_type& it)
 TEST(qpp_QEngineT_execute, Iterator) {}
@@ -32,6 +29,9 @@ TEST(qpp_QEngineT_get_dit, AllTests) {}
 /// BEGIN std::vector<idx> QEngineT::get_dits() const
 TEST(qpp_QEngineT_get_dits, AllTests) {}
 
+/// BEGIN bool QEngineT::get_ensure_post_selection() const
+TEST(qpp_QEngineT_get_ensure_post_selection, AllTests) {}
+
 /// BEGIN idx QEngineT::get_max_post_selection_reps() const
 TEST(qpp_QEngineT_get_max_post_selection_reps, AllTests) {}
 
@@ -53,9 +53,7 @@ TEST(qpp_QEngineT_get_stats, AllTests) {}
 /// BEGIN bool QEngineT::post_select_ok() const
 TEST(qpp_QEngineT_post_select_ok, AllTests) {}
 
-/// BEGIN QEngineT& QEngineT::reset(bool reset_stats = true,
-///       bool ensure_post_selection = false,
-///       idx max_post_selection_reps = std::numeric_limits<idx>::max())
+/// BEGIN QEngineT& QEngineT::reset(bool reset_stats = true)
 TEST(qpp_QEngineT_reset, AllTests) {}
 
 /// BEGIN QEngineT& QEngineT::reset_stats()
@@ -66,6 +64,9 @@ TEST(qpp_QEngineT_set_dit, AllTests) {}
 
 /// BEGIN QEngineT& QEngineT::set_dits(std::vector<idx> dits)
 TEST(qpp_QEngineT_set_dits, AllTests) {}
+
+/// BEGIN QEngineT& QEngineT::set_ensure_post_selection(bool val)
+TEST(qpp_QEngineT_set_ensure_post_selection, AllTests) {}
 
 /// BEGIN QEngineT& QEngineT::set_max_post_selection_reps(
 ///       idx max_post_selection_reps)

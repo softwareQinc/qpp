@@ -90,7 +90,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     void
     execute_circuit_steps_once_(const std::vector<QCircuit::iterator>& steps,
                                 idx pos, bool ensure_post_selection) {
-        // copy the engine state
+        // save the engine state
         auto engine_state_copy = qeng_st_;
 
         // lambda that restores qeng_st_.ensure_post_selection_ flag
@@ -136,7 +136,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      */
     void execute_no_sample_(const std::vector<QCircuit::iterator>& steps,
                             idx pos, idx reps) {
-        // copy the engine state
+        // save the engine state
         internal::QEngineState<T> engine_state_copy = qeng_st_;
 
         // this state will store the state of the engine for the first
@@ -331,7 +331,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         std::vector<idx> sample_from(sample_from_set.begin(),
                                      sample_from_set.end());
 
-        // copy the engine state
+        // save the engine state
         internal::QEngineState<T> engine_state_copy = qeng_st_;
 
         // this state will store the state of the engine for the first
@@ -797,18 +797,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \f$|0\rangle^{\otimes n}\f$
      *
      * \param qc Quantum circuit description
-     * \param ensure_post_selection If true, repeatedly executes
-     * post-selection steps until the post-selection result(s) agree, or
-     * until the maximum number of post-selection repetitions is reached,
-     * \see qpp::QEngineT::set_max_post_selection_reps(), in which case the
-     * post-selection is not guaranteed to succeed; check the state of the
-     * engine, \see qpp::QEngineT::post_select_ok(). False by default.
-     *
      */
-    explicit QEngineT(const QCircuit& qc, bool ensure_post_selection = false)
-        : QBaseEngine<T, QCircuit>{qc}, qeng_st_{this->qc_ptr_}, stats_{} {
-        qeng_st_.ensure_post_selection_ = ensure_post_selection;
-    }
+    explicit QEngineT(const QCircuit& qc)
+        : QBaseEngine<T, QCircuit>{qc}, qeng_st_{this->qc_ptr_}, stats_{} {}
 
     // traits
     /**
@@ -966,7 +957,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \brief Returns true if post-selection is enforced (must succeed), false
      * otherwise
      */
-    bool ensure_post_selection() const {
+    bool get_ensure_post_selection() const {
         return qeng_st_.ensure_post_selection_;
     }
 
@@ -1028,6 +1019,22 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // END EXCEPTION CHECKS
         qeng_st_.dits_ = std::move(dits);
 
+        return *this;
+    }
+
+    /**
+     * \brief
+     *
+     * \param val If true, repeatedly executes post-selection steps until the
+     * post-selection result(s) agree, or until the maximum number of
+     * post-selection repetitions is reached, \see
+     * qpp::QEngineT::set_max_post_selection_reps(), in which case the
+     * post-selection is not guaranteed to succeed; check the state of the
+     * engine, \see qpp::QEngineT::post_select_ok(). False by default.
+     * \return Reference to the current instance
+     */
+    QEngineT& set_ensure_post_selection(bool val) {
+        qeng_st_.ensure_post_selection_ = val;
         return *this;
     }
 
@@ -1098,18 +1105,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param reset_stats Optional (true by default), resets the collected
      * measurement statistics hash table
-     * \param ensure_post_selection Optional (false by default). If true,
-     * executes a measurement step repeatedly until the post-selection
-     * result(s) agree \param max_post_selection_reps Maximum number of
-     * executions of a post-selection step until success \return Reference
-     * to the current instance
      */
-    virtual QEngineT&
-    reset(bool reset_stats = true, bool ensure_post_selection = false,
-          idx max_post_selection_reps = std::numeric_limits<idx>::max()) {
+    virtual QEngineT& reset(bool reset_stats = true) {
         qeng_st_.reset(qeng_st_.qstate_);
-        qeng_st_.ensure_post_selection_ = ensure_post_selection;
-        qeng_st_.max_post_selection_reps_ = max_post_selection_reps;
 
         if (reset_stats) {
             this->reset_stats();
@@ -1176,8 +1174,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
         // END EXCEPTION CHECKS
 
-        this->reset(false, qeng_st_.ensure_post_selection_,
-                    qeng_st_.max_post_selection_reps_);
+        // save the engine state
+        auto engine_state_copy = qeng_st_;
+
+        this->reset(false); // keep the statistics
+        this->set_ensure_post_selection(
+            engine_state_copy.ensure_post_selection_);
+        this->set_max_post_selection_reps(
+            engine_state_copy.max_post_selection_reps_);
 
         auto steps_as_iterators =
             reps > 1 ? internal::canonical_form(*this->qc_ptr_)

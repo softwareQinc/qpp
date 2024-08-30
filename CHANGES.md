@@ -31,20 +31,16 @@
   - `QCircuit& post_selectV()` - destructive/non-destructive post-selection of
     single/multiple qudits in an arbitrary orthonormal basis
 - Implemented `qpp::QEngineT<>::`
-  - `bool ensure_post_selection() const` - True if post-selection is enforced
-    (must succeed), false otherwise
-  - `bool post_select_ok() const` - True if post-selection was successful (or
-    absent), false otherwise
+  - `bool get_ensure_post_selection() const` - True if post-selection is
+    enforced, false otherwise
+  - `QEngineT<>& set_ensure_post_selection()` - Enforces post-selection (i.e.,
+    post-selection steps are repeated until success)
   - `idx get_max_post_selection_reps() const` - Maximum number of executions of
     a circuit post-selection step until success
   - `QEngineT<>& set_max_post_selection_reps()` - Sets the maximum number of
     executions of a circuit post-selection step until success
-- Modified `qpp::QEngineT<>::`
-  - `QEngineT(const QCircuit& qc)` ->
-    `QEngineT(const QCircuit& qc, bool ensure_post_selection = false)`
-  - `virtual QEngineT& reset(bool reset_stats = true)` ->
-    `virtual QEngineT& reset(bool reset_stats = true, 
- bool ensure_post_selection = false, idx max_post_selection_reps = std::numeric_limits<idx>::max())`
+  - `bool post_select_ok() const` - True if post-selection was successful (or
+    absent), false otherwise
 
 # Version 5.1 - 1 March 2024
 
