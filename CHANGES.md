@@ -1,30 +1,8 @@
 # Pre-release
 
-- Bugfix in qpp::internal::canonical_form(), the re-ordering is now stable, so
-  qpp::QCircuit measurement probabilities are not displayed in reversed order
-  w.r.t. target
 - Breaking change: renamed ["qpp/qpp.h"] to ["qpp/qpp.hpp"]
-- Refactored `qpp::QCircuit::GateStep/MeasurementStep/NOPStep` into separate
-  files ["qpp/internal/classes/qcircuit_gate_step.hpp"],
-  ["qpp/internal/classes/qcircuit_measurement_step.hpp"], and
-  ["qpp/internal/classes/qcircuit_nop_step.hpp"], respectively
-- Refactored `qpp::QCircuit::Resources` into an independent class in a separate
-  file ["qpp/internal/classes/qcircuit_resources.hpp"]
-- Refactored qpp::QCircuit::iterator class into an independent class, defined
-  outside qpp::QCircuit in ["qpp/classes/qcircuit.hpp"]
-- Refactored `qpp::internal::QEngineState` and
-  `qpp::internal::QEngineStatistics`
-  in separate files, ["qpp/internal/classes/qengine_state.hpp"] and
-  ["qpp/internal/classes/qengine_statistics.hpp"], respectively
-- API changes in ["qpp/classes/qengine.hpp"]
-  - `qpp::QEngineT<>::get_measured()` ->
-    `qpp::QEngineT<>::get_measured_destructively()`
-  - `qpp::QEngineT<>::get_non_measured()` ->
-    `qpp::QEngineT<>::get_non_measured_destructively()`
-  - `qpp::QEngineT<>::was_measured()` ->
-    `qpp::QEngineT<>::was_measured_destructively()`
-- Implemented support for post-selection in ["qpp/classes/qengine.hpp"] and
-  ["qpp/classes/qcircuit.hpp"]
+- New feature: implemented support for post-selection in
+  ["qpp/classes/qengine.hpp"] and ["qpp/classes/qcircuit.hpp"]
 - Implemented `qpp::QCircuit::`
   - `QCircuit& post_select()` - destructive/non-destructive post-selection of
     single/multiple qudits in the Z basis
@@ -44,6 +22,28 @@
 - Added
   [["examples/circuits/post_selection.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/post_selection.cpp)]
   example
+- Refactored `qpp::QCircuit::GateStep/MeasurementStep/NOPStep` into separate
+  files ["qpp/internal/classes/qcircuit_gate_step.hpp"],
+  ["qpp/internal/classes/qcircuit_measurement_step.hpp"], and
+  ["qpp/internal/classes/qcircuit_nop_step.hpp"], respectively
+- Refactored `qpp::QCircuit::Resources` into an independent class in a separate
+  file ["qpp/internal/classes/qcircuit_resources.hpp"]
+- Refactored qpp::QCircuit::iterator class into an independent class, defined
+  outside qpp::QCircuit in ["qpp/classes/qcircuit.hpp"]
+- Refactored `qpp::internal::QEngineState` and
+  `qpp::internal::QEngineStatistics`
+  in separate files, ["qpp/internal/classes/qengine_state.hpp"] and
+  ["qpp/internal/classes/qengine_statistics.hpp"], respectively
+- API changes in ["qpp/classes/qengine.hpp"]
+  - `qpp::QEngineT<>::get_measured()` ->
+    `qpp::QEngineT<>::get_measured_destructively()`
+  - `qpp::QEngineT<>::get_non_measured()` ->
+    `qpp::QEngineT<>::get_non_measured_destructively()`
+  - `qpp::QEngineT<>::was_measured()` ->
+    `qpp::QEngineT<>::was_measured_destructively()`
+- Bugfix in qpp::internal::canonical_form(), the re-ordering is now stable, so
+  qpp::QCircuit measurement probabilities are not displayed in reversed order
+  w.r.t. target
 
 # Version 5.1 - 1 March 2024
 
