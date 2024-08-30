@@ -23,7 +23,7 @@
     `qpp::QEngineT<>::get_non_measured_destructively()`
   - `qpp::QEngineT<>::was_measured()` ->
     `qpp::QEngineT<>::was_measured_destructively()`
-- Introduced post-selection in ["qpp/classes/qengine.hpp"] and
+- Implemented support for post-selection in ["qpp/classes/qengine.hpp"] and
   ["qpp/classes/qcircuit.hpp"]
 - Implemented `qpp::QCircuit::`
   - `QCircuit& post_select()` - destructive/non-destructive post-selection of
