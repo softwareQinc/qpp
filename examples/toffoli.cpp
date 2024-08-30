@@ -52,7 +52,7 @@ int main() {
     result = apply(result, gt.H, {2});
     result = applyCTRL(result, gt.X, {0}, {1});
     std::cout << ">> Toffoli with T and CNOT output state:\n";
-    std::cout << disp(dirac(result)) << "\n";
+    std::cout << disp(dirac(result)) << '\n';
     std::cout << ">> Norm difference: " << norm(result - result_qpp) << "\n\n";
 
     /**
@@ -75,6 +75,6 @@ int main() {
     result = applyCTRL(result, sqrtx, {0}, {2});
     std::cout
         << ">> Barenco et. al. [quant-ph/9503016] construction output state:\n";
-    std::cout << disp(dirac(result)) << "\n";
-    std::cout << ">> Norm difference: " << norm(result - result_qpp) << "\n";
+    std::cout << disp(dirac(result)) << '\n';
+    std::cout << ">> Norm difference: " << norm(result - result_qpp) << '\n';
 }

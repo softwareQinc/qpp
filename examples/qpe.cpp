@@ -78,7 +78,7 @@ int main() {
         << disp(counting_qubits,
                 IOManipContainerOpts{}.set_sep(", ").set_left("(").set_right(
                     ")"))
-        << "\n";
+        << '\n';
 
     // measure the counting register and readout probabilities
     auto measured = measure_seq(result, {counting_qubits});

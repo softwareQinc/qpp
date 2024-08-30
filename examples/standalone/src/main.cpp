@@ -14,5 +14,5 @@ int main() {
     std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
 
     QEngine qe{qc};
-    std::cout << qe.execute(100) << "\n";
+    std::cout << qe.execute(100) << '\n';
 }

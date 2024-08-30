@@ -296,7 +296,7 @@ TEST(qpp_QCircuit_operator_eq, AllTests) {}
 /// BEGIN QCircuit& QCircuit::post_select(const std::vector<idx>& target,
 ///       const std::vector<idx>& ps_vals, idx c_reg, bool destructive = true,
 ///       std::optional<std::string> name = "pZ")
-TEST(qpp_QCircuit_postselect, MultipleTargets) {
+TEST(qpp_QCircuit_post_select, MultipleTargets) {
     QCircuit qc{2, 2};
     qc.gate_fan(gt.H, {0, 1});
     qc.post_select({0, 1}, {0, 1}, 0, false);
@@ -304,8 +304,10 @@ TEST(qpp_QCircuit_postselect, MultipleTargets) {
     QEngine qe{qc};
     qe.set_ensure_post_selection(true); // enforce post-selection
     qe.execute(2);
+
     auto dits = qe.get_dits();
     ket state = qe.get_state();
+
     std::vector<idx> expected_dits{0, 1};
     ket expected_state = 01_ket;
 
@@ -315,7 +317,7 @@ TEST(qpp_QCircuit_postselect, MultipleTargets) {
 
 /// BEGIN QCircuit& QCircuit::post_select(idx target, idx ps_val, idx c_reg,
 ///       bool destructive = true, std::optional<std::string> name = "pZ")
-TEST(qpp_QCircuit_postselect, SingleTarget) {
+TEST(qpp_QCircuit_post_select, SingleTarget) {
     QCircuit qc{2, 2};
     qc.gate_fan(gt.H, {0, 1});
     qc.post_select(0, 1, 0, false);
@@ -324,8 +326,10 @@ TEST(qpp_QCircuit_postselect, SingleTarget) {
     QEngine qe{qc};
     qe.set_ensure_post_selection(true); // enforce post-selection
     qe.execute(2);
+
     auto dits = qe.get_dits();
     ket state = qe.get_state();
+
     std::vector<idx> expected_dits{1, 1};
     ket expected_state = 11_ket;
 
@@ -333,16 +337,50 @@ TEST(qpp_QCircuit_postselect, SingleTarget) {
     ASSERT_EQ(state, expected_state);
 }
 
-/// BEGIN QCircuit& QCircuit::post_select(const cmat& V,
-///       const std::vector<idx>& target, const std::vector<idx>& ps_vals, idx
-///       c_reg, bool destructive = true,
+/// BEGIN QCircuit& QCircuit::post_selectV(const cmat& V,
+///       const std::vector<idx>& target, idx ps_val, idx c_reg,
+///       bool destructive = true,
 ///       std::optional<std::string> name = std::nullopt)
-TEST(qpp_QCircuit_postselectV, MultipleTargets) {}
+TEST(qpp_QCircuit_post_selectV, MultipleTargets) {
+    QCircuit qc{2, 2};
+    cmat HH_basis = kron(gt.H, gt.H);
+    qc.post_selectV(HH_basis, {0, 1}, 2, 0, false);
 
-/// BEGIN QCircuit& QCircuit::post_select(const cmat& V, idx target,
+    QEngine qe{qc};
+    qe.set_ensure_post_selection(true); // enforce post-selection
+    qe.execute(2);
+
+    auto dits = qe.get_dits();
+    ket state = qe.get_state();
+
+    std::vector<idx> expected_dits{2, 0};
+    ket expected_state = kron(st.minus(), st.plus());
+
+    ASSERT_EQ(dits, expected_dits);
+    ASSERT_NEAR(0, norm(state - expected_state), 1e-5);
+}
+
+/// BEGIN QCircuit& QCircuit::post_selectV(const cmat& V, idx target,
 ///       idx ps_val, idx c_reg, bool destructive = true,
 ///       std::optional<std::string> name = std::nullopt)
-TEST(qpp_QCircuit_postselectV, SingleTarget) {}
+TEST(qpp_QCircuit_post_selectV, SingleTarget) {
+    QCircuit qc{2, 2};
+    qc.post_selectV(gt.H, 0, 1, 0, false);
+    qc.post_selectV(gt.H, 1, 1, 1, false);
+
+    QEngine qe{qc};
+    qe.set_ensure_post_selection(true); // enforce post-selection
+    qe.execute(2);
+
+    auto dits = qe.get_dits();
+    ket state = qe.get_state();
+
+    std::vector<idx> expected_dits{1, 1};
+    ket expected_state = kron(st.minus(), st.minus());
+
+    ASSERT_EQ(dits, expected_dits);
+    ASSERT_NEAR(0, norm(state - expected_state), 1e-5);
+}
 
 /// BEGIN QCircuit& QCircuit::QFT(bool swap = true)
 TEST(qpp_QCircuit_QFT, AllQudits) {}

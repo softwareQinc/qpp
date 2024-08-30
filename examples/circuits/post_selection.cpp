@@ -34,5 +34,5 @@ int main() {
     std::cout << engine << "\n\n";
     // display the output quantum state
     std::cout << ">> Final state:\n";
-    std::cout << disp(dirac(engine.get_state())) << "\n";
+    std::cout << disp(dirac(engine.get_state())) << '\n';
 }

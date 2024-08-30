@@ -380,13 +380,12 @@ inline void init_classes_qcircuit(py::module_& m) {
                  py::arg("c_reg"), py::arg("destructive") = true,
                  py::arg("name") = std::nullopt)
             .def("post_selectV",
-                 py::overload_cast<const cmat&, const std::vector<idx>&,
-                                   const std::vector<idx>&, idx, bool,
-                                   std::optional<std::string>>(
+                 py::overload_cast<const cmat&, const std::vector<idx>&, idx,
+                                   idx, bool, std::optional<std::string>>(
                      &QCircuit::post_selectV),
                  "Post-selection of multiple qudits in the orthonormal basis "
                  "specified by the columns of matrix V",
-                 py::arg("V"), py::arg("target"), py::arg("ps_vals"),
+                 py::arg("V"), py::arg("target"), py::arg("ps_val"),
                  py::arg("c_reg"), py::arg("destructive") = true,
                  py::arg("name") = std::nullopt)
             .def("QFT",

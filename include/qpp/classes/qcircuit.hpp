@@ -3321,7 +3321,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param V Orthonormal basis or rank-1 projectors specified by the
      * columns of matrix \a V
      * \param target Target qudit indexes that are jointly post-selected
-     * \param ps_vals Post-election values
+     * \param ps_val Post-election value
      * \param c_reg Classical register where the value of the measurement is
      * stored
      * \param destructive Destructive measurement, true by default
@@ -3329,8 +3329,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& post_selectV(const cmat& V, const std::vector<idx>& target,
-                           const std::vector<idx>& ps_vals, idx c_reg,
-                           bool destructive = true,
+                           idx ps_val, idx c_reg, bool destructive = true,
                            std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
@@ -3369,11 +3368,9 @@ class QCircuit : public IDisplay, public IJSON {
             }
         }
         // post-selection value out of range
-        for (idx elem : ps_vals) {
-            if (elem >= d_) {
-                throw exception::OutOfRange("qpp::QCircuit::post_selectV()",
-                                            context + ": ps_vals");
-            }
+        if (ps_val >= static_cast<idx>(V.cols())) {
+            throw exception::OutOfRange("qpp::QCircuit::post_selectV()",
+                                        context + ": ps_val");
         }
         // trying to put the result into a non-existing classical slot
         if (c_reg >= nc_) {
@@ -3385,7 +3382,8 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::ZeroSize("qpp::QCircuit::post_selectV()",
                                       context + ": V");
         }
-        if (static_cast<idx>(V.rows()) != d_) {
+        if (V.rows() !=
+            static_cast<Eigen::Index>(std::pow(d_, target.size()))) {
             throw exception::DimsNotEqual("qpp::QCircuit::post_selectV()",
                                           context + ": V");
         }
@@ -3407,7 +3405,7 @@ class QCircuit : public IDisplay, public IJSON {
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT,
                 std::vector<std::size_t>{hashV}, std::vector<idx>{target},
-                c_reg, name, ps_vals});
+                c_reg, name, std::vector<idx>{ps_val}});
         } else {
             for (idx elem : target) {
                 measured_nd_[elem] = true;
@@ -3415,7 +3413,7 @@ class QCircuit : public IDisplay, public IJSON {
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT_ND,
                 std::vector<std::size_t>{hashV}, std::vector<idx>{target},
-                c_reg, name, ps_vals});
+                c_reg, name, std::vector<idx>{ps_val}});
         }
         ++measurement_count_[hashV];
 
