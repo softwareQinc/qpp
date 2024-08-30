@@ -1,4 +1,4 @@
-// Qubit teleportation circuit simulator
+// Qubit post-selection circuit simulator
 // Source: ./examples/circuits/post_selection.cpp
 
 #include <iostream>
