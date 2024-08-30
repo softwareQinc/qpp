@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     // read the circuit from the input stream
     QCircuit qc = qasm::read(std::cin);
 
-    // initialize the quantum engine with a circuit
+    // initialize the quantum engine with the circuit
     QEngine q_engine{qc};
 
     // display the quantum circuit and its corresponding resources

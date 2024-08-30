@@ -36,7 +36,7 @@ int main() {
     // display the quantum circuit and its corresponding resources
     std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
 
-    // initialize the quantum engine with a circuit
+    // initialize the quantum engine with the circuit
     QEngine engine{qc};
 
     // execute the entire circuit

@@ -20,7 +20,7 @@ int main() {
     // display the quantum circuit and its corresponding resources
     std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
 
-    // initialize the quantum engine with a circuit
+    // initialize the quantum engine with the circuit
     QEngine engine{qc};
 
     // un-comment the line below to enforce post-selection, i.e., repeat
