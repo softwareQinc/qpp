@@ -31,7 +31,7 @@ include(../cmake/qpp_eigen3.cmake)
 # Dependencies, do not modify unless you know what you're doing
 include(../cmake/qpp_dependencies.cmake)
 
-# Enable all warnings for GNU gcc and Clang/AppleClang
+# Enable all warnings for GCC and Clang/AppleClang
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID}
                                                STREQUAL "GNU")
   add_compile_options("-pedantic" "-Wall" "-Wextra" "-Weffc++")

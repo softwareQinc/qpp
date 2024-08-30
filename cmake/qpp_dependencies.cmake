@@ -152,7 +152,7 @@ if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
   add_compile_options(-stdlib=libc++)
 endif()
 
-# GNU gcc additional debug settings
+# GCC additional debug settings
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
   # if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin") ## use the "no-weak" debugging
   # flag only when debugging under OS X, ## as gdb cannot step in template

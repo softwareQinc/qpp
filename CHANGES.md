@@ -44,6 +44,9 @@
 - Bugfix in qpp::internal::canonical_form(), the re-ordering is now stable, so
   qpp::QCircuit measurement probabilities are not displayed in reversed order
   w.r.t. target
+- Simplified MATLAB detection via CMake `find_package()` function. Users should
+  only use `-DQPP_MATLAB=ON` when building with MATLAB support, all other
+  MATLAB-related CMake flags have been removed.
 
 # Version 5.1 - 1 March 2024
 
@@ -355,7 +358,7 @@
   attribute `[[qpp::parallel]]`. Since C++17, unknown attributes are supposed
   to be ignored by the compiler (and one can use this technique to define
   custom attributes). Warnings are explicitly disabled for
-  clang/gcc/MSVC/icc. If your compiler emits a warning, please disable it
+  Clang/GCC/MSVC/Intel. If your compiler emits a warning, please disable it
   with the corresponding `#pragma` directive at the beginning of ["qpp.h"]
 - Added from-string constructor for `qpp::Bit_circuit` and
   `qpp::Dynamic_bitset`
@@ -958,13 +961,13 @@
   as using traits over-complicated the design and it was not worth it.
 - Marked final all classes that are not intended to be used as base classes.
 - Modified the `CMakeLists.txt`, which now:
-  - supports only GNU gcc and LLVM/Apple clang; otherwise, emits an error
-    during the CMake running phase
+  - supports only GCC and LLVM/Apple clang; otherwise, emits an error during
+    the CMake running phase
   - adds `-D_NO_THREAD_LOCAL` definition for conditional compiling the
     source code without support for `std::thread_local` (if using e.g.,
     LLVM/Apple clang with libc++, as libc++ does not yet support
     `std::thread_local`)
-  - uses OpenMP only if the compiler is detected as GNU gcc
+  - uses OpenMP only if the compiler is detected as GCC
 
 # Version 0.7 - 22 April 2015
 
