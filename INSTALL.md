@@ -53,7 +53,7 @@ To build the
 [examples](https://github.com/softwareQinc/qpp/tree/main/examples), execute
 
 ```shell
-cmake --build build --target=examples --parallel 8
+cmake --build build --target examples --parallel 8
 ```
 
 The above command builds all examples as executables in `./build`. The
@@ -76,7 +76,7 @@ ctest --test-dir build
 To build **only** a specific target, execute, e.g.,
 
 ```shell
-cmake --build build --target=bb84
+cmake --build build --target bb84
 ```
 
 The command above builds only the example
