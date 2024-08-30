@@ -272,7 +272,7 @@ inline void init_classes_qcircuit(py::module_& m) {
                  "(Total) Gate count", py::arg("U") = std::nullopt)
             .def("get_gate_depth", &QCircuit::get_gate_depth,
                  "(Total) Gate depth", py::arg("U") = std::nullopt)
-            .def("get_measured", &QCircuit::get_measured,
+            .def("get_measured_d", &QCircuit::get_measured_d,
                  "Vector of already measured qudit indexes")
             .def("get_measured_nd", &QCircuit::get_measured_nd,
                  "Vector of already measured non-destructively qudit indexes")
@@ -285,7 +285,7 @@ inline void init_classes_qcircuit(py::module_& m) {
                  "measurements (either destructive or non-destructive)")
             .def("get_name", &QCircuit::get_name, "Description name")
             .def("get_nc", &QCircuit::get_nc, "Number of classical dits")
-            .def("get_non_measured", &QCircuit::get_non_measured,
+            .def("get_non_measured_d", &QCircuit::get_non_measured_d,
                  "Non-measured qudit indexes")
             .def("get_nop_count", &QCircuit::get_nop_count, "No-op count")
             .def("get_nq", &QCircuit::get_nq, "Number of qudits")
@@ -445,7 +445,7 @@ inline void init_classes_qcircuit(py::module_& m) {
             .def("to_JSON", &QCircuit::to_JSON,
                  "Displays the quantum circuit description in JSON format",
                  py::arg("enclosed_in_curly_brackets") = true)
-            .def("was_measured", &QCircuit::was_measured,
+            .def("was_measured_d", &QCircuit::was_measured_d,
                  "Whether qudit i was already measured", py::arg("i"))
             .def("was_measured_nd", &QCircuit::was_measured_nd,
                  "Whether qudit i was already measured non-destructively",

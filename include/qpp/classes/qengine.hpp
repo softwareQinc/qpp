@@ -419,7 +419,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      */
     void set_measured_destructively_(idx i) {
         // EXCEPTION CHECKS
-        if (was_measured_destructively(i)) {
+        if (was_measured_d(i)) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QEngineT::set_measured_()", "i");
         }
@@ -427,7 +427,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         qeng_st_.subsys_[i] = std::numeric_limits<idx>::max(); // set qudit i to
                                                                // measured state
         for (idx m = i; m < this->qc_ptr_->get_nq(); ++m) {
-            if (!was_measured_destructively(m)) {
+            if (!was_measured_d(m)) {
                 --qeng_st_.subsys_[m];
             }
         }
@@ -446,7 +446,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         idx vsize = v.size();
         for (idx i = 0; i < vsize; ++i) {
             // EXCEPTION CHECKS
-            if (was_measured_destructively(v[i])) {
+            if (was_measured_d(v[i])) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QEngineT::get_relative_pos_()", "v[i]");
             }
@@ -898,7 +898,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param i Qudit index
      * \return True if qudit \a i was already measured, false otherwise
      */
-    bool was_measured_destructively(idx i) const {
+    bool was_measured_d(idx i) const {
         return qeng_st_.subsys_[i] == std::numeric_limits<idx>::max();
     }
 
@@ -909,10 +909,10 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \return Vector of already measured qudit (destructively) indexes at
      * the current engine state
      */
-    std::vector<idx> get_measured_destructively() const {
+    std::vector<idx> get_measured_d() const {
         std::vector<idx> result;
         for (idx i = 0; i < this->qc_ptr_->get_nq(); ++i) {
-            if (was_measured_destructively(i)) {
+            if (was_measured_d(i)) {
                 result.emplace_back(i);
             }
         }
@@ -925,10 +925,10 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \return Vector of non-measured (destructively) qudit indexes
      */
-    std::vector<idx> get_non_measured_destructively() const {
+    std::vector<idx> get_non_measured_d() const {
         std::vector<idx> result;
         for (idx i = 0; i < this->qc_ptr_->get_nq(); ++i) {
-            if (!was_measured_destructively(i)) {
+            if (!was_measured_d(i)) {
                 result.emplace_back(i);
             }
         }
@@ -1049,7 +1049,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      */
     QEngineT& set_state(const T& state) override {
         // EXCEPTION CHECKS
-        idx n = get_non_measured_destructively().size();
+        idx n = get_non_measured_d().size();
         idx D = internal::safe_pow(this->qc_ptr_->get_d(), n);
         if constexpr (std::is_same_v<T, ket>) {
             if (static_cast<idx>(state.rows()) != D) {
@@ -1240,14 +1240,12 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         ss << "\"sampling\": " << (qeng_st_.can_sample_ ? "true" : "false")
            << ", ";
         ss << "\"measured/discarded (destructively)\": ";
-        ss << disp(get_measured_destructively(),
-                   IOManipContainerOpts{}.set_sep(", "));
+        ss << disp(get_measured_d(), IOManipContainerOpts{}.set_sep(", "));
         result += ss.str() + ", ";
 
         ss.str("");
         ss.clear();
-        ss << disp(get_non_measured_destructively(),
-                   IOManipContainerOpts{}.set_sep(", "));
+        ss << disp(get_non_measured_d(), IOManipContainerOpts{}.set_sep(", "));
         result += "\"non-measured (destructively)/non-discarded\": " + ss.str();
 
         ss.str("");

@@ -200,8 +200,8 @@ TEST(qpp_QCircuit_get_gate_count, SpecificGateCount) {}
 TEST(qpp_QCircuit_get_gate_depth, TotalGateDepth) {}
 TEST(qpp_QCircuit_get_gate_depth, SpecificGateDepth) {}
 
-/// BEGIN std::vector<idx> QCircuit::get_measured() const
-TEST(qpp_QCircuit_get_measured, AllTests) {}
+/// BEGIN std::vector<idx> QCircuit::get_measured_d() const
+TEST(qpp_QCircuit_get_measured_d, AllTests) {}
 
 /// BEGIN std::vector<idx> QCircuit::get_measured_nd() const
 TEST(qpp_QCircuit_get_measured_nd, AllTests) {}
@@ -225,8 +225,8 @@ TEST(qpp_QCircuit_get_name, AllTests) {}
 /// BEGIN idx QCircuit::get_nc() const noexcept
 TEST(qpp_QCircuit_get_nc, AllTests) {}
 
-/// BEGIN std::vector<idx> QCircuit::get_non_measured() const
-TEST(qpp_QCircuit_get_non_measured, AllTests) {}
+/// BEGIN std::vector<idx> QCircuit::get_non_measured_d() const
+TEST(qpp_QCircuit_get_non_measured_d, AllTests) {}
 
 /// BEGIN idx QCircuit::get_nop_count() const
 TEST(qpp_QCircuit_get_nop_count, AllTests) {}
@@ -429,8 +429,8 @@ TEST(qpp_QCircuit_TFQ, SpecificQudits) {}
 ///       const override
 TEST(qpp_QCircuit_to_JSON, AllTests) {}
 
-/// BEGIN bool QCircuit::was_measured(idx i) const
-TEST(qpp_QCircuit_was_measured, AllTests) {}
+/// BEGIN bool QCircuit::was_measured_d(idx i) const
+TEST(qpp_QCircuit_was_measured_d, AllTests) {}
 
 /// BEGIN bool QCircuit::was_measured_nd(idx i) const
 TEST(qpp_QCircuit_was_measured_nd, AllTests) {}

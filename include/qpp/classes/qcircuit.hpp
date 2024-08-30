@@ -79,7 +79,7 @@ class QCircuit : public IDisplay, public IJSON {
     std::optional<std::string> name_; ///< optional circuit name
 
     std::vector<bool>
-        measured_; ///< keeps track of the destructively measured qudits
+        measured_d_; ///< keeps track of the destructively measured qudits
     std::vector<bool>
         measured_nd_; ///< keeps track of the non-destructively measured qudits
     std::vector<bool> clean_qudits_; ///< keeps track of clean (unused) qudits
@@ -232,9 +232,10 @@ class QCircuit : public IDisplay, public IJSON {
      */
     explicit QCircuit(idx nq = 1, idx nc = 0, idx d = 2,
                       std::optional<std::string> name = std::nullopt)
-        : nq_{nq}, nc_{nc}, d_{d}, name_{std::move(name)}, measured_(nq, false),
-          measured_nd_(nq, false), clean_qudits_(nq_, true),
-          clean_dits_(nc_, true), measurement_dits_(nc_, false), circuit_{} {
+        : nq_{nq}, nc_{nc}, d_{d}, name_{std::move(name)},
+          measured_d_(nq, false), measured_nd_(nq, false),
+          clean_qudits_(nq_, true), clean_dits_(nc_, true),
+          measurement_dits_(nc_, false), circuit_{} {
         // EXCEPTION CHECKS
         // if (nq == 0)
         //    throw exception::ZeroSize("qpp::QCircuit::QCircuit()", "nq");
@@ -327,14 +328,14 @@ class QCircuit : public IDisplay, public IJSON {
      * \return True if qudit \a i was already measured (destructively),
      * false otherwise
      */
-    bool was_measured(idx i) const {
+    bool was_measured_d(idx i) const {
         // EXCEPTION CHECKS
         if (i >= nq_) {
-            throw exception::OutOfRange("qpp::QCircuit::was_measured()", "i");
+            throw exception::OutOfRange("qpp::QCircuit::was_measured_d()", "i");
         }
         // END EXCEPTION CHECKS
 
-        return measured_[i];
+        return measured_d_[i];
     }
 
     /**
@@ -342,10 +343,10 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \return Vector of already measured (destructively) qudit indexes
      */
-    std::vector<idx> get_measured() const {
+    std::vector<idx> get_measured_d() const {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i) {
-            if (was_measured(i)) {
+            if (was_measured_d(i)) {
                 result.emplace_back(i);
             }
         }
@@ -392,10 +393,10 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \return Vector of non-measured (destructively) qudit indexes
      */
-    std::vector<idx> get_non_measured() const {
+    std::vector<idx> get_non_measured_d() const {
         std::vector<idx> result;
         for (idx i = 0; i < nq_; ++i) {
-            if (!was_measured(i)) {
+            if (!was_measured_d(i)) {
                 result.emplace_back(i);
             }
         }
@@ -805,8 +806,8 @@ class QCircuit : public IDisplay, public IJSON {
                        nop_step_visitor);
 
         // update the destructively measured qudits
-        measured_.insert(
-            std::next(measured_.begin(), static_cast<std::ptrdiff_t>(pos)), n,
+        measured_d_.insert(
+            std::next(measured_d_.begin(), static_cast<std::ptrdiff_t>(pos)), n,
             false);
 
         // update the non-destructively measured qudits
@@ -911,7 +912,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": i");
         }
         // check not measured before
-        if (was_measured(i)) {
+        if (was_measured_d(i)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()",
                                                   context + ": i");
         }
@@ -964,7 +965,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::gate()",
                                         context + ": i/j");
         }
-        if (was_measured(i) || was_measured(j)) {
+        if (was_measured_d(i) || was_measured_d(j)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()",
                                                   context + ": i/j");
         }
@@ -1020,7 +1021,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::gate()",
                                         context + ": i/j/k");
         }
-        if (was_measured(i) || was_measured(j) || was_measured(k)) {
+        if (was_measured_d(i) || was_measured_d(j) || was_measured_d(k)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()",
                                                   context + ": i/j/k");
         }
@@ -1080,7 +1081,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::gate_fan()", context + ": target");
             }
@@ -1154,7 +1155,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::string context{"Step " + std::to_string(get_step_count())};
 
         // check non-empty target
-        std::vector<idx> target = get_non_measured();
+        std::vector<idx> target = get_non_measured_d();
         if (target.empty()) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::gate_fan()",
@@ -1197,7 +1198,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::gate()",
                                                       context + ": target");
             }
@@ -1263,7 +1264,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::QFT()",
                                                       context + ": target");
             }
@@ -1351,7 +1352,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param swap Swaps the qubits at the end (true by default)
      * \return Reference to the current instance
      */
-    QCircuit& QFT(bool swap = true) { return QFT(get_non_measured(), swap); }
+    QCircuit& QFT(bool swap = true) { return QFT(get_non_measured_d(), swap); }
 
     /**
      * \brief Applies the inverse quantum Fourier transform (as a series of
@@ -1378,7 +1379,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::TFQ()",
                                                       context + ": target");
             }
@@ -1466,7 +1467,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \param swap Swaps the qubits at the end (true by default)
      * \return Reference to the current instance
      */
-    QCircuit& TFQ(bool swap = true) { return TFQ(get_non_measured(), swap); }
+    QCircuit& TFQ(bool swap = true) { return TFQ(get_non_measured_d(), swap); }
 
     // single ctrl multiple targets
     /**
@@ -1494,7 +1495,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::CTRL_fan()",
                                         context + ": ctrl");
         }
-        if (was_measured(ctrl)) {
+        if (was_measured_d(ctrl)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL_fan()",
                                                   context + ": ctrl");
         }
@@ -1510,7 +1511,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::CTRL_fan()", context + ": target");
             }
@@ -1609,7 +1610,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": ctrl");
             }
             // check ctrl was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::CTRL_fan()", context + ": ctrl");
             }
@@ -1631,7 +1632,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::CTRL_fan()", context + ": target");
             }
@@ -1739,7 +1740,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": ctrl");
             }
             // check ctrl was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                       context + ": ctrl");
             }
@@ -1761,7 +1762,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                       context + ": target");
             }
@@ -1859,7 +1860,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": ctrl");
             }
             // check ctrl was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                       context + ": ctrl");
             }
@@ -1875,7 +1876,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                         context + ": target");
         }
-        if (was_measured(target)) {
+        if (was_measured_d(target)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                   context + ": target");
         }
@@ -1964,7 +1965,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                         context + ": ctrl");
         }
-        if (was_measured(ctrl)) {
+        if (was_measured_d(ctrl)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                   context + ": ctrl");
         }
@@ -1980,7 +1981,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                       context + ": target");
             }
@@ -2067,7 +2068,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::CTRL()",
                                         context + ": ctrl/target");
         }
-        if (was_measured(ctrl) || was_measured(target)) {
+        if (was_measured_d(ctrl) || was_measured_d(target)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::CTRL()",
                                                   context + ": ctrl/target");
         }
@@ -2153,7 +2154,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::cCTRL_fan()", context + ": target");
             }
@@ -2260,7 +2261,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::cCTRL_fan()", context + ": target");
             }
@@ -2375,7 +2376,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
                                                       context + ": target");
             }
@@ -2482,7 +2483,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": target");
         }
         // check target was not measured before
-        if (was_measured(target)) {
+        if (was_measured_d(target)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
                                                   context + ": target");
         }
@@ -2576,7 +2577,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
                                                       context + ": target");
             }
@@ -2656,7 +2657,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::cCTRL()",
                                         context + ": ctrl/target");
         }
-        if (was_measured(target)) {
+        if (was_measured_d(target)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::cCTRL()",
                                                   context + ": target");
         }
@@ -2733,7 +2734,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": c_reg");
         }
         // qudit was measured before
-        if (was_measured(target)) {
+        if (was_measured_d(target)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::measure()",
                                                   context + ": target");
         }
@@ -2742,7 +2743,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
 
         if (destructive) {
-            measured_[target] = true;
+            measured_d_[target] = true;
 
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::MEASURE,
@@ -2798,7 +2799,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // qudit was measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::measure()", context + ": target");
             }
@@ -2820,7 +2821,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (destructive) {
             for (idx elem : target) {
-                measured_[elem] = true;
+                measured_d_[elem] = true;
             }
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::MEASURE_MANY,
@@ -2865,7 +2866,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        std::vector<idx> non_measured = get_non_measured();
+        std::vector<idx> non_measured = get_non_measured_d();
         if (non_measured.empty()) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::measure_all()",
@@ -2913,7 +2914,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": c_reg");
         }
         // qudit was measured before
-        if (was_measured(target)) {
+        if (was_measured_d(target)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::measureV()",
                                                   context + ": target");
         }
@@ -2938,7 +2939,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashV, V);
 
         if (destructive) {
-            measured_[target] = true;
+            measured_d_[target] = true;
 
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::MEASURE_V,
@@ -2994,7 +2995,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::measureV()", context + ": target");
             }
@@ -3011,7 +3012,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // qudit was measured before
         for (idx elem : target) {
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::measureV()", context + ": target");
             }
@@ -3039,7 +3040,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (destructive) {
             for (idx elem : target) {
-                measured_[elem] = true;
+                measured_d_[elem] = true;
             }
 
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
@@ -3100,7 +3101,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": c_reg");
         }
         // qudit was measured before
-        if (was_measured(target)) {
+        if (was_measured_d(target)) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::post_select()", context + ": target");
         }
@@ -3109,7 +3110,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
 
         if (destructive) {
-            measured_[target] = true;
+            measured_d_[target] = true;
 
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT,
@@ -3166,7 +3167,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // qudit was measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::post_select()", context + ": target");
             }
@@ -3195,7 +3196,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (destructive) {
             for (idx elem : target) {
-                measured_[elem] = true;
+                measured_d_[elem] = true;
             }
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY,
@@ -3263,7 +3264,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": c_reg");
         }
         // qudit was measured before
-        if (was_measured(target)) {
+        if (was_measured_d(target)) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::post_selectV()", context + ": target");
         }
@@ -3288,7 +3289,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashV, V);
 
         if (destructive) {
-            measured_[target] = true;
+            measured_d_[target] = true;
 
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_V,
@@ -3345,7 +3346,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // check target was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::post_selectV()", context + ": target");
             }
@@ -3362,7 +3363,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // qudit was measured before
         for (idx elem : target) {
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::post_selectV()", context + ": target");
             }
@@ -3400,7 +3401,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (destructive) {
             for (idx elem : target) {
-                measured_[elem] = true;
+                measured_d_[elem] = true;
             }
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT,
@@ -3445,7 +3446,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": target");
         }
         // qudit was measured before
-        if (was_measured(target)) {
+        if (was_measured_d(target)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::discard()",
                                                   context + ": target");
         }
@@ -3453,7 +3454,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t m_hash = hash_eigen(cmat::Zero(d_, d_));
 
-        measured_[target] = true;
+        measured_d_[target] = true;
 
         circuit_.emplace_back(internal::QCircuitMeasurementStep{
             internal::QCircuitMeasurementStep::Type::DISCARD,
@@ -3492,7 +3493,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // qudit was measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::discard()", context + ": target");
             }
@@ -3502,7 +3503,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t m_hash = hash_eigen(cmat::Zero(d_, d_));
 
         for (idx elem : target) {
-            measured_[elem] = true;
+            measured_d_[elem] = true;
         }
 
         circuit_.emplace_back(internal::QCircuitMeasurementStep{
@@ -3552,7 +3553,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": target");
         }
         // qudit was measured before
-        if (was_measured(target)) {
+        if (was_measured_d(target)) {
             throw exception::QuditAlreadyMeasured("qpp::QCircuit::reset()",
                                                   context + ": target");
         }
@@ -3597,7 +3598,7 @@ class QCircuit : public IDisplay, public IJSON {
                                             context + ": target");
             }
             // qudit was measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured("qpp::QCircuit::reset()",
                                                       context + ": target");
             }
@@ -3707,7 +3708,7 @@ class QCircuit : public IDisplay, public IJSON {
                                                static_cast<bigint>(other.nq_)),
                               nq_);
                  ++i) {
-                if (was_measured(i)) {
+                if (was_measured_d(i)) {
                     throw exception::QuditAlreadyMeasured(
                         "qpp::QCircuit::compose_circuit()",
                         "Current qpp::QCircuit instance");
@@ -3718,7 +3719,7 @@ class QCircuit : public IDisplay, public IJSON {
             for (idx i = 0;
                  i < std::min(static_cast<idx>(nq_ - pos_qudit), other.nq_);
                  ++i) {
-                if (was_measured(pos_qudit + i)) {
+                if (was_measured_d(pos_qudit + i)) {
                     throw exception::QuditAlreadyMeasured(
                         "qpp::QCircuit::compose_circuit()",
                         "Current qpp::QCircuit instance");
@@ -3785,15 +3786,15 @@ class QCircuit : public IDisplay, public IJSON {
         // replace the corresponding elements of measured_, measured_nd_,
         // and clean_qudits_ with the ones of other
         if (pos_qudit < 0) {
-            std::copy_if(other.measured_.begin(), other.measured_.end(),
-                         measured_.begin(), [](bool val) { return val; });
+            std::copy_if(other.measured_d_.begin(), other.measured_d_.end(),
+                         measured_d_.begin(), [](bool val) { return val; });
             std::copy_if(other.measured_nd_.begin(), other.measured_nd_.end(),
                          measured_nd_.begin(), [](bool val) { return val; });
             std::copy_if(other.clean_qudits_.begin(), other.clean_qudits_.end(),
                          clean_qudits_.begin(), [](bool val) { return !val; });
         } else {
-            std::copy_if(other.measured_.begin(), other.measured_.end(),
-                         std::next(measured_.begin(), pos_qudit),
+            std::copy_if(other.measured_d_.begin(), other.measured_d_.end(),
+                         std::next(measured_d_.begin(), pos_qudit),
                          [](bool val) { return val; });
             std::copy_if(other.measured_nd_.begin(), other.measured_nd_.end(),
                          std::next(measured_nd_.begin(), pos_qudit),
@@ -3882,7 +3883,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         "pos_dit");
         }
         // check no measurement for the coupled circuit
-        if (!other.get_measured().empty()) {
+        if (!other.get_measured_d().empty()) {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::couple_circuit_left()", "other");
         }
@@ -3908,7 +3909,7 @@ class QCircuit : public IDisplay, public IJSON {
         // check matching qudits (in the current instance) were not already
         // measured destructively
         for (idx elem : target) {
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::couple_circuit_left()", "target");
             }
@@ -3956,9 +3957,9 @@ class QCircuit : public IDisplay, public IJSON {
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
         // of other
-        for (idx i = 0; i < static_cast<idx>(other.measured_.size()); ++i) {
-            if (other.measured_[i]) {
-                measured_[target[i]] = true;
+        for (idx i = 0; i < static_cast<idx>(other.measured_d_.size()); ++i) {
+            if (other.measured_d_[i]) {
+                measured_d_[target[i]] = true;
             }
         }
         for (idx i = 0; i < static_cast<idx>(other.measured_nd_.size()); ++i) {
@@ -4072,7 +4073,7 @@ class QCircuit : public IDisplay, public IJSON {
         // check matching qudits (in the current instance) were not already
         // measured destructively
         for (idx elem : target) {
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::couple_circuit_right()", "target");
             }
@@ -4122,9 +4123,9 @@ class QCircuit : public IDisplay, public IJSON {
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
         // of other
-        for (idx i = 0; i < static_cast<idx>(other.measured_.size()); ++i) {
-            if (other.measured_[i]) {
-                measured_[target[i]] = true;
+        for (idx i = 0; i < static_cast<idx>(other.measured_d_.size()); ++i) {
+            if (other.measured_d_[i]) {
+                measured_d_[target[i]] = true;
             }
         }
         for (idx i = 0; i < static_cast<idx>(other.measured_nd_.size()); ++i) {
@@ -4250,7 +4251,7 @@ class QCircuit : public IDisplay, public IJSON {
                                                                qc_target.nq_)),
                               nq_);
                  ++i) {
-                if (was_measured(i)) {
+                if (was_measured_d(i)) {
                     throw exception::QuditAlreadyMeasured(
                         "qpp::QCircuit::compose_CTRL_circuit()",
                         "Current qpp::QCircuit instance");
@@ -4261,7 +4262,7 @@ class QCircuit : public IDisplay, public IJSON {
             for (idx i = 0;
                  i < std::min(static_cast<idx>(nq_ - pos_qudit), qc_target.nq_);
                  ++i) {
-                if (was_measured(pos_qudit + i)) {
+                if (was_measured_d(pos_qudit + i)) {
                     throw exception::QuditAlreadyMeasured(
                         "qpp::QCircuit::compose_CTRL_circuit()",
                         "Current qpp::QCircuit instance");
@@ -4280,7 +4281,7 @@ class QCircuit : public IDisplay, public IJSON {
                     "qpp::QCircuit::compose_CTRL_circuit()", "ctrl");
             }
             // check ctrl was not measured before
-            if (was_measured(elem)) {
+            if (was_measured_d(elem)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::QCircuit::compose_CTRL_circuit()", "ctrl");
             }
@@ -4832,9 +4833,9 @@ class QCircuit : public IDisplay, public IJSON {
      * otherwise
      */
     bool operator==(const QCircuit& rhs) const noexcept {
-        return std::tie(rhs.circuit_, rhs.nq_, rhs.nc_, rhs.measured_,
+        return std::tie(rhs.circuit_, rhs.nq_, rhs.nc_, rhs.measured_d_,
                         rhs.measured_nd_, rhs.d_, rhs.cmat_hash_tbl_) ==
-               std::tie(circuit_, nq_, nc_, measured_, measured_nd_, d_,
+               std::tie(circuit_, nq_, nc_, measured_d_, measured_nd_, d_,
                         cmat_hash_tbl_);
     }
 
@@ -5372,7 +5373,7 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
 
     ss.str("");
     ss.clear();
-    ss << disp(get_measured(), IOManipContainerOpts{}.set_sep(", "));
+    ss << disp(get_measured_d(), IOManipContainerOpts{}.set_sep(", "));
     result += "\"measured/discarded (destructive)\": " + ss.str() + ", ";
 
     ss.str("");
@@ -5464,7 +5465,7 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
                                            static_cast<bigint>(qc2.get_nq())),
                           qc1.get_nq());
              ++i) {
-            if (qc1.was_measured(i)) {
+            if (qc1.was_measured_d(i)) {
                 throw exception::QuditAlreadyMeasured("qpp::compose_circuit()",
                                                       "qc1");
             }
@@ -5474,7 +5475,7 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
         for (idx i = 0; i < std::min(static_cast<idx>(qc1.get_nq() - pos_qudit),
                                      qc2.get_nq());
              ++i) {
-            if (qc1.was_measured(pos_qudit + i)) {
+            if (qc1.was_measured_d(pos_qudit + i)) {
                 throw exception::QuditAlreadyMeasured("qpp::compose_circuit()",
                                                       "qc1");
             }
@@ -5536,7 +5537,7 @@ couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
         throw exception::OutOfRange("qpp::couple_circuit_left()", "pos_dit");
     }
     // check no measurement for the coupled circuit
-    if (!qc2.get_measured().empty()) {
+    if (!qc2.get_measured_d().empty()) {
         throw exception::QuditAlreadyMeasured("qpp::couple_circuit_left()",
                                               "qc2");
     }
@@ -5558,7 +5559,7 @@ couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
     // check matching qudits (in the current instance) were not already
     // measured destructively
     for (idx elem : target) {
-        if (qc1.was_measured(elem)) {
+        if (qc1.was_measured_d(elem)) {
             throw exception::QuditAlreadyMeasured("qpp::couple_circuit_left()",
                                                   "target");
         }
@@ -5638,7 +5639,7 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
     // check matching qudits (in the current instance) were not already
     // measured destructively
     for (idx elem : target) {
-        if (qc1.was_measured(elem)) {
+        if (qc1.was_measured_d(elem)) {
             throw exception::QuditAlreadyMeasured("qpp::couple_circuit_right()",
                                                   "target");
         }
@@ -5730,7 +5731,7 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
                                                            qc_target.get_nq())),
                           qc_ctrl.get_nq());
              ++i) {
-            if (qc_ctrl.was_measured(i)) {
+            if (qc_ctrl.was_measured_d(i)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::compose_CTRL_circuit()", "qc_ctrl");
             }
@@ -5741,7 +5742,7 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
              i < std::min(static_cast<idx>(qc_ctrl.get_nq() - pos_qudit),
                           qc_target.get_nq());
              ++i) {
-            if (qc_ctrl.was_measured(pos_qudit + i)) {
+            if (qc_ctrl.was_measured_d(pos_qudit + i)) {
                 throw exception::QuditAlreadyMeasured(
                     "qpp::compose_CTRL_circuit()", "qc_ctrl");
             }
@@ -5757,7 +5758,7 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
             throw exception::OutOfRange("qpp::compose_CTRL_circuit()", "ctrl");
         }
         // check ctrl was not measured before
-        if (qc_ctrl.was_measured(elem)) {
+        if (qc_ctrl.was_measured_d(elem)) {
             throw exception::QuditAlreadyMeasured("qpp::compose_CTRL_circuit()",
                                                   "ctrl");
         }
@@ -5799,7 +5800,7 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
                                         pos_dit);
 }
 
-// TODO: check for reset/measured non-destructively etc.
+//  TODO: check for reset/measured non-destructively etc.
 /**
  * \brief Adjoint quantum circuit description
  *

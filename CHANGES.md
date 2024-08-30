@@ -34,13 +34,15 @@
   `qpp::internal::QEngineStatistics`
   in separate files, ["qpp/internal/classes/qengine_state.hpp"] and
   ["qpp/internal/classes/qengine_statistics.hpp"], respectively
+- API changes in ["qpp/classes/qcircuit.hpp"]
+  - `qpp::QCircuit::get_measured()` -> `qpp::QCircuit::get_measured_d()`
+  - `qpp::QCircuit::get_non_measured()` -> `qpp::QCircuit::get_non_measured_d()`
+  - `qpp::QCircuit::was_measured()` -> `qpp::QCircuit::was_measured_d()`
 - API changes in ["qpp/classes/qengine.hpp"]
-  - `qpp::QEngineT<>::get_measured()` ->
-    `qpp::QEngineT<>::get_measured_destructively()`
+  - `qpp::QEngineT<>::get_measured()` -> `qpp::QEngineT<>::get_measured_d()`
   - `qpp::QEngineT<>::get_non_measured()` ->
-    `qpp::QEngineT<>::get_non_measured_destructively()`
-  - `qpp::QEngineT<>::was_measured()` ->
-    `qpp::QEngineT<>::was_measured_destructively()`
+    `qpp::QEngineT<>::get_non_measured_d()`
+  - `qpp::QEngineT<>::was_measured()` -> `qpp::QEngineT<>::was_measured_d()`
 - Bugfix in qpp::internal::canonical_form(), the re-ordering is now stable, so
   qpp::QCircuit measurement probabilities are not displayed in reversed order
   w.r.t. target

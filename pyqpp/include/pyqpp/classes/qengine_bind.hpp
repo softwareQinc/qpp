@@ -64,11 +64,9 @@ void declare_QEngineT(py::module& m) {
              &QEngineT<T>::get_max_post_selection_reps,
              "Maximum number of repetitions of a cirucit post-selection step "
              "until success")
-        .def("get_measured_destructively",
-             &QEngineT<T>::get_measured_destructively,
+        .def("get_measured_d", &QEngineT<T>::get_measured_d,
              "Vector of already destructively measured qudit indexes")
-        .def("get_non_measured_destructively",
-             &QEngineT<T>::get_non_measured_destructively,
+        .def("get_non_measured_d", &QEngineT<T>::get_non_measured_d,
              "Vector of qudit indexes that were not measured destructively")
         .def("get_probs", &QEngineT<T>::get_probs,
              "Underlying measurement outcome probabilities")
@@ -114,8 +112,7 @@ void declare_QEngineT(py::module& m) {
         .def("to_JSON", &QEngineT<T>::to_JSON,
              "State of the engine in JSON format",
              py::arg("enclosed_in_curly_brackets") = true)
-        .def("was_measured_destructively",
-             &QEngineT<T>::was_measured_destructively,
+        .def("was_measured_d", &QEngineT<T>::was_measured_d,
              "Whether qudit i was already measured destructively", py::arg("i"))
 
         .def("traits_get_name", &QEngineT<T>::traits_get_name, "Engine name")
