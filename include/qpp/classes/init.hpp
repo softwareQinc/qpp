@@ -48,13 +48,7 @@ class Init final : public internal::Singleton<const Init> // const Singleton
     /**
      * \brief Additional initializations
      */
-    Init() = default;
-    //{
-    // set default output format and precision
-    // std::cout << std::fixed; // use fixed format for nice formatting
-    // std::cout << std::scientific;
-    // std::cout << std::setprecision(4); // only for fixed/scientific modes
-    //}
+    Init() = default; // modify this for custom initialization stuff
 
     /**
      * \brief Cleanups

@@ -33,6 +33,7 @@
 #define QPP_CLASSES_QENGINE_HPP_
 
 #include <algorithm>
+#include <cassert>
 #include <iterator>
 #include <limits>
 #include <map>
@@ -155,7 +156,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             }
             // restore the engine state for the next run
             qeng_st_ = engine_state_copy;
-            qeng_st_.post_select_ok_ = post_select_ok;
         }
 
         // restore the engine state to the first successful post-selection
@@ -372,10 +372,12 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 } else {
                     continue;
                 }
+            } else {
+                qeng_st_.post_select_ok_ = true;
             }
 
             // at this point we know for sure that the current rep succeeded
-            qeng_st_.post_select_ok_ = true;
+            assert(qeng_st_.post_select_ok_ == true);
 
             // save the first successful post-selection engine state and
             // repeatedly re-execute the rep until post-selection succeeds, so
@@ -1030,7 +1032,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * post-selection repetitions is reached, \see
      * qpp::QEngineT::set_max_post_selection_reps(), in which case the
      * post-selection is not guaranteed to succeed; check the state of the
-     * engine, \see qpp::QEngineT::post_select_ok(). False by default.
+     * engine, \see qpp::QEngineT::post_select_ok().
      * \return Reference to the current instance
      */
     QEngineT& set_ensure_post_selection(bool val) {
