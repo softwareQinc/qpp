@@ -1322,11 +1322,11 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         os << "last probs: "
            << disp(get_probs(), IOManipContainerOpts{}.set_sep(", ")) << '\n';
         os << "last dits: "
-           << disp(get_dits(), IOManipContainerOpts{}.set_sep(", ")) << '\n';
+           << disp(get_dits(), IOManipContainerOpts{}.set_sep(", "));
 
         // compute the statistics
         if (!stats_.data().empty()) {
-            os << stats_;
+            os << '\n' << stats_;
         }
 
         return os;
