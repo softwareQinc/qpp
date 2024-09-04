@@ -77,95 +77,6 @@ namespace qpp {
 template <typename T>
 class QEngineT : public QBaseEngine<T, QCircuit> {
     /**
-     * \brief Executes a contiguous series of projective measurement steps
-     *
-     * \param steps Vector of qpp::QCircuit::iterator
-     * \param pos Index from where the execution starts
-     * \param ensure_post_selection When \a ensure_post_selection is true, the
-     * step is executed repeatedly until the post-selection succeeds, or until
-     * the maximum number of post-selection reps is reached,
-     * \see qpp::QEngineT::set_max_post_selection_reps(), in which case the
-     * post-selection is not guaranteed to succeed; check the state of the
-     * engine, \see qpp::QEngineT::post_select_ok()
-     */
-    void
-    execute_circuit_steps_once_(const std::vector<QCircuit::iterator>& steps,
-                                idx pos, bool ensure_post_selection) {
-        // save the engine state
-        auto engine_state_copy = qeng_st_;
-
-        // lambda that restores qeng_st_.ensure_post_selection_ flag
-        auto restore_ensure_post_selection_flag = [&] {
-            if (ensure_post_selection) {
-                qeng_st_.ensure_post_selection_ =
-                    engine_state_copy.ensure_post_selection_;
-            }
-        };
-
-        // sets the state of the engine to the entry state
-        if (ensure_post_selection) {
-            qeng_st_.ensure_post_selection_ = true;
-        }
-
-        bool measured = false;
-        for (idx i = pos; i < steps.size(); ++i) {
-            if (internal::is_measurement(steps[i])) {
-                measured = true;
-            }
-            this->execute(steps[i]);
-            // post-selection failed, stop executing
-            if (!qeng_st_.post_select_ok_) {
-                restore_ensure_post_selection_flag();
-                return;
-            }
-        }
-
-        // at least one qudit was measured
-        if (measured) {
-            ++stats_.data()[get_dits()];
-        }
-
-        restore_ensure_post_selection_flag();
-    }
-
-    /**
-     * \brief Executes a contiguous series of projective measurement steps
-     *
-     * \param steps Vector of qpp::QCircuit::iterator
-     * \param pos Index from where the execution starts
-     * \param reps Number of repetitions
-     */
-    void execute_no_sample_(const std::vector<QCircuit::iterator>& steps,
-                            idx pos, idx reps) {
-        // save the engine state
-        internal::QEngineState<T> engine_state_copy = qeng_st_;
-
-        // this state will store the state of the engine for the first
-        // successful post-selection
-        internal::QEngineState<T> engine_state_ps_ok = qeng_st_;
-
-        bool found_successful_rep = false;
-        for (idx rep = 0; rep < reps; ++rep) {
-            execute_circuit_steps_once_(steps, pos,
-                                        qeng_st_.ensure_post_selection_);
-            bool post_select_ok = this->post_select_ok();
-            // save the first successful post-selection engine state
-            if (post_select_ok && !found_successful_rep) {
-                found_successful_rep = true;
-                engine_state_ps_ok = qeng_st_;
-            }
-            // restore the engine state for the next run
-            qeng_st_ = engine_state_copy;
-        }
-
-        // restore the engine state to the first successful post-selection
-        // engine state
-        if (found_successful_rep) {
-            qeng_st_ = engine_state_ps_ok;
-        }
-    }
-
-    /**
      * \brief Compute the position of the first measurement/discard/reset step
      * \see qpp::internal::canonical_form()
      *
@@ -289,6 +200,102 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         return {measured, true};
     }
 
+  protected:
+    internal::QEngineState<T> qeng_st_; ///< current state of the engine
+    internal::QEngineStatistics
+        stats_{}; ///< measurement statistics for multiple runs
+
+    /**
+     * \brief Executes a contiguous series of projective measurement steps
+     *
+     * \param steps Vector of qpp::QCircuit::iterator
+     * \param pos Index from where the execution starts
+     * \param ensure_post_selection When \a ensure_post_selection is true, the
+     * step is executed repeatedly until the post-selection succeeds, or until
+     * the maximum number of post-selection reps is reached,
+     * \see qpp::QEngineT::set_max_post_selection_reps(), in which case the
+     * post-selection is not guaranteed to succeed; check the state of the
+     * engine, \see qpp::QEngineT::post_select_ok()
+     */
+    void
+    execute_circuit_steps_once_(const std::vector<QCircuit::iterator>& steps,
+                                idx pos, bool ensure_post_selection) {
+        // save the engine state
+        auto engine_state_copy = qeng_st_;
+
+        // lambda that restores qeng_st_.ensure_post_selection_ flag
+        auto restore_ensure_post_selection_flag = [&] {
+            if (ensure_post_selection) {
+                qeng_st_.ensure_post_selection_ =
+                    engine_state_copy.ensure_post_selection_;
+            }
+        };
+
+        // sets the state of the engine to the entry state
+        if (ensure_post_selection) {
+            qeng_st_.ensure_post_selection_ = true;
+        }
+
+        bool measured = false;
+        for (idx i = pos; i < steps.size(); ++i) {
+            if (internal::is_measurement(steps[i])) {
+                measured = true;
+            }
+            this->execute(steps[i]);
+            // post-selection failed, stop executing
+            if (!qeng_st_.post_select_ok_) {
+                restore_ensure_post_selection_flag();
+                return;
+            }
+        }
+
+        // at least one qudit was measured
+        if (measured) {
+            ++stats_.data()[get_dits()];
+        }
+
+        restore_ensure_post_selection_flag();
+    }
+
+    /**
+     * \brief Executes a contiguous series of projective measurement steps
+     *
+     * \param steps Vector of qpp::QCircuit::iterator
+     * \param pos Index from where the execution starts
+     * \param reps Number of repetitions
+     */
+    void execute_no_sample_(const std::vector<QCircuit::iterator>& steps,
+                            idx pos, idx reps) {
+        // save the engine state
+        internal::QEngineState<T> engine_state_copy = qeng_st_;
+
+        // this state will store the state of the engine for the first
+        // successful post-selection
+        internal::QEngineState<T> engine_state_ps_ok = qeng_st_;
+
+        bool found_successful_rep = false;
+        for (idx rep = 0; rep < reps; ++rep) {
+            execute_circuit_steps_once_(steps, pos,
+                                        qeng_st_.ensure_post_selection_);
+            bool post_select_ok = this->post_select_ok();
+            // save the first successful post-selection engine state
+            if (post_select_ok && !found_successful_rep) {
+                found_successful_rep = true;
+                engine_state_ps_ok = qeng_st_;
+            }
+            // if not last rep, restore the engine state for the next run
+            if (rep + 1 < reps) {
+                qeng_st_ = engine_state_copy;
+            }
+        }
+
+        // restore the engine state to the first successful post-selection
+        // engine state
+        if (found_successful_rep) {
+            qeng_st_ = engine_state_ps_ok;
+        }
+    }
+
     /**
      * \brief Executes a contiguous series of projective measurement steps via
      * sampling
@@ -407,11 +414,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             qeng_st_ = engine_state_ps_ok;
         }
     }
-
-  protected:
-    internal::QEngineState<T> qeng_st_; ///< current state of the engine
-    internal::QEngineStatistics
-        stats_{}; ///< measurement statistics for multiple runs
 
     /**
      * \brief Marks qudit \a i as measured then re-label accordingly the
@@ -838,7 +840,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
     /**
      * \brief Vector with the values of the underlying classical dits
-     * \see qpp::QEngine::set_dits()
+     * \see qpp::QEngineT::set_dits()
      *
      * \note When interfacing with OpenQASM, the classical dits/registers
      * are evaluated in little-endian order, with  the least significant bit
@@ -851,7 +853,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
     /**
      * \brief Value of the classical dit at position \a i
-     * \see qpp::QEngine::set_dit()
+     * \see qpp::QEngineT::set_dit()
      *
      * \note When interfacing with OpenQASM, the classical dits/registers
      * are evaluated in little-endian order, with  the least significant bit
@@ -978,7 +980,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     // setters
     /**
      * \brief Sets the classical dit at position \a i
-     * \see qpp::QEngine::get_dit()
+     * \see qpp::QEngineT::get_dit()
      *
      * \note When interfacing with OpenQASM, the classical dits/registers
      * are evaluated in little-endian order, with  the least significant bit
@@ -1002,7 +1004,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
     /**
      * \brief Set the classical dits to \a dits
-     * \see qpp::QEngine::get_dits()
+     * \see qpp::QEngineT::get_dits()
      *
      * \note When interfacing with OpenQASM, the classical dits/registers
      * are evaluated in little-endian order, with  the least significant bit
@@ -1011,7 +1013,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param dits Vector of classical dits, must have the same size as the
      * internal vector of classical dits returned by
-     * qpp::QEngine::get_dits() \return Reference to the current instance
+     * qpp::QEngineT::get_dits() \return Reference to the current instance
      */
     QEngineT& set_dits(std::vector<idx> dits) {
         // EXCEPTION CHECKS
@@ -1172,7 +1174,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     QEngineT& execute(idx reps = 1) override {
         // EXCEPTION CHECKS
         if (reps == 0) {
-            throw exception::OutOfRange("qpp::QEngine::execute()", "reps");
+            throw exception::OutOfRange("qpp::QEngineT::execute()", "reps");
         }
         // END EXCEPTION CHECKS
 
@@ -1201,6 +1203,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         for (idx i = 0; i < first_measurement_discard_reset_pos; ++i) {
             execute(steps_as_iterators[i]);
         }
+
+        // TODO: comment the line below in production
+        // qeng_st_.can_sample_ = false;
 
         // execute repeatedly everything in the remaining interval
         // can sample: every step from now on is a projective measurement

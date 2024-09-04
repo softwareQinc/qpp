@@ -112,11 +112,9 @@ class QNoisyEngineT : public QEngineT<T> {
 
         // execute the circuit step
         (void)QEngineT<T>::execute(elem);
-
         return *this;
     }
 
-    // TODO: check this!!!
     /**
      * \brief Executes the entire quantum circuit description
      *
@@ -124,31 +122,14 @@ class QNoisyEngineT : public QEngineT<T> {
      * \return Reference to the current instance
      */
     QNoisyEngineT& execute(idx reps = 1) override {
-        auto initial_engine_state =
-            this->qeng_st_; // saves the engine entry state
-
-        for (idx i = 0; i < reps; ++i) {
-            // sets the state of the engine to the entry state
-            this->qeng_st_ = initial_engine_state;
-
-            for (auto&& elem : *this->qc_ptr_) {
-                (void)execute(elem);
-                // post-selection failed, stop executing
-                if (!this->qeng_st_.post_select_ok_) {
-                    break;
-                }
-            }
-            // post-selection failed, skip this run
-            if (!this->qeng_st_.post_select_ok_) {
-                continue;
-            }
-
-            // at least one qudit was measured
-            if (this->qc_ptr_->get_measurement_count() > 0) {
-                std::vector<idx> m_res = this->get_dits();
-                ++this->stats_.data()[m_res];
-            }
+        // EXCEPTION CHECKS
+        if (reps == 0) {
+            throw exception::OutOfRange("qpp::QNoisyEngineT::execute()",
+                                        "reps");
         }
+        // END EXCEPTION CHECKS
+        auto steps = internal::circuit_as_iterators(*this->qc_ptr_);
+        this->execute_no_sample_(steps, 0, reps);
 
         return *this;
     }
