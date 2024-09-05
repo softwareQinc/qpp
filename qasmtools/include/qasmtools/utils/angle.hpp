@@ -40,8 +40,6 @@
 #include <optional>
 #include <variant>
 
-#include "templates.hpp"
-
 namespace qasmtools {
 namespace utils {
 

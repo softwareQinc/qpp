@@ -2,11 +2,11 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "input_output.hpp"
+// Unit testing "qpp/input_output.hpp"
 
 #if (0)
 

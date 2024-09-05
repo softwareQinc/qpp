@@ -3,11 +3,11 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "classes/gates.hpp"
+// Unit testing "qpp/classes/gates.hpp"
 
 TEST(qpp_Gates_CTRL, Qudits) {
     idx d = 3; // qutrits

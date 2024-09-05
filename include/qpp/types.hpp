@@ -25,7 +25,7 @@
  */
 
 /**
- * \file types.hpp
+ * \file qpp/types.hpp
  * \brief Type aliases
  */
 

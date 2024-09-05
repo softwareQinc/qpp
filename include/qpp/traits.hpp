@@ -25,7 +25,7 @@
  */
 
 /**
- * \file traits.hpp
+ * \file qpp/traits.hpp
  * \brief Type traits
  */
 

@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/timer.hpp
+ * \file qpp/classes/timer.hpp
  * \brief Timing
  */
 

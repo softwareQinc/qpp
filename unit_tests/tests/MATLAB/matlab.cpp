@@ -1,12 +1,12 @@
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 #include "qpp/MATLAB/matlab.hpp"
 
 using namespace qpp;
 
-// Unit testing "MATLAB/matlab.hpp"
+// Unit testing "qpp/MATLAB/matlab.hpp"
 
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       load_MATLAB(const std::string& mat_file,

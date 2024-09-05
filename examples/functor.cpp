@@ -4,7 +4,7 @@
 #include <complex>
 #include <iostream>
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 // test function used by qpp::cwise()
 qpp::cplx pow3(qpp::cplx z) { return static_cast<qpp::cplx>(std::pow(z, 3)); }

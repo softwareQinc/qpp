@@ -2,11 +2,11 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "entropies.hpp"
+// Unit testing "qpp/entropies.hpp"
 
 /// BEGIN template <typename Derived> realT entropy(
 ///       const Eigen::MatrixBase<Derived>& A)

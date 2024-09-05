@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 int main() {
     using namespace qpp;
@@ -30,7 +30,7 @@ int main() {
     qc.cCTRL(gt.X, 1, 2);
     qc.cCTRL(gt.Z, 0, 2);
 
-    // initialize the quantum engine with a circuit
+    // initialize the quantum engine with the circuit
     QEngine engine{qc};
 
     // display the quantum circuit and its corresponding resources

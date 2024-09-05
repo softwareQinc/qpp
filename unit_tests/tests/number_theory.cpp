@@ -4,11 +4,11 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "number_theory.hpp"
+// Unit testing "qpp/number_theory.hpp"
 
 /// BEGIN std::vector<idx> compperm(const std::vector<idx>& perm,
 ///       const std::vector<idx>& sigma)

@@ -23,7 +23,7 @@ execute simulation on the phase of U = diag(1, e^{2*pi*i*theta}).
 #include <tuple>
 #include <vector>
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 int main() {
     using namespace qpp;
@@ -78,7 +78,7 @@ int main() {
         << disp(counting_qubits,
                 IOManipContainerOpts{}.set_sep(", ").set_left("(").set_right(
                     ")"))
-        << "\n";
+        << '\n';
 
     // measure the counting register and readout probabilities
     auto measured = measure_seq(result, {counting_qubits});

@@ -1,11 +1,11 @@
 #include "gmock/gmock.h" // for matchers
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "statistics.hpp"
+// Unit testing "qpp/statistics.hpp"
 
 /// BEGIN template<typename Container> realT avg(
 ///       const std::vector<realT>& prob, const Container& X,

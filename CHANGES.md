@@ -1,5 +1,51 @@
 # Pre-release
 
+- Breaking change: renamed ["qpp/qpp.h"] to ["qpp/qpp.hpp"]
+- New feature: implemented support for post-selection in
+  ["qpp/classes/qengine.hpp"] and ["qpp/classes/qcircuit.hpp"]
+- Implemented `qpp::QCircuit::`
+  - `QCircuit& post_select()` - destructive/non-destructive post-selection of
+    single/multiple qudits in the Z basis
+  - `QCircuit& post_selectV()` - destructive/non-destructive post-selection of
+    single/multiple qudits in an arbitrary orthonormal basis
+- Implemented `qpp::QEngineT<>::`
+  - `bool get_ensure_post_selection() const` - True if post-selection is
+    enforced, false otherwise
+  - `QEngineT<>& set_ensure_post_selection()` - Enforces post-selection (i.e.,
+    post-selection steps are repeated until success)
+  - `idx get_max_post_selection_reps() const` - Maximum number of executions of
+    a circuit post-selection step until success
+  - `QEngineT<>& set_max_post_selection_reps()` - Sets the maximum number of
+    executions of a circuit post-selection step until success
+  - `bool post_select_ok() const` - True if post-selection was successful (or
+    absent), false otherwise
+- Added
+  [["examples/circuits/post_selection.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/post_selection.cpp)]
+  example
+- Refactored `qpp::QCircuit::GateStep/MeasurementStep/NOPStep` into separate
+  files ["qpp/internal/classes/qcircuit_gate_step.hpp"],
+  ["qpp/internal/classes/qcircuit_measurement_step.hpp"], and
+  ["qpp/internal/classes/qcircuit_nop_step.hpp"], respectively
+- Refactored `qpp::QCircuit::Resources` into an independent class in a separate
+  file ["qpp/internal/classes/qcircuit_resources.hpp"]
+- Refactored qpp::QCircuit::iterator class into an independent class, defined
+  outside qpp::QCircuit in ["qpp/classes/qcircuit.hpp"]
+- Refactored `qpp::internal::QEngineState` and
+  `qpp::internal::QEngineStatistics`
+  in separate files, ["qpp/internal/classes/qengine_state.hpp"] and
+  ["qpp/internal/classes/qengine_statistics.hpp"], respectively
+- API changes in ["qpp/classes/qcircuit.hpp"]
+  - `qpp::QCircuit::get_measured()` -> `qpp::QCircuit::get_measured_d()`
+  - `qpp::QCircuit::get_non_measured()` -> `qpp::QCircuit::get_non_measured_d()`
+  - `qpp::QCircuit::was_measured()` -> `qpp::QCircuit::was_measured_d()`
+- API changes in ["qpp/classes/qengine.hpp"]
+  - `qpp::QEngineT<>::get_measured()` -> `qpp::QEngineT<>::get_measured_d()`
+  - `qpp::QEngineT<>::get_non_measured()` ->
+    `qpp::QEngineT<>::get_non_measured_d()`
+  - `qpp::QEngineT<>::was_measured()` -> `qpp::QEngineT<>::was_measured_d()`
+- Bugfix in qpp::internal::canonical_form(), the re-ordering is now stable, so
+  qpp::QCircuit measurement probabilities are not displayed in reversed order
+  w.r.t. target
 - Simplified MATLAB detection via CMake `find_package()` function. Users should
   only use `-DQPP_MATLAB=ON` when building with MATLAB support, all other
   MATLAB-related CMake flags have been removed.
@@ -25,17 +71,17 @@
   - ["qpp/classes/qnoisy_engine.hpp"] - noisy quantum engines
 - Introduced ["qpp/classes/qengine_traits.hpp"] that implement
   engine traits at run-time. All engines are now deriving from it.
-  The traits implements qpp::IQEngineTraits::
+  The traits implements `qpp::IQEngineTraits::`
   - `std::string traits_get_name() const` - Engine's name
   - `bool traits_is_noisy() const` - Simulates noisy execution
   - `bool traits_is_pure() const` - Operates on pure states
 - API changes in ["qpp/classes/qengine.hpp"] and
   ["qpp/classes/qnoisy_engine.hpp"]
   - Enabled mixed-state engines by refactoring
-    `qpp::QEngine` -> `template<typename T> qpp::QEngineT<T>`
-    `qpp::QNoisyEngine` -> `template<typename T> qpp::QNoisyEngineT<T>`
-    The template argument T is restricted to `qpp::ket` (pure state
-    engines) and `qpp::cmat` (mixed states engines)
+    - `qpp::QEngine` -> `template<typename T> qpp::QEngineT<T>`
+    - `qpp::QNoisyEngine` -> `template<typename T> qpp::QNoisyEngineT<T>`
+      The template argument T is restricted to `qpp::ket` (pure state
+      engines) and `qpp::cmat` (mixed states engines)
   - The following additional engines are now available
     - `qpp::QEngine` - pure state ideal engine, backwards
       compatibility
@@ -45,8 +91,8 @@
       compatibility
     - `qpp::QKetNoisyEngine` - same as `qpp::QNoisyEngine`
     - `qpp::QDensityNoisyEngine` - mixed state noisy engine
-  - Renamed `qpp::QEngineT::get_psi()` -> `qpp::QEngineT::get_state()`
-  - Removed `qpp::QEngineT::is_noisy()`
+  - Renamed `qpp::QEngineT<>::get_psi()` -> `qpp::QEngineT<>::get_state()`
+  - Removed `qpp::QEngineT<>::is_noisy()`
   - Added the new engines to **pyqpp**, which now defines the following
     factory functions for instantiating engines
     - `pyqpp.QEngine()` - pure state ideal engine, backwards
@@ -58,9 +104,9 @@
     - `pyqpp.QKetNoisyEngine()` - same as `pyqpp.QNoisyEngine()`
     - `pyqpp.QDensityNoisyEngine()` - mixed state noisy engine
   - Removed the default argument `bool try_sampling = true` in
-    `qpp::QEngineT::execute(idx reps = 1, bool try_sampling = true)` ->
-    `qpp::QEngineT::execute(idx reps = 1)`
-    so now `qpp::QEngineT` will always try to sample from the output when
+    `qpp::QEngineT<>::execute(idx reps = 1, bool try_sampling = true)` ->
+    `qpp::QEngineT<>::execute(idx reps = 1)`
+    so now `qpp::QEngineT<>` will always try to sample from the output when
     the circuit is executed multiple times (i.e., when `reps > 1`)
 - Introduced no-op (dummy) quantum engines in ["qpp/classes/qdummy_engine.hpp"]
   that provides

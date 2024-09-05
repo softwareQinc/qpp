@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/qbase_engine.hpp
+ * \file qpp/classes/qbase_engine.hpp
  * \brief Base class for quantum engines
  */
 

@@ -27,7 +27,7 @@
 #ifndef PYQPP_CLASSES_REVERSIBLE_BIND_HPP_
 #define PYQPP_CLASSES_REVERSIBLE_BIND_HPP_
 
-#include "pyqpp/pyqpp_common.h"
+#include "pyqpp/pyqpp_common.hpp"
 
 /* qpp::Dynamic_bitset and qpp::Bit_circuit */
 inline void init_classes_reversible(py::module_& m) {

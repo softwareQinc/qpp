@@ -27,7 +27,7 @@
 #ifndef PYQPP_TYPES_BIND_HPP_
 #define PYQPP_TYPES_BIND_HPP_
 
-#include "pyqpp/pyqpp_common.h"
+#include "pyqpp/pyqpp_common.hpp"
 
 /* Types from types.hpp */
 inline void init_types(py::module_& m) {

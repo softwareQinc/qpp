@@ -27,7 +27,7 @@
 #ifndef PYQPP_PYQPP_SPECIFIC_BIND_HPP_
 #define PYQPP_PYQPP_SPECIFIC_BIND_HPP_
 
-#include "pyqpp/pyqpp_common.h"
+#include "pyqpp/pyqpp_common.hpp"
 
 /* Python-specific functions only (not necessarily with an equivalent version in
  * qpp) */

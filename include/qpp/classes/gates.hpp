@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/gates.hpp
+ * \file qpp/classes/gates.hpp
  * \brief Quantum gates
  */
 
@@ -148,7 +148,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      */
     cmat RX(realT theta) const {
         // EXCEPTION CHECKS
-
         // END EXCEPTION CHECKS
 
         return Rn(theta, {1, 0, 0});
@@ -162,7 +161,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      */
     cmat RY(realT theta) const {
         // EXCEPTION CHECKS
-
         // END EXCEPTION CHECKS
 
         return Rn(theta, {0, 1, 0});
@@ -176,7 +174,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      */
     cmat RZ(realT theta) const {
         // EXCEPTION CHECKS
-
         // END EXCEPTION CHECKS
 
         return Rn(theta, {0, 0, 1});
@@ -195,7 +192,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      */
     cmat Zd(idx D = 2) const {
         // EXCEPTION CHECKS
-
         // check valid dimension
         if (D == 0) {
             throw exception::DimsInvalid("qpp::Gates::Zd()", "D");
@@ -222,7 +218,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      */
     [[qpp::parallel]] cmat SWAPd(idx D = 2) const {
         // EXCEPTION CHECKS
-
         // check valid dimension
         if (D == 0) {
             throw exception::DimsInvalid("qpp::Gates::SWAPd()", "D");
@@ -261,7 +256,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      */
     [[qpp::parallel]] cmat Fd(idx D = 2) const {
         // EXCEPTION CHECKS
-
         // check valid dimension
         if (D == 0) {
             throw exception::DimsInvalid("qpp::Gates::Fd()", "D");
@@ -308,7 +302,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // check co-primality (unitarity) only in DEBUG version
         assert(gcd(a, N) == 1);
         // EXCEPTION CHECKS
-
         // check valid arguments
         if (N < 3 || a >= N) {
             throw exception::OutOfRange("qpp::Gates::MODMUL()", "a/N");
@@ -363,7 +356,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      */
     cmat Xd(idx D = 2) const {
         // EXCEPTION CHECKS
-
         // check valid dimension
         if (D == 0) {
             throw exception::DimsInvalid("qpp::Gates::Xd()", "D");
@@ -389,7 +381,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     template <typename Derived = cmat>
     Derived Id(idx D = 2) const {
         // EXCEPTION CHECKS
-
         // check valid dimension
         if (D == 0) {
             throw exception::DimsInvalid("qpp::Gates::Id()", "D");
@@ -418,7 +409,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
-
         // check matrix zero-size
         if (!internal::check_nonzero_size(rA)) {
             throw exception::ZeroSize("qpp::Gates::GATE()", "A");
@@ -457,7 +447,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
             throw exception::MatrixMismatchSubsys("qpp::Gates::GATE()",
                                                   "A/dims/target");
         }
-
         // END EXCEPTION CHECKS
 
         // Use static allocation for speed!
@@ -568,7 +557,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                                            const std::vector<idx>& target,
                                            idx n, idx d = 2) const {
         // EXCEPTION CHECKS
-
         // check valid local dimension
         if (d == 0) {
             throw exception::DimsInvalid("qpp::Gates::GATE()", "d");
@@ -604,7 +592,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
-
         // check matrix zero-size
         if (!internal::check_nonzero_size(rA)) {
             throw exception::ZeroSize("qpp::Gates::CTRL()", "A");
@@ -758,7 +745,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
         // EXCEPTION CHECKS
-
         // check zero-size
         if (!internal::check_nonzero_size(rA)) {
             throw exception::ZeroSize("qpp::Gates::expandout()", "A");
@@ -838,7 +824,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     expandout(const Eigen::MatrixBase<Derived>& A, idx pos, idx n,
               idx d = 2) const {
         // EXCEPTION CHECKS
-
         // check zero size
         if (!internal::check_nonzero_size(A)) {
             throw exception::ZeroSize("qpp::Gates::expandout()", "A");
@@ -866,7 +851,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      */
     std::optional<std::string> get_name(const cmat& U) const {
         // EXCEPTION CHECKS
-
         // check zero size
         if (!internal::check_nonzero_size(U)) {
             throw exception::ZeroSize("qpp::Gates::get_name()", "U");
@@ -876,7 +860,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         if (!internal::check_square_mat(U)) {
             return {};
         }
-
         // END EXCEPTION CHECKS
 
         const idx D = static_cast<idx>(U.rows());

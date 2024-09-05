@@ -25,7 +25,7 @@
  */
 
 /**
- * \file instruments.hpp
+ * \file qpp/instruments.hpp
  * \brief Measurement functions
  */
 
@@ -66,7 +66,6 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
     const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rphi)) {
         throw exception::ZeroSize("qpp::ip()", "phi");
@@ -201,7 +200,6 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
     const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
 
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(rpsi)) {
         throw exception::ZeroSize("qpp::ip()", "psi");
     }
@@ -238,7 +236,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
     const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure()", "A");
@@ -338,7 +335,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
     const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure()", "A");
@@ -390,7 +386,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure()", "A");
@@ -540,7 +535,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure()", "A");
@@ -616,7 +610,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure()", "A");
@@ -742,7 +735,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure()", "A");
@@ -788,7 +780,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     expr_t<Derived> rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure_seq()", "A");
@@ -882,7 +873,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure_seq()", "A");
@@ -916,7 +906,6 @@ template <typename Derived>
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::sample()", "A");
@@ -990,7 +979,6 @@ std::vector<idx> sample(const Eigen::MatrixBase<Derived>& A,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::sample()", "A");
@@ -1027,7 +1015,6 @@ sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::sample()", "A");
@@ -1115,7 +1102,6 @@ sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::sample()", "A");
@@ -1152,7 +1138,6 @@ reset(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::reset()", "A");
@@ -1215,7 +1200,6 @@ dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::reset()", "A");
@@ -1250,7 +1234,6 @@ dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::discard()", "A");
@@ -1303,7 +1286,6 @@ dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::discard()", "A");

@@ -25,7 +25,7 @@
  */
 
 /**
- * \file internal/classes/singleton.hpp
+ * \file qpp/internal/classes/singleton.hpp
  * \brief Singleton pattern via CRTP
  */
 

@@ -25,7 +25,7 @@
  */
 
 /**
- * \file number_theory.hpp
+ * \file qpp/number_theory.hpp
  * \brief Number theory functions
  */
 
@@ -56,7 +56,6 @@ namespace qpp {
  */
 inline std::vector<bigint> x2contfrac(realT x, idx N, idx cut = 10000) {
     // EXCEPTION CHECKS
-
     if (N == 0) {
         throw exception::OutOfRange("qpp::x2contfrac()", "N");
     }
@@ -133,7 +132,6 @@ inline realT contfrac2x(const std::vector<bigint>& cf,
  */
 inline bigint gcd(bigint a, bigint b) {
     // EXCEPTION CHECKS
-
     if (a == 0 && b == 0) {
         throw exception::OutOfRange("qpp::gcd()", "a/b");
     }
@@ -162,7 +160,6 @@ inline bigint gcd(bigint a, bigint b) {
  */
 inline bigint gcd(const std::vector<bigint>& as) {
     // EXCEPTION CHECKS
-
     if (as.empty()) {
         throw exception::ZeroSize("qpp::gcd()", "as");
     }
@@ -186,7 +183,6 @@ inline bigint gcd(const std::vector<bigint>& as) {
  */
 inline bigint lcm(bigint a, bigint b) {
     // EXCEPTION CHECKS
-
     if (a == 0 && b == 0) {
         throw exception::OutOfRange("qpp::lcm()", "a/b");
     }
@@ -206,7 +202,6 @@ inline bigint lcm(bigint a, bigint b) {
  */
 inline bigint lcm(const std::vector<bigint>& as) {
     // EXCEPTION CHECKS
-
     if (as.empty()) {
         throw exception::ZeroSize("qpp::lcm()", "as");
     }
@@ -237,7 +232,6 @@ inline bigint lcm(const std::vector<bigint>& as) {
  */
 inline std::vector<idx> invperm(const std::vector<idx>& perm) {
     // EXCEPTION CHECKS
-
     if (!internal::check_perm(perm)) {
         throw exception::PermInvalid("qpp::invperm()", "perm");
     }
@@ -263,7 +257,6 @@ inline std::vector<idx> invperm(const std::vector<idx>& perm) {
 inline std::vector<idx> compperm(const std::vector<idx>& perm,
                                  const std::vector<idx>& sigma) {
     // EXCEPTION CHECKS
-
     if (!internal::check_perm(perm)) {
         throw exception::PermInvalid("qpp::compperm()", "perm");
     }
@@ -297,7 +290,6 @@ inline std::vector<bigint> factors(bigint a) {
     a = std::abs(a);
 
     // EXCEPTION CHECKS
-
     if (a == 0 || a == 1) {
         throw exception::OutOfRange("qpp::factors()", "a");
     }
@@ -336,7 +328,6 @@ inline std::vector<bigint> factors(bigint a) {
  */
 inline bigint modmul(bigint a, bigint b, bigint p) {
     // EXCEPTION CHECKS
-
     if (p < 1) {
         throw exception::OutOfRange("qpp::modmul()", "p");
     }
@@ -424,7 +415,6 @@ inline bigint modmul(bigint a, bigint b, bigint p) {
  */
 inline bigint modpow(bigint a, bigint n, bigint p) {
     // EXCEPTION CHECKS
-
     if (a < 0 || n < 0 || p < 1) {
         throw exception::OutOfRange("qpp::modpow()", "a/n/p");
     }
@@ -466,7 +456,6 @@ inline bigint modpow(bigint a, bigint n, bigint p) {
  */
 inline std::tuple<bigint, bigint, bigint> egcd(bigint a, bigint b) {
     // EXCEPTION CHECKS
-
     if (a == 0 && b == 0) {
         throw exception::OutOfRange("qpp::egcd()", "a/b");
     }
@@ -505,7 +494,6 @@ inline std::tuple<bigint, bigint, bigint> egcd(bigint a, bigint b) {
  */
 inline bigint modinv(bigint a, bigint p) {
     // EXCEPTION CHECKS
-
     if (a <= 0 || p <= 0) {
         throw exception::OutOfRange("qpp::modinv()", "a/p");
     }
@@ -534,7 +522,6 @@ inline bool isprime(bigint p, idx k = 80) {
     p = std::abs(p);
 
     // EXCEPTION CHECKS
-
     if (p < 2) {
         throw exception::OutOfRange("qpp::isprime()", "p");
     }
@@ -606,7 +593,6 @@ inline bool isprime(bigint p, idx k = 80) {
 // A std::optional<bigint> return type would have been awesome here!
 inline bigint randprime(bigint a, bigint b, idx N = 1000) {
     // EXCEPTION CHECKS
-
     if (a > b) {
         throw exception::OutOfRange("qpp::randprime()", "a/b");
     }
@@ -656,7 +642,6 @@ convergents(const std::vector<bigint>& cf) {
 
     idx N = cf.size();
     // EXCEPTION CHECKS
-
     if (N == 0) {
         throw exception::ZeroSize("qpp::convergents()", "cf");
     }
@@ -702,7 +687,6 @@ convergents(const std::vector<bigint>& cf) {
 inline std::vector<std::pair<bigint, bigint>> convergents(realT x, idx N) {
 
     // EXCEPTION CHECKS
-
     if (N == 0) {
         throw exception::OutOfRange("qpp::convergents()", "N");
     }

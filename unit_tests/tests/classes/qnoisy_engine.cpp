@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "classes/qnoisy_engine.hpp"
+// Unit testing "qpp/classes/qnoisy_engine.hpp"
 
 /// BEGIN QBaseEngine& QNoisyEngineT::execute(
 ///       const typename QCircuitTraits<QCT>::iterator_type& it)

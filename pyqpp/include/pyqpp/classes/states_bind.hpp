@@ -27,7 +27,7 @@
 #ifndef PYQPP_CLASSES_STATES_BIND_HPP_
 #define PYQPP_CLASSES_STATES_BIND_HPP_
 
-#include "pyqpp/pyqpp_common.h"
+#include "pyqpp/pyqpp_common.hpp"
 
 /* qpp::States */
 inline void init_classes_states(py::module_& m) {

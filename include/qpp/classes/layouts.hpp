@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/layouts.hpp
+ * \file qpp/classes/layouts.hpp
  * \see qpp::ILayout
  * \brief Various qudit placement layouts, all must implement the interface
  * \a qpp::ILayout
@@ -99,7 +99,6 @@ class Lattice : public ILayout {
      */
     explicit Lattice(const std::vector<idx>& dims) : dims_{dims} {
         // EXCEPTION CHECKS
-
         if (dims.empty()) {
             throw exception::ZeroSize("qpp::Lattice::Lattice()", "dims");
         }
@@ -126,7 +125,6 @@ class Lattice : public ILayout {
      */
     idx operator()(const std::vector<idx>& xs) const override {
         // EXCEPTION CHECKS
-
         if (xs.size() != dims_.size()) {
             throw exception::SizeMismatch("qpp::Lattice::operator()", "xs");
         }
@@ -162,7 +160,6 @@ class Lattice : public ILayout {
      */
     std::vector<idx> to_coordinates(idx i) const override {
         // EXCEPTION CHECKS
-
         if (i >= prod(dims_)) {
             throw exception::OutOfRange("qpp::Lattice::to_coordinates()", "i");
         }
@@ -203,7 +200,6 @@ class PeriodicBoundaryLattice : public Lattice {
      */
     idx operator()(const std::vector<idx>& xs) const override {
         // EXCEPTION CHECKS
-
         if (xs.size() != dims_.size()) {
             throw exception::SizeMismatch("qpp::Lattice::operator()", "xs");
         }

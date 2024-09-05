@@ -27,7 +27,7 @@
 #ifndef PYQPP_CLASSES_QENGINE_BIND_HPP_
 #define PYQPP_CLASSES_QENGINE_BIND_HPP_
 
-#include "pyqpp/pyqpp_common.h"
+#include "pyqpp/pyqpp_common.hpp"
 
 /* qpp::QEngineT instantiator */
 template <typename T>
@@ -56,10 +56,18 @@ void declare_QEngineT(py::module& m) {
         .def("get_dit", &QEngineT<T>::get_dit,
              "Underlying classical dit at position i", py::arg("i"))
         .def("get_dits", &QEngineT<T>::get_dits, "Underlying classical dits")
-        .def("get_measured", &QEngineT<T>::get_measured,
-             "Vector of already measured qudit indexes")
-        .def("get_non_measured", &QEngineT<T>::get_non_measured,
-             "Non-measured qudit indexes")
+        .def("get_ensure_post_selection",
+             &QEngineT<T>::get_ensure_post_selection,
+             "True if post-selection is enforced (must succeed), false "
+             "otherwise")
+        .def("get_max_post_selection_reps",
+             &QEngineT<T>::get_max_post_selection_reps,
+             "Maximum number of repetitions of a cirucit post-selection step "
+             "until success")
+        .def("get_measured_d", &QEngineT<T>::get_measured_d,
+             "Vector of already destructively measured qudit indexes")
+        .def("get_non_measured_d", &QEngineT<T>::get_non_measured_d,
+             "Vector of qudit indexes that were not measured destructively")
         .def("get_probs", &QEngineT<T>::get_probs,
              "Underlying measurement outcome probabilities")
         .def("get_state", &QEngineT<T>::get_state, "Underlying quantum state")
@@ -79,6 +87,9 @@ void declare_QEngineT(py::module& m) {
                 return result;
             },
             "Measurement statistics for multiple runs")
+        .def("post_select_ok", &QEngineT<T>::post_select_ok,
+             "True if post-selection was successful (or absent), false "
+             "otherwise")
         .def("reset", &QEngineT<T>::reset, "Resets the engine",
              py::arg("reset_stats") = true)
         .def("reset_stats", &QEngineT<T>::reset_stats,
@@ -88,12 +99,20 @@ void declare_QEngineT(py::module& m) {
              py::arg("value"))
         .def("set_dits", &QEngineT<T>::set_dits, "Set the classical dits",
              py::arg("dits"))
+        .def("set_ensure_post_selection",
+             &QEngineT<T>::set_ensure_post_selection,
+             "Enforces post-selection (must succeed)", py::arg("val"))
+        .def("set_max_post_selection_reps",
+             &QEngineT<T>::set_max_post_selection_reps,
+             py::arg("max_post_selection_reps"),
+             "Sets the maximum number of repetitions of a circuit "
+             "post-selection step until success")
         .def("set_state", &QEngineT<T>::set_state,
              "Sets the underlying quantum state", py::arg("state"))
         .def("to_JSON", &QEngineT<T>::to_JSON,
              "State of the engine in JSON format",
              py::arg("enclosed_in_curly_brackets") = true)
-        .def("was_measured", &QEngineT<T>::was_measured,
+        .def("was_measured_d", &QEngineT<T>::was_measured_d,
              "Whether qudit i was already measured destructively", py::arg("i"))
 
         .def("traits_get_name", &QEngineT<T>::traits_get_name, "Engine name")

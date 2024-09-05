@@ -25,7 +25,7 @@
  */
 
 /**
- * \file qasm/qasm.hpp
+ * \file qpp/qasm/qasm.hpp
  * \brief OpenQASM to QCircuit interface
  */
 

@@ -25,7 +25,7 @@
  */
 
 /**
- * \file random.hpp
+ * \file qpp/random.hpp
  * \brief Randomness-related functions
  */
 
@@ -112,7 +112,6 @@ Derived rand([[maybe_unused]] idx rows, [[maybe_unused]] idx cols,
 template <>
 inline rmat rand(idx rows, idx cols, realT a, realT b) {
     // EXCEPTION CHECKS
-
     if (rows == 0 || cols == 0) {
         throw exception::ZeroSize("qpp::rand()", "rows/cols");
     }
@@ -129,7 +128,6 @@ inline rmat rand(idx rows, idx cols, realT a, realT b) {
 template <>
 inline cmat rand(idx rows, idx cols, realT a, realT b) {
     // EXCEPTION CHECKS
-
     if (rows == 0 || cols == 0) {
         throw exception::ZeroSize("qpp::rand()", "rows/cols");
     }
@@ -202,7 +200,6 @@ Derived randn([[maybe_unused]] idx rows, [[maybe_unused]] idx cols,
 template <>
 inline rmat randn(idx rows, idx cols, realT mean, realT sigma) {
     // EXCEPTION CHECKS
-
     if (rows == 0 || cols == 0) {
         throw exception::ZeroSize("qpp::randn()", "rows/cols");
     }
@@ -219,7 +216,6 @@ inline rmat randn(idx rows, idx cols, realT mean, realT sigma) {
 template <>
 inline cmat randn(idx rows, idx cols, realT mean, realT sigma) {
     // EXCEPTION CHECKS
-
     if (rows == 0 || cols == 0) {
         throw exception::ZeroSize("qpp::randn()", "rows/cols");
     }
@@ -241,7 +237,6 @@ inline cmat randn(idx rows, idx cols, realT mean, realT sigma) {
 inline idx randidx(idx a = std::numeric_limits<idx>::min(),
                    idx b = std::numeric_limits<idx>::max()) {
     // EXCEPTION CHECKS
-
     if (a > b) {
         throw exception::OutOfRange("qpp::randidx()", "a/b");
     }
@@ -264,7 +259,6 @@ inline cmat randU(idx D = 2)
 // because Eigen 3 QR algorithm is not parallelized
 {
     // EXCEPTION CHECKS
-
     if (D == 0) {
         throw exception::DimsInvalid("qpp::randU()", "D");
     }
@@ -297,7 +291,6 @@ inline cmat randU(idx D = 2)
  */
 inline cmat randV(idx Din, idx Dout) {
     // EXCEPTION CHECKS
-
     if (Din == 0 || Dout == 0 || Din > Dout) {
         throw exception::DimsInvalid("qpp::randV()", "Din/Dout");
     }
@@ -323,7 +316,6 @@ inline cmat randV(idx Din, idx Dout) {
  */
 [[qpp::parallel]] inline std::vector<cmat> randkraus(idx N, idx Din, idx Dout) {
     // EXCEPTION CHECKS
-
     if (N == 0) {
         throw exception::OutOfRange("qpp::randkraus()", "N");
     }
@@ -383,7 +375,6 @@ inline std::vector<cmat> randkraus(idx N, idx D = 2) {
  */
 inline cmat randH(idx D = 2) {
     // EXCEPTION CHECKS
-
     if (D == 0) {
         throw exception::DimsInvalid("qpp::randH()", "D");
     }
@@ -403,7 +394,6 @@ inline cmat randH(idx D = 2) {
  */
 inline ket randket(idx D = 2) {
     // EXCEPTION CHECKS
-
     if (D == 0) {
         throw exception::DimsInvalid("qpp::randket()", "D");
     }
@@ -429,7 +419,6 @@ inline ket randket(idx D = 2) {
  */
 inline cmat randrho(idx D = 2) {
     // EXCEPTION CHECKS
-
     if (D == 0) {
         throw exception::DimsInvalid("qpp::randrho()", "D");
     }
@@ -452,7 +441,6 @@ inline cmat randrho(idx D = 2) {
  */
 inline std::vector<idx> randperm(idx N) {
     // EXCEPTION CHECKS
-
     if (N == 0) {
         throw exception::ZeroSize("qpp::randperm()", "N");
     }
@@ -479,7 +467,6 @@ inline std::vector<idx> randperm(idx N) {
  */
 inline std::vector<realT> randprob(idx N) {
     // EXCEPTION CHECKS
-
     if (N == 0) {
         throw exception::ZeroSize("qpp::randprob()");
     }

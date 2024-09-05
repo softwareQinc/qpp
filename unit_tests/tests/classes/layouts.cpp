@@ -2,11 +2,11 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "classes/layouts.hpp"
+// Unit testing "qpp/classes/layouts.hpp"
 
 /// BEGIN std::vector<idx> Lattice::get_dims() const override
 TEST(qpp_Lattice_get_dims, AllTests) {}

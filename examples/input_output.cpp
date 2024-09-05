@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 int main() {
     using namespace qpp;

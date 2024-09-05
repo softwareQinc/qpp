@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using basis_T = short; // basis type
 using state_T = short; // state index type

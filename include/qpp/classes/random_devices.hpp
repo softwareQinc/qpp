@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/random_devices.hpp
+ * \file qpp/classes/random_devices.hpp
  * \brief Random devices
  */
 

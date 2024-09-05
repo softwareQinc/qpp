@@ -3,11 +3,11 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "operations.hpp"
+// Unit testing "qpp/operations.hpp"
 
 /// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
 ///       apply(const Eigen::MatrixBase<Derived1>& state,

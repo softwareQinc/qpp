@@ -27,7 +27,7 @@
 #ifndef PYQPP_CLASSES_QNOISY_ENGINE_BIND_HPP_
 #define PYQPP_CLASSES_QNOISY_ENGINE_BIND_HPP_
 
-#include "pyqpp/pyqpp_common.h"
+#include "pyqpp/pyqpp_common.hpp"
 
 /** Noise models instantiators */
 template <typename NoiseModel, typename... CtorTypeList>

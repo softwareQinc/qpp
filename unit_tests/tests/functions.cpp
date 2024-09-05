@@ -2,11 +2,11 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "functions.hpp"
+// Unit testing "qpp/functions.hpp"
 
 /// BEGIN template <char... Bits> bra operator"" _bra()
 TEST(qpp_literals_operator_bra, AllTests) {}

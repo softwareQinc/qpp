@@ -25,7 +25,7 @@
  */
 
 /**
- * \file operations.hpp
+ * \file qpp/operations.hpp
  * \brief Quantum operation functions
  */
 
@@ -72,7 +72,6 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check types
     if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::apply()", "A/state");
@@ -345,7 +344,6 @@ expr_t<Derived1> apply(const Eigen::MatrixBase<Derived1>& state,
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rstate)) {
         throw exception::ZeroSize("qpp::apply()", "state");
@@ -380,7 +378,6 @@ template <typename Derived>
     const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::apply()", "A");
     }
@@ -434,7 +431,6 @@ apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero sizes
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::apply()", "A");
@@ -528,7 +524,6 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     const cmat& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero sizes
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::apply()", "A");
@@ -564,7 +559,6 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  */
 [[qpp::parallel]] inline cmat kraus2choi(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
-
     if (Ks.empty()) {
         throw exception::ZeroSize("qpp::kraus2choi()", "Ks");
     }
@@ -632,7 +626,6 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  */
 inline std::vector<cmat> choi2kraus(const cmat& A, idx Din, idx Dout) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::choi2kraus()", "A");
     }
@@ -675,7 +668,6 @@ inline std::vector<cmat> choi2kraus(const cmat& A, idx Din, idx Dout) {
  */
 inline std::vector<cmat> choi2kraus(const cmat& A) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::choi2kraus()", "A");
     }
@@ -706,7 +698,6 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
  */
 [[qpp::parallel]] inline cmat choi2super(const cmat& A, idx Din, idx Dout) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::choi2super()", "A");
     }
@@ -751,7 +742,6 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
  */
 inline cmat choi2super(const cmat& A) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::choi2super()", "A");
     }
@@ -780,7 +770,6 @@ inline cmat choi2super(const cmat& A) {
  */
 [[qpp::parallel]] inline cmat super2choi(const cmat& A) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::super2choi()", "A");
     }
@@ -832,7 +821,6 @@ inline cmat choi2super(const cmat& A) {
  */
 [[qpp::parallel]] inline cmat kraus2super(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
-
     if (Ks.empty()) {
         throw exception::ZeroSize("qpp::kraus2super()", "Ks");
     }
@@ -907,7 +895,6 @@ inline cmat choi2super(const cmat& A) {
  */
 inline std::vector<cmat> super2kraus(const cmat& A) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(A)) {
         throw exception::ZeroSize("qpp::super2kraus()", "A");
     }
@@ -944,7 +931,6 @@ ptrace1(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::ptrace1()", "A");
@@ -1050,7 +1036,6 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::ptrace1()", "A");
@@ -1086,7 +1071,6 @@ ptrace2(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::ptrace2()", "A");
@@ -1183,7 +1167,6 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::ptrace2()", "A");
@@ -1221,7 +1204,6 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::ptrace()", "A");
@@ -1429,7 +1411,6 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::ptrace()", "A");
@@ -1467,7 +1448,6 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::ptranspose()", "A");
@@ -1636,7 +1616,6 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::ptranspose()", "A");
@@ -1673,7 +1652,6 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::syspermute()", "A");
@@ -1822,7 +1800,6 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::syspermute()", "A");
@@ -1871,7 +1848,6 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check types
     if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::applyCTRL()", "A/state");
@@ -1982,7 +1958,6 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
             elem = d - elem;
         }
     }
-
     // END EXCEPTION CHECKS
 
     if (!shift.has_value()) {
@@ -2129,7 +2104,6 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rstate)) {
         throw exception::ZeroSize("qpp::applyCTRL()", "state");
@@ -2182,7 +2156,6 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check types
     if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::applyCTRL_fan()", "A/state");
@@ -2301,9 +2274,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
             elem = d - elem;
         }
     }
-
     // END EXCEPTION CHECKS
-
     if (!shift.has_value()) {
         shift = std::vector<idx>(ctrl.size(), 0);
     }
@@ -2452,7 +2423,6 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rstate)) {
         throw exception::ZeroSize("qpp::applyCTRL_fan()", "state");
@@ -2490,7 +2460,6 @@ template <typename Derived>
     const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero sizes
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::applyQFT()", "A");
@@ -2606,7 +2575,6 @@ template <typename Derived>
     const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero sizes
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::applyTFQ()", "A");
@@ -2718,7 +2686,6 @@ expr_t<Derived> QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
     const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::QFT()", "A");
@@ -2771,7 +2738,6 @@ expr_t<Derived> TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2,
     const expr_t<Derived>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::TFQ()", "A");
@@ -2831,7 +2797,6 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM) {
     const dyn_mat<typename Derived::Scalar>& rpsi = psi.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rpsi)) {
         throw exception::ZeroSize("qpp::qRAM()", "psi");
@@ -2897,7 +2862,6 @@ template <typename Derived>
 dyn_col_vect<typename Derived::Scalar>
 qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data) {
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(data)) {
         throw exception::ZeroSize("qpp::qRAM()", "data");

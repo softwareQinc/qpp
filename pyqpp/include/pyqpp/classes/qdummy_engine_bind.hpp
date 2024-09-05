@@ -27,7 +27,7 @@
 #ifndef PYQPP_CLASSES_QDUMMY_ENGINE_BIND_HPP_
 #define PYQPP_CLASSES_QDUMMY_ENGINE_BIND_HPP_
 
-#include "pyqpp/pyqpp_common.h"
+#include "pyqpp/pyqpp_common.hpp"
 
 /* qpp::QKetDummyEngine and qpp::QDensityDummyEngine instantiator */
 template <typename T>

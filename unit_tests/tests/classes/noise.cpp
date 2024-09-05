@@ -2,11 +2,11 @@
 
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "classes/noise.hpp"
+// Unit testing "qpp/classes/noise.hpp"
 
 /// BEGIN idx NoiseBase::get_d() const noexcept
 TEST(qpp_NoiseBase_get_d, AllTests) {}

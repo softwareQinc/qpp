@@ -25,7 +25,7 @@
  */
 
 /**
- * \file internal/util.hpp
+ * \file qpp/internal/util.hpp
  * \brief Internal utility functions
  */
 
@@ -296,7 +296,6 @@ kron2(const Eigen::MatrixBase<Derived1>& A,
     const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
 
     // EXCEPTION CHECKS
-
     // check types
     if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::kron()", "A/B");
@@ -344,7 +343,6 @@ dirsum2(const Eigen::MatrixBase<Derived1>& A,
     const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
 
     // EXCEPTION CHECKS
-
     // check types
     if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::dirsum()", "A/B");

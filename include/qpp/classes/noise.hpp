@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/noise.hpp
+ * \file qpp/classes/noise.hpp
  * \brief Noise models
  */
 
@@ -174,7 +174,6 @@ class NoiseBase {
             std::is_same_v<NoiseType::StateDependent, U>>* = nullptr)
         : Ks_{Ks}, probs_(Ks.size()) {
         // EXCEPTION CHECKS
-
         if (Ks.empty()) {
             throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()", "Ks");
         }
@@ -211,7 +210,6 @@ class NoiseBase {
             std::is_same_v<NoiseType::StateIndependent, U>>* = nullptr)
         : Ks_{Ks}, probs_(probs) {
         // EXCEPTION CHECKS
-
         if (Ks.empty()) {
             throw exception::ZeroSize("qpp::NoiseBase::NoiseBase()", "Ks");
         }
@@ -401,7 +399,6 @@ class QubitDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
                      Gates::get_no_thread_local_instance().Z},
                     {1 - p, p / 3, p / 3, p / 3}) {
         // EXCEPTION CHECKS
-
         if (p < 0 || p > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitDepolarizingNoise::QubitDepolarizingNoise()", "p");
@@ -426,7 +423,6 @@ class QubitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
                      Gates::get_no_thread_local_instance().Z},
                     {1 - p, p}) {
         // EXCEPTION CHECKS
-
         if (p < 0 || p > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitPhaseFlipNoise::QubitPhaseFlipNoise()", "p");
@@ -451,7 +447,6 @@ class QubitBitFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
                      Gates::get_no_thread_local_instance().X},
                     {1 - p, p}) {
         // EXCEPTION CHECKS
-
         if (p < 0 || p > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitBitFlipNoise::QubitBitFlipNoise()", "p");
@@ -476,7 +471,6 @@ class QubitBitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
                      Gates::get_no_thread_local_instance().Y},
                     {1 - p, p}) {
         // EXCEPTION CHECKS
-
         if (p < 0 || p > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitBitPhaseFlipNoise::QubitBitPhaseFlipNoise()", "p");
@@ -501,7 +495,6 @@ class QubitAmplitudeDampingNoise : public NoiseBase<NoiseType::StateDependent> {
               ((cmat(2, 2)) << 1, 0, 0, std::sqrt(gamma)).finished(),
               ((cmat(2, 2)) << 0, std::sqrt(1 - gamma), 0, 0).finished()}) {
         // EXCEPTION CHECKS
-
         if (gamma < 0 || gamma > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitAmplitudeDampingNoise::QubitAmplitudeDampingNoise()",
@@ -527,7 +520,6 @@ class QubitPhaseDampingNoise : public NoiseBase<NoiseType::StateDependent> {
               ((cmat(2, 2)) << 1, 0, 0, std::sqrt(1 - lambda)).finished(),
               ((cmat(2, 2)) << 0, 0, 0, std::sqrt(lambda)).finished()}) {
         // EXCEPTION CHECKS
-
         if (lambda < 0 || lambda > 1) {
             throw exception::OutOfRange(
                 "qpp::QubitPhaseDampingNoise::QubitPhaseDampingNoise()",
@@ -592,7 +584,6 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
     explicit QuditDepolarizingNoise(realT p, idx D)
         : NoiseBase(fill_Ks_(D), fill_probs_(p, D)) {
         // EXCEPTION CHECKS
-
         if (D < 2) {
             throw exception::OutOfRange(
                 "qpp::QuditDepolarizingNoise::QuditDepolarizingNoise()", "D");

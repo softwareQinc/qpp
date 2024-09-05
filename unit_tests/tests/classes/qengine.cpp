@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "classes/qengine.hpp"
+// Unit testing "qpp/classes/qengine.hpp"
 
 /// BEGIN QBaseEngine& QEngineT::execute(
 ///       const typename QCircuitTraits<QCT>::iterator_type& it)
@@ -29,11 +29,17 @@ TEST(qpp_QEngineT_get_dit, AllTests) {}
 /// BEGIN std::vector<idx> QEngineT::get_dits() const
 TEST(qpp_QEngineT_get_dits, AllTests) {}
 
-/// BEGIN bool QEngineT::get_measured(idx i) const
-TEST(qpp_QEngineT_get_measured, SpecificQudit) {}
+/// BEGIN bool QEngineT::get_ensure_post_selection() const
+TEST(qpp_QEngineT_get_ensure_post_selection, AllTests) {}
 
-/// BEGIN std::vector<idx> QEngineT::get_non_measured() const
-TEST(qpp_QEngineT_get_non_measured, AllTests) {}
+/// BEGIN idx QEngineT::get_max_post_selection_reps() const
+TEST(qpp_QEngineT_get_max_post_selection_reps, AllTests) {}
+
+/// BEGIN std::vector<idx> QEngineT::get_measured_d() const
+TEST(qpp_QEngineT_get_measured_d, AllTests) {}
+
+/// BEGIN std::vector<idx> QEngineT::get_non_measured_d() const
+TEST(qpp_QEngineT_get_non_measured_d, AllTests) {}
 
 /// BEGIN std::vector<realT> QEngineT::get_probs() const
 TEST(qpp_QEngineT_get_probs, AllTests) {}
@@ -43,6 +49,9 @@ TEST(qpp_QEngineT_get_state, AllTests) {}
 
 /// BEGIN internal::QEngineStatistics QEngineT::get_stats() const
 TEST(qpp_QEngineT_get_stats, AllTests) {}
+
+/// BEGIN bool QEngineT::post_select_ok() const
+TEST(qpp_QEngineT_post_select_ok, AllTests) {}
 
 /// BEGIN QEngineT& QEngineT::reset(bool reset_stats = true)
 TEST(qpp_QEngineT_reset, AllTests) {}
@@ -55,6 +64,13 @@ TEST(qpp_QEngineT_set_dit, AllTests) {}
 
 /// BEGIN QEngineT& QEngineT::set_dits(std::vector<idx> dits)
 TEST(qpp_QEngineT_set_dits, AllTests) {}
+
+/// BEGIN QEngineT& QEngineT::set_ensure_post_selection(bool val)
+TEST(qpp_QEngineT_set_ensure_post_selection, AllTests) {}
+
+/// BEGIN QEngineT& QEngineT::set_max_post_selection_reps(
+///       idx max_post_selection_reps)
+TEST(qpp_QEngineT_set_max_post_selection_reps, AllTests) {}
 
 /// BEGIN QEngineT& QEngineT::set_state(const T& state) override
 TEST(qpp_QEngineT_set_state, AllTests) {}
@@ -72,5 +88,5 @@ TEST(qpp_QEngineT_traits_is_noisy, AllTests) {}
 /// BEGIN bool QEngineT::traits_is_pure() const override
 TEST(qpp_QEngineT_traits_is_pure, AllTests) {}
 
-/// BEGIN std::vector<idx> QEngineT::was_measured() const
-TEST(qpp_QEngineT_was_measured, AllQudits) {}
+/// BEGIN bool QEngineT::was_measured_d(idx i) const
+TEST(qpp_QEngineT_was_measured_d, AllTests) {}

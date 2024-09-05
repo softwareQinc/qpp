@@ -25,7 +25,7 @@
  */
 
 /**
- * \file constants.hpp
+ * \file qpp/constants.hpp
  * \brief Constants
  */
 

@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 using namespace qpp;
 
-// Unit testing "instruments.hpp"
+// Unit testing "qpp/instruments.hpp"
 
 /// BEGIN template <typename Derived>
 ///       dyn_mat<typename Derived::Scalar> discard(

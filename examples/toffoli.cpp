@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 int main() {
     using namespace qpp;
@@ -23,9 +23,9 @@ int main() {
      *     |
      *  ---X---
      */
-    ket result = apply(psi_in, gt.TOF, {0, 1, 2});
+    ket result_qpp = apply(psi_in, gt.TOF, {0, 1, 2});
     std::cout << ">> Toffoli gate output state:\n";
-    std::cout << disp(dirac(result)) << "\n\n";
+    std::cout << disp(dirac(result_qpp)) << "\n\n";
 
     /**
      * Toffoli with T and CNOT
@@ -36,7 +36,7 @@ int main() {
      *       |       |     |       |
      *  --H--X--T_d--X--T--X--T_d--X--T--H----------
      */
-    result = apply(psi_in, gt.H, {2});
+    ket result = apply(psi_in, gt.H, {2});
     result = applyCTRL(result, gt.X, {1}, {2});
     result = apply(result, adjoint(gt.T), {2});
     result = applyCTRL(result, gt.X, {0}, {2});
@@ -52,10 +52,12 @@ int main() {
     result = apply(result, gt.H, {2});
     result = applyCTRL(result, gt.X, {0}, {1});
     std::cout << ">> Toffoli with T and CNOT output state:\n";
-    std::cout << disp(dirac(result)) << "\n\n";
+    std::cout << disp(dirac(result)) << '\n';
+    std::cout << ">> Norm difference: " << norm(result - result_qpp) << "\n\n";
 
     /**
-     * Sleator Weinfurter construction
+     * https://arxiv.org/abs/quant-ph/9503016 construction
+     *
      * V * V = X
      *
      *  -----+-------+---+---
@@ -73,5 +75,6 @@ int main() {
     result = applyCTRL(result, sqrtx, {0}, {2});
     std::cout
         << ">> Barenco et. al. [quant-ph/9503016] construction output state:\n";
-    std::cout << disp(dirac(result)) << "\n\n";
+    std::cout << disp(dirac(result)) << '\n';
+    std::cout << ">> Norm difference: " << norm(result - result_qpp) << '\n';
 }

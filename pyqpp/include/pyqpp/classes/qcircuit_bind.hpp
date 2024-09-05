@@ -27,7 +27,7 @@
 #ifndef PYQPP_CLASSES_QCIRCUIT_BIND_HPP_
 #define PYQPP_CLASSES_QCIRCUIT_BIND_HPP_
 
-#include "pyqpp/pyqpp_common.h"
+#include "pyqpp/pyqpp_common.hpp"
 
 /* qpp::QCircuit and related free functions */
 inline void init_classes_qcircuit(py::module_& m) {
@@ -81,7 +81,7 @@ inline void init_classes_qcircuit(py::module_& m) {
                 "cCTRL",
                 py::overload_cast<const cmat&, idx, idx, std::optional<idx>,
                                   std::optional<std::string>>(&QCircuit::cCTRL),
-                "Applies the single qubit controlled gate U with classical "
+                "Applies the single qudit controlled gate U with classical "
                 "control dit ctrl and target qudit target, i.e., cCTRL-U",
                 py::arg("U"), py::arg("ctrl_dit"), py::arg("target"),
                 py::arg("shift") = std::nullopt, py::arg("name") = std::nullopt)
@@ -272,7 +272,7 @@ inline void init_classes_qcircuit(py::module_& m) {
                  "(Total) Gate count", py::arg("U") = std::nullopt)
             .def("get_gate_depth", &QCircuit::get_gate_depth,
                  "(Total) Gate depth", py::arg("U") = std::nullopt)
-            .def("get_measured", &QCircuit::get_measured,
+            .def("get_measured_d", &QCircuit::get_measured_d,
                  "Vector of already measured qudit indexes")
             .def("get_measured_nd", &QCircuit::get_measured_nd,
                  "Vector of already measured non-destructively qudit indexes")
@@ -285,7 +285,7 @@ inline void init_classes_qcircuit(py::module_& m) {
                  "measurements (either destructive or non-destructive)")
             .def("get_name", &QCircuit::get_name, "Description name")
             .def("get_nc", &QCircuit::get_nc, "Number of classical dits")
-            .def("get_non_measured", &QCircuit::get_non_measured,
+            .def("get_non_measured_d", &QCircuit::get_non_measured_d,
                  "Non-measured qudit indexes")
             .def("get_nop_count", &QCircuit::get_nop_count, "No-op count")
             .def("get_nq", &QCircuit::get_nq, "Number of qudits")
@@ -355,6 +355,39 @@ inline void init_classes_qcircuit(py::module_& m) {
                  py::arg("V"), py::arg("target"), py::arg("c_reg"),
                  py::arg("destructive") = true, py::arg("name") = std::nullopt)
             .def("nop", &QCircuit::nop, "No operation (no-op)")
+            .def("post_select",
+                 py::overload_cast<idx, idx, idx, bool,
+                                   std::optional<std::string>>(
+                     &QCircuit::post_select),
+                 "Z post-selection of single qudit", py::arg("target"),
+                 py::arg("ps_val"), py::arg("c_reg"),
+                 py::arg("destructive") = true, py::arg("name") = std::nullopt)
+            .def("post_select",
+                 py::overload_cast<const std::vector<idx>&,
+                                   const std::vector<idx>&, idx, bool,
+                                   std::optional<std::string>>(
+                     &QCircuit::post_select),
+                 "Z post-selection of multiple qudits", py::arg("target"),
+                 py::arg("ps_vals"), py::arg("c_reg"),
+                 py::arg("destructive") = true, py::arg("name") = std::nullopt)
+            .def("post_selectV",
+                 py::overload_cast<const cmat&, idx, idx, idx, bool,
+                                   std::optional<std::string>>(
+                     &QCircuit::post_selectV),
+                 "Post-selection of single qudit in the orthonormal basis "
+                 "specified by the columns of matrix V",
+                 py::arg("V"), py::arg("target"), py::arg("ps_val"),
+                 py::arg("c_reg"), py::arg("destructive") = true,
+                 py::arg("name") = std::nullopt)
+            .def("post_selectV",
+                 py::overload_cast<const cmat&, const std::vector<idx>&, idx,
+                                   idx, bool, std::optional<std::string>>(
+                     &QCircuit::post_selectV),
+                 "Post-selection of multiple qudits in the orthonormal basis "
+                 "specified by the columns of matrix V",
+                 py::arg("V"), py::arg("target"), py::arg("ps_val"),
+                 py::arg("c_reg"), py::arg("destructive") = true,
+                 py::arg("name") = std::nullopt)
             .def("QFT",
                  py::overload_cast<const std::vector<idx>&, bool>(
                      &QCircuit::QFT),
@@ -412,7 +445,7 @@ inline void init_classes_qcircuit(py::module_& m) {
             .def("to_JSON", &QCircuit::to_JSON,
                  "Displays the quantum circuit description in JSON format",
                  py::arg("enclosed_in_curly_brackets") = true)
-            .def("was_measured", &QCircuit::was_measured,
+            .def("was_measured_d", &QCircuit::was_measured_d,
                  "Whether qudit i was already measured", py::arg("i"))
             .def("was_measured_nd", &QCircuit::was_measured_nd,
                  "Whether qudit i was already measured non-destructively",
@@ -431,21 +464,21 @@ inline void init_classes_qcircuit(py::module_& m) {
             .def("__deepcopy__",
                  [](const QCircuit& self, py::dict) { return QCircuit(self); });
 
-    /* qpp::QCircuit::Resources */
-    py::class_<QCircuit::Resources>(pyQCircuit, "Resources")
-        .def_readonly("nq", &QCircuit::Resources::nq)
-        .def_readonly("nc", &QCircuit::Resources::nc)
-        .def_readonly("d", &QCircuit::Resources::d)
-        .def_readonly("name", &QCircuit::Resources::name)
-        .def_readonly("step_count", &QCircuit::Resources::step_count)
-        .def_readonly("gate_count", &QCircuit::Resources::gate_count)
-        .def_readonly("gate_depth", &QCircuit::Resources::gate_depth)
+    /* qpp::internal::QCircuitResources */
+    py::class_<internal::QCircuitResources>(pyQCircuit, "Resources")
+        .def_readonly("nq", &internal::QCircuitResources::nq)
+        .def_readonly("nc", &internal::QCircuitResources::nc)
+        .def_readonly("d", &internal::QCircuitResources::d)
+        .def_readonly("name", &internal::QCircuitResources::name)
+        .def_readonly("step_count", &internal::QCircuitResources::step_count)
+        .def_readonly("gate_count", &internal::QCircuitResources::gate_count)
+        .def_readonly("gate_depth", &internal::QCircuitResources::gate_depth)
         .def_readonly("measurement_count",
-                      &QCircuit::Resources::measurement_count)
+                      &internal::QCircuitResources::measurement_count)
         .def_readonly("measurement_depth",
-                      &QCircuit::Resources::measurement_depth)
-        .def_readonly("total_depth", &QCircuit::Resources::total_depth)
-        .def("__repr__", [](const QCircuit::Resources& self) {
+                      &internal::QCircuitResources::measurement_depth)
+        .def_readonly("total_depth", &internal::QCircuitResources::total_depth)
+        .def("__repr__", [](const internal::QCircuitResources& self) {
             std::ostringstream oss;
             oss << self;
             return oss.str();

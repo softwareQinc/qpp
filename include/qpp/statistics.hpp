@@ -25,7 +25,7 @@
  */
 
 /**
- * \file statistics.hpp
+ * \file qpp/statistics.hpp
  * \brief Statistics functions
  */
 
@@ -49,7 +49,6 @@ namespace qpp {
  */
 inline std::vector<realT> uniform(idx N) {
     // EXCEPTION CHECKS
-
     if (N == 0) {
         throw exception::ZeroSize("qpp::uniform()", "N");
     }
@@ -69,7 +68,6 @@ inline std::vector<realT> uniform(idx N) {
  */
 inline std::vector<realT> marginalX(const rmat& probXY) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(probXY)) {
         throw exception::ZeroSize("qpp::marginalX()", "probXY");
     }
@@ -95,7 +93,6 @@ inline std::vector<realT> marginalX(const rmat& probXY) {
  */
 inline std::vector<realT> marginalY(const rmat& probXY) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(probXY)) {
         throw exception::ZeroSize("qpp::marginalY()", "probXY");
     }
@@ -117,7 +114,6 @@ template <typename Container>
 realT avg(const std::vector<realT>& prob, const Container& X,
           std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::avg()", "prob");
     }
@@ -148,7 +144,6 @@ template <typename Container>
 realT cov(const rmat& probXY, const Container& X, const Container& Y,
           std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(X)) {
         throw exception::ZeroSize("qpp::cov()", "X");
     }
@@ -188,7 +183,6 @@ template <typename Container>
 realT var(const std::vector<realT>& prob, const Container& X,
           std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::var()", "prob");
     }
@@ -218,7 +212,6 @@ template <typename Container>
 realT sigma(const std::vector<realT>& prob, const Container& X,
             std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(prob)) {
         throw exception::ZeroSize("qpp::sigma()", "prob");
     }
@@ -244,7 +237,6 @@ template <typename Container>
 realT cor(const rmat& probXY, const Container& X, const Container& Y,
           std::enable_if_t<is_iterable_v<Container>>* = nullptr) {
     // EXCEPTION CHECKS
-
     if (!internal::check_nonzero_size(X)) {
         throw exception::ZeroSize("qpp::cor()", "X");
     }

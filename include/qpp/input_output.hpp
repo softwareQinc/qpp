@@ -25,7 +25,7 @@
  */
 
 /**
- * \file input_output.hpp
+ * \file qpp/input_output.hpp
  * \brief Input/output functions
  */
 
@@ -178,7 +178,6 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::save()", "A");
@@ -232,7 +231,6 @@ dyn_mat<typename Derived::Scalar>
 load(std::istream& is,
      std::enable_if_t<is_complex_v<typename Derived::Scalar>>* = nullptr) {
     // EXCEPTION CHECKS
-
     if (!is.good()) {
         throw std::runtime_error("qpp::load(): Error opening input stream!");
     }
@@ -278,7 +276,6 @@ dyn_mat<typename Derived::Scalar>
 load(std::istream& is,
      std::enable_if_t<!is_complex_v<typename Derived::Scalar>>* = nullptr) {
     // EXCEPTION CHECKS
-
     if (!is.good()) {
         throw std::runtime_error("qpp::load(): Error opening input stream!");
     }
@@ -322,7 +319,6 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::obsolete::save()", "A");
@@ -367,7 +363,6 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> load(std::istream& is) {
     // EXCEPTION CHECKS
-
     if (!is.good()) {
         throw std::runtime_error(
             "qpp::obsolete::load(): Error opening input stream!");

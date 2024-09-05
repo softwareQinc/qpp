@@ -25,7 +25,7 @@
  */
 
 /**
- * \file experimental/experimental.hpp
+ * \file qpp/experimental/experimental.hpp
  * \brief Experimental/test functions/classes
  */
 
@@ -78,7 +78,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     expr_t<Derived> cA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero-size
     if (!internal::check_nonzero_size(cA)) {
         throw exception::ZeroSize("qpp::measure_seq()", "A");
@@ -195,7 +194,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 #endif // QPP_OPENMP
                 { out_state += current_ket; }
             } // end if(overlap_ket)
-        }     // end for
+        } // end for
         realT norm_out_state = norm(out_state);
         prob = norm_out_state * norm_out_state;
         out_state = out_state / norm_out_state;
@@ -249,9 +248,9 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
 #endif // QPP_OPENMP
                         { out_state += cA(i, j) * current_ket * current_bra; }
                     } // end if(overlap_bra)
-                }     // end for(all bras)
-            }         // end if(overlap_ket)
-        }             // end for(all kets)
+                } // end for(all bras)
+            } // end if(overlap_ket)
+        } // end for(all kets)
         prob = trace(out_state).real();
         out_state = out_state / prob;
     } // end else(density matrix)
@@ -283,7 +282,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
-
     // check zero size
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize("qpp::measure_seq()", "A");

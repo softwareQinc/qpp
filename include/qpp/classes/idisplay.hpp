@@ -25,7 +25,7 @@
  */
 
 /**
- * \file classes/idisplay.hpp
+ * \file qpp/classes/idisplay.hpp
  * \brief Textual representation interface
  */
 
