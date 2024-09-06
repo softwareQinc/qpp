@@ -6944,7 +6944,8 @@ circuit_as_iterators(const QCircuit& qc) {
  * \brief Puts a quantum (sub)-circuit description in the canonical form,
  * i.e., starting with the first measurement step in the circuit range
  * [start, finish), pushes all cCTRLs and measurements to the end of the
- * circuit, so the circuit will be of the form [Gates, cCTRLs, Measurements]
+ * circuit, so, if possible, the circuit will be of the form
+ * [Gates, cCTRLs, Measurements]
  *
  * \note This function does not interchange measurements, i.e., the re-ordering
  * is stable
@@ -7009,8 +7010,12 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 
 /**
  * \brief Puts a quantum (sub)-circuit description in the canonical form,
- * i.e., starting with the first measurement step of the quantum circuit,
- * pushes all measurements and cCTRLs at the end of the circuit
+ * i.e., starting with the first measurement step in the circuit, pushes all
+ * cCTRLs and measurements to the end of the circuit, so, if possible, the
+ * circuit will be of the form [Gates, cCTRLs, Measurements]
+ *
+ * \note This function does not interchange measurements, i.e., the re-ordering
+ * is stable
  *
  * \param qc Quantum circuit description
  * \return Quantum circuit canonical form represented as a vector of quantum

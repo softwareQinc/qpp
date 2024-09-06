@@ -110,20 +110,22 @@ struct QCircuitConditionalStep : IDisplay {
      * \brief Equality operator
      *
      * \param rhs qpp::internal::QCircuitConditionalStep against which the
-     * equality is being tested \return True if the
-     * qpp::internal::QCircuitConditionalStep(s) are equal, false otherwise
+     * equality is being tested
+     * \return True if the qpp::internal::QCircuitConditionalStep(s) are equal,
+     * false otherwise
      */
     bool operator==(const QCircuitConditionalStep& rhs) const noexcept {
-        return std::tie(rhs.condition_type_) == std::tie(condition_type_);
+        return std::addressof(rhs.func_) == std::addressof(func_) &&
+               std::tie(rhs.condition_type_) == std::tie(condition_type_);
     }
 
     /**
      * \brief Inequality operator
      *
      * \param rhs qpp::internal::QCircuitConditionalStep against which the
-     * inequality is being tested \return True if the
-     * qpp::internal::QCircuitConditionalStep(s) are not equal, false
-     otherwise
+     * inequality is being tested
+     * \return True if the qpp::internal::QCircuitConditionalStep(s) are not
+     * equal, false otherwise
      */
     bool operator!=(const QCircuitConditionalStep& rhs) const noexcept {
         return !(*this == rhs);

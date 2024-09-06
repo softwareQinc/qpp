@@ -215,9 +215,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param ensure_post_selection When \a ensure_post_selection is true, the
      * step is executed repeatedly until the post-selection succeeds, or until
      * the maximum number of post-selection reps is reached,
-     * \see qpp::QEngineT::set_max_post_selection_reps(), in which case the
+     * see qpp::QEngineT::set_max_post_selection_reps(), in which case the
      * post-selection is not guaranteed to succeed; check the state of the
-     * engine, \see qpp::QEngineT::post_select_ok()
+     * engine, see qpp::QEngineT::post_select_ok()
      */
     void
     execute_circuit_steps_once_(const std::vector<QCircuit::iterator>& steps,
@@ -1015,7 +1015,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param dits Vector of classical dits, must have the same size as the
      * internal vector of classical dits returned by
-     * qpp::QEngineT::get_dits() \return Reference to the current instance
+     * qpp::QEngineT::get_dits()
+     * \return Reference to the current instance
      */
     QEngineT& set_dits(std::vector<idx> dits) {
         // EXCEPTION CHECKS
@@ -1029,14 +1030,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     }
 
     /**
-     * \brief
+     * \brief Enforces post-selection (must succeed) when \a val is true
      *
      * \param val If true, repeatedly executes post-selection steps until the
      * post-selection result(s) agree, or until the maximum number of
-     * post-selection repetitions is reached, \see
+     * post-selection repetitions is reached, see
      * qpp::QEngineT::set_max_post_selection_reps(), in which case the
      * post-selection is not guaranteed to succeed; check the state of the
-     * engine, \see qpp::QEngineT::post_select_ok().
+     * engine, see qpp::QEngineT::post_select_ok().
      * \return Reference to the current instance
      */
     QEngineT& set_ensure_post_selection(bool val) {
