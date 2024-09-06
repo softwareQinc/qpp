@@ -32,6 +32,8 @@
 #ifndef QPP_CLASSES_QENGINE_HPP_
 #define QPP_CLASSES_QENGINE_HPP_
 
+#include <iostream>
+
 #include <algorithm>
 #include <cassert>
 #include <iterator>
@@ -1123,8 +1125,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     /**
      * \brief Executes one step in the quantum circuit description
      *
-     * \note Override only this QEngine::execute() member function in every
-     * derived class to achieve the desired behaviour
+     * \note Override only this member function in every derived class to
+     * achieve the desired behaviour
      *
      * \param elem Step to be executed
      * \return Reference to the current instance
@@ -1153,9 +1155,19 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep& nop_step) {
             return this->execute_nop_step_(nop_step);
         };
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep& conditional_step) {
+                auto func = conditional_step.func_;
+                if (func.has_value()) {
+                    // simply call the functor
+                    func.value()(qeng_st_.dits_);
+                }
+                return;
+            };
 
         std::visit(
             overloaded{
+                conditional_step_visitor,
                 gate_step_visitor,
                 measurement_step_visitor,
                 nop_step_visitor,

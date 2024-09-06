@@ -239,6 +239,11 @@ using expr_t = Eigen::Matrix<
     internal::eval_t<Derived>::ColsAtCompileTime == 1 ? 1 : Eigen::Dynamic>;
 
 /**
+ * \brief Conditional functor type in qpp::QCircuit conditional statements
+ */
+using cond_func_t = std::function<bool(std::vector<idx>)>;
+
+/**
  * \brief Variant type-matching utility for std::visit
  * \tparam Ts Type list
  */

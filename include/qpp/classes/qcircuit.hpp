@@ -55,6 +55,7 @@
 #include "qpp/classes/idisplay.hpp"
 #include "qpp/classes/ijson.hpp"
 
+#include "qpp/internal/classes/qcircuit_conditional_step.hpp"
 #include "qpp/internal/classes/qcircuit_gate_step.hpp"
 #include "qpp/internal/classes/qcircuit_measurement_step.hpp"
 #include "qpp/internal/classes/qcircuit_nop_step.hpp"
@@ -121,7 +122,8 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     using VarStep =
-        std::variant<internal::QCircuitGateStep,
+        std::variant<internal::QCircuitConditionalStep,
+                     internal::QCircuitGateStep,
                      internal::QCircuitMeasurementStep,
                      internal::QCircuitNOPStep>; ///< circuit step variant
     std::vector<VarStep> circuit_; ///<< quantum circuit representation
@@ -148,6 +150,7 @@ class QCircuit : public IDisplay, public IJSON {
      */
     template <class... Fns>
     void visit_circuit_step_(const VarStep& circuit_step, Fns&&... fns) const;
+
     /**
      * \brief Visits a vector of qpp::QCircuit::VarStep variants
      *
@@ -801,9 +804,11 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(circuit_, gate_step_visitor, measurement_step_visitor,
-                       nop_step_visitor);
+        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor);
 
         // update the destructively measured qudits
         measured_d_.insert(
@@ -868,9 +873,11 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(circuit_, gate_step_visitor, measurement_step_visitor,
-                       nop_step_visitor);
+        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor);
 
         // update (enlarge) the clean dits vector
         clean_dits_.insert(
@@ -892,6 +899,27 @@ class QCircuit : public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     QCircuit& add_dit(idx n = 1) { return add_dit(n, nc_); }
+
+    QCircuit& cond_if(std::function<bool(std::vector<idx>)> cond_func) {
+        circuit_.emplace_back(internal::QCircuitConditionalStep{
+            internal::QCircuitConditionalStep::Type::IF, cond_func});
+
+        return *this;
+    }
+
+    QCircuit& cond_else() {
+        circuit_.emplace_back(internal::QCircuitConditionalStep{
+            internal::QCircuitConditionalStep::Type::ELSE});
+
+        return *this;
+    }
+
+    QCircuit& cond_endif() {
+        circuit_.emplace_back(internal::QCircuitConditionalStep{
+            internal::QCircuitConditionalStep::Type::ENDIF});
+
+        return *this;
+    }
 
     /**
      * \brief Applies the single qudit gate \a U on single qudit \a i
@@ -3778,9 +3806,12 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(other.circuit_, gate_step_visitor,
-                       measurement_step_visitor, nop_step_visitor);
+        visit_circuit_(other.circuit_, conditional_step_visitor,
+                       gate_step_visitor, measurement_step_visitor,
+                       nop_step_visitor);
 
         // STEP 2
         // replace the corresponding elements of measured_, measured_nd_,
@@ -3948,9 +3979,12 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(other.circuit_, gate_step_visitor,
-                       measurement_step_visitor, nop_step_visitor);
+        visit_circuit_(other.circuit_, conditional_step_visitor,
+                       gate_step_visitor, measurement_step_visitor,
+                       nop_step_visitor);
 
         // TODO check this
 
@@ -4114,9 +4148,12 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(other.circuit_, gate_step_visitor,
-                       measurement_step_visitor, nop_step_visitor);
+        visit_circuit_(other.circuit_, conditional_step_visitor,
+                       gate_step_visitor, measurement_step_visitor,
+                       nop_step_visitor);
 
         // TODO check this
 
@@ -4390,9 +4427,12 @@ class QCircuit : public IDisplay, public IJSON {
             [&](const internal::QCircuitMeasurementStep&) {};
         // NOPs are left unchanged
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep&) {};
         for (idx i = end_ctrl_circuit; i < end_composed_circuit; ++i) {
-            visit_circuit_step_(circuit_[i], gate_step_visitor,
-                                measurement_step_visitor, nop_step_visitor);
+            visit_circuit_step_(circuit_[i], conditional_step_visitor,
+                                gate_step_visitor, measurement_step_visitor,
+                                nop_step_visitor);
         }
 
         return *this;
@@ -4507,9 +4547,11 @@ class QCircuit : public IDisplay, public IJSON {
         auto measurement_step_visitor =
             [&](const internal::QCircuitMeasurementStep&) {};
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(circuit_, gate_step_visitor, measurement_step_visitor,
-                       nop_step_visitor);
+        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor);
 
         return *this;
     }
@@ -4678,9 +4720,11 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(circuit_, gate_step_visitor, measurement_step_visitor,
-                       nop_step_visitor);
+        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor);
 
         clean_qudits_.erase(std::next(clean_qudits_.begin(),
                                       static_cast<std::ptrdiff_t>(target)));
@@ -4723,9 +4767,11 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(circuit_, gate_step_visitor, measurement_step_visitor,
-                       nop_step_visitor);
+        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor);
 
         clean_dits_.erase(std::next(clean_dits_.begin(),
                                     static_cast<std::ptrdiff_t>(target)));
@@ -5056,10 +5102,14 @@ class QCircuitIterator {
                 [&](const internal::QCircuitNOPStep& nop_step) {
                     os << nop_step;
                 };
+            auto conditional_step_visitor =
+                [&](const internal::QCircuitConditionalStep& conditional_step) {
+                    os << conditional_step;
+                };
 
             qc_ptr_->visit_circuit_step_(
-                qc_ptr_->circuit_[ip_], gate_step_visitor,
-                measurement_step_visitor, nop_step_visitor);
+                qc_ptr_->circuit_[ip_], conditional_step_visitor,
+                gate_step_visitor, measurement_step_visitor, nop_step_visitor);
 
             return os;
         }
@@ -5363,9 +5413,12 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {
             result += std::string{"\"NOP\""} + "}";
         };
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_step_(elem.get_step(), gate_step_visitor,
-                            measurement_step_visitor, nop_step_visitor);
+        visit_circuit_step_(elem.get_step(), conditional_step_visitor,
+                            gate_step_visitor, measurement_step_visitor,
+                            nop_step_visitor);
     } // end for
     result += "], "; // end steps
 
@@ -6889,9 +6942,9 @@ circuit_as_iterators(const QCircuit& qc) {
 
 /**
  * \brief Puts a quantum (sub)-circuit description in the canonical form,
- * i.e., starting with the first measurement step from the circuit range
- * [start, finish), pushes all measurements and cCTRLs to the end of the
- * circuit
+ * i.e., starting with the first measurement step in the circuit range
+ * [start, finish), pushes all cCTRLs and measurements to the end of the
+ * circuit, so the circuit will be of the form [Gates, cCTRLs, Measurements]
  *
  * \note This function does not interchange measurements, i.e., the re-ordering
  * is stable
