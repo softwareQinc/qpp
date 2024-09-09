@@ -58,23 +58,6 @@ struct QCircuitConditionalStep : IDisplay {
     };
 
     /**
-     * \brief Conditional functor type in qpp::QCircuit conditional statements
-     */
-    using cond_func_t = std::function<bool(std::vector<idx>)>;
-
-    /**
-     * \class qpp::internal::QCircuitConditionalStep::IfElseLoc
-     * \brief Stores the location of conditional statements
-     */
-    struct Context {
-        std::optional<std::pair<idx, cond_func_t>>
-            if_expr; ///< location of if statement and corresponding condition
-                     ///< function
-        std::optional<idx> else_expr;  ///< location of else statement
-        std::optional<idx> endif_expr; ///< location of endif statement
-    };
-
-    /**
      * \brief Extraction operator overload for
      * qpp::internal::QCircuitConditionalStep::Type enum class
      *
@@ -103,8 +86,48 @@ struct QCircuitConditionalStep : IDisplay {
         return os;
     }
 
+    /**
+     * \brief Conditional functor type in qpp::QCircuit conditional statements
+     */
+    using cond_func_t = std::function<bool(std::vector<idx>)>;
+
+    /**
+     * \class qpp::internal::QCircuitConditionalStep::IfElseLoc
+     * \brief Stores the location of conditional statements
+     */
+    struct Context {
+        std::optional<std::pair<idx, cond_func_t>>
+            if_expr; ///< location of if statement and corresponding condition
+                     ///< function
+        std::optional<idx> else_expr;  ///< location of else statement
+        std::optional<idx> endif_expr; ///< location of endif statement
+    };
     Type condition_type_ = Type::NONE; ///< condition type
     Context ctx_;
+
+    /**
+     * \brief Extraction operator overload for
+     * qpp::internal::QCircuitConditionalStep::Context class
+     *
+     * \param os Output stream passed by reference
+     * \param measure_type qpp::internal::QCircuitConditionalStep::Context
+     *
+     * \return Reference to the output stream
+     */
+    friend std::ostream& operator<<(std::ostream& os, const Context& ctx) {
+        if (ctx.if_expr.has_value()) {
+            os << "IF: " << ctx.if_expr.value().first << ' ';
+            os << "addr. " << std::addressof(ctx.if_expr.value().second);
+        }
+        if (ctx.else_expr.has_value()) {
+            os << ", ELSE: " << ctx.else_expr.value();
+        }
+        if (ctx.endif_expr.has_value()) {
+            os << ", ENDIF: " << ctx.endif_expr.value();
+        }
+
+        return os;
+    }
 
     /**
      * \brief Default constructor
@@ -156,10 +179,7 @@ struct QCircuitConditionalStep : IDisplay {
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        os << condition_type_;
-        if (condition_type_ == Type::IF) {
-            os << ", <FUNC " << std::addressof(ctx_.if_expr->second) << ">";
-        }
+        os << condition_type_ << " -> Context [" << ctx_ << ']';
 
         return os;
     }

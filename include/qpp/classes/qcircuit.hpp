@@ -933,9 +933,9 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        internal::QCircuitConditionalStep::Context ctx;
+        internal::QCircuitConditionalStep::Context& ctx =
+            conditional_stack_.top();
         ctx.else_expr = get_step_count();
-        conditional_stack_.top().else_expr = ctx.else_expr;
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::ELSE, ctx});
 
@@ -952,11 +952,23 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        internal::QCircuitConditionalStep::Context ctx;
+        internal::QCircuitConditionalStep::Context& ctx =
+            conditional_stack_.top();
         ctx.endif_expr = get_step_count();
-        conditional_stack_.top().endif_expr = ctx.endif_expr;
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::ENDIF, ctx});
+
+        // update the IF/ELSE contexts
+        auto if_expr = ctx.if_expr;
+        auto else_expr = ctx.else_expr;
+        if (else_expr.has_value()) {
+            std::get<internal::QCircuitConditionalStep>(
+                circuit_[else_expr.value()])
+                .ctx_ = ctx;
+        }
+        std::get<internal::QCircuitConditionalStep>(
+            circuit_[if_expr.value().first])
+            .ctx_ = ctx;
         conditional_stack_.pop();
 
         return *this;

@@ -1158,11 +1158,29 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         };
         auto conditional_step_visitor =
             [&](const internal::QCircuitConditionalStep& conditional_step) {
-                auto func = conditional_step.ctx_.if_expr;
-                if (func.has_value()) {
-                    // simply call the functor
-                    func.value().second(qeng_st_.dits_);
+                using Type = internal::QCircuitConditionalStep::Type;
+                auto if_expr = conditional_step.ctx_.if_expr;
+                bool is_true = true;
+                switch (conditional_step.condition_type_) {
+                    case Type::IF:
+                        if (if_expr.has_value()) {
+                            is_true = if_expr.value().second(qeng_st_.dits_);
+                        }
+                        std::cout << "Executing IF statement -> "
+                                  << std::boolalpha << is_true << "\n";
+                        // jump on false
+                        if (!is_true) {
+                        }
+                    case Type::ELSE:
+                        std::cout << "Executing ELSE statement\n";
+                        break;
+                    case Type::ENDIF:
+                        std::cout << "Executing ENDIF statement\n";
+                        break;
+                    case Type::NONE:
+                        break;
                 }
+
                 return;
             };
 
@@ -1190,8 +1208,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             throw exception::OutOfRange("qpp::QEngineT::execute()", "reps");
         }
         if (!qeng_st_.qc_ptr_->validate_conditionals()) {
-            throw exception::InvalidConditional(
-                "qpp::QEngineT::execute", "Unmatched IF or missing ENDIF");
+            throw exception::InvalidConditional("qpp::QEngineT::execute",
+                                                "Missing ENDIF");
         }
         // END EXCEPTION CHECKS
 
@@ -1204,8 +1222,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         this->set_max_post_selection_reps(
             engine_state_copy.max_post_selection_reps_);
 
+        // TODO: change back first to canonical_form
         auto steps_as_iterators =
-            reps > 1 ? internal::canonical_form(*this->qc_ptr_)
+            reps > 1 ? internal::circuit_as_iterators(*this->qc_ptr_)
                      : internal::circuit_as_iterators(*this->qc_ptr_);
         if (steps_as_iterators.empty()) {
             return *this;
@@ -1222,7 +1241,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
 
         // TODO: comment the line below in production
-        // qeng_st_.can_sample_ = false;
+        qeng_st_.can_sample_ = false;
 
         // execute repeatedly everything in the remaining interval
         // can sample: every step from now on is a projective measurement
