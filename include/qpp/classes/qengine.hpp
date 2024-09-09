@@ -1189,6 +1189,10 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         if (reps == 0) {
             throw exception::OutOfRange("qpp::QEngineT::execute()", "reps");
         }
+        if (!qeng_st_.qc_ptr_->validate_conditionals()) {
+            throw exception::InvalidConditional(
+                "qpp::QEngineT::execute", "Unmatched IF or missing ENDIF");
+        }
         // END EXCEPTION CHECKS
 
         // save the engine state

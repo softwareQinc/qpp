@@ -747,6 +747,14 @@ class QCircuit : public IDisplay, public IJSON {
         return result;
     }
 
+    /*
+     * \brief Validates the conditional statements
+     *
+     * \return True if valid conditionals, false otherwise
+     */
+    bool validate_conditionals() const {
+        return conditional_stack_.empty() ? true : false;
+    }
     // end getters
 
     // setters
