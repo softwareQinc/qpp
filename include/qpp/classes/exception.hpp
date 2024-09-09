@@ -637,6 +637,17 @@ class InvalidIterator : public Exception {
     using Exception::Exception;
 };
 
+/**
+ * \class qpp::exception::InvalidConditional
+ * \brief Invalid conditional
+ */
+class InvalidConditional : public Exception {
+  public:
+    std::string description() const override { return "Invalid conditional"; }
+
+    using Exception::Exception;
+};
+
 } /* namespace exception */
 } /* namespace qpp */
 

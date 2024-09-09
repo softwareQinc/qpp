@@ -1158,10 +1158,10 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         };
         auto conditional_step_visitor =
             [&](const internal::QCircuitConditionalStep& conditional_step) {
-                auto func = conditional_step.func_;
+                auto func = conditional_step.ctx_.if_expr;
                 if (func.has_value()) {
                     // simply call the functor
-                    func.value()(qeng_st_.dits_);
+                    func.value().second(qeng_st_.dits_);
                 }
                 return;
             };

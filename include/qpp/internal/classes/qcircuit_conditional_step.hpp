@@ -32,7 +32,7 @@
 #ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_CONDITIONAL_STEP_HPP_
 #define QPP_INTERNAL_CLASSES_QCIRCUIT_CONDITIONAL_STEP_HPP_
 
-#include <any>
+#include <optional>
 
 #include "qpp/input_output.hpp"
 
@@ -55,6 +55,23 @@ struct QCircuitConditionalStep : IDisplay {
         ELSE, ///< else branch statement
 
         ENDIF, ///< end if statement
+    };
+
+    /**
+     * \brief Conditional functor type in qpp::QCircuit conditional statements
+     */
+    using cond_func_t = std::function<bool(std::vector<idx>)>;
+
+    /**
+     * \class qpp::internal::QCircuitConditionalStep::IfElseLoc
+     * \brief Stores the location of conditional statements
+     */
+    struct Context {
+        std::optional<std::pair<idx, cond_func_t>>
+            if_expr; ///< location of if statement and corresponding condition
+                     ///< function
+        std::optional<idx> else_expr;  ///< location of else statement
+        std::optional<idx> endif_expr; ///< location of endif statement
     };
 
     /**
@@ -87,9 +104,7 @@ struct QCircuitConditionalStep : IDisplay {
     }
 
     Type condition_type_ = Type::NONE; ///< condition type
-    std::optional<idx>
-        jump_if_false_; ///< where to jump (relative) when condition is false
-    std::optional<cond_func_t> func_{}; ///< condition function
+    Context ctx_;
 
     /**
      * \brief Default constructor
@@ -102,9 +117,8 @@ struct QCircuitConditionalStep : IDisplay {
      * \tparam Func Conditional functor
      * \param condition_type Measurement type
      */
-    explicit QCircuitConditionalStep(
-        Type condition_type, std::optional<cond_func_t> func = std::nullopt)
-        : condition_type_{condition_type}, func_{func} {}
+    explicit QCircuitConditionalStep(Type condition_type, Context ctx)
+        : condition_type_{condition_type}, ctx_(std::move(ctx)) {}
 
     /**
      * \brief Equality operator
@@ -114,9 +128,9 @@ struct QCircuitConditionalStep : IDisplay {
      * \return True if the qpp::internal::QCircuitConditionalStep(s) are equal,
      * false otherwise
      */
+    // FIXME:
     bool operator==(const QCircuitConditionalStep& rhs) const noexcept {
-        return std::addressof(rhs.func_) == std::addressof(func_) &&
-               std::tie(rhs.condition_type_) == std::tie(condition_type_);
+        return std::tie(rhs.condition_type_) == std::tie(condition_type_);
     }
 
     /**
@@ -144,7 +158,7 @@ struct QCircuitConditionalStep : IDisplay {
     std::ostream& display(std::ostream& os) const override {
         os << condition_type_;
         if (condition_type_ == Type::IF) {
-            os << ", <FUNC " << std::addressof(func_) << ">";
+            os << ", <FUNC " << std::addressof(ctx_.if_expr->second) << ">";
         }
 
         return os;
