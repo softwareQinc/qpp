@@ -648,6 +648,19 @@ class InvalidConditional : public Exception {
     using Exception::Exception;
 };
 
+/**
+ * \class qpp::exception::CircuitContainsConditionals
+ * \brief Circuit contains conditional statements
+ */
+class CircuitContainsConditionals : public Exception {
+  public:
+    std::string description() const override {
+        return "Circuit contains conditionals";
+    }
+
+    using Exception::Exception;
+};
+
 } /* namespace exception */
 } /* namespace qpp */
 

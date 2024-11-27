@@ -492,6 +492,7 @@ dyn_col_vect<Derived> project_ket_on_dits(dyn_col_vect<Derived> psi,
 
     return psi;
 }
+
 } /* namespace internal */
 
 } /* namespace qpp */

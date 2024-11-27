@@ -49,6 +49,7 @@
 - Simplified MATLAB detection via CMake `find_package()` function. Users should
   only use `-DQPP_MATLAB=ON` when building with MATLAB support, all other
   MATLAB-related CMake flags have been removed.
+- Bugfix in qpp::adjoint(QCircuit);
 
 # Version 5.1 - 1 March 2024
 

@@ -1454,7 +1454,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
     return grams<dyn_mat<typename Derived::Scalar>>(input);
 }
 
-// TODO check why 2 * internal::maxn
+// TODO: check why 2 * internal::maxn
 /**
  * \brief Non-negative integer index to non-negative integer multi-index
  * \see qpp::multiidx2n()
@@ -2232,8 +2232,8 @@ dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
                 if (coeff != 0.0) {
                     auto bra_dits = n2multiidx(j, dims_cols);
                     auto mat_dits = ket_dits;
-                    mat_dits.insert(mat_dits.end(), bra_dits.begin(),
-                                    bra_dits.end());
+                    mat_dits.insert(mat_dits.end(), bra_dits.cbegin(),
+                                    bra_dits.cend());
                     result.states.emplace_back(coeff, mat_dits);
                 }
             }

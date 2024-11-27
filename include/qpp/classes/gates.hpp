@@ -623,7 +623,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // ctrl + gate subsystem vector
         std::vector<idx> ctrlgate = ctrl;
         std::sort(ctrlgate.begin(), ctrlgate.end());
-        ctrlgate.insert(ctrlgate.end(), target.begin(), target.end());
+        ctrlgate.insert(ctrlgate.end(), target.cbegin(), target.cend());
         // FIXME if needed
         // std::sort(ctrlgate.begin(), ctrlgate.end());
 

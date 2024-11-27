@@ -2251,7 +2251,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
     }
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
-    ctrlgate.insert(ctrlgate.end(), target.begin(), target.end());
+    ctrlgate.insert(ctrlgate.end(), target.cbegin(), target.cend());
     // FIXME if needed
     std::sort(ctrlgate.begin(), ctrlgate.end());
 

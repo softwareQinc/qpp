@@ -32,8 +32,6 @@
 #ifndef QPP_CLASSES_QENGINE_HPP_
 #define QPP_CLASSES_QENGINE_HPP_
 
-#include <iostream>
-
 #include <algorithm>
 #include <cassert>
 #include <iterator>
@@ -207,6 +205,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     internal::QEngineStatistics
         stats_{}; ///< measurement statistics for multiple runs
 
+    // FIXME: doc
     /**
      * \brief Executes a contiguous series of projective measurement steps
      *
@@ -219,9 +218,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * post-selection is not guaranteed to succeed; check the state of the
      * engine, see qpp::QEngineT::post_select_ok()
      */
-    void
-    execute_circuit_steps_once_(const std::vector<QCircuit::iterator>& steps,
-                                idx pos, bool ensure_post_selection) {
+    void execute_circuit_steps_once_(std::vector<QCircuit::iterator>& steps,
+                                     idx pos, bool ensure_post_selection) {
         // save the engine state
         auto engine_state_copy = qeng_st_;
 
@@ -259,6 +257,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         restore_ensure_post_selection_flag();
     }
 
+    // FIXME: doc
     /**
      * \brief Executes a contiguous series of projective measurement steps
      *
@@ -266,8 +265,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param pos Index from where the execution starts
      * \param reps Number of repetitions
      */
-    void execute_no_sample_(const std::vector<QCircuit::iterator>& steps,
-                            idx pos, idx reps) {
+    void execute_no_sample_(std::vector<QCircuit::iterator>& steps, idx pos,
+                            idx reps) {
         // save the engine state
         internal::QEngineState<T> engine_state_copy = qeng_st_;
 
@@ -308,7 +307,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * post-selection)
      * \param reps Number of repetitions
      */
-    void execute_sample_(const std::vector<QCircuit::iterator>& steps, idx pos,
+    void execute_sample_(std::vector<QCircuit::iterator>& steps, idx pos,
                          idx reps) {
         std::map<idx, std::pair<idx, std::optional<idx>>>
             c_q; // records the c <- (q, [OPTIONAL ps_val]) map
@@ -571,7 +570,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     }
                 }
             }
-            // TODO check if this can happen (st_.dits_.empty())
+            // TODO: check if this can happen (st_.dits_.empty())
             else {
                 if (is_fan) {
                     for (idx qudit : target_rel_pos) {
@@ -779,6 +778,62 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 break;
         } // end switch on measurement type
     };
+
+    /**
+     * \brief Executes qpp::internal::QCircuitConditionalStep
+     *
+     * \param conditional_step Instance of
+     * qpp::internal::QCircuitConditionalStep
+     * \param it Iterator pointing to the step to be executed
+     *
+     */
+    virtual void execute_conditional_step_(
+        const internal::QCircuitConditionalStep& conditional_step,
+        QCircuitTraits<QCircuit>::iterator_type it) {
+        using Type = internal::QCircuitConditionalStep::Type;
+        auto if_expr = conditional_step.ctx_.if_expr;
+        auto else_expr = conditional_step.ctx_.else_expr;
+        auto endif_expr = conditional_step.ctx_.endif_expr;
+        auto dit_shift = conditional_step.ctx_.dit_shift;
+        bool is_true = true;
+        switch (conditional_step.condition_type_) {
+            case Type::IF:
+                if (if_expr.has_value()) {
+                    auto lambda = if_expr.value().second;
+                    auto it_begin =
+                        std::next(qeng_st_.dits_.begin(), dit_shift);
+                    auto it_end = qeng_st_.dits_.end();
+                    is_true = lambda(std::vector<idx>(it_begin, it_end));
+                }
+                LOG << "Executing IF statement -> " << std::boolalpha << is_true
+                    << "\n";
+                // jump on false
+                if (!is_true) {
+                    idx adv = else_expr.has_value() ? else_expr.value()
+                                                    : endif_expr.value();
+                    adv -= if_expr.value().first;
+
+                    it.advance(adv - 1);
+                    LOG << "\t\texecute_conditional_step_(): " << it
+                        << std::endl;
+                }
+                break;
+            case Type::ELSE: {
+                idx adv = endif_expr.value();
+                adv -= else_expr.value();
+                it.advance(adv - 1);
+                LOG << "Executing ELSE statement\n";
+                break;
+            }
+            case Type::ENDIF:
+                LOG << "Executing ENDIF statement\n";
+                break;
+            case Type::NONE:
+                break;
+        }
+
+        return;
+    }
 
     /**
      * \brief Executes qpp::internal::QCircuitNOPStep
@@ -1129,17 +1184,20 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \note Override only this member function in every derived class to
      * achieve the desired behaviour
      *
-     * \param elem Step to be executed
+     * \param it Iterator pointing to the step to be executed
      * \return Reference to the current instance
      */
-    QEngineT& execute(
-        const typename QCircuitTraits<QCircuit>::value_type& elem) override {
+    QEngineT& execute(QCircuitTraits<QCircuit>::iterator_type it) override {
         // EXCEPTION CHECKS
         // iterator must point to the same quantum circuit description
-        if (elem.get_qc_ptr() != this->qc_ptr_) {
+        if ((*it).get_qc_ptr() != this->qc_ptr_) {
             throw exception::InvalidIterator(
                 "qpp::QEngineT::execute()",
                 "Iterator does not point to the same circuit description");
+        }
+        if (!this->qc_ptr_->validate_conditionals()) {
+            throw exception::InvalidConditional("qpp::QEngineT::execute())",
+                                                "Missing ENDIF");
         }
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
@@ -1153,35 +1211,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             [&](const internal::QCircuitMeasurementStep& measurement_step) {
                 return this->execute_measurement_step_(measurement_step);
             };
+
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep& nop_step) {
             return this->execute_nop_step_(nop_step);
         };
+
         auto conditional_step_visitor =
             [&](const internal::QCircuitConditionalStep& conditional_step) {
-                using Type = internal::QCircuitConditionalStep::Type;
-                auto if_expr = conditional_step.ctx_.if_expr;
-                bool is_true = true;
-                switch (conditional_step.condition_type_) {
-                    case Type::IF:
-                        if (if_expr.has_value()) {
-                            is_true = if_expr.value().second(qeng_st_.dits_);
-                        }
-                        std::cout << "Executing IF statement -> "
-                                  << std::boolalpha << is_true << "\n";
-                        // jump on false
-                        if (!is_true) {
-                        }
-                    case Type::ELSE:
-                        std::cout << "Executing ELSE statement\n";
-                        break;
-                    case Type::ENDIF:
-                        std::cout << "Executing ENDIF statement\n";
-                        break;
-                    case Type::NONE:
-                        break;
-                }
-
-                return;
+                return this->execute_conditional_step_(conditional_step, it);
             };
 
         std::visit(
@@ -1191,7 +1228,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 measurement_step_visitor,
                 nop_step_visitor,
             },
-            elem.get_step());
+            (*it).get_step());
 
         return *this;
     }
@@ -1207,8 +1244,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         if (reps == 0) {
             throw exception::OutOfRange("qpp::QEngineT::execute()", "reps");
         }
-        if (!qeng_st_.qc_ptr_->validate_conditionals()) {
-            throw exception::InvalidConditional("qpp::QEngineT::execute",
+        if (!this->qc_ptr_->validate_conditionals()) {
+            throw exception::InvalidConditional("qpp::QEngineT::execute()",
                                                 "Missing ENDIF");
         }
         // END EXCEPTION CHECKS

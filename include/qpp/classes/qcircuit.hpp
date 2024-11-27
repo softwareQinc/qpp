@@ -34,12 +34,12 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <deque>
 #include <initializer_list>
 #include <iomanip>
 #include <iterator>
 #include <optional>
 #include <ostream>
-#include <stack>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -64,10 +64,16 @@
 #include "qpp/internal/util.hpp"
 
 namespace qpp {
-// forward declaration
 namespace internal {
+///< conditional stack type
+using conditional_stack_t =
+    std::deque<internal::QCircuitConditionalStep::Context>;
+
+// forward declarations
 class QCircuitIterator;
-}
+void inc_conditional_stack_(conditional_stack_t& cs, idx i);
+} /* namespace internal */
+
 /**
  * \class qpp::QCircuit
  * \brief Quantum circuit description
@@ -98,7 +104,7 @@ class QCircuit : public IDisplay, public IJSON {
     std::unordered_map<std::size_t, idx>
         measurement_count_{}; ///< measurement counts
 
-    std::stack<internal::QCircuitConditionalStep::Context>
+    internal::conditional_stack_t
         conditional_stack_; ///< used to parse conditional statements
 
     /**
@@ -500,9 +506,10 @@ class QCircuit : public IDisplay, public IJSON {
                 std::vector<idx> target = gate_step.target_;
                 std::vector<idx> ctrl_target;
                 ctrl_target.reserve(ctrl.size() + target.size());
-                ctrl_target.insert(ctrl_target.end(), ctrl.begin(), ctrl.end());
-                ctrl_target.insert(ctrl_target.end(), target.begin(),
-                                   target.end());
+                ctrl_target.insert(ctrl_target.end(), ctrl.cbegin(),
+                                   ctrl.cend());
+                ctrl_target.insert(ctrl_target.end(), target.cbegin(),
+                                   target.cend());
 
                 idx max_height = 0;
 
@@ -560,7 +567,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t hashV = V.has_value() ? hash_eigen(V.value()) : 0;
 
-        // TODO check this
+        // TODO: check this
 
         // iterate over all steps in the circuit
         for (auto&& step : circuit_) {
@@ -897,7 +904,7 @@ class QCircuit : public IDisplay, public IJSON {
             true);
 
         // update (enlarge) the measurement dits vector
-        measurement_dits_.insert(std::next(measurement_dits_.begin(),
+        measurement_dits_.insert(std::next(measurement_dits_.cbegin(),
                                            static_cast<std::ptrdiff_t>(pos)),
                                  n, false);
 
@@ -915,7 +922,7 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& cond_if(std::function<bool(std::vector<idx>)> cond_func) {
         internal::QCircuitConditionalStep::Context ctx;
         ctx.if_expr = {get_step_count(), cond_func};
-        conditional_stack_.push(ctx);
+        conditional_stack_.push_back(ctx);
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::IF, ctx});
 
@@ -925,8 +932,8 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& cond_else() {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
-        if (conditional_stack_.empty() || !conditional_stack_.top().if_expr ||
-            conditional_stack_.top().else_expr.has_value()) {
+        if (conditional_stack_.empty() || !conditional_stack_.back().if_expr ||
+            conditional_stack_.back().else_expr.has_value()) {
             throw exception::InvalidConditional(
                 "qpp::QCircuit::cond_else()",
                 context + ": ELSE without a matching IF");
@@ -934,7 +941,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         internal::QCircuitConditionalStep::Context& ctx =
-            conditional_stack_.top();
+            conditional_stack_.back();
         ctx.else_expr = get_step_count();
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::ELSE, ctx});
@@ -945,7 +952,7 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& cond_endif() {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
-        if (conditional_stack_.empty() || !conditional_stack_.top().if_expr) {
+        if (conditional_stack_.empty() || !conditional_stack_.back().if_expr) {
             throw exception::InvalidConditional(
                 "qpp::QCircuit::cond_endif()",
                 context + ": ENDIF without a matching IF");
@@ -953,7 +960,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         internal::QCircuitConditionalStep::Context& ctx =
-            conditional_stack_.top();
+            conditional_stack_.back();
         ctx.endif_expr = get_step_count();
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::ENDIF, ctx});
@@ -969,7 +976,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::get<internal::QCircuitConditionalStep>(
             circuit_[if_expr.value().first])
             .ctx_ = ctx;
-        conditional_stack_.pop();
+        conditional_stack_.pop_back();
 
         return *this;
     }
@@ -3717,10 +3724,19 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         std::vector<VarStep> result;
-        result.reserve(n * circuit_.size());
+        std::vector<VarStep> circuit_copy(circuit_);
+        auto conditional_stack_copy = conditional_stack_;
+        idx num_steps = circuit_copy.size();
+        result.reserve(n * num_steps);
         for (idx i = 0; i < n; ++i) {
-            result.insert(result.end(), circuit_.begin(), circuit_.end());
+            result.insert(result.end(), circuit_copy.cbegin(),
+                          circuit_copy.cend());
+            internal::inc_conditional_stack_(conditional_stack_copy, num_steps);
+            conditional_stack_.insert(conditional_stack_.end(),
+                                      conditional_stack_copy.cbegin(),
+                                      conditional_stack_copy.cend());
         }
+
         circuit_ = std::move(result);
 
         // update gate counts
@@ -3827,7 +3843,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
         add_dit(other.nc_, pos_dit.value());
 
-        // STEP 1: update [c]ctrl and target indexes of other
+        // STEP 1: update [c]ctrl and target indexes of other, and modify
+        // the locations in conditional steps
         auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             // update the cctrl indexes
             if (is_cCTRL(gate_step)) {
@@ -3859,8 +3876,13 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        // TODO: check this one with the dit_shift
         auto conditional_step_visitor =
-            [&](const internal::QCircuitConditionalStep&) {};
+            [&](internal::QCircuitConditionalStep& conditional_step) {
+                conditional_step.ctx_.inc_locs(other.get_step_count());
+                conditional_step.ctx_.inc_dit_shift(
+                    pos_dit.value_or(other.get_nc()));
+            };
 
         visit_circuit_(other.circuit_, conditional_step_visitor,
                        gate_step_visitor, measurement_step_visitor,
@@ -3900,11 +3922,11 @@ class QCircuit : public IDisplay, public IJSON {
                             static_cast<std::ptrdiff_t>(pos_dit.value())));
 
         // STEP 4: append the copy of other to the current instance
-        circuit_.insert(circuit_.end(), other.circuit_.begin(),
-                        other.circuit_.end());
+        circuit_.insert(circuit_.end(), other.circuit_.cbegin(),
+                        other.circuit_.cend());
 
         // STEP 5: modify gate counts, hash tables etc. accordingly
-        // update matrix hash table
+        // update matrix hash table, update conditional stack
         for (auto& elem : other.cmat_hash_tbl_) {
             cmat_hash_tbl_[elem.first] = elem.second;
         }
@@ -3916,6 +3938,12 @@ class QCircuit : public IDisplay, public IJSON {
         for (auto& elem : other.measurement_count_) {
             measurement_count_[elem.first] += elem.second;
         }
+        // update conditional stack
+        inc_conditional_stack_(other.conditional_stack_,
+                               other.get_step_count());
+        conditional_stack_.insert(conditional_stack_.end(),
+                                  other.conditional_stack_.cbegin(),
+                                  other.conditional_stack_.cend());
 
         return *this;
     }
@@ -4039,7 +4067,7 @@ class QCircuit : public IDisplay, public IJSON {
                        gate_step_visitor, measurement_step_visitor,
                        nop_step_visitor);
 
-        // TODO check this
+        // TODO: check this
 
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
@@ -4073,8 +4101,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // STEP 2: append the copy of other to the current instance
-        circuit_.insert(circuit_.begin(), other.circuit_.begin(),
-                        other.circuit_.end());
+        circuit_.insert(circuit_.begin(), other.circuit_.cbegin(),
+                        other.circuit_.cend());
 
         // STEP 3: modify gate counts, hash tables etc. accordingly
         // update matrix hash table
@@ -4208,7 +4236,7 @@ class QCircuit : public IDisplay, public IJSON {
                        gate_step_visitor, measurement_step_visitor,
                        nop_step_visitor);
 
-        // TODO check this
+        // TODO: check this
 
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
@@ -4242,8 +4270,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // STEP 2: append the copy of other to the current instance
-        circuit_.insert(circuit_.end(), other.circuit_.begin(),
-                        other.circuit_.end());
+        circuit_.insert(circuit_.end(), other.circuit_.cbegin(),
+                        other.circuit_.cend());
 
         // STEP 3: modify gate counts, hash tables etc. accordingly
         // update matrix hash table
@@ -4288,14 +4316,13 @@ class QCircuit : public IDisplay, public IJSON {
      * qudits of the current quantum circuit description, then the required
      * number of additional qudits are automatically added to the current
      * quantum circuit description.
-     * \param shift Optional, performs the control as if the \a ctrl qudit state
-     * was \f$X\f$-incremented by \a shift
-     * \param pos_dit Optional, the first classical dit of \a
-     * qc_target quantum circuit description is inserted before the \a
-     * pos_dit classical dit index of the current quantum circuit
-     * description (in the classical dits array), the rest following in
-     * order. If absent (default), insertion is performed at the end.
-     * \return Reference to the current instance
+     * \param shift Optional, performs the control as if the \a ctrl qudit
+     * state was \f$X\f$-incremented by \a shift \param pos_dit Optional,
+     * the first classical dit of \a qc_target quantum circuit description
+     * is inserted before the \a pos_dit classical dit index of the current
+     * quantum circuit description (in the classical dits array), the rest
+     * following in order. If absent (default), insertion is performed at
+     * the end. \return Reference to the current instance
      */
     QCircuit&
     compose_CTRL_circuit(const std::vector<idx>& ctrl, QCircuit qc_target,
@@ -4443,13 +4470,13 @@ class QCircuit : public IDisplay, public IJSON {
             if (gate_step.ctrl_.has_value()) {
                 // enlarge ctrl
                 gate_step.ctrl_.value().insert(gate_step.ctrl_.value().begin(),
-                                               ctrl.begin(), ctrl.end());
+                                               ctrl.cbegin(), ctrl.cend());
                 // enlarge shifts
                 // both shifts present
                 if (shift.has_value() && gate_step.shift_.has_value()) {
                     gate_step.shift_.value().insert(
-                        gate_step.shift_.value().begin(), shift.value().begin(),
-                        shift.value().end());
+                        gate_step.shift_.value().begin(),
+                        shift.value().cbegin(), shift.value().cend());
                 }
                 // current shift present (ctrl circuit)
                 else if (shift.has_value() && !gate_step.shift_.has_value()) {
@@ -4519,6 +4546,20 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
+     * \brief Returns true if the quantum circuit description contains any
+     * conditionals, false otherwise
+     *
+     * \return True if the quantum circuit description contains any
+     * conditionals, false otherwise
+     */
+    bool has_conditionals() const noexcept {
+        return std::find_if(circuit_.begin(), circuit_.end(), [](auto&& arg) {
+                   return std::holds_alternative<
+                       internal::QCircuitConditionalStep>(arg);
+               }) != circuit_.end();
+    }
+
+    /**
      * \brief Returns true if the quantum circuit description
      * contains any operations/measurements that remove qudits,
      * false otherwise
@@ -4571,6 +4612,10 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
         if (this->has_measurements()) {
             throw exception::QuditAlreadyMeasured(
+                "qpp::QCircuit::adjoint()", "Current qpp::QCircuit instance");
+        }
+        if (this->has_conditionals()) {
+            throw exception::CircuitContainsConditionals(
                 "qpp::QCircuit::adjoint()", "Current qpp::QCircuit instance");
         }
         // END EXCEPTION CHECKS
@@ -5233,7 +5278,7 @@ class QCircuitIterator {
         }
 
         // protects against incrementing past the end
-        if (ip_ == num_steps) {
+        if (ip_ >= num_steps) {
             throw exception::InvalidIterator(
                 "qpp::internal::QCircuitIterator::operator++()",
                 "Incrementing past the end");
@@ -5241,6 +5286,7 @@ class QCircuitIterator {
         // END EXCEPTION CHECKS
 
         ++ip_;
+        LOG << "\toperator++()" << *this << std::endl;
 
         return *this;
     }
@@ -5307,6 +5353,46 @@ class QCircuitIterator {
 
         return value_type{qc_ptr_, ip_, qc_ptr_->circuit_[ip_]};
     }
+
+    /**
+     * \brief Advance the iterator forward
+     *
+     * \param n Number of steps
+     * \return Reference to the current instance
+     */
+    QCircuitIterator& advance(idx n) {
+        // EXCEPTION CHECKS
+        // protects against de-referencing past the last element or
+        // against de-referencing invalid iterators
+        idx num_steps = qc_ptr_->get_step_count();
+        if (qc_ptr_ == nullptr) {
+            throw exception::InvalidIterator(
+                "qpp::internal::QCircuitIterator::advance()",
+                "No qpp::QCircuit assigned");
+        }
+        if (num_steps == 0) {
+            throw exception::InvalidIterator(
+                "qpp::internal::QCircuitIterator::advance()",
+                "Zero-sized qpp::QCircuit");
+        }
+        if (ip_ + n > num_steps) {
+            throw exception::InvalidIterator(
+                "qpp::internal::QCircuitIterator::advance()",
+                "Advancing past the end");
+        }
+        // END EXCEPTION CHECKS
+
+        ip_ += n;
+
+        return *this;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const QCircuit::iterator& it) {
+        os << "[IT-> qc_ptr: " << it.qc_ptr_ << ", ip_: " << it.ip_ << "]";
+        return os;
+    }
+
 }; /* class internal::QCircuitIterator */
 } /* namespace internal */
 
@@ -5512,7 +5598,7 @@ struct QCircuitTraits;
  */
 template <>
 struct QCircuitTraits<QCircuit> {
-    using iterator_type = QCircuit::iterator;
+    using iterator_type = QCircuit::iterator&;
     using value_type = QCircuit::iterator::value_type;
 };
 
@@ -5915,10 +6001,13 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
  * \return Adjoint quantum circuit description
  */
 inline QCircuit adjoint(QCircuit qc,
-                        std::optional<std::string> name = nullptr) {
+                        std::optional<std::string> name = std::nullopt) {
     // EXCEPTION CHECKS
     if (qc.has_measurements()) {
         throw exception::QuditAlreadyMeasured("qpp::adjoint()", "qc");
+    }
+    if (qc.has_conditionals()) {
+        throw exception::CircuitContainsConditionals("qpp::adjoint()", "qc");
     }
     // END EXCEPTION CHECKS
 
@@ -6821,6 +6910,34 @@ inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
 inline bool is_cCTRL(QCircuit::iterator it) { return is_cCTRL(*it); }
 
 /**
+ * \brief True if the quantum circuit step is a conditionalstep, false
+ * otherwise
+ *
+ * \param elem Quantum circuit step
+ * \return True if the quantum circuit step is a conditional step, false
+ * otherwise
+ */
+inline bool is_conditional(const QCircuit::iterator::value_type& elem) {
+    auto step = elem.get_step();
+    if (std::holds_alternative<internal::QCircuitConditionalStep>(step)) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * \brief True if the quantum circuit iterator points to a conditional step,
+ * false otherwise
+ *
+ * \param it Quantum circuit iterator
+ * \return True if the quantum circuit iterator points to a conditional
+ * step, false otherwise
+ */
+inline bool is_conditional(QCircuit::iterator it) {
+    return is_conditional(*it);
+}
+/**
  * \brief Extracts ctrl, target, ps_vals, and c_reg vectors (in this order)
  * from a quantum circuit step, as a tuple
  *
@@ -7059,7 +7176,7 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
     }
 
     steps_before_measurement.insert(steps_before_measurement.end(),
-                                    steps.begin(), steps.end());
+                                    steps.cbegin(), steps.cend());
 
     return steps_before_measurement;
 }
@@ -7079,6 +7196,19 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
  */
 inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
     return canonical_form(qc.begin(), qc.end());
+}
+
+/**
+ * \brief Increments by \a i all conditional locations in the conditional
+ * stack \a cs
+ *
+ * \param cs Conditional stack
+ * \param i Non-negative integer
+ */
+inline void inc_conditional_stack_(conditional_stack_t& cs, idx i) {
+    for (auto& elem : cs) {
+        elem.inc_locs(i);
+    }
 }
 
 } /* namespace internal */
