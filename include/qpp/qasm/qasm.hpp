@@ -281,10 +281,6 @@ class Context {
     idx max_qubit_ =
         std::numeric_limits<idx>::max(); ///< largest (virtual) qubit index
 
-    // For controlled contexts
-    std::vector<idx> cctrls_{}; ///< classical controls in the current context
-    std::vector<idx> cctrl_shift_{}; ///< control shift
-
   public:
     /**
      * \brief Constructs a translation context with a given target QCircuit
@@ -399,49 +395,6 @@ class Context {
         }
         env_.back().val_[id] = std::move(val);
     }
-
-    /*------------------- Classical controls ----------------*/
-    /**
-     * \brief Enter a classically controlled context
-     * \note QASM syntax does not allow nested classically controlled contexts
-     *
-     * \param cctrls Const reference to a list of classical controls
-     * \param shift Const reference to a list of classical control values
-     */
-    void set_ccontrols(const std::vector<idx>& cctrls,
-                       const std::vector<idx>& shift) {
-        cctrls_ = cctrls;
-        cctrl_shift_ = shift;
-    }
-
-    /**
-     * \brief Exit a classically controlled context
-     */
-    void clear_ccontrols() {
-        cctrls_.clear();
-        cctrl_shift_.clear();
-    }
-
-    /**
-     * \brief Whether the current context is classically controlled
-     *
-     * \return True if and only if the current context is classically controlled
-     */
-    bool ccontrolled() { return !cctrls_.empty(); }
-
-    /**
-     * \brief The current classical controls
-     *
-     * \return Const reference to the classical controls
-     */
-    const std::vector<idx>& get_cctrls() { return cctrls_; }
-
-    /**
-     * \brief The current classical control values
-     *
-     * \return Const reference to the classical control values
-     */
-    const std::vector<idx>& get_shift() { return cctrl_shift_; }
 };
 
 /**
@@ -572,9 +525,14 @@ class QCircuitBuilder final : public ast::Visitor {
         }
 
         // apply controls to then branch
-        ctx.set_ccontrols(creg->indices_, shift);
+        ctx.get_circuit()->cond_if([i = creg->indices_,
+                                    shift](std::vector<idx> v) {
+            return std::transform_reduce(
+                i.begin(), i.end(), shift.begin(), true, std::logical_and<>(),
+                [&](auto& ind, auto& b) { return v[ind] ^ b; });
+        });
         stmt.then().accept(*this);
-        ctx.clear_ccontrols();
+        ctx.get_circuit()->cond_endif();
     }
 
     // Gates
@@ -614,12 +572,7 @@ class QCircuitBuilder final : public ast::Visitor {
 
         // apply the gate
         for (auto i : args) {
-            if (ctx.ccontrolled()) {
-                circuit->cCTRL(u, ctx.get_cctrls(), i, ctx.get_shift(),
-                               "Controlled-U");
-            } else {
-                circuit->gate(u, i, "U");
-            }
+            circuit->gate(u, i, "U");
         }
     }
 
@@ -630,49 +583,22 @@ class QCircuitBuilder final : public ast::Visitor {
 
         // different combinations of controls and targets
         if (ctrls.size() == 1 && tgts.size() == 1) {
-            if (ctx.ccontrolled()) {
-                std::vector<idx> tmp{ctrls[0], tgts[0]};
-                circuit->cCTRL(Gates::get_no_thread_local_instance().CNOT,
-                               ctx.get_cctrls(), tmp, ctx.get_shift(), "CX");
-            } else {
-                circuit->gate(Gates::get_no_thread_local_instance().CNOT,
+            circuit->gate(Gates::get_no_thread_local_instance().CNOT,
                               ctrls[0], tgts[0], "CX");
-            }
         } else if (ctrls.size() > 1 && tgts.size() == 1) {
             for (idx ctrl : ctrls) {
-                if (ctx.ccontrolled()) {
-                    std::vector<idx> tmp{ctrl, tgts[0]};
-                    circuit->cCTRL(Gates::get_no_thread_local_instance().CNOT,
-                                   ctx.get_cctrls(), tmp, ctx.get_shift(),
-                                   "CX");
-                } else {
-                    circuit->gate(Gates::get_no_thread_local_instance().CNOT,
+                circuit->gate(Gates::get_no_thread_local_instance().CNOT,
                                   ctrl, tgts[0], "CX");
-                }
             }
         } else if (ctrls.size() == 1 && tgts.size() > 1) {
             for (idx tgt : tgts) {
-                if (ctx.ccontrolled()) {
-                    std::vector<idx> tmp{ctrls[0], tgt};
-                    circuit->cCTRL(Gates::get_no_thread_local_instance().CNOT,
-                                   ctx.get_cctrls(), tmp, ctx.get_shift(),
-                                   "CX");
-                } else {
-                    circuit->gate(Gates::get_no_thread_local_instance().CNOT,
+                circuit->gate(Gates::get_no_thread_local_instance().CNOT,
                                   ctrls[0], tgt, "CX");
-                }
             }
         } else if (ctrls.size() == tgts.size()) {
             for (idx i = 0; i < static_cast<idx>(ctrls.size()); i++) {
-                if (ctx.ccontrolled()) {
-                    std::vector<idx> tmp{ctrls[i], tgts[i]};
-                    circuit->cCTRL(Gates::get_no_thread_local_instance().CNOT,
-                                   ctx.get_cctrls(), tmp, ctx.get_shift(),
-                                   "CX");
-                } else {
-                    circuit->gate(Gates::get_no_thread_local_instance().CNOT,
+                circuit->gate(Gates::get_no_thread_local_instance().CNOT,
                                   ctrls[i], tgts[i], "CX");
-                }
             }
         } // If registers have different lengths then it would be caught by the
           // parser
@@ -720,12 +646,7 @@ class QCircuitBuilder final : public ast::Visitor {
                 }
 
                 // apply (possibly classical controlled) gate
-                if (ctx.ccontrolled()) {
-                    circuit->cCTRL(mat, ctx.get_cctrls(), mapped_args,
-                                   ctx.get_shift(), dgate.name());
-                } else {
-                    circuit->gate(mat, mapped_args, dgate.name());
-                }
+                circuit->gate(mat, mapped_args, dgate.name());
             }
         } else {
             // push classical arguments onto a new scope
