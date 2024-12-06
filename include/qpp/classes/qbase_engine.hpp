@@ -133,7 +133,7 @@ class QBaseEngine : public IQEngineTraits, public IDisplay, public IJSON {
     };
 
     QBaseEngine& execute([[maybe_unused]]
-                         typename QCircuitTraits<QCT>::value_type step) {}
+                         typename QCircuitTraits<QCT>::value_type& step) {}
 
     /**
      * \brief Executes the entire quantum circuit description

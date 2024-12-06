@@ -5110,6 +5110,15 @@ class QCircuitIterator {
          */
         bool operator!=(const value_type_& rhs) { return !(*this == rhs); }
 
+        /**
+         * \brief Arrow de-reference operator
+         *
+         * \return Pointer to itself
+         */
+        value_type_* operator-> () {
+            return this;
+        }
+
         // getters
         /**
          * \brief Pointer to underlying quantum circuit description
@@ -5344,7 +5353,7 @@ class QCircuitIterator {
                 "qpp::internal::QCircuitIterator::operator*()",
                 "Zero-sized qpp::QCircuit");
         }
-        if (ip_ == num_steps) {
+        if (ip_ >= num_steps) {
             throw exception::InvalidIterator(
                 "qpp::internal::QCircuitIterator::operator*()",
                 "Dereferencing past the end");
@@ -5352,6 +5361,15 @@ class QCircuitIterator {
         // END EXCEPTION CHECKS
 
         return value_type{qc_ptr_, ip_, qc_ptr_->circuit_[ip_]};
+    }
+
+    /**
+     * \brief Safe arrow operator
+     *
+     * \return Pointer to de-referenced iterator element
+     */
+    value_type operator->() const {
+        return **this;
     }
 
     /**
@@ -5386,6 +5404,13 @@ class QCircuitIterator {
 
         return *this;
     }
+
+    /**
+     * \brief Current quantum circuit description instruction pointer
+     *
+     * \return Current quantum circuit description instruction pointer
+     */
+    idx get_ip() const { return ip_; }
 
     friend std::ostream& operator<<(std::ostream& os,
                                     const QCircuit::iterator& it) {
