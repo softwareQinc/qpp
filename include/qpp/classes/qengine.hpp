@@ -240,7 +240,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
 
         bool measured = false;
-        for (auto it = steps[pos]; it.get_ip() < steps.size(); ++it) {
+        auto it = steps[0];
+        it.advance(pos);
+        for (; it.get_ip() < steps.size(); ++it) {
             if (internal::is_measurement(it)) {
                 measured = true;
             }
