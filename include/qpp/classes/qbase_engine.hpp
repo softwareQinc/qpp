@@ -128,7 +128,7 @@ class QBaseEngine : public IQEngineTraits, public IDisplay, public IJSON {
      * \return Reference to the current instance
      */
     virtual QBaseEngine&
-    execute([[maybe_unused]] typename QCircuitTraits<QCT>::iterator_type it) {
+    execute([[maybe_unused]] typename QCircuitTraits<QCT>::iterator_type& it) {
         return *this;
     };
 

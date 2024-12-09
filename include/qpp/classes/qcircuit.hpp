@@ -5623,7 +5623,7 @@ struct QCircuitTraits;
  */
 template <>
 struct QCircuitTraits<QCircuit> {
-    using iterator_type = QCircuit::iterator&;
+    using iterator_type = QCircuit::iterator;
     using value_type = QCircuit::iterator::value_type;
 };
 

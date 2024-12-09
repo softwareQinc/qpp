@@ -794,7 +794,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      */
     virtual void execute_conditional_step_(
         const internal::QCircuitConditionalStep& conditional_step,
-        QCircuitTraits<QCircuit>::iterator_type it) {
+        QCircuitTraits<QCircuit>::iterator_type& it) {
         using Type = internal::QCircuitConditionalStep::Type;
         auto if_expr = conditional_step.ctx_.if_expr;
         auto else_expr = conditional_step.ctx_.else_expr;
@@ -1193,7 +1193,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param it Iterator pointing to the step to be executed
      * \return Reference to the current instance
      */
-    QEngineT& execute(QCircuitTraits<QCircuit>::iterator_type it) override {
+    QEngineT& execute(QCircuitTraits<QCircuit>::iterator_type& it) override {
         // EXCEPTION CHECKS
         // iterator must point to the same quantum circuit description
         if (it->get_qc_ptr() != this->qc_ptr_) {
