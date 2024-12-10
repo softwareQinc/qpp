@@ -408,7 +408,9 @@ template <typename Derived>
 #ifdef QPP_OPENMP
 #pragma omp critical
 #endif // QPP_OPENMP
-        { result += K * rA * adjoint(K); }
+        {
+            result += K * rA * adjoint(K);
+        }
     }
 
     return result;
@@ -502,7 +504,9 @@ apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 #ifdef QPP_OPENMP
 #pragma omp critical
 #endif // QPP_OPENMP
-        { result += apply(rA, K, target, dims); }
+        {
+            result += apply(rA, K, target, dims);
+        }
     }
 
     return result;
@@ -2006,7 +2010,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 // NOLINTNEXTLINE
 #pragma omp critical
 #endif // QPP_OPENMP
-                { result += (chopped_psi + chopped_psi_bar); }
+                {
+                    result += (chopped_psi + chopped_psi_bar);
+                }
             }
 
             return result;
@@ -2065,7 +2071,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 // NOLINTNEXTLINE
 #pragma omp critical
 #endif // QPP_OPENMP
-            { result += kron(psi_i, phi_i_bra); }
+            {
+                result += kron(psi_i, phi_i_bra);
+            }
         } // end for(i)
 
         return result;
@@ -2323,7 +2331,9 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 // NOLINTNEXTLINE
 #pragma omp critical
 #endif // QPP_OPENMP
-                { result += (chopped_psi + chopped_psi_bar); }
+                {
+                    result += (chopped_psi + chopped_psi_bar);
+                }
             }
             return result;
         }; // end applyCTRL_fan_ket
@@ -2382,7 +2392,9 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 // NOLINTNEXTLINE
 #pragma omp critical
 #endif // QPP_OPENMP
-            { result += kron(psi_i, phi_i_bra); }
+            {
+                result += kron(psi_i, phi_i_bra);
+            }
         } // end for(i)
 
         return result;

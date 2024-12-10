@@ -5115,9 +5115,7 @@ class QCircuitIterator {
          *
          * \return Pointer to itself
          */
-        value_type_* operator-> () {
-            return this;
-        }
+        value_type_* operator->() { return this; }
 
         // getters
         /**
@@ -5368,9 +5366,7 @@ class QCircuitIterator {
      *
      * \return Pointer to de-referenced iterator element
      */
-    value_type operator->() const {
-        return **this;
-    }
+    value_type operator->() const { return **this; }
 
     /**
      * \brief Advance the iterator forward

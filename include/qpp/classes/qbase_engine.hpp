@@ -141,8 +141,8 @@ class QBaseEngine : public IQEngineTraits, public IDisplay, public IJSON {
      * \param elem Step to be executed
      * \return Reference to the current instance
      */
-    virtual QBaseEngine& execute([[maybe_unused]]
-                         const typename QCircuitTraits<QCT>::value_type& elem) {
+    virtual QBaseEngine& execute(
+        [[maybe_unused]] const typename QCircuitTraits<QCT>::value_type& elem) {
         return *this;
     };
 

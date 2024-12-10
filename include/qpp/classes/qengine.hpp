@@ -128,8 +128,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         // decide if we can sample (every step after optimize_up_to_pos
         // must be a projective measurement)
-        for (idx i = optimize_up_to_pos; i < steps.size();
-             ++i) {
+        for (idx i = optimize_up_to_pos; i < steps.size(); ++i) {
             if (!(internal::is_projective_measurement(steps[i])) ||
                 internal::is_discard(steps[i])) {
                 return {false, optimize_up_to_pos};
@@ -1279,8 +1278,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         // execute everything ONCE in the interval
         // [0, first_measurement_discard_reset_pos)
-        for (auto it = steps_as_iterators[0];
-             it.get_ip() < optimize_up_to_pos; ++it) {
+        for (auto it = steps_as_iterators[0]; it.get_ip() < optimize_up_to_pos;
+             ++it) {
             execute(it);
         }
 
@@ -1290,13 +1289,11 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // execute repeatedly everything in the remaining interval
         // can sample: every step from now on is a projective measurement
         if (qeng_st_.can_sample_) {
-            execute_sample_(steps_as_iterators,
-                            optimize_up_to_pos, reps);
+            execute_sample_(steps_as_iterators, optimize_up_to_pos, reps);
         }
         // cannot sample
         else {
-            execute_no_sample_(steps_as_iterators,
-                               optimize_up_to_pos, reps);
+            execute_no_sample_(steps_as_iterators, optimize_up_to_pos, reps);
         }
 
         return *this;

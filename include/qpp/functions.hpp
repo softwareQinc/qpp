@@ -2368,7 +2368,7 @@ cmat operator"" _prj() {
     }
     // END EXCEPTION CHECKS
 
-    return kron(operator""_ket < Bits... > (), operator""_bra < Bits... > ());
+    return kron(operator""_ket < Bits...>(), operator""_bra < Bits...>());
 }
 } /* namespace literals */
 

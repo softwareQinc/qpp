@@ -268,7 +268,7 @@ class Context {
     using hash_ident_uptr =
         std::unordered_map<ast::symbol, std::unique_ptr<Value>>;
     struct Environment {
-        Environment() noexcept : val_(){};
+        Environment() noexcept : val_() {};
         Environment(Environment&& rhs) noexcept : val_(std::move(rhs.val_)) {}
         hash_ident_uptr val_;
     };
@@ -583,22 +583,22 @@ class QCircuitBuilder final : public ast::Visitor {
 
         // different combinations of controls and targets
         if (ctrls.size() == 1 && tgts.size() == 1) {
-            circuit->gate(Gates::get_no_thread_local_instance().CNOT,
-                              ctrls[0], tgts[0], "CX");
+            circuit->gate(Gates::get_no_thread_local_instance().CNOT, ctrls[0],
+                          tgts[0], "CX");
         } else if (ctrls.size() > 1 && tgts.size() == 1) {
             for (idx ctrl : ctrls) {
-                circuit->gate(Gates::get_no_thread_local_instance().CNOT,
-                                  ctrl, tgts[0], "CX");
+                circuit->gate(Gates::get_no_thread_local_instance().CNOT, ctrl,
+                              tgts[0], "CX");
             }
         } else if (ctrls.size() == 1 && tgts.size() > 1) {
             for (idx tgt : tgts) {
                 circuit->gate(Gates::get_no_thread_local_instance().CNOT,
-                                  ctrls[0], tgt, "CX");
+                              ctrls[0], tgt, "CX");
             }
         } else if (ctrls.size() == tgts.size()) {
             for (idx i = 0; i < static_cast<idx>(ctrls.size()); i++) {
                 circuit->gate(Gates::get_no_thread_local_instance().CNOT,
-                                  ctrls[i], tgts[i], "CX");
+                              ctrls[i], tgts[i], "CX");
             }
         } // If registers have different lengths then it would be caught by the
           // parser
