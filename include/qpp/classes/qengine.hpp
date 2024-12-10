@@ -128,6 +128,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         // decide if we can sample (every step after optimize_up_to_pos
         // must be a projective measurement)
+        // TODO: why is_discard() here?
         for (idx i = optimize_up_to_pos; i < steps.size(); ++i) {
             if (!(internal::is_projective_measurement(steps[i])) ||
                 internal::is_discard(steps[i])) {
@@ -207,7 +208,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     internal::QEngineStatistics
         stats_{}; ///< measurement statistics for multiple runs
 
-    // FIXME: doc
     /**
      * \brief Executes a contiguous series of projective measurement steps
      *
@@ -261,7 +261,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         restore_ensure_post_selection_flag();
     }
 
-    // FIXME: doc
     /**
      * \brief Executes a contiguous series of projective measurement steps
      *
@@ -809,8 +808,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     auto it_end = qeng_st_.dits_.end();
                     is_true = lambda(std::vector<idx>(it_begin, it_end));
                 }
-                LOG << "Executing IF statement -> " << std::boolalpha << is_true
-                    << "\n";
                 // jump on false
                 if (!is_true) {
                     idx adv = else_expr.has_value() ? else_expr.value()
@@ -818,8 +815,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     adv -= if_expr.value().first;
 
                     it.advance(adv - 1);
-                    LOG << "\t\texecute_conditional_step_(): " << it
-                        << std::endl;
                 } else if (else_expr.has_value()) {
                     idx adv = endif_expr.value();
                     adv -= else_expr.value();
@@ -827,11 +822,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 }
                 break;
             case Type::ELSE: {
-                LOG << "Executing ELSE statement\n";
                 break;
             }
             case Type::ENDIF:
-                LOG << "Executing ENDIF statement\n";
                 break;
             case Type::NONE:
                 break;
@@ -1284,7 +1277,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
 
         // TODO: comment the line below in production
-        qeng_st_.can_sample_ = false;
+        // qeng_st_.can_sample_ = false;
 
         // execute repeatedly everything in the remaining interval
         // can sample: every step from now on is a projective measurement

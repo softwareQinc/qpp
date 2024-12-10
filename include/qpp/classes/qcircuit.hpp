@@ -5293,7 +5293,6 @@ class QCircuitIterator {
         // END EXCEPTION CHECKS
 
         ++ip_;
-        LOG << "\toperator++()" << *this << std::endl;
 
         return *this;
     }

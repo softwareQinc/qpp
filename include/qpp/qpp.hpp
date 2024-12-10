@@ -39,16 +39,6 @@
 #ifndef QPP_QPP_H_
 #define QPP_QPP_H_
 
-#include <iostream>
-#define QPP_DEBUG
-#ifdef QPP_DEBUG
-#define LOG std::cout
-#else
-#define LOG                                                                    \
-    if (false)                                                                 \
-    std::cout
-#endif
-
 // Ignore warnings for unknown C++17 attributes (we use such "custom"
 // attributes internally, the compiler is supposed to ignore them according to
 // the C++17 standard)
