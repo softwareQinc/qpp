@@ -1269,8 +1269,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             can_sample_from_(steps_as_iterators);
         qeng_st_.can_sample_ = reps > 1 && can_sample;
 
-        // execute everything ONCE in the interval
-        // [0, first_measurement_discard_reset_pos)
+        // execute everything ONCE in the interval [0, optimize_up_to_pos)
         for (auto it = steps_as_iterators[0]; it.get_ip() < optimize_up_to_pos;
              ++it) {
             execute(it);
