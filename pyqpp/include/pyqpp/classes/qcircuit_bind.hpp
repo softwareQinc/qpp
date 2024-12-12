@@ -27,6 +27,8 @@
 #ifndef PYQPP_CLASSES_QCIRCUIT_BIND_HPP_
 #define PYQPP_CLASSES_QCIRCUIT_BIND_HPP_
 
+#include <pybind11/functional.h>
+
 #include "pyqpp/pyqpp_common.hpp"
 
 /* qpp::QCircuit and related free functions */
@@ -69,6 +71,13 @@ inline void init_classes_qcircuit(py::module_& m) {
             .def("add_dit", py::overload_cast<idx, idx>(&QCircuit::add_dit),
                  "Adds n additional classical dits before qudit pos",
                  py::arg("n"), py::arg("pos"))
+            .def("cond_if", py::overload_cast<std::function<bool(std::vector<idx>)>>(&QCircuit::cond_if),
+                 "Adds conditional if",
+                 py::arg("cond_func"))
+            .def("cond_else", &QCircuit::cond_else,
+                 "Adds conditional else")
+            .def("cond_endif", &QCircuit::cond_endif,
+                 "Adds conditional endif")
             .def("add_qudit", py::overload_cast<idx>(&QCircuit::add_qudit),
                  "Adds n additional qudits after the last qudit",
                  py::arg("n") = 1)
@@ -291,11 +300,16 @@ inline void init_classes_qcircuit(py::module_& m) {
             .def("get_nq", &QCircuit::get_nq, "Number of qudits")
             .def("get_resources", &QCircuit::get_resources,
                  "Quantum circuit resources")
+            .def("validate_conditionals", &QCircuit::validate_conditionals,
+                 "True if valid conditionals, false otherwise")
             .def("get_step_count", &QCircuit::get_step_count,
                  "Total (gates + measurements) count")
             .def("has_measurements", &QCircuit::has_measurements,
                  "True if the quantum circuit description contains any "
                  "measurements, false otherwise")
+            .def("has_conditionals", &QCircuit::has_conditionals,
+                 "True if the quantum circuit description contains any "
+                 "conditionals, false otherwise")
             .def_static(
                 "is_cCTRL", &QCircuit::is_cCTRL,
                 "True if the gate step is a classically-controlled gate, "

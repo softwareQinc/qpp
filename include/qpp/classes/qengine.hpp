@@ -37,6 +37,7 @@
 #include <iterator>
 #include <limits>
 #include <map>
+#include <stack>
 #include <optional>
 #include <ostream>
 #include <set>
@@ -814,14 +815,13 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                                                     : endif_expr.value();
                     adv -= if_expr.value().first;
 
-                    it.advance(adv - 1);
-                } else if (else_expr.has_value()) {
-                    idx adv = endif_expr.value();
-                    adv -= else_expr.value();
-                    it.advance(adv - 1);
+                    it.advance(adv);
                 }
                 break;
             case Type::ELSE: {
+                idx adv = endif_expr.value();
+                adv -= else_expr.value();
+                it.advance(adv - 1);
                 break;
             }
             case Type::ENDIF:
