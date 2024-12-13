@@ -46,6 +46,7 @@
 #include <utility>
 #include <variant>
 #include <vector>
+#include <stack>
 
 #include "qpp/functions.hpp"
 #include "qpp/input_output.hpp"
@@ -86,8 +87,10 @@ class QCircuit : public IDisplay, public IJSON {
     idx d_;                           ///< qudit dimension
     std::optional<std::string> name_; ///< optional circuit name
 
-    std::vector<bool>
+    std::stack<std::vector<bool>>
         measured_d_; ///< keeps track of the destructively measured qudits
+    std::stack<std::vector<bool>>
+        measured_d_if_stack_; ///< measured_d_ on the if branch
     std::vector<bool>
         measured_nd_; ///< keeps track of the non-destructively measured qudits
     std::vector<bool> clean_qudits_; ///< keeps track of clean (unused) qudits
@@ -246,7 +249,7 @@ class QCircuit : public IDisplay, public IJSON {
     explicit QCircuit(idx nq = 1, idx nc = 0, idx d = 2,
                       std::optional<std::string> name = std::nullopt)
         : nq_{nq}, nc_{nc}, d_{d}, name_{std::move(name)},
-          measured_d_(nq, false), measured_nd_(nq, false),
+          measured_nd_(nq, false),
           clean_qudits_(nq_, true), clean_dits_(nc_, true),
           measurement_dits_(nc_, false), circuit_{} {
         // EXCEPTION CHECKS
@@ -256,6 +259,8 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::OutOfRange("qpp::QCircuit::QCircuit()", "d");
         }
         // END EXCEPTION CHECKS
+
+        measured_d_.push(std::vector(nq, false));
     }
 
     /**
@@ -348,7 +353,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        return measured_d_[i];
+        return measured_d_.top()[i];
     }
 
     /**
@@ -830,8 +835,8 @@ class QCircuit : public IDisplay, public IJSON {
                        measurement_step_visitor, nop_step_visitor);
 
         // update the destructively measured qudits
-        measured_d_.insert(
-            std::next(measured_d_.begin(), static_cast<std::ptrdiff_t>(pos)), n,
+        measured_d_.top().insert(
+            std::next(measured_d_.top().begin(), static_cast<std::ptrdiff_t>(pos)), n,
             false);
 
         // update the non-destructively measured qudits
@@ -926,6 +931,8 @@ class QCircuit : public IDisplay, public IJSON {
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::IF, ctx});
 
+        measured_d_.push(measured_d_.top());
+
         return *this;
     }
 
@@ -945,6 +952,10 @@ class QCircuit : public IDisplay, public IJSON {
         ctx.else_expr = get_step_count();
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::ELSE, ctx});
+
+        measured_d_if_stack_.push(measured_d_.top());
+        measured_d_.pop();
+        measured_d_.push(measured_d_.top());
 
         return *this;
     }
@@ -977,6 +988,21 @@ class QCircuit : public IDisplay, public IJSON {
             circuit_[if_expr.value().first])
             .ctx_ = ctx;
         conditional_stack_.pop_back();
+
+        if (else_expr.has_value()) {
+            auto if_ = measured_d_if_stack_.top();
+            measured_d_if_stack_.pop();
+            auto else_ = measured_d_.top();
+            measured_d_.pop();
+
+            std::transform(if_.begin(), if_.end(), else_.begin(),
+                           measured_d_.top().begin(),
+                           std::bit_or<>());
+        } else {
+            auto if_ = measured_d_.top();
+            measured_d_.pop();
+            measured_d_.top() = if_;
+        }
 
         return *this;
     }
@@ -2831,7 +2857,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
 
         if (destructive) {
-            measured_d_[target] = true;
+            measured_d_.top()[target] = true;
 
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::MEASURE,
@@ -2909,7 +2935,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (destructive) {
             for (idx elem : target) {
-                measured_d_[elem] = true;
+                measured_d_.top()[elem] = true;
             }
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::MEASURE_MANY,
@@ -3027,7 +3053,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashV, V);
 
         if (destructive) {
-            measured_d_[target] = true;
+            measured_d_.top()[target] = true;
 
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::MEASURE_V,
@@ -3128,7 +3154,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (destructive) {
             for (idx elem : target) {
-                measured_d_[elem] = true;
+                measured_d_.top()[elem] = true;
             }
 
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
@@ -3198,7 +3224,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
 
         if (destructive) {
-            measured_d_[target] = true;
+            measured_d_.top()[target] = true;
 
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT,
@@ -3284,7 +3310,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (destructive) {
             for (idx elem : target) {
-                measured_d_[elem] = true;
+                measured_d_.top()[elem] = true;
             }
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_MANY,
@@ -3377,7 +3403,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_hash_(hashV, V);
 
         if (destructive) {
-            measured_d_[target] = true;
+            measured_d_.top()[target] = true;
 
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_V,
@@ -3489,7 +3515,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         if (destructive) {
             for (idx elem : target) {
-                measured_d_[elem] = true;
+                measured_d_.top()[elem] = true;
             }
             circuit_.emplace_back(internal::QCircuitMeasurementStep{
                 internal::QCircuitMeasurementStep::Type::POST_SELECT_V_JOINT,
@@ -3542,7 +3568,7 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t m_hash = hash_eigen(cmat::Zero(d_, d_));
 
-        measured_d_[target] = true;
+        measured_d_.top()[target] = true;
 
         circuit_.emplace_back(internal::QCircuitMeasurementStep{
             internal::QCircuitMeasurementStep::Type::DISCARD,
@@ -3591,7 +3617,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::size_t m_hash = hash_eigen(cmat::Zero(d_, d_));
 
         for (idx elem : target) {
-            measured_d_[elem] = true;
+            measured_d_.top()[elem] = true;
         }
 
         circuit_.emplace_back(internal::QCircuitMeasurementStep{
@@ -3892,15 +3918,15 @@ class QCircuit : public IDisplay, public IJSON {
         // replace the corresponding elements of measured_, measured_nd_,
         // and clean_qudits_ with the ones of other
         if (pos_qudit < 0) {
-            std::copy_if(other.measured_d_.begin(), other.measured_d_.end(),
-                         measured_d_.begin(), [](bool val) { return val; });
+            std::copy_if(other.measured_d_.top().begin(), other.measured_d_.top().end(),
+                         measured_d_.top().begin(), [](bool val) { return val; });
             std::copy_if(other.measured_nd_.begin(), other.measured_nd_.end(),
                          measured_nd_.begin(), [](bool val) { return val; });
             std::copy_if(other.clean_qudits_.begin(), other.clean_qudits_.end(),
                          clean_qudits_.begin(), [](bool val) { return !val; });
         } else {
-            std::copy_if(other.measured_d_.begin(), other.measured_d_.end(),
-                         std::next(measured_d_.begin(), pos_qudit),
+            std::copy_if(other.measured_d_.top().begin(), other.measured_d_.top().end(),
+                         std::next(measured_d_.top().begin(), pos_qudit),
                          [](bool val) { return val; });
             std::copy_if(other.measured_nd_.begin(), other.measured_nd_.end(),
                          std::next(measured_nd_.begin(), pos_qudit),
@@ -4072,9 +4098,9 @@ class QCircuit : public IDisplay, public IJSON {
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
         // of other
-        for (idx i = 0; i < static_cast<idx>(other.measured_d_.size()); ++i) {
-            if (other.measured_d_[i]) {
-                measured_d_[target[i]] = true;
+        for (idx i = 0; i < static_cast<idx>(other.measured_d_.top().size()); ++i) {
+            if (other.measured_d_.top()[i]) {
+                measured_d_.top()[target[i]] = true;
             }
         }
         for (idx i = 0; i < static_cast<idx>(other.measured_nd_.size()); ++i) {
@@ -4241,9 +4267,9 @@ class QCircuit : public IDisplay, public IJSON {
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
         // of other
-        for (idx i = 0; i < static_cast<idx>(other.measured_d_.size()); ++i) {
-            if (other.measured_d_[i]) {
-                measured_d_[target[i]] = true;
+        for (idx i = 0; i < static_cast<idx>(other.measured_d_.top().size()); ++i) {
+            if (other.measured_d_.top()[i]) {
+                measured_d_.top()[target[i]] = true;
             }
         }
         for (idx i = 0; i < static_cast<idx>(other.measured_nd_.size()); ++i) {

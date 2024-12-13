@@ -821,7 +821,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             case Type::ELSE: {
                 idx adv = endif_expr.value();
                 adv -= else_expr.value();
-                it.advance(adv - 1);
+                it.advance(adv);
                 break;
             }
             case Type::ENDIF:
