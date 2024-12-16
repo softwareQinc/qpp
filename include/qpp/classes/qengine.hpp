@@ -37,11 +37,11 @@
 #include <iterator>
 #include <limits>
 #include <map>
-#include <stack>
 #include <optional>
 #include <ostream>
 #include <set>
 #include <sstream>
+#include <stack>
 #include <string>
 #include <tuple>
 #include <type_traits>
@@ -811,6 +811,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 }
                 // jump on false
                 if (!is_true) {
+                    // jump immediately after ELSE on false
                     idx adv = else_expr.has_value() ? else_expr.value()
                                                     : endif_expr.value();
                     adv -= if_expr.value().first;
