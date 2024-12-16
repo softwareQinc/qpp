@@ -88,9 +88,9 @@ class QCircuit : public IDisplay, public IJSON {
     std::optional<std::string> name_; ///< optional circuit name
 
     std::stack<std::vector<bool>>
-        measured_d_; ///< keeps track of the destructively measured qudits
+        measured_d_{}; ///< keeps track of the destructively measured qudits
     std::stack<std::vector<bool>>
-        measured_d_if_stack_; ///< measured_d_ on the if branch
+        measured_d_if_stack_{}; ///< measured_d_ on the if branch
     std::vector<bool>
         measured_nd_; ///< keeps track of the non-destructively measured qudits
     std::vector<bool> clean_qudits_; ///< keeps track of clean (unused) qudits
@@ -108,7 +108,7 @@ class QCircuit : public IDisplay, public IJSON {
         measurement_count_{}; ///< measurement counts
 
     internal::conditional_stack_t
-        conditional_stack_; ///< used to parse conditional statements
+        conditional_stack_{}; ///< used to parse conditional statements
 
     /**
      * \brief Adds matrix to the hash table
