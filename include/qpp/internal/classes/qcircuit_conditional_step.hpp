@@ -99,10 +99,10 @@ struct QCircuitConditionalStep : IDisplay {
         idx dit_shift = 0; ///< relative position of the first dit w.r.t. 0,
                            ///< used when composing circuits
         std::optional<std::pair<idx, cond_func_t>>
-            if_expr; ///< location of if statement and corresponding condition
-                     ///< function
-        std::optional<idx> else_expr;  ///< location of else statement
-        std::optional<idx> endif_expr; ///< location of endif statement
+            if_expr{}; ///< location of if statement and corresponding condition
+                       ///< function
+        std::optional<idx> else_expr{};  ///< location of else statement
+        std::optional<idx> endif_expr{}; ///< location of endif statement
 
         /**
          * \brief Equality operator
