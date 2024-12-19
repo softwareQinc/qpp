@@ -41,7 +41,6 @@
 #include <ostream>
 #include <set>
 #include <sstream>
-#include <stack>
 #include <string>
 #include <tuple>
 #include <type_traits>
