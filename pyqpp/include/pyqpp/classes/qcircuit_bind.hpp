@@ -74,10 +74,13 @@ inline void init_classes_qcircuit(py::module_& m) {
             .def("cond_if", py::overload_cast<std::function<bool(std::vector<idx>)>>(&QCircuit::cond_if),
                  "Adds conditional if",
                  py::arg("cond_func"))
+            .def("cond_while", py::overload_cast<std::function<bool(std::vector<idx>)>>(&QCircuit::cond_while),
+                 "Adds conditional while",
+                 py::arg("cond_func"))
             .def("cond_else", &QCircuit::cond_else,
                  "Adds conditional else")
-            .def("cond_endif", &QCircuit::cond_endif,
-                 "Adds conditional endif")
+            .def("cond_end", &QCircuit::cond_end,
+                 "Adds conditional end")
             .def("add_qudit", py::overload_cast<idx>(&QCircuit::add_qudit),
                  "Adds n additional qudits after the last qudit",
                  py::arg("n") = 1)

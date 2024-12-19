@@ -801,6 +801,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         auto dit_shift = conditional_step.ctx_.dit_shift;
         bool is_true = true;
         switch (conditional_step.condition_type_) {
+            case Type::WHILE:
             case Type::IF:
                 if (if_expr.has_value()) {
                     auto lambda = if_expr.value().second;
@@ -811,7 +812,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 }
                 // jump on false
                 if (!is_true) {
-                    // jump immediately after ELSE on false
+                    // jump immediately after ELSE/END on false
                     idx adv = else_expr.has_value() ? else_expr.value()
                                                     : endif_expr.value();
                     adv -= if_expr.value().first;
@@ -827,6 +828,22 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             }
             case Type::ENDIF:
                 break;
+            case Type::ENDWHILE:
+                if (if_expr.has_value()) {
+                    auto lambda = if_expr.value().second;
+                    auto it_begin =
+                        std::next(qeng_st_.dits_.begin(), dit_shift);
+                    auto it_end = qeng_st_.dits_.end();
+                    is_true = lambda(std::vector<idx>(it_begin, it_end));
+                }
+                // jump back on true
+                if (is_true) {
+                    idx adv = if_expr.value().first;
+                    adv -= endif_expr.value();
+                    // adv is a negative value
+                    it.advance(adv);
+                    break;
+                }
             case Type::NONE:
                 break;
         }

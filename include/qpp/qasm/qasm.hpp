@@ -532,7 +532,7 @@ class QCircuitBuilder final : public ast::Visitor {
                 [&](auto& ind, auto& b) { return v[ind] ^ b; });
         });
         stmt.then().accept(*this);
-        ctx.get_circuit()->cond_endif();
+        ctx.get_circuit()->cond_end();
     }
 
     // Gates

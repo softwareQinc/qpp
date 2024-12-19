@@ -32,6 +32,7 @@
 #ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_CONDITIONAL_STEP_HPP_
 #define QPP_INTERNAL_CLASSES_QCIRCUIT_CONDITIONAL_STEP_HPP_
 
+#include <functional>
 #include <optional>
 
 #include "qpp/input_output.hpp"
@@ -45,7 +46,7 @@ namespace internal {
  */
 struct QCircuitConditionalStep : IDisplay {
     /**
-     * \brief Type of measurement being executed in a measurement step
+     * \brief Type of conditional being executed in a conditional step
      */
     enum class Type {
         NONE, ///< no condition
@@ -54,7 +55,11 @@ struct QCircuitConditionalStep : IDisplay {
 
         ELSE, ///< else branch statement
 
-        ENDIF, ///< end if statement
+        ENDIF, ///< end if block statement
+
+        WHILE, ///< while branch statement
+
+        ENDWHILE, ///< end while branch statement
     };
 
     /**
@@ -80,6 +85,12 @@ struct QCircuitConditionalStep : IDisplay {
                 break;
             case Type::ENDIF:
                 os << "ENDIF";
+                break;
+            case Type::WHILE:
+                os << "WHILE";
+                break;
+            case Type::ENDWHILE:
+                os << "ENDWHILE";
                 break;
         }
 
