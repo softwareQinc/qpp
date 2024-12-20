@@ -107,8 +107,9 @@ class QCircuit : public IDisplay, public IJSON {
         measurement_count_{}; ///< measurement counts
 
     internal::conditional_stack_t
-        conditional_stack_{};      ///< used to parse conditional statements
-    std::optional<idx> while_pos_; ///< location of outermost while statement
+        conditional_stack_{}; ///< used to parse conditional statements
+    std::optional<idx>
+        outer_while_pos_; ///< location of outermost while statement
 
     /**
      * \brief Adds matrix to the hash table
@@ -931,8 +932,8 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& add_dit(idx n = 1) { return add_dit(n, nc_); }
 
     QCircuit& cond_while(std::function<bool(std::vector<idx>)> cond_func) {
-        if (!while_pos_.has_value()) {
-            while_pos_ = get_step_count();
+        if (!outer_while_pos_.has_value()) {
+            outer_while_pos_ = get_step_count();
         }
 
         internal::QCircuitConditionalStep::Context ctx{};
@@ -1008,8 +1009,8 @@ class QCircuit : public IDisplay, public IJSON {
             internal::QCircuitConditionalStep::Type::WHILE) {
             circuit_.emplace_back(internal::QCircuitConditionalStep{
                 internal::QCircuitConditionalStep::Type::ENDWHILE, ctx});
-            if (while_pos_.value() == ctx.start_expr.value().first) {
-                while_pos_ = std::nullopt;
+            if (outer_while_pos_.value() == ctx.start_expr.value().first) {
+                outer_while_pos_ = std::nullopt;
             }
         } else {
             circuit_.emplace_back(internal::QCircuitConditionalStep{
@@ -2892,7 +2893,7 @@ class QCircuit : public IDisplay, public IJSON {
                                                   context + ": target");
         }
         // trying to measure destructively in a while loop
-        if (destructive && while_pos_.has_value()) {
+        if (destructive && outer_while_pos_.has_value()) {
             throw exception::InvalidConditional("qpp::QCircuit::measure()",
                                                 context + ": while");
         }
@@ -2974,7 +2975,7 @@ class QCircuit : public IDisplay, public IJSON {
                                         context + ": c_reg, target");
         }
         // trying to measure destructively in a while loop
-        if (destructive && while_pos_.has_value()) {
+        if (destructive && outer_while_pos_.has_value()) {
             throw exception::InvalidConditional("qpp::QCircuit::measure()",
                                                 context + ": while");
         }
@@ -3091,7 +3092,7 @@ class QCircuit : public IDisplay, public IJSON {
                                           context + ": V");
         }
         // trying to measure destructively in a while loop
-        if (destructive && while_pos_.has_value()) {
+        if (destructive && outer_while_pos_.has_value()) {
             throw exception::InvalidConditional("qpp::QCircuit::measureV()",
                                                 context + ": while");
         }
@@ -3196,7 +3197,7 @@ class QCircuit : public IDisplay, public IJSON {
                                           context + ": V");
         }
         // trying to measure destructively in a while loop
-        if (destructive && while_pos_.has_value()) {
+        if (destructive && outer_while_pos_.has_value()) {
             throw exception::InvalidConditional("qpp::QCircuit::measureV()",
                                                 context + ": while");
         }
@@ -3279,7 +3280,7 @@ class QCircuit : public IDisplay, public IJSON {
                 "qpp::QCircuit::post_select()", context + ": target");
         }
         // trying to measure destructively in a while loop
-        if (destructive && while_pos_.has_value()) {
+        if (destructive && outer_while_pos_.has_value()) {
             throw exception::InvalidConditional("qpp::QCircuit::post_select()",
                                                 context + ": while");
         }
@@ -3369,7 +3370,7 @@ class QCircuit : public IDisplay, public IJSON {
             }
         }
         // trying to measure destructively in a while loop
-        if (destructive && while_pos_.has_value()) {
+        if (destructive && outer_while_pos_.has_value()) {
             throw exception::InvalidConditional("qpp::QCircuit::post_select()",
                                                 context + ": while");
         }
@@ -3461,7 +3462,7 @@ class QCircuit : public IDisplay, public IJSON {
                                           context + ": V");
         }
         // trying to measure destructively in a while loop
-        if (destructive && while_pos_.has_value()) {
+        if (destructive && outer_while_pos_.has_value()) {
             throw exception::InvalidConditional("qpp::QCircuit::post_selectV()",
                                                 context + ": while");
         }
@@ -3577,7 +3578,7 @@ class QCircuit : public IDisplay, public IJSON {
                                           context + ": V");
         }
         // trying to measure destructively in a while loop
-        if (destructive && while_pos_.has_value()) {
+        if (destructive && outer_while_pos_.has_value()) {
             throw exception::InvalidConditional("qpp::QCircuit::post_selectV()",
                                                 context + ": while");
         }
@@ -3644,7 +3645,7 @@ class QCircuit : public IDisplay, public IJSON {
                                                   context + ": target");
         }
         // trying to discard in a while loop
-        if (while_pos_.has_value()) {
+        if (outer_while_pos_.has_value()) {
             throw exception::InvalidConditional("qpp::QCircuit::discard()",
                                                 context + ": while");
         }
@@ -3697,7 +3698,7 @@ class QCircuit : public IDisplay, public IJSON {
             }
         }
         // trying to discard in a while loop
-        if (while_pos_.has_value()) {
+        if (outer_while_pos_.has_value()) {
             throw exception::InvalidConditional("qpp::QCircuit::discard()",
                                                 context + ": while");
         }
@@ -4031,9 +4032,9 @@ class QCircuit : public IDisplay, public IJSON {
         std::copy_if(other.clean_qudits_.begin(), other.clean_qudits_.end(),
                      std::next(clean_qudits_.begin(), pos_qudit),
                      [](bool val) { return !val; });
-        // update while_pos_
-        if (!while_pos_.has_value()) {
-            while_pos_ = other.while_pos_;
+        // update outer_while_pos_
+        if (!outer_while_pos_.has_value()) {
+            outer_while_pos_ = other.outer_while_pos_;
         }
 
         // STEP 3
@@ -4247,11 +4248,11 @@ class QCircuit : public IDisplay, public IJSON {
                 measurement_dits_[target[i]] = true;
             }
         }
-        // update while_pos_
-        if (other.while_pos_.has_value()) {
-            while_pos_ = other.while_pos_;
-        } else if (while_pos_.has_value()) {
-            while_pos_.value() += other.get_step_count();
+        // update outer_while_pos_
+        if (other.outer_while_pos_.has_value()) {
+            outer_while_pos_ = other.outer_while_pos_;
+        } else if (outer_while_pos_.has_value()) {
+            outer_while_pos_.value() += other.get_step_count();
         }
 
         // STEP 3: append the copy of other to the current instance
@@ -4441,9 +4442,9 @@ class QCircuit : public IDisplay, public IJSON {
                 measurement_dits_[target[i]] = true;
             }
         }
-        // update while_pos_
-        if (!while_pos_.has_value()) {
-            while_pos_ = other.while_pos_;
+        // update outer_while_pos_
+        if (!outer_while_pos_.has_value()) {
+            outer_while_pos_ = other.outer_while_pos_;
         }
 
         // STEP 2: append the copy of other to the current instance
