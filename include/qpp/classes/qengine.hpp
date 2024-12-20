@@ -794,16 +794,16 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         const internal::QCircuitConditionalStep& conditional_step,
         QCircuitTraits<QCircuit>::iterator_type& it) {
         using Type = internal::QCircuitConditionalStep::Type;
-        auto if_expr = conditional_step.ctx_.if_expr;
+        auto start_expr = conditional_step.ctx_.start_expr;
         auto else_expr = conditional_step.ctx_.else_expr;
-        auto endif_expr = conditional_step.ctx_.endif_expr;
+        auto end_expr = conditional_step.ctx_.end_expr;
         auto dit_shift = conditional_step.ctx_.dit_shift;
         bool is_true = true;
         switch (conditional_step.condition_type_) {
             case Type::WHILE:
             case Type::IF:
-                if (if_expr.has_value()) {
-                    auto lambda = if_expr.value().second;
+                if (start_expr.has_value()) {
+                    auto lambda = start_expr.value().second;
                     auto it_begin =
                         std::next(qeng_st_.dits_.begin(), dit_shift);
                     auto it_end = qeng_st_.dits_.end();
@@ -813,14 +813,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 if (!is_true) {
                     // jump immediately after ELSE/END on false
                     idx adv = else_expr.has_value() ? else_expr.value()
-                                                    : endif_expr.value();
-                    adv -= if_expr.value().first;
+                                                    : end_expr.value();
+                    adv -= start_expr.value().first;
 
                     it.advance(adv);
                 }
                 break;
             case Type::ELSE: {
-                idx adv = endif_expr.value();
+                idx adv = end_expr.value();
                 adv -= else_expr.value();
                 it.advance(adv);
                 break;
@@ -828,8 +828,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             case Type::ENDIF:
                 break;
             case Type::ENDWHILE:
-                if (if_expr.has_value()) {
-                    auto lambda = if_expr.value().second;
+                if (start_expr.has_value()) {
+                    auto lambda = start_expr.value().second;
                     auto it_begin =
                         std::next(qeng_st_.dits_.begin(), dit_shift);
                     auto it_end = qeng_st_.dits_.end();
@@ -837,8 +837,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 }
                 // jump back on true
                 if (is_true) {
-                    idx adv = if_expr.value().first;
-                    adv -= endif_expr.value();
+                    idx adv = start_expr.value().first;
+                    adv -= end_expr.value();
                     // adv is a negative value
                     it.advance(adv);
                     break;

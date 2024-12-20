@@ -110,10 +110,10 @@ struct QCircuitConditionalStep : IDisplay {
         idx dit_shift = 0; ///< relative position of the first dit w.r.t. 0,
                            ///< used when composing circuits
         std::optional<std::pair<idx, cond_func_t>>
-            if_expr{}; ///< location of if statement and corresponding condition
-                       ///< function
-        std::optional<idx> else_expr{};  ///< location of else statement
-        std::optional<idx> endif_expr{}; ///< location of endif statement
+            start_expr{}; ///< location of if/while statement and corresponding
+                          ///< condition function
+        std::optional<idx> else_expr{}; ///< location of else statement
+        std::optional<idx> end_expr{};  ///< location of endif/endwhile statement
 
         /**
          * \brief Equality operator
@@ -126,22 +126,22 @@ struct QCircuitConditionalStep : IDisplay {
             if (else_expr != rhs.else_expr) {
                 return false;
             }
-            if (endif_expr != rhs.endif_expr) {
+            if (end_expr != rhs.end_expr) {
                 return false;
             }
-            if (if_expr.has_value() && !rhs.if_expr.has_value()) {
+            if (start_expr.has_value() && !rhs.start_expr.has_value()) {
                 return false;
             }
-            if (!if_expr.has_value() && rhs.if_expr.has_value()) {
+            if (!start_expr.has_value() && rhs.start_expr.has_value()) {
                 return false;
             }
-            if (!if_expr.has_value() && !rhs.if_expr.has_value()) {
+            if (!start_expr.has_value() && !rhs.start_expr.has_value()) {
                 return true;
             }
 
-            auto if_expr_val = if_expr.value();
-            auto rhs_if_expr_val = rhs.if_expr.value();
-            return if_expr_val.first == rhs_if_expr_val.first;
+            auto start_expr_val = start_expr.value();
+            auto rhs_start_expr_val = rhs.start_expr.value();
+            return start_expr_val.first == rhs_start_expr_val.first;
         }
 
         /**
@@ -150,14 +150,14 @@ struct QCircuitConditionalStep : IDisplay {
          * \param i Non-negative integer
          */
         void inc_locs(idx i) {
-            if (if_expr.has_value()) {
-                if_expr.value().first += i;
+            if (start_expr.has_value()) {
+                start_expr.value().first += i;
             }
             if (else_expr.has_value()) {
                 else_expr.value() += i;
             }
-            if (endif_expr.has_value()) {
-                endif_expr.value() += i;
+            if (end_expr.has_value()) {
+                end_expr.value() += i;
             }
         }
 
@@ -175,15 +175,15 @@ struct QCircuitConditionalStep : IDisplay {
          * \return Reference to the output stream
          */
         std::ostream& display(std::ostream& os) const override {
-            if (if_expr.has_value()) {
-                os << "IF: " << if_expr.value().first << ' ';
-                os << "addr. " << std::addressof(if_expr.value().second);
+            if (start_expr.has_value()) {
+                os << "IF: " << start_expr.value().first << ' ';
+                os << "addr. " << std::addressof(start_expr.value().second);
             }
             if (else_expr.has_value()) {
                 os << ", ELSE: " << else_expr.value();
             }
-            if (endif_expr.has_value()) {
-                os << ", ENDIF: " << endif_expr.value();
+            if (end_expr.has_value()) {
+                os << ", ENDIF: " << end_expr.value();
             }
 
             return os;

@@ -931,24 +931,24 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& add_dit(idx n = 1) { return add_dit(n, nc_); }
 
     QCircuit& cond_while(std::function<bool(std::vector<idx>)> cond_func) {
+        if (!while_pos_.has_value()) {
+            while_pos_ = get_step_count();
+        }
+
         internal::QCircuitConditionalStep::Context ctx{};
-        ctx.if_expr = {get_step_count(), cond_func};
+        ctx.start_expr = {get_step_count(), cond_func};
         conditional_stack_.push_back(ctx);
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::WHILE, ctx});
 
         measured_d_.push_back(measured_d_.back());
 
-        if (!while_pos_.has_value()) {
-            while_pos_ = get_step_count();
-        }
-
         return *this;
     }
 
     QCircuit& cond_if(std::function<bool(std::vector<idx>)> cond_func) {
         internal::QCircuitConditionalStep::Context ctx{};
-        ctx.if_expr = {get_step_count(), cond_func};
+        ctx.start_expr = {get_step_count(), cond_func};
         conditional_stack_.push_back(ctx);
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::IF, ctx});
@@ -961,14 +961,14 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& cond_else() {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
-        if (conditional_stack_.empty() || !conditional_stack_.back().if_expr ||
+        if (conditional_stack_.empty() || !conditional_stack_.back().start_expr ||
             conditional_stack_.back().else_expr.has_value()) {
             throw exception::InvalidConditional(
                 "qpp::QCircuit::cond_else()",
                 context + ": ELSE without a matching IF");
         }
         if (std::get<internal::QCircuitConditionalStep>(
-                circuit_[conditional_stack_.back().if_expr->first])
+                circuit_[conditional_stack_.back().start_expr->first])
                 .condition_type_ ==
             internal::QCircuitConditionalStep::Type::WHILE) {
             throw exception::InvalidConditional("qpp::QCircuit::cond_else()",
@@ -992,7 +992,7 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& cond_end() {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
-        if (conditional_stack_.empty() || !conditional_stack_.back().if_expr) {
+        if (conditional_stack_.empty() || !conditional_stack_.back().start_expr) {
             throw exception::InvalidConditional(
                 "qpp::QCircuit::cond_end()",
                 context + ": END without a matching IF/WHILE");
@@ -1001,14 +1001,14 @@ class QCircuit : public IDisplay, public IJSON {
 
         internal::QCircuitConditionalStep::Context& ctx =
             conditional_stack_.back();
-        ctx.endif_expr = get_step_count();
+        ctx.end_expr = get_step_count();
         if (std::get<internal::QCircuitConditionalStep>(
-                circuit_[ctx.if_expr->first])
+                circuit_[ctx.start_expr->first])
                 .condition_type_ ==
             internal::QCircuitConditionalStep::Type::WHILE) {
             circuit_.emplace_back(internal::QCircuitConditionalStep{
                 internal::QCircuitConditionalStep::Type::ENDWHILE, ctx});
-            if (while_pos_.value() == ctx.if_expr->first) {
+            if (while_pos_.value() == ctx.start_expr.value().first) {
                 while_pos_ = std::nullopt;
             }
         } else {
@@ -1017,7 +1017,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
 
         // update the IF/ELSE contexts
-        auto if_expr = ctx.if_expr;
+        auto start_expr = ctx.start_expr;
         auto else_expr = ctx.else_expr;
         if (else_expr.has_value()) {
             std::get<internal::QCircuitConditionalStep>(
@@ -1025,7 +1025,7 @@ class QCircuit : public IDisplay, public IJSON {
                 .ctx_ = ctx;
         }
         std::get<internal::QCircuitConditionalStep>(
-            circuit_[if_expr.value().first])
+            circuit_[start_expr.value().first])
             .ctx_ = ctx;
         conditional_stack_.pop_back();
 
@@ -3991,7 +3991,6 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
-        // TODO: check this one with the dit_shift
         auto conditional_step_visitor =
             [&](internal::QCircuitConditionalStep& conditional_step) {
                 conditional_step.ctx_.inc_locs(get_step_count());
