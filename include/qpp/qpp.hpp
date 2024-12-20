@@ -1,3 +1,5 @@
+// TODO: remove pos_dit
+
 /*
  * This file is part of Quantum++.
  *
@@ -36,8 +38,8 @@
  * \brief Quantum++ main header file, includes all other required headers
  */
 
-#ifndef QPP_QPP_H_
-#define QPP_QPP_H_
+#ifndef QPP_QPP_HPP_
+#define QPP_QPP_HPP_
 
 // Ignore warnings for unknown C++17 attributes (we use such "custom"
 // attributes internally, the compiler is supposed to ignore them according to
@@ -169,4 +171,4 @@ namespace obsolete {} /* namespace obsolete */
 
 } /* namespace qpp */
 
-#endif /* QPP_QPP_H_ */
+#endif /* QPP_QPP_HPP_ */
