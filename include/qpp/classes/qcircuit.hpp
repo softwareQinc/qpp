@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -962,7 +962,8 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& cond_else() {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
-        if (conditional_stack_.empty() || !conditional_stack_.back().start_expr ||
+        if (conditional_stack_.empty() ||
+            !conditional_stack_.back().start_expr ||
             conditional_stack_.back().else_expr.has_value()) {
             throw exception::InvalidConditional(
                 "qpp::QCircuit::cond_else()",
@@ -993,7 +994,8 @@ class QCircuit : public IDisplay, public IJSON {
     QCircuit& cond_end() {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
-        if (conditional_stack_.empty() || !conditional_stack_.back().start_expr) {
+        if (conditional_stack_.empty() ||
+            !conditional_stack_.back().start_expr) {
             throw exception::InvalidConditional(
                 "qpp::QCircuit::cond_end()",
                 context + ": END without a matching IF/WHILE");

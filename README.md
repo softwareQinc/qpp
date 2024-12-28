@@ -43,7 +43,7 @@ see <https://eigen.tuxfamily.org/dox/>. For a simple
 [Eigen 3](https://eigen.tuxfamily.org) quick ASCII reference see
 <https://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
-Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
 
 ---
 

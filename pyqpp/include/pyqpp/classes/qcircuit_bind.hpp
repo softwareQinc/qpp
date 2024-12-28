@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -71,16 +71,16 @@ inline void init_classes_qcircuit(py::module_& m) {
             .def("add_dit", py::overload_cast<idx, idx>(&QCircuit::add_dit),
                  "Adds n additional classical dits before qudit pos",
                  py::arg("n"), py::arg("pos"))
-            .def("cond_if", py::overload_cast<std::function<bool(std::vector<idx>)>>(&QCircuit::cond_if),
-                 "Adds conditional if",
-                 py::arg("cond_func"))
-            .def("cond_while", py::overload_cast<std::function<bool(std::vector<idx>)>>(&QCircuit::cond_while),
-                 "Adds conditional while",
-                 py::arg("cond_func"))
-            .def("cond_else", &QCircuit::cond_else,
-                 "Adds conditional else")
-            .def("cond_end", &QCircuit::cond_end,
-                 "Adds conditional end")
+            .def("cond_if",
+                 py::overload_cast<std::function<bool(std::vector<idx>)>>(
+                     &QCircuit::cond_if),
+                 "Adds conditional if", py::arg("cond_func"))
+            .def("cond_while",
+                 py::overload_cast<std::function<bool(std::vector<idx>)>>(
+                     &QCircuit::cond_while),
+                 "Adds conditional while", py::arg("cond_func"))
+            .def("cond_else", &QCircuit::cond_else, "Adds conditional else")
+            .def("cond_end", &QCircuit::cond_end, "Adds conditional end")
             .def("add_qudit", py::overload_cast<idx>(&QCircuit::add_qudit),
                  "Adds n additional qudits after the last qudit",
                  py::arg("n") = 1)

@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -113,7 +113,7 @@ struct QCircuitConditionalStep : IDisplay {
             start_expr{}; ///< location of if/while statement and corresponding
                           ///< condition function
         std::optional<idx> else_expr{}; ///< location of else statement
-        std::optional<idx> end_expr{};  ///< location of endif/endwhile statement
+        std::optional<idx> end_expr{}; ///< location of endif/endwhile statement
 
         /**
          * \brief Equality operator
