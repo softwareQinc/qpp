@@ -1,4 +1,4 @@
-# Pre-release
+# Version 6.0 - xx January 2025
 
 - Breaking change: renamed ["qpp/qpp.h"] to ["qpp/qpp.hpp"]
 - New feature: implemented support for post-selection in
