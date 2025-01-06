@@ -83,13 +83,13 @@ TEST(qpp_QCircuit_compose_CTRL_circuit, AllTests) {}
 /// BEGIN QCircuit& QCircuit::compress()
 TEST(qpp_QCircuit_compress, AllTests) {}
 
-/// BEGIN QCircuit& QCircuit::cond_if(cond_func_t cond_func)
+/// BEGIN QCircuit& QCircuit::cond_if(cond_func_t pred)
 TEST(qpp_QCircuit_cond_if, AllTests) {}
 
 /// BEGIN QCircuit& QCircuit::cond_else()
 TEST(qpp_QCircuit_cond_else, AllTests) {}
 
-/// BEGIN QCircuit& QCircuit::cond_while(cond_func_t cond_func)
+/// BEGIN QCircuit& QCircuit::cond_while(cond_func_t pred)
 TEST(qpp_QCircuit_cond_while, AllTests) {}
 
 /// BEGIN QCircuit& QCircuit::cond_end()

@@ -934,10 +934,10 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Conditional WHILE, repeats the circuit steps starting with this
      * step and ending with a qpp::QCircuit::cond_end() step while the
-     * predicate \a cond_func is true
+     * predicate \a pred is true
      * \see qpp::QCircuit::cond_end()
      *
-     * \param cond_func Boolean predicate std::vector<idx> v -> bool. The
+     * \param pred Boolean predicate std::vector<idx> v -> bool. The
      * classical dits can be read from the vector at runtime, when the circuit
      * is being run by a quantum engine. Example of a predicate:
      * \code
@@ -947,13 +947,13 @@ class QCircuit : public IDisplay, public IJSON {
      * \endcode
      * \return Reference to the current instance
      */
-    QCircuit& cond_while(cond_func_t cond_func) {
+    QCircuit& cond_while(cond_func_t pred) {
         if (!outer_while_pos_.has_value()) {
             outer_while_pos_ = get_step_count();
         }
 
         internal::QCircuitConditionalStep::Context ctx{};
-        ctx.start_expr = {get_step_count(), cond_func};
+        ctx.start_expr = {get_step_count(), pred};
         conditional_stack_.push_back(ctx);
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::WHILE, ctx});
@@ -966,10 +966,10 @@ class QCircuit : public IDisplay, public IJSON {
     /**
      * \brief Conditional IF, executes the circuit steps starting with this
      * step and ending with a qpp::QCircuit::cond_end() step if the predicate
-     * \a cond_func is true
+     * \a pred is true
      * \see qpp::QCircuit::cond_else(), qpp::QCircuit::cond_end()
      *
-     * \param cond_func Boolean predicate std::vector<idx> v -> bool. The
+     * \param pred Boolean predicate std::vector<idx> v -> bool. The
      * classical dits can be read from the vector at runtime, when the circuit
      * is being run by a quantum engine. Example of a predicate:
      * \code
@@ -979,9 +979,9 @@ class QCircuit : public IDisplay, public IJSON {
      * \endcode
      * \return Reference to the current instance
      */
-    QCircuit& cond_if(cond_func_t cond_func) {
+    QCircuit& cond_if(cond_func_t pred) {
         internal::QCircuitConditionalStep::Context ctx{};
-        ctx.start_expr = {get_step_count(), cond_func};
+        ctx.start_expr = {get_step_count(), pred};
         conditional_stack_.push_back(ctx);
         circuit_.emplace_back(internal::QCircuitConditionalStep{
             internal::QCircuitConditionalStep::Type::IF, ctx});
