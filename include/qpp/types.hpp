@@ -222,7 +222,6 @@ struct dirac_t {
  * \brief Conditional functor type in qpp::QCircuit conditional statements
  */
 using cond_func_t = std::function<bool(std::vector<idx>)>;
-// using cond_func_t = bool (*)(std::vector<idx>);
 
 /**
  * \brief Quantumly-accessible Random Access Memory (qRAM)

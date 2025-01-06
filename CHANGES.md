@@ -22,6 +22,18 @@
 - Added
   [["examples/circuits/post_selection.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/post_selection.cpp)]
   example
+- New feature: implemented support for conditional statements in
+  ["qpp/classes/qcircuit.hpp"]
+- Implemented `qpp::QCircuit::`
+  - `QCircuit& cond_if()` - conditional IF statement
+  - `QCircuit& cond_else()` - conditional ELSE statement
+  - `QCircuit& cond_while()` - conditional WHILE statement
+  - `QCircuit& cond_end()` - conditional END block delimiter
+- Added
+  [["examples/circuits/conditional_if.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_if.cpp)]
+  and
+  [["examples/circuits/conditional_while.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_while.cpp)]
+  examples
 - Refactored `qpp::QCircuit::GateStep/MeasurementStep/NOPStep` into separate
   files ["qpp/internal/classes/qcircuit_gate_step.hpp"],
   ["qpp/internal/classes/qcircuit_measurement_step.hpp"], and
@@ -49,9 +61,9 @@
 - Simplified MATLAB detection via CMake `find_package()` function. Users should
   only use `-DQPP_MATLAB=ON` when building with MATLAB support, all other
   MATLAB-related CMake flags have been removed.
-- Bugfix in qpp::adjoint(QCircuit);
-- Introduced conditional statements
-- cond_func_t type alias
+- Bugfix in `qpp::adjoint(QCircuit)`
+- Added `cond_func_t` type alias in ["qpp/types.hpp"] for boolean predicates of
+  the form `std::vector<idx> -> bool`
 
 # Version 5.1 - 1 March 2024
 
