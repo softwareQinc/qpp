@@ -46,40 +46,41 @@ void declare_QDummyEngine(py::module& m) {
     using DummyEngineType =
         std::conditional_t<std::is_same_v<T, ket>, QKetDummyEngine,
                            QDensityDummyEngine>;
-    py::class_<DummyEngineType>(m, pyname.c_str())
-        .def(py::init<const QCircuit&>(), py::keep_alive<1, 2>())
-        .def("execute", py::overload_cast<idx>(&DummyEngineType::execute),
-             "Executes the entire quantum circuit description",
-             py::arg("reps") = 1)
-        .def(
-            "get_circuit",
-            [](const DummyEngineType& qe) { return qe.get_circuit(); },
-            "Underlying quantum circuit description")
-        .def("get_state", &DummyEngineType::get_state,
-             "Underlying quantum state")
-        .def("set_state", &DummyEngineType::set_state,
-             "Sets the underlying quantum state", py::arg("state"))
-        .def("to_JSON", &DummyEngineType::to_JSON,
-             "State of the engine in JSON format",
-             py::arg("enclosed_in_curly_brackets") = true)
-        .def("traits_get_name", &DummyEngineType::traits_get_name,
-             "Engine name")
-        .def("traits_is_noisy", &DummyEngineType::traits_is_noisy,
-             "Noisy engine?")
-        .def("traits_is_pure", &DummyEngineType::traits_is_pure,
-             "Pure state engine?")
+    auto pyQDummyEngine = py::class_<DummyEngineType>(m, pyname.c_str());
+    pyQDummyEngine.def(py::init<const QCircuit&>(), py::keep_alive<1, 2>());
+    pyQDummyEngine.def(
+        "execute", py::overload_cast<idx>(&DummyEngineType::execute),
+        "Executes the entire quantum circuit description", py::arg("reps") = 1);
+    pyQDummyEngine.def(
+        "get_circuit",
+        [](const DummyEngineType& qe) { return qe.get_circuit(); },
+        "Underlying quantum circuit description");
+    pyQDummyEngine.def("get_state", &DummyEngineType::get_state,
+                       "Underlying quantum state");
+    pyQDummyEngine.def("set_state", &DummyEngineType::set_state,
+                       "Sets the underlying quantum state", py::arg("state"));
+    pyQDummyEngine.def("to_JSON", &DummyEngineType::to_JSON,
+                       "State of the engine in JSON format",
+                       py::arg("enclosed_in_curly_brackets") = true);
+    pyQDummyEngine.def("traits_get_name", &DummyEngineType::traits_get_name,
+                       "Engine name");
+    pyQDummyEngine.def("traits_is_noisy", &DummyEngineType::traits_is_noisy,
+                       "Noisy engine?");
+    pyQDummyEngine.def("traits_is_pure", &DummyEngineType::traits_is_pure,
+                       "Pure state engine?");
 
-        .def("__repr__",
-             [](const DummyEngineType& self) {
-                 std::ostringstream oss;
-                 oss << self;
-                 return oss.str();
-             })
-        .def("__copy__",
-             [](const DummyEngineType& self) { return DummyEngineType(self); })
-        .def("__deepcopy__", [](const DummyEngineType& self, py::dict) {
-            return DummyEngineType(self);
-        });
+    pyQDummyEngine.def("__repr__", [](const DummyEngineType& self) {
+        std::ostringstream oss;
+        oss << self;
+        return oss.str();
+    });
+    pyQDummyEngine.def("__copy__", [](const DummyEngineType& self) {
+        return DummyEngineType(self);
+    });
+    pyQDummyEngine.def("__deepcopy__",
+                       [](const DummyEngineType& self, py::dict) {
+                           return DummyEngineType(self);
+                       });
 
     if constexpr (std::is_same_v<T, ket>) {
         m.def(

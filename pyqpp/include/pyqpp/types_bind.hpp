@@ -37,19 +37,19 @@ inline void init_types(py::module_& m) {
     using py_dirac_t = dirac_t<cplx>;
 
     /* qpp::dirac_t */
-    auto pydirac_t =
-        py::class_<py_dirac_t>(m, "dirac_t")
-            .def(py::self == py::self)
-            .def(py::self != py::self)
-            .def("__copy__",
-                 [](const py_dirac_t& self) { return py_dirac_t(self); })
-            .def("__deepcopy__", [](const py_dirac_t& self,
-                                    py::dict) { return py_dirac_t(self); })
-            .def("__repr__", [](const py_dirac_t& self) {
-                std::ostringstream oss;
-                oss << disp(self);
-                return oss.str();
-            });
+    auto pydirac_t = py::class_<py_dirac_t>(m, "dirac_t");
+    pydirac_t.def(py::self == py::self);
+    pydirac_t.def(py::self != py::self);
+    pydirac_t.def("__copy__",
+                  [](const py_dirac_t& self) { return py_dirac_t(self); });
+    pydirac_t.def("__deepcopy__", [](const py_dirac_t& self, py::dict) {
+        return py_dirac_t(self);
+    });
+    pydirac_t.def("__repr__", [](const py_dirac_t& self) {
+        std::ostringstream oss;
+        oss << disp(self);
+        return oss.str();
+    });
 }
 
 #endif /* PYQPP_TYPES_BIND_HPP_ */

@@ -33,19 +33,22 @@
 template <typename NoiseModel, typename... CtorTypeList>
 void declare_noise_model(py::module& m, const std::string& type) {
     using namespace qpp;
-    py::class_<NoiseModel>(m, type.c_str())
-        .def(py::init<CtorTypeList...>())
+    auto pyNoiseModel = py::class_<NoiseModel>(m, type.c_str());
 
-        .def("get_d", &NoiseModel::get_d, "Qudit dimension")
-        .def("get_Ks", &NoiseModel::get_Ks, "Vector of noise operators")
-        .def("get_last_idx", &NoiseModel::get_last_idx,
-             "Index of the last occurring noise element")
-        .def("get_last_K", &NoiseModel::get_last_K,
-             "Last occurring noise element")
-        .def("get_last_p", &NoiseModel::get_last_p,
-             "Probability of the last occurring noise element")
-        .def("get_probs", &NoiseModel::get_probs,
-             "Vector of probabilities corresponding to each noise operator");
+    pyNoiseModel.def(py::init<CtorTypeList...>());
+
+    pyNoiseModel.def("get_d", &NoiseModel::get_d, "Qudit dimension");
+    pyNoiseModel.def("get_Ks", &NoiseModel::get_Ks,
+                     "Vector of noise operators");
+    pyNoiseModel.def("get_last_idx", &NoiseModel::get_last_idx,
+                     "Index of the last occurring noise element");
+    pyNoiseModel.def("get_last_K", &NoiseModel::get_last_K,
+                     "Last occurring noise element");
+    pyNoiseModel.def("get_last_p", &NoiseModel::get_last_p,
+                     "Probability of the last occurring noise element");
+    pyNoiseModel.def(
+        "get_probs", &NoiseModel::get_probs,
+        "Vector of probabilities corresponding to each noise operator");
 }
 
 /* qpp::QNoisyEngineT instantiator */
@@ -61,23 +64,26 @@ void declare_QNoisyEngineT(py::module& m, const std::string& type) {
     } else {
         pyname = "_QDensityNoisyEngine_" + type;
     }
-    py::class_<QNoisyEngineT<T, NoiseModel>, QEngineT<T>>(m, pyname.c_str())
-        .def(py::init<const QCircuit&, const NoiseModel&>(),
-             py::keep_alive<1, 2>())
+    auto pyQNoisyEngineT =
+        py::class_<QNoisyEngineT<T, NoiseModel>, QEngineT<T>>(m,
+                                                              pyname.c_str());
 
-        .def(
-            "get_noise_results",
-            &QNoisyEngineT<T, NoiseModel>::get_noise_results,
-            "Vector of noise results obtained before every step in the circuit")
+    pyQNoisyEngineT.def(py::init<const QCircuit&, const NoiseModel&>(),
+                        py::keep_alive<1, 2>());
 
-        .def("__copy__",
-             [](const QNoisyEngineT<T, NoiseModel>& self) {
-                 return QNoisyEngineT<T, NoiseModel>(self);
-             })
-        .def("__deepcopy__",
-             [](const QNoisyEngineT<T, NoiseModel>& self, py::dict) {
-                 return QNoisyEngineT<T, NoiseModel>(self);
-             });
+    pyQNoisyEngineT.def(
+        "get_noise_results", &QNoisyEngineT<T, NoiseModel>::get_noise_results,
+        "Vector of noise results obtained before every step in the circuit");
+
+    pyQNoisyEngineT.def("__copy__",
+                        [](const QNoisyEngineT<T, NoiseModel>& self) {
+                            return QNoisyEngineT<T, NoiseModel>(self);
+                        });
+    pyQNoisyEngineT.def("__deepcopy__",
+                        [](const QNoisyEngineT<T, NoiseModel>& self, py::dict) {
+                            return QNoisyEngineT<T, NoiseModel>(self);
+                        });
+    ;
 
     if constexpr (std::is_same_v<T, ket>) {
         m.def(
