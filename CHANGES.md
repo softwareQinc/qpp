@@ -50,6 +50,8 @@
   only use `-DQPP_MATLAB=ON` when building with MATLAB support, all other
   MATLAB-related CMake flags have been removed.
 - Bugfix in qpp::adjoint(QCircuit);
+- Introduced conditional statements
+- cond_func_t type alias
 
 # Version 5.1 - 1 March 2024
 

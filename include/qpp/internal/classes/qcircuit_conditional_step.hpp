@@ -98,11 +98,6 @@ struct QCircuitConditionalStep : IDisplay {
     }
 
     /**
-     * \brief Conditional functor type in qpp::QCircuit conditional statements
-     */
-    using cond_func_t = std::function<bool(std::vector<idx>)>;
-
-    /**
      * \class qpp::internal::QCircuitConditionalStep::Context
      * \brief Keeps track of the location of conditional statements
      */
@@ -176,14 +171,15 @@ struct QCircuitConditionalStep : IDisplay {
          */
         std::ostream& display(std::ostream& os) const override {
             if (start_expr.has_value()) {
-                os << "IF: " << start_expr.value().first << ' ';
-                os << "addr. " << std::addressof(start_expr.value().second);
+                os << "START: " << start_expr.value().first << ' ';
+                os << "(addr. " << std::addressof(start_expr.value().second)
+                   << ")";
             }
             if (else_expr.has_value()) {
                 os << ", ELSE: " << else_expr.value();
             }
             if (end_expr.has_value()) {
-                os << ", ENDIF: " << end_expr.value();
+                os << ", END: " << end_expr.value();
             }
 
             return os;

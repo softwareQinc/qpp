@@ -40,6 +40,7 @@
 #include <iterator>
 #include <optional>
 #include <ostream>
+#include <sstream>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -135,11 +136,10 @@ class QCircuit : public IDisplay, public IJSON {
         cmat_hash_tbl_.insert({hashU, U});
     }
 
-    using VarStep =
-        std::variant<internal::QCircuitConditionalStep,
-                     internal::QCircuitGateStep,
-                     internal::QCircuitMeasurementStep,
-                     internal::QCircuitNOPStep>; ///< circuit step variant
+    ///< circuit step variant
+    using VarStep = std::variant<
+        internal::QCircuitConditionalStep, internal::QCircuitGateStep,
+        internal::QCircuitMeasurementStep, internal::QCircuitNOPStep>;
     std::vector<VarStep> circuit_; ///<< quantum circuit representation
 
   protected:
@@ -931,7 +931,23 @@ class QCircuit : public IDisplay, public IJSON {
      */
     QCircuit& add_dit(idx n = 1) { return add_dit(n, nc_); }
 
-    QCircuit& cond_while(std::function<bool(std::vector<idx>)> cond_func) {
+    /**
+     * \brief Conditional WHILE, repeats the circuit steps starting with this
+     * step and ending with a qpp::QCircuit::cond_end() step while the
+     * predicate \a cond_func is true
+     * \see qpp::QCircuit::cond_end()
+     *
+     * \param cond_func Boolean predicate std::vector<idx> v -> bool. The
+     * classical dits can be read from the vector at runtime, when the circuit
+     * is being run by a quantum engine. Example of a predicate:
+     * \code
+     * auto pred = [](std::vector<idx> v) {
+     *     return v[0] == 1; // true if the classical dit 0 equals 1 at runtime
+     * }
+     * \endcode
+     * \return Reference to the current instance
+     */
+    QCircuit& cond_while(cond_func_t cond_func) {
         if (!outer_while_pos_.has_value()) {
             outer_while_pos_ = get_step_count();
         }
@@ -947,7 +963,23 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    QCircuit& cond_if(std::function<bool(std::vector<idx>)> cond_func) {
+    /**
+     * \brief Conditional IF, executes the circuit steps starting with this
+     * step and ending with a qpp::QCircuit::cond_end() step if the predicate
+     * \a cond_func is true
+     * \see qpp::QCircuit::cond_else(), qpp::QCircuit::cond_end()
+     *
+     * \param cond_func Boolean predicate std::vector<idx> v -> bool. The
+     * classical dits can be read from the vector at runtime, when the circuit
+     * is being run by a quantum engine. Example of a predicate:
+     * \code
+     * auto pred = [](std::vector<idx> v) {
+     *     return v[0] == 1; // true if the classical dit 0 equals 1 at runtime
+     * }
+     * \endcode
+     * \return Reference to the current instance
+     */
+    QCircuit& cond_if(cond_func_t cond_func) {
         internal::QCircuitConditionalStep::Context ctx{};
         ctx.start_expr = {get_step_count(), cond_func};
         conditional_stack_.push_back(ctx);
@@ -959,6 +991,12 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
+    /**
+     * \brief Conditional ELSE, alternative branch of a conditional IF
+     * \see qpp::QCircuit::cond_if(), qpp::QCircuit::cond_end()
+     *
+     * \return Reference to the current instance
+     */
     QCircuit& cond_else() {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
@@ -991,6 +1029,12 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
+    /**
+     * \brief Ends conditional IF/ELSE and WHILE blocks
+     * \see qpp::QCircuit::cond_if(), qpp::QCircuit::cond_while()
+     *
+     * \return Reference to the current instance
+     */
     QCircuit& cond_end() {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
@@ -4497,12 +4541,13 @@ class QCircuit : public IDisplay, public IJSON {
      * number of additional qudits are automatically added to the current
      * quantum circuit description.
      * \param shift Optional, performs the control as if the \a ctrl qudit
-     * state was \f$X\f$-incremented by \a shift \param pos_dit Optional,
-     * the first classical dit of \a qc_target quantum circuit description
-     * is inserted before the \a pos_dit classical dit index of the current
-     * quantum circuit description (in the classical dits array), the rest
-     * following in order. If absent (default), insertion is performed at
-     * the end. \return Reference to the current instance
+     * state was \f$X\f$-incremented by \a shift
+     * \param pos_dit Optional, the first classical dit of \a qc_target quantum
+     * circuit description is inserted before the \a pos_dit classical dit index
+     * of the current quantum circuit description (in the classical dits array),
+     * the rest following in order. If absent (default), insertion is performed
+     * at the end.
+     * \return Reference to the current instance
      */
     QCircuit&
     compose_CTRL_circuit(const std::vector<idx>& ctrl, QCircuit qc_target,
@@ -5754,7 +5799,22 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
         };
         // TODO: fill in function
         auto conditional_step_visitor =
-            [&](const internal::QCircuitConditionalStep&) {};
+            [&](const internal::QCircuitConditionalStep& conditional_step) {
+                auto type = conditional_step.condition_type_;
+                auto ctx = conditional_step.ctx_;
+
+                std::ostringstream ss;
+                std::string type_str, ctx_str;
+                ss << type;
+                type_str = ss.str();
+                ss.str("");
+                ss.clear();
+                ss << ctx;
+                ctx_str = ss.str();
+
+                result += "\"" + type_str + "\", \"Context\": \"" + ctx_str +
+                          "\"" + "}";
+            };
 
         visit_circuit_step_(elem.get_step(), conditional_step_visitor,
                             gate_step_visitor, measurement_step_visitor,
@@ -6276,16 +6336,16 @@ inline QCircuit replicate(QCircuit qc, idx n,
  * \param gate_count Circuit gate count
  * \param p_two Optional, probability of applying a two qudit gate, must
  * belong to the interval (0,1). If the two qudit gate set has more than one
- * element, then the gate is chosen at random from the set. \param
- * with_respect_to_gate Optional, if present, gate count is calculated with
- * respect to this particular gate (absent by default, so by default gate
+ * element, then the gate is chosen at random from the set.
+ * \param with_respect_to_gate Optional, if present, gate count is calculated
+ * with respect to this particular gate (absent by default, so by default gate
  * count is calculated with respect to all gates in the circuit)
  * \param one_qudit_gate_set Optional set of one qudit gates, must be
- * specified for \a d > 2 \param two_qudit_gate_set Optional set of two
- * qudit gates, must be specified for \a d > 2 \param one_qudit_gate_names
- * Optional one qudit gate names \param two_qudit_gate_names Optional two
- * qudit gate names \return Instance of random qpp::QCircuit for fixed gate
- * count
+ * specified for \a d > 2
+ * \param two_qudit_gate_set Optional set of two qudit gates, must be specified
+ * for \a d > 2 \param one_qudit_gate_names Optional one qudit gate names
+ * \param two_qudit_gate_names Optional two qudit gate names
+ * \return Instance of random qpp::QCircuit for fixed gate count
  */
 inline QCircuit random_circuit_count(
     idx nq, idx d, idx gate_count, std::optional<realT> p_two,
@@ -6461,16 +6521,17 @@ inline QCircuit random_circuit_count(
  * \param gate_depth Circuit gate depth
  * \param p_two Optional, probability of applying a two qudit gate, must
  * belong to the interval (0,1). If the two qudit gate set has more than one
- * element, then the gate is chosen at random from the set. \param
- * with_respect_to_gate Optional, if present, gate depth is calculated with
- * respect to this particular gate (absent by default, so by default gate
+ * element, then the gate is chosen at random from the set.
+ * \param with_respect_to_gate Optional, if present, gate depth is calculated
+ * with respect to this particular gate (absent by default, so by default gate
  * depth is calculated with respect to all gates in the circuit)
  * \param one_qudit_gate_set Set of one qudit gates (optional, must be
- * specified for \a d > 2) \param two_qudit_gate_set Set of two qudit gates
- * (optional, must be specified for \a d > 2); \param one_qudit_gate_names
- * One qudit gate names (optional) \param two_qudit_gate_names Two qudit
- * gate names (optional) \return Instance of random qpp::QCircuit for fixed
- * circuit gate depth
+ * specified for \a d > 2)
+ * \param two_qudit_gate_set Set of two qudit gates (optional, must be specified
+ * for \a d > 2);
+ * \param one_qudit_gate_names One qudit gate names (optional)
+ * \param two_qudit_gate_names Two qudit gate names (optional)
+ * \return Instance of random qpp::QCircuit for fixed circuit gate depth
  */
 inline QCircuit random_circuit_depth(
     idx nq, idx d, idx gate_depth, std::optional<realT> p_two,
@@ -6699,10 +6760,9 @@ namespace internal {
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a projective
  * measurement step (including post-selection), false otherwise
  *
- * \param measurement_step Instance of
- * qpp::internal::QCircuitMeasurementStep \return True if the
- * qpp::internal::QCircuitMeasurementStep is a projective measurement step
- * (including post-selection), false otherwise
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a projective
+ * measurement step (including post-selection), false otherwise
  */
 inline bool is_projective_measurement(
     const internal::QCircuitMeasurementStep& measurement_step) {
@@ -6758,10 +6818,9 @@ inline bool is_projective_measurement(QCircuit::iterator it) {
  * measurement step (projective or not, including post-selection), false
  * otherwise
  *
- * \param measurement_step Instance of
- * qpp::internal::QCircuitMeasurementStep \return True if the
- * qpp::internal::QCircuitMeasurementStep is a measurement step (projective
- * or not, including post-selection), false otherwise
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a measurement
+ * step (projective or not, including post-selection), false otherwise
  */
 inline bool
 is_measurement(const internal::QCircuitMeasurementStep& measurement_step) {
@@ -6817,9 +6876,10 @@ inline bool is_measurement(QCircuit::iterator it) {
  * otherwise
  *
  * \param measurement_step Instance of
- * qpp::internal::QCircuitMeasurementStep \return True if the
- * qpp::internal::QCircuitMeasurementStep performs a destructive measurement
- * of any kind (including post-selection), false otherwise
+ * qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep performs a
+ * destructive measurement of any kind (including post-selection), false
+ * otherwise
  */
 inline bool is_destructive_measurement(
     const internal::QCircuitMeasurementStep& measurement_step) {
@@ -6873,10 +6933,9 @@ inline bool is_destructive_measurement(QCircuit::iterator it) {
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a projective
  * post-selection step, false otherwise
  *
- * \param measurement_step Instance of
- * qpp::internal::QCircuitMeasurementStep \return True if the
- * qpp::internal::QCircuitMeasurementStep is a projective post-selection
- * step, false otherwise
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a projective
+ * post-selection step, false otherwise
  */
 inline bool is_projective_post_selection(
     const internal::QCircuitMeasurementStep& measurement_step) {
@@ -6927,10 +6986,9 @@ inline bool is_projective_post_selection(QCircuit::iterator it) {
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a
  * post-selection step (projective or not), false otherwise
  *
- * \param measurement_step Instance of
- * qpp::internal::QCircuitMeasurementStep \return True if the
- * qpp::internal::QCircuitMeasurementStep is a post-selection step
- * (projective or not), false otherwise
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a
+ * post-selection step (projective or not), false otherwise
  */
 inline bool
 is_post_selection(const internal::QCircuitMeasurementStep& measurement_step) {
@@ -6980,9 +7038,9 @@ inline bool is_post_selection(QCircuit::iterator it) {
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a discard
  * step, false otherwise
  *
- * \param measurement_step Instance of
- * qpp::internal::QCircuitMeasurementStep \return True if the
- * qpp::internal::QCircuitMeasurementStep is a discard step, false otherwise
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a discard step,
+ * false otherwise
  */
 inline bool
 is_discard(const internal::QCircuitMeasurementStep& measurement_step) {
@@ -7028,9 +7086,9 @@ inline bool is_discard(QCircuit::iterator it) { return is_discard(*it); }
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a reset
  * step, false otherwise
  *
- * \param measurement_step Instance of
- * qpp::internal::QCircuitMeasurementStep \return True if the
- * qpp::internal::QCircuitMeasurementStep is a reset step, false otherwise
+ * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a reset step,
+ * false otherwise
  */
 inline bool
 is_reset(const internal::QCircuitMeasurementStep& measurement_step) {
