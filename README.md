@@ -19,10 +19,7 @@ multiprocessing library.
 information processing tasks, being capable of simulating arbitrary quantum
 processes. The main design factors taken in consideration were the ease of use,
 high portability, and high performance. The library's simulation capabilities
-are only restricted by the amount of available physical memory. On a typical
-machine (Intel i5 8Gb RAM) **Quantum++** can successfully simulate the
-evolution of 25 qubits in a pure state or of 12 qubits in a mixed state
-reasonably fast.
+are only restricted by the amount of available physical memory.
 
 To report any bugs or ask for additional features/enhancements, please
 [submit an issue](https://github.com/softwareQinc/qpp/issues) with an
