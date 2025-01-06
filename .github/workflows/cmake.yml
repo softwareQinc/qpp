@@ -14,6 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest]
+        # os: [ubuntu-latest, macos-latest, windows-latest]
         # os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
 
@@ -69,5 +70,9 @@ jobs:
         shell: bash
         run: |
           python3 -mvenv venv
-          source venv/bin/activate
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            venv/Scripts/Activate
+          else
+            source venv/bin/activate
+          fi
           pip3 install .
