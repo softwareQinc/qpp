@@ -110,7 +110,7 @@ class QCircuit : public IDisplay, public IJSON {
     internal::conditional_stack_t
         conditional_stack_{}; ///< used to parse conditional statements
     std::optional<idx>
-        outer_while_pos_; ///< location of outermost while statement
+        outer_while_pos_{}; ///< location of outermost while statement
 
     /**
      * \brief Adds matrix to the hash table
@@ -140,7 +140,7 @@ class QCircuit : public IDisplay, public IJSON {
     using VarStep = std::variant<
         internal::QCircuitConditionalStep, internal::QCircuitGateStep,
         internal::QCircuitMeasurementStep, internal::QCircuitNOPStep>;
-    std::vector<VarStep> circuit_; ///<< quantum circuit representation
+    std::vector<VarStep> circuit_{}; ///<< quantum circuit representation
 
   protected:
     /**
@@ -251,7 +251,7 @@ class QCircuit : public IDisplay, public IJSON {
                       std::optional<std::string> name = std::nullopt)
         : nq_{nq}, nc_{nc}, d_{d}, name_{std::move(name)},
           measured_nd_(nq, false), clean_qudits_(nq_, true),
-          clean_dits_(nc_, true), measurement_dits_(nc_, false), circuit_{} {
+          clean_dits_(nc_, true), measurement_dits_(nc_, false) {
         // EXCEPTION CHECKS
         // if (nq == 0)
         //    throw exception::ZeroSize("qpp::QCircuit::QCircuit()", "nq");
