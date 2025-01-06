@@ -67,7 +67,7 @@ struct QCircuitConditionalStep : IDisplay {
      * qpp::internal::QCircuitConditionalStep::Type enum class
      *
      * \param os Output stream passed by reference
-     * \param measure_type qpp::internal::QCircuitConditionalStep::Type enum
+     * \param condition_type qpp::internal::QCircuitConditionalStep::Type enum
      * class
      * \return Reference to the output stream
      */
