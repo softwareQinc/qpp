@@ -163,3 +163,8 @@ TEST(qpp_qasm_read_from_file, SciNot) {
     // Check norm
     EXPECT_NEAR(1, norm(adjoint(psi) * phi), 1e-5);
 }
+
+TEST(qpp_qasm_read_from_string, BasicParsing) {
+    EXPECT_NO_THROW(qasm::read_from_string(
+        "OPENQASM 2.0;\ninclude \"qelib1.inc\";\n qreg q[10];"));
+}
