@@ -37,6 +37,7 @@
 #include <list>
 #include <memory>
 #include <sstream>
+#include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -767,6 +768,23 @@ class QCircuitBuilder final : public ast::Visitor {
  * \return qpp::QCircuit
  */
 inline QCircuit read(std::istream& stream) {
+    ast::ptr<ast::Program> program = parser::parse_stream(stream);
+
+    std::unique_ptr<QCircuit> qc(
+        new QCircuit(program->qubits(), program->bits()));
+    QCircuitBuilder builder(qc.get());
+    program->accept(builder);
+    return *qc;
+}
+
+/**
+ * \brief Reads an OpenQASM circuit from a string and returns its qpp::QCircuit
+ * representation
+ *
+ * \return qpp::QCircuit
+ */
+inline QCircuit read_from_string(std::string qasm_string) {
+    std::istringstream stream(qasm_string);
     ast::ptr<ast::Program> program = parser::parse_stream(stream);
 
     std::unique_ptr<QCircuit> qc(

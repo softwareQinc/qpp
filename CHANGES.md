@@ -64,6 +64,8 @@
 - Bugfix in `qpp::adjoint(QCircuit)`
 - Added `cond_func_t` type alias in ["qpp/types.hpp"] for boolean predicates of
   the form `std::vector<idx> -> bool`
+- Added `qpp::read_from_string()` to ["qpp/qasm/qasm.hpp"] and an associated
+  pyqpp wrapper
 
 # Version 5.1 - 1 March 2024
 
