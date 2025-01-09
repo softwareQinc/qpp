@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -35,10 +35,9 @@ inline void init_qasm_qasm(py::module_& m) {
 
     auto py_qasm = m.def_submodule("qasm");
     py_qasm.def("read_from_file", &qpp::qasm::read_from_file,
-                "Get QCircuit representation of OpenQASM circuit");
-
+                "Get QCircuit representation of OpenQASM circuit from file");
     py_qasm.def("read_from_string", &qpp::qasm::read_from_string,
-                "Get QCircuit representation of OpenQASM circuit");
+                "Get QCircuit representation of OpenQASM circuit from string");
 }
 
 #endif /* PYQPP_QASM_QASM_BIND_HPP_ */

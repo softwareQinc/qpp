@@ -3,21 +3,21 @@
 // Cuccaro et al, quant-ph/0410184
 OPENQASM 2.0;
 include "qelib1.inc";
-gate majority a,b,c 
-{ 
-  cx c,b; 
-  cx c,a; 
-  ccx a,b,c; 
+gate majority a,b,c
+{
+  cx c,b;
+  cx c,a;
+  ccx a,b,c;
 }
-gate unmaj a,b,c 
-{ 
-  ccx a,b,c; 
-  cx c,a; 
-  cx a,b; 
+gate unmaj a,b,c
+{
+  ccx a,b,c;
+  cx c,a;
+  cx a,b;
 }
 
 // add a to b, storing result in b
-gate add4 a0,a1,a2,a3,b0,b1,b2,b3,cin,cout 
+gate add4 a0,a1,a2,a3,b0,b1,b2,b3,cin,cout
 {
   majority cin,b0,a0;
   majority a0,b1,a1;

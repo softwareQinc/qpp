@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -623,7 +623,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // ctrl + gate subsystem vector
         std::vector<idx> ctrlgate = ctrl;
         std::sort(ctrlgate.begin(), ctrlgate.end());
-        ctrlgate.insert(ctrlgate.end(), target.begin(), target.end());
+        ctrlgate.insert(ctrlgate.end(), target.cbegin(), target.cend());
         // FIXME if needed
         // std::sort(ctrlgate.begin(), ctrlgate.end());
 
