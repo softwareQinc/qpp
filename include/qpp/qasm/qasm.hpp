@@ -774,6 +774,7 @@ inline QCircuit read(std::istream& stream) {
         new QCircuit(program->qubits(), program->bits()));
     QCircuitBuilder builder(qc.get());
     program->accept(builder);
+
     return *qc;
 }
 
@@ -791,6 +792,7 @@ inline QCircuit read_from_string(std::string qasm_string) {
         new QCircuit(program->qubits(), program->bits()));
     QCircuitBuilder builder(qc.get());
     program->accept(builder);
+
     return *qc;
 }
 
@@ -807,6 +809,7 @@ inline QCircuit read_from_file(const std::string& fname) {
         new QCircuit(program->qubits(), program->bits()));
     QCircuitBuilder builder(qc.get());
     program->accept(builder);
+
     return *qc;
 }
 
