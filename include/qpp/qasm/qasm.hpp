@@ -404,8 +404,10 @@ class Context {
  * \brief Visitor for converting a QASM AST to a QCircuit
  */
 class QCircuitBuilder final : public ast::Visitor {
-    Context ctx;      ///< QCircuit translation context
-    realT temp_value; ///< stores intermediate values when computing expressions
+    Context ctx; ///< qpp::QCircuit translation context
+
+    ///< stores intermediate values when computing expressions
+    realT temp_value = 0;
 
   public:
     /**
@@ -413,7 +415,7 @@ class QCircuitBuilder final : public ast::Visitor {
      *
      * \param qc Pointer to the accumulating QCircuit
      */
-    explicit QCircuitBuilder(QCircuit* qc) : ctx(qc), temp_value(0) {}
+    explicit QCircuitBuilder(QCircuit* qc) : ctx(qc) {}
 
     // Variables
     void visit(ast::VarAccess&) override {}
