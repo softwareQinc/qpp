@@ -12,8 +12,8 @@ if(NOT TARGET Eigen3::Eigen)
     GIT_TAG 3.4.0 # 3.4.0
     GIT_SHALLOW TRUE
     # no CMakeLists.txt in cmake, so this turns off configure. Recommend also
-    # add `FIND_PACKAGE_ARGS CONFIG` so that FetchContent checks to see if Eigen
-    # is installed on the system, via the o/s, or a package manager
+    # to add `FIND_PACKAGE_ARGS CONFIG` so that FetchContent checks to see if
+    # Eigen is installed on the system, via the OS, or a package manager
     SOURCE_SUBDIR cmake)
   FetchContent_MakeAvailable(Eigen3)
 endif()

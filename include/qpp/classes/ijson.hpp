@@ -56,7 +56,6 @@ class IJSON {
      */
     virtual std::string
     to_JSON(bool enclosed_in_curly_brackets = true) const = 0;
-
 }; /* class IJSON */
 
 } /* namespace qpp */

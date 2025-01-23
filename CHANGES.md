@@ -55,9 +55,9 @@
   - `qpp::QEngineT<>::get_non_measured()` ->
     `qpp::QEngineT<>::get_non_measured_d()`
   - `qpp::QEngineT<>::was_measured()` -> `qpp::QEngineT<>::was_measured_d()`
-- Bugfix in qpp::internal::canonical_form(), the re-ordering is now stable, so
-  qpp::QCircuit measurement probabilities are not displayed in reversed order
-  w.r.t. target
+- Bugfix in `qpp::internal::canonical_form()`, the re-ordering is now stable,
+  so `qpp::QCircuit` measurement probabilities are not displayed in reversed
+  order w.r.t. target
 - Simplified MATLAB detection via CMake `find_package()` function. Users should
   only use `-DQPP_MATLAB=ON` when building with MATLAB support, all other
   MATLAB-related CMake flags have been removed.
