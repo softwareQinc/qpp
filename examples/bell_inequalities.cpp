@@ -19,11 +19,10 @@ int main() {
 
     // number of "experiments" for each of the 4 detector settings
     idx N = 10000;
-    std::cout << ">> Number N of experiments for each of the 4 measurement";
-    std::cout << " settings = " << N << '\n';
+    std::cout << ">> Number N of experiments for each of the 4 measurement settings = " << N << '\n';
 
-    idx statistics[4][4] = {{0}}; // total statistics
-    long E[4] = {0};              // experimental estimate
+    std::array<std::array<idx, 4>, 4> statistics{}; // total statistics
+    std::array<long, 4> E{};              // experimental estimate
 
     idx gate_idx = 0;           // gate index (0, 1, 2 or 3)
     for (auto&& gateA : {Q, R}) // measure Alice's side
