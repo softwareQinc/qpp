@@ -1,9 +1,9 @@
 // Bell inequalities (CHSH) violation
 // Source: ./examples/bell_inequalities.cpp
 
+#include <array>
 #include <iostream>
 #include <tuple>
-#include <array>
 
 #include "qpp/qpp.hpp"
 
@@ -20,10 +20,12 @@ int main() {
 
     // number of "experiments" for each of the 4 detector settings
     idx N = 10000;
-    std::cout << ">> Number N of experiments for each of the 4 measurement settings = " << N << '\n';
+    std::cout << ">> Number N of experiments for each of the 4 measurement "
+                 "settings = "
+              << N << '\n';
 
     std::array<std::array<idx, 4>, 4> statistics{}; // total statistics
-    std::array<long, 4> E{};              // experimental estimate
+    std::array<long, 4> E{};                        // experimental estimate
 
     idx gate_idx = 0;           // gate index (0, 1, 2 or 3)
     for (auto&& gateA : {Q, R}) // measure Alice's side
@@ -70,10 +72,18 @@ int main() {
         }
     }
     std::cout << "[N++ | N+- | N-+ | N--] (N++ + N--) - (N+- + N-+)\n";
-    std::cout << "QS: " << disp(statistics[0], IOManipContainerOpts{}.set_sep(" ")) << " " << E[0] << '\n';
-    std::cout << "QT: " << disp(statistics[1], IOManipContainerOpts{}.set_sep(" ")) << " " << E[1] << '\n';
-    std::cout << "RS: " << disp(statistics[2], IOManipContainerOpts{}.set_sep(" ")) << " " << E[2] << '\n';
-    std::cout << "RT: " << disp(statistics[3], IOManipContainerOpts{}.set_sep(" ")) << " " << E[3] << '\n';
+    std::cout << "QS: "
+              << disp(statistics[0], IOManipContainerOpts{}.set_sep(" ")) << " "
+              << E[0] << '\n';
+    std::cout << "QT: "
+              << disp(statistics[1], IOManipContainerOpts{}.set_sep(" ")) << " "
+              << E[1] << '\n';
+    std::cout << "RS: "
+              << disp(statistics[2], IOManipContainerOpts{}.set_sep(" ")) << " "
+              << E[2] << '\n';
+    std::cout << "RT: "
+              << disp(statistics[3], IOManipContainerOpts{}.set_sep(" ")) << " "
+              << E[3] << '\n';
 
     // Experimental average
     realT exp_avg =
