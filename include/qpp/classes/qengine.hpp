@@ -100,6 +100,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         return optimize_up_to_pos;
     }
 
+    // TODO: update docs, make it clear that the circuit is expected to be in
+    // canonical form
     /**
      * \brief Returns pair of (bool, idx), first true if the canonical form of
      * the circuit can be sampled from, second denoting the position of the
@@ -127,8 +129,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         idx optimize_up_to_pos = compute_optimize_up_to_pos_(steps);
 
         // decide if we can sample (every step after optimize_up_to_pos
-        // must be a projective measurement)
-        // TODO: why is_discard() here?
+        // must be a projective measurement, including discarding)
         for (idx i = optimize_up_to_pos; i < steps.size(); ++i) {
             if (!(internal::is_projective_measurement(steps[i])) ||
                 internal::is_discard(steps[i])) {
@@ -144,8 +145,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param steps Vector of qpp::QCircuit::iterator
      * \param pos Index from where the execution starts; from this index
-     * further,
-     * all steps are assumed to be a projective measurement (including
+     * further, all steps are assumed to be a projective measurement (including
      * post-selection)
      * \param[out] c_q Records the c <- (q, [OPTIONAL ps_val]) map
      * \param[out] q_ps_val Records the q <- ps_val map
@@ -239,13 +239,11 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
 
         bool measured = false;
-        auto it = steps[0];
-        it.advance(pos);
-        for (; it.get_ip() < steps.size(); ++it) {
-            if (internal::is_measurement(it)) {
+        for (idx i = pos; i < steps.size(); ++i) {
+            if (internal::is_measurement(steps[i])) {
                 measured = true;
             }
-            this->execute(it);
+            this->execute(steps[i]);
             // post-selection failed, stop executing
             if (!qeng_st_.post_select_ok_) {
                 restore_ensure_post_selection_flag();
@@ -1276,7 +1274,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         // TODO: change back first to canonical_form
         auto steps_as_iterators =
-            reps > 1 ? internal::circuit_as_iterators(*this->qc_ptr_)
+            reps > 1 ? internal::canonical_form(*this->qc_ptr_)
                      : internal::circuit_as_iterators(*this->qc_ptr_);
         if (steps_as_iterators.empty()) {
             return *this;
@@ -1287,12 +1285,11 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         qeng_st_.can_sample_ = reps > 1 && can_sample;
 
         // execute everything ONCE in the interval [0, optimize_up_to_pos)
-        for (auto it = steps_as_iterators[0]; it.get_ip() < optimize_up_to_pos;
-             ++it) {
-            execute(it);
+        for (idx i = 0; i < optimize_up_to_pos; ++i) {
+            execute(steps_as_iterators[i]);
         }
 
-        // TODO: comment the line below in production
+        // NOTE: comment the line below in production
         // qeng_st_.can_sample_ = false;
 
         // execute repeatedly everything in the remaining interval

@@ -1,5 +1,3 @@
-// TODO: remove pos_dit
-
 /*
  * This file is part of Quantum++.
  *

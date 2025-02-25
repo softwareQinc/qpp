@@ -274,7 +274,7 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \return True if the gate step is a controlled gate, false otherwise
      */
-    inline static bool is_CTRL(const internal::QCircuitGateStep& gate_step) {
+    static bool is_CTRL(const internal::QCircuitGateStep& gate_step) {
         switch (gate_step.gate_type_) {
             case internal::QCircuitGateStep::Type::CTRL:
             case internal::QCircuitGateStep::Type::CTRL_FAN:
@@ -290,7 +290,7 @@ class QCircuit : public IDisplay, public IJSON {
      * \return True if the gate step is a classically-controlled gate, false
      * otherwise
      */
-    inline static bool is_cCTRL(const internal::QCircuitGateStep& gate_step) {
+    static bool is_cCTRL(const internal::QCircuitGateStep& gate_step) {
         switch (gate_step.gate_type_) {
             case internal::QCircuitGateStep::Type::cCTRL:
             case internal::QCircuitGateStep::Type::cCTRL_FAN:
@@ -522,14 +522,10 @@ class QCircuit : public IDisplay, public IJSON {
                     // compute the "height" of the to-be-placed
                     // gate_step
                     for (idx i : ctrl) {
-                        if (heights[i] > max_height) {
-                            max_height = heights[i];
-                        }
+                        max_height = std::max(heights[i], max_height);
                     }
                     for (idx i : target) {
-                        if (heights[nc_ + i] > max_height) {
-                            max_height = heights[nc_ + i];
-                        }
+                        max_height = std::max(heights[nc_ + i], max_height);
                     }
                     // apply classical ctrl
                     for (idx i : ctrl) {
@@ -543,9 +539,7 @@ class QCircuit : public IDisplay, public IJSON {
                     // compute the "height" of the to-be-placed
                     // gate_step
                     for (idx i : ctrl_target) {
-                        if (heights[nc_ + i] > max_height) {
-                            max_height = heights[nc_ + i];
-                        }
+                        max_height = std::max(heights[nc_ + i], max_height);
                     }
                     // apply (ctrl) gate_step
                     for (idx i : ctrl_target) {
@@ -608,13 +602,9 @@ class QCircuit : public IDisplay, public IJSON {
                         POST_SELECT_V_JOINT_ND:
                         // compute the "height" of the to-be-placed
                         // measurement_step
-                        if (heights[c_reg] > max_height) {
-                            max_height = heights[c_reg];
-                        }
+                        max_height = std::max(heights[c_reg], max_height);
                         for (idx i : target) {
-                            if (heights[nc_ + i] > max_height) {
-                                max_height = heights[nc_ + i];
-                            }
+                            max_height = std::max(heights[nc_ + i], max_height);
                         }
                         // apply measurement_step
                         heights[c_reg] = max_height + 1;
@@ -639,14 +629,11 @@ class QCircuit : public IDisplay, public IJSON {
                         // measurement_step
                         for (idx i = 0; i < static_cast<idx>(target.size());
                              ++i) {
-                            if (heights[c_reg + i] > max_height) {
-                                max_height = heights[c_reg + i];
-                            }
+                            max_height =
+                                std::max(heights[c_reg + i], max_height);
                         }
                         for (idx i : target) {
-                            if (heights[nc_ + i] > max_height) {
-                                max_height = heights[nc_ + i];
-                            }
+                            max_height = std::max(heights[nc_ + i], max_height);
                         }
                         // apply measurement_step
                         for (idx i = 0; i < static_cast<idx>(target.size());
@@ -664,9 +651,7 @@ class QCircuit : public IDisplay, public IJSON {
                     case internal::QCircuitMeasurementStep::Type::DISCARD:
                     case internal::QCircuitMeasurementStep::Type::DISCARD_MANY:
                         for (idx i : target) {
-                            if (heights[nc_ + i] > max_height) {
-                                max_height = heights[nc_ + i];
-                            }
+                            max_height = std::max(heights[nc_ + i], max_height);
                         }
                         // apply reset/discard
                         for (idx i : target) {
@@ -3058,6 +3043,7 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
+    // TODO: consider c_reg being the last measured qudit
     /**
      * \brief Measures all remaining measurable qudits in the computational
      * basis (Z-basis)
@@ -6142,6 +6128,7 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
  * \return Combined quantum circuit description, with \a qc_target added at
  * the end of \a qc_ctrl
  */
+// TODO: do we need pos_dit optionals?!
 inline QCircuit
 compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
                      const QCircuit& qc_target, bigint pos_qudit,
@@ -6506,7 +6493,7 @@ inline QCircuit random_circuit_count(
             }
         }
         current_count = with_respect_to_gate.has_value()
-                            ? qc.get_gate_count(with_respect_to_gate.value())
+                            ? qc.get_gate_count(with_respect_to_gate)
                             : qc.get_gate_count();
     }
 
@@ -6692,7 +6679,7 @@ inline QCircuit random_circuit_depth(
             }
         }
         current_depth = with_respect_to_gate.has_value()
-                            ? qc.get_gate_depth(with_respect_to_gate.value())
+                            ? qc.get_gate_depth(with_respect_to_gate)
                             : qc.get_gate_depth();
     }
 
@@ -7374,13 +7361,15 @@ circuit_as_iterators(const QCircuit& qc) {
 
 /**
  * \brief Puts a quantum (sub)-circuit description in the canonical form,
- * i.e., starting with the first measurement step in the circuit range
- * [start, finish), pushes all cCTRLs and measurements to the end of the
- * circuit, so, if possible, the circuit will be of the form
+ * i.e., pushes all cCTRLs followed by measurements to the end of the circuit,
+ * so, if possible, the circuit will be of the form
  * [Gates, cCTRLs, Measurements]
  *
  * \note This function does not interchange measurements, i.e., the
  * re-ordering is stable
+ *
+ * \note This function has no effect if the circuit description contains
+ * conditional statements
  *
  * \param start Quantum circuit iterator pointing to the first element
  * \param finish Quantum circuit iterator pointing to the last element (not
@@ -7391,6 +7380,16 @@ circuit_as_iterators(const QCircuit& qc) {
 inline std::vector<QCircuit::iterator>
 canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 
+    // NOTE: optimize conditionals if possible
+    //
+    // if the circuit contains conditional statements, return the circuit as is
+    auto first_conditional_it = std::find_if(
+        start, finish, [](auto&& elem) { return is_conditional(elem); });
+    if (first_conditional_it != finish) {
+        return circuit_as_iterators(start, finish);
+    }
+
+    // iterator to the first measurement step
     auto first_measurement_it = std::find_if(
         start, finish, [](auto&& elem) { return is_measurement(elem); });
 
@@ -7442,12 +7441,14 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 
 /**
  * \brief Puts a quantum (sub)-circuit description in the canonical form,
- * i.e., starting with the first measurement step in the circuit, pushes all
- * cCTRLs and measurements to the end of the circuit, so, if possible, the
- * circuit will be of the form [Gates, cCTRLs, Measurements]
+ * i.e., pushes all cCTRLs followed by measurements to the end of the circuit,
+ * so, if possible, the circuit will be of the form
+ * [Gates, cCTRLs, Measurements]
  *
- * \note This function does not interchange measurements, i.e., the
- * re-ordering is stable
+ * \note This function has no effect if the circuit description contains
+ * conditional statements
+ *
+ * \note This function does not push across conditional statements
  *
  * \param qc Quantum circuit description
  * \return Quantum circuit canonical form represented as a vector of quantum

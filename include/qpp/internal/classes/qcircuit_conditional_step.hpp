@@ -171,9 +171,9 @@ struct QCircuitConditionalStep : IDisplay {
          */
         std::ostream& display(std::ostream& os) const override {
             if (start_expr.has_value()) {
-                os << "START: " << start_expr.value().first << ' ';
-                os << "(addr. " << std::addressof(start_expr.value().second)
-                   << ")";
+                os << "START: " << start_expr.value().first;
+                // os << " (addr. " << std::addressof(start_expr.value().second)
+                //    << ")";
             }
             if (else_expr.has_value()) {
                 os << ", ELSE: " << else_expr.value();
