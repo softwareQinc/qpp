@@ -12,9 +12,9 @@ FetchContent_Declare(
   GIT_SHALLOW TRUE
   GIT_PROGRESS TRUE)
 # For Windows: Prevent overriding the parent project's compiler/linker settings,
-# and add bigobj option
+# and add /bigobj option
 if(MSVC)
-  add_compile_options(-bigobj)
+  add_compile_options(/bigobj)
   set(gtest_force_shared_crt
       ON
       CACHE BOOL "" FORCE)

@@ -7,7 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #
 # cmake -B build -DCMAKE_INSTALL_PREFIX=/path/to/installed/qpp
 #
-# then uncomment the following line and replace the installation path with yours
+# uncomment the following line and replace the installation path with yours
 
 # set(CMAKE_PREFIX_PATH "/path/to/installed/qpp")
 

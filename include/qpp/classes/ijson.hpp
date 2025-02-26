@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -56,7 +56,6 @@ class IJSON {
      */
     virtual std::string
     to_JSON(bool enclosed_in_curly_brackets = true) const = 0;
-
 }; /* class IJSON */
 
 } /* namespace qpp */

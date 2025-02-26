@@ -74,3 +74,4 @@ cmake_install.cmake
 CMakeCache.txt
 CMakeFiles/
 pyqpp.egg-info/
+/uv.lock

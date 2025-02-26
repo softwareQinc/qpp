@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -142,11 +142,6 @@ class QNoisyEngineT : public QEngineT<T> {
      *
      * \param reset_stats Optional (true by default), resets the collected
      * measurement statistics hash table
-     * \param ensure_post_selection Optional (false by default). If true,
-     * executes a measurement step repeatedly until the post-selection
-     * result(s) agree
-     * \param max_post_selection_reps Maximum number of executions of a
-     * post-selection step until success
      * \return Reference to the current instance
      */
     QNoisyEngineT& reset(bool reset_stats = true) override {
@@ -194,8 +189,8 @@ struct QNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
 };
 // template deduction rule
 template <class NoiseModel>
-QNoisyEngine(const qpp::QCircuit& qc,
-             const NoiseModel& noise) -> QNoisyEngine<NoiseModel>;
+QNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
+    -> QNoisyEngine<NoiseModel>;
 
 /**
  * \class qpp::QKetNoisyEngine
@@ -214,8 +209,8 @@ struct QKetNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
 };
 // template deduction rule
 template <class NoiseModel>
-QKetNoisyEngine(const qpp::QCircuit& qc,
-                const NoiseModel& noise) -> QKetNoisyEngine<NoiseModel>;
+QKetNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
+    -> QKetNoisyEngine<NoiseModel>;
 
 /**
  * \class qpp::QDensityNoisyEngine
@@ -236,8 +231,8 @@ struct QDensityNoisyEngine : public QNoisyEngineT<cmat, NoiseModel> {
 };
 // template deduction rule
 template <class NoiseModel>
-QDensityNoisyEngine(const qpp::QCircuit& qc,
-                    const NoiseModel& noise) -> QDensityNoisyEngine<NoiseModel>;
+QDensityNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
+    -> QDensityNoisyEngine<NoiseModel>;
 
 } /* namespace qpp */
 

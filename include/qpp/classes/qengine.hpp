@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -77,63 +77,67 @@ namespace qpp {
 template <typename T>
 class QEngineT : public QBaseEngine<T, QCircuit> {
     /**
-     * \brief Compute the position of the first measurement/discard/reset step
+     * \brief Compute the position of the first
+     * measurement/discard/reset/conditional step
      * \see qpp::internal::canonical_form()
      *
      * \param steps Vector of qpp::QCircuit::iterator
-     * \return Position of the first measurement/discard/reset step
+     * \return Position of the first measurement/discard/reset/conditional step
      */
-    idx compute_first_measurement_discard_reset_pos_(
+    idx compute_optimize_up_to_pos_(
         const std::vector<QCircuit::iterator>& steps) const {
-        // find the position of the first measurement/reset/discard step
-        auto first_measurement_discard_reset_it =
+        // find the position of the first
+        // measurement/reset/discard/conditional step
+        auto optimize_up_to_pos_it =
             std::find_if(steps.begin(), steps.end(), [](auto&& elem) {
                 return internal::is_measurement(elem) ||
-                       internal::is_discard(elem) || internal::is_reset(elem);
+                       internal::is_discard(elem) || internal::is_reset(elem) ||
+                       internal::is_conditional(elem);
             });
-        idx first_measurement_discard_reset_pos =
-            std::distance(steps.begin(), first_measurement_discard_reset_it);
+        idx optimize_up_to_pos =
+            std::distance(steps.begin(), optimize_up_to_pos_it);
 
-        return first_measurement_discard_reset_pos;
+        return optimize_up_to_pos;
     }
 
+    // TODO: update docs, make it clear that the circuit is expected to be in
+    // canonical form
     /**
      * \brief Returns pair of (bool, idx), first true if the canonical form of
      * the circuit can be sampled from, second denoting the position of the
-     * first measurement/reset/discard step
+     * first measurement/reset/discard/conditional step
      * \see qpp::internal::canonical_form()
      *
      * \note A circuit can be sampled from if and only if it its canonical form
      * have only projective measurements (including post-selection) after the
-     * first measurement/reset/discard step. In other words, it's of the form
-     * [Gate step(s)] * [Projective measurements step(s)].
+     * first measurement/reset/discard/conditional step. In other words, it's of
+     * the form [Gate step(s)] * [Projective measurements step(s)].
      *
      * \param steps Vector of qpp::QCircuit::iterator
      * \return Pair of (bool, idx), first true if the canonical form of the
      * circuit can be sampled from, second denoting the position of the first
-     * measurement/reset/discard step
+     * measurement/reset/discard/conditional step
      */
     std::pair<bool, idx>
     can_sample_from_(const std::vector<QCircuit::iterator>& steps) const {
 
         // in the following, we will partition the circuit as
-        // [0 ... first_measurement_discard_reset_pos ... end)
+        // [0 ... optimize_up_to_pos ... end)
 
-        // find the position of the first measurement/reset/discard step
-        idx first_measurement_discard_reset_pos =
-            compute_first_measurement_discard_reset_pos_(steps);
+        // find the position of the first
+        // measurement/reset/discard/conditional step
+        idx optimize_up_to_pos = compute_optimize_up_to_pos_(steps);
 
-        // decide if we can sample (every step after
-        // first_measurement_discard_reset_pos must be a projective measurement)
-        for (idx i = first_measurement_discard_reset_pos; i < steps.size();
-             ++i) {
+        // decide if we can sample (every step after optimize_up_to_pos
+        // must be a projective measurement, including discarding)
+        for (idx i = optimize_up_to_pos; i < steps.size(); ++i) {
             if (!(internal::is_projective_measurement(steps[i])) ||
                 internal::is_discard(steps[i])) {
-                return {false, first_measurement_discard_reset_pos};
+                return {false, optimize_up_to_pos};
             }
         }
 
-        return {true, first_measurement_discard_reset_pos};
+        return {true, optimize_up_to_pos};
     }
 
     /**
@@ -141,8 +145,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param steps Vector of qpp::QCircuit::iterator
      * \param pos Index from where the execution starts; from this index
-     * further,
-     * all steps are assumed to be a projective measurement (including
+     * further, all steps are assumed to be a projective measurement (including
      * post-selection)
      * \param[out] c_q Records the c <- (q, [OPTIONAL ps_val]) map
      * \param[out] q_ps_val Records the q <- ps_val map
@@ -213,13 +216,12 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param ensure_post_selection When \a ensure_post_selection is true, the
      * step is executed repeatedly until the post-selection succeeds, or until
      * the maximum number of post-selection reps is reached,
-     * \see qpp::QEngineT::set_max_post_selection_reps(), in which case the
+     * see qpp::QEngineT::set_max_post_selection_reps(), in which case the
      * post-selection is not guaranteed to succeed; check the state of the
-     * engine, \see qpp::QEngineT::post_select_ok()
+     * engine, see qpp::QEngineT::post_select_ok()
      */
-    void
-    execute_circuit_steps_once_(const std::vector<QCircuit::iterator>& steps,
-                                idx pos, bool ensure_post_selection) {
+    void execute_circuit_steps_once_(std::vector<QCircuit::iterator>& steps,
+                                     idx pos, bool ensure_post_selection) {
         // save the engine state
         auto engine_state_copy = qeng_st_;
 
@@ -237,15 +239,34 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
 
         bool measured = false;
-        for (idx i = pos; i < steps.size(); ++i) {
-            if (internal::is_measurement(steps[i])) {
-                measured = true;
+        // execute with jumps (conditionals)
+        if (internal::has_conditionals(steps.front(), steps.back())) {
+            auto it = steps[0];
+            it.advance(pos);
+            for (; it.get_ip() < steps.size(); ++it) {
+                if (internal::is_measurement(it)) {
+                    measured = true;
+                }
+                this->execute(it);
+                // post-selection failed, stop executing
+                if (!qeng_st_.post_select_ok_) {
+                    restore_ensure_post_selection_flag();
+                    return;
+                }
             }
-            this->execute(steps[i]);
-            // post-selection failed, stop executing
-            if (!qeng_st_.post_select_ok_) {
-                restore_ensure_post_selection_flag();
-                return;
+        }
+        // execute serially
+        else {
+            for (idx i = pos; i < steps.size(); ++i) {
+                if (internal::is_measurement(steps[i])) {
+                    measured = true;
+                }
+                this->execute(steps[i]);
+                // post-selection failed, stop executing
+                if (!qeng_st_.post_select_ok_) {
+                    restore_ensure_post_selection_flag();
+                    return;
+                }
             }
         }
 
@@ -264,8 +285,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param pos Index from where the execution starts
      * \param reps Number of repetitions
      */
-    void execute_no_sample_(const std::vector<QCircuit::iterator>& steps,
-                            idx pos, idx reps) {
+    void execute_no_sample_(std::vector<QCircuit::iterator>& steps, idx pos,
+                            idx reps) {
         // save the engine state
         internal::QEngineState<T> engine_state_copy = qeng_st_;
 
@@ -306,7 +327,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * post-selection)
      * \param reps Number of repetitions
      */
-    void execute_sample_(const std::vector<QCircuit::iterator>& steps, idx pos,
+    void execute_sample_(std::vector<QCircuit::iterator>& steps, idx pos,
                          idx reps) {
         std::map<idx, std::pair<idx, std::optional<idx>>>
             c_q; // records the c <- (q, [OPTIONAL ps_val]) map
@@ -569,7 +590,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     }
                 }
             }
-            // TODO check if this can happen (st_.dits_.empty())
+            // TODO: check if this can happen (st_.dits_.empty())
             else {
                 if (is_fan) {
                     for (idx qudit : target_rel_pos) {
@@ -777,6 +798,76 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 break;
         } // end switch on measurement type
     };
+
+    /**
+     * \brief Executes qpp::internal::QCircuitConditionalStep
+     *
+     * \param conditional_step Instance of
+     * qpp::internal::QCircuitConditionalStep
+     * \param it Iterator pointing to the step to be executed
+     *
+     */
+    virtual void execute_conditional_step_(
+        const internal::QCircuitConditionalStep& conditional_step,
+        QCircuitTraits<QCircuit>::iterator_type& it) {
+        using Type = internal::QCircuitConditionalStep::Type;
+        auto start_expr = conditional_step.ctx_.start_expr;
+        auto else_expr = conditional_step.ctx_.else_expr;
+        auto end_expr = conditional_step.ctx_.end_expr;
+        auto dit_shift = conditional_step.ctx_.dit_shift;
+        bool is_true = true;
+
+        switch (conditional_step.condition_type_) {
+            case Type::WHILE:
+            case Type::IF:
+                if (start_expr.has_value()) {
+                    auto lambda = start_expr.value().second;
+                    auto it_begin =
+                        std::next(qeng_st_.dits_.begin(), dit_shift);
+                    auto it_end = qeng_st_.dits_.end();
+                    auto arg_lambda = std::vector<idx>(it_begin, it_end);
+                    is_true = lambda(arg_lambda);
+                }
+                // jump on false
+                if (!is_true) {
+                    // jump immediately after ELSE/END on false
+                    idx adv = else_expr.has_value() ? else_expr.value()
+                                                    : end_expr.value();
+                    adv -= start_expr.value().first;
+
+                    it.advance(adv);
+                }
+                break;
+            case Type::ELSE: {
+                idx adv = end_expr.value();
+                adv -= else_expr.value();
+                it.advance(adv);
+                break;
+            }
+            case Type::ENDIF:
+                break;
+            case Type::ENDWHILE:
+                if (start_expr.has_value()) {
+                    auto lambda = start_expr.value().second;
+                    auto it_begin =
+                        std::next(qeng_st_.dits_.begin(), dit_shift);
+                    auto it_end = qeng_st_.dits_.end();
+                    is_true = lambda(std::vector<idx>(it_begin, it_end));
+                }
+                // jump back on true
+                if (is_true) {
+                    idx adv = start_expr.value().first;
+                    adv -= end_expr.value();
+                    // adv is a negative value
+                    it.advance(adv);
+                    break;
+                }
+            case Type::NONE:
+                break;
+        }
+
+        return;
+    }
 
     /**
      * \brief Executes qpp::internal::QCircuitNOPStep
@@ -1013,7 +1104,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param dits Vector of classical dits, must have the same size as the
      * internal vector of classical dits returned by
-     * qpp::QEngineT::get_dits() \return Reference to the current instance
+     * qpp::QEngineT::get_dits()
+     * \return Reference to the current instance
      */
     QEngineT& set_dits(std::vector<idx> dits) {
         // EXCEPTION CHECKS
@@ -1027,14 +1119,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     }
 
     /**
-     * \brief
+     * \brief Enforces post-selection (must succeed) when \a val is true
      *
      * \param val If true, repeatedly executes post-selection steps until the
      * post-selection result(s) agree, or until the maximum number of
-     * post-selection repetitions is reached, \see
+     * post-selection repetitions is reached, see
      * qpp::QEngineT::set_max_post_selection_reps(), in which case the
      * post-selection is not guaranteed to succeed; check the state of the
-     * engine, \see qpp::QEngineT::post_select_ok().
+     * engine, see qpp::QEngineT::post_select_ok().
      * \return Reference to the current instance
      */
     QEngineT& set_ensure_post_selection(bool val) {
@@ -1123,20 +1215,24 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     /**
      * \brief Executes one step in the quantum circuit description
      *
-     * \note Override only this QEngine::execute() member function in every
-     * derived class to achieve the desired behaviour
+     * \note Override only this member function in every derived class to
+     * achieve the desired behaviour
      *
-     * \param elem Step to be executed
+     * \param it Iterator pointing to the step to be executed
      * \return Reference to the current instance
      */
-    QEngineT& execute(
-        const typename QCircuitTraits<QCircuit>::value_type& elem) override {
+    QEngineT& execute(QCircuitTraits<QCircuit>::iterator_type& it) override {
         // EXCEPTION CHECKS
         // iterator must point to the same quantum circuit description
-        if (elem.get_qc_ptr() != this->qc_ptr_) {
+        if (it->get_qc_ptr() != this->qc_ptr_) {
             throw exception::InvalidIterator(
                 "qpp::QEngineT::execute()",
                 "Iterator does not point to the same circuit description");
+        }
+        if (!this->qc_ptr_->validate_conditionals()) {
+            throw exception::InvalidConditional(
+                "qpp::QEngineT::execute())",
+                "Missing QCircuit::cond_end() delimiter");
         }
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
@@ -1150,17 +1246,24 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             [&](const internal::QCircuitMeasurementStep& measurement_step) {
                 return this->execute_measurement_step_(measurement_step);
             };
+
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep& nop_step) {
             return this->execute_nop_step_(nop_step);
         };
 
+        auto conditional_step_visitor =
+            [&](const internal::QCircuitConditionalStep& conditional_step) {
+                return this->execute_conditional_step_(conditional_step, it);
+            };
+
         std::visit(
             overloaded{
+                conditional_step_visitor,
                 gate_step_visitor,
                 measurement_step_visitor,
                 nop_step_visitor,
             },
-            elem.get_step());
+            it->get_step());
 
         return *this;
     }
@@ -1175,6 +1278,11 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // EXCEPTION CHECKS
         if (reps == 0) {
             throw exception::OutOfRange("qpp::QEngineT::execute()", "reps");
+        }
+        if (!this->qc_ptr_->validate_conditionals()) {
+            throw exception::InvalidConditional(
+                "qpp::QEngineT::execute()",
+                "Missing QCircuit::cond_end() delimiter");
         }
         // END EXCEPTION CHECKS
 
@@ -1194,29 +1302,36 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             return *this;
         }
 
-        auto [can_sample, first_measurement_discard_reset_pos] =
+        auto [can_sample, optimize_up_to_pos] =
             can_sample_from_(steps_as_iterators);
         qeng_st_.can_sample_ = reps > 1 && can_sample;
 
-        // execute everything ONCE in the interval
-        // [0, first_measurement_discard_reset_pos)
-        for (idx i = 0; i < first_measurement_discard_reset_pos; ++i) {
-            execute(steps_as_iterators[i]);
+        // execute everything ONCE in the interval [0, optimize_up_to_pos)
+        // execute with jumps (conditionals)
+        if (this->qc_ptr_->has_conditionals()) {
+            for (auto it = steps_as_iterators[0];
+                 it.get_ip() < optimize_up_to_pos; ++it) {
+                execute(it);
+            }
+        }
+        // execute serially
+        else {
+            for (idx i = 0; i < optimize_up_to_pos; ++i) {
+                execute(steps_as_iterators[i]);
+            }
         }
 
-        // TODO: comment the line below in production
+        // NOTE: comment the line below in production
         // qeng_st_.can_sample_ = false;
 
         // execute repeatedly everything in the remaining interval
         // can sample: every step from now on is a projective measurement
         if (qeng_st_.can_sample_) {
-            execute_sample_(steps_as_iterators,
-                            first_measurement_discard_reset_pos, reps);
+            execute_sample_(steps_as_iterators, optimize_up_to_pos, reps);
         }
         // cannot sample
         else {
-            execute_no_sample_(steps_as_iterators,
-                               first_measurement_discard_reset_pos, reps);
+            execute_no_sample_(steps_as_iterators, optimize_up_to_pos, reps);
         }
 
         return *this;
