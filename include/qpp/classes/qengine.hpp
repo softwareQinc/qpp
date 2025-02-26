@@ -239,15 +239,34 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
 
         bool measured = false;
-        for (idx i = pos; i < steps.size(); ++i) {
-            if (internal::is_measurement(steps[i])) {
-                measured = true;
+        // execute with jumps (conditionals)
+        if (internal::has_conditionals(steps.front(), steps.back())) {
+            auto it = steps[0];
+            it.advance(pos);
+            for (; it.get_ip() < steps.size(); ++it) {
+                if (internal::is_measurement(it)) {
+                    measured = true;
+                }
+                this->execute(it);
+                // post-selection failed, stop executing
+                if (!qeng_st_.post_select_ok_) {
+                    restore_ensure_post_selection_flag();
+                    return;
+                }
             }
-            this->execute(steps[i]);
-            // post-selection failed, stop executing
-            if (!qeng_st_.post_select_ok_) {
-                restore_ensure_post_selection_flag();
-                return;
+        }
+        // execute serially
+        else {
+            for (idx i = pos; i < steps.size(); ++i) {
+                if (internal::is_measurement(steps[i])) {
+                    measured = true;
+                }
+                this->execute(steps[i]);
+                // post-selection failed, stop executing
+                if (!qeng_st_.post_select_ok_) {
+                    restore_ensure_post_selection_flag();
+                    return;
+                }
             }
         }
 
@@ -797,6 +816,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         auto end_expr = conditional_step.ctx_.end_expr;
         auto dit_shift = conditional_step.ctx_.dit_shift;
         bool is_true = true;
+
         switch (conditional_step.condition_type_) {
             case Type::WHILE:
             case Type::IF:
@@ -805,7 +825,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     auto it_begin =
                         std::next(qeng_st_.dits_.begin(), dit_shift);
                     auto it_end = qeng_st_.dits_.end();
-                    is_true = lambda(std::vector<idx>(it_begin, it_end));
+                    auto arg_lambda = std::vector<idx>(it_begin, it_end);
+                    is_true = lambda(arg_lambda);
                 }
                 // jump on false
                 if (!is_true) {
@@ -1209,8 +1230,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 "Iterator does not point to the same circuit description");
         }
         if (!this->qc_ptr_->validate_conditionals()) {
-            throw exception::InvalidConditional("qpp::QEngineT::execute())",
-                                                "Missing ENDIF");
+            throw exception::InvalidConditional(
+                "qpp::QEngineT::execute())",
+                "Missing QCircuit::cond_end() delimiter");
         }
         // the rest of exceptions are caught by the iterator::operator*()
         // END EXCEPTION CHECKS
@@ -1258,8 +1280,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             throw exception::OutOfRange("qpp::QEngineT::execute()", "reps");
         }
         if (!this->qc_ptr_->validate_conditionals()) {
-            throw exception::InvalidConditional("qpp::QEngineT::execute()",
-                                                "Missing ENDIF");
+            throw exception::InvalidConditional(
+                "qpp::QEngineT::execute()",
+                "Missing QCircuit::cond_end() delimiter");
         }
         // END EXCEPTION CHECKS
 
@@ -1272,7 +1295,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         this->set_max_post_selection_reps(
             engine_state_copy.max_post_selection_reps_);
 
-        // TODO: change back first to canonical_form
         auto steps_as_iterators =
             reps > 1 ? internal::canonical_form(*this->qc_ptr_)
                      : internal::circuit_as_iterators(*this->qc_ptr_);
@@ -1285,8 +1307,18 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         qeng_st_.can_sample_ = reps > 1 && can_sample;
 
         // execute everything ONCE in the interval [0, optimize_up_to_pos)
-        for (idx i = 0; i < optimize_up_to_pos; ++i) {
-            execute(steps_as_iterators[i]);
+        // execute with jumps (conditionals)
+        if (this->qc_ptr_->has_conditionals()) {
+            for (auto it = steps_as_iterators[0];
+                 it.get_ip() < optimize_up_to_pos; ++it) {
+                execute(it);
+            }
+        }
+        // execute serially
+        else {
+            for (idx i = 0; i < optimize_up_to_pos; ++i) {
+                execute(steps_as_iterators[i]);
+            }
         }
 
         // NOTE: comment the line below in production

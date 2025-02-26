@@ -72,7 +72,7 @@ using conditional_stack_t =
 
 // forward declarations
 class QCircuitIterator;
-void inc_conditional_stack_(conditional_stack_t& cs, idx i);
+void inc_conditional_stack(conditional_stack_t& cs, idx i);
 } /* namespace internal */
 
 /**
@@ -108,9 +108,9 @@ class QCircuit : public IDisplay, public IJSON {
         measurement_count_{}; ///< measurement counts
 
     internal::conditional_stack_t
-        conditional_stack_{}; ///< used to parse conditional statements
+        conditional_stack_{}; ///< used for parsing conditional statements
     std::optional<idx>
-        outer_while_pos_{}; ///< location of outermost while statement
+        outer_while_pos_{}; ///< location of the outermost while statement
 
     /**
      * \brief Adds matrix to the hash table
@@ -3879,7 +3879,7 @@ class QCircuit : public IDisplay, public IJSON {
         for (idx i = 0; i < n; ++i) {
             result.insert(result.end(), circuit_copy.cbegin(),
                           circuit_copy.cend());
-            internal::inc_conditional_stack_(conditional_stack_copy, num_steps);
+            internal::inc_conditional_stack(conditional_stack_copy, num_steps);
             conditional_stack_.insert(conditional_stack_.end(),
                                       conditional_stack_copy.cbegin(),
                                       conditional_stack_copy.cend());
@@ -4098,8 +4098,7 @@ class QCircuit : public IDisplay, public IJSON {
             measurement_count_[elem.first] += elem.second;
         }
         // update conditional stack
-        inc_conditional_stack_(other.conditional_stack_,
-                               other.get_step_count());
+        inc_conditional_stack(other.conditional_stack_, other.get_step_count());
         conditional_stack_.insert(conditional_stack_.end(),
                                   other.conditional_stack_.cbegin(),
                                   other.conditional_stack_.cend());
@@ -4757,14 +4756,14 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Returns true if the quantum circuit description contains any
+     * \brief Returns true if the quantum circuit description contains
      * conditionals, false otherwise
      *
-     * \return True if the quantum circuit description contains any
-     * conditionals, false otherwise
+     * \return True if the quantum circuit description contains conditionals,
+     * false otherwise
      */
     bool has_conditionals() const noexcept {
-        return std::find_if(circuit_.begin(), circuit_.end(), [](auto&& arg) {
+        return std::find_if(circuit_.cbegin(), circuit_.cend(), [](auto&& arg) {
                    return std::holds_alternative<
                        internal::QCircuitConditionalStep>(arg);
                }) != circuit_.end();
@@ -7329,8 +7328,8 @@ inline bool can_swap(QCircuit::iterator it1, QCircuit::iterator it2) {
 }
 
 /**
- * \brief Converts a quantum (sub)-circuit description to a vector of
- * quantum circuit iterators
+ * \brief Converts a qpp::QCircuit::iterator range [\a start, \a finish) to a
+ * vector of quantum circuit iterators
  *
  * \param start Quantum circuit iterator pointing to the first element
  * \param finish Quantum circuit iterator pointing to the last element (not
@@ -7348,15 +7347,15 @@ circuit_as_iterators(QCircuit::iterator start, QCircuit::iterator finish) {
 }
 
 /**
- * \brief Converts a quantum (sub)-circuit description to a vector of
- * quantum circuit iterators
+ * \brief Converts a quantum circuit description to a vector of quantum circuit
+ * iterators
  *
  * \param qc Quantum circuit description
  * \return Vector of quantum circuit iterators
  */
 inline std::vector<QCircuit::iterator>
 circuit_as_iterators(const QCircuit& qc) {
-    return circuit_as_iterators(qc.begin(), qc.end());
+    return circuit_as_iterators(qc.cbegin(), qc.cend());
 }
 
 /**
@@ -7380,9 +7379,10 @@ circuit_as_iterators(const QCircuit& qc) {
 inline std::vector<QCircuit::iterator>
 canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 
-    // NOTE: optimize conditionals if possible
+    // TODO: optimize conditionals if possible
     //
-    // if the circuit contains conditional statements, return the circuit as is
+    // if the circuit contains conditional statements, return the circuit as is,
+    // do not reorder it
     auto first_conditional_it = std::find_if(
         start, finish, [](auto&& elem) { return is_conditional(elem); });
     if (first_conditional_it != finish) {
@@ -7455,7 +7455,7 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
  * circuit iterators
  */
 inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
-    return canonical_form(qc.begin(), qc.end());
+    return canonical_form(qc.cbegin(), qc.cend());
 }
 
 /**
@@ -7465,10 +7465,27 @@ inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
  * \param cs Conditional stack
  * \param i Non-negative integer
  */
-inline void inc_conditional_stack_(conditional_stack_t& cs, idx i) {
+inline void inc_conditional_stack(conditional_stack_t& cs, idx i) {
     for (auto& elem : cs) {
         elem.inc_locs(i);
     }
+}
+
+/**
+ * \brief True if the qpp::QCircuit::iterator range [\a start, \a finish)
+ * contains conditional statements, false otherwise
+ *
+ * \param start Quantum circuit iterator pointing to the first element
+ * \param finish Quantum circuit iterator pointing to the last element (not
+ included)
+ * \return True if the qpp::QCircuit::iterator range [\a start, \a finish)
+ * contains conditional statements, false otherwise
+
+ */
+inline bool has_conditionals(QCircuit::iterator start,
+                             QCircuit::iterator finish) {
+    return std::find_if(start, finish,
+                        [](auto&& it) { return is_conditional(it); }) != finish;
 }
 
 } /* namespace internal */
