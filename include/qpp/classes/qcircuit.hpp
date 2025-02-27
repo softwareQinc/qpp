@@ -888,9 +888,17 @@ class QCircuit : public IDisplay, public IJSON {
                     measurement_step.c_reg_ += n;
                 }
             };
-        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        // update condition statement context indexes
         auto conditional_step_visitor =
-            [&](const internal::QCircuitConditionalStep&) {};
+            [&](internal::QCircuitConditionalStep& conditional_step) {
+                if (conditional_step.ctx_.start_expr.has_value()) {
+                    // FIXME: update conditionals c_regs in lambdas!
+                    // TODO: check this, and inside the lambda evaluation in
+                    // QEngine
+                    conditional_step.ctx_.dit_shift += n;
+                }
+            };
+        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
 
         visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
                        measurement_step_visitor, nop_step_visitor);
@@ -1016,7 +1024,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Ends conditional IF/ELSE and WHILE blocks
-     * \see qpp::QCircuit::cond_if(), qpp::QCircuit::cond_while()
+     * \see qpp::QCircuit::cond_if(), qpp::QCircuit:: cond_while()
      *
      * \return Reference to the current instance
      */
@@ -3854,7 +3862,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Replicates the circuit, in place
-     * \note The circuit should not contain any measurement steps
+     * \note The circuit should not contain measurement steps
      *
      * \param n Number of repetitions. If \a n == 1, returns the original
      * circuit.
@@ -3974,7 +3982,7 @@ class QCircuit : public IDisplay, public IJSON {
         // END EXCEPTION CHECKS
 
         // STEP 0: add additional qudits (if needed) and classical dits from
-        // the to-be-coupled circuit
+        // the to-be-composed circuit
         if (pos_qudit < 0) {
             // add qudits before beginning
             idx extra_qudits = std::abs(pos_qudit);
@@ -4319,7 +4327,7 @@ class QCircuit : public IDisplay, public IJSON {
      * the current quantum circuit description, i.e., all qudit indexes of
      * the added quantum circuit description must match with qudits from the
      * current quantum circuit description (and the latter should not
-     * contain any destructive measurements on the coupled qudits)
+     * contain destructive measurements on the coupled qudits)
      *
      * \note The classical dits are not relabeled
      *
@@ -4742,11 +4750,11 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Returns true if the quantum circuit description contains any
+     * \brief Returns true if the quantum circuit description contains
      * measurements, false otherwise
      *
-     * \return True if the quantum circuit description contains any
-     * measurements, false otherwise
+     * \return True if the quantum circuit description contains measurements,
+     * false otherwise
      */
     bool has_measurements() const noexcept {
         return std::find_if(circuit_.begin(), circuit_.end(), [](auto&& arg) {
@@ -4770,11 +4778,10 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Returns true if the quantum circuit description
-     * contains any operations/measurements that remove qudits,
-     * false otherwise
+     * \brief Returns true if the quantum circuit description contains
+     * operations/measurements that remove qudits, false otherwise
      *
-     * \return True if the quantum circuit description contains any
+     * \return True if the quantum circuit description contains
      * operations/measurements that remove qudits, false otherwise
      */
     bool removes_qudits() const noexcept {
@@ -4814,7 +4821,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Adjoint quantum circuit description, in place
-     * \note The circuit should not contain any measurement steps
+     * \note The circuit should not contain measurement steps
      *
      * \return Reference to the current instance
      */
@@ -6285,7 +6292,7 @@ inline QCircuit kron(QCircuit qc1, const QCircuit& qc2,
 
 /**
  * \brief Replicates a quantum circuit description
- * \note The circuit should not contain any steps that remove qudits
+ * \note The circuit should not contain steps that remove qudits
  *
  * \param qc Quantum circuit description
  * \param n Number of repetitions. If \a n == 1, returns the original
@@ -6886,11 +6893,11 @@ inline bool is_destructive_measurement(
 
 /**
  * \brief True if the quantum circuit step performs a destructive
- * measurement of any kind, false otherwise
+ * measurement of any kind (including post-selection), false otherwise
  *
  * \param elem Quantum circuit step
  * \return True if the quantum circuit step performs a destructive
- * measurement of any kind, false otherwise
+ * measurement of any kind (including post-selection), false otherwise
  */
 inline bool
 is_destructive_measurement(const QCircuit::iterator::value_type& elem) {
@@ -6905,11 +6912,11 @@ is_destructive_measurement(const QCircuit::iterator::value_type& elem) {
 
 /**
  * \brief True if the quantum circuit iterator points to a destructive
- * measurement step of any kind, false otherwise
+ * measurement step of any kind (including post-selection), false otherwise
  *
  * \param it Quantum circuit iterator
  * \return True if the quantum circuit iterator points to a destructive
- * measurement step of any kind, false otherwise
+ * measurement step of any kind (including post-selection), false otherwise
  */
 inline bool is_destructive_measurement(QCircuit::iterator it) {
     return is_destructive_measurement(*it);

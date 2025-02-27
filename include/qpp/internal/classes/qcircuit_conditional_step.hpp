@@ -182,6 +182,10 @@ struct QCircuitConditionalStep : IDisplay {
                 os << ", END: " << end_expr.value();
             }
 
+            if (dit_shift != 0) {
+                os << ", dit_shift: " << dit_shift;
+            }
+
             return os;
         }
     };

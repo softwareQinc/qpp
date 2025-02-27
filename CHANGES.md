@@ -29,6 +29,10 @@
   - `QCircuit& cond_else()` - conditional ELSE statement
   - `QCircuit& cond_while()` - conditional WHILE statement
   - `QCircuit& cond_end()` - conditional END block delimiter
+  - `bool has_conditionals() const noexcept` - true if and only if the circuit contains
+    conditional statements
+  - `bool validate_conditionals() const` - true if an only if the conditional
+    statements are valid (e.g., matching `cond_end()` to `cond_if()` etc.
 - Added
   [["examples/circuits/conditional_if.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_if.cpp)]
   and

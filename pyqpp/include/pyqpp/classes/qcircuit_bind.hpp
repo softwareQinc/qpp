@@ -308,12 +308,12 @@ inline void init_classes_qcircuit(py::module_& m) {
                    "True if valid conditionals, false otherwise");
     pyQCircuit.def("get_step_count", &QCircuit::get_step_count,
                    "Total (gates + measurements) count");
-    pyQCircuit.def("has_measurements", &QCircuit::has_measurements,
-                   "True if the quantum circuit description contains any "
-                   "measurements, false otherwise");
     pyQCircuit.def("has_conditionals", &QCircuit::has_conditionals,
-                   "True if the quantum circuit description contains any "
+                   "True if the quantum circuit description contains "
                    "conditionals, false otherwise");
+    pyQCircuit.def("has_measurements", &QCircuit::has_measurements,
+                   "True if the quantum circuit description contains "
+                   "measurements, false otherwise");
     pyQCircuit.def_static(
         "is_cCTRL", &QCircuit::is_cCTRL,
         "True if the gate step is a classically-controlled gate, "
@@ -432,7 +432,7 @@ inline void init_classes_qcircuit(py::module_& m) {
                    "accordingly",
                    py::arg("target"));
     pyQCircuit.def("removes_qudits", &QCircuit::removes_qudits,
-                   "True if the quantum circuit description contains any "
+                   "True if the quantum circuit description contains "
                    "measurements that remove qudits, false otherwise");
     pyQCircuit.def("replicate", &QCircuit::replicate,
                    "Replicates the quantum circuit description, in place",

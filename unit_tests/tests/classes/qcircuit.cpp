@@ -253,6 +253,9 @@ TEST(qpp_QCircuit_get_resources, AllTests) {}
 TEST(qpp_QCircuit_get_step_count, AllTests) {}
 
 /// BEGIN bool QCircuit::has_measurements() const noexcept
+TEST(qpp_QCircuit_has_conditionals, AllTests) {}
+
+/// BEGIN bool QCircuit::has_measurements() const noexcept
 TEST(qpp_QCircuit_has_measurements, AllTests) {}
 
 /// BEGIN inline static bool QCircuit::is_cCTRL(const GateStep& gate_step)
@@ -440,6 +443,9 @@ TEST(qpp_QCircuit_TFQ, SpecificQudits) {}
 ///       bool enclosed_in_curly_brackets = true)
 ///       const override
 TEST(qpp_QCircuit_to_JSON, AllTests) {}
+
+/// BEGIN bool QCircuit::validate_conditionals() const
+TEST(qpp_QCircuit_validate_condtional, AllTests) {}
 
 /// BEGIN bool QCircuit::was_measured_d(idx i) const
 TEST(qpp_QCircuit_was_measured_d, AllTests) {}
