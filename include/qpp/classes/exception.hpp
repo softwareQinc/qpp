@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -633,6 +633,30 @@ class NotImplemented : public Exception {
 class InvalidIterator : public Exception {
   public:
     std::string description() const override { return "Invalid iterator"; }
+
+    using Exception::Exception;
+};
+
+/**
+ * \class qpp::exception::InvalidConditional
+ * \brief Invalid conditional
+ */
+class InvalidConditional : public Exception {
+  public:
+    std::string description() const override { return "Invalid conditional"; }
+
+    using Exception::Exception;
+};
+
+/**
+ * \class qpp::exception::CircuitContainsConditionals
+ * \brief Circuit contains conditional statements
+ */
+class CircuitContainsConditionals : public Exception {
+  public:
+    std::string description() const override {
+        return "Circuit contains conditionals";
+    }
 
     using Exception::Exception;
 };

@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 5.1 - 1 March 2024
+## Version 6.0 - 14 April 2025
 
 [![GitHub actions](https://github.com/softwareqinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
 
@@ -19,10 +19,7 @@ multiprocessing library.
 information processing tasks, being capable of simulating arbitrary quantum
 processes. The main design factors taken in consideration were the ease of use,
 high portability, and high performance. The library's simulation capabilities
-are only restricted by the amount of available physical memory. On a typical
-machine (Intel i5 8Gb RAM) **Quantum++** can successfully simulate the
-evolution of 25 qubits in a pure state or of 12 qubits in a mixed state
-reasonably fast.
+are only restricted by the amount of available physical memory.
 
 To report any bugs or ask for additional features/enhancements, please
 [submit an issue](https://github.com/softwareQinc/qpp/issues) with an
@@ -43,7 +40,7 @@ see <https://eigen.tuxfamily.org/dox/>. For a simple
 [Eigen 3](https://eigen.tuxfamily.org) quick ASCII reference see
 <https://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
 
-Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
 
 ---
 

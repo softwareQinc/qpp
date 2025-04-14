@@ -1,5 +1,5 @@
-# Quantum++ additional dependencies Do not modify unless you know what you're
-# doing
+# Quantum++ additional dependencies
+# Do not modify unless you know what you're doing
 
 # Custom index type. If none selected, a default one is selected by
 # include/types.hpp (usually std::size_t).
@@ -112,7 +112,7 @@ if(${QPP_OPENMP})
   find_package(OpenMP)
   if(OpenMP_CXX_FOUND)
     if(OpenMP_CXX_VERSION_MAJOR GREATER_EQUAL 3)
-      # inject definition (as #define) in the source files
+      # Inject definition (as #define) in the source files
       add_compile_definitions(QPP_OPENMP)
       # OpenMP linking dependencies to be injected in the main CMakeLists.txt
       set(QPP_OPENMP_LINK_DEPS OpenMP::OpenMP_CXX)
@@ -123,18 +123,20 @@ requires OpenMP 3.0 or later")
   endif()
 endif()
 
-# Disable support for thread_local storage duration specifier when using
-# AppleClang as libc++ doesn't yet support it if (${CMAKE_CXX_COMPILER_ID}
-# STREQUAL "AppleClang") #### inject definition (as #define) in the source files
-# add_definitions(-DNO_THREAD_LOCAL_) message(WARNING "Detected compiler:
-# ${CMAKE_CXX_COMPILER_ID} \ ${CMAKE_CXX_COMPILER_VERSION}. thread_local not
-# supported.") endif ()
+# # Disable support for thread_local storage duration specifier when using
+# # AppleClang as libc++ doesn't yet support it
+# if (${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
+#   # Inject definition (as #define) in the source files
+#   add_definitions(-DNO_THREAD_LOCAL_)
+#   message(WARNING "Detected compiler:  ${CMAKE_CXX_COMPILER_ID} \
+#   ${CMAKE_CXX_COMPILER_VERSION}. thread_local not # supported.") 
+# endif ()
 
 # Windows issues with Microsoft Visual Studio
 if(MSVC)
   # Disable spurious Eigen warnings with MSVC (warning STL4007)
   add_compile_definitions(_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING)
-  add_compile_options(-bigobj)
+  add_compile_options(/bigobj)
 endif()
 
 # MinGW or Cygwin have issues with object files that are too large
@@ -154,11 +156,12 @@ endif()
 
 # GCC additional debug settings
 if(${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-  # if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin") ## use the "no-weak" debugging
-  # flag only when debugging under OS X, ## as gdb cannot step in template
-  # functions when debugging code ## produced by g++ ## see
-  # https://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
-  # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-weak") endif ()
+  # if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  #   # Use the "no-weak" debugging flag only when debugging under OS X, as gdb
+  #   # cannot step in template functions when debugging code produced by g++, see
+  #   # https://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
+  #   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-weak")
+  # endif ()
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Og -D_GLIBCXX_DEBUG")
 endif()
 

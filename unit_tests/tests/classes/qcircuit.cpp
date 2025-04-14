@@ -83,6 +83,18 @@ TEST(qpp_QCircuit_compose_CTRL_circuit, AllTests) {}
 /// BEGIN QCircuit& QCircuit::compress()
 TEST(qpp_QCircuit_compress, AllTests) {}
 
+/// BEGIN QCircuit& QCircuit::cond_if(cond_func_t pred)
+TEST(qpp_QCircuit_cond_if, AllTests) {}
+
+/// BEGIN QCircuit& QCircuit::cond_else()
+TEST(qpp_QCircuit_cond_else, AllTests) {}
+
+/// BEGIN QCircuit& QCircuit::cond_while(cond_func_t pred)
+TEST(qpp_QCircuit_cond_while, AllTests) {}
+
+/// BEGIN QCircuit& QCircuit::cond_end()
+TEST(qpp_QCircuit_cond_end, AllTests) {}
+
 /// BEGIN QCircuit& QCircuit::couple_circuit_left(QCircuit other,
 ///       const std::vector<idx>& target,
 ///       std::optional<idx> pos_dit = std::nullopt)
@@ -239,6 +251,9 @@ TEST(qpp_QCircuit_get_resources, AllTests) {}
 
 /// BEGIN idx QCircuit::get_step_count() const noexcept
 TEST(qpp_QCircuit_get_step_count, AllTests) {}
+
+/// BEGIN bool QCircuit::has_measurements() const noexcept
+TEST(qpp_QCircuit_has_conditionals, AllTests) {}
 
 /// BEGIN bool QCircuit::has_measurements() const noexcept
 TEST(qpp_QCircuit_has_measurements, AllTests) {}
@@ -428,6 +443,9 @@ TEST(qpp_QCircuit_TFQ, SpecificQudits) {}
 ///       bool enclosed_in_curly_brackets = true)
 ///       const override
 TEST(qpp_QCircuit_to_JSON, AllTests) {}
+
+/// BEGIN bool QCircuit::validate_conditionals() const
+TEST(qpp_QCircuit_validate_condtional, AllTests) {}
 
 /// BEGIN bool QCircuit::was_measured_d(idx i) const
 TEST(qpp_QCircuit_was_measured_d, AllTests) {}

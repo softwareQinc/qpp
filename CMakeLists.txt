@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-set(QPP_VERSION_NUM 5.1)
+set(QPP_VERSION_NUM 6.0)
 set(QPP_VERSION_STR "${QPP_VERSION_NUM}")
 project(
   qpp
@@ -105,8 +105,10 @@ install(FILES "${CMAKE_SOURCE_DIR}/cmake/qpp_MATLAB.cmake"
 
 # Uninstall
 # https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
-# UNIX/Linux: sudo cmake --build build --target uninstall Windows:    cmake
-# --build build --target uninstall
+#
+# UNIX/Linux: sudo cmake --build build --target uninstall
+
+# Windows: cmake --build build --target uninstall
 if(NOT TARGET uninstall)
   configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/qpp_uninstall.cmake.in"

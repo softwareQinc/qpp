@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -217,6 +217,11 @@ struct dirac_t {
 
     bool operator!=(const dirac_t& rhs) const { return !(*this == rhs); }
 };
+
+/**
+ * \brief Conditional functor type in qpp::QCircuit conditional statements
+ */
+using cond_func_t = std::function<bool(std::vector<idx>)>;
 
 /**
  * \brief Quantumly-accessible Random Access Memory (qRAM)

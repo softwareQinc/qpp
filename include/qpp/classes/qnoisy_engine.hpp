@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -95,10 +95,14 @@ class QNoisyEngineT : public QEngineT<T> {
     /**
      * \brief Executes one step in the quantum circuit description
      *
-     * \param elem Step to be executed
+     * \note Override only this member function in every derived class to
+     * achieve the desired behaviour
+     *
+     * \param it Iterator pointing to the step to be executed
+     * \return Reference to the current instance
      */
-    QNoisyEngineT& execute(
-        const typename QCircuitTraits<QCircuit>::value_type& elem) override {
+    QNoisyEngineT&
+    execute(typename QCircuitTraits<QCircuit>::iterator_type& it) override {
         // get the relative position of the target
         std::vector<idx> target_rel_pos =
             this->get_relative_pos_(this->get_non_measured_d());
@@ -107,11 +111,12 @@ class QNoisyEngineT : public QEngineT<T> {
         for (idx i : target_rel_pos) {
             this->qeng_st_.qstate_ = noise_(this->qeng_st_.qstate_, i);
             // record the Kraus operator that occurred
-            noise_results_[elem.get_ip()].emplace_back(noise_.get_last_idx());
+            noise_results_[it->get_ip()].emplace_back(noise_.get_last_idx());
         }
 
         // execute the circuit step
-        (void)QEngineT<T>::execute(elem);
+        (void)QEngineT<T>::execute(it);
+
         return *this;
     }
 
@@ -129,7 +134,7 @@ class QNoisyEngineT : public QEngineT<T> {
         }
         // END EXCEPTION CHECKS
         auto steps = internal::circuit_as_iterators(*this->qc_ptr_);
-        this->execute_no_sample_(steps, 0, reps);
+        this->execute_prj_steps_no_sample_(steps, 0, reps);
 
         return *this;
     }
@@ -142,11 +147,6 @@ class QNoisyEngineT : public QEngineT<T> {
      *
      * \param reset_stats Optional (true by default), resets the collected
      * measurement statistics hash table
-     * \param ensure_post_selection Optional (false by default). If true,
-     * executes a measurement step repeatedly until the post-selection
-     * result(s) agree
-     * \param max_post_selection_reps Maximum number of executions of a
-     * post-selection step until success
      * \return Reference to the current instance
      */
     QNoisyEngineT& reset(bool reset_stats = true) override {
@@ -194,8 +194,8 @@ struct QNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
 };
 // template deduction rule
 template <class NoiseModel>
-QNoisyEngine(const qpp::QCircuit& qc,
-             const NoiseModel& noise) -> QNoisyEngine<NoiseModel>;
+QNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
+    -> QNoisyEngine<NoiseModel>;
 
 /**
  * \class qpp::QKetNoisyEngine
@@ -214,8 +214,8 @@ struct QKetNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
 };
 // template deduction rule
 template <class NoiseModel>
-QKetNoisyEngine(const qpp::QCircuit& qc,
-                const NoiseModel& noise) -> QKetNoisyEngine<NoiseModel>;
+QKetNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
+    -> QKetNoisyEngine<NoiseModel>;
 
 /**
  * \class qpp::QDensityNoisyEngine
@@ -236,8 +236,8 @@ struct QDensityNoisyEngine : public QNoisyEngineT<cmat, NoiseModel> {
 };
 // template deduction rule
 template <class NoiseModel>
-QDensityNoisyEngine(const qpp::QCircuit& qc,
-                    const NoiseModel& noise) -> QDensityNoisyEngine<NoiseModel>;
+QDensityNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
+    -> QDensityNoisyEngine<NoiseModel>;
 
 } /* namespace qpp */
 

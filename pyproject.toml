@@ -1,14 +1,7 @@
-[build-system]
-requires = [
-    "pybind11>=2.10.0",
-    "setuptools>=42",
-    "wheel",
-]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "pyqpp"
-version = "5.1"
+requires-python = ">=3.9"
+version = "6.0"
 description = "Python 3 wrapper for Quantum++"
 authors = [
     { name = "softwareQ Inc.", email = "info@softwareq.ca" },
@@ -22,6 +15,14 @@ dependencies = [
 [project.urls]
 homepage = "https://github.com/softwareqinc/qpp"
 repository = "https://github.com/softwareqinc/qpp.git"
+
+[build-system]
+requires = [
+    "pybind11>=2.10.0",
+    "setuptools>=42",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 py-modules = []

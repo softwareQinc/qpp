@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -124,13 +124,27 @@ class QBaseEngine : public IQEngineTraits, public IDisplay, public IJSON {
      * \note This function is a no-op in qpp::QBaseEngine; override it in all
      * derived classes to achieve the desired behaviour
      *
+     * \param it Iterator to the step to be executed
+     * \return Reference to the current instance
+     */
+    virtual QBaseEngine&
+    execute([[maybe_unused]] typename QCircuitTraits<QCT>::iterator_type& it) {
+        return *this;
+    }
+
+    /**
+     * \brief Executes one step in the quantum circuit description
+     *
+     * \note This function is a no-op in qpp::QBaseEngine; override it in all
+     * derived classes to achieve the desired behaviour
+     *
      * \param elem Step to be executed
      * \return Reference to the current instance
      */
     virtual QBaseEngine& execute(
         [[maybe_unused]] const typename QCircuitTraits<QCT>::value_type& elem) {
         return *this;
-    };
+    }
 
     /**
      * \brief Executes the entire quantum circuit description
@@ -163,19 +177,6 @@ class QBaseEngine : public IQEngineTraits, public IDisplay, public IJSON {
      */
     virtual QBaseEngine& set_state([[maybe_unused]] const T& state) {
         return *this;
-    }
-
-    /**
-     * \brief Executes one step in the quantum circuit description
-     *
-     * \note Do not override!
-     *
-     * \param it Iterator to the step to be executed
-     * \return Reference to the current instance
-     */
-    QBaseEngine&
-    execute(const typename QCircuitTraits<QCT>::iterator_type& it) {
-        return this->execute(*it);
     }
 
     /**

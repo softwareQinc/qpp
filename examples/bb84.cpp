@@ -1,6 +1,7 @@
 // BB84 quantum key establishment
 // Source: ./examples/bb84.cpp
 
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <numeric>

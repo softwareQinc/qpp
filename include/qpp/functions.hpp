@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2024 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -1454,7 +1454,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
     return grams<dyn_mat<typename Derived::Scalar>>(input);
 }
 
-// TODO check why 2 * internal::maxn
+// NOTE: check why 2 * internal::maxn
 /**
  * \brief Non-negative integer index to non-negative integer multi-index
  * \see qpp::multiidx2n()
@@ -1564,7 +1564,7 @@ template <typename V, typename T = V, typename U = T>
 
 /**
  * \brief Multi-partite qudit ket
- * \see qpp::operator "" _ket()
+ * \see qpp::operator ""_ket()
  *
  * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$,
  * where \a mask is a std::vector of non-negative integers. Each element in
@@ -1610,7 +1610,7 @@ inline ket mket(const std::vector<idx>& mask, const std::vector<idx>& dims) {
 
 /**
  * \brief Multi-partite qudit ket
- * \see qpp::operator "" _ket()
+ * \see qpp::operator ""_ket()
  *
  * Constructs the multi-partite qudit ket \f$|\mathrm{mask}\rangle\f$, all
  * subsystem having equal dimension \a d. \a mask is a std::vector of
@@ -1654,7 +1654,7 @@ inline ket mket(const std::vector<idx>& mask, idx d = 2) {
 
 /**
  * \brief Projector onto multi-partite qudit ket
- * \see qpp::operator "" _prj()
+ * \see qpp::operator ""_prj()
  *
  * Constructs the projector onto the multi-partite qudit ket
  * \f$|\mathrm{mask}\rangle\f$, where \a mask is a std::vector of non-negative
@@ -1702,7 +1702,7 @@ inline cmat mprj(const std::vector<idx>& mask, const std::vector<idx>& dims) {
 
 /**
  * \brief Projector onto multi-partite qudit ket
- * \see qpp::operator "" _prj()
+ * \see qpp::operator ""_prj()
  *
  * Constructs the projector onto the multi-partite qudit ket
  * \f$|\mathrm{mask}\rangle\f$, all subsystem having equal dimension \a d.
@@ -2232,8 +2232,8 @@ dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
                 if (coeff != 0.0) {
                     auto bra_dits = n2multiidx(j, dims_cols);
                     auto mat_dits = ket_dits;
-                    mat_dits.insert(mat_dits.end(), bra_dits.begin(),
-                                    bra_dits.end());
+                    mat_dits.insert(mat_dits.end(), bra_dits.cbegin(),
+                                    bra_dits.cend());
                     result.states.emplace_back(coeff, mat_dits);
                 }
             }
@@ -2290,7 +2290,7 @@ inline namespace literals {
  * \return Multi-partite qubit ket, as a complex dynamic column vector
  */
 template <char... Bits>
-ket operator"" _ket() {
+ket operator""_ket() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
     qpp::ket q = qpp::ket::Zero(internal::safe_pow<idx>(2, n));
@@ -2299,7 +2299,7 @@ ket operator"" _ket() {
     // check valid multi-partite qubit state
     for (idx i = 0; i < n; ++i) {
         if (bits[i] != '0' && bits[i] != '1') {
-            throw exception::OutOfRange(R"xxx(qpp::operator "" _ket())xxx",
+            throw exception::OutOfRange(R"xxx(qpp::operator ""_ket())xxx",
                                         "Bits");
         }
     }
@@ -2321,7 +2321,7 @@ ket operator"" _ket() {
  * \return Multi-partite qubit bra, as a complex dynamic row vector
  */
 template <char... Bits>
-bra operator"" _bra() {
+bra operator""_bra() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
     qpp::bra q = qpp::ket::Zero(internal::safe_pow<idx>(2, n));
@@ -2330,7 +2330,7 @@ bra operator"" _bra() {
     // check valid multi-partite qubit state
     for (idx i = 0; i < n; ++i) {
         if (bits[i] != '0' && bits[i] != '1') {
-            throw exception::OutOfRange(R"xxx(qpp::operator "" _bra())xxx",
+            throw exception::OutOfRange(R"xxx(qpp::operator ""_bra())xxx",
                                         "Bits");
         }
     }
@@ -2354,7 +2354,7 @@ bra operator"" _bra() {
  * \return Multi-partite qubit projector, as a complex dynamic matrix
  */
 template <char... Bits>
-cmat operator"" _prj() {
+cmat operator""_prj() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
 
@@ -2362,13 +2362,13 @@ cmat operator"" _prj() {
     // check valid multi-partite qubit state
     for (idx i = 0; i < n; ++i) {
         if (bits[i] != '0' && bits[i] != '1') {
-            throw exception::OutOfRange(R"xxx(qpp::operator "" _prj())xxx",
+            throw exception::OutOfRange(R"xxx(qpp::operator ""_prj())xxx",
                                         "Bits");
         }
     }
     // END EXCEPTION CHECKS
 
-    return kron(operator""_ket < Bits... > (), operator""_bra < Bits... > ());
+    return kron(operator""_ket < Bits...>(), operator""_bra < Bits...>());
 }
 } /* namespace literals */
 

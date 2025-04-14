@@ -1,4 +1,4 @@
-# Pre-release
+# Version 6.0 - 14 April 2025
 
 - Breaking change: renamed ["qpp/qpp.h"] to ["qpp/qpp.hpp"]
 - New feature: implemented support for post-selection in
@@ -22,6 +22,22 @@
 - Added
   [["examples/circuits/post_selection.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/post_selection.cpp)]
   example
+- New feature: implemented support for conditional statements in
+  ["qpp/classes/qcircuit.hpp"]
+- Implemented `qpp::QCircuit::`
+  - `QCircuit& cond_if()` - conditional IF statement
+  - `QCircuit& cond_else()` - conditional ELSE statement
+  - `QCircuit& cond_while()` - conditional WHILE statement
+  - `QCircuit& cond_end()` - conditional END block delimiter
+  - `bool has_conditionals() const noexcept` - true if and only if the circuit contains
+    conditional statements
+  - `bool validate_conditionals() const` - true if an only if the conditional
+    statements are valid (e.g., matching `cond_end()` to `cond_if()` etc.
+- Added
+  [["examples/circuits/conditional_if.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_if.cpp)]
+  and
+  [["examples/circuits/conditional_while.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_while.cpp)]
+  examples
 - Refactored `qpp::QCircuit::GateStep/MeasurementStep/NOPStep` into separate
   files ["qpp/internal/classes/qcircuit_gate_step.hpp"],
   ["qpp/internal/classes/qcircuit_measurement_step.hpp"], and
@@ -43,13 +59,17 @@
   - `qpp::QEngineT<>::get_non_measured()` ->
     `qpp::QEngineT<>::get_non_measured_d()`
   - `qpp::QEngineT<>::was_measured()` -> `qpp::QEngineT<>::was_measured_d()`
-- Bugfix in qpp::internal::canonical_form(), the re-ordering is now stable, so
-  qpp::QCircuit measurement probabilities are not displayed in reversed order
-  w.r.t. target
+- Bugfix in `qpp::internal::canonical_form()`, the re-ordering is now stable,
+  so `qpp::QCircuit` measurement probabilities are not displayed in reversed
+  order w.r.t. target
 - Simplified MATLAB detection via CMake `find_package()` function. Users should
   only use `-DQPP_MATLAB=ON` when building with MATLAB support, all other
   MATLAB-related CMake flags have been removed.
-- Added `read_from_string` to `qasm.hpp` and an associated pyqpp wrapper
+- Bugfix in `qpp::adjoint(QCircuit)`
+- Added `cond_func_t` type alias in ["qpp/types.hpp"] for boolean predicates of
+  the form `std::vector<idx> -> bool`
+- Added `qpp::read_from_string()` to ["qpp/qasm/qasm.hpp"] and an associated
+  pyqpp wrapper function
 
 # Version 5.1 - 1 March 2024
 
