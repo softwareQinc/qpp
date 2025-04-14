@@ -566,8 +566,8 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t hashV = V.has_value() ? hash_eigen(V.value()) : 0;
 
-        // TODO: check this
-
+        // NOTE: check this
+        //
         // iterate over all steps in the circuit
         for (auto&& step : circuit_) {
             if (std::holds_alternative<internal::QCircuitMeasurementStep>(
@@ -3048,7 +3048,6 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    // TODO: consider c_reg being the last measured qudit
     /**
      * \brief Measures all remaining measurable qudits in the computational
      * basis (Z-basis)
@@ -5814,7 +5813,6 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {
             result += std::string{"\"NOP\""} + "}";
         };
-        // TODO: fill in function
         auto conditional_step_visitor =
             [&](const internal::QCircuitConditionalStep& conditional_step) {
                 auto type = conditional_step.condition_type_;
@@ -6159,7 +6157,6 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
  * \return Combined quantum circuit description, with \a qc_target added at
  * the end of \a qc_ctrl
  */
-// TODO: do we need pos_dit optionals?!
 inline QCircuit
 compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
                      const QCircuit& qc_target, bigint pos_qudit,
@@ -6271,7 +6268,6 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
                                         pos_dit);
 }
 
-//  TODO: check for reset/measured non-destructively etc.
 /**
  * \brief Adjoint quantum circuit description
  *
@@ -7411,7 +7407,7 @@ circuit_as_iterators(const QCircuit& qc) {
 inline std::vector<QCircuit::iterator>
 canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 
-    // TODO: optimize conditionals if possible
+    // NOTE: optimize conditionals if possible (probably not straightforward)
     //
     // if the circuit contains conditional statements, return the circuit as is,
     // do not reorder it

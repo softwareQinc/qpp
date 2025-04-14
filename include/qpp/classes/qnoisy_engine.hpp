@@ -42,8 +42,6 @@
 #include "qpp/classes/qcircuit.hpp"
 #include "qpp/classes/qengine.hpp"
 
-// TODO: check conditional execution with noisy engines
-
 namespace qpp {
 /**
  * \class qpp::QNoisyEngineT

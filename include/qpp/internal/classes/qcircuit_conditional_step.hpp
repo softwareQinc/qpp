@@ -218,6 +218,7 @@ struct QCircuitConditionalStep : IDisplay {
             }
 
             // NOTE: not necessary in Release
+            /*
             if (!dit_ctx.empty()) {
                 os << ", dit_ctx: [";
                 bool first = true;
@@ -231,6 +232,7 @@ struct QCircuitConditionalStep : IDisplay {
                 }
                 os << ']';
             }
+            */
 
             return os;
         }
@@ -259,8 +261,8 @@ struct QCircuitConditionalStep : IDisplay {
      *
      * \param rhs qpp::internal::QCircuitConditionalStep against which the
      * equality is being tested
-     * \return True if the qpp::internal::QCircuitConditionalStep(s) are equal,
-     * false otherwise
+     * \return True if the qpp::internal::QCircuitConditionalStep(s) are
+     * equal, false otherwise
      */
     bool operator==(const QCircuitConditionalStep& rhs) const noexcept {
         return std::tie(rhs.condition_type_, rhs.ctx_) ==

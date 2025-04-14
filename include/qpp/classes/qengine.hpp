@@ -100,18 +100,19 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         return optimize_up_to_pos;
     }
 
-    // TODO: update docs, make it clear that the circuit is expected to be in
-    // canonical form
     /**
      * \brief Returns pair of (bool, idx), first true if the canonical form of
      * the circuit can be sampled from, second denoting the position of the
      * first measurement/reset/discard/conditional step
      * \see qpp::internal::canonical_form()
      *
+     * \note The circuit is expected to be in canonical form
+     *
      * \note A circuit can be sampled from if and only if it its canonical form
      * have only projective measurements (including post-selection) after the
      * first measurement/reset/discard/conditional step. In other words, it's of
      * the form [Gate step(s)] * [Projective measurements step(s)].
+     *
      *
      * \param steps Vector of qpp::QCircuit::iterator
      * \return Pair of (bool, idx), first true if the canonical form of the
@@ -208,7 +209,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     internal::QEngineStatistics
         stats_{}; ///< measurement statistics for multiple runs
 
-    // FIXME: doc
+    // NOTE: doc
     /**
      * \brief Executes a contiguous series of projective measurement steps
      *
@@ -590,7 +591,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     }
                 }
             }
-            // TODO: check if this can happen (st_.dits_.empty())
+            // NOTE: check if this can happen (st_.dits_.empty())
             else {
                 if (is_fan) {
                     for (idx qudit : target_rel_pos) {
@@ -1220,7 +1221,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param it Iterator pointing to the step to be executed
      * \return Reference to the current instance
      */
-    // FIXME: regular engine conditional
     QEngineT& execute(QCircuitTraits<QCircuit>::iterator_type& it) override {
         // EXCEPTION CHECKS
         // iterator must point to the same quantum circuit description

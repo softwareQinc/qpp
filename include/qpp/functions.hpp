@@ -1454,7 +1454,7 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
     return grams<dyn_mat<typename Derived::Scalar>>(input);
 }
 
-// TODO: check why 2 * internal::maxn
+// NOTE: check why 2 * internal::maxn
 /**
  * \brief Non-negative integer index to non-negative integer multi-index
  * \see qpp::multiidx2n()
