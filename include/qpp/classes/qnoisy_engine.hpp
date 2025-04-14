@@ -42,6 +42,8 @@
 #include "qpp/classes/qcircuit.hpp"
 #include "qpp/classes/qengine.hpp"
 
+// TODO: check conditional execution with noisy engines
+
 namespace qpp {
 /**
  * \class qpp::QNoisyEngineT
@@ -97,6 +99,7 @@ class QNoisyEngineT : public QEngineT<T> {
      *
      * \param elem Step to be executed
      */
+    // FIXME: noisy engine conditionals
     QNoisyEngineT& execute(
         const typename QCircuitTraits<QCircuit>::value_type& elem) override {
         // get the relative position of the target
@@ -121,6 +124,7 @@ class QNoisyEngineT : public QEngineT<T> {
      * \param reps Number of repetitions
      * \return Reference to the current instance
      */
+    // FIXME: noisy engine multiple reps
     QNoisyEngineT& execute(idx reps = 1) override {
         // EXCEPTION CHECKS
         if (reps == 0) {
@@ -129,7 +133,7 @@ class QNoisyEngineT : public QEngineT<T> {
         }
         // END EXCEPTION CHECKS
         auto steps = internal::circuit_as_iterators(*this->qc_ptr_);
-        this->execute_no_sample_(steps, 0, reps);
+        this->execute_prj_steps_no_sample_(steps, 0, reps);
 
         return *this;
     }

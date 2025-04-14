@@ -102,13 +102,69 @@ struct QCircuitConditionalStep : IDisplay {
      * \brief Keeps track of the location of conditional statements
      */
     struct Context : IDisplay {
-        idx dit_shift = 0; ///< relative position of the first dit w.r.t. 0,
-                           ///< used when composing circuits
+        /**
+         * \brief Vector of pairs (offset, length) that keep track of where
+         * classical dits were added by QCircuit::add_dit() or when composing
+         * quantum circuit descriptions
+         */
+        std::vector<std::pair<idx, idx>> dit_ctx;
         std::optional<std::pair<idx, cond_func_t>>
             start_expr{}; ///< location of if/while statement and corresponding
                           ///< condition function
         std::optional<idx> else_expr{}; ///< location of else statement
         std::optional<idx> end_expr{}; ///< location of endif/endwhile statement
+
+        /**
+         * \brief Given a vector of pairs (offset, length) that keep tracks of
+         * where additional classical dits were added, restore the vector of
+         * dits to its original form
+         *
+         * \param dits Vector of classical dits
+         * \return Vector of classical dits, with the additional dits listed in
+         * \a dit_ctx removed
+         */
+        std::vector<idx>
+        restore_dits_from_dit_ctx(std::vector<idx> dits) const {
+            if (dit_ctx.empty()) {
+                return dits;
+            }
+            for (auto rit = dit_ctx.rbegin(); rit != dit_ctx.rend(); ++rit) {
+                auto elem = *rit;
+                auto start = std::next(dits.begin(), elem.first);
+                auto finish = std::next(dits.begin(), elem.first + elem.second);
+                dits.erase(start, finish);
+            }
+
+            return dits;
+        }
+
+        /**
+         * \brief Increments each offset in the \a dit_ctx by \a i
+         *
+         * \param i Non-negative integer
+         */
+        void inc_offset_dit_ctx(idx i) {
+            for (auto& elem : dit_ctx) {
+                elem.first += i;
+            }
+        }
+
+        /**
+         * \brief Increments conditional locations by \a i
+         *
+         * \param i Non-negative integer
+         */
+        void inc_cond_locs(idx i) {
+            if (start_expr.has_value()) {
+                start_expr.value().first += i;
+            }
+            if (else_expr.has_value()) {
+                else_expr.value() += i;
+            }
+            if (end_expr.has_value()) {
+                end_expr.value() += i;
+            }
+        }
 
         /**
          * \brief Equality operator
@@ -118,6 +174,9 @@ struct QCircuitConditionalStep : IDisplay {
          * \return True if the contexts are equal, false otherwise
          */
         bool operator==(const Context& rhs) const {
+            if (dit_ctx != rhs.dit_ctx) {
+                return false;
+            }
             if (else_expr != rhs.else_expr) {
                 return false;
             }
@@ -140,30 +199,6 @@ struct QCircuitConditionalStep : IDisplay {
         }
 
         /**
-         * \brief Increments conditional locations by \a i
-         *
-         * \param i Non-negative integer
-         */
-        void inc_locs(idx i) {
-            if (start_expr.has_value()) {
-                start_expr.value().first += i;
-            }
-            if (else_expr.has_value()) {
-                else_expr.value() += i;
-            }
-            if (end_expr.has_value()) {
-                end_expr.value() += i;
-            }
-        }
-
-        /**
-         * \brief Increments dit shift by \a i
-         *
-         * \param i Non-negative integer
-         */
-        void inc_dit_shift(idx i) { dit_shift += i; }
-
-        /**
          * \brief qpp::IDisplay::display() override
          *
          * \param os Output stream passed by reference
@@ -182,13 +217,24 @@ struct QCircuitConditionalStep : IDisplay {
                 os << ", END: " << end_expr.value();
             }
 
-            if (dit_shift != 0) {
-                os << ", dit_shift: " << dit_shift;
+            // NOTE: not necessary in Release
+            if (!dit_ctx.empty()) {
+                os << ", dit_ctx: [";
+                bool first = true;
+                for (auto&& elem : dit_ctx) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        os << ", ";
+                    }
+                    os << '(' << elem.first << ',' << elem.second << ')';
+                }
+                os << ']';
             }
 
             return os;
         }
-    };
+    }; /* struct QCircuitConditionalStep::Context */
 
     Type condition_type_ = Type::NONE; ///< condition type
     Context ctx_;

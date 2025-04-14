@@ -66,11 +66,11 @@
 
 namespace qpp {
 namespace internal {
-///< conditional stack type
+///< Conditional stack type
 using conditional_stack_t =
     std::deque<internal::QCircuitConditionalStep::Context>;
 
-// forward declarations
+///< Forward declarations
 class QCircuitIterator;
 void inc_conditional_stack(conditional_stack_t& cs, idx i);
 } /* namespace internal */
@@ -812,12 +812,12 @@ class QCircuit : public IDisplay, public IJSON {
                     }
                 }
             };
-        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
         auto conditional_step_visitor =
             [&](const internal::QCircuitConditionalStep&) {};
 
         visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
-                       measurement_step_visitor, nop_step_visitor);
+                       measurement_step_visitor, nop_step_visitor_id);
 
         // update the destructively measured qudits
         for (auto& m_d_ : measured_d_) {
@@ -891,17 +891,15 @@ class QCircuit : public IDisplay, public IJSON {
         // update condition statement context indexes
         auto conditional_step_visitor =
             [&](internal::QCircuitConditionalStep& conditional_step) {
+                // add dit context (offset, length)
                 if (conditional_step.ctx_.start_expr.has_value()) {
-                    // FIXME: update conditionals c_regs in lambdas!
-                    // TODO: check this, and inside the lambda evaluation in
-                    // QEngine
-                    conditional_step.ctx_.dit_shift += n;
+                    conditional_step.ctx_.dit_ctx.emplace_back(pos, n);
                 }
             };
-        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
 
         visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
-                       measurement_step_visitor, nop_step_visitor);
+                       measurement_step_visitor, nop_step_visitor_id);
 
         // update (enlarge) the clean dits vector
         clean_dits_.insert(
@@ -912,7 +910,6 @@ class QCircuit : public IDisplay, public IJSON {
         measurement_dits_.insert(std::next(measurement_dits_.cbegin(),
                                            static_cast<std::ptrdiff_t>(pos)),
                                  n, false);
-
         return *this;
     }
 
@@ -4000,7 +3997,7 @@ class QCircuit : public IDisplay, public IJSON {
         add_dit(other.nc_, pos_dit.value());
 
         // STEP 1: update [c]ctrl and target indexes of other, and modify
-        // the locations in conditional steps
+        // the locations in conditional steps + add dit context for other
         auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             // update the cctrl indexes
             if (is_cCTRL(gate_step)) {
@@ -4031,17 +4028,21 @@ class QCircuit : public IDisplay, public IJSON {
                     }
                 }
             };
-        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
         auto conditional_step_visitor =
-            [&](internal::QCircuitConditionalStep& conditional_step) {
-                conditional_step.ctx_.inc_locs(get_step_count());
-                conditional_step.ctx_.inc_dit_shift(
-                    pos_dit.value_or(other.get_nc()));
+            [&](internal::qcircuitconditionalstep& conditional_step) {
+                // increment location of conditional statements accordingly
+                conditional_step.ctx_.inc_cond_locs(get_step_count());
+                // add dit context (offset, length) as if we're inserting
+                // classical dits into other before composing
+                auto& ctx_dit_vec = conditional_step.ctx_.dit_ctx;
+                ctx_dit_vec.insert(ctx_dit_vec.begin(),
+                                   {0, pos_dit.value_or(this->get_nc())});
             };
 
         visit_circuit_(other.circuit_, conditional_step_visitor,
                        gate_step_visitor, measurement_step_visitor,
-                       nop_step_visitor);
+                       nop_step_visitor_id);
 
         // STEP 2
         // replace the corresponding elements of measured_, measured_nd_,
@@ -4204,17 +4205,32 @@ class QCircuit : public IDisplay, public IJSON {
         // STEP 0: insert classical dits from the to-be-coupled circuit
         add_dit(other.nc_, pos_dit.value());
 
-        // STEP 1: modify the locations in conditional steps in current circuit
-        auto gate_step_visitor = [&](internal::QCircuitGateStep&) {};
-        auto measurement_step_visitor =
+        // STEP 1: modify the locations in conditional steps of current, and add
+        // dit context for other
+        auto gate_step_visitor_id = [&](internal::QCircuitGateStep&) {};
+        auto measurement_step_visitor_id =
             [&](internal::QCircuitMeasurementStep&) {};
-        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor =
-            [&](internal::QCircuitConditionalStep& conditional_step) {
-                conditional_step.ctx_.inc_locs(other.get_step_count());
+        auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor_current =
+            [&](internal::QCircuitConditionalStep& conditional_step_current) {
+                // increment location of conditional statements accordingly
+                conditional_step_current.ctx_.inc_cond_locs(
+                    other.get_step_count());
             };
-        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
-                       measurement_step_visitor, nop_step_visitor);
+        auto conditional_step_visitor_other =
+            [&](internal::QCircuitConditionalStep& conditional_step_other) {
+                auto& ctx_dit_vec = conditional_step_other.ctx_.dit_ctx;
+                // add dit context (offset, length) as if we're inserting
+                // classical dits into other before composing
+                ctx_dit_vec.insert(ctx_dit_vec.begin(),
+                                   {0, pos_dit.value_or(this->get_nc())});
+            };
+        visit_circuit_(circuit_, conditional_step_visitor_current,
+                       gate_step_visitor_id, measurement_step_visitor_id,
+                       nop_step_visitor_id);
+        visit_circuit_(other.circuit_, conditional_step_visitor_other,
+                       gate_step_visitor_id, measurement_step_visitor_id,
+                       nop_step_visitor_id);
 
         // STEP 2: update [c]ctrl and target indexes of other
         // update gate_step indexes of other
@@ -4245,13 +4261,13 @@ class QCircuit : public IDisplay, public IJSON {
                     pos = target[pos];
                 }
             };
-        auto other_nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
-        auto other_conditional_step_visitor =
+        auto other_nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
+        auto other_conditional_step_visitor_id =
             [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(other.circuit_, other_conditional_step_visitor,
+        visit_circuit_(other.circuit_, other_conditional_step_visitor_id,
                        other_gate_step_visitor, other_measurement_step_visitor,
-                       other_nop_step_visitor);
+                       other_nop_step_visitor_id);
 
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
@@ -4414,7 +4430,8 @@ class QCircuit : public IDisplay, public IJSON {
                 pos = target[pos];
             }
         };
-        // update measurement indexes
+        // update measurement indexes of other, modify the locations in
+        // conditional steps + add dit context for other
         auto measurement_step_visitor =
             [&](internal::QCircuitMeasurementStep& measurement_step) {
                 measurement_step.c_reg_ += pos_dit.value();
@@ -4422,13 +4439,21 @@ class QCircuit : public IDisplay, public IJSON {
                     pos = target[pos];
                 }
             };
-        auto nop_step_visitor = [&](internal::QCircuitNOPStep&) {};
+        auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
         auto conditional_step_visitor =
-            [&](const internal::QCircuitConditionalStep&) {};
+            [&](internal::QCircuitConditionalStep& conditional_step) {
+                // increment location of conditional statements accordingly
+                conditional_step.ctx_.inc_cond_locs(get_step_count());
+                // add dit context (offset, length) as if we're inserting
+                // classical dits into other before composing
+                auto& ctx_dit_vec = conditional_step.ctx_.dit_ctx;
+                ctx_dit_vec.insert(ctx_dit_vec.begin(),
+                                   {0, pos_dit.value_or(this->get_nc())});
+            };
 
         visit_circuit_(other.circuit_, conditional_step_visitor,
                        gate_step_visitor, measurement_step_visitor,
-                       nop_step_visitor);
+                       nop_step_visitor_id);
 
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
@@ -4721,16 +4746,16 @@ class QCircuit : public IDisplay, public IJSON {
             }
         };
         // measurements are left unchanged
-        auto measurement_step_visitor =
+        auto measurement_step_visitor_id =
             [&](const internal::QCircuitMeasurementStep&) {};
         // NOPs are left unchanged
-        auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor =
+        auto nop_step_visitor_id = [&](const internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor_id =
             [&](const internal::QCircuitConditionalStep&) {};
         for (idx i = end_ctrl_circuit; i < end_composed_circuit; ++i) {
-            visit_circuit_step_(circuit_[i], conditional_step_visitor,
-                                gate_step_visitor, measurement_step_visitor,
-                                nop_step_visitor);
+            visit_circuit_step_(circuit_[i], conditional_step_visitor_id,
+                                gate_step_visitor, measurement_step_visitor_id,
+                                nop_step_visitor_id);
         }
 
         return *this;
@@ -4859,14 +4884,14 @@ class QCircuit : public IDisplay, public IJSON {
             }
             add_hash_(hashUdagger, Udagger);
         };
-        auto measurement_step_visitor =
+        auto measurement_step_visitor_id =
             [&](const internal::QCircuitMeasurementStep&) {};
-        auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor =
+        auto nop_step_visitor_id = [&](const internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor_id =
             [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
-                       measurement_step_visitor, nop_step_visitor);
+        visit_circuit_(circuit_, conditional_step_visitor_id, gate_step_visitor,
+                       measurement_step_visitor_id, nop_step_visitor_id);
 
         return *this;
     }
@@ -5034,12 +5059,12 @@ class QCircuit : public IDisplay, public IJSON {
                     }
                 }
             };
-        auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor =
+        auto nop_step_visitor_id = [&](const internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor_id =
             [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
-                       measurement_step_visitor, nop_step_visitor);
+        visit_circuit_(circuit_, conditional_step_visitor_id, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor_id);
 
         clean_qudits_.erase(std::next(clean_qudits_.begin(),
                                       static_cast<std::ptrdiff_t>(target)));
@@ -5081,12 +5106,12 @@ class QCircuit : public IDisplay, public IJSON {
                     --measurement_step.c_reg_;
                 }
             };
-        auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor =
+        auto nop_step_visitor_id = [&](const internal::QCircuitNOPStep&) {};
+        auto conditional_step_visitor_id =
             [&](const internal::QCircuitConditionalStep&) {};
 
-        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
-                       measurement_step_visitor, nop_step_visitor);
+        visit_circuit_(circuit_, conditional_step_visitor_id, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor_id);
 
         clean_dits_.erase(std::next(clean_dits_.begin(),
                                     static_cast<std::ptrdiff_t>(target)));
@@ -7474,7 +7499,7 @@ inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
  */
 inline void inc_conditional_stack(conditional_stack_t& cs, idx i) {
     for (auto& elem : cs) {
-        elem.inc_locs(i);
+        elem.inc_cond_locs(i);
     }
 }
 

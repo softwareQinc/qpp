@@ -1,4 +1,4 @@
-# Version 6.0 - xx February 2025
+# Version 6.0 - 14 April 2025
 
 - Breaking change: renamed ["qpp/qpp.h"] to ["qpp/qpp.hpp"]
 - New feature: implemented support for post-selection in
@@ -69,7 +69,7 @@
 - Added `cond_func_t` type alias in ["qpp/types.hpp"] for boolean predicates of
   the form `std::vector<idx> -> bool`
 - Added `qpp::read_from_string()` to ["qpp/qasm/qasm.hpp"] and an associated
-  pyqpp wrapper
+  pyqpp wrapper function
 
 # Version 5.1 - 1 March 2024
 

@@ -145,7 +145,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param steps Vector of qpp::QCircuit::iterator
      * \param pos Index from where the execution starts; from this index
-     * further, all steps are assumed to be a projective measurement (including
+     * further, all steps are assumed to be projective measurements (including
      * post-selection)
      * \param[out] c_q Records the c <- (q, [OPTIONAL ps_val]) map
      * \param[out] q_ps_val Records the q <- ps_val map
@@ -208,6 +208,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     internal::QEngineStatistics
         stats_{}; ///< measurement statistics for multiple runs
 
+    // FIXME: doc
     /**
      * \brief Executes a contiguous series of projective measurement steps
      *
@@ -285,8 +286,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param pos Index from where the execution starts
      * \param reps Number of repetitions
      */
-    void execute_no_sample_(std::vector<QCircuit::iterator>& steps, idx pos,
-                            idx reps) {
+    void execute_prj_steps_no_sample_(std::vector<QCircuit::iterator>& steps,
+                                      idx pos, idx reps) {
         // save the engine state
         internal::QEngineState<T> engine_state_copy = qeng_st_;
 
@@ -323,12 +324,12 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param steps Vector of qpp::QCircuit::iterator
      * \param pos Index from where the execution starts; from this index
-     * further, all steps are assumed to be a projective measurement (including
+     * further, all steps are assumed to be projective measurements (including
      * post-selection)
      * \param reps Number of repetitions
      */
-    void execute_sample_(std::vector<QCircuit::iterator>& steps, idx pos,
-                         idx reps) {
+    void execute_prj_steps_sample_(std::vector<QCircuit::iterator>& steps,
+                                   idx pos, idx reps) {
         std::map<idx, std::pair<idx, std::optional<idx>>>
             c_q; // records the c <- (q, [OPTIONAL ps_val]) map
         std::map<idx, idx> q_ps_val; // records the q <- ps_val map
@@ -486,8 +487,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param gate_step Instance of qpp::internal::QCircuitGateStep
      */
-    virtual void
-    execute_gate_step_(const internal::QCircuitGateStep& gate_step) {
+    virtual void visit_gate_step_(const internal::QCircuitGateStep& gate_step) {
         std::vector<idx> ctrl_rel_pos;
         std::vector<idx> target_rel_pos = get_relative_pos_(gate_step.target_);
 
@@ -613,7 +613,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param measurement_step Instance of
      * qpp::internal::QCircuitMeasurementStep
      */
-    virtual void execute_measurement_step_(
+    virtual void visit_measurement_step_(
         const internal::QCircuitMeasurementStep& measurement_step) {
         std::vector<idx> target_rel_pos =
             get_relative_pos_(measurement_step.target_);
@@ -807,26 +807,25 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param it Iterator pointing to the step to be executed
      *
      */
-    virtual void execute_conditional_step_(
+    virtual void visit_conditional_step_(
         const internal::QCircuitConditionalStep& conditional_step,
         QCircuitTraits<QCircuit>::iterator_type& it) {
         using Type = internal::QCircuitConditionalStep::Type;
         auto start_expr = conditional_step.ctx_.start_expr;
         auto else_expr = conditional_step.ctx_.else_expr;
         auto end_expr = conditional_step.ctx_.end_expr;
-        auto dit_shift = conditional_step.ctx_.dit_shift;
         bool is_true = true;
 
         switch (conditional_step.condition_type_) {
             case Type::WHILE:
             case Type::IF:
                 if (start_expr.has_value()) {
-                    auto lambda = start_expr.value().second;
-                    auto it_begin =
-                        std::next(qeng_st_.dits_.begin(), dit_shift);
-                    auto it_end = qeng_st_.dits_.end();
-                    auto arg_lambda = std::vector<idx>(it_begin, it_end);
-                    is_true = lambda(arg_lambda);
+                    auto predicate = start_expr.value().second;
+                    // build the dits arg for lambda
+                    auto arg_predicate =
+                        conditional_step.ctx_.restore_dits_from_dit_ctx(
+                            qeng_st_.dits_);
+                    is_true = predicate(arg_predicate);
                 }
                 // jump on false
                 if (!is_true) {
@@ -848,11 +847,11 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 break;
             case Type::ENDWHILE:
                 if (start_expr.has_value()) {
-                    auto lambda = start_expr.value().second;
-                    auto it_begin =
-                        std::next(qeng_st_.dits_.begin(), dit_shift);
-                    auto it_end = qeng_st_.dits_.end();
-                    is_true = lambda(std::vector<idx>(it_begin, it_end));
+                    auto predicate = start_expr.value().second;
+                    auto arg_predicate =
+                        conditional_step.ctx_.restore_dits_from_dit_ctx(
+                            qeng_st_.dits_);
+                    is_true = predicate(arg_predicate);
                 }
                 // jump back on true
                 if (is_true) {
@@ -874,7 +873,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      *
      * \param nop_step Instance of qpp::internal::QCircuitNOPStep
      */
-    virtual void execute_nop_step_(
+    virtual void visit_nop_step_(
         [[maybe_unused]] const internal::QCircuitNOPStep& nop_step) {}
 
   public:
@@ -1221,6 +1220,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \param it Iterator pointing to the step to be executed
      * \return Reference to the current instance
      */
+    // FIXME: regular engine conditional
     QEngineT& execute(QCircuitTraits<QCircuit>::iterator_type& it) override {
         // EXCEPTION CHECKS
         // iterator must point to the same quantum circuit description
@@ -1239,21 +1239,21 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         auto gate_step_visitor =
             [&](const internal::QCircuitGateStep& gate_step) {
-                return this->execute_gate_step_(gate_step);
+                return this->visit_gate_step_(gate_step);
             };
 
         auto measurement_step_visitor =
             [&](const internal::QCircuitMeasurementStep& measurement_step) {
-                return this->execute_measurement_step_(measurement_step);
+                return this->visit_measurement_step_(measurement_step);
             };
 
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep& nop_step) {
-            return this->execute_nop_step_(nop_step);
+            return this->visit_nop_step_(nop_step);
         };
 
         auto conditional_step_visitor =
             [&](const internal::QCircuitConditionalStep& conditional_step) {
-                return this->execute_conditional_step_(conditional_step, it);
+                return this->visit_conditional_step_(conditional_step, it);
             };
 
         std::visit(
@@ -1327,11 +1327,13 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // execute repeatedly everything in the remaining interval
         // can sample: every step from now on is a projective measurement
         if (qeng_st_.can_sample_) {
-            execute_sample_(steps_as_iterators, optimize_up_to_pos, reps);
+            execute_prj_steps_sample_(steps_as_iterators, optimize_up_to_pos,
+                                      reps);
         }
         // cannot sample
         else {
-            execute_no_sample_(steps_as_iterators, optimize_up_to_pos, reps);
+            execute_prj_steps_no_sample_(steps_as_iterators, optimize_up_to_pos,
+                                         reps);
         }
 
         return *this;
