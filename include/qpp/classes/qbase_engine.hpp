@@ -1,3 +1,4 @@
+#include <iostream>
 /*
  * This file is part of Quantum++.
  *
@@ -130,7 +131,7 @@ class QBaseEngine : public IQEngineTraits, public IDisplay, public IJSON {
     virtual QBaseEngine&
     execute([[maybe_unused]] typename QCircuitTraits<QCT>::iterator_type& it) {
         return *this;
-    };
+    }
 
     /**
      * \brief Executes one step in the quantum circuit description
@@ -144,7 +145,7 @@ class QBaseEngine : public IQEngineTraits, public IDisplay, public IJSON {
     virtual QBaseEngine& execute(
         [[maybe_unused]] const typename QCircuitTraits<QCT>::value_type& elem) {
         return *this;
-    };
+    }
 
     /**
      * \brief Executes the entire quantum circuit description
