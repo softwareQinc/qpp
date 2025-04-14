@@ -946,6 +946,10 @@ class QCircuit : public IDisplay, public IJSON {
      * qc.cond_end();
      * \endcode
      *
+     * \note Currently, conditional statements are executed only by
+     * qpp::QEngine::execute(idx reps). If you execute the circuit via
+     * iterators, as in a range-based loop, conditional statements are ignored.
+     *
      * \param pred Boolean predicate std::vector<idx> v -> bool. The
      * classical dits can be read from the vector at runtime, when the circuit
      * is being run by a quantum engine. Example of a predicate:
@@ -996,6 +1000,10 @@ class QCircuit : public IDisplay, public IJSON {
      *     qc.gate(gt.X, 0);
      * qc.cond_end();
      * \endcode
+     *
+     * \note Currently, conditional statements are executed only by
+     * qpp::QEngine::execute(idx reps). If you execute the circuit via
+     * iterators, as in a range-based loop, conditional statements are ignored.
      *
      * \param pred Boolean predicate std::vector<idx> v -> bool. The
      * classical dits can be read from the vector at runtime, when the circuit
