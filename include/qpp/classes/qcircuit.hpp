@@ -4030,7 +4030,7 @@ class QCircuit : public IDisplay, public IJSON {
             };
         auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
         auto conditional_step_visitor =
-            [&](internal::qcircuitconditionalstep& conditional_step) {
+            [&](internal::QCircuitConditionalStep& conditional_step) {
                 // increment location of conditional statements accordingly
                 conditional_step.ctx_.inc_cond_locs(get_step_count());
                 // add dit context (offset, length) as if we're inserting
