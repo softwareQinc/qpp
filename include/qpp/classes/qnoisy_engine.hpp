@@ -95,11 +95,14 @@ class QNoisyEngineT : public QEngineT<T> {
     /**
      * \brief Executes one step in the quantum circuit description
      *
-     * \param elem Step to be executed
+     * \note Override only this member function in every derived class to
+     * achieve the desired behaviour
+     *
+     * \param it Iterator pointing to the step to be executed
+     * \return Reference to the current instance
      */
-    // FIXME: noisy engine conditionals
-    QNoisyEngineT& execute(
-        const typename QCircuitTraits<QCircuit>::value_type& elem) override {
+    QNoisyEngineT&
+    execute(typename QCircuitTraits<QCircuit>::iterator_type& it) override {
         // get the relative position of the target
         std::vector<idx> target_rel_pos =
             this->get_relative_pos_(this->get_non_measured_d());
@@ -108,11 +111,12 @@ class QNoisyEngineT : public QEngineT<T> {
         for (idx i : target_rel_pos) {
             this->qeng_st_.qstate_ = noise_(this->qeng_st_.qstate_, i);
             // record the Kraus operator that occurred
-            noise_results_[elem.get_ip()].emplace_back(noise_.get_last_idx());
+            noise_results_[it->get_ip()].emplace_back(noise_.get_last_idx());
         }
 
         // execute the circuit step
-        (void)QEngineT<T>::execute(elem);
+        (void)QEngineT<T>::execute(it);
+
         return *this;
     }
 
@@ -122,7 +126,6 @@ class QNoisyEngineT : public QEngineT<T> {
      * \param reps Number of repetitions
      * \return Reference to the current instance
      */
-    // FIXME: noisy engine multiple reps
     QNoisyEngineT& execute(idx reps = 1) override {
         // EXCEPTION CHECKS
         if (reps == 0) {

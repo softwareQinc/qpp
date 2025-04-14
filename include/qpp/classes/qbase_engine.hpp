@@ -1,4 +1,3 @@
-#include <iostream>
 /*
  * This file is part of Quantum++.
  *

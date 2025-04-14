@@ -925,7 +925,26 @@ class QCircuit : public IDisplay, public IJSON {
      * \brief Conditional WHILE, repeats the circuit steps starting with this
      * step and ending with a qpp::QCircuit::cond_end() step while the
      * predicate \a pred is true
+     *
      * \see qpp::QCircuit::cond_end()
+     *
+     * \note This member function is not as general as a typical while statement
+     * in a programming language. The instructions enclosed within cond_while()
+     * and cond_end() are always executed when building the circuit. However, at
+     * runtime, when the circuit is executed by the engine, only the resulting
+     * circuit steps are conditionally executed. For example, in the snippet
+     * below, the instruction `qc.add_dit()` adds 10 classical dits to the
+     * circuit regardless of the predicate’s value (in this case, false). The
+     * next instruction, `qc.gate(gt.X, 0)`, also contributes a step to the
+     * circuit, but at runtime the quantum engine skips it because the predicate
+     * is trivially false.
+     *
+     * \code
+     * qc.cond_while([](std::vector<idx> v) { return false; });
+     *     qc.add_dit(10);
+     *     qc.gate(gt.X, 0);
+     * qc.cond_end();
+     * \endcode
      *
      * \param pred Boolean predicate std::vector<idx> v -> bool. The
      * classical dits can be read from the vector at runtime, when the circuit
@@ -935,6 +954,7 @@ class QCircuit : public IDisplay, public IJSON {
      *     return v[0] == 1; // true if the classical dit 0 equals 1 at runtime
      * }
      * \endcode
+     *
      * \return Reference to the current instance
      */
     QCircuit& cond_while(cond_func_t pred) {
@@ -959,6 +979,24 @@ class QCircuit : public IDisplay, public IJSON {
      * \a pred is true
      * \see qpp::QCircuit::cond_else(), qpp::QCircuit::cond_end()
      *
+     * \note This member function is not as general as a typical if statement in
+     * a programming language. The instructions enclosed within cond_if() and
+     * cond_end() are always executed when building the circuit. However, at
+     * runtime, when the circuit is executed by the engine, only the resulting
+     * circuit steps are conditionally executed. For example, in the snippet
+     * below, the instruction `qc.add_dit()` adds 10 classical dits to the
+     * circuit regardless of the predicate’s value (in this case, false). The
+     * next instruction, `qc.gate(gt.X, 0)`, also contributes a step to the
+     * circuit, but at runtime the quantum engine skips it because the predicate
+     * is trivially false.
+     *
+     * \code
+     * qc.cond_if([](std::vector<idx> v) { return false; });
+     *     qc.add_dit(10);
+     *     qc.gate(gt.X, 0);
+     * qc.cond_end();
+     * \endcode
+     *
      * \param pred Boolean predicate std::vector<idx> v -> bool. The
      * classical dits can be read from the vector at runtime, when the circuit
      * is being run by a quantum engine. Example of a predicate:
@@ -967,6 +1005,7 @@ class QCircuit : public IDisplay, public IJSON {
      *     return v[0] == 1; // true if the classical dit 0 equals 1 at runtime
      * }
      * \endcode
+     *
      * \return Reference to the current instance
      */
     QCircuit& cond_if(cond_func_t pred) {
@@ -1021,7 +1060,7 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Ends conditional IF/ELSE and WHILE blocks
-     * \see qpp::QCircuit::cond_if(), qpp::QCircuit:: cond_while()
+     * \see qpp::QCircuit::cond_if(), qpp::QCircuit::cond_while()
      *
      * \return Reference to the current instance
      */
@@ -5311,6 +5350,8 @@ class QCircuitIterator {
          * \brief Constructor
          *
          * \param qc_ptr Pointer to constant quantum circuit description
+         * \param ip Instruction pointer
+         * \param step Circuit step
          */
         explicit value_type_(const QCircuit* qc_ptr, idx ip,
                              QCircuit::VarStep step)

@@ -217,7 +217,7 @@ struct QCircuitConditionalStep : IDisplay {
                 os << ", END: " << end_expr.value();
             }
 
-            // NOTE: not necessary in Release
+            // NOTE: comment in production
             /*
             if (!dit_ctx.empty()) {
                 os << ", dit_ctx: [";

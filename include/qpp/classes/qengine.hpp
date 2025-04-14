@@ -1269,6 +1269,23 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     }
 
     /**
+     * \brief Executes one step in the quantum circuit description
+     *
+     * \note Override only this member function in every derived class to
+     * achieve the desired behaviour
+     *
+     * \param elem Step to be executed
+     * \return Reference to the current instance
+     */
+    QEngineT& execute(
+        const typename QCircuitTraits<QCircuit>::value_type& elem) override {
+        auto qc_ptr = elem.get_qc_ptr();
+        auto ip = elem.get_ip();
+        QCircuitTraits<QCircuit>::iterator_type it(qc_ptr, ip);
+        return this->execute(it);
+    }
+
+    /**
      * \brief Executes the entire quantum circuit description
      *
      * \param reps Number of repetitions
@@ -1314,7 +1331,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 execute(it);
             }
         }
-        // execute serially
+        // execute sequentially
         else {
             for (idx i = 0; i < optimize_up_to_pos; ++i) {
                 execute(steps_as_iterators[i]);
