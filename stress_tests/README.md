@@ -1,4 +1,4 @@
-# Deprecated stress test suite -- preserved solely for reference purposes.
+# Deprecated stress test suite - preserved solely for reference purposes.
 
 ## Stress test suite (for POSIX compliant systems)
 
