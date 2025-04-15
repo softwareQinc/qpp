@@ -219,7 +219,8 @@ struct dirac_t {
 };
 
 /**
- * \brief Conditional functor type in qpp::QCircuit conditional statements
+ * \brief Conditional functor type (boolean predicate) in qpp::QCircuit
+ * conditional statements
  */
 using cond_func_t = std::function<bool(std::vector<idx>)>;
 

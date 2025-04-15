@@ -105,14 +105,16 @@ struct QCircuitConditionalStep : IDisplay {
      */
     struct Context : IDisplay {
         /**
-         * \brief Vector of pairs (offset, length) that keep track of where
+         * \brief vector of pairs (offset, length) that keep track of where
          * classical dits were added by QCircuit::add_dit() or when composing
          * quantum circuit descriptions
          */
         std::vector<std::pair<idx, idx>> dit_ctx{};
-        std::optional<std::pair<idx, cond_func_t>>
-            start_expr{}; ///< location of if/while statement and corresponding
-                          ///< condition function
+        /**
+         * \brief location of if/while statement and corresponding condition
+         * functor (boolean predicate)
+         */
+        std::optional<std::pair<idx, cond_func_t>> start_expr{};
         std::optional<idx> else_expr{}; ///< location of else statement
         std::optional<idx> end_expr{}; ///< location of endif/endwhile statement
 
@@ -241,7 +243,7 @@ struct QCircuitConditionalStep : IDisplay {
     }; /* struct QCircuitConditionalStep::Context */
 
     Type condition_type_ = Type::NONE; ///< condition type
-    Context ctx_;
+    Context ctx_{};
 
     /**
      * \brief Default constructor
