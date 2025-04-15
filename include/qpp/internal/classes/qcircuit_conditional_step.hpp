@@ -32,10 +32,12 @@
 #ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_CONDITIONAL_STEP_HPP_
 #define QPP_INTERNAL_CLASSES_QCIRCUIT_CONDITIONAL_STEP_HPP_
 
-#include <functional>
+#include <iterator>
 #include <optional>
-
-#include "qpp/input_output.hpp"
+#include <ostream>
+#include <tuple>
+#include <utility>
+#include <vector>
 
 #include "qpp/classes/idisplay.hpp"
 
@@ -107,7 +109,7 @@ struct QCircuitConditionalStep : IDisplay {
          * classical dits were added by QCircuit::add_dit() or when composing
          * quantum circuit descriptions
          */
-        std::vector<std::pair<idx, idx>> dit_ctx;
+        std::vector<std::pair<idx, idx>> dit_ctx{};
         std::optional<std::pair<idx, cond_func_t>>
             start_expr{}; ///< location of if/while statement and corresponding
                           ///< condition function
