@@ -1,4 +1,6 @@
-# Stress test suite (for POSIX compliant systems)
+# Deprecated stress test suite -- preserved solely for reference purposes.
+
+## Stress test suite (for POSIX compliant systems)
 
 Tests some quantum circuit/operation as a function of the number of cores of
 the machine and number of qubits (hard-coded in the script `run.sh`). Records

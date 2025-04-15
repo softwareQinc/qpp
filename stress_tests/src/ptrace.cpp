@@ -9,7 +9,7 @@
 
 #include <omp.h>
 
-#include "qpp/qpp.h"
+#include "qpp/qpp.hpp"
 
 int main(int argc, char** argv) {
     using namespace qpp;
