@@ -7,7 +7,7 @@ using namespace qpp;
 // Unit testing "qpp/classes/qdummy_engine.hpp"
 
 /// BEGIN QBaseEngine& QDummyEngineT::execute(
-///       const typename QCircuitTraits<QCT>::iterator_type& it)
+///       typename QCircuitTraits<QCT>::iterator_type& it)
 TEST(qpp_QDummyEngine_execute, Iterator) {}
 
 /// BEGIN QBaseEngine& QDummyEngine::execute(
