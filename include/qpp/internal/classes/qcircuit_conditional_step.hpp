@@ -105,7 +105,7 @@ struct QCircuitConditionalStep : IDisplay {
      */
     struct Context : IDisplay {
         /**
-         * \brief vector of pairs (offset, length) that keep track of where
+         * \brief Vector of pairs (offset, length) that keep track of where
          * classical dits were added by QCircuit::add_dit() or when composing
          * quantum circuit descriptions
          */
