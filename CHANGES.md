@@ -1,3 +1,7 @@
+# Pre-release
+
+-
+
 # Version 6.0 - 14 April 2025
 
 - Breaking change: renamed ["qpp/qpp.h"] to ["qpp/qpp.hpp"]
