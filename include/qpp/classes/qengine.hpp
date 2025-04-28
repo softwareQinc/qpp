@@ -817,16 +817,23 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         auto end_expr = conditional_step.ctx_.end_expr;
         bool is_true = true;
 
+        auto set_dit_func = conditional_step.ctx_.set_dits_func;
+
         switch (conditional_step.condition_type_) {
             case Type::WHILE:
             case Type::IF:
                 if (start_expr.has_value()) {
                     auto predicate = start_expr.value().second;
+
                     // build the dits arg for lambda
-                    auto arg_predicate =
-                        conditional_step.ctx_.restore_dits_from_dit_ctx(
-                            qeng_st_.dits_);
-                    is_true = predicate(arg_predicate);
+                    std::vector<idx> labels(qeng_st_.dits_.size());
+                    std::iota(labels.begin(), labels.end(), 0);
+                    labels =
+                        conditional_step.ctx_.restore_dits_from_dit_ctx(labels);
+                    const_proxy_to_engine_dits_t w(qeng_st_.dits_, labels);
+
+                    // evaluate the conditional expression
+                    is_true = predicate(w);
                 }
                 // jump on false
                 if (!is_true) {
@@ -862,6 +869,22 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     it.advance(adv);
                     break;
                 }
+                break;
+            case Type::SET_DITS_RUNTIME:
+                if (set_dit_func.has_value()) {
+                    auto functor = set_dit_func.value();
+
+                    // build the dits arg for lambda
+                    std::vector<idx> labels(qeng_st_.dits_.size());
+                    std::iota(labels.begin(), labels.end(), 0);
+                    labels =
+                        conditional_step.ctx_.restore_dits_from_dit_ctx(labels);
+                    proxy_to_engine_dits_t w(qeng_st_.dits_, labels);
+
+                    // evaluate the statement
+                    functor(w);
+                }
+                break;
             case Type::NONE:
                 break;
         }

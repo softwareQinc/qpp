@@ -17,8 +17,9 @@ int main() {
     // measure the first qubit non-destructively
     qc.measure(0, 0, false);
 
-    // define a boolean predicate of the required form std::vector<idx> -> bool
-    auto pred = [](std::vector<idx> dits) {
+    // define a boolean predicate of the required form
+    // proxy_to_engine_dits_t -> bool
+    auto pred = [](auto dits) {
         // returns true when the first dit is 1 at runtime (when run by a
         // quantum engine); in our case, this corresponds to the result of the
         // measurement result of the first qubit

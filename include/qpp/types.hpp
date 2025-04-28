@@ -34,6 +34,7 @@
 
 #include <complex>
 #include <cstddef>
+#include <functional>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -41,6 +42,7 @@
 
 #include <Eigen/Dense>
 
+#include "qpp/internal/classes/labelled_vector_proxy.hpp"
 #include "qpp/traits.hpp"
 
 namespace qpp {
@@ -218,11 +220,30 @@ struct dirac_t {
     bool operator!=(const dirac_t& rhs) const { return !(*this == rhs); }
 };
 
+// TODO: Consider moving these types into QCircuit
+
+/**
+ * \brief Mutable proxy to engine dits
+ */
+using proxy_to_engine_dits_t = internal::LabelledVectorProxy<idx, false>;
+
+/**
+ * \brief Const proxy to engine dits
+ */
+using const_proxy_to_engine_dits_t = internal::LabelledVectorProxy<idx, true>;
+
 /**
  * \brief Conditional functor type (boolean predicate) in qpp::QCircuit
  * conditional statements
  */
-using cond_func_t = std::function<bool(std::vector<idx>)>;
+using cond_pred_t = std::function<bool(const_proxy_to_engine_dits_t)>;
+
+/**
+ * \brief Functor type in qpp::QCircuit in setting dits at runtime statements
+ */
+using mutable_dits_functor_t = std::function<void(proxy_to_engine_dits_t)>;
+
+// using cond_func_t = std::function<bool(std::vector<idx>&)>;
 
 /**
  * \brief Quantumly-accessible Random Access Memory (qRAM)

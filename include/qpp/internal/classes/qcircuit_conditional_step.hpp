@@ -62,6 +62,8 @@ struct QCircuitConditionalStep : IDisplay {
         WHILE, ///< while branch statement
 
         ENDWHILE, ///< end while branch statement
+
+        SET_DITS_RUNTIME, ///< set dits at runtime
     };
 
     /**
@@ -94,6 +96,9 @@ struct QCircuitConditionalStep : IDisplay {
             case Type::ENDWHILE:
                 os << "ENDWHILE";
                 break;
+            case Type::SET_DITS_RUNTIME:
+                os << "SET_DITS_RUNTIME";
+                break;
         }
 
         return os;
@@ -114,9 +119,12 @@ struct QCircuitConditionalStep : IDisplay {
          * \brief location of if/while statement and corresponding condition
          * functor (boolean predicate)
          */
-        std::optional<std::pair<idx, cond_func_t>> start_expr{};
+        std::optional<std::pair<idx, cond_pred_t>> start_expr{};
         std::optional<idx> else_expr{}; ///< location of else statement
         std::optional<idx> end_expr{}; ///< location of endif/endwhile statement
+
+        std::optional<mutable_dits_functor_t>
+            set_dits_func{}; ///< functor that set dits at runtime
 
         /**
          * \brief Given a vector of pairs (offset, length) that keep tracks of

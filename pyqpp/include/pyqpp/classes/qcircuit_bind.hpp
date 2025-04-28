@@ -71,13 +71,9 @@ inline void init_classes_qcircuit(py::module_& m) {
     pyQCircuit.def("add_dit", py::overload_cast<idx, idx>(&QCircuit::add_dit),
                    "Adds n additional classical dits before qudit pos",
                    py::arg("n"), py::arg("pos"));
-    pyQCircuit.def("cond_if",
-                   py::overload_cast<std::function<bool(std::vector<idx>)>>(
-                       &QCircuit::cond_if),
-                   "Adds conditional if", py::arg("pred"));
-    pyQCircuit.def("cond_while",
-                   py::overload_cast<std::function<bool(std::vector<idx>)>>(
-                       &QCircuit::cond_while),
+    pyQCircuit.def("cond_if", &QCircuit::cond_if, "Adds conditional if",
+                   py::arg("pred"));
+    pyQCircuit.def("cond_while", &QCircuit::cond_while,
                    "Adds conditional while", py::arg("pred"));
     pyQCircuit.def("cond_else", &QCircuit::cond_else, "Adds conditional else");
     pyQCircuit.def("cond_end", &QCircuit::cond_end, "Adds conditional end");
@@ -446,6 +442,8 @@ inline void init_classes_qcircuit(py::module_& m) {
         "reset",
         py::overload_cast<idx, std::optional<std::string>>(&QCircuit::reset),
         "Reset single qudit", py::arg("target"), py::arg("name") = "reset");
+    pyQCircuit.def("set_dits_runtime", &QCircuit::set_dits_runtime,
+                   "Set dits at runtime", py::arg("functor"));
     pyQCircuit.def("set_name", &QCircuit::set_name, "Sets name",
                    py::arg("name"));
     pyQCircuit.def("TFQ", py::overload_cast<bool>(&QCircuit::TFQ),

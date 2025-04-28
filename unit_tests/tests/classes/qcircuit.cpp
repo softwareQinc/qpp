@@ -83,13 +83,13 @@ TEST(qpp_QCircuit_compose_CTRL_circuit, AllTests) {}
 /// BEGIN QCircuit& QCircuit::compress()
 TEST(qpp_QCircuit_compress, AllTests) {}
 
-/// BEGIN QCircuit& QCircuit::cond_if(cond_func_t pred)
+/// BEGIN QCircuit& QCircuit::cond_if(cond_pred_t pred)
 TEST(qpp_QCircuit_cond_if, AllTests) {}
 
 /// BEGIN QCircuit& QCircuit::cond_else()
 TEST(qpp_QCircuit_cond_else, AllTests) {}
 
-/// BEGIN QCircuit& QCircuit::cond_while(cond_func_t pred)
+/// BEGIN QCircuit& QCircuit::cond_while(cond_pred_t pred)
 TEST(qpp_QCircuit_cond_while, AllTests) {}
 
 /// BEGIN QCircuit& QCircuit::cond_end()
@@ -428,6 +428,9 @@ TEST(qpp_QCircuit_reset, MultipleTargets) {}
 /// BEGIN QCircuit& QCircuit::reset(idx target,
 ///       std::optional<std::string> name = "reset")
 TEST(qpp_QCircuit_reset, SingleTarget) {}
+
+/// BEGIN QCircuit& QCircuit::set_dits_runtime(mutable_dits_functor_t functor)
+TEST(qpp_QCircuit_set_dits_runtime, AllTests) {}
 
 /// BEGIN QCircuit& QCircuit::set_name(const std::string& name)
 TEST(qpp_QCircuit_set_name, AllTests) {}
