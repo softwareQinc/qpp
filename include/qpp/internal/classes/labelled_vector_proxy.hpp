@@ -46,7 +46,7 @@ namespace qpp {
 namespace internal {
 
 ///< Mutable view into a vector via a labelling, i.e., v[label[i]]
-template <class T = std::size_t, bool is_const = true>
+template <class T, bool is_const>
 class LabelledVectorProxy {
     using VecType =
         std::conditional_t<is_const, const std::vector<T>, std::vector<T>>;
