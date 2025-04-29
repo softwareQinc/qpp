@@ -38,8 +38,6 @@
 #include <utility>
 #include <vector>
 
-#include <iostream>
-
 #include "qpp/classes/exception.hpp"
 
 namespace qpp {
@@ -81,9 +79,6 @@ class LabelledVectorProxy {
     template <bool B = is_const, typename = std::enable_if_t<!B>>
     T& operator[](std::size_t i) {
         // FIXME: operator[] exceptions in LabelledVectorProxy (out of bounds)
-        std::cout << "i: " << i << '\n';
-        std::cout << "label[i]: " << label_[i] << '\n';
-        std::cout << "label size: " << label_.size() << '\n';
         if (i + 1 > label_.size()) {
             throw exception::OutOfRange{
                 "qpp::internal::LabelledVectorProxy::operator[]()", "i"};
