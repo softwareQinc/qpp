@@ -43,7 +43,7 @@
 namespace qpp {
 namespace internal {
 
-///< Mutable view into a vector via a labelling, i.e., v[label[i]]
+///< (Mutable) View into a vector via a labelling, i.e., vector[label[i]]
 template <class T, bool is_const>
 class LabelledVectorProxy {
     using VecType =
