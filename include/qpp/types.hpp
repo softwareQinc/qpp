@@ -234,7 +234,7 @@ using const_proxy_to_engine_dits_t = internal::LabelledVectorProxy<idx, true>;
 
 /**
  * \brief Conditional functor type (boolean predicate) in qpp::QCircuit
- * conditional statements
+ * conditional (runtime) statements
  */
 using cond_pred_t = std::function<bool(const_proxy_to_engine_dits_t)>;
 

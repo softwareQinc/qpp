@@ -7,6 +7,12 @@
   in ["qpp/types.hpp"]
 - Changed `cond_func_t` type alias in ["qpp/types.hpp"] to `cond_pred_t` for
   boolean predicates in conditional statements; alias to an internal type.
+- Renamed the class `internal::QCircuitConditionalStep` to
+  `internal::QCircuitRuntimeStep`, and the corresponding
+  ["qpp/internal/classes/qcircuit_conditional_step.hpp"] to
+  ["qpp/internal/classes/qcircuit_runtime_step.hpp"]
+- Renamed `qpp::QCircuit::has_conditionals()` to
+  `qpp::QCircuit::has_runtime_steps()`
 
 # Version 6.0 - 14 April 2025
 
