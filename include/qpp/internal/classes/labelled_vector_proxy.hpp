@@ -38,13 +38,15 @@
 #include <utility>
 #include <vector>
 
+#include <iostream>
+
 #include "qpp/classes/exception.hpp"
 
 namespace qpp {
 namespace internal {
 
 ///< Mutable view into a vector via a labelling, i.e., v[label[i]]
-template <class T, bool is_const>
+template <class T = std::size_t, bool is_const = true>
 class LabelledVectorProxy {
     using VecType =
         std::conditional_t<is_const, const std::vector<T>, std::vector<T>>;
@@ -62,8 +64,11 @@ class LabelledVectorProxy {
 
     const T& operator[](std::size_t i) const {
         // EXCEPTION CHECKS
-        auto pos = label_[i];
-        if (pos + 1 > data_.size()) {
+        if (i + 1 > label_.size()) {
+            throw exception::OutOfRange{
+                "qpp::internal::LabelledVectorProxy::operator[]() const", "i"};
+        }
+        if (label_[i] + 1 > data_.size()) {
             throw exception::OutOfRange{
                 "qpp::internal::LabelledVectorProxy::operator[]() const", "i"};
         }
@@ -72,13 +77,20 @@ class LabelledVectorProxy {
         return data_[label_[i]];
     }
 
-    // mutable operator[], only if is_const == false
+    // mutable operator[], enabled only if is_const == false
     template <bool B = is_const, typename = std::enable_if_t<!B>>
     T& operator[](std::size_t i) {
-        auto pos = label_[i];
-        if (pos + 1 > data_.size()) {
-            throw std::out_of_range{
-                "LabelledVectorProxy::operator[](): index out of range"};
+        // FIXME: operator[] exceptions in LabelledVectorProxy
+        std::cout << "i: " << i << '\n';
+        std::cout << "label[i]: " << label_[i] << '\n';
+        std::cout << "label size: " << label_.size() << '\n';
+        if (i + 1 > label_.size()) {
+            throw exception::OutOfRange{
+                "qpp::internal::LabelledVectorProxy::operator[]()", "i"};
+        }
+        if (label_[i] + 1 > data_.size()) {
+            throw exception::OutOfRange{
+                "qpp::internal::LabelledVectorProxy::operator[]()", "i"};
         }
         return data_[label_[i]];
     }
