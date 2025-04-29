@@ -893,7 +893,8 @@ class QCircuit : public IDisplay, public IJSON {
         auto runtime_step_visitor =
             [&](internal::QCircuitRuntimeStep& runtime_step) {
                 // add dit context (offset, length)
-                if (runtime_step.ctx_.start_expr.has_value()) {
+                if (runtime_step.ctx_.start_expr.has_value() ||
+                    runtime_step.ctx_.set_dits_func.has_value()) {
                     runtime_step.ctx_.dit_ctx.emplace_back(pos, n);
                 }
             };
