@@ -220,7 +220,8 @@ struct dirac_t {
     bool operator!=(const dirac_t& rhs) const { return !(*this == rhs); }
 };
 
-// TODO: Consider moving these types into classes/qcircuit.hpp
+// TODO: Consider moving these types into classes/qcircuit.hpp or to
+// internal/classes/labelled_vector_proxy.hpp
 
 /**
  * \brief Mutable proxy to quantum engine dits
