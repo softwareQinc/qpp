@@ -62,7 +62,7 @@ inline void init_types(py::module_& m) {
         [](const py_proxy_to_engine_dits_t& self, idx i) { return self[i]; });
     py_proxy_to_engine_dits.def(
         "__setitem__",
-        [](py_proxy_to_engine_dits_t& self, idx i) { return self[i]; });
+        [](py_proxy_to_engine_dits_t& self, idx i, idx val) { self[i] = val; });
 
     auto py_const_proxy_to_engine_dits =
         py::class_<py_const_proxy_to_engine_dits_t>(
