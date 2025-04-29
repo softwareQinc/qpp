@@ -223,12 +223,12 @@ struct dirac_t {
 // TODO: Consider moving these types into QCircuit
 
 /**
- * \brief Mutable proxy to engine dits
+ * \brief Mutable proxy to quantum engine dits
  */
 using proxy_to_engine_dits_t = internal::LabelledVectorProxy<idx, false>;
 
 /**
- * \brief Const proxy to engine dits
+ * \brief Const proxy to quantum engine dits
  */
 using const_proxy_to_engine_dits_t = internal::LabelledVectorProxy<idx, true>;
 
@@ -237,13 +237,13 @@ using const_proxy_to_engine_dits_t = internal::LabelledVectorProxy<idx, true>;
  * conditional (runtime) statements
  */
 using cond_pred_t = std::function<bool(const_proxy_to_engine_dits_t)>;
+// using cond_pred_t = std::function<bool(std::vector<idx>&)>;
 
 /**
- * \brief Functor type in qpp::QCircuit in setting dits at runtime statements
+ * \brief Functor type in qpp::QCircuit for overwriting quantum engine dits at
+ * runtime
  */
 using mutable_dits_functor_t = std::function<void(proxy_to_engine_dits_t)>;
-
-// using cond_func_t = std::function<bool(std::vector<idx>&)>;
 
 /**
  * \brief Quantumly-accessible Random Access Memory (qRAM)
