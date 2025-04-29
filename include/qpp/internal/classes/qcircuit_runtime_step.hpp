@@ -64,7 +64,7 @@ struct QCircuitRuntimeStep : IDisplay {
 
         ENDWHILE, ///< end while branch statement
 
-        SET_DITS_RUNTIME, ///< set dits at runtime
+        SET_DITS_RUNTIME, ///< overwrite quantum engine dits at runtime
     };
 
     /**
