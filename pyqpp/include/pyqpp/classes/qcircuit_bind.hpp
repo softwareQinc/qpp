@@ -304,12 +304,12 @@ inline void init_classes_qcircuit(py::module_& m) {
                    "True if valid conditionals, false otherwise");
     pyQCircuit.def("get_step_count", &QCircuit::get_step_count,
                    "Total (gates + measurements) count");
-    pyQCircuit.def("has_conditionals", &QCircuit::has_conditionals,
-                   "True if the quantum circuit description contains "
-                   "conditionals, false otherwise");
     pyQCircuit.def("has_measurements", &QCircuit::has_measurements,
                    "True if the quantum circuit description contains "
                    "measurements, false otherwise");
+    pyQCircuit.def("has_runtime_steps", &QCircuit::has_runtime_steps,
+                   "True if the quantum circuit description contains "
+                   "runtime steps, false otherwise");
     pyQCircuit.def_static(
         "is_cCTRL", &QCircuit::is_cCTRL,
         "True if the gate step is a classically-controlled gate, "
