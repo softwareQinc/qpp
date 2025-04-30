@@ -57,18 +57,17 @@
 #include "qpp/classes/idisplay.hpp"
 #include "qpp/classes/ijson.hpp"
 
-#include "qpp/internal/classes/qcircuit_conditional_step.hpp"
 #include "qpp/internal/classes/qcircuit_gate_step.hpp"
 #include "qpp/internal/classes/qcircuit_measurement_step.hpp"
 #include "qpp/internal/classes/qcircuit_nop_step.hpp"
 #include "qpp/internal/classes/qcircuit_resources.hpp"
+#include "qpp/internal/classes/qcircuit_runtime_step.hpp"
 #include "qpp/internal/util.hpp"
 
 namespace qpp {
 namespace internal {
 ///< Conditional stack type
-using conditional_stack_t =
-    std::deque<internal::QCircuitConditionalStep::Context>;
+using conditional_stack_t = std::deque<internal::QCircuitRuntimeStep::Context>;
 
 ///< Forward declarations
 class QCircuitIterator;
@@ -108,7 +107,7 @@ class QCircuit : public IDisplay, public IJSON {
         measurement_count_{}; ///< measurement counts
 
     internal::conditional_stack_t
-        conditional_stack_{}; ///< used for parsing conditional statements
+        conditional_stack_{}; ///< to parse conditional (runtime) statements
     std::optional<idx>
         outer_while_pos_{}; ///< location of the outermost while statement
 
@@ -137,9 +136,10 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     ///< circuit step variant
-    using VarStep = std::variant<
-        internal::QCircuitConditionalStep, internal::QCircuitGateStep,
-        internal::QCircuitMeasurementStep, internal::QCircuitNOPStep>;
+    using VarStep =
+        std::variant<internal::QCircuitRuntimeStep, internal::QCircuitGateStep,
+                     internal::QCircuitMeasurementStep,
+                     internal::QCircuitNOPStep>;
     std::vector<VarStep> circuit_{}; ///<< quantum circuit representation
 
   protected:
@@ -695,6 +695,7 @@ class QCircuit : public IDisplay, public IJSON {
             }
             return result;
         }
+        // END EXCEPTION CHECKS
 
         idx result = 0;
         for (auto&& elem : measurement_count_) {
@@ -745,7 +746,7 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /*
-     * \brief Validates the conditional statements
+     * \brief Validates the conditional if/else/while (runtime) statements
      *
      * \return True if valid conditionals, false otherwise
      */
@@ -813,10 +814,10 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor =
-            [&](const internal::QCircuitConditionalStep&) {};
+        auto runtime_step_visitor = [&](const internal::QCircuitRuntimeStep&) {
+        };
 
-        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
+        visit_circuit_(circuit_, runtime_step_visitor, gate_step_visitor,
                        measurement_step_visitor, nop_step_visitor_id);
 
         // update the destructively measured qudits
@@ -889,16 +890,17 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         // update condition statement context indexes
-        auto conditional_step_visitor =
-            [&](internal::QCircuitConditionalStep& conditional_step) {
+        auto runtime_step_visitor =
+            [&](internal::QCircuitRuntimeStep& runtime_step) {
                 // add dit context (offset, length)
-                if (conditional_step.ctx_.start_expr.has_value()) {
-                    conditional_step.ctx_.dit_ctx.emplace_back(pos, n);
+                if (runtime_step.ctx_.start_expr.has_value() ||
+                    runtime_step.ctx_.set_dits_func.has_value()) {
+                    runtime_step.ctx_.dit_ctx.emplace_back(pos, n);
                 }
             };
         auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
 
-        visit_circuit_(circuit_, conditional_step_visitor, gate_step_visitor,
+        visit_circuit_(circuit_, runtime_step_visitor, gate_step_visitor,
                        measurement_step_visitor, nop_step_visitor_id);
 
         // update (enlarge) the clean dits vector
@@ -940,37 +942,39 @@ class QCircuit : public IDisplay, public IJSON {
      * is trivially false.
      *
      * \code
-     * qc.cond_while([](std::vector<idx> v) { return false; });
+     * qc.cond_while([](auto dits) { return false; });
      *     qc.add_dit(10);
      *     qc.gate(gt.X, 0);
      * qc.cond_end();
      * \endcode
      *
      * \note Currently, conditional statements are executed only by
-     * qpp::QEngine::execute(idx reps). If you execute the circuit via
-     * iterators, as in a range-based loop, conditional statements are ignored.
+     * qpp::QEngine::execute(idx reps). If one executes the circuit step by step
+     * by iterating, as in a range-based loop, conditional statements are
+     * ignored.
      *
-     * \param pred Boolean predicate std::vector<idx> v -> bool. The
-     * classical dits can be read from the vector at runtime, when the circuit
-     * is being run by a quantum engine. Example of a predicate:
+     * \param pred Boolean predicate qpp::const_proxy_to_engine_dits_t -> bool.
+     * The classical dits can be read at runtime, when the circuit is being run
+     * by a quantum engine. Example of a predicate:
      * \code
-     * auto pred = [](std::vector<idx> v) {
-     *     return v[0] == 1; // true if the classical dit 0 equals 1 at runtime
+     * auto pred = [](auto dits) {
+     *     return dits[0] == 1; // true if the classical dit 0 equals 1 at
+     * runtime
      * }
      * \endcode
      *
      * \return Reference to the current instance
      */
-    QCircuit& cond_while(cond_func_t pred) {
+    QCircuit& cond_while(cond_pred_t pred) {
         if (!outer_while_pos_.has_value()) {
             outer_while_pos_ = get_step_count();
         }
 
-        internal::QCircuitConditionalStep::Context ctx{};
+        internal::QCircuitRuntimeStep::Context ctx{};
         ctx.start_expr = {get_step_count(), pred};
         conditional_stack_.push_back(ctx);
-        circuit_.emplace_back(internal::QCircuitConditionalStep{
-            internal::QCircuitConditionalStep::Type::WHILE, ctx});
+        circuit_.emplace_back(internal::QCircuitRuntimeStep{
+            internal::QCircuitRuntimeStep::Type::WHILE, ctx});
 
         measured_d_.push_back(measured_d_.back());
 
@@ -995,33 +999,35 @@ class QCircuit : public IDisplay, public IJSON {
      * is trivially false.
      *
      * \code
-     * qc.cond_if([](std::vector<idx> v) { return false; });
+     * qc.cond_if([](auto dits) { return false; });
      *     qc.add_dit(10);
      *     qc.gate(gt.X, 0);
      * qc.cond_end();
      * \endcode
      *
      * \note Currently, conditional statements are executed only by
-     * qpp::QEngine::execute(idx reps). If you execute the circuit via
-     * iterators, as in a range-based loop, conditional statements are ignored.
+     * qpp::QEngine::execute(idx reps). If one executes the circuit step by step
+     * by iterating, as in a range-based loop, conditional statements are
+     * ignored.
      *
-     * \param pred Boolean predicate std::vector<idx> v -> bool. The
-     * classical dits can be read from the vector at runtime, when the circuit
-     * is being run by a quantum engine. Example of a predicate:
+     * \param pred Boolean predicate qpp::const_proxy_to_engine_dits_t -> bool.
+     * The classical dits can be read at runtime, when the circuit is being run
+     * by a quantum engine. Example of a predicate:
      * \code
-     * auto pred = [](std::vector<idx> v) {
-     *     return v[0] == 1; // true if the classical dit 0 equals 1 at runtime
+     * auto pred = [](auto dits) {
+     *     return dits[0] == 1; // true if the classical dit 0 equals 1 at
+     *                          // runtime
      * }
      * \endcode
      *
      * \return Reference to the current instance
      */
-    QCircuit& cond_if(cond_func_t pred) {
-        internal::QCircuitConditionalStep::Context ctx{};
+    QCircuit& cond_if(cond_pred_t pred) {
+        internal::QCircuitRuntimeStep::Context ctx{};
         ctx.start_expr = {get_step_count(), pred};
         conditional_stack_.push_back(ctx);
-        circuit_.emplace_back(internal::QCircuitConditionalStep{
-            internal::QCircuitConditionalStep::Type::IF, ctx});
+        circuit_.emplace_back(internal::QCircuitRuntimeStep{
+            internal::QCircuitRuntimeStep::Type::IF, ctx});
 
         measured_d_.push_back(measured_d_.back());
 
@@ -1044,20 +1050,18 @@ class QCircuit : public IDisplay, public IJSON {
                 "qpp::QCircuit::cond_else()",
                 context + ": ELSE without a matching IF");
         }
-        if (std::get<internal::QCircuitConditionalStep>(
+        if (std::get<internal::QCircuitRuntimeStep>(
                 circuit_[conditional_stack_.back().start_expr->first])
-                .condition_type_ ==
-            internal::QCircuitConditionalStep::Type::WHILE) {
+                .runtime_type_ == internal::QCircuitRuntimeStep::Type::WHILE) {
             throw exception::InvalidConditional("qpp::QCircuit::cond_else()",
                                                 context + ": WHILE ELSE");
         }
         // END EXCEPTION CHECKS
 
-        internal::QCircuitConditionalStep::Context& ctx =
-            conditional_stack_.back();
+        internal::QCircuitRuntimeStep::Context& ctx = conditional_stack_.back();
         ctx.else_expr = get_step_count();
-        circuit_.emplace_back(internal::QCircuitConditionalStep{
-            internal::QCircuitConditionalStep::Type::ELSE, ctx});
+        circuit_.emplace_back(internal::QCircuitRuntimeStep{
+            internal::QCircuitRuntimeStep::Type::ELSE, ctx});
 
         measured_d_if_stack_.push_back(measured_d_.back());
         measured_d_.pop_back();
@@ -1083,32 +1087,29 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        internal::QCircuitConditionalStep::Context& ctx =
-            conditional_stack_.back();
+        internal::QCircuitRuntimeStep::Context& ctx = conditional_stack_.back();
         ctx.end_expr = get_step_count();
-        if (std::get<internal::QCircuitConditionalStep>(
+        if (std::get<internal::QCircuitRuntimeStep>(
                 circuit_[ctx.start_expr->first])
-                .condition_type_ ==
-            internal::QCircuitConditionalStep::Type::WHILE) {
-            circuit_.emplace_back(internal::QCircuitConditionalStep{
-                internal::QCircuitConditionalStep::Type::ENDWHILE, ctx});
+                .runtime_type_ == internal::QCircuitRuntimeStep::Type::WHILE) {
+            circuit_.emplace_back(internal::QCircuitRuntimeStep{
+                internal::QCircuitRuntimeStep::Type::ENDWHILE, ctx});
             if (outer_while_pos_.value() == ctx.start_expr.value().first) {
                 outer_while_pos_ = std::nullopt;
             }
         } else {
-            circuit_.emplace_back(internal::QCircuitConditionalStep{
-                internal::QCircuitConditionalStep::Type::ENDIF, ctx});
+            circuit_.emplace_back(internal::QCircuitRuntimeStep{
+                internal::QCircuitRuntimeStep::Type::ENDIF, ctx});
         }
 
         // update the IF/ELSE contexts
         auto start_expr = ctx.start_expr;
         auto else_expr = ctx.else_expr;
         if (else_expr.has_value()) {
-            std::get<internal::QCircuitConditionalStep>(
-                circuit_[else_expr.value()])
+            std::get<internal::QCircuitRuntimeStep>(circuit_[else_expr.value()])
                 .ctx_ = ctx;
         }
-        std::get<internal::QCircuitConditionalStep>(
+        std::get<internal::QCircuitRuntimeStep>(
             circuit_[start_expr.value().first])
             .ctx_ = ctx;
         conditional_stack_.pop_back();
@@ -1126,6 +1127,29 @@ class QCircuit : public IDisplay, public IJSON {
             measured_d_.pop_back();
             measured_d_.back() = if_;
         }
+
+        return *this;
+    }
+
+    /** \brief Set dits at runtime (when running with a quantum engine)
+     *
+     * \param functor Functor qpp::proxy_to_engine_dits_t -> bool.
+     * The classical dits can be read/written at runtime, when the circuit is
+     * being run by a quantum engine. Example of a functor:
+     *
+     * \code
+     * auto functor= [](auto dits) {
+     *     dits[0] == 1; // set dit 0 of the quantum engine
+     * }
+     * \endcode
+     *
+     * \return Reference to the current instance
+     */
+    QCircuit& set_dits_runtime(mutable_dits_functor_t functor) {
+        internal::QCircuitRuntimeStep::Context ctx{};
+        ctx.set_dits_func = functor;
+        circuit_.emplace_back(internal::QCircuitRuntimeStep{
+            internal::QCircuitRuntimeStep::Type::SET_DITS_RUNTIME, ctx});
 
         return *this;
     }
@@ -4043,7 +4067,8 @@ class QCircuit : public IDisplay, public IJSON {
         add_dit(other.nc_, pos_dit.value());
 
         // STEP 1: update [c]ctrl and target indexes of other, and modify
-        // the locations in conditional steps + add dit context for other
+        // the locations in conditional (runtime) steps + add dit context for
+        // other
         auto gate_step_visitor = [&](internal::QCircuitGateStep& gate_step) {
             // update the cctrl indexes
             if (is_cCTRL(gate_step)) {
@@ -4075,20 +4100,20 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor =
-            [&](internal::QCircuitConditionalStep& conditional_step) {
-                // increment location of conditional statements accordingly
-                conditional_step.ctx_.inc_cond_locs(get_step_count());
+        auto runtime_step_visitor =
+            [&](internal::QCircuitRuntimeStep& runtime_step) {
+                // increment location of conditional (runtime) statements
+                // accordingly
+                runtime_step.ctx_.inc_cond_locs(get_step_count());
                 // add dit context (offset, length) as if we're inserting
                 // classical dits into other before composing
-                auto& ctx_dit_vec = conditional_step.ctx_.dit_ctx;
+                auto& ctx_dit_vec = runtime_step.ctx_.dit_ctx;
                 ctx_dit_vec.insert(ctx_dit_vec.begin(),
                                    {0, pos_dit.value_or(this->get_nc())});
             };
 
-        visit_circuit_(other.circuit_, conditional_step_visitor,
-                       gate_step_visitor, measurement_step_visitor,
-                       nop_step_visitor_id);
+        visit_circuit_(other.circuit_, runtime_step_visitor, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor_id);
 
         // STEP 2
         // replace the corresponding elements of measured_, measured_nd_,
@@ -4251,30 +4276,30 @@ class QCircuit : public IDisplay, public IJSON {
         // STEP 0: insert classical dits from the to-be-coupled circuit
         add_dit(other.nc_, pos_dit.value());
 
-        // STEP 1: modify the locations in conditional steps of current, and add
-        // dit context for other
+        // STEP 1: modify the locations in conditional (runtime) steps of
+        // current, and add dit context for other
         auto gate_step_visitor_id = [&](internal::QCircuitGateStep&) {};
         auto measurement_step_visitor_id =
             [&](internal::QCircuitMeasurementStep&) {};
         auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor_current =
-            [&](internal::QCircuitConditionalStep& conditional_step_current) {
-                // increment location of conditional statements accordingly
-                conditional_step_current.ctx_.inc_cond_locs(
-                    other.get_step_count());
+        auto runtime_step_visitor_current =
+            [&](internal::QCircuitRuntimeStep& runtime_step_current) {
+                // increment location of conditional (runtime) statements
+                // accordingly
+                runtime_step_current.ctx_.inc_cond_locs(other.get_step_count());
             };
-        auto conditional_step_visitor_other =
-            [&](internal::QCircuitConditionalStep& conditional_step_other) {
-                auto& ctx_dit_vec = conditional_step_other.ctx_.dit_ctx;
+        auto runtime_step_visitor_other =
+            [&](internal::QCircuitRuntimeStep& runtime_step_other) {
+                auto& ctx_dit_vec = runtime_step_other.ctx_.dit_ctx;
                 // add dit context (offset, length) as if we're inserting
                 // classical dits into other before composing
                 ctx_dit_vec.insert(ctx_dit_vec.begin(),
                                    {0, pos_dit.value_or(this->get_nc())});
             };
-        visit_circuit_(circuit_, conditional_step_visitor_current,
+        visit_circuit_(circuit_, runtime_step_visitor_current,
                        gate_step_visitor_id, measurement_step_visitor_id,
                        nop_step_visitor_id);
-        visit_circuit_(other.circuit_, conditional_step_visitor_other,
+        visit_circuit_(other.circuit_, runtime_step_visitor_other,
                        gate_step_visitor_id, measurement_step_visitor_id,
                        nop_step_visitor_id);
 
@@ -4308,10 +4333,10 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto other_nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
-        auto other_conditional_step_visitor_id =
-            [&](const internal::QCircuitConditionalStep&) {};
+        auto other_runtime_step_visitor_id =
+            [&](const internal::QCircuitRuntimeStep&) {};
 
-        visit_circuit_(other.circuit_, other_conditional_step_visitor_id,
+        visit_circuit_(other.circuit_, other_runtime_step_visitor_id,
                        other_gate_step_visitor, other_measurement_step_visitor,
                        other_nop_step_visitor_id);
 
@@ -4477,7 +4502,7 @@ class QCircuit : public IDisplay, public IJSON {
             }
         };
         // update measurement indexes of other, modify the locations in
-        // conditional steps + add dit context for other
+        // conditional (runtime) steps + add dit context for other
         auto measurement_step_visitor =
             [&](internal::QCircuitMeasurementStep& measurement_step) {
                 measurement_step.c_reg_ += pos_dit.value();
@@ -4486,20 +4511,20 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor_id = [&](internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor =
-            [&](internal::QCircuitConditionalStep& conditional_step) {
-                // increment location of conditional statements accordingly
-                conditional_step.ctx_.inc_cond_locs(get_step_count());
+        auto runtime_step_visitor =
+            [&](internal::QCircuitRuntimeStep& runtime_step) {
+                // increment location of conditional (runtime) statements
+                // accordingly
+                runtime_step.ctx_.inc_cond_locs(get_step_count());
                 // add dit context (offset, length) as if we're inserting
                 // classical dits into other before composing
-                auto& ctx_dit_vec = conditional_step.ctx_.dit_ctx;
+                auto& ctx_dit_vec = runtime_step.ctx_.dit_ctx;
                 ctx_dit_vec.insert(ctx_dit_vec.begin(),
                                    {0, pos_dit.value_or(this->get_nc())});
             };
 
-        visit_circuit_(other.circuit_, conditional_step_visitor,
-                       gate_step_visitor, measurement_step_visitor,
-                       nop_step_visitor_id);
+        visit_circuit_(other.circuit_, runtime_step_visitor, gate_step_visitor,
+                       measurement_step_visitor, nop_step_visitor_id);
 
         // replace the corresponding elements of measured_, measured_nd_,
         // clean_qudits_, clean_dits_, and measurement_dits_ with the ones
@@ -4796,10 +4821,10 @@ class QCircuit : public IDisplay, public IJSON {
             [&](const internal::QCircuitMeasurementStep&) {};
         // NOPs are left unchanged
         auto nop_step_visitor_id = [&](const internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor_id =
-            [&](const internal::QCircuitConditionalStep&) {};
+        auto runtime_step_visitor_id =
+            [&](const internal::QCircuitRuntimeStep&) {};
         for (idx i = end_ctrl_circuit; i < end_composed_circuit; ++i) {
-            visit_circuit_step_(circuit_[i], conditional_step_visitor_id,
+            visit_circuit_step_(circuit_[i], runtime_step_visitor_id,
                                 gate_step_visitor, measurement_step_visitor_id,
                                 nop_step_visitor_id);
         }
@@ -4836,15 +4861,15 @@ class QCircuit : public IDisplay, public IJSON {
 
     /**
      * \brief Returns true if the quantum circuit description contains
-     * conditionals, false otherwise
+     * runtime steps, false otherwise
      *
-     * \return True if the quantum circuit description contains conditionals,
+     * \return True if the quantum circuit description contains runtime steps,
      * false otherwise
      */
-    bool has_conditionals() const noexcept {
+    bool has_runtime_steps() const noexcept {
         return std::find_if(circuit_.cbegin(), circuit_.cend(), [](auto&& arg) {
-                   return std::holds_alternative<
-                       internal::QCircuitConditionalStep>(arg);
+                   return std::holds_alternative<internal::QCircuitRuntimeStep>(
+                       arg);
                }) != circuit_.end();
     }
 
@@ -4902,7 +4927,7 @@ class QCircuit : public IDisplay, public IJSON {
             throw exception::QuditAlreadyMeasured(
                 "qpp::QCircuit::adjoint()", "Current qpp::QCircuit instance");
         }
-        if (this->has_conditionals()) {
+        if (this->has_runtime_steps()) {
             throw exception::CircuitContainsConditionals(
                 "qpp::QCircuit::adjoint()", "Current qpp::QCircuit instance");
         }
@@ -4933,10 +4958,10 @@ class QCircuit : public IDisplay, public IJSON {
         auto measurement_step_visitor_id =
             [&](const internal::QCircuitMeasurementStep&) {};
         auto nop_step_visitor_id = [&](const internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor_id =
-            [&](const internal::QCircuitConditionalStep&) {};
+        auto runtime_step_visitor_id =
+            [&](const internal::QCircuitRuntimeStep&) {};
 
-        visit_circuit_(circuit_, conditional_step_visitor_id, gate_step_visitor,
+        visit_circuit_(circuit_, runtime_step_visitor_id, gate_step_visitor,
                        measurement_step_visitor_id, nop_step_visitor_id);
 
         return *this;
@@ -5106,10 +5131,10 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor_id = [&](const internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor_id =
-            [&](const internal::QCircuitConditionalStep&) {};
+        auto runtime_step_visitor_id =
+            [&](const internal::QCircuitRuntimeStep&) {};
 
-        visit_circuit_(circuit_, conditional_step_visitor_id, gate_step_visitor,
+        visit_circuit_(circuit_, runtime_step_visitor_id, gate_step_visitor,
                        measurement_step_visitor, nop_step_visitor_id);
 
         clean_qudits_.erase(std::next(clean_qudits_.begin(),
@@ -5153,10 +5178,10 @@ class QCircuit : public IDisplay, public IJSON {
                 }
             };
         auto nop_step_visitor_id = [&](const internal::QCircuitNOPStep&) {};
-        auto conditional_step_visitor_id =
-            [&](const internal::QCircuitConditionalStep&) {};
+        auto runtime_step_visitor_id =
+            [&](const internal::QCircuitRuntimeStep&) {};
 
-        visit_circuit_(circuit_, conditional_step_visitor_id, gate_step_visitor,
+        visit_circuit_(circuit_, runtime_step_visitor_id, gate_step_visitor,
                        measurement_step_visitor, nop_step_visitor_id);
 
         clean_dits_.erase(std::next(clean_dits_.begin(),
@@ -5497,14 +5522,14 @@ class QCircuitIterator {
                 [&](const internal::QCircuitNOPStep& nop_step) {
                     os << nop_step;
                 };
-            auto conditional_step_visitor =
-                [&](const internal::QCircuitConditionalStep& conditional_step) {
-                    os << conditional_step;
+            auto runtime_step_visitor =
+                [&](const internal::QCircuitRuntimeStep& runtime_step) {
+                    os << runtime_step;
                 };
 
             qc_ptr_->visit_circuit_step_(
-                qc_ptr_->circuit_[ip_], conditional_step_visitor,
-                gate_step_visitor, measurement_step_visitor, nop_step_visitor);
+                qc_ptr_->circuit_[ip_], runtime_step_visitor, gate_step_visitor,
+                measurement_step_visitor, nop_step_visitor);
 
             return os;
         }
@@ -5862,10 +5887,10 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
         auto nop_step_visitor = [&](const internal::QCircuitNOPStep&) {
             result += std::string{"\"NOP\""} + "}";
         };
-        auto conditional_step_visitor =
-            [&](const internal::QCircuitConditionalStep& conditional_step) {
-                auto type = conditional_step.condition_type_;
-                auto ctx = conditional_step.ctx_;
+        auto runtime_step_visitor =
+            [&](const internal::QCircuitRuntimeStep& runtime_step) {
+                auto type = runtime_step.runtime_type_;
+                auto ctx = runtime_step.ctx_;
 
                 std::ostringstream ss;
                 std::string type_str, ctx_str;
@@ -5880,7 +5905,7 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
                           "\"" + "}";
             };
 
-        visit_circuit_step_(elem.get_step(), conditional_step_visitor,
+        visit_circuit_step_(elem.get_step(), runtime_step_visitor,
                             gate_step_visitor, measurement_step_visitor,
                             nop_step_visitor);
     } // end for
@@ -6330,7 +6355,7 @@ inline QCircuit adjoint(QCircuit qc,
     if (qc.has_measurements()) {
         throw exception::QuditAlreadyMeasured("qpp::adjoint()", "qc");
     }
-    if (qc.has_conditionals()) {
+    if (qc.has_runtime_steps()) {
         throw exception::CircuitContainsConditionals("qpp::adjoint()", "qc");
     }
     // END EXCEPTION CHECKS
@@ -6400,13 +6425,15 @@ inline QCircuit replicate(QCircuit qc, idx n,
  * \param p_two Optional, probability of applying a two qudit gate, must
  * belong to the interval (0,1). If the two qudit gate set has more than one
  * element, then the gate is chosen at random from the set.
- * \param with_respect_to_gate Optional, if present, gate count is calculated
- * with respect to this particular gate (absent by default, so by default gate
- * count is calculated with respect to all gates in the circuit)
+ * \param with_respect_to_gate Optional, if present, gate count is
+ * calculated with respect to this particular gate (absent by default, so by
+ * default gate count is calculated with respect to all gates in the
+ * circuit)
  * \param one_qudit_gate_set Optional set of one qudit gates, must be
  * specified for \a d > 2
- * \param two_qudit_gate_set Optional set of two qudit gates, must be specified
- * for \a d > 2 \param one_qudit_gate_names Optional one qudit gate names
+ * \param two_qudit_gate_set Optional set of two qudit gates, must be
+ * specified for \a d > 2 \param one_qudit_gate_names Optional one qudit
+ * gate names
  * \param two_qudit_gate_names Optional two qudit gate names
  * \return Instance of random qpp::QCircuit for fixed gate count
  */
@@ -6585,13 +6612,14 @@ inline QCircuit random_circuit_count(
  * \param p_two Optional, probability of applying a two qudit gate, must
  * belong to the interval (0,1). If the two qudit gate set has more than one
  * element, then the gate is chosen at random from the set.
- * \param with_respect_to_gate Optional, if present, gate depth is calculated
- * with respect to this particular gate (absent by default, so by default gate
- * depth is calculated with respect to all gates in the circuit)
+ * \param with_respect_to_gate Optional, if present, gate depth is
+ * calculated with respect to this particular gate (absent by default, so by
+ * default gate depth is calculated with respect to all gates in the
+ * circuit)
  * \param one_qudit_gate_set Set of one qudit gates (optional, must be
  * specified for \a d > 2)
- * \param two_qudit_gate_set Set of two qudit gates (optional, must be specified
- * for \a d > 2);
+ * \param two_qudit_gate_set Set of two qudit gates (optional, must be
+ * specified for \a d > 2);
  * \param one_qudit_gate_names One qudit gate names (optional)
  * \param two_qudit_gate_names Two qudit gate names (optional)
  * \return Instance of random qpp::QCircuit for fixed circuit gate depth
@@ -6823,9 +6851,10 @@ namespace internal {
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a projective
  * measurement step (including post-selection), false otherwise
  *
- * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a projective
- * measurement step (including post-selection), false otherwise
+ * \param measurement_step Instance of
+ * qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a
+ * projective measurement step (including post-selection), false otherwise
  */
 inline bool is_projective_measurement(
     const internal::QCircuitMeasurementStep& measurement_step) {
@@ -6881,9 +6910,11 @@ inline bool is_projective_measurement(QCircuit::iterator it) {
  * measurement step (projective or not, including post-selection), false
  * otherwise
  *
- * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a measurement
- * step (projective or not, including post-selection), false otherwise
+ * \param measurement_step Instance of
+ * qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a
+ * measurement step (projective or not, including post-selection), false
+ * otherwise
  */
 inline bool
 is_measurement(const internal::QCircuitMeasurementStep& measurement_step) {
@@ -6996,9 +7027,10 @@ inline bool is_destructive_measurement(QCircuit::iterator it) {
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a projective
  * post-selection step, false otherwise
  *
- * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a projective
- * post-selection step, false otherwise
+ * \param measurement_step Instance of
+ * qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a
+ * projective post-selection step, false otherwise
  */
 inline bool is_projective_post_selection(
     const internal::QCircuitMeasurementStep& measurement_step) {
@@ -7049,7 +7081,8 @@ inline bool is_projective_post_selection(QCircuit::iterator it) {
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a
  * post-selection step (projective or not), false otherwise
  *
- * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
+ * \param measurement_step Instance of
+ * qpp::internal::QCircuitMeasurementStep
  * \return True if the qpp::internal::QCircuitMeasurementStep is a
  * post-selection step (projective or not), false otherwise
  */
@@ -7101,9 +7134,10 @@ inline bool is_post_selection(QCircuit::iterator it) {
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a discard
  * step, false otherwise
  *
- * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a discard step,
- * false otherwise
+ * \param measurement_step Instance of
+ * qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a discard
+ * step, false otherwise
  */
 inline bool
 is_discard(const internal::QCircuitMeasurementStep& measurement_step) {
@@ -7149,9 +7183,10 @@ inline bool is_discard(QCircuit::iterator it) { return is_discard(*it); }
  * \brief True if the qpp::internal::QCircuitMeasurementStep is a reset
  * step, false otherwise
  *
- * \param measurement_step Instance of qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a reset step,
- * false otherwise
+ * \param measurement_step Instance of
+ * qpp::internal::QCircuitMeasurementStep
+ * \return True if the qpp::internal::QCircuitMeasurementStep is a reset
+ * step, false otherwise
  */
 inline bool
 is_reset(const internal::QCircuitMeasurementStep& measurement_step) {
@@ -7232,16 +7267,16 @@ inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
 inline bool is_cCTRL(QCircuit::iterator it) { return is_cCTRL(*it); }
 
 /**
- * \brief True if the quantum circuit step is a conditionalstep, false
+ * \brief True if the quantum circuit step is a runtime step, false
  * otherwise
  *
  * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a conditional step, false
+ * \return True if the quantum circuit step is a runtime step, false
  * otherwise
  */
-inline bool is_conditional(const QCircuit::iterator::value_type& elem) {
+inline bool is_runtime_step(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
-    if (std::holds_alternative<internal::QCircuitConditionalStep>(step)) {
+    if (std::holds_alternative<internal::QCircuitRuntimeStep>(step)) {
         return true;
     }
 
@@ -7249,15 +7284,15 @@ inline bool is_conditional(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a conditional step,
- * false otherwise
+ * \brief True if the quantum circuit iterator points to a runtime step, false
+ * otherwise
  *
  * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a conditional
- * step, false otherwise
+ * \return True if the quantum circuit iterator points to a runtime step, false
+ * otherwise
  */
-inline bool is_conditional(QCircuit::iterator it) {
-    return is_conditional(*it);
+inline bool is_runtime_step(QCircuit::iterator it) {
+    return is_runtime_step(*it);
 }
 /**
  * \brief Extracts ctrl, target, ps_vals, and c_reg vectors (in this order)
@@ -7405,8 +7440,8 @@ inline bool can_swap(QCircuit::iterator it1, QCircuit::iterator it2) {
 }
 
 /**
- * \brief Converts a qpp::QCircuit::iterator range [\a start, \a finish) to a
- * vector of quantum circuit iterators
+ * \brief Converts a qpp::QCircuit::iterator range [\a start, \a finish) to
+ * a vector of quantum circuit iterators
  *
  * \param start Quantum circuit iterator pointing to the first element
  * \param finish Quantum circuit iterator pointing to the last element (not
@@ -7424,8 +7459,8 @@ circuit_as_iterators(QCircuit::iterator start, QCircuit::iterator finish) {
 }
 
 /**
- * \brief Converts a quantum circuit description to a vector of quantum circuit
- * iterators
+ * \brief Converts a quantum circuit description to a vector of quantum
+ * circuit iterators
  *
  * \param qc Quantum circuit description
  * \return Vector of quantum circuit iterators
@@ -7437,15 +7472,15 @@ circuit_as_iterators(const QCircuit& qc) {
 
 /**
  * \brief Puts a quantum (sub)-circuit description in the canonical form,
- * i.e., pushes all cCTRLs followed by measurements to the end of the circuit,
- * so, if possible, the circuit will be of the form
- * [Gates, cCTRLs, Measurements]
+ * i.e., pushes all cCTRLs followed by measurements to the end of the
+ * circuit, so, if possible, the circuit will be of the form [Gates, cCTRLs,
+ * Measurements]
  *
  * \note This function does not interchange measurements, i.e., the
  * re-ordering is stable
  *
  * \note This function has no effect if the circuit description contains
- * conditional statements
+ * runtime statements
  *
  * \param start Quantum circuit iterator pointing to the first element
  * \param finish Quantum circuit iterator pointing to the last element (not
@@ -7456,13 +7491,14 @@ circuit_as_iterators(const QCircuit& qc) {
 inline std::vector<QCircuit::iterator>
 canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 
-    // NOTE: optimize conditionals if possible (probably not straightforward)
+    // NOTE: optimize conditionals if possible (probably not
+    // straightforward)
     //
-    // if the circuit contains conditional statements, return the circuit as is,
-    // do not reorder it
-    auto first_conditional_it = std::find_if(
-        start, finish, [](auto&& elem) { return is_conditional(elem); });
-    if (first_conditional_it != finish) {
+    // if the circuit contains runtime statements, return the circuit as
+    // is, do not reorder it
+    auto first_runtime_it = std::find_if(
+        start, finish, [](auto&& elem) { return is_runtime_step(elem); });
+    if (first_runtime_it != finish) {
         return circuit_as_iterators(start, finish);
     }
 
@@ -7518,14 +7554,14 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 
 /**
  * \brief Puts a quantum (sub)-circuit description in the canonical form,
- * i.e., pushes all cCTRLs followed by measurements to the end of the circuit,
- * so, if possible, the circuit will be of the form
- * [Gates, cCTRLs, Measurements]
+ * i.e., pushes all cCTRLs followed by measurements to the end of the
+ * circuit, so, if possible, the circuit will be of the form [Gates, cCTRLs,
+ * Measurements]
  *
  * \note This function has no effect if the circuit description contains
- * conditional statements
+ * runtime statements
  *
- * \note This function does not push across conditional statements
+ * \note This function does not push across runtime statements
  *
  * \param qc Quantum circuit description
  * \return Quantum circuit canonical form represented as a vector of quantum
@@ -7536,8 +7572,8 @@ inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
 }
 
 /**
- * \brief Increments by \a i all conditional locations in the conditional
- * stack \a cs
+ * \brief Increments by \a i all conditional if/else/while locations in the
+ * conditional stack \a cs
  *
  * \param cs Conditional stack
  * \param i Non-negative integer
@@ -7550,19 +7586,20 @@ inline void inc_conditional_stack(conditional_stack_t& cs, idx i) {
 
 /**
  * \brief True if the qpp::QCircuit::iterator range [\a start, \a finish)
- * contains conditional statements, false otherwise
+ * contains runtime statements, false otherwise
  *
  * \param start Quantum circuit iterator pointing to the first element
  * \param finish Quantum circuit iterator pointing to the last element (not
  included)
  * \return True if the qpp::QCircuit::iterator range [\a start, \a finish)
- * contains conditional statements, false otherwise
+ * contains runtime statements, false otherwise
 
  */
-inline bool has_conditionals(QCircuit::iterator start,
-                             QCircuit::iterator finish) {
-    return std::find_if(start, finish,
-                        [](auto&& it) { return is_conditional(it); }) != finish;
+inline bool has_runtime_steps(QCircuit::iterator start,
+                              QCircuit::iterator finish) {
+    return std::find_if(start, finish, [](auto&& it) {
+               return is_runtime_step(it);
+           }) != finish;
 }
 
 } /* namespace internal */

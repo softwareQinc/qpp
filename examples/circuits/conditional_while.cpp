@@ -13,8 +13,9 @@ int main() {
     // quantum circuit with 2 qubits and 2 classical bits
     QCircuit qc{3, 3};
 
-    // define a boolean predicate of the required form std::vector<idx> -> bool
-    auto pred = [](std::vector<idx> dits) {
+    // define a boolean predicate of the required form
+    // const_proxy_to_engine_dits_t -> bool
+    auto pred = [](auto dits) {
         // returns true as long as the first two classical dits ARE NOT 1, 1
         return !(dits[0] == 1 && dits[1] == 1);
     };

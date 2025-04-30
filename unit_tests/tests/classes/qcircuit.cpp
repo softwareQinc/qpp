@@ -83,13 +83,13 @@ TEST(qpp_QCircuit_compose_CTRL_circuit, AllTests) {}
 /// BEGIN QCircuit& QCircuit::compress()
 TEST(qpp_QCircuit_compress, AllTests) {}
 
-/// BEGIN QCircuit& QCircuit::cond_if(cond_func_t pred)
+/// BEGIN QCircuit& QCircuit::cond_if(cond_pred_t pred)
 TEST(qpp_QCircuit_cond_if, AllTests) {}
 
 /// BEGIN QCircuit& QCircuit::cond_else()
 TEST(qpp_QCircuit_cond_else, AllTests) {}
 
-/// BEGIN QCircuit& QCircuit::cond_while(cond_func_t pred)
+/// BEGIN QCircuit& QCircuit::cond_while(cond_pred_t pred)
 TEST(qpp_QCircuit_cond_while, AllTests) {}
 
 /// BEGIN QCircuit& QCircuit::cond_end()
@@ -253,10 +253,10 @@ TEST(qpp_QCircuit_get_resources, AllTests) {}
 TEST(qpp_QCircuit_get_step_count, AllTests) {}
 
 /// BEGIN bool QCircuit::has_measurements() const noexcept
-TEST(qpp_QCircuit_has_conditionals, AllTests) {}
-
-/// BEGIN bool QCircuit::has_measurements() const noexcept
 TEST(qpp_QCircuit_has_measurements, AllTests) {}
+
+/// BEGIN bool QCircuit::has_runtime_steps() const noexcept
+TEST(qpp_QCircuit_has_runtime_steps, AllTests) {}
 
 /// BEGIN inline static bool QCircuit::is_cCTRL(const GateStep& gate_step)
 TEST(qpp_QCircuit_is_cCTRL, AllTests) {}
@@ -429,6 +429,9 @@ TEST(qpp_QCircuit_reset, MultipleTargets) {}
 ///       std::optional<std::string> name = "reset")
 TEST(qpp_QCircuit_reset, SingleTarget) {}
 
+/// BEGIN QCircuit& QCircuit::set_dits_runtime(mutable_dits_functor_t functor)
+TEST(qpp_QCircuit_set_dits_runtime, AllTests) {}
+
 /// BEGIN QCircuit& QCircuit::set_name(const std::string& name)
 TEST(qpp_QCircuit_set_name, AllTests) {}
 
@@ -445,7 +448,7 @@ TEST(qpp_QCircuit_TFQ, SpecificQudits) {}
 TEST(qpp_QCircuit_to_JSON, AllTests) {}
 
 /// BEGIN bool QCircuit::validate_conditionals() const
-TEST(qpp_QCircuit_validate_condtional, AllTests) {}
+TEST(qpp_QCircuit_validate_conditionals, AllTests) {}
 
 /// BEGIN bool QCircuit::was_measured_d(idx i) const
 TEST(qpp_QCircuit_was_measured_d, AllTests) {}

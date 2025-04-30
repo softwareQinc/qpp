@@ -78,21 +78,21 @@ template <typename T>
 class QEngineT : public QBaseEngine<T, QCircuit> {
     /**
      * \brief Compute the position of the first
-     * measurement/discard/reset/conditional step
+     * measurement/discard/reset/runtime step
      * \see qpp::internal::canonical_form()
      *
      * \param steps Vector of qpp::QCircuit::iterator
-     * \return Position of the first measurement/discard/reset/conditional step
+     * \return Position of the first measurement/discard/reset/runtime step
      */
     idx compute_optimize_up_to_pos_(
         const std::vector<QCircuit::iterator>& steps) const {
         // find the position of the first
-        // measurement/reset/discard/conditional step
+        // measurement/reset/discard/runtime step
         auto optimize_up_to_pos_it =
             std::find_if(steps.begin(), steps.end(), [](auto&& elem) {
                 return internal::is_measurement(elem) ||
                        internal::is_discard(elem) || internal::is_reset(elem) ||
-                       internal::is_conditional(elem);
+                       internal::is_runtime_step(elem);
             });
         idx optimize_up_to_pos =
             std::distance(steps.begin(), optimize_up_to_pos_it);
@@ -103,21 +103,21 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     /**
      * \brief Returns pair of (bool, idx), first true if the canonical form of
      * the circuit can be sampled from, second denoting the position of the
-     * first measurement/reset/discard/conditional step
+     * first measurement/reset/discard/runtime step
      * \see qpp::internal::canonical_form()
      *
      * \note The circuit is expected to be in canonical form
      *
      * \note A circuit can be sampled from if and only if it its canonical form
      * have only projective measurements (including post-selection) after the
-     * first measurement/reset/discard/conditional step. In other words, it's of
+     * first measurement/reset/discard/runtime step. In other words, it's of
      * the form [Gate step(s)] * [Projective measurements step(s)].
      *
      *
      * \param steps Vector of qpp::QCircuit::iterator
      * \return Pair of (bool, idx), first true if the canonical form of the
      * circuit can be sampled from, second denoting the position of the first
-     * measurement/reset/discard/conditional step
+     * measurement/reset/discard/runtime step
      */
     std::pair<bool, idx>
     can_sample_from_(const std::vector<QCircuit::iterator>& steps) const {
@@ -126,7 +126,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // [0 ... optimize_up_to_pos ... end)
 
         // find the position of the first
-        // measurement/reset/discard/conditional step
+        // measurement/reset/discard/runtime step
         idx optimize_up_to_pos = compute_optimize_up_to_pos_(steps);
 
         // decide if we can sample (every step after optimize_up_to_pos
@@ -242,7 +242,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         bool measured = false;
         // execute with jumps (conditionals)
-        if (internal::has_conditionals(steps.front(), steps.back())) {
+        if (internal::has_runtime_steps(steps.front(), steps.back())) {
             auto it = steps[0];
             it.advance(pos);
             for (; it.get_ip() < steps.size(); ++it) {
@@ -801,32 +801,38 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     };
 
     /**
-     * \brief Executes qpp::internal::QCircuitConditionalStep
+     * \brief Executes qpp::internal::QCircuitRuntimeStep
      *
-     * \param conditional_step Instance of
-     * qpp::internal::QCircuitConditionalStep
+     * \param runtime_step Instance of qpp::internal::QCircuitRuntimeStep
      * \param it Iterator pointing to the step to be executed
      *
      */
-    virtual void visit_conditional_step_(
-        const internal::QCircuitConditionalStep& conditional_step,
-        QCircuitTraits<QCircuit>::iterator_type& it) {
-        using Type = internal::QCircuitConditionalStep::Type;
-        auto start_expr = conditional_step.ctx_.start_expr;
-        auto else_expr = conditional_step.ctx_.else_expr;
-        auto end_expr = conditional_step.ctx_.end_expr;
+    virtual void
+    visit_runtime_step_(const internal::QCircuitRuntimeStep& runtime_step,
+                        QCircuitTraits<QCircuit>::iterator_type& it) {
+        using Type = internal::QCircuitRuntimeStep::Type;
+        auto start_expr = runtime_step.ctx_.start_expr;
+        auto else_expr = runtime_step.ctx_.else_expr;
+        auto end_expr = runtime_step.ctx_.end_expr;
         bool is_true = true;
 
-        switch (conditional_step.condition_type_) {
+        auto set_dit_func = runtime_step.ctx_.set_dits_func;
+
+        switch (runtime_step.runtime_type_) {
             case Type::WHILE:
             case Type::IF:
                 if (start_expr.has_value()) {
                     auto predicate = start_expr.value().second;
+
                     // build the dits arg for lambda
-                    auto arg_predicate =
-                        conditional_step.ctx_.restore_dits_from_dit_ctx(
-                            qeng_st_.dits_);
-                    is_true = predicate(arg_predicate);
+                    std::vector<idx> labels(qeng_st_.dits_.size());
+                    std::iota(labels.begin(), labels.end(), 0);
+                    labels =
+                        runtime_step.ctx_.restore_dits_from_dit_ctx(labels);
+                    const_proxy_to_engine_dits_t w(qeng_st_.dits_, labels);
+
+                    // evaluate the conditional if/while runtime expression
+                    is_true = predicate(w);
                 }
                 // jump on false
                 if (!is_true) {
@@ -850,7 +856,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 if (start_expr.has_value()) {
                     auto predicate = start_expr.value().second;
                     auto arg_predicate =
-                        conditional_step.ctx_.restore_dits_from_dit_ctx(
+                        runtime_step.ctx_.restore_dits_from_dit_ctx(
                             qeng_st_.dits_);
                     is_true = predicate(arg_predicate);
                 }
@@ -862,6 +868,22 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     it.advance(adv);
                     break;
                 }
+                break;
+            case Type::SET_DITS_RUNTIME:
+                if (set_dit_func.has_value()) {
+                    auto functor = set_dit_func.value();
+
+                    // build the dits arg for lambda
+                    std::vector<idx> labels(qeng_st_.dits_.size());
+                    std::iota(labels.begin(), labels.end(), 0);
+                    labels =
+                        runtime_step.ctx_.restore_dits_from_dit_ctx(labels);
+                    proxy_to_engine_dits_t w(qeng_st_.dits_, labels);
+
+                    // evaluate the statement
+                    functor(w);
+                }
+                break;
             case Type::NONE:
                 break;
         }
@@ -1251,14 +1273,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             return this->visit_nop_step_(nop_step);
         };
 
-        auto conditional_step_visitor =
-            [&](const internal::QCircuitConditionalStep& conditional_step) {
-                return this->visit_conditional_step_(conditional_step, it);
+        auto runtime_step_visitor =
+            [&](const internal::QCircuitRuntimeStep& runtime_step) {
+                return this->visit_runtime_step_(runtime_step, it);
             };
 
         std::visit(
             overloaded{
-                conditional_step_visitor,
+                runtime_step_visitor,
                 gate_step_visitor,
                 measurement_step_visitor,
                 nop_step_visitor,
@@ -1325,7 +1347,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         // execute everything ONCE in the interval [0, optimize_up_to_pos)
         // execute with jumps (conditionals)
-        if (this->qc_ptr_->has_conditionals()) {
+        if (this->qc_ptr_->has_runtime_steps()) {
             for (auto it = steps_as_iterators[0];
                  it.get_ip() < optimize_up_to_pos; ++it) {
                 execute(it);

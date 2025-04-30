@@ -1,7 +1,25 @@
+# Pre-release
+
+- New feature: support for setting dits at runtime in
+  ["qpp/classes/qcircuit.hpp"], implemented
+  `qpp::QCircuit::set_dits_runtime(mutable_dits_functor_t dits)`. Here
+  `mutable_dits_functor_t` is an alias to an internal mutable functor defined
+  in ["qpp/types.hpp"]
+- Changed `cond_func_t` type alias in ["qpp/types.hpp"] to `cond_pred_t` for
+  boolean predicates in conditional statements; alias to an internal type.
+- Renamed the class `internal::QCircuitConditionalStep` to
+  `internal::QCircuitRuntimeStep`, and the corresponding
+  ["qpp/internal/classes/qcircuit_conditional_step.hpp"] to
+  ["qpp/internal/classes/qcircuit_runtime_step.hpp"]
+- Renamed `qpp::QCircuit::has_conditionals()` to
+  `qpp::QCircuit::has_runtime_steps()`
+- Added
+  [["examples/circuits/runtime_set_dits.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)]
+
 # Version 6.0 - 14 April 2025
 
 - Breaking change: renamed ["qpp/qpp.h"] to ["qpp/qpp.hpp"]
-- New feature: implemented support for post-selection in
+- New feature: support for post-selection in
   ["qpp/classes/qengine.hpp"] and ["qpp/classes/qcircuit.hpp"]
 - Implemented `qpp::QCircuit::`
   - `QCircuit& post_select()` - destructive/non-destructive post-selection of
@@ -36,7 +54,7 @@
 - Added
   [["examples/circuits/conditional_if.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_if.cpp)]
   and
-  [["examples/circuits/conditional_while.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_while.cpp)]
+  [["examples/circuits/conditional_while.cpp"](htps://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_while.cpp)]
   examples
 - Refactored `qpp::QCircuit::GateStep/MeasurementStep/NOPStep` into separate
   files ["qpp/internal/classes/qcircuit_gate_step.hpp"],

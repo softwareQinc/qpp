@@ -528,8 +528,7 @@ class QCircuitBuilder final : public ast::Visitor {
         }
 
         // apply controls to then branch
-        ctx.get_circuit()->cond_if([i = creg->indices_,
-                                    shift](std::vector<idx> v) {
+        ctx.get_circuit()->cond_if([i = creg->indices_, shift](auto v) {
             return std::transform_reduce(
                 i.begin(), i.end(), shift.begin(), true, std::logical_and<>(),
                 [&](auto& ind, auto& b) { return v[ind] ^ b; });

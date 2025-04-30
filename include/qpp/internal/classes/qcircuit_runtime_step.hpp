@@ -25,12 +25,12 @@
  */
 
 /**
- * \file qpp/internal/classes/qcircuit_conditional_step.hpp
- * \brief qpp::internal::QCircuitConditionalStep
+ * \file qpp/internal/classes/qcircuit_runtime_step.hpp
+ * \brief qpp::internal::QCircuitRuntimeStep
  */
 
-#ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_CONDITIONAL_STEP_HPP_
-#define QPP_INTERNAL_CLASSES_QCIRCUIT_CONDITIONAL_STEP_HPP_
+#ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_RUNTIME_STEP_HPP_
+#define QPP_INTERNAL_CLASSES_QCIRCUIT_RUNTIME_STEP_HPP_
 
 #include <iterator>
 #include <optional>
@@ -44,14 +44,15 @@
 namespace qpp {
 namespace internal {
 /**
- * \brief One step consisting only of measurements in the circuit
+ * \brief One step consisting only of runtime statements such as
+ * if/while/set_dits_runtime etc.
  */
-struct QCircuitConditionalStep : IDisplay {
+struct QCircuitRuntimeStep : IDisplay {
     /**
-     * \brief Type of conditional being executed in a conditional step
+     * \brief Type of runtime statement being executed in a runtime step
      */
     enum class Type {
-        NONE, ///< no condition
+        NONE, ///< no statement
 
         IF, ///< if branch statement
 
@@ -62,20 +63,22 @@ struct QCircuitConditionalStep : IDisplay {
         WHILE, ///< while branch statement
 
         ENDWHILE, ///< end while branch statement
+
+        SET_DITS_RUNTIME, ///< overwrite quantum engine dits at runtime
     };
 
     /**
      * \brief Extraction operator overload for
-     * qpp::internal::QCircuitConditionalStep::Type enum class
+     * qpp::internal::QCircuitRuntimeStep::Type enum class
      *
      * \param os Output stream passed by reference
-     * \param condition_type qpp::internal::QCircuitConditionalStep::Type enum
+     * \param runtime_type qpp::internal::QCircuitRuntimeStep::Type enum
      * class
      * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
-                                    const Type& condition_type) {
-        switch (condition_type) {
+                                    const Type& runtime_type) {
+        switch (runtime_type) {
             case Type::NONE:
                 os << "CONDITIONAL NONE";
                 break;
@@ -94,18 +97,21 @@ struct QCircuitConditionalStep : IDisplay {
             case Type::ENDWHILE:
                 os << "ENDWHILE";
                 break;
+            case Type::SET_DITS_RUNTIME:
+                os << "SET_DITS_RUNTIME";
+                break;
         }
 
         return os;
     }
 
     /**
-     * \class qpp::internal::QCircuitConditionalStep::Context
-     * \brief Keeps track of the location of conditional statements
+     * \class qpp::internal::QCircuitRuntimeStep::Context
+     * \brief Keeps track of the location of runtime statements
      */
     struct Context : IDisplay {
         /**
-         * \brief vector of pairs (offset, length) that keep track of where
+         * \brief Vector of pairs (offset, length) that keep track of where
          * classical dits were added by QCircuit::add_dit() or when composing
          * quantum circuit descriptions
          */
@@ -114,9 +120,11 @@ struct QCircuitConditionalStep : IDisplay {
          * \brief location of if/while statement and corresponding condition
          * functor (boolean predicate)
          */
-        std::optional<std::pair<idx, cond_func_t>> start_expr{};
+        std::optional<std::pair<idx, cond_pred_t>> start_expr{};
         std::optional<idx> else_expr{}; ///< location of else statement
         std::optional<idx> end_expr{}; ///< location of endif/endwhile statement
+        std::optional<mutable_dits_functor_t>
+            set_dits_func{}; ///< functor that overwrites engine dits at runtime
 
         /**
          * \brief Given a vector of pairs (offset, length) that keep tracks of
@@ -240,48 +248,47 @@ struct QCircuitConditionalStep : IDisplay {
 
             return os;
         }
-    }; /* struct QCircuitConditionalStep::Context */
+    }; /* struct QCircuitRuntimeStep::Context */
 
-    Type condition_type_ = Type::NONE; ///< condition type
+    Type runtime_type_ = Type::NONE; ///< runtime type
     Context ctx_{};
 
     /**
      * \brief Default constructor
      */
-    QCircuitConditionalStep() = default;
+    QCircuitRuntimeStep() = default;
 
     /**
-     * \brief Constructs a conditional step instance
+     * \brief Constructs a runtime step instance
      *
-     * \tparam Func Conditional functor
-     * \param condition_type Measurement type
+     * \param runtime_type Runtime type
      * \param ctx Context
      */
-    explicit QCircuitConditionalStep(Type condition_type, Context ctx)
-        : condition_type_{condition_type}, ctx_(std::move(ctx)) {}
+    explicit QCircuitRuntimeStep(Type runtime_type, Context ctx)
+        : runtime_type_{runtime_type}, ctx_(std::move(ctx)) {}
 
     /**
      * \brief Equality operator
      *
-     * \param rhs qpp::internal::QCircuitConditionalStep against which the
+     * \param rhs qpp::internal::QCircuitRuntimeStep against which the
      * equality is being tested
-     * \return True if the qpp::internal::QCircuitConditionalStep(s) are
+     * \return True if the qpp::internal::QCircuitRuntimeStep(s) are
      * equal, false otherwise
      */
-    bool operator==(const QCircuitConditionalStep& rhs) const noexcept {
-        return std::tie(rhs.condition_type_, rhs.ctx_) ==
-               std::tie(condition_type_, ctx_);
+    bool operator==(const QCircuitRuntimeStep& rhs) const noexcept {
+        return std::tie(rhs.runtime_type_, rhs.ctx_) ==
+               std::tie(runtime_type_, ctx_);
     }
 
     /**
      * \brief Inequality operator
      *
-     * \param rhs qpp::internal::QCircuitConditionalStep against which the
+     * \param rhs qpp::internal::QCircuitRuntimeStep against which the
      * inequality is being tested
-     * \return True if the qpp::internal::QCircuitConditionalStep(s) are not
+     * \return True if the qpp::internal::QCircuitRuntimeStep(s) are not
      * equal, false otherwise
      */
-    bool operator!=(const QCircuitConditionalStep& rhs) const noexcept {
+    bool operator!=(const QCircuitRuntimeStep& rhs) const noexcept {
         return !(*this == rhs);
     }
 
@@ -290,13 +297,13 @@ struct QCircuitConditionalStep : IDisplay {
      * \brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the
-     * \a qpp::internal::QCircuitConditionalStep instance
+     * \a qpp::internal::QCircuitRuntimeStep instance
      *
      * \param os Output stream passed by reference
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        os << condition_type_ << " -> Context [" << ctx_ << ']';
+        os << runtime_type_ << " -> Context [" << ctx_ << ']';
 
         return os;
     }
@@ -305,4 +312,4 @@ struct QCircuitConditionalStep : IDisplay {
 } /* namespace internal */
 } /* namespace qpp */
 
-#endif /* QPP_INTERNAL_CLASSES_QCIRCUIT_CONDITIONAL_STEP_HPP_ */
+#endif /* QPP_INTERNAL_CLASSES_QCIRCUIT_RUNTIME_STEP_HPP_ */
