@@ -303,7 +303,11 @@ struct QCircuitRuntimeStep : IDisplay {
      * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        os << runtime_type_ << " -> Context [" << ctx_ << ']';
+        os << runtime_type_;
+        if (runtime_type_ != Type::NONE &&
+            runtime_type_ != Type::SET_DITS_RUNTIME) {
+            os << "-> Context [" << ctx_ << ']';
+        }
 
         return os;
     }
