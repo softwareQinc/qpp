@@ -13,6 +13,8 @@
   ["qpp/internal/classes/qcircuit_runtime_step.hpp"]
 - Renamed `qpp::QCircuit::has_conditionals()` to
   `qpp::QCircuit::has_runtime_steps()`
+- Added
+  [["examples/circuits/runtime_set_dits.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)]
 
 # Version 6.0 - 14 April 2025
 

@@ -14,7 +14,7 @@ int main() {
     QCircuit qc{3, 3};
 
     // define a boolean predicate of the required form
-    // proxy_to_engine_dits_t -> bool
+    // const_proxy_to_engine_dits_t -> bool
     auto pred = [](auto dits) {
         // returns true as long as the first two classical dits ARE NOT 1, 1
         return !(dits[0] == 1 && dits[1] == 1);

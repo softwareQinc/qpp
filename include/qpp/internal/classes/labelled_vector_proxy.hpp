@@ -78,7 +78,14 @@ class LabelledVectorProxy {
     // mutable operator[], enabled only if is_const == false
     template <bool B = is_const, typename = std::enable_if_t<!B>>
     T& operator[](std::size_t i) {
-        // FIXME: operator[] exceptions in LabelledVectorProxy (out of bounds)
+        // NOTE: check operator[] exceptions in LabelledVectorProxy (out of
+        // bounds)
+
+        // std::cout << "label_.size(): " << label_.size() << '\n';
+        // std::cout << "data_.size(): " << data_.size() << '\n';
+        // std::cout << "i: " << i << '\n';
+        // std::cout << "label_[i]: " << label_[i] << "\n\n";
+
         if (i + 1 > label_.size()) {
             throw exception::OutOfRange{
                 "qpp::internal::LabelledVectorProxy::operator[]()", "i"};
