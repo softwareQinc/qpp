@@ -251,7 +251,7 @@ struct QCircuitRuntimeStep : IDisplay {
     }; /* struct QCircuitRuntimeStep::Context */
 
     Type runtime_type_ = Type::NONE; ///< runtime type
-    Context ctx_{};
+    Context ctx_{};                  ///< additional context
 
     /**
      * \brief Default constructor
