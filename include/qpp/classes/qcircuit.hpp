@@ -140,7 +140,7 @@ class QCircuit : public IDisplay, public IJSON {
         std::variant<internal::QCircuitRuntimeStep, internal::QCircuitGateStep,
                      internal::QCircuitMeasurementStep,
                      internal::QCircuitNOPStep>;
-    std::vector<VarStep> circuit_{}; ///<< quantum circuit representation
+    std::vector<VarStep> circuit_{}; ///< quantum circuit representation
 
   protected:
     /**
@@ -5457,13 +5457,15 @@ class QCircuitIterator {
 
       private:
         std::ostream& display(std::ostream& os) const override {
+            /*
             // field spacing for the step number
-            idx text_width = std::to_string(qc_ptr_->get_step_count()).size();
+            idx step_field_width =
+                std::to_string(qc_ptr_->get_step_count()).size();
 
             os << std::left;
-            os << std::setw(static_cast<int>(text_width)) << ip_ << ": ";
+            os << std::setw(static_cast<int>(step_field_width)) << ip_ << ": ";
             os << std::right;
-
+            */
             auto gate_step_visitor =
                 [&](const internal::QCircuitGateStep& gate_step) {
                     os << gate_step;
@@ -5772,9 +5774,51 @@ inline std::ostream& QCircuit::display(std::ostream& os) const {
     }
     os << "]\n";
 
+    using Type = internal::QCircuitRuntimeStep::Type;
     std::string sep{};
-    for (auto&& elem : *this) {
-        os << sep << elem;
+    idx indent = 0;
+    bool use_indenting = true; // use indenting for conditional statements
+    auto step_field_width = std::to_string(this->get_step_count()).size();
+    auto display_step = [&](auto it) {
+        auto step_number = it.get_ip();
+        if (use_indenting) {
+            os << std::left;
+            os << sep << std::setw(static_cast<int>(step_field_width))
+               << step_number << ": " << std::string(indent, '\t') << *it;
+            os << std::right;
+        } else {
+            os << sep << *it;
+        }
+    };
+    for (auto it = this->begin(); it != this->end(); ++it) {
+        auto circuit_step = circuit_[it.get_ip()];
+        if (std::holds_alternative<internal::QCircuitRuntimeStep>(
+                circuit_step)) {
+            auto circuit_step_runtime =
+                std::get<internal::QCircuitRuntimeStep>(circuit_step);
+            auto conditional_step_type = circuit_step_runtime.runtime_type_;
+            switch (conditional_step_type) {
+                case Type::IF:
+                case Type::WHILE:
+                    display_step(it);
+                    ++indent;
+                    break;
+                case Type::ENDIF:
+                case Type::ENDWHILE:
+                    --indent;
+                    display_step(it);
+                    break;
+                case Type::ELSE:
+                    --indent;
+                    display_step(it);
+                    ++indent;
+                default:
+                    display_step(it);
+                    break;
+            }
+        } else {
+            display_step(it);
+        }
         sep = '\n';
     }
 
@@ -5901,8 +5945,11 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
                 ss << ctx;
                 ctx_str = ss.str();
 
-                result += "\"" + type_str + "\", \"Context\": \"" + ctx_str +
-                          "\"" + "}";
+                result += "\"" + type_str + "\"";
+                if (!ctx_str.empty()) {
+                    result += ", \"Context\": \"" + ctx_str + "\"";
+                }
+                result += "}";
             };
 
         visit_circuit_step_(elem.get_step(), runtime_step_visitor,
