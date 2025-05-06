@@ -1,4 +1,8 @@
-# Deprecated stress test suite - preserved solely for reference purposes.
+# Deprecated stress test suite - retained for reference only
+
+Please refer to the new
+[benchmarking suite](https://github.com/softwareQinc/qpp/tree/main/benchmarks)
+which supersedes it.
 
 ## Stress test suite (for POSIX compliant systems)
 
