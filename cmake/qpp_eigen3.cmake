@@ -11,9 +11,9 @@ if(NOT TARGET Eigen3::Eigen)
     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
     GIT_TAG 3.4.0 # 3.4.0
     GIT_SHALLOW TRUE
-    # no CMakeLists.txt in cmake, so this turns off configure. Recommend also
-    # to add `FIND_PACKAGE_ARGS CONFIG` so that FetchContent checks to see if
-    # Eigen is installed on the system, via the OS, or a package manager
+    # no CMakeLists.txt in cmake, so this turns off configure. Recommend also to
+    # add `FIND_PACKAGE_ARGS CONFIG` so that FetchContent checks to see if Eigen
+    # is installed on the system, via the OS, or a package manager
     SOURCE_SUBDIR cmake)
   FetchContent_MakeAvailable(Eigen3)
 endif()
@@ -25,5 +25,8 @@ if(NOT TARGET Eigen3::Eigen)
   set(EIGEN3_INCLUDE_DIR ${eigen3_SOURCE_DIR})
 endif()
 
-message(STATUS "Detected Eigen3 in: ${EIGEN3_INCLUDE_DIR}")
+message(
+  STATUS
+    "Detected Eigen3 in: ${EIGEN3_INCLUDE_DIR} (found version \"${Eigen3_VERSION}\")"
+)
 set(QPP_EIGEN3_LINK_DEPS Eigen3::Eigen)

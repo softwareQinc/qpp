@@ -6,4 +6,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/qpp_eigen3.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/qpp_dependencies.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/qpp_MATLAB.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/qpp_targets.cmake")
-message(STATUS "Found Quantum++ in @QPP_INSTALL_DIR@")
+message(
+  STATUS
+    "Found Quantum++ in @QPP_INSTALL_DIR@ (found version \"@QPP_VERSION_STR@\")"
+)
