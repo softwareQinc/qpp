@@ -64,7 +64,7 @@ jobs:
             sudo cmake --build build --target uninstall
           fi
 
-      - name: Install pyqpp
+      - name: Install pyqpp and test import
         shell: bash
         run: |
           python3 -mvenv venv
@@ -74,3 +74,5 @@ jobs:
             source venv/bin/activate
           fi
           pip3 install .
+
+          python - c "import pyqpp; print(qpp.states.zero())"
