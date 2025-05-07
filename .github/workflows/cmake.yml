@@ -75,4 +75,4 @@ jobs:
           fi
           pip3 install .
 
-          python - c "import pyqpp; print(qpp.states.zero())"
+          python -c "import pyqpp; print(pyqpp.dirac(pyqpp.states.zero()))"
