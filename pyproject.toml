@@ -7,7 +7,7 @@ authors = [
     { name = "softwareQ Inc.", email = "info@softwareq.ca" },
 ]
 readme = "pyqpp/README.md"
-license = { text = "MIT" }
+license = "MIT"
 dependencies = [
     "numpy",
 ]
