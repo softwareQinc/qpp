@@ -23,7 +23,12 @@ for line in cmake_output:
     pos_eigen = line.find(prefix_eigen)
     pos_pybind11 = line.find(prefix_pybind11)
     if pos_eigen != -1:
-        eigen_path = line[pos_eigen + len(prefix_eigen) :]
+        start = pos_eigen + len(prefix_eigen)
+        end = line.find(" ", start)
+        if end == -1:  # no space found, take the rest of the line
+            eigen_path = line[start:]
+        else:
+            eigen_path = line[start:end]
     if pos_pybind11 != -1:
         pybind11_path = line[pos_pybind11 + len(prefix_pybind11) :]
 
