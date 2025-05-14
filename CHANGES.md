@@ -17,6 +17,8 @@
   [["examples/circuits/runtime_set_dits.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)]
 - Conditional statements are now indented with tabs when displaying
   qpp::QCircuit instances
+- Added benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
+  in ["benchmarks"](https://github.com/softwareQinc/qpp/blob/main/benchmarks)
 
 # Version 6.0 - 14 April 2025
 

@@ -1,4 +1,4 @@
-# Benchmarking suite using the [Catch2](https://github.com/catchorg/Catch2) unit testing/benchmarking suite
+# Benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
 
 ## Pre-requisites
 
