@@ -14,7 +14,7 @@ docker build -t softwareq-qpp .
 Run the Jupyter server in a container by executing
 
 ```shell
-docker run -p8888:8888 -it --workdir=/home/sq/notebooks softwareq-qpp sh -c "jupyter notebook --port=8888 --no-browser --ip=0.0.0.0"
+docker run -p8888:8888 -it --workdir=/home/sq/notebooks softwareq-qpp sh -c ". ~/venv/bin/activate && jupyter notebook --port=8888 --no-browser --ip=0.0.0.0"
 ```
 
 ---
