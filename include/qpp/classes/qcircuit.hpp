@@ -5812,6 +5812,7 @@ inline std::ostream& QCircuit::display(std::ostream& os) const {
                     --indent;
                     display_step(it);
                     ++indent;
+                    break;
                 default:
                     display_step(it);
                     break;
