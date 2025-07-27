@@ -40,5 +40,5 @@ foreach(file ${TEST_FILES})
   target_sources(${TARGET_NAME} PUBLIC ${file})
 endforeach()
 
-target_link_libraries(${TARGET_NAME} PUBLIC ${QPP_LINK_DEPS} gmock libqpp)
+target_link_libraries(${TARGET_NAME} PUBLIC gmock libqpp)
 gtest_discover_tests(${TARGET_NAME})

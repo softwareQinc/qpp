@@ -13,4 +13,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(qpp REQUIRED)
 add_executable(standalone src/main.cpp)
-target_link_libraries(standalone PUBLIC ${QPP_LINK_DEPS} libqpp)
+target_link_libraries(standalone PUBLIC libqpp)
