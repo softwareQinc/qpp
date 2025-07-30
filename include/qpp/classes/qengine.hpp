@@ -1162,7 +1162,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \note The order is lexicographical with respect to the remaining
      * non-measured qudits
      *
-     * \param[out] state State vector
+     * \param state State vector
      * \return Reference to the current instance
      */
     QEngineT& set_state(const T& state) override {

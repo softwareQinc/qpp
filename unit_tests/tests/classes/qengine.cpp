@@ -55,13 +55,14 @@ TEST(qpp_QEngineT_post_select_ok, AllTests) {}
 
 /// BEGIN QEngineT& QEngineT::reset(bool reset_stats = true)
 TEST(qpp_QEngineT_reset, AllTests) {
-  auto circuit = qpp::QCircuit{ 2, 1 };
-  circuit.measure(0, 0);
-  auto engine = qpp::QEngine{ circuit };
+    auto circuit = qpp::QCircuit{2, 1};
+    circuit.measure(0, 0);
 
-  auto const psi = qpp::randket(4).eval();
-  engine.reset().set_state(psi).execute();
-  EXPECT_NO_THROW(engine.reset().set_state(psi).execute());
+    auto engine = qpp::QEngine{circuit};
+    auto const psi = qpp::randket(4).eval();
+    engine.reset().set_state(psi).execute();
+
+    EXPECT_NO_THROW(engine.reset().set_state(psi).execute());
 }
 
 /// BEGIN QEngineT& QEngineT::reset_stats()
