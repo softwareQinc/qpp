@@ -1225,7 +1225,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * measurement statistics hash table
      */
     virtual QEngineT& reset(bool reset_stats = true) {
-        qeng_st_.reset(qeng_st_.qstate_);
+        qeng_st_.reset();
 
         if (reset_stats) {
             this->reset_stats();
