@@ -190,13 +190,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(qpp REQUIRED)
 add_executable(standalone src/main.cpp)
-target_link_libraries(standalone PUBLIC ${QPP_LINK_DEPS} libqpp)
+target_link_libraries(standalone PUBLIC libqpp)
 
 ```
-
-**Do not forget to ALWAYS add `${QPP_LINK_DEPS}` (verbatim)
-to `target_link_libraries()`!** (last line of the
-`CMakeLists.txt` file above).
 
 Configure the application in an out-of-source directory by executing
 
