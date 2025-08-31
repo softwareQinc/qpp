@@ -5,6 +5,7 @@
 // the final state is displayed.
 // Source: ./examples/qasm/qpp_qasm.cpp
 
+#include <cstdlib>
 #include <iostream>
 
 #include "qpp/qpp.hpp"
@@ -19,21 +20,26 @@ int main(int argc, char** argv) {
     QEngine q_engine{qc};
 
     // display the quantum circuit and its corresponding resources
-    std::cout << qc << "\n\n" << qc.get_resources() << "\n\n";
+    std::cout << qc << "\n\n" << qc.get_resources() << "\n";
 
     // execute the quantum circuit
     idx reps = argc > 1 ? std::stoi(argv[1]) : 1; // repetitions
+    // if no reps, exit
+    if (reps == 0) {
+        std::exit(EXIT_SUCCESS);
+    }
+
     q_engine.execute(reps);
 
     // display the measurement statistics
-    std::cout << q_engine << '\n';
+    std::cout << '\n' << q_engine << '\n';
 
     // display the final state on demand
     if (argc == 3) {
-        std::cout << ">> Final state:\n";
+        std::cout << "\n>> Final state:\n";
         std::cout << disp(dirac(q_engine.get_state())) << '\n';
     } else if (argc > 3) {
-        std::cout << ">> Final density operator:\n";
+        std::cout << "\n>> Final density operator:\n";
         std::cout << disp(dirac(prj(q_engine.get_state()))) << '\n';
     }
 }
