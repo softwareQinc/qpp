@@ -1,8 +1,9 @@
 // Executes an OpenQASM program read from the input stream, repeatedly if the
-// number of repetitions is passed as the first argument. If there is a second
-// argument (i.e., argc == 3), then the final quantum state is displayed. If
-// there are three or more arguments (i.e., argc  > 3), then the projector onto
-// the final state is displayed.
+// number of repetitions is passed as the first argument. If the number of
+// repetitions is 0, the program only displays the circuit and its resources,
+// without executing it. If there is a second argument (i.e., argc == 3), then
+// the final quantum state is displayed. If there are three or more arguments
+// (i.e., argc  > 3), then the projector onto the final state is displayed.
 // Source: ./examples/qasm/qpp_qasm.cpp
 
 #include <cstdlib>
