@@ -1,5 +1,6 @@
-// Classical reversible circuits
 // Source: ./examples/reversible2.cpp
+//
+// Classical reversible circuits
 
 #include <algorithm>
 #include <iostream>

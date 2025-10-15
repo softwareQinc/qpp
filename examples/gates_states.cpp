@@ -1,5 +1,6 @@
-// Gates and states
 // Source: ./examples/gates_states.cpp
+//
+// Gates and states
 
 #include <iostream>
 

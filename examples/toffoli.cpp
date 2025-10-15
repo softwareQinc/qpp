@@ -1,5 +1,6 @@
-// Toffoli gate simulation
 // Source: ./examples/toffoli.cpp
+//
+// Toffoli gate simulation
 
 #include <iostream>
 

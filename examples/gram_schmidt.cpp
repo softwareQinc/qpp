@@ -1,5 +1,6 @@
-// Gram-Schmidt orthogonalization
 // Source: ./examples/gram_schmidt.cpp
+//
+// Gram-Schmidt orthogonalization
 
 #include <iostream>
 

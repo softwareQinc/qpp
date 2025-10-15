@@ -1,5 +1,6 @@
-// Spectral decomposition
 // Source: ./examples/spectral.cpp
+//
+// Spectral decomposition
 
 #include <iostream>
 

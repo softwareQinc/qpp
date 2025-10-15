@@ -1,5 +1,6 @@
-// Statistics
 // Source: ./examples/statistics.cpp
+//
+// Statistics
 
 #include <iostream>
 #include <vector>

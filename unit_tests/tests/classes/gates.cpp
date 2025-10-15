@@ -191,8 +191,6 @@ TEST(qpp_Gates_GATE, Qudits) {
 ///       Gates::GATE(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& target, idx n, idx d = 2) const
 TEST(qpp_Gates_GATE, Qubits) {
-    idx n = 4; // 4 qubits
-
     ket psi = mket({1, 1, 1, 1});
     cmat U = gt.CNOT;
     cmat res = gt.GATE(U, {1, 3}, 4);

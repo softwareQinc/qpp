@@ -1,5 +1,6 @@
-// Quantumly-accessible Random Access Memory over classical data
 // Source: ./examples/qram.cpp
+//
+// Quantumly-accessible Random Access Memory over classical data
 
 #include <iostream>
 

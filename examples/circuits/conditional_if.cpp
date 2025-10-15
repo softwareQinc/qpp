@@ -1,5 +1,6 @@
-// Conditional IF quantum circuit simulator
 // Source: ./examples/circuits/conditional_if.cpp
+//
+// Conditional IF quantum circuit simulator
 
 #include <iostream>
 

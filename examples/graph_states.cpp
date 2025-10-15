@@ -1,5 +1,6 @@
-// Graph states
 // Source: ./examples/graph_states.cpp
+//
+// Graph states
 
 #include <iostream>
 

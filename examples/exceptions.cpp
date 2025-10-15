@@ -1,5 +1,6 @@
-// Exceptions
 // Source: ./examples/exceptions.cpp
+//
+// Exceptions
 
 #include <exception>
 #include <iostream>
