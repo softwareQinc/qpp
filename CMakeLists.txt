@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.20)
 # -----------------------------------------------------------------------------
 project(
   qpp
-  VERSION 6.0.0
+  VERSION 6.1
   LANGUAGES CXX)
 
 # -----------------------------------------------------------------------------
@@ -19,13 +19,18 @@ enable_testing()
 # -----------------------------------------------------------------------------
 # Version Definitions
 # -----------------------------------------------------------------------------
+# Default patch to 0 if not provided
+if("${PROJECT_VERSION_PATCH}" STREQUAL "")
+  set(PROJECT_VERSION_PATCH 0)
+endif()
 # The project() command automatically creates PROJECT_VERSION_MAJOR, _MINOR, and
 # _PATCH. Define QPP_VERSION_NUM as an integer (e.g., 60000 for 6.0.0)
-math(
-  EXPR
-  QPP_VERSION_NUM
-  "${PROJECT_VERSION_MAJOR}*10000 + ${PROJECT_VERSION_MINOR}*100 + ${PROJECT_VERSION_PATCH}"
-)
+math(EXPR QPP_VERSION_NUM
+     "${PROJECT_VERSION_MAJOR}*10000 + ${PROJECT_VERSION_MINOR}*100 +
+  ${PROJECT_VERSION_PATCH}")
+# Define QPP_VERSION_STR as the string representation of ${PROJECT_VERSION},
+# e.g. "6.0.0"
+set(QPP_VERSION_STR ${PROJECT_VERSION})
 
 # -----------------------------------------------------------------------------
 # Guard against in-source builds
@@ -49,7 +54,7 @@ add_library(libqpp INTERFACE)
 target_compile_definitions(
   libqpp
   INTERFACE "QPP_VERSION_NUM=${QPP_VERSION_NUM}"
-            "QPP_VERSION_STR=\"${PROJECT_VERSION}\""
+            "QPP_VERSION_STR=${QPP_VERSION_STR}"
             $<BUILD_INTERFACE:PROJECT_ROOT_DIR=\"${PROJECT_SOURCE_DIR}\">)
 
 # Quantum++ headers (include/)
@@ -148,9 +153,11 @@ write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/qppConfigVersion.cmake"
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY SameMajorVersion)
+# Install configuration files
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/qppConfig.cmake"
               "${CMAKE_CURRENT_BINARY_DIR}/qppConfigVersion.cmake"
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+# Install additional dependencies
 install(FILES "cmake/qpp_dependencies.cmake" "cmake/qpp_eigen3.cmake"
               "cmake/qpp_MATLAB.cmake"
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
