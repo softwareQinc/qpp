@@ -176,7 +176,7 @@ in a single file `src/main.cpp`, and the `CMakeLists.txt` is located in the
 project's root directory.
 
 ```cmake
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.20)
 project(standalone)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -190,7 +190,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(qpp REQUIRED)
 add_executable(standalone src/main.cpp)
-target_link_libraries(standalone PUBLIC libqpp)
+target_link_libraries(standalone PRIVATE libqpp)
 
 ```
 
