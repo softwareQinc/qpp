@@ -1,9 +1,9 @@
 message(STATUS "Detecting pybind11...")
 find_package(pybind11 CONFIG)
+
 if(NOT pybind11_FOUND)
-  # Install pybind11 on demand
+  # Install pybind11 if not found by find_package()
   include(FetchContent)
-  set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
   message(STATUS "pybind11 not detected, fetching pybind11...")
   FetchContent_Declare(
     pybind11
@@ -14,4 +14,5 @@ if(NOT pybind11_FOUND)
   FetchContent_MakeAvailable(pybind11)
   set(PYBIND11_INCLUDE_DIRS ${pybind11_SOURCE_DIR})
 endif()
+
 message(STATUS "Detected pybind11 in: ${PYBIND11_INCLUDE_DIRS}")

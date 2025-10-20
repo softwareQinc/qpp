@@ -1,23 +1,21 @@
 message(STATUS "Detecting Eigen3...")
-find_package(Eigen3 3.0 QUIET NO_MODULE)
+find_package(Eigen3 5.0 QUIET NO_MODULE)
+
 if(NOT TARGET Eigen3::Eigen)
-  # Install Eigen3 on demand
+  # Install Eigen3 if not found by find_package()
   include(FetchContent)
-  set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
   message(STATUS "Eigen3 not detected, fetching Eigen3...")
   FetchContent_Declare(
     Eigen3
     SYSTEM
     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG 3.4.0 # 3.4.0
+    GIT_TAG 5.0.0
     GIT_SHALLOW TRUE
-    # no CMakeLists.txt in cmake, so this turns off configure. Recommend also
-    # to add `FIND_PACKAGE_ARGS CONFIG` so that FetchContent checks to see if
-    # Eigen is installed on the system, via the OS, or a package manager
     SOURCE_SUBDIR cmake)
   FetchContent_MakeAvailable(Eigen3)
 endif()
 
+# In case FetchContent does not make Eigen3::Eigen available
 if(NOT TARGET Eigen3::Eigen)
   add_library(Eigen3::Eigen INTERFACE IMPORTED)
   set_target_properties(Eigen3::Eigen PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
