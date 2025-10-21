@@ -88,6 +88,13 @@ include(cmake/qpp_MATLAB.cmake)
 include(cmake/qpp_dependencies.cmake)
 target_link_libraries(libqpp INTERFACE ${QPP_LINK_DEPS})
 
+if(MSVC)
+  target_compile_definitions(libqpp PRIVATE ${MSVC_COMPILE_DEFS})
+  target_compile_options(libqpp PRIVATE ${MSVC_COMPILE_OPTIONS})
+elseif(MINGW OR CYGWIN)
+  target_compile_options(libqpp PRIVATE ${MINGW_CYGWIN_COMPILE_OPTIONS})
+endif()
+
 # Unit testing
 add_subdirectory(unit_tests EXCLUDE_FROM_ALL SYSTEM)
 
