@@ -9,7 +9,7 @@ if(QPP_OPENMP)
   else()
     message(
       WARNING
-        "-- OpenMP support requested, but OpenMP (>=3.0) not found — building without parallel support."
+        "OpenMP support requested, but OpenMP (>=3.0) not found — building without parallel support."
     )
   endif()
 endif()
