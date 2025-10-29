@@ -10,6 +10,7 @@ if(NOT TARGET Eigen3::Eigen)
     SYSTEM
     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
     GIT_TAG 5.0.0
+    GIT_PROGRESS TRUE
     GIT_SHALLOW TRUE
     SOURCE_SUBDIR cmake)
   FetchContent_MakeAvailable(Eigen3)
@@ -24,4 +25,4 @@ if(NOT TARGET Eigen3::Eigen)
 endif()
 
 message(STATUS "Detected Eigen3 in: ${EIGEN3_INCLUDE_DIR}")
-set(QPP_EIGEN3_LINK_DEPS Eigen3::Eigen)
+target_link_libraries(libqpp INTERFACE Eigen3::Eigen)

@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.20)
 # -----------------------------------------------------------------------------
 project(
   qpp
-  VERSION 6.1
+  VERSION 6.1.0
   LANGUAGES CXX)
 
 # -----------------------------------------------------------------------------
@@ -29,8 +29,8 @@ math(EXPR QPP_VERSION_NUM
      "${PROJECT_VERSION_MAJOR}*10000 + ${PROJECT_VERSION_MINOR}*100 +
   ${PROJECT_VERSION_PATCH}")
 # Define QPP_VERSION_STR as the string representation of ${PROJECT_VERSION},
-# e.g. "6.0.0"
-set(QPP_VERSION_STR ${PROJECT_VERSION})
+# e.g. "6.1.0"
+set(QPP_VERSION_STR \"${PROJECT_VERSION}\")
 
 # -----------------------------------------------------------------------------
 # Guard against in-source builds
@@ -45,7 +45,7 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 # -----------------------------------------------------------------------------
-# Quantum++ Headers and Interface Library
+# Quantum++ headers and interface library
 # -----------------------------------------------------------------------------
 # Use INTERFACE library for headers-only libraries
 add_library(libqpp INTERFACE)
@@ -78,51 +78,25 @@ if(Python3_FOUND)
 endif()
 
 # -----------------------------------------------------------------------------
-# BEGIN LOCAL stuff, you don't need those in standalone projects
-# -----------------------------------------------------------------------------
-option(SANITIZE "Enable code sanitizing (only for GCC/Clang)" OFF)
-
 # Dependencies
+# -----------------------------------------------------------------------------
+include(cmake/qpp_types.cmake)
+include(cmake/qpp_compiler_flags.cmake)
 include(cmake/qpp_eigen3.cmake)
+include(cmake/qpp_openmp.cmake)
+include(cmake/qpp_openqasm.cmake)
+include(cmake/qpp_sanitize.cmake)
 include(cmake/qpp_MATLAB.cmake)
-include(cmake/qpp_dependencies.cmake)
-target_link_libraries(libqpp INTERFACE ${QPP_LINK_DEPS})
 
-if(MSVC)
-  target_compile_definitions(libqpp PRIVATE ${MSVC_COMPILE_DEFS})
-  target_compile_options(libqpp PRIVATE ${MSVC_COMPILE_OPTIONS})
-elseif(MINGW OR CYGWIN)
-  target_compile_options(libqpp PRIVATE ${MINGW_CYGWIN_COMPILE_OPTIONS})
-endif()
-
-# Unit testing
-add_subdirectory(unit_tests EXCLUDE_FROM_ALL SYSTEM)
-
-# Compiler Flags
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL
-                                            "GNU")
-  target_compile_options(libqpp INTERFACE "-pedantic" "-Wall" "-Wextra"
-                                          "-Weffc++")
-
-  if(SANITIZE)
-    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
-      list(APPEND SANITIZE_OPTIONS -fsanitize=undefined)
-      set_property(
-        TARGET libqpp
-        APPEND
-        PROPERTY INTERFACE_COMPILE_OPTIONS ${SANITIZE_OPTIONS})
-      # Apply to executable linker flags for the build targets
-      set(CMAKE_EXE_LINKER_FLAGS
-          "${CMAKE_EXE_LINKER_FLAGS} ${SANITIZE_OPTIONS}")
-    endif()
-  endif()
-endif()
-
+# -----------------------------------------------------------------------------
 # Examples
+# -----------------------------------------------------------------------------
 include(cmake/examples.cmake)
+
 # -----------------------------------------------------------------------------
-# END LOCAL stuff
+# Unit tests
 # -----------------------------------------------------------------------------
+add_subdirectory(unit_tests EXCLUDE_FROM_ALL SYSTEM)
 
 # -----------------------------------------------------------------------------
 # Installation
@@ -170,7 +144,7 @@ install(FILES "cmake/qpp_dependencies.cmake" "cmake/qpp_eigen3.cmake"
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 
 # -----------------------------------------------------------------------------
-# Uninstall Target
+# Uninstall target
 # -----------------------------------------------------------------------------
 # https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake
 
