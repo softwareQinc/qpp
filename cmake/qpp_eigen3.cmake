@@ -4,7 +4,7 @@ find_package(Eigen3 5.0 QUIET NO_MODULE)
 if(NOT TARGET Eigen3::Eigen)
   # Install Eigen3 if not found by find_package()
   include(FetchContent)
-  message(STATUS "Eigen3 version 5.0 or newer not detected, fetching it...")
+  message(STATUS "Eigen3 (>= 5.0.0) not detected, fetching it...")
   FetchContent_Declare(
     Eigen3
     SYSTEM
