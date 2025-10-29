@@ -1,4 +1,4 @@
-message(STATUS "Detecting Eigen3 version 5.0 or newer...")
+message(STATUS "Detecting Eigen3 (>= 5.0.0)...")
 find_package(Eigen3 5.0 QUIET NO_MODULE)
 
 if(NOT TARGET Eigen3::Eigen)
