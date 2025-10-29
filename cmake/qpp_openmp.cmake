@@ -8,6 +8,6 @@ if(QPP_OPENMP)
     target_link_libraries(libqpp INTERFACE OpenMP::OpenMP_CXX)
   else()
     message(
-      FATAL_ERROR "OpenMP support requested but OpenMP_CXX was not found.")
+      WARNING "OpenMP (>=3.0) not found — building without parallel support.")
   endif()
 endif()
