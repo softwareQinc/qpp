@@ -28,9 +28,9 @@ endif()
 math(EXPR QPP_VERSION_NUM
      "${PROJECT_VERSION_MAJOR}*10000 + ${PROJECT_VERSION_MINOR}*100 +
   ${PROJECT_VERSION_PATCH}")
-# Define QPP_VERSION_STR as the string representation of ${PROJECT_VERSION},
-# e.g. "6.1.0"
-set(QPP_VERSION_STR \"${PROJECT_VERSION}\")
+# Define QPP_VERSION_STR as the unquoted string representation of
+# ${PROJECT_VERSION}, e.g. 6.1.0
+set(QPP_VERSION_STR ${PROJECT_VERSION})
 
 # -----------------------------------------------------------------------------
 # Guard against in-source builds
@@ -54,7 +54,7 @@ add_library(libqpp INTERFACE)
 target_compile_definitions(
   libqpp
   INTERFACE "QPP_VERSION_NUM=${QPP_VERSION_NUM}"
-            "QPP_VERSION_STR=${QPP_VERSION_STR}"
+            "QPP_VERSION_STR=\"${QPP_VERSION_STR}\""
             $<BUILD_INTERFACE:PROJECT_ROOT_DIR=\"${PROJECT_SOURCE_DIR}\">)
 
 # Quantum++ headers (include/)
@@ -139,9 +139,15 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/qppConfig.cmake"
               "${CMAKE_CURRENT_BINARY_DIR}/qppConfigVersion.cmake"
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 # Install additional dependencies
-install(FILES "cmake/qpp_dependencies.cmake" "cmake/qpp_eigen3.cmake"
-              "cmake/qpp_MATLAB.cmake"
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+install(
+  FILES "cmake/qpp_types.cmake"
+        "cmake/qpp_compiler_flags.cmake"
+        "cmake/qpp_eigen3.cmake"
+        "cmake/qpp_openmp.cmake"
+        "cmake/qpp_openqasm.cmake"
+        "cmake/qpp_sanitize.cmake"
+        "cmake/qpp_MATLAB.cmake"
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 
 # -----------------------------------------------------------------------------
 # Uninstall target
