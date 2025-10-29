@@ -27,7 +27,7 @@ target_compile_options(
     #
     # MSVC warnings
     $<$<CXX_COMPILER_ID:MSVC>:
-    /W4
+    /W3
     >
     #
     # Use the "no-weak" debugging flag only when debugging under OS X, as gdb
