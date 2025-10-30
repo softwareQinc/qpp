@@ -1,5 +1,6 @@
-// Qubit post-selection quantum circuit simulator
 // Source: ./examples/circuits/post_selection.cpp
+//
+// Qubit post-selection quantum circuit simulator
 
 #include <iostream>
 

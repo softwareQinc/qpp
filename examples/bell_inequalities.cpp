@@ -1,5 +1,6 @@
-// Bell inequalities (CHSH) violation
 // Source: ./examples/bell_inequalities.cpp
+//
+// Bell inequalities (CHSH) violation
 
 #include <array>
 #include <iostream>

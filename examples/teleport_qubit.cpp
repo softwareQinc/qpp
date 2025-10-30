@@ -1,5 +1,6 @@
-// Qubit teleportation
 // Source: ./examples/teleport_qubit.cpp
+//
+// Qubit teleportation
 // See also: ./examples/teleport_qudit.cpp
 
 #include <iostream>

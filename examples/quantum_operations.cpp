@@ -1,5 +1,6 @@
-// Quantum operations
 // Source: ./examples/quantum_operations.cpp
+//
+// Quantum operations
 
 #include <iostream>
 #include <vector>

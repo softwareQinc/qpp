@@ -1,5 +1,6 @@
-// Shor's algorithm
 // Source: ./examples/shor.cpp
+//
+// Shor's algorithm
 
 #include <cmath>
 #include <cstdlib>

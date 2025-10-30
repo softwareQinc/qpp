@@ -87,17 +87,17 @@ their corresponding `CMakeLists.txt` via `findpackage(qpp ...)`.
 
 | Optional argument       | Value                                  | Description                                                                                                                                                                                                         |
 | ----------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `CMAKE_INSTALL_PREFIX`  | `/path/to/install`                     | Installs **Quantum++** header files in a non-standard location (e.g., due to lack of admin. rights)                                                                                                                 |
+| `CMAKE_INSTALL_PREFIX`  | `/path/to/install`                     | Specifies a custom installation directory for **Quantum++** header files -- useful when you lack administrative privileges or want a non-default install location                                                   |
 |                         |                                        |                                                                                                                                                                                                                     |
 | `QPP_MATLAB`            | `ON/OFF` [`OFF` by default]            | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load **Quantum++** matrices and vectors to/from MATLAB. |
 | `QPP_OPENMP`            | `ON/OFF` [`ON` by default]             | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                     |
-| `QASMTOOLS_QASM2_SPECS` | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications; see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                         |
+| `QASMTOOLS_QASM2_SPECS` | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications -- see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                       |
 |                         |                                        |                                                                                                                                                                                                                     |
 | `QPP_BIGINT`            | `default`, etc. [`default` by default] | Signed big integer type (`qpp::bigint`)                                                                                                                                                                             |
 | `QPP_FP`                | `default`, etc. [`default` by default] | Floating-point type (`qpp::realT`)                                                                                                                                                                                  |
 | `QPP_IDX`               | `default`, etc. [`default` by default] | Integer index type (`qpp::idx`)                                                                                                                                                                                     |
 |                         |                                        |                                                                                                                                                                                                                     |
-| `SANITIZE`              | `ON/OFF` [`OFF` by default]            | Enable code sanitizing (only for GCC/Clang)                                                                                                                                                                         |
+| `QPP_SANITIZE`          | `ON/OFF` [`OFF` by default]            | Enable code sanitizing                                                                                                                                                                                              |
 
 ---
 
@@ -176,7 +176,7 @@ in a single file `src/main.cpp`, and the `CMakeLists.txt` is located in the
 project's root directory.
 
 ```cmake
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.20)
 project(standalone)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -190,13 +190,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(qpp REQUIRED)
 add_executable(standalone src/main.cpp)
-target_link_libraries(standalone PUBLIC ${QPP_LINK_DEPS} libqpp)
+target_link_libraries(standalone PRIVATE libqpp)
 
 ```
-
-**Do not forget to ALWAYS add `${QPP_LINK_DEPS}` (verbatim)
-to `target_link_libraries()`!** (last line of the
-`CMakeLists.txt` file above).
 
 Configure the application in an out-of-source directory by executing
 

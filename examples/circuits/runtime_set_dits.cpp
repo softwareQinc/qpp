@@ -1,5 +1,6 @@
-// Overwriting quantum engine dits at runtime quantum circuit simulator
 // Source: ./examples/circuits/runtime_set_dits.cpp
+//
+// Overwriting quantum engine dits at runtime quantum circuit simulator
 
 #include <iostream>
 

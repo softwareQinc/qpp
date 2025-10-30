@@ -1,5 +1,6 @@
-// BB84 quantum key establishment
 // Source: ./examples/bb84.cpp
+//
+// BB84 quantum key establishment
 
 #include <algorithm>
 #include <cstdlib>

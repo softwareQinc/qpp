@@ -1,6 +1,4 @@
-include(GoogleTest)
 set(TARGET_NAME "unit_tests")
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # GoogleTest
 include(FetchContent)
@@ -9,36 +7,36 @@ FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
   GIT_TAG main
-  GIT_SHALLOW TRUE
-  GIT_PROGRESS TRUE)
-# For Windows: Prevent overriding the parent project's compiler/linker settings,
-# and add /bigobj option
+  GIT_PROGRESS TRUE
+  GIT_SHALLOW TRUE)
+
 if(MSVC)
-  add_compile_options(/bigobj)
+  # Ensure Google Test uses the Shared C Runtime (/MD or /MDd) to prevent linker
+  # and runtime errors due to mixed CRT usage between the main project and the
+  # GTest libraries.
   set(gtest_force_shared_crt
       ON
-      CACHE BOOL "" FORCE)
+      CACHE BOOL "Force Google Test to use shared C Runtime on MSVC" FORCE)
 endif()
+
 FetchContent_MakeAvailable(googletest)
 
-aux_source_directory(tests TEST_FILES)
-aux_source_directory(tests/MATLAB TEST_FILES)
-aux_source_directory(tests/classes TEST_FILES)
-aux_source_directory(tests/qasm TEST_FILES)
+file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp" "tests/MATLAB/*.cpp"
+     "tests/classes/*.cpp" "tests/qasm/*.cpp")
 
-add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL tests/main.cpp)
-add_dependencies(unit_tests ${TARGET_NAME})
-
-cmake_policy(SET CMP0076 NEW)
-
-# Build all tests in ${TEST_FILES}
-foreach(file ${TEST_FILES})
-  # Do not build "tests/MATLAB/matlab.cpp" if there's no MATLAB support
-  if(${file} STREQUAL "tests/MATLAB/matlab.cpp" AND NOT MATLAB_FOUND)
-    continue()
+set(TEST_SOURCES_FILTERED "")
+foreach(file ${TEST_SOURCES})
+  # Filter: Do not build "tests/MATLAB/matlab.cpp" if there's no MATLAB support
+  if(NOT ("${file}" MATCHES "matlab\\.cpp" AND NOT MATLAB_FOUND))
+    list(APPEND TEST_SOURCES_FILTERED "${file}")
+  else()
+    message(STATUS "Skipping test file ${file} (MATLAB not found).")
   endif()
-  target_sources(${TARGET_NAME} PUBLIC ${file})
 endforeach()
 
-target_link_libraries(${TARGET_NAME} PUBLIC ${QPP_LINK_DEPS} gmock libqpp)
+add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL tests/main.cpp
+                                               ${TEST_SOURCES_FILTERED})
+target_link_libraries(${TARGET_NAME} PRIVATE libqpp GTest::gmock)
+
+include(GoogleTest)
 gtest_discover_tests(${TARGET_NAME})

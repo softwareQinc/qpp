@@ -1,5 +1,6 @@
-// Input/output
 // Source: ./examples/input_output.cpp
+//
+// Input/output
 
 #include <fstream>
 #include <iostream>

@@ -1,5 +1,6 @@
-// Functor
 // Source: ./examples/functor.cpp
+//
+// Functor
 
 #include <complex>
 #include <iostream>

@@ -1,5 +1,6 @@
-// Randomness
 // Source: ./examples/randomness.cpp
+//
+// Randomness
 
 #include <iostream>
 #include <vector>

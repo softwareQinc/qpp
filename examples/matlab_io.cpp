@@ -1,5 +1,6 @@
-// MATLAB input/output
 // Source: ./examples/matlab_io.cpp
+//
+// MATLAB input/output
 
 #include <iostream>
 

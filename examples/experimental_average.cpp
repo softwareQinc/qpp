@@ -1,5 +1,6 @@
-// Experimental average
 // Source: ./examples/experimental_average.cpp
+//
+// Experimental average
 
 #include <iostream>
 #include <tuple>

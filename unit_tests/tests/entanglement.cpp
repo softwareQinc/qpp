@@ -215,7 +215,7 @@ TEST(qpp_negativity, Qubits) {
 ///       const std::vector<idx>& dims)
 TEST(qpp_schmidt, Qudits) {
     // random 3 x 4 state
-    idx dA = 3, dB = 4, D = dA * dB, minD = std::min(dA, dB);
+    idx dA = 3, dB = 4, D = dA * dB;
     auto const psi = randket(D);
 
     auto const t = schmidt(psi, {dA, dB});

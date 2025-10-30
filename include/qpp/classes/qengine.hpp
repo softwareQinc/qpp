@@ -1162,7 +1162,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \note The order is lexicographical with respect to the remaining
      * non-measured qudits
      *
-     * \param[out] state State vector
+     * \param state State vector
      * \return Reference to the current instance
      */
     QEngineT& set_state(const T& state) override {
@@ -1225,7 +1225,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * measurement statistics hash table
      */
     virtual QEngineT& reset(bool reset_stats = true) {
-        qeng_st_.reset(qeng_st_.qstate_);
+        qeng_st_.reset();
 
         if (reset_stats) {
             this->reset_stats();

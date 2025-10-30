@@ -519,7 +519,8 @@ svd(const Eigen::MatrixBase<Derived>& A) {
     }
     // END EXCEPTION CHECKS
 
-    auto const sv = rA.bdcSvd(Eigen::ComputeFullU | Eigen::ComputeFullV);
+    auto const sv =
+        rA.template bdcSvd<Eigen::ComputeFullU | Eigen::ComputeFullV>();
 
     return std::make_tuple(sv.matrixU(), sv.singularValues(), sv.matrixV());
 }
@@ -563,7 +564,7 @@ template <typename Derived>
     }
     // END EXCEPTION CHECKS
 
-    return rA.bdcSvd(Eigen::ComputeFullU).matrixU();
+    return rA.template bdcSvd<Eigen::ComputeFullU>().matrixU();
 }
 
 /**
@@ -584,7 +585,7 @@ template <typename Derived>
     }
     // END EXCEPTION CHECKS
 
-    return rA.bdcSvd(Eigen::ComputeFullV).matrixV();
+    return rA.template bdcSvd<Eigen::ComputeFullV>().matrixV();
 }
 
 // Matrix functional calculus

@@ -1,5 +1,6 @@
-// Quantum Fourier transform
 // Source: ./examples/qft.cpp
+//
+// Quantum Fourier transform
 
 #include <cmath>
 #include <iostream>

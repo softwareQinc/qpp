@@ -1,12 +1,14 @@
 @PACKAGE_INIT@
 
-set(QPP_INSTALL_DIR "@QPP_INSTALL_DIR@")
-# Do not change the order below!
-include("${CMAKE_CURRENT_LIST_DIR}/qpp_eigen3.cmake")
-include("${CMAKE_CURRENT_LIST_DIR}/qpp_dependencies.cmake")
-include("${CMAKE_CURRENT_LIST_DIR}/qpp_MATLAB.cmake")
+# Provide CMake modules and targets
 include("${CMAKE_CURRENT_LIST_DIR}/qpp_targets.cmake")
-message(
-  STATUS
-    "Found Quantum++ in @QPP_INSTALL_DIR@ (found version \"@QPP_VERSION_STR@\")"
-)
+include("${CMAKE_CURRENT_LIST_DIR}/qpp_types.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/qpp_compiler_flags.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/qpp_eigen3.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/qpp_openmp.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/qpp_openqasm.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/qpp_sanitize.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/qpp_MATLAB.cmake")
+
+# Log the load success
+message(STATUS "Found Quantum++ version @QPP_VERSION_STR@ at @QPP_INSTALL_DIR@")

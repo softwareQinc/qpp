@@ -1,5 +1,6 @@
-// Quantum channels
 // Source: ./examples/channels.cpp
+//
+// Quantum channels
 
 #include <complex>
 #include <iostream>

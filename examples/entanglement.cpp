@@ -1,5 +1,6 @@
-// Entanglement
 // Source: ./examples/entanglement.cpp
+//
+// Entanglement
 
 #include <iostream>
 

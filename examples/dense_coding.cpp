@@ -1,5 +1,6 @@
-// Qudit dense coding
 // Source: ./examples/dense_coding.cpp
+//
+// Qudit dense coding
 
 #include <iostream>
 #include <tuple>

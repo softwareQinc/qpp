@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.20)
 project(standalone)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -13,4 +13,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(qpp REQUIRED)
 add_executable(standalone src/main.cpp)
-target_link_libraries(standalone PUBLIC ${QPP_LINK_DEPS} libqpp)
+target_link_libraries(standalone PRIVATE libqpp)
