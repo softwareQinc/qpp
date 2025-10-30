@@ -1,5 +1,9 @@
-# Pre-release
+# Version 6.1.0 - xx November 2025
 
+- Switched back to MAJOR.MINOR.PATCH release versioning:
+  - MAJOR -- introduces significant changes that break backward compatibility
+  - MINOR -- may include limited or minor compatibility breaks
+  - PATCH -- fully backward compatible fixes and improvements
 - New feature: support for setting dits at runtime in
   ["qpp/classes/qcircuit.hpp"], implemented
   `qpp::QCircuit::set_dits_runtime(mutable_dits_functor_t dits)`. Here
@@ -17,6 +21,10 @@
   [["examples/circuits/runtime_set_dits.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)]
 - Conditional statements are now indented with tabs when displaying
   qpp::QCircuit instances
+- Bumped Eigen3 minimum required version to 5.0.0
+- Bumped CMake minimum required version to 3.20
+- Modernized CMake configuration files
+- Removed `EIGEN3_INSTALL_DIR` CMake flag
 
 # Version 6.0 - 14 April 2025
 

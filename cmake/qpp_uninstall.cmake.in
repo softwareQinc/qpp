@@ -10,7 +10,7 @@ foreach(file ${files})
   message(STATUS "Uninstalling ${file}")
   if(IS_SYMLINK "${file}" OR EXISTS "${file}")
     execute_process(
-      COMMAND @CMAKE_COMMAND@ -E rm -f "${file}"
+      COMMAND @CMAKE_COMMAND@ -E remove "${file}"
       OUTPUT_VARIABLE rm_out
       RESULT_VARIABLE rm_retval)
     if(${rm_retval})
@@ -21,9 +21,13 @@ foreach(file ${files})
   endif()
 endforeach()
 
-if(NOT "@MSVC@")
-  message(STATUS "Removing @CMAKE_INSTALL_PREFIX@/lib/cmake/@PROJECT_NAME@")
-  message(STATUS "Removing @QPP_INSTALL_DIR@")
-else()
-  message(STATUS "Removing @CMAKE_INSTALL_PREFIX@")
-endif()
+message(STATUS "Removing
+    @CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@/cmake/@PROJECT_NAME@")
+execute_process(
+  COMMAND ${CMAKE_COMMAND} -E remove_directory
+          "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@/cmake/@PROJECT_NAME@")
+
+message(STATUS "Removing @QPP_INSTALL_DIR@ ")
+execute_process(
+  COMMAND ${CMAKE_COMMAND} -E remove_directory
+          "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@/@PROJECT_NAME@")

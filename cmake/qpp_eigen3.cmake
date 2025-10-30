@@ -1,23 +1,22 @@
-message(STATUS "Detecting Eigen3...")
-find_package(Eigen3 QUIET NO_MODULE)
+message(STATUS "Detecting Eigen3 (>= 5.0.0)...")
+find_package(Eigen3 5.0 QUIET NO_MODULE)
+
 if(NOT TARGET Eigen3::Eigen)
-  # Install Eigen3 on demand
+  # Install Eigen3 if not found by find_package()
   include(FetchContent)
-  set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
-  message(STATUS "Eigen3 not detected, fetching Eigen3...")
+  message(STATUS "Eigen3 (>= 5.0.0) not detected, fetching it...")
   FetchContent_Declare(
     Eigen3
     SYSTEM
     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG 3.4.0 # 3.4.0
+    GIT_TAG 5.0.0
+    GIT_PROGRESS TRUE
     GIT_SHALLOW TRUE
-    # no CMakeLists.txt in cmake, so this turns off configure. Recommend also
-    # to add `FIND_PACKAGE_ARGS CONFIG` so that FetchContent checks to see if
-    # Eigen is installed on the system, via the OS, or a package manager
     SOURCE_SUBDIR cmake)
   FetchContent_MakeAvailable(Eigen3)
 endif()
 
+# In case FetchContent does not make Eigen3::Eigen available
 if(NOT TARGET Eigen3::Eigen)
   add_library(Eigen3::Eigen INTERFACE IMPORTED)
   set_target_properties(Eigen3::Eigen PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
@@ -26,4 +25,4 @@ if(NOT TARGET Eigen3::Eigen)
 endif()
 
 message(STATUS "Detected Eigen3 in: ${EIGEN3_INCLUDE_DIR}")
-set(QPP_EIGEN3_LINK_DEPS Eigen3::Eigen)
+target_link_libraries(libqpp INTERFACE Eigen3::Eigen)
