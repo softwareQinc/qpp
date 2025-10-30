@@ -1,5 +1,6 @@
-// Minimal example
 // Source: ./examples/minimal.cpp
+//
+// Minimal example
 
 #include <iostream>
 

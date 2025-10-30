@@ -1,5 +1,6 @@
-// Entropies
 // Source: ./examples/entropies.cpp
+//
+// Entropies
 
 #include <iostream>
 

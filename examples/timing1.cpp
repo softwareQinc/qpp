@@ -1,5 +1,6 @@
-// Timing
 // Source: ./examples/timing1.cpp
+//
+// Timing
 
 #include <iomanip>
 #include <iostream>

@@ -1,5 +1,6 @@
-// Qudit teleportation quantum circuit simulator
 // Source: ./examples/circuits/teleport_qudit_circuit.cpp
+//
+// Qudit teleportation quantum circuit simulator
 
 #include <iostream>
 

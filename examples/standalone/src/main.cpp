@@ -1,4 +1,6 @@
-// Standalone example, assumes quantum++ is installed in a system-wide visible
+// Source: ./examples/standalone/src/main.cpp
+//
+// Standalone example, assumes Quantum++ is installed in a system-wide visible
 // directory
 
 #include <iostream>

@@ -1,5 +1,6 @@
-// Grover's searching
 // Source: ./examples/grover.cpp
+//
+// Grover's searching
 
 #include <cmath>
 #include <iostream>

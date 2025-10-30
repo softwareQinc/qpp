@@ -1,5 +1,6 @@
-// Conditional WHILE quantum circuit simulator
 // Source: ./examples/circuits/conditional_while.cpp
+//
+// Conditional WHILE quantum circuit simulator
 
 #include <iostream>
 

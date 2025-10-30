@@ -1,5 +1,6 @@
-// Quantum error correcting codes
 // Source: ./examples/qecc.cpp
+//
+// Quantum error correcting codes
 
 #include <iostream>
 

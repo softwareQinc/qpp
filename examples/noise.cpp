@@ -1,5 +1,6 @@
-// Quantum noise
 // Source: ./examples/noise.cpp
+//
+// Quantum noise
 
 #include <iostream>
 

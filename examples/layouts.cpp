@@ -1,5 +1,6 @@
-// Various physical layouts
 // Source: ./examples/layouts.cpp
+//
+// Various physical layouts
 
 #include <iostream>
 
