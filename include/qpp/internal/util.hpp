@@ -49,7 +49,7 @@
 namespace qpp {
 /**
  * \namespace qpp::internal
- * \brief Internal utility functions, do not use them directly or modify them
+ * \brief Internal functions, do not use them directly or modify them
  */
 namespace internal {
 // integer index to multi-index, use C-style array for speed
@@ -494,7 +494,6 @@ dyn_col_vect<Derived> project_ket_on_dits(dyn_col_vect<Derived> psi,
 }
 
 } /* namespace internal */
-
 } /* namespace qpp */
 
 #endif /* QPP_INTERNAL_UTIL_HPP_ */
