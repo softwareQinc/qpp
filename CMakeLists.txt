@@ -82,6 +82,12 @@ endif()
 include(cmake/qpp_types.cmake)
 include(cmake/qpp_compiler_flags.cmake)
 include(cmake/qpp_eigen3.cmake)
+
+# Internal interface only, do not link against it, use libqpp instead. Used to
+# run examples and unit tests.
+add_library(libqpp_internal INTERFACE)
+target_link_libraries(libqpp_internal INTERFACE libqpp)
+
 include(cmake/qpp_openmp.cmake)
 include(cmake/qpp_openqasm.cmake)
 include(cmake/qpp_sanitize.cmake)
@@ -140,7 +146,8 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/qppConfig.cmake"
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 # Install additional dependencies
 install(
-  FILES "cmake/qpp_types.cmake"
+  FILES "cmake/qpp_detect_target.cmake"
+        "cmake/qpp_types.cmake"
         "cmake/qpp_compiler_flags.cmake"
         "cmake/qpp_eigen3.cmake"
         "cmake/qpp_openmp.cmake"
