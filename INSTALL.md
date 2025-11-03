@@ -81,9 +81,12 @@ and outputs the executable `./build/bb84[.exe]`.
 
 ## CMake optional arguments and flags
 
-Note that all CMake flags below that start with `QPP_` and `QASMTOOLS_`
-propagate to subprojects that use **Quantum++** in
-their corresponding `CMakeLists.txt` via `findpackage(qpp ...)`.
+> **Note:**
+> All CMake flags below **do not propagate** to projects that use **Quantum++**
+> via `find_package(qpp ...)`.
+>
+> Each consumer project must explicitly define these flags in its own
+> `CMakeLists.txt` if needed.
 
 | Optional argument       | Value                                  | Description                                                                                                                                                                                                         |
 | ----------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -93,11 +96,11 @@ their corresponding `CMakeLists.txt` via `findpackage(qpp ...)`.
 | `QPP_OPENMP`            | `ON/OFF` [`ON` by default]             | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                     |
 | `QASMTOOLS_QASM2_SPECS` | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications -- see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                       |
 |                         |                                        |                                                                                                                                                                                                                     |
+| `QPP_SANITIZE`          | `ON/OFF` [`OFF` by default]            | Enable code sanitizing                                                                                                                                                                                              |
+|                         |                                        |                                                                                                                                                                                                                     |
 | `QPP_BIGINT`            | `default`, etc. [`default` by default] | Signed big integer type (`qpp::bigint`)                                                                                                                                                                             |
 | `QPP_FP`                | `default`, etc. [`default` by default] | Floating-point type (`qpp::realT`)                                                                                                                                                                                  |
 | `QPP_IDX`               | `default`, etc. [`default` by default] | Integer index type (`qpp::idx`)                                                                                                                                                                                     |
-|                         |                                        |                                                                                                                                                                                                                     |
-| `QPP_SANITIZE`          | `ON/OFF` [`OFF` by default]            | Enable code sanitizing                                                                                                                                                                                              |
 
 ---
 

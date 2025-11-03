@@ -32,6 +32,7 @@
 #ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_RUNTIME_STEP_HPP_
 #define QPP_INTERNAL_CLASSES_QCIRCUIT_RUNTIME_STEP_HPP_
 
+#include <functional>
 #include <iterator>
 #include <optional>
 #include <ostream>
@@ -40,8 +41,23 @@
 #include <vector>
 
 #include "qpp/classes/idisplay.hpp"
+#include "qpp/internal/classes/labelled_vector_proxy.hpp"
 
 namespace qpp {
+/**
+ * \brief Conditional functor type (boolean predicate) in qpp::QCircuit
+ * conditional (runtime) statements
+ */
+using cond_pred_t = std::function<bool(internal::const_proxy_to_engine_dits_t)>;
+// using cond_pred_t = std::function<bool(std::vector<idx>&)>;
+
+/**
+ * \brief Functor type in qpp::QCircuit used for overwriting quantum engine
+ * dits at runtime
+ */
+using mutable_dits_functor_t =
+    std::function<void(internal::proxy_to_engine_dits_t)>;
+
 namespace internal {
 /**
  * \brief One step consisting only of runtime statements such as

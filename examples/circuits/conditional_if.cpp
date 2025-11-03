@@ -19,7 +19,7 @@ int main() {
     qc.measure(0, 0, false);
 
     // define a boolean predicate of the required form
-    // const_proxy_to_engine_dits_t -> bool
+    // qpp::internal::const_proxy_to_engine_dits_t -> bool
     auto pred = [](auto dits) {
         // returns true when the first dit is 1 at runtime (when run by a
         // quantum engine); in our case, this corresponds to the result of the

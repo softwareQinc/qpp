@@ -243,10 +243,10 @@ realT cor(const rmat& probXY, const Container& X, const Container& Y,
     if (!internal::check_nonzero_size(Y)) {
         throw exception::ZeroSize("qpp::cor()", "Y");
     }
-    if (static_cast<idx>(probXY.rows()) != X.size()) {
+    if (static_cast<idx>(probXY.rows()) != static_cast<idx>(X.size())) {
         throw exception::SizeMismatch("qpp::cor()", "probXY/X");
     }
-    if (static_cast<idx>(probXY.cols()) != Y.size()) {
+    if (static_cast<idx>(probXY.cols()) != static_cast<idx>(Y.size())) {
         throw exception::SizeMismatch("qpp::cor()", "probXY/Y");
     }
     // END EXCEPTION CHECKS

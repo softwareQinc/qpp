@@ -112,10 +112,9 @@ static std::unordered_map<ast::symbol,
         {"sdg",
          [](const std::vector<realT>&) {
 #ifdef QASMTOOLS_QASM2_SPECS
-             return Gates::get_no_thread_local_instance().S.adjoint() *
-                           std::exp(1_i *
-                                    static_cast<cplx::value_type>(pi / 4.0)))
-                              .eval();
+             return (Gates::get_no_thread_local_instance().S.adjoint() *
+                     std::exp(1_i * static_cast<cplx::value_type>(pi / 4.0)))
+                 .eval();
 #else
              return Gates::get_no_thread_local_instance().S.adjoint();
 #endif
@@ -132,10 +131,9 @@ static std::unordered_map<ast::symbol,
         {"tdg",
          [](const std::vector<realT>&) {
 #ifdef QASMTOOLS_QASM2_SPECS
-             return Gates::get_no_thread_local_instance().T.adjoint() *
-                           std::exp(1_i *
-                                    static_cast<cplx::value_type>(pi / 8.0)))
-                              .eval();
+             return (Gates::get_no_thread_local_instance().T.adjoint() *
+                     std::exp(1_i * static_cast<cplx::value_type>(pi / 8.0)))
+                 .eval();
 #else
              return Gates::get_no_thread_local_instance().T.adjoint();
 #endif

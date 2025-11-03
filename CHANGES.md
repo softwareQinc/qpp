@@ -8,9 +8,12 @@
   ["qpp/classes/qcircuit.hpp"], implemented
   `qpp::QCircuit::set_dits_runtime(mutable_dits_functor_t dits)`. Here
   `mutable_dits_functor_t` is an alias to an internal mutable functor defined
-  in ["qpp/types.hpp"]
-- Changed `cond_func_t` type alias in ["qpp/types.hpp"] to `cond_pred_t` for
-  boolean predicates in conditional statements; alias to an internal type.
+  in ["qpp/internal/classes/qcircuit_runtime_step.hpp"]
+- Changed `cond_func_t` type alias to `cond_pred_t` for
+  Boolean predicates in conditional statements and moved the type alias from
+  ["qpp/types.hpp"] to
+  ["qpp/internal/classes/qcircuit_conditional_step.hpp"]; alias to an internal
+  type.
 - Renamed the class `internal::QCircuitConditionalStep` to
   `internal::QCircuitRuntimeStep`, and the corresponding
   ["qpp/internal/classes/qcircuit_conditional_step.hpp"] to
@@ -94,7 +97,7 @@
   only use `-DQPP_MATLAB=ON` when building with MATLAB support, all other
   MATLAB-related CMake flags have been removed.
 - Bugfix in `qpp::adjoint(QCircuit)`
-- Added `cond_func_t` type alias in ["qpp/types.hpp"] for boolean predicates of
+- Added `cond_func_t` type alias in ["qpp/types.hpp"] for Boolean predicates of
   the form `std::vector<idx> -> bool`
 - Added `qpp::read_from_string()` to ["qpp/qasm/qasm.hpp"] and an associated
   pyqpp wrapper function
@@ -614,7 +617,7 @@
   - `qpp::super2kraus()` - extracts a set of orthogonal (in the
     Hilbert-Schmidt norm) Kraus operators from a
     superoperator matrix ["operations.h"]
-  - `qpp::bernoulli()` - generates Bernoulli-p random booleans
+  - `qpp::bernoulli()` - generates Bernoulli-p random Booleans
     ["random.h"]
 - Kraus-related functions on full systems (not subsystems) now support
   input and output spaces of different dimensions, i.e., can now use

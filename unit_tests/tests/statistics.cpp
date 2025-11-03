@@ -114,7 +114,7 @@ TEST(qpp_marginalX, AllTests) {
     std::vector<realT> expected{1};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-5);
-    for (idx i = 0; i < result.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(result.size()); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-5);
     }
@@ -126,7 +126,7 @@ TEST(qpp_marginalX, AllTests) {
     expected = std::vector<realT>{1};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-5);
-    for (idx i = 0; i < result.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(result.size()); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-5);
     }
@@ -138,7 +138,7 @@ TEST(qpp_marginalX, AllTests) {
     expected = std::vector<realT>{0.15, 0.3, 0.55};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-5);
-    for (idx i = 0; i < result.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(result.size()); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-5);
     }
@@ -150,7 +150,7 @@ TEST(qpp_marginalX, AllTests) {
     expected = std::vector<realT>{0.3, 0.35, 0.35};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-5);
-    for (idx i = 0; i < result.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(result.size()); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-5);
     }
@@ -165,7 +165,7 @@ TEST(qpp_marginalY, AllTests) {
     std::vector<realT> expected{1};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-5);
-    for (idx i = 0; i < result.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(result.size()); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-5);
     }
@@ -177,7 +177,7 @@ TEST(qpp_marginalY, AllTests) {
     expected = std::vector<realT>{0.15, 0.3, 0.55};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-5);
-    for (idx i = 0; i < result.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(result.size()); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-5);
     }
@@ -189,7 +189,7 @@ TEST(qpp_marginalY, AllTests) {
     expected = std::vector<realT>{1};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-5);
-    for (idx i = 0; i < result.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(result.size()); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-5);
     }
@@ -201,7 +201,7 @@ TEST(qpp_marginalY, AllTests) {
     expected = std::vector<realT>{0.55, 0.45};
     EXPECT_EQ(result.size(), expected.size());
     EXPECT_NEAR(1, sum(result.begin(), result.end()), 1e-5);
-    for (idx i = 0; i < result.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(result.size()); ++i) {
         EXPECT_GE(result[i], 0);
         EXPECT_NEAR(result[i], expected[i], 1e-5);
     }
