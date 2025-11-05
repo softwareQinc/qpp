@@ -264,7 +264,7 @@ inline cmat randU(idx D = 2)
     }
     // END EXCEPTION CHECKS
 
-    cmat X = 1 / std::sqrt(2.) * randn<cmat>(D, D);
+    cmat X = 1 / std::sqrt(static_cast<realT>(2.0)) * randn<cmat>(D, D);
     Eigen::HouseholderQR<cmat> qr(X);
 
     cmat Q = qr.householderQ();

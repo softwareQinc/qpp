@@ -528,7 +528,7 @@ realT gconcurrence(const Eigen::MatrixBase<Derived>& A) {
 
     // we compute exp(logdet()) to avoid underflow
     return d *
-           std::abs(std::exp(static_cast<realT>(2.) / static_cast<realT>(d) *
+           std::abs(std::exp(static_cast<realT>(2.0) / static_cast<realT>(d) *
                              logdet(reshape(rA, d, d))));
 }
 

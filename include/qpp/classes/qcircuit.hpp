@@ -1377,7 +1377,7 @@ class QCircuit : public IDisplay, public IJSON {
             internal::QCircuitGateStep::Type::FAN, hashU, std::nullopt, target,
             std::nullopt, name});
 
-        gate_count_[hashU] += target.size();
+        gate_count_[hashU] += static_cast<idx>(target.size());
 
         for (idx elem : target) {
             clean_qudits_[elem] = false;
@@ -1539,7 +1539,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        idx n_subsys = target.size();
+        idx n_subsys = static_cast<idx>(target.size());
         if (d_ == 2) // qubits
         {
             for (idx i = 0; i < n_subsys; ++i) {
@@ -1654,7 +1654,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        idx n_subsys = target.size();
+        idx n_subsys = static_cast<idx>(target.size());
         if (d_ == 2) // qubits
         {
             if (swap) {
@@ -1828,7 +1828,7 @@ class QCircuit : public IDisplay, public IJSON {
             internal::QCircuitGateStep::Type::CTRL_FAN, hashU,
             std::vector<idx>{ctrl}, target, shift_vec, name});
 
-        gate_count_[hashU] += target.size();
+        gate_count_[hashU] += static_cast<idx>(target.size());
 
         clean_qudits_[ctrl] = false;
         for (idx elem : target) {
@@ -1955,7 +1955,7 @@ class QCircuit : public IDisplay, public IJSON {
             internal::QCircuitGateStep::Type::CTRL_FAN, hashU, ctrl, target,
             shift, name});
 
-        gate_count_[hashU] += target.size();
+        gate_count_[hashU] += static_cast<idx>(target.size());
 
         for (idx elem : ctrl) {
             clean_qudits_[elem] = false;
@@ -2463,7 +2463,7 @@ class QCircuit : public IDisplay, public IJSON {
             internal::QCircuitGateStep::Type::cCTRL_FAN, hashU,
             std::vector<idx>{ctrl_dit}, target, shift_vec, name});
 
-        gate_count_[hashU] += target.size();
+        gate_count_[hashU] += static_cast<idx>(target.size());
 
         clean_dits_[ctrl_dit] = false;
         for (idx elem : target) {
@@ -2574,7 +2574,7 @@ class QCircuit : public IDisplay, public IJSON {
             internal::QCircuitGateStep::Type::cCTRL_FAN, hashU, ctrl_dits,
             std::vector<idx>{target}, shift, name});
 
-        gate_count_[hashU] += target.size();
+        gate_count_[hashU] += static_cast<idx>(target.size());
 
         for (idx elem : ctrl_dits) {
             clean_dits_[elem] = false;
@@ -2821,8 +2821,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        idx D_target = internal::safe_pow<idx>(static_cast<std::size_t>(d_),
-                                               target.size());
+        idx D_target = internal::safe_pow<idx>(d_, target.size());
 
         // check valid ctrl_dit
         if (ctrl_dit >= nc_) {
@@ -3080,7 +3079,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // not enough dits to store the result
         if (static_cast<idx>(target.size()) > nc_ ||
-            c_reg > static_cast<idx>(nc_ - target.size())) {
+            c_reg > nc_ - static_cast<idx>(target.size())) {
             throw exception::OutOfRange("qpp::QCircuit::measure()",
                                         context + ": c_reg, target");
         }
@@ -3468,7 +3467,7 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // not enough dits to store the result
         if (static_cast<idx>(target.size()) > nc_ ||
-            c_reg > static_cast<idx>(nc_ - target.size())) {
+            c_reg > nc_ - static_cast<idx>(target.size())) {
             throw exception::OutOfRange("qpp::QCircuit::post_select()",
                                         context + ": c_reg, target");
         }
