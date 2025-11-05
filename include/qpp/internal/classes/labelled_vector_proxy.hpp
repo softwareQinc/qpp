@@ -39,6 +39,7 @@
 #include <vector>
 
 #include "qpp/classes/exception.hpp"
+#include "qpp/types.hpp"
 
 namespace qpp {
 namespace internal {
@@ -49,10 +50,10 @@ class LabelledVectorProxy {
     using VecType =
         std::conditional_t<is_const, const std::vector<T>, std::vector<T>>;
     VecType& data_{};
-    std::vector<std::size_t> label_{};
+    std::vector<idx> label_{};
 
   public:
-    LabelledVectorProxy(std::vector<T>& data, std::vector<std::size_t> label)
+    LabelledVectorProxy(std::vector<T>& data, std::vector<idx> label)
         : data_{data}, label_{std::move(label)} {}
 
     LabelledVectorProxy(std::vector<T>& data) : data_{data} {
@@ -60,13 +61,13 @@ class LabelledVectorProxy {
         std::iota(label_.begin(), label_.end(), 0);
     }
 
-    const T& operator[](std::size_t i) const {
+    const T& operator[](idx i) const {
         // EXCEPTION CHECKS
-        if (i + 1 > label_.size()) {
+        if (i + 1 > static_cast<idx>(label_.size())) {
             throw exception::OutOfRange{
                 "qpp::internal::LabelledVectorProxy::operator[]() const", "i"};
         }
-        if (label_[i] + 1 > data_.size()) {
+        if (label_[i] + 1 > static_cast<idx>(data_.size())) {
             throw exception::OutOfRange{
                 "qpp::internal::LabelledVectorProxy::operator[]() const", "i"};
         }
@@ -77,7 +78,7 @@ class LabelledVectorProxy {
 
     // mutable operator[], enabled only if is_const == false
     template <bool B = is_const, typename = std::enable_if_t<!B>>
-    T& operator[](std::size_t i) {
+    T& operator[](idx i) {
         // NOTE: check operator[] exceptions in LabelledVectorProxy (out of
         // bounds)
 
@@ -86,20 +87,29 @@ class LabelledVectorProxy {
         // std::cout << "i: " << i << '\n';
         // std::cout << "label_[i]: " << label_[i] << "\n\n";
 
-        if (i + 1 > label_.size()) {
+        if (i + 1 > static_cast<idx>(label_.size())) {
             throw exception::OutOfRange{
                 "qpp::internal::LabelledVectorProxy::operator[]()", "i"};
         }
-        if (label_[i] + 1 > data_.size()) {
+        if (label_[i] + 1 > static_cast<idx>(data_.size())) {
             throw exception::OutOfRange{
                 "qpp::internal::LabelledVectorProxy::operator[]()", "i"};
         }
         return data_[label_[i]];
     }
 
-    // void set_val(std::size_t i, T val) { this->operator[](i) = val; }
+    // void set_val(idx i, T val) { this->operator[](i) = val; }
 };
 
+/**
+ * \brief Mutable proxy to quantum engine dits
+ */
+using proxy_to_engine_dits_t = internal::LabelledVectorProxy<idx, false>;
+
+/**
+ * \brief Const proxy to quantum engine dits
+ */
+using const_proxy_to_engine_dits_t = internal::LabelledVectorProxy<idx, true>;
 } /* namespace internal */
 } /* namespace qpp */
 

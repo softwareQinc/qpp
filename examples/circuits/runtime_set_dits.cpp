@@ -23,7 +23,8 @@ int main() {
     qc.cond_if([](auto dits) { return dits[0] == 1; });
     // curly braces are optional, used to force code indenting
     {
-        // define a functor of the required form proxy_to_engine_dits_t -> void
+        // define a functor of the required form
+        // qpp::internal::proxy_to_engine_dits_t -> void
         auto functor = [](auto dits) { dits[0] = 100; };
 
         // runtime set dit statement

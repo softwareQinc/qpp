@@ -103,10 +103,12 @@ TEST(qpp_qasm_read_from_file, MappedGates) {
     // Final state
     ket psi1 = engine.get_state();
 
-    // Reference state
-    ket psi2 = QASMTOOLS_QASM2_SPECS
-                   ? kron(gt.H * 0_ket * (-1_i), gt.H * 0_ket * (-1_i))
-                   : kron(gt.H * 0_ket, gt.H * 0_ket);
+// Reference state
+#ifdef QASMTOOLS_QASM2_SPECS
+    ket psi2 = kron(gt.H * 0_ket * (-1_i), gt.H * 0_ket * (-1_i));
+#else
+    ket psi2 = kron(gt.H * 0_ket, gt.H * 0_ket);
+#endif
 
     // Check norm
     EXPECT_NEAR(0, norm(psi1 - psi2), 1e-5);
@@ -125,8 +127,12 @@ TEST(qpp_qasm_read_from_file, NonDestrMeas) {
     // Final state
     ket psi = engine.get_state();
 
-    // Reference state
-    ket mres = QASMTOOLS_QASM2_SPECS ? mket({res}) * (-1_i) : mket({res});
+// Reference state
+#ifdef QASMTOOLS_QASM2_SPECS
+    ket mres = mket({res}) * (-1_i);
+#else
+    ket mres = mket({res});
+#endif
 
     // Check norm
     EXPECT_NEAR(0, norm(psi - mres), 1e-5);
@@ -141,8 +147,12 @@ TEST(qpp_qasm_read_from_file, Reset) {
     // Final state
     ket psi = engine.get_state();
 
-    // Reference state
-    ket psi2 = QASMTOOLS_QASM2_SPECS ? 0_ket * (-1_i) : 0_ket;
+// Reference state
+#ifdef QASMTOOLS_QASM2_SPECS
+    ket psi2 = 0_ket * (-1_i);
+#else
+    ket psi2 = 0_ket;
+#endif
 
     // Check norm
     EXPECT_NEAR(0, norm(psi - psi2), 1e-5);

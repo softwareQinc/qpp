@@ -86,8 +86,10 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \brief Initializes the gates
      */
     Gates() {
-        H << 1 / std::sqrt(2.), 1 / std::sqrt(2.), 1 / std::sqrt(2.),
-            -1 / std::sqrt(2.);
+        H << 1 / std::sqrt(static_cast<realT>(2.0)),
+            1 / std::sqrt(static_cast<realT>(2.0)),
+            1 / std::sqrt(static_cast<realT>(2.0)),
+            -1 / std::sqrt(static_cast<realT>(2.0));
         X << 0, 1, 1, 0;
         Z << 1, 0, 0, -1;
         Y << 0, -1_i, 1_i, 0;
@@ -100,13 +102,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         CNOTba(3, 1) = 1;
         CZ(3, 3) = -1;
 
-        RXX = RXX * (1 / std::sqrt(2.));
-        RXX.block(0, 2, 2, 2) = ((-1_i / std::sqrt(2.))) * X;
-        RXX.block(2, 0, 2, 2) = ((-1_i / std::sqrt(2.))) * X;
+        RXX = RXX * (1 / std::sqrt(static_cast<realT>(2.0)));
+        RXX.block(0, 2, 2, 2) = (-1_i / std::sqrt(static_cast<realT>(2.0))) * X;
+        RXX.block(2, 0, 2, 2) = (-1_i / std::sqrt(static_cast<realT>(2.0))) * X;
 
-        RYY = RYY * (1 / std::sqrt(2.));
-        RYY.block(0, 2, 2, 2) = (1 / std::sqrt(2.)) * Y.transpose().conjugate();
-        RYY.block(2, 0, 2, 2) = (1 / std::sqrt(2.)) * Y;
+        RYY = RYY * (1 / std::sqrt(static_cast<realT>(2.0)));
+        RYY.block(0, 2, 2, 2) = (1 / std::sqrt(static_cast<realT>(2.0))) *
+                                Y.transpose().conjugate();
+        RYY.block(2, 0, 2, 2) = (1 / std::sqrt(static_cast<realT>(2.0))) * Y;
 
         SWAP.block(1, 1, 2, 2) = X;
         TOF.block(6, 6, 2, 2) = X;
@@ -237,7 +240,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
        // column major order for speed
         for (idx j = 0; j < D; ++j) {
             for (idx i = 0; i < D; ++i) {
-                result(D * i + j, i + D * j) = 1;
+                result((D * i) + j, i + (D * j)) = 1;
             }
         }
 
@@ -647,7 +650,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check that target list match the dimension of the matrix
         idx DA = rA.rows();
-        if (DA != internal::safe_pow(d, target.size())) {
+        if (DA != internal::safe_pow<idx>(d, target.size())) {
             throw exception::MatrixMismatchSubsys("qpp::Gates::CTRL()",
                                                   "A/d/target");
         }
@@ -671,7 +674,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         }
 
         idx D = prod(dims);
-        idx Dctrl = internal::safe_pow(d, ctrl.size());
+        idx Dctrl = internal::safe_pow<idx>(d, ctrl.size());
         idx ctrl_size = ctrl.size();
 
         dyn_mat<typename Derived::Scalar> result =

@@ -68,7 +68,9 @@ int main() {
      *  --V-----V_d------V---
      */
     cmat sqrtx{cmat::Zero(2, 2)};
-    sqrtx << 0.5 + 0.5 * 1_i, 0.5 - 0.5 * 1_i, 0.5 - 0.5 * 1_i, 0.5 + 0.5 * 1_i;
+    auto half = static_cast<realT>(0.5);
+    sqrtx << half + half * 1_i, half - half * 1_i, half - half * 1_i,
+        half + half * 1_i;
     result = applyCTRL(psi_in, sqrtx, {1}, {2});
     result = applyCTRL(result, gt.X, {0}, {1});
     result = applyCTRL(result, adjoint(sqrtx), {1}, {2});

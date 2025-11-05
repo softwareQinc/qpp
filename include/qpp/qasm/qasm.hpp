@@ -51,10 +51,6 @@
 
 #include "qasmtools/parser/parser.hpp"
 
-#ifndef QASMTOOLS_QASM2_SPECS
-#define QASMTOOLS_QASM2_SPECS false
-#endif
-
 namespace qpp::qasm {
 
 namespace ast = qasmtools::ast;
@@ -74,61 +70,73 @@ static std::unordered_map<ast::symbol,
          }},
         {"x",
          [](const std::vector<realT>&) {
-             return QASMTOOLS_QASM2_SPECS
-                        ? Gates::get_no_thread_local_instance().X * (-1_i)
-                        : Gates::get_no_thread_local_instance().X;
+#ifdef QASMTOOLS_QASM2_SPECS
+             return Gates::get_no_thread_local_instance().X * (-1_i);
+#else
+             return Gates::get_no_thread_local_instance().X;
+#endif
          }},
         {"y",
          [](const std::vector<realT>&) {
-             return QASMTOOLS_QASM2_SPECS
-                        ? Gates::get_no_thread_local_instance().Y * (-1_i)
-                        : Gates::get_no_thread_local_instance().Y;
+#ifdef QASMTOOLS_QASM2_SPECS
+             return Gates::get_no_thread_local_instance().Y * (-1_i);
+#else
+             return Gates::get_no_thread_local_instance().Y;
+#endif
          }},
         {"z",
          [](const std::vector<realT>&) {
-             return QASMTOOLS_QASM2_SPECS
-                        ? Gates::get_no_thread_local_instance().Z * (-1_i)
-                        : Gates::get_no_thread_local_instance().Z;
+#ifdef QASMTOOLS_QASM2_SPECS
+             return Gates::get_no_thread_local_instance().Z * (-1_i);
+#else
+             return Gates::get_no_thread_local_instance().Z;
+#endif
          }},
         {"h",
          [](const std::vector<realT>&) {
-             return QASMTOOLS_QASM2_SPECS
-                        ? Gates::get_no_thread_local_instance().H * (-1_i)
-                        : Gates::get_no_thread_local_instance().H;
+#ifdef QASMTOOLS_QASM2_SPECS
+             return Gates::get_no_thread_local_instance().H * (-1_i);
+#else
+             return Gates::get_no_thread_local_instance().H;
+#endif
          }},
         {"s",
          [](const std::vector<realT>&) {
-             return QASMTOOLS_QASM2_SPECS
-                        ? Gates::get_no_thread_local_instance().S *
-                              std::exp(-1_i *
-                                       static_cast<cplx::value_type>(pi / 4.0))
-                        : Gates::get_no_thread_local_instance().S;
+#ifdef QASMTOOLS_QASM2_SPECS
+             return Gates::get_no_thread_local_instance().S *
+                    std::exp(-1_i * static_cast<cplx::value_type>(pi / 4.0));
+#else
+             return Gates::get_no_thread_local_instance().S;
+#endif
          }},
         {"sdg",
          [](const std::vector<realT>&) {
-             return QASMTOOLS_QASM2_SPECS
-                        ? (Gates::get_no_thread_local_instance().S.adjoint() *
-                           std::exp(1_i *
-                                    static_cast<cplx::value_type>(pi / 4.0)))
-                              .eval()
-                        : Gates::get_no_thread_local_instance().S.adjoint();
+#ifdef QASMTOOLS_QASM2_SPECS
+             return (Gates::get_no_thread_local_instance().S.adjoint() *
+                     std::exp(1_i * static_cast<cplx::value_type>(pi / 4.0)))
+                 .eval();
+#else
+             return Gates::get_no_thread_local_instance().S.adjoint();
+#endif
          }},
         {"t",
          [](const std::vector<realT>&) {
-             return QASMTOOLS_QASM2_SPECS
-                        ? Gates::get_no_thread_local_instance().T *
-                              std::exp(-1_i *
-                                       static_cast<cplx::value_type>(pi / 8.0))
-                        : Gates::get_no_thread_local_instance().T;
+#ifdef QASMTOOLS_QASM2_SPECS
+             return Gates::get_no_thread_local_instance().T *
+                    std::exp(-1_i * static_cast<cplx::value_type>(pi / 8.0));
+#else
+             return Gates::get_no_thread_local_instance().T;
+#endif
          }},
         {"tdg",
          [](const std::vector<realT>&) {
-             return QASMTOOLS_QASM2_SPECS
-                        ? (Gates::get_no_thread_local_instance().T.adjoint() *
-                           std::exp(1_i *
-                                    static_cast<cplx::value_type>(pi / 8.0)))
-                              .eval()
-                        : Gates::get_no_thread_local_instance().T.adjoint();
+#ifdef QASMTOOLS_QASM2_SPECS
+             return (Gates::get_no_thread_local_instance().T.adjoint() *
+                     std::exp(1_i * static_cast<cplx::value_type>(pi / 8.0)))
+                 .eval();
+#else
+             return Gates::get_no_thread_local_instance().T.adjoint();
+#endif
          }},
         {"rx",
          [](const std::vector<realT>& args) {
@@ -147,9 +155,11 @@ static std::unordered_map<ast::symbol,
          }},
         {"cz",
          [](const std::vector<realT>&) {
-             return QASMTOOLS_QASM2_SPECS
-                        ? Gates::get_no_thread_local_instance().CZ * (-1)
-                        : Gates::get_no_thread_local_instance().CZ;
+#ifdef QASMTOOLS_QASM2_SPECS
+             return Gates::get_no_thread_local_instance().CZ * (-1);
+#else
+             return Gates::get_no_thread_local_instance().CZ;
+#endif
          }},
         {"cy",
          [](const std::vector<realT>&) {
@@ -165,18 +175,21 @@ static std::unordered_map<ast::symbol,
          [](const std::vector<realT>&) {
              cmat mat{cmat::Identity(4, 4)};
              mat.block(2, 2, 2, 2) = Gates::get_no_thread_local_instance().H;
-             return QASMTOOLS_QASM2_SPECS
-                        ? mat * std::exp(-1_i * static_cast<cplx::value_type>(
-                                                    pi / 4.0))
-                        : mat;
+#ifdef QASMTOOLS_QASM2_SPECS
+             return mat *
+                    std::exp(-1_i * static_cast<cplx::value_type>(pi / 4.0));
+#else
+             return mat;
+#endif
          }},
         {"ccx",
          [](const std::vector<realT>&) {
-             return QASMTOOLS_QASM2_SPECS
-                        ? Gates::get_no_thread_local_instance().TOF *
-                              (-std::exp(-1_i * static_cast<cplx::value_type>(
-                                                    pi / 8.0)))
-                        : Gates::get_no_thread_local_instance().TOF;
+#ifdef QASMTOOLS_QASM2_SPECS
+             return Gates::get_no_thread_local_instance().TOF *
+                    (-std::exp(-1_i * static_cast<cplx::value_type>(pi / 8.0)));
+#else
+             return Gates::get_no_thread_local_instance().TOF;
+#endif
          }},
         {"crz", [](const std::vector<realT>& args) {
              assert(!args.empty());
@@ -551,7 +564,7 @@ class QCircuitBuilder final : public ast::Visitor {
         // generate the matrix
         cmat u{cmat::Zero(2, 2)};
 
-#if QASMTOOLS_QASM2_SPECS
+#ifdef QASMTOOLS_QASM2_SPECS
         // standard QASM spec, as defined in
         // https://arxiv.org/pdf/1707.03429.pdf
         u << std::cos(theta / 2) *

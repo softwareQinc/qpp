@@ -2208,7 +2208,7 @@ dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
     else if (is_row_vec) {
         for (idx i = 0; i < D_cols; ++i) {
             auto coeff = rA(i);
-            if (coeff != 0.0) {
+            if (coeff != static_cast<realT>(0.0)) {
                 auto bra_dits = n2multiidx(i, dims_cols);
                 result.states.emplace_back(coeff, bra_dits);
             }
@@ -2218,7 +2218,7 @@ dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
     else if (is_col_vec) {
         for (idx i = 0; i < D_rows; ++i) {
             auto coeff = rA(i);
-            if (coeff != 0.0) {
+            if (coeff != static_cast<realT>(0.0)) {
                 auto ket_dits = n2multiidx(i, dims_rows);
                 result.states.emplace_back(coeff, ket_dits);
             }
@@ -2230,7 +2230,7 @@ dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
             auto ket_dits = n2multiidx(i, dims_rows);
             for (idx j = 0; j < D_cols; ++j) {
                 auto coeff = rA(i, j);
-                if (coeff != 0.0) {
+                if (coeff != static_cast<realT>(0.0)) {
                     auto bra_dits = n2multiidx(j, dims_cols);
                     auto mat_dits = ket_dits;
                     mat_dits.insert(mat_dits.end(), bra_dits.cbegin(),

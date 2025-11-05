@@ -131,7 +131,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         // decide if we can sample (every step after optimize_up_to_pos
         // must be a projective measurement, including discarding)
-        for (idx i = optimize_up_to_pos; i < steps.size(); ++i) {
+        for (idx i = optimize_up_to_pos; i < static_cast<idx>(steps.size());
+             ++i) {
             if (!(internal::is_projective_measurement(steps[i])) ||
                 internal::is_discard(steps[i])) {
                 return {false, optimize_up_to_pos};
@@ -163,7 +164,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                          std::map<idx, idx>& q_ps_val, std::set<idx>& q_m) {
         bool measured = false;
 
-        for (idx i = pos; i < steps.size(); ++i) {
+        for (idx i = pos; i < static_cast<idx>(steps.size()); ++i) {
             // post-selection
             if (internal::is_projective_post_selection(steps[i])) {
                 measured = true;
@@ -245,7 +246,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         if (internal::has_runtime_steps(steps.front(), steps.back())) {
             auto it = steps[0];
             it.advance(pos);
-            for (; it.get_ip() < steps.size(); ++it) {
+            for (; it.get_ip() < static_cast<idx>(steps.size()); ++it) {
                 if (internal::is_measurement(it)) {
                     measured = true;
                 }
@@ -259,7 +260,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
         // execute serially
         else {
-            for (idx i = pos; i < steps.size(); ++i) {
+            for (idx i = pos; i < static_cast<idx>(steps.size()); ++i) {
                 if (internal::is_measurement(steps[i])) {
                     measured = true;
                 }
@@ -379,7 +380,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
             // make sure post-selected qudits agree on their values
             bool post_selection_failed = false;
-            for (idx q = 0; q < sample_from.size(); ++q) {
+            for (idx q = 0; q < static_cast<idx>(sample_from.size()); ++q) {
                 // qudit sample_from[i] is a post-selected qudit
                 if (auto it = q_ps_val.find(sample_from[q]);
                     it != q_ps_val.end()) {
@@ -829,7 +830,8 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     std::iota(labels.begin(), labels.end(), 0);
                     labels =
                         runtime_step.ctx_.restore_dits_from_dit_ctx(labels);
-                    const_proxy_to_engine_dits_t w(qeng_st_.dits_, labels);
+                    internal::const_proxy_to_engine_dits_t w(qeng_st_.dits_,
+                                                             labels);
 
                     // evaluate the conditional if/while runtime expression
                     is_true = predicate(w);
@@ -878,7 +880,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                     std::iota(labels.begin(), labels.end(), 0);
                     labels =
                         runtime_step.ctx_.restore_dits_from_dit_ctx(labels);
-                    proxy_to_engine_dits_t w(qeng_st_.dits_, labels);
+                    internal::proxy_to_engine_dits_t w(qeng_st_.dits_, labels);
 
                     // evaluate the statement
                     functor(w);

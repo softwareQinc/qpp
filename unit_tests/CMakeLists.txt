@@ -36,7 +36,7 @@ endforeach()
 
 add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL tests/main.cpp
                                                ${TEST_SOURCES_FILTERED})
-target_link_libraries(${TARGET_NAME} PRIVATE libqpp GTest::gmock)
+target_link_libraries(${TARGET_NAME} PRIVATE libqpp_internal GTest::gmock)
 
 include(GoogleTest)
 gtest_discover_tests(${TARGET_NAME})
