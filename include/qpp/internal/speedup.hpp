@@ -53,9 +53,6 @@ namespace internal {
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
 apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
-<<<<<<< Updated upstream
-             const Eigen::MatrixBase<Derived2>& A, idx i, idx n) {}
-=======
              const Eigen::MatrixBase<Derived2>& A, idx i, idx n) {
     // 1. Type and Dimension Setup
     using Scalar = typename Derived1::Scalar;
@@ -131,9 +128,6 @@ apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
 apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
-<<<<<<< Updated upstream
-             const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx n) {}
-=======
              const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx n) {
 
     // 1. Type and Dimension Setup
