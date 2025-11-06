@@ -433,11 +433,11 @@ inline cmat randrho(idx D = 2) {
 /**
  * \brief Generates a random uniformly distributed permutation
  *
- * Uses Knuth shuffle method (as implemented by std::shuffle), so that all
- * permutations are equally probable
+ * Uses the **Knuth (Fisher–Yates) shuffle** algorithm (as implemented by
+ * `std::shuffle`), ensuring that all permutations are equally probable
  *
  * \param N Size of the permutation
- * \return Random permutation of size \a N
+ * \return A random permutation of the integers [0, 1, ..., N - 1]
  */
 inline std::vector<idx> randperm(idx N) {
     // EXCEPTION CHECKS
