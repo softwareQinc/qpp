@@ -61,7 +61,8 @@ apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
 
     // Input Validation
     assert(i < n && "Target qubit index i must be less than n");
-    assert(state.size() == D && "State vector size must be 2^n");
+    assert(static_cast<idx>(state.size()) == D &&
+           "State vector size must be 2^n");
     assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
 
     // A deep copy of the input state is required. The new state must be
@@ -142,7 +143,8 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     // Input Validation
     assert(i < n && j < n && i != j &&
            "Target qubit indices i and j must be distinct and less than n");
-    assert(state.size() == D && "State vector size must be 2^n");
+    assert(static_cast<idx>(state.size()) == D &&
+           "State vector size must be 2^n");
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
 
     // A deep copy of the input state is required.
@@ -277,7 +279,8 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
     // Input Validation
     assert(i < n && j < n && k < n && i != j && i != k && j != k &&
            "Target qubit indices i, j, k must be distinct and less than n");
-    assert(state.size() == D && "State vector size must be 2^n");
+    assert(static_cast<idx>(state.size()) == D &&
+           "State vector size must be 2^n");
     assert(A.rows() == 8 && A.cols() == 8 && "Gate A must be an 8x8 matrix");
 
     // A deep copy of the input state is required.
@@ -466,12 +469,12 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     using EigenVector = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
     // Setup
-    const idx k = target.size();
+    const idx k = static_cast<idx>(target.size());
     const idx dim = 1ULL << k;
     const idx outer_dim = 1ULL << (n - k);
 
     // Input Validation
-#ifdef DEBUG
+#ifndef DEBUG
     // D is the dimension of the state (2^n)
     const idx D = 1ULL << n;
 
@@ -481,12 +484,14 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     }
 
     // Check Gate Dimension: A must be a 2^k x 2^k matrix
-    assert(A.rows() == dim && A.cols() == dim &&
+    assert(static_cast<idx>(A.rows()) == dim &&
+           static_cast<idx>(A.cols()) == dim &&
            "Gate A must be a 2^k x 2^k matrix, where k is the number of target "
            "qubits");
 
     // Check State Dimension: state must be 2^n x 1 vector
-    assert(state.size() == D && "State vector size must be 2^n");
+    assert(static_cast<idx>(state.size()) == D &&
+           "State vector size must be 2^n");
     assert(state.cols() == 1 && "State must be a column vector (ket)");
 
     // Check Target Qubit Indices are distinct
@@ -535,7 +540,7 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     std::vector<idx> outer_idx(outer_dim);
     for (idx m = 0; m < outer_dim; ++m) {
         idx i_base = 0;
-        for (idx j = 0; j < spectator_qubits.size(); ++j) {
+        for (idx j = 0; j < static_cast<idx>(spectator_qubits.size()); ++j) {
             if ((m >> j) & 1) {
                 i_base += (1ULL << (n - 1 - spectator_qubits[j]));
             }
@@ -593,7 +598,8 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
 
     // Input Validation
     assert(i < n && "Target qubit index i must be less than n");
-    assert(state.rows() == D && state.cols() == D &&
+    assert(static_cast<idx>(state.rows()) == D &&
+           static_cast<idx>(state.cols()) == D &&
            "State must be a square matrix sized 2^n x 2^n");
     assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
 
@@ -680,7 +686,7 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
     // Input Validation
     assert(i < n && j < n && i != j &&
            "Target qubit indices i and j must be distinct and less than n");
-    assert(D == D_expected && D == state.cols() &&
+    assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
            "State must be a square matrix sized 2^n x 2^n");
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
 
