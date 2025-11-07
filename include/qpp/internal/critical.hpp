@@ -55,11 +55,11 @@ template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
 apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A, idx i, idx n) {
-    // 1. Type and Dimension Setup
+    // Type and Dimension Setup
     using Scalar = typename Derived1::Scalar;
     const idx D = 1ULL << n; // Total size of the state vector (2^n)
 
-    // --- Input Validation ---
+    // Input Validation
     assert(i < n && "Target qubit index i must be less than n");
     assert(state.size() == D && "State vector size must be 2^n");
     assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
@@ -68,7 +68,7 @@ apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     // calculated using the *old* values of psi_k0 and psi_k1 simultaneously.
     expr_t<Derived1> result = state;
 
-    // 2. Pre-calculate Bit-Shift Constants (BIG-ENDIAN)
+    // Pre-calculate Bit-Shift Constants (BIG-ENDIAN)
     // The effective bit position 'j' corresponding to qubit 'i' in big-endian
     // is (n - 1 - i).
     const idx j = n - 1 - i;
@@ -80,13 +80,13 @@ apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     // 'jump' is 2^(j+1). This is the size of the block that repeats.
     const idx jump = 1ULL << (j + 1);
 
-    // 3. Extract the 2x2 gate elements
+    // Extract the 2x2 gate elements
     const Scalar a00 = A.coeff(0, 0);
     const Scalar a01 = A.coeff(0, 1);
     const Scalar a10 = A.coeff(1, 0);
     const Scalar a11 = A.coeff(1, 1);
 
-    // 4. Pair-wise Amplitude Transformation
+    // Pair-wise Amplitude Transformation
     // The outer loop (L) iterates over all blocks of size 'jump'.
     // This loop is perfectly independent and is the primary target for
     // parallelization.
@@ -135,11 +135,11 @@ template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
 apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx n) {
-    // 1. Type and Dimension Setup
+    // Type and Dimension Setup
     using Scalar = typename Derived1::Scalar;
     const idx D = 1ULL << n; // Total size of the state vector (2^n)
 
-    // --- Input Validation ---
+    // Input Validation
     assert(i < n && j < n && i != j &&
            "Target qubit indices i and j must be distinct and less than n");
     assert(state.size() == D && "State vector size must be 2^n");
@@ -148,7 +148,7 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     // A deep copy of the input state is required.
     expr_t<Derived1> result = state;
 
-    // 2. Pre-calculate Bit-Shift Constants (BIG-ENDIAN)
+    // Pre-calculate Bit-Shift Constants (BIG-ENDIAN)
     // The effective bit position 'p' for a physical qubit 'q' in big-endian is
     // (n - 1 - q).
     const idx p_i = n - 1 - i;
@@ -163,7 +163,7 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     // total blocks)
     const idx D_rem = 1ULL << (n - 2);
 
-    // 3. Extract the 4x4 gate elements
+    // Extract the 4x4 gate elements
     // Using .coeff() for fast, direct access. A is assumed to be 4x4.
     const Scalar a00 = A.coeff(0, 0);
     const Scalar a01 = A.coeff(0, 1);
@@ -185,7 +185,7 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     const Scalar a32 = A.coeff(3, 2);
     const Scalar a33 = A.coeff(3, 3);
 
-    // 4. Pair-wise Amplitude Transformation (Robust Loop for all i, j)
+    // Pair-wise Amplitude Transformation (Robust Loop for all i, j)
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
@@ -194,7 +194,7 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     // are zero
     for (idx block_idx = 0; block_idx < D_rem; ++block_idx) {
 
-        // --- 1. Reconstruct the base index k00 ---
+        // Reconstruct the base index k00
         idx k00 = 0;
         idx current_block_bit =
             0; // The current bit position in 'block_idx' (0 to n-3)
@@ -216,7 +216,7 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
             current_block_bit++;
         }
 
-        // --- 2. Calculate the other three indices from k00, s_i, and s_j ---
+        // Calculate the other three indices from k00, s_i, and s_j
 
         // k01: |...0_i 1_j...> (A index 1)
         const idx k01 = k00 + s_j;
@@ -225,14 +225,14 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
         // k11: |...1_i 1_j...> (A index 3)
         const idx k11 = k00 + s_i + s_j;
 
-        // --- 3. Fetch the ORIGINAL amplitudes ---
+        // Fetch the ORIGINAL amplitudes
         const Scalar psi00 = state.coeff(k00);
         const Scalar psi01 = state.coeff(k01);
         const Scalar psi10 = state.coeff(k10);
         const Scalar psi11 = state.coeff(k11);
 
-        // --- 4. Apply the 4x4 matrix-vector multiplication A * [psi00, psi01,
-        // psi10, psi11]^T ---
+        // Apply the 4x4 matrix-vector multiplication A * [psi00, psi01,
+        // psi10, psi11]^T
 
         // Row 0 -> result_k00 (|0_i 0_j>)
         result.coeffRef(k00) =
@@ -270,11 +270,11 @@ template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
 apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx k, idx n) {
-    // 1. Type and Dimension Setup
+    // Type and Dimension Setup
     using Scalar = typename Derived1::Scalar;
     const idx D = 1ULL << n; // Total size of the state vector (2^n)
 
-    // --- Input Validation ---
+    // Input Validation
     assert(i < n && j < n && k < n && i != j && i != k && j != k &&
            "Target qubit indices i, j, k must be distinct and less than n");
     assert(state.size() == D && "State vector size must be 2^n");
@@ -283,7 +283,7 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
     // A deep copy of the input state is required.
     expr_t<Derived1> result = state;
 
-    // 2. Pre-calculate Bit-Shift Constants (BIG-ENDIAN)
+    // Pre-calculate Bit-Shift Constants (BIG-ENDIAN)
     // The effective bit position 'p' for a physical qubit 'q' in big-endian is
     // (n - 1 - q).
     const idx p_i = n - 1 - i;
@@ -300,7 +300,7 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
     // total blocks)
     const idx D_rem = 1ULL << (n - 3);
 
-    // 3. Extract the 8x8 gate elements (A is assumed to be 8x8)
+    // Extract the 8x8 gate elements (A is assumed to be 8x8)
     // A[r, c] maps to basis states |c_i c_j c_k> -> |r_i r_j r_k>
     const Scalar A00 = A.coeff(0, 0), A01 = A.coeff(0, 1), A02 = A.coeff(0, 2),
                  A03 = A.coeff(0, 3);
@@ -342,7 +342,7 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
     const Scalar A74 = A.coeff(7, 4), A75 = A.coeff(7, 5), A76 = A.coeff(7, 6),
                  A77 = A.coeff(7, 7);
 
-    // 4. Robust Amplitude Transformation
+    // Robust Amplitude Transformation
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
@@ -351,7 +351,7 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
     // are zero
     for (idx block_idx = 0; block_idx < D_rem; ++block_idx) {
 
-        // --- 1. Reconstruct the base index k000 ---
+        // Reconstruct the base index k000
         idx k000 = 0;
         idx current_block_bit =
             0; // The current bit position in 'block_idx' (0 to n-4)
@@ -373,7 +373,7 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
             current_block_bit++;
         }
 
-        // --- 2. Calculate the other seven indices from k000 ---
+        // Calculate the other seven indices from k000
         // k0xy is k000 + (x * s_j) + (y * s_k)
         // k1xy is k000 + s_i + (x * s_j) + (y * s_k)
 
@@ -387,8 +387,8 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
         const idx k110 = k100 + s_j; // |110>
         const idx k111 = k110 + s_k; // |111>
 
-        // --- 3. Fetch the ORIGINAL amplitudes from the INPUT 'state' (8
-        // inputs) ---
+        // Fetch the ORIGINAL amplitudes from the INPUT 'state' (8
+        // inputs)
         const Scalar psi000 = state.coeff(k000);
         const Scalar psi001 = state.coeff(k001);
         const Scalar psi010 = state.coeff(k010);
@@ -398,8 +398,8 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
         const Scalar psi110 = state.coeff(k110);
         const Scalar psi111 = state.coeff(k111);
 
-        // --- 4. Apply the 8x8 matrix-vector multiplication A * [psi000, ...,
-        // psi111]^T --- Grouping multiplications in parentheses for
+        // Apply the 8x8 matrix-vector multiplication A * [psi000, ...,
+        // psi111]^T; grouping multiplications in parentheses for
         // consistency.
 
         // Row 0 -> result_k000 (|000>)
@@ -461,35 +461,35 @@ template <typename Derived1, typename Derived2>
 apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A,
              const std::vector<idx>& target, idx n) {
-    // --- Type Aliases ---
+    // Type Aliases
     using Scalar = typename Derived1::Scalar;
     using EigenVector = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
-    // --- Setup ---
+    // Setup
     const idx k = target.size();
     const idx dim = 1ULL << k;
     const idx outer_dim = 1ULL << (n - k);
 
-    // --- Input Validation ---
+    // Input Validation
 #ifdef DEBUG
     // D is the dimension of the state (2^n)
     const idx D = 1ULL << n;
 
-    // 1. Check Target Qubit Indices are valid
+    // Check Target Qubit Indices are valid
     for (idx t : target) {
         assert(t < n && "Target qubit index must be less than n");
     }
 
-    // 2. Check Gate Dimension: A must be a 2^k x 2^k matrix
+    // Check Gate Dimension: A must be a 2^k x 2^k matrix
     assert(A.rows() == dim && A.cols() == dim &&
            "Gate A must be a 2^k x 2^k matrix, where k is the number of target "
            "qubits");
 
-    // 3. Check State Dimension: state must be 2^n x 1 vector
+    // Check State Dimension: state must be 2^n x 1 vector
     assert(state.size() == D && "State vector size must be 2^n");
     assert(state.cols() == 1 && "State must be a column vector (ket)");
 
-    // 4. Check Target Qubit Indices are distinct
+    // Check Target Qubit Indices are distinct
     if (k > 1) {
         std::vector<idx> sorted_target = target;
         std::sort(sorted_target.begin(), sorted_target.end());
@@ -499,12 +499,12 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     }
 #endif
 
-    // 1. Create the output state vector as a copy of the input.
+    // Create the output state vector as a copy of the input.
     // This allows in-place updates via parallel access to non-overlapping
     // blocks.
     qpp::expr_t<Derived1> result = state;
 
-    // --- Pre-calculation of Inner Indices (Gate Index Mapping) ---
+    // Pre-calculation of Inner Indices (Gate Index Mapping)
     // Maps local index r to its global index contribution.
     std::vector<idx> inner_idx(dim);
     for (idx r = 0; r < dim; ++r) {
@@ -519,7 +519,7 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
         inner_idx[r] = index_r;
     }
 
-    // --- Pre-calculation of Outer Indices (Spectator Block Base Index) ---
+    // Pre-calculation of Outer Indices (Spectator Block Base Index)
     // Maps spectator state index m to its global base index (i_base).
     std::vector<bool> is_qubit_acted_on(n, false);
     for (idx q : target) {
@@ -543,12 +543,12 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
         outer_idx[m] = i_base;
     }
 
-// --- Main Parallel Loop (Iterate over spectator blocks m) ---
+// Main Parallel Loop (Iterate over spectator blocks m)
 #pragma omp parallel for
     for (idx m = 0; m < outer_dim; ++m) {
         const idx i_base = outer_idx[m];
 
-        // 1. Input Block Caching (The Optimization)
+        // Input Block Caching (The Optimization)
         // Read the scattered input block (dim elements) into a contiguous
         // temporary vector. This ensures the GEMV in step 2 benefits from
         // perfect cache locality.
@@ -557,11 +557,11 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
             input_block(c) = state(i_base + inner_idx[c]);
         }
 
-        // 2. Core Transformation (Block GEMV)
+        // Core Transformation (Block GEMV)
         // The output of the matrix multiplication is stored in new_block
         EigenVector new_block = A * input_block;
 
-        // 3. Write Output Block (Scattered Write)
+        // Write Output Block (Scattered Write)
         // Write the contiguous result block (new_block) back to the scattered
         // global indices.
         for (idx r = 0; r < dim; ++r) {
@@ -591,7 +591,7 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
     using Matrix2 = Eigen::Matrix2<Scalar>;
     const idx D = 1ULL << n; // total Hilbert space dimension
 
-    // --- Input validation ---
+    // Input Validation
     assert(i < n && "Target qubit index i must be less than n");
     assert(state.rows() == D && state.cols() == D &&
            "State must be a square matrix sized 2^n x 2^n");
@@ -619,7 +619,7 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
 #pragma omp parallel for collapse(2)
 #endif
     for (idx s = 0; s < D_spec; ++s) {
-        // 1. Calculate Row Indices (r0, r1) from spectator state 's'
+        // Calculate Row Indices (r0, r1) from spectator state 's'
         // r0 = index for |s, 0> (inserting '0' at bit p_i)
         const idx s_high_r = s >> p_i;
         const idx s_low_r = s & low_mask;
@@ -627,14 +627,14 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
         const idx r1 = r0 + s_i; // r1 = index for |s, 1>
 
         for (idx s_prime = 0; s_prime < D_spec; ++s_prime) {
-            // 2. Calculate Column Indices (c0, c1) from spectator state
+            // Calculate Column Indices (c0, c1) from spectator state
             // 's_prime' c0 = index for |s', 0> (inserting '0' at bit p_i)
             const idx s_prime_high_c = s_prime >> p_i;
             const idx s_prime_low_c = s_prime & low_mask;
             const idx c0 = (s_prime_high_c << p_i_plus_1) | s_prime_low_c;
             const idx c1 = c0 + s_i; // c1 = index for |s', 1>
 
-            // 3. Extract the current 2x2 block rho[r0:r1, c0:c1]
+            // Extract the current 2x2 block rho[r0:r1, c0:c1]
             // We use Matrix2cd (fixed size) for maximum optimization by Eigen.
             Matrix2 rho_block;
             rho_block(0, 0) = state.coeff(r0, c0);
@@ -642,7 +642,7 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
             rho_block(1, 0) = state.coeff(r1, c0);
             rho_block(1, 1) = state.coeff(r1, c1);
 
-            // 4. Apply the transformation: A * rho_block * A^\dagger
+            // Apply the transformation: A * rho_block * A^\dagger
             // Eigen will fully unroll and vectorize this small matrix
             // multiplication.
             const Matrix2 result_block = A_block * rho_block * A_dagger;
@@ -677,20 +677,20 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
     const idx D = static_cast<idx>(state.rows());
     const idx D_expected = (1ULL << n);
 
-    // --- Input Validation ---
+    // Input Validation
     assert(i < n && j < n && i != j &&
            "Target qubit indices i and j must be distinct and less than n");
     assert(D == D_expected && D == state.cols() &&
            "State must be a square matrix sized 2^n x 2^n");
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
 
-    // --- Index Conversion (Big Endian to Little Endian) ---
+    // Index Conversion (Big Endian to Little Endian)
     // Convert user's MSB-first indices (0 is MSB) to physical LSB-first indices
     // (0 is LSB)
     const idx i_phys = n - i - 1;
     const idx j_phys = n - j - 1;
 
-    // --- Type and Setup ---
+    // Type and Dimension Setup
     using Scalar = typename Derived1::Scalar;
     using ComputeMatrixType = Eigen::Matrix<Scalar, -1, -1>;
     using ComputeBlockType = Eigen::Matrix<Scalar, 4, 4>;
@@ -708,7 +708,7 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
 
     ComputeMatrixType rho_prime_cd = ComputeMatrixType::Zero(D, D);
 
-// --- Block Iteration (Parallelized) ---
+// Block Iteration (Parallelized)
 // Parallelize the outermost loop (row-blocks). This is safe as each thread
 // writes to a non-overlapping region of rho_prime_cd.
 #pragma omp parallel for default(none) shared(                                 \
@@ -765,14 +765,14 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
             vec_k_col[2] = r_base_col + P_i;
             vec_k_col[3] = r_base_col + P_i + P_j;
 
-            // 3. Extract the 4x4 block M from the *input* state
+            // Extract the 4x4 block M from the *input* state
             for (int row = 0; row < 4; ++row) {
                 for (int col = 0; col < 4; ++col) {
                     M(row, col) = rho_cd(vec_k_row[row], vec_k_col[col]);
                 }
             }
 
-            // 4. Apply the gate: M' = U * M * U_adj (Optimized 4x4
+            // Apply the gate: M' = U * M * U_adj (Optimized 4x4
             // multiplication)
             M_prime = (U * M * U_adj).eval();
 
