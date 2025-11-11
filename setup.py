@@ -11,8 +11,8 @@ p = subprocess.Popen(
     stderr=subprocess.STDOUT,
 )
 
-prefix_eigen = "Detected Eigen3 in: "
-prefix_pybind11 = "Detected pybind11 in: "
+prefix_eigen = "Eigen3: "
+prefix_pybind11 = "pybind11: "
 eigen_path = None
 pybind11_path = None
 
