@@ -18,7 +18,7 @@ foreach(file ${EXAMPLE_FILES})
   get_filename_component(TARGET_NAME ${file} NAME_WE)
   # Do not build "examples/matlab_io.cpp" if there's no MATLAB support
   if(${TARGET_NAME} STREQUAL "matlab_io" AND NOT MATLAB_FOUND)
-    message(STATUS "Skipping example ${TARGET_NAME} (MATLAB not found).")
+    message(STATUS "Skipping example: ${file} (MATLAB support not enabled)")
     continue()
   endif()
   add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL ${file})

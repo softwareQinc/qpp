@@ -54,7 +54,11 @@ target_compile_definitions(
             $<$<NOT:$<CONFIG:Debug>>:EIGEN_NO_DEBUG>)
 
 # Default build type
-set(CMAKE_BUILD_TYPE
-    Release
-    CACHE STRING "Choose the type of build, options are:
-        None Debug Release MinSizeRel RelWithDebInfo.")
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE
+      "Release"
+      CACHE
+        STRING
+        "Choose the type of build: None Debug Release MinSizeRel RelWithDebInfo."
+        FORCE)
+endif()

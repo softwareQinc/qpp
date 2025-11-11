@@ -116,14 +116,20 @@ install(
   DIRECTORY include/
   DESTINATION ${QPP_INSTALL_DIR}
   FILES_MATCHING
+  PATTERN "*.h"
+  PATTERN "*.h++"
+  PATTERN "*.hh"
   PATTERN "*.hpp"
-  PATTERN "*.h")
+  PATTERN "*.hxx")
 install(
   DIRECTORY qasmtools/include/
   DESTINATION ${QPP_INSTALL_DIR}
   FILES_MATCHING
+  PATTERN "*.h"
+  PATTERN "*.h++"
+  PATTERN "*.hh"
   PATTERN "*.hpp"
-  PATTERN "*.h")
+  PATTERN "*.hxx")
 
 # Install target and config files
 install(TARGETS libqpp EXPORT qpp_targets)

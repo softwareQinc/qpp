@@ -30,7 +30,7 @@ foreach(file ${TEST_SOURCES})
   if(NOT ("${file}" MATCHES "matlab\\.cpp" AND NOT MATLAB_FOUND))
     list(APPEND TEST_SOURCES_FILTERED "${file}")
   else()
-    message(STATUS "Skipping test file ${file} (MATLAB not found).")
+    message(STATUS "Skipping test file: ${file} (MATLAB support not enabled)")
   endif()
 endforeach()
 
