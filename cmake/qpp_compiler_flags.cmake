@@ -1,4 +1,5 @@
-# Compiler options
+# Compiler flags/options
+
 target_compile_options(
   libqpp
   INTERFACE

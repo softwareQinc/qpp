@@ -1,4 +1,5 @@
 # OpenQASM 2.0 specs, see DISCREPANCIES.md for a comparison with Qiskit
+
 option(QASMTOOLS_QASM2_SPECS
        "Use OpenQASM 2.0 standard instead of Qiskit gate specifications" OFF)
 

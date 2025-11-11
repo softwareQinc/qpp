@@ -1,4 +1,5 @@
 # OpenMP support
+
 option(QPP_OPENMP "Enable OpenMP support" ON)
 
 if(QPP_OPENMP)
