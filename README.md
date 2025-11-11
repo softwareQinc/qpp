@@ -11,7 +11,7 @@
 **Quantum++** is a modern C++ general purpose quantum computing library,
 composed solely of template header files. **Quantum++** is written in standard
 C++17 and has very low external dependencies, using only the
-[Eigen 3](https://eigen.tuxfamily.org) linear algebra header-only template
+[Eigen 3](https://libeigen.gitlab.io) linear algebra header-only template
 library and, if available, the [OpenMP](https://www.openmp.org/)
 multiprocessing library.
 
@@ -38,12 +38,13 @@ branch. The latter will eventually be merged into a future release version. To
 contribute, it is preferable to have a solid knowledge of modern C++
 (preferably C++17 or later), including templates and the standard library, a
 basic knowledge of quantum computing and linear algebra, and working experience
-with [Eigen 3](https://eigen.tuxfamily.org).
+with [Eigen 3](https://libeigen.gitlab.io).
 
-For additional [Eigen 3](https://eigen.tuxfamily.org) documentation
-see <https://eigen.tuxfamily.org/dox/>. For a simple
-[Eigen 3](https://eigen.tuxfamily.org) quick ASCII reference see
-<https://eigen.tuxfamily.org/dox/AsciiQuickReference.txt>.
+For more information on [Eigen 3](https://libeigen.gitlab.io), please refer to
+the [official documentation](https://libeigen.gitlab.io/eigen/docs-nightly/). A
+concise
+[ASCII quick reference with MATLAB comparisons](https://libeigen.gitlab.io/eigen/docs-nightly/AsciiQuickReference.txt)
+is also available.
 
 Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
 

@@ -15,7 +15,7 @@ its build/install system. **Quantum++** is platform-independent, supporting
   , [Clang](https://clang.llvm.org)
   , [MSVC](https://visualstudio.microsoft.com/vs/) etc.
 - [CMake](https://cmake.org/)
-- [Eigen 3](https://eigen.tuxfamily.org) linear algebra library. If missing, it
+- [Eigen 3](https://libeigen.gitlab.io) linear algebra library. If missing, it
   will be installed automatically by CMake as a build dependency.
 
 ### Optional
