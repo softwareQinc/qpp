@@ -491,9 +491,8 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
            "qubits");
 
     // Check State Dimension: state must be 2^n x 1 vector
-    assert(static_cast<idx>(state.size()) == D &&
-           "State vector size must be 2^n");
-    assert(state.cols() == 1 && "State must be a 2^n x 1 column vector (ket)");
+    assert(static_cast<idx>(state.size()) == D && state.cols() == 1 &&
+           "State must be a 2^n x 1 column vector (ket)");
 
     // Check Target Qubit Indices are distinct
     if (k > 1) {
@@ -726,7 +725,7 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
         idx r_base_row = 0;
         idx current_r = r;
 
-        // 1a. Calculate the 'base' index for the row block (rest qubits)
+        // Calculate the 'base' index for the row block (rest qubits)
         for (idx q = 0; q < n;
              ++q) { // q is the physical index (0=LSB, n-1=MSB)
             // Skip the physical qubits we are acting on (i_phys and j_phys).
@@ -738,7 +737,7 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
             }
         }
 
-        // 2a. Define the 4 *row* indices, aligned with the gate A's basis |q_i
+        // Define the 4 *row* indices, aligned with the gate A's basis |q_i
         // q_j> P_i corresponds to the MSB of the 4x4 block, P_j to the LSB.
         const idx vec_k_row[4] = {
             r_base_row,            // |00>
@@ -766,7 +765,7 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
                 }
             }
 
-            // 2b. Define the 4 *column* indices
+            // Define the 4 *column* indices
             vec_k_col[0] = r_base_col;
             vec_k_col[1] = r_base_col + P_j;
             vec_k_col[2] = r_base_col + P_i;
@@ -821,7 +820,7 @@ apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
     assert(i < n && j < n && k < n && i != j && i != k && j != k &&
            "Target qubit indices i, j, and k must be distinct and less than n");
     assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
-           "State must be a square matrix sized 2^n x 2^n");
+           "State must be a square matrix of size 2^n x 2^n");
     assert(A.rows() == 8 && A.cols() == 8 && "Gate A must be an 8x8 matrix");
     assert(n >= 3 && "Need at least 3 qubits for a 3-qubit gate");
 
