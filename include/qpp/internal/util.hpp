@@ -55,27 +55,27 @@ namespace internal {
 // integer index to multi-index, use C-style array for speed
 // standard lexicographical order, e.g., 00, 01, 10, 11
 template <typename T, typename U = T, typename V = T>
-[[qpp::critical]] void n2multiidx(T n, std::size_t numdims, const U* const dims,
-                                  V* result) noexcept {
+[[qpp::critical]] inline void n2multiidx(T n, std::size_t numdims,
+                                         const U* dims, V* result) noexcept {
     static_assert(std::is_integral_v<T>, "T must be an integral value");
     static_assert(std::is_integral_v<U>, "U must be an integral value");
     static_assert(std::is_integral_v<V>, "V must be an integral value");
 
-    // error checks only in DEBUG version
 #ifndef NDEBUG
-    if (numdims > 0) // numdims equal zero is a no-op
-    {
-        idx D = 1;
+    if (numdims != 0) {
+        std::size_t D = 1;
         for (std::size_t i = 0; i < numdims; ++i) {
-            D *= dims[i];
+            D *= static_cast<std::size_t>(dims[i]);
         }
-        assert(static_cast<idx>(n) < D);
+        assert(static_cast<std::size_t>(n) < D && "n is out of bounds");
     }
 #endif
-    // no error checks in release version to improve speed
-    for (std::size_t i = 0; i < numdims; ++i) {
-        result[numdims - i - 1] = n % (dims[numdims - i - 1]);
-        n /= (dims[numdims - i - 1]);
+
+    // main loop: unrolled directionally for cache locality
+    for (std::size_t i = numdims; i-- > 0;) {
+        const auto dim = static_cast<T>(dims[i]);
+        result[i] = static_cast<V>(n % dim);
+        n /= dim;
     }
 }
 
@@ -96,23 +96,21 @@ template <typename V, typename T = V, typename U = T>
     static_assert(std::is_integral_v<V>, "V must be an integral value");
 
     // error checks only in DEBUG version
-    assert(numdims > 0);
-    assert(numdims < internal::maxn);
+    assert(numdims > 0 && numdims < internal::maxn);
 #ifndef NDEBUG
     for (std::size_t i = 0; i < numdims; ++i) {
-        assert(static_cast<idx>(midx[i]) < dims[i]);
+        assert(static_cast<std::size_t>(midx[i]) <
+               static_cast<std::size_t>(dims[i]));
     }
 #endif
-    // no error checks in release version to improve speed
 
-    T part_prod = 1;
     T result = 0;
-    for (std::size_t i = 1; i < numdims; ++i) {
-        part_prod *= dims[numdims - i];
-        result += midx[numdims - i - 1] * part_prod;
+    T stride = 1;
+    for (std::size_t i = numdims; i-- > 0;) {
+        result += static_cast<T>(midx[i]) * stride;
+        stride *= static_cast<T>(dims[i]);
     }
-
-    return result + midx[numdims - 1];
+    return result;
 }
 #if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
 #pragma GCC diagnostic pop

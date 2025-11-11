@@ -61,10 +61,12 @@ apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     const idx D = 1ULL << n; // Total size of the state vector (2^n)
 
     // Input Validation
+#ifndef NDEBUG
     assert(i < n && "Target qubit index i must be less than n");
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
     assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
+#endif
 
     // A deep copy of the input state is required. The new state must be
     // calculated using the *old* values of psi_k0 and psi_k1 simultaneously.
@@ -139,14 +141,16 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx n) {
     // Type and Dimension Setup
     using Scalar = typename Derived1::Scalar;
-    const idx D = 1ULL << n; // Total size of the state vector (2^n)
 
     // Input Validation
+#ifndef NDEBUG
+    const idx D = 1ULL << n; // Total size of the state vector (2^n)
     assert(i < n && j < n && i != j &&
            "Target qubit indices i and j must be distinct and less than n");
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
+#endif
 
     // A deep copy of the input state is required.
     expr_t<Derived1> result = state;
@@ -275,14 +279,16 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx k, idx n) {
     // Type and Dimension Setup
     using Scalar = typename Derived1::Scalar;
-    const idx D = 1ULL << n; // Total size of the state vector (2^n)
 
     // Input Validation
+#ifndef NDEBUG
+    const idx D = 1ULL << n; // Total size of the state vector (2^n)
     assert(i < n && j < n && k < n && i != j && i != k && j != k &&
            "Target qubit indices i, j, k must be distinct and less than n");
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
     assert(A.rows() == 8 && A.cols() == 8 && "Gate A must be an 8x8 matrix");
+#endif
 
     // A deep copy of the input state is required.
     expr_t<Derived1> result = state;
@@ -475,7 +481,7 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     const idx outer_dim = 1ULL << (n - k);
 
     // Input Validation
-#ifndef DEBUG
+#ifndef NDEBUG
     // D is the dimension of the state (2^n)
     const idx D = 1ULL << n;
 
@@ -597,11 +603,13 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
     const idx D = 1ULL << n; // total Hilbert space dimension
 
     // Input Validation
+#ifndef NDEBUG
     assert(i < n && "Target qubit index i must be less than n");
     assert(static_cast<idx>(state.rows()) == D &&
            static_cast<idx>(state.cols()) == D &&
            "State must be a square matrix sized 2^n x 2^n");
     assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
+#endif
 
     expr_t<Derived1> result = state; // deep copy
 
@@ -681,14 +689,16 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
                               idx j, idx n) {
 
     const idx D = static_cast<idx>(state.rows());
-    const idx D_expected = (1ULL << n);
 
     // Input Validation
+#ifndef NDEBUG
+    const idx D_expected = (1ULL << n);
     assert(i < n && j < n && i != j &&
            "Target qubit indices i and j must be distinct and less than n");
     assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
            "State must be a square matrix sized 2^n x 2^n");
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
+#endif
 
     // Index Conversion (Big Endian to Little Endian)
     // Convert user's MSB-first indices (0 is MSB) to physical LSB-first indices
@@ -814,15 +824,17 @@ apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx k, idx n) {
 
     const idx D = static_cast<idx>(state.rows());
-    const idx D_expected = (1ULL << n);
 
     // Input Validation
+#ifndef NDEBUG
+    const idx D_expected = (1ULL << n);
     assert(i < n && j < n && k < n && i != j && i != k && j != k &&
            "Target qubit indices i, j, and k must be distinct and less than n");
     assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
            "State must be a square matrix of size 2^n x 2^n");
     assert(A.rows() == 8 && A.cols() == 8 && "Gate A must be an 8x8 matrix");
     assert(n >= 3 && "Need at least 3 qubits for a 3-qubit gate");
+#endif
 
     // Index Conversion (Big Endian to Little Endian
     // Convert user's MSB-first indices (0 is MSB) to physical LSB-first indices
@@ -970,7 +982,7 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     const idx D_k = (k == 0) ? 1 : (1ULL << k);
 
     // Input Validation
-#ifndef DEBUG
+#ifndef NDEBUG
     // Check Target Qubit Indices are valid
     for (idx t : target) {
         assert(t < n && "Target qubit index must be less than n");
