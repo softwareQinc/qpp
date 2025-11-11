@@ -1,4 +1,5 @@
-# MATLAB support (disabled by default)
+# MATLAB support
+
 option(QPP_MATLAB "Enable MATLAB support" OFF)
 
 if(QPP_MATLAB)

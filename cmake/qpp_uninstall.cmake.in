@@ -1,3 +1,5 @@
+# Uninstall
+
 if(NOT EXISTS "@CMAKE_BINARY_DIR@/install_manifest.txt")
   message(
     FATAL_ERROR

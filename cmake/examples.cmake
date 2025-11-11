@@ -1,4 +1,5 @@
 # Examples source file(s) to be compiled, modify as needed
+
 set(EXAMPLE_DIRS
     ${CMAKE_SOURCE_DIR}/examples ${CMAKE_SOURCE_DIR}/examples/circuits
     ${CMAKE_SOURCE_DIR}/examples/qasm)

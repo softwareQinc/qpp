@@ -97,7 +97,7 @@ TEST(qpp_apply, SubsysChannelQubits) {}
 ///       applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 ///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
 ///       const std::vector<idx>& target, const std::vector<idx>& dims,
-///       std::vector<idx> shift = {})
+///       std::optional<std::vector<idx>> shift = std::nullopt)
 TEST(qpp_applyCTRL, Qudits) {
     idx d = 3;
     idx n = 4;
@@ -165,14 +165,14 @@ TEST(qpp_applyCTRL, Qudits) {
 ///       applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 ///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
 ///       const std::vector<idx>& target, idx d = 2,
-///       std::vector<idx> shift = {})
+///       std::optional<std::vector<idx>> shift = std::nullopt)
 TEST(qpp_applyCTRL, Qubits) {}
 
 /// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
 ///       applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 ///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
 ///       const std::vector<idx>& target, const std::vector<idx>& dims,
-///       std::vector<idx> shift = {})
+///       std::optional<std::vector<idx>> shift = std::nullopt)
 TEST(qpp_applyCTRL_fan, Qudits) {
     idx d = 3;
     idx n = 4;
@@ -233,7 +233,7 @@ TEST(qpp_applyCTRL_fan, Qudits) {
 ///       applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 ///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
 ///       const std::vector<idx>& target, idx d = 2,
-///       std::vector<idx> shift = {})
+///       std::optional<std::vector<idx>> shift = std::nullopt)
 TEST(qpp_applyCTRL_fan, Qubits) {}
 
 /// BEGIN template <typename Derived> expr_t<Derived>

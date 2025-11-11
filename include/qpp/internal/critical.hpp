@@ -37,6 +37,7 @@
 
 #include <Eigen/Dense>
 
+#include "qpp/functions.hpp"
 #include "qpp/types.hpp"
 
 namespace qpp {
@@ -492,7 +493,7 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     // Check State Dimension: state must be 2^n x 1 vector
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
-    assert(state.cols() == 1 && "State must be a column vector (ket)");
+    assert(state.cols() == 1 && "State must be a 2^n x 1 column vector (ket)");
 
     // Check Target Qubit Indices are distinct
     if (k > 1) {
@@ -812,6 +813,138 @@ template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
 apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx k, idx n) {
+
+    const idx D = static_cast<idx>(state.rows());
+    const idx D_expected = (1ULL << n);
+
+    // Input Validation
+    assert(i < n && j < n && k < n && i != j && i != k && j != k &&
+           "Target qubit indices i, j, and k must be distinct and less than n");
+    assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
+           "State must be a square matrix sized 2^n x 2^n");
+    assert(A.rows() == 8 && A.cols() == 8 && "Gate A must be an 8x8 matrix");
+    assert(n >= 3 && "Need at least 3 qubits for a 3-qubit gate");
+
+    // Index Conversion (Big Endian to Little Endian
+    // Convert user's MSB-first indices (0 is MSB) to physical LSB-first indices
+    // (0 is LSB)
+    const idx i_phys = n - i - 1;
+    const idx j_phys = n - j - 1;
+    const idx k_phys = n - k - 1;
+
+    // Type and Dimension Setup
+    using Scalar = typename Derived1::Scalar;
+    using ComputeMatrixType = Eigen::Matrix<Scalar, -1, -1>;
+    // The block size is 8x8 for a 3-qubit gate
+    using ComputeBlockType = Eigen::Matrix<Scalar, 8, 8>;
+
+    const ComputeMatrixType rho_cd = state.template cast<Scalar>().eval();
+    const ComputeBlockType U = A.template cast<Scalar>().eval();
+    const ComputeBlockType U_adj = U.adjoint();
+
+    // Size of the N-3 qubit subsystem (the "rest" of the system)
+    const idx D_rest = (n >= 3) ? (1ULL << (n - 3)) : 1;
+
+    // Powers of 2 corresponding to the physical qubit indices
+    const idx P_i = 1ULL << i_phys;
+    const idx P_j = 1ULL << j_phys;
+    const idx P_k = 1ULL << k_phys;
+
+    ComputeMatrixType rho_prime_cd = ComputeMatrixType::Zero(D, D);
+
+// Block Iteration (Parallelized)
+// Loop over row-blocks (r) and column-blocks (c) corresponding to the rest
+// of the system (D_rest x D_rest blocks). Each block is 8x8.
+#pragma omp parallel for default(none)                                         \
+    shared(D_rest, n, P_i, P_j, P_k, rho_cd, U, U_adj, rho_prime_cd, i_phys,   \
+               j_phys, k_phys)
+    for (idx r = 0; r < D_rest; ++r) { // Loop over row-blocks (rest index)
+
+        // Variables private to this thread
+        idx r_base_row = 0;
+        idx current_r = r;
+
+        // Calculate the 'base' index for the row block (rest qubits)
+        // This index represents the |rest> part of the basis state |i j k rest>
+        for (idx q = 0; q < n;
+             ++q) { // q is the physical index (0=LSB, n-1=MSB)
+            // Skip the physical qubits we are acting on (i_phys, j_phys,
+            // k_phys)
+            if (q != i_phys && q != j_phys && q != k_phys) {
+                if (current_r & 1) {
+                    r_base_row |= (1ULL << q);
+                }
+                current_r >>= 1;
+            }
+        }
+
+        // Define the 8 *row* indices, aligned with the gate A's basis |q_i
+        // q_j q_k> Assuming A's basis order is |000> to |111> with i=MSB,
+        // j=Mid, k=LSB.
+        const idx vec_k_row[8] = {
+            r_base_row,                  // |000>
+            r_base_row + P_k,            // |001>
+            r_base_row + P_j,            // |010>
+            r_base_row + P_j + P_k,      // |011>
+            r_base_row + P_i,            // |100>
+            r_base_row + P_i + P_k,      // |101>
+            r_base_row + P_i + P_j,      // |110>
+            r_base_row + P_i + P_j + P_k // |111>
+        };
+
+        // Inner loop (col-blocks)
+        for (idx c = 0; c < D_rest; ++c) {
+            // Variables private to this inner iteration
+            idx r_base_col = 0;
+            idx current_c = c;
+            ComputeBlockType M;
+            ComputeBlockType M_prime;
+            idx vec_k_col[8];
+
+            // Calculate the 'base' index for the column block (rest qubits)
+            for (idx q = 0; q < n; ++q) {
+                if (q != i_phys && q != j_phys && q != k_phys) {
+                    if (current_c & 1) {
+                        r_base_col |= (1ULL << q);
+                    }
+                    current_c >>= 1;
+                }
+            }
+
+            // Define the 8 *column* indices (using the same order)
+            vec_k_col[0] = r_base_col;
+            vec_k_col[1] = r_base_col + P_k;
+            vec_k_col[2] = r_base_col + P_j;
+            vec_k_col[3] = r_base_col + P_j + P_k;
+            vec_k_col[4] = r_base_col + P_i;
+            vec_k_col[5] = r_base_col + P_i + P_k;
+            vec_k_col[6] = r_base_col + P_i + P_j;
+            vec_k_col[7] = r_base_col + P_i + P_j + P_k;
+
+            // Extract the 8x8 block M from the *input* state
+            for (int row = 0; row < 8; ++row) {
+                for (int col = 0; col < 8; ++col) {
+                    M(row, col) = rho_cd(vec_k_row[row], vec_k_col[col]);
+                }
+            }
+
+            // Apply the gate: M' = U * M * U_adj (Optimized 8x8
+            // multiplication)
+            M_prime = (U * M * U_adj).eval();
+
+            // Insert the resulting 8x8 block M_prime back into the result
+            for (int row = 0; row < 8; ++row) {
+                for (int col = 0; col < 8; ++col) {
+                    rho_prime_cd(vec_k_row[row], vec_k_col[col]) =
+                        M_prime(row, col);
+                }
+            }
+        } // end col loop
+    } // end row loop (parallelized)
+
+    // Return
+    // Cast back to the original's scalar type
+    return rho_prime_cd.template cast<typename Derived1::Scalar>();
 }
 
 /**
@@ -827,7 +960,176 @@ template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
 apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A,
-             const std::vector<idx>& target) {}
+             const std::vector<idx>& target, idx n) {
+    using Scalar = typename Derived1::Scalar;
+    using ComputeMatrixType = Eigen::Matrix<Scalar, -1, -1>;
+
+    const idx D = static_cast<idx>(state.rows());
+    const idx k = target.size(); // Gate qubits
+
+    // Calculate block dimension D_k = 2^k
+    const idx D_k = (k == 0) ? 1 : (1ULL << k);
+
+    // Input Validation
+#ifndef DEBUG
+    // Check Target Qubit Indices are valid
+    for (idx t : target) {
+        assert(t < n && "Target qubit index must be less than n");
+    }
+
+    // Check Gate Dimension: A must be a 2^k x 2^k matrix
+    assert(static_cast<idx>(A.rows()) == D_k &&
+           static_cast<idx>(A.cols()) == D_k &&
+           "Gate A must be a 2^k x 2^k matrix, where k is the number of target "
+           "qubits");
+
+    // Check State Dimension: state must be 2^n x 2^n matrix
+    assert(static_cast<idx>(state.rows()) == D &&
+           static_cast<idx>(state.cols()) == D &&
+           "State must be a 2^n x 2^n matrix");
+
+    // Validate target indices are distinct and in range
+    if (k > 1) {
+        std::vector<idx> sorted_target = target;
+        std::sort(sorted_target.begin(), sorted_target.end());
+        assert(std::unique(sorted_target.begin(), sorted_target.end()) ==
+                   sorted_target.end() &&
+               "Target qubit indices must be distinct");
+    }
+#endif
+
+    // Pre-Calculations for Index Mapping
+
+    // Convert user's logical (MSB-first) target indices to physical (LSB-first)
+    // indices and determine their powers of 2.
+    // P_gate_basis[l] is the power of 2 for the physical index of target[l].
+    std::vector<idx> target_phys(k);
+    std::vector<idx> P_gate_basis(k);
+    for (idx l = 0; l < k; ++l) {
+        // Physical index: 0 is LSB, n-1 is MSB
+        target_phys[l] = n - target[l] - 1;
+        P_gate_basis[l] = 1ULL << target_phys[l];
+    }
+
+    // Determine the physical indices that are *not* in the target set (the
+    // "rest")
+    std::vector<idx> rest_phys;
+    // Iterate over all physical indices (0 to n-1)
+    for (idx q_phys = 0; q_phys < n; ++q_phys) {
+        bool is_target = false;
+        for (const auto& t_phys : target_phys) {
+            if (q_phys == t_phys) {
+                is_target = true;
+                break;
+            }
+        }
+        if (!is_target) {
+            rest_phys.push_back(q_phys);
+        }
+    }
+
+    // Size of the N-k qubit subsystem
+    const idx D_rest = (n >= k) ? (1ULL << (n - k)) : 1;
+
+    // Matrix Setup
+    const ComputeMatrixType rho_cd = state.template cast<Scalar>().eval();
+    const ComputeMatrixType U = A.template cast<Scalar>().eval();
+    const ComputeMatrixType U_adj = U.adjoint();
+
+    ComputeMatrixType rho_prime_cd = ComputeMatrixType::Zero(D, D);
+
+    // Block Iteration (Parallelized)
+    // Loop over row-blocks (r) and column-blocks (c) corresponding to the
+    // rest of the system (D_rest x D_rest blocks). Each block is D_k x D_k.
+#pragma omp parallel for default(none)                                         \
+    shared(D_rest, n, k, rest_phys, target, target_phys, P_gate_basis, rho_cd, \
+               U, U_adj, rho_prime_cd, D_k)
+    for (idx r = 0; r < D_rest; ++r) { // Loop over row-blocks (rest index)
+
+        // Variables private to this thread
+        idx r_base_row = 0;
+        idx current_r = r;
+
+        // Calculate the 'base' index for the row block (rest qubits)
+        // This index represents the |rest> part of the basis state
+        for (const auto& q_phys : rest_phys) {
+            if (current_r & 1) {
+                r_base_row |= (1ULL << q_phys);
+            }
+            current_r >>= 1;
+        }
+
+        // Pre-calculate the D_k *row* indices for the block.
+        // The index m is the linear index in the gate's basis |q_t0 ...
+        // q_{t(k-1)}>, where bit l of m determines the state of target[k-1-l]
+        // (MSB/LSB flip)
+        std::vector<idx> vec_k_row(D_k);
+        for (idx m = 0; m < D_k; ++m) { // m iterates over the 2^k basis states
+            idx target_component = 0;
+            for (idx l = 0; l < k; ++l) {
+                // l=0 is MSB of the gate (target[0]), l=k-1 is LSB
+                // (target[k-1]) The bit corresponding to target[l] is bit
+                // (k-1-l) of m.
+                idx bit_pos = k - 1 - l;
+                if ((m >> bit_pos) & 1) {
+                    target_component += P_gate_basis[l];
+                }
+            }
+            vec_k_row[m] = r_base_row + target_component;
+        }
+
+        // Inner loop (col-blocks)
+        for (idx c = 0; c < D_rest; ++c) {
+            // Variables private to this inner iteration
+            idx r_base_col = 0;
+            idx current_c = c;
+            ComputeMatrixType M(D_k, D_k);
+            ComputeMatrixType M_prime;
+            std::vector<idx> vec_k_col(D_k);
+
+            // Calculate the 'base' index for the column block (rest qubits)
+            for (const auto& q_phys : rest_phys) {
+                if (current_c & 1) {
+                    r_base_col |= (1ULL << q_phys);
+                }
+                current_c >>= 1;
+            }
+
+            // Pre-calculate the D_k *column* indices (using the same order)
+            for (idx m = 0; m < D_k; ++m) {
+                idx target_component = 0;
+                for (idx l = 0; l < k; ++l) {
+                    idx bit_pos = k - 1 - l;
+                    if ((m >> bit_pos) & 1) {
+                        target_component += P_gate_basis[l];
+                    }
+                }
+                vec_k_col[m] = r_base_col + target_component;
+            }
+
+            // Extract the D_k x D_k block M from the *input* state
+            for (idx row = 0; row < D_k; ++row) {
+                for (idx col = 0; col < D_k; ++col) {
+                    M(row, col) = rho_cd(vec_k_row[row], vec_k_col[col]);
+                }
+            }
+
+            // Apply the gate: M' = U * M * U_adj
+            M_prime = (U * M * U_adj).eval();
+
+            // Insert the resulting block M_prime back into the result
+            for (idx row = 0; row < D_k; ++row) {
+                for (idx col = 0; col < D_k; ++col) {
+                    rho_prime_cd(vec_k_row[row], vec_k_col[col]) =
+                        M_prime(row, col);
+                }
+            }
+        } // end col loop
+    } // end row loop (parallelized)
+
+    // Return
+    return rho_prime_cd.template cast<typename Derived1::Scalar>();
+}
 
 } /* namespace internal */
 } /* namespace qpp */

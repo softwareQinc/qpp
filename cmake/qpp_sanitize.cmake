@@ -1,4 +1,5 @@
-# Code sanitizing
+# Code sanitizing support
+
 option(QPP_SANITIZE "Enable code sanitizing" OFF)
 
 # Sanitizing (only AddressSanitizer is available on MSVC)
