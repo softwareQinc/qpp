@@ -1840,7 +1840,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * initial state \f$|00\rangle\f$ with first qutrit as control, second qutrit as
  * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If present,
  * the size of \a shift must be the same as the size of \a ctrl.
- * \return CTRL-A gate applied to the part \a target of \a state
+ * \return CTRL-\a A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -1940,7 +1940,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
     ctrlgate.insert(ctrlgate.end(), target.begin(), target.end());
-    // FIXME if needed
+    // FIXME: if needed, check wrt dims, I think OK, dims are assumed sorted,
+    // and ctrlgate is only used for exception checking
     std::sort(ctrlgate.begin(), ctrlgate.end());
 
     // check that ctrl + gate subsystem is valid
@@ -2100,7 +2101,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  * first qutrit as control, second qutrit as target, and \a shift = {1}, yields
  * the state \f$|01\rangle\f$. If present, the size of \a shift must be the same
  * as the size of \a ctrl.
- * \return CTRL-A gate applied to the part \a target of \a state
+ * \return CTRL-\a A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 expr_t<Derived1>
@@ -2132,7 +2133,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 /**
  * \brief Applies the single qudit controlled-gate \a A with multiple
  * control qudits listed in \a ctrl on every qudit listed in \a target,
- * i.e., CTRL-CTRL-...-CTRL-A-A-...-A.
+ * i.e., CTRL-\a A-\a A-...-\a A.
  * \see qpp::Gates::CTRL()
  *
  * \note The dimension of the gate \a A must match the dimension of every qudit
@@ -2150,8 +2151,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  * initial state \f$|00\rangle\f$ with first qutrit as control, second qutrit as
  * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If present,
  * the size of \a shift must be the same as the size of \a ctrl.
- * \return CTRL-CTRL-...-CTRL-A-A-...-A gate applied to every \a target qudit
- * in \a state
+ * \return CTRL-\a A-\a A-...-\a A gate applied to every \a target qudit in
+ * \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -2260,7 +2261,8 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
     ctrlgate.insert(ctrlgate.end(), target.cbegin(), target.cend());
-    // FIXME if needed
+    // FIXME: if needed, check wrt dims, I think OK, dims are assumed sorted,
+    // and ctrlgate is only used for exception checking
     std::sort(ctrlgate.begin(), ctrlgate.end());
 
     // check that ctrl + gate subsystem is valid
@@ -2404,7 +2406,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 /**
  * \brief Applies the single qudit controlled-gate \a A with multiple
  * control qudits listed in \a ctrl on every qudit listed in \a target,
- * i.e., CTRL-CTRL-...-CTRL-A-A-...-A.
+ * i.e., CTRL-\a A-\a A-...-\a A.
  * \see qpp::Gates::CTRL()
  *
  * \note The dimension of the gate \a A must match the dimension of every qudit
@@ -2422,8 +2424,8 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
  * initial state \f$|00\rangle\f$ with first qutrit as control, second qutrit as
  * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If present,
  * the size of \a shift must be the same as the size of \a ctrl.
- * \return CTRL-CTRL-...-CTRL-A-A-...-A gate applied to every \a target qudit
- * in \a state
+ * \return CTRL-\a A-\a A-...-\a A gate applied to every \a target qudit in
+ * \a state
  */
 template <typename Derived1, typename Derived2>
 expr_t<Derived1>

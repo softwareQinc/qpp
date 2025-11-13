@@ -28,7 +28,7 @@ int main() {
     G1 = G0;
     rhoG0 = (H3 * rhoG0 * adjoint(H3)).eval();
     rhoG1 = rhoG0;
-    // apply pairwise Control-Phases
+    // apply pairwise Controlled-Phases
     for (idx i = 0; i < 3; ++i) {
         for (idx j = i + 1; j < 3; ++j) {
             if (Gamma[i][j]) {

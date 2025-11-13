@@ -24,7 +24,7 @@ are only restricted by the amount of available physical memory.
 The [examples](https://github.com/softwareQinc/qpp/tree/main/examples)
 directory provides a comprehensive collection of **Quantum++** usage examples.
 For more, check out
-[@antoine-bussy's GitHub repository](https://github.com/antoine-bussy/qpp-examples).
+[\@antoine-bussy's GitHub repository](https://github.com/antoine-bussy/qpp-examples).
 
 To report any bugs or ask for additional features/enhancements, please
 [submit an issue](https://github.com/softwareQinc/qpp/issues) with an

@@ -54,7 +54,7 @@ TEST(qpp_Gates_CTRL, Qudits) {
     EXPECT_NEAR(0, norm(CTRL2 * mket({2, 2}, {d, d}) - mket({1, 2}, {d, d})),
                 1e-5);
 
-    // multiple Control-X-X, partial testing
+    // multiple Controlled-X-X, partial testing
     cmat CTRL3 = gt.CTRL(kron(gt.Xd(d), gt.Xd(3)), {1, 4}, {2, 3}, 6, d);
     ket psi1 = mket({0, 1, 2, 2, 1, 1}, {d, d, d, d, d, d});
     ket res1 = mket({0, 1, 0, 0, 1, 1}, {d, d, d, d, d, d});

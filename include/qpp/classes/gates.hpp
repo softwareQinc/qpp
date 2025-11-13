@@ -731,7 +731,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \see qpp::kron()
      *
      * Expands out \a A as a matrix in a multi-partite system. Faster than using
-     * qpp::kron(I, I, ..., I, A, I, ..., I).
+     * qpp::kron(I, I, ..., I, \a A, I, ..., I).
      *
      * \param A Eigen expression
      * \param pos Position
@@ -783,7 +783,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \see qpp::kron()
      *
      * Expands out \a A as a matrix in a multi-partite system. Faster than using
-     * qpp::kron(I, I, ..., I, A, I, ..., I).
+     * qpp::kron(I, I, ..., I, \a A, I, ..., I).
      *
      * \note The std::initializer_list overload exists because otherwise, in the
      * degenerate case when \a dims has only one element, the one element list
@@ -811,7 +811,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \see qpp::kron()
      *
      * Expands out \a A as a matrix in a multi-partite system. Faster than using
-     * qpp::kron(I, I, ..., I, A, I, ..., I).
+     * qpp::kron(I, I, ..., I, \a A, I, ..., I).
      *
      * \param A Eigen expression
      * \param pos Position
