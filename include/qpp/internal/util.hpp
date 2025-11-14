@@ -42,6 +42,7 @@
 #include <Eigen/Dense>
 
 #include "qpp/options.hpp"
+#include "qpp/traits.hpp"
 #include "qpp/types.hpp"
 
 #include "qpp/classes/exception.hpp"
@@ -489,6 +490,19 @@ dyn_col_vect<Derived> project_ket_on_dits(dyn_col_vect<Derived> psi,
     }
 
     return psi;
+}
+
+// returns true when all elements of a dimension container are qubits (e.g.,
+// all dimensions are 2), false otherwise
+template <typename Container,
+          typename = std::enable_if_t<is_iterable_v<Container>>>
+bool all_qubits(const Container& c) {
+    for (auto it = std::begin(c); it != std::end(c); ++it) {
+        if (*it != 2) {
+            return false;
+        }
+    }
+    return true;
 }
 
 } /* namespace internal */

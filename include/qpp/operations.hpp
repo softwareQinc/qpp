@@ -48,6 +48,7 @@
 
 #include "qpp/classes/exception.hpp"
 #include "qpp/classes/gates.hpp"
+#include "qpp/internal/critical.hpp"
 #include "qpp/internal/util.hpp"
 
 namespace qpp {
@@ -131,8 +132,42 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     }
     // END EXCEPTION CHECKS
 
+    idx n = dims.size(); // total number of subsystems
+
+    // qubit optimization
+    if (internal::all_qubits(dims)) {
+        auto nq_target = target.size();
+        if (internal::check_cvector(rstate)) {
+            if (nq_target == 1) {
+                return internal::apply_psi_1q(state, A, target[0], n);
+            }
+            if (nq_target == 2) {
+                return internal::apply_psi_2q(state, A, target[0], target[1],
+                                              n);
+            }
+            if (nq_target == 3) {
+                return internal::apply_psi_3q(state, A, target[0], target[1],
+                                              target[2], n);
+            }
+            return internal::apply_psi_kq(state, A, target, n);
+
+        } else {
+            if (nq_target == 1) {
+                return internal::apply_rho_1q(state, A, target[0], n);
+            }
+            if (nq_target == 2) {
+                return internal::apply_rho_2q(state, A, target[0], target[1],
+                                              n);
+            }
+            if (nq_target == 3) {
+                return internal::apply_rho_3q(state, A, target[0], target[1],
+                                              target[2], n);
+            }
+            return internal::apply_rho_kq(state, A, target, n);
+        }
+    }
+
     idx D = static_cast<idx>(rstate.rows()); // total dimension
-    idx n = dims.size();                     // total number of subsystems
     idx DA = static_cast<idx>(rA.rows());    // dimension of gate subsystem
 
     idx Cdims[internal::maxn];      // local dimensions total
@@ -1967,6 +2002,36 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
     if (!shift.has_value()) {
         shift = std::vector<idx>(ctrl.size(), 0);
+    }
+
+    // qubit optimization
+    if (internal::all_qubits(dims)) {
+        idx n = dims.size();
+        auto nq_target = target.size();
+        if (internal::check_cvector(rstate)) {
+            if (nq_target == 1) {
+                return internal::apply_ctrl_psi_1q(state, A, ctrl, target[0],
+                                                   shift.value(), n);
+            }
+            if (nq_target == 2) {
+                return internal::apply_ctrl_psi_2q(state, A, ctrl, target[0],
+                                                   target[1], shift.value(), n);
+            }
+            return internal::apply_ctrl_psi_kq(state, A, ctrl, target,
+                                               shift.value(), n);
+
+        } else {
+            if (nq_target == 1) {
+                return internal::apply_ctrl_rho_1q(state, A, ctrl, target[0],
+                                                   shift.value(), n);
+            }
+            if (nq_target == 2) {
+                return internal::apply_ctrl_rho_2q(state, A, ctrl, target[0],
+                                                   target[1], shift.value(), n);
+            }
+            return internal::apply_ctrl_rho_kq(state, A, ctrl, target,
+                                               shift.value(), n);
+        }
     }
 
     // construct the table of A^k
