@@ -1149,7 +1149,7 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
  * \brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
  * multi-partite state vector \a state
  *
- * The gate is applied only if the state of the control qubits \a ctrls matches
+ * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
  * \param state Eigen expression
@@ -1177,12 +1177,12 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
     assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
-    assert(ctrls.size() == shift.size() &&
-           "ctrls and shift vectors must have the same size");
+    assert(ctrl.size() == shift.size() &&
+           "ctrl and shift vectors must have the same size");
 
     // Validate control qubits and shift values
-    for (idx c_idx = 0; c_idx < ctrls.size(); ++c_idx) {
-        const idx c = ctrls[c_idx];
+    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+        const idx c = ctrl[c_idx];
         assert(c < n && "Control qubit index c must be less than n");
         assert(c != i && "Target qubit i cannot also be a control qubit");
         assert(
@@ -1212,7 +1212,7 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     // Mask for controls that MUST be |0> (shift == 1, Negative Control)
     idx expected_zero_mask = 0;
 
-    // We iterate over the list of control qubits (ctrls)
+    // We iterate over the list of control qubits (ctrl)
     for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
         const idx c = ctrl[c_idx];
         const idx j_c =
@@ -1277,7 +1277,7 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
  * \brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
  * of the multi-partite state vector \a state
  *
- * The gate is applied only if the state of the control qubits \a ctrls matches
+ * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
  * \param state Eigen expression
@@ -1297,9 +1297,9 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
                   const std::vector<idx>& ctrl, idx i, idx j,
                   const std::vector<idx>& shift, idx n) {
     using Scalar = typename Derived1::Scalar;
+    const idx D = 1ULL << n;
 
 #ifndef NDEBUG
-    const idx D = 1ULL << n;
     assert(i < n && j < n && i != j &&
            "Target qubit indices i and j must be distinct and less than n");
     assert(static_cast<idx>(state.size()) == D &&
@@ -1318,7 +1318,6 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     }
 #endif
 
-    const idx D = 1ULL << n;
     expr_t<Derived1> result =
         state; // deep copy; we'll overwrite only where control holds
 
@@ -1384,13 +1383,13 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
         // write transformed amplitudes into 'result' (based on A *
         // [psi00,psi01,psi10,psi11]^T)
         result.coeffRef(k00) =
-            a00 * psi00 + a01 * psi01 + a02 * psi10 + a03 * psi11;
+            (a00 * psi00) + (a01 * psi01) + (a02 * psi10) + (a03 * psi11);
         result.coeffRef(k01) =
-            a10 * psi00 + a11 * psi01 + a12 * psi10 + a13 * psi11;
+            (a10 * psi00) + (a11 * psi01) + (a12 * psi10) + (a13 * psi11);
         result.coeffRef(k10) =
-            a20 * psi00 + a21 * psi01 + a22 * psi10 + a23 * psi11;
+            (a20 * psi00) + (a21 * psi01) + (a22 * psi10) + (a23 * psi11);
         result.coeffRef(k11) =
-            a30 * psi00 + a31 * psi01 + a32 * psi10 + a33 * psi11;
+            (a30 * psi00) + (a31 * psi01) + (a32 * psi10) + (a33 * psi11);
     }
 
     return result;
@@ -1400,7 +1399,7 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
  * \brief Applies the multi-controlled qubit gate \a A to the part \a target of
  * the multi-partite state vector \a state
  *
- * The gate is applied only if the state of the control qubits \a ctrls matches
+ * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
  * \param state Eigen expression
@@ -1416,7 +1415,7 @@ template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] qpp::expr_t<Derived1>
 apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
                   const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrls, const std::vector<idx>& target,
+                  const std::vector<idx>& ctrl, const std::vector<idx>& target,
                   const std::vector<idx>& shift, idx n) {
     // Type Aliases
     using Scalar = typename Derived1::Scalar;
@@ -1457,15 +1456,15 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     }
 
     // Check Control Qubit Indices and overlap
-    assert(ctrls.size() == shift.size() &&
-           "ctrls and shift vectors must have the same size");
+    assert(ctrl.size() == shift.size() &&
+           "ctrl and shift vectors must have the same size");
 
     // Create a set of target indices for quick lookup
     std::set<idx> target_set(target.begin(), target.end());
 
     // Validate control qubits and shift values
-    for (idx c_idx = 0; c_idx < ctrls.size(); ++c_idx) {
-        const idx c = ctrls[c_idx];
+    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+        const idx c = ctrl[c_idx];
         assert(c < n && "Control qubit index c must be less than n");
         assert(target_set.find(c) == target_set.end() &&
                "Control qubit cannot also be a target qubit");
@@ -1487,9 +1486,9 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     // Mask for controls that MUST be |0> (shift == 1, Negative Control)
     idx expected_zero_mask = 0;
 
-    // We iterate over the list of control qubits (ctrls)
-    for (idx c_idx = 0; c_idx < ctrls.size(); ++c_idx) {
-        const idx c = ctrls[c_idx];
+    // We iterate over the list of control qubits (ctrl)
+    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+        const idx c = ctrl[c_idx];
         const idx j_c =
             n - 1 - c; // Big-endian bit position for control qubit c
         const idx bit = (1ULL << j_c); // Pre-calculate the bit to be set
@@ -1589,7 +1588,7 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
  * \brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
  * multi-partite density matrix \a state
  *
- * The gate is applied only if the state of the control qubits \a ctrls matches
+ * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
  * \param state Eigen expression
@@ -1619,13 +1618,13 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
            static_cast<idx>(state.cols()) == D &&
            "State must be a square matrix sized 2^n x 2^n");
     assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
-    assert(ctrls.size() == shift.size() &&
-           "ctrls and shift vectors must have the same size");
+    assert(ctrl.size() == shift.size() &&
+           "ctrl and shift vectors must have the same size");
 
     // Validate control qubits and overlap
     std::set<idx> target_set = {i};
-    for (idx c_idx = 0; c_idx < ctrls.size(); ++c_idx) {
-        const idx c = ctrls[c_idx];
+    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+        const idx c = ctrl[c_idx];
         assert(c < n && "Control qubit index c must be less than n");
         assert(target_set.find(c) == target_set.end() &&
                "Control qubit cannot also be a target qubit");
@@ -1736,7 +1735,7 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
  * \brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
  * of the multi-partite density matrix \a state
  *
- * The gate is applied only if the state of the control qubits \a ctrls matches
+ * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
  * \param state Eigen expression
@@ -1764,13 +1763,13 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
     assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
            "State must be a square matrix sized 2^n x 2^n");
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
-    assert(ctrls.size() == shift.size() &&
-           "ctrls and shift vectors must have the same size");
+    assert(ctrl.size() == shift.size() &&
+           "ctrl and shift vectors must have the same size");
 
     // Validate control qubits and overlap
     std::set<idx> target_set = {i, j};
-    for (idx c_idx = 0; c_idx < ctrls.size(); ++c_idx) {
-        const idx c = ctrls[c_idx];
+    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+        const idx c = ctrl[c_idx];
         assert(c < n && "Control qubit index c must be less than n");
         assert(target_set.find(c) == target_set.end() &&
                "Control qubit cannot also be a target qubit");
@@ -1930,7 +1929,7 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
  * \brief Applies the controlled multi-qubit gate \a A to the part \a target of
  * the multi-partite density matrix \a state
  *
- * The gate is applied only if the state of the control qubits \a ctrls matches
+ * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
  * \param state Eigen expression
@@ -1966,15 +1965,15 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     assert(static_cast<idx>(state.rows()) == D &&
            static_cast<idx>(state.cols()) == D &&
            "State must be a 2^n x 2^n matrix");
-    assert(ctrls.size() == shift.size() &&
-           "ctrls and shift vectors must have the same size");
+    assert(ctrl.size() == shift.size() &&
+           "ctrl and shift vectors must have the same size");
 
     // Validate target and control qubit indices and check for overlap
     // Use a temporary vector to check distinctness and overlap efficiently
     std::vector<idx> check_set;
-    check_set.reserve(target.size() + ctrls.size());
+    check_set.reserve(target.size() + ctrl.size());
     check_set.insert(check_set.end(), target.begin(), target.end());
-    check_set.insert(check_set.end(), ctrls.begin(), ctrls.end());
+    check_set.insert(check_set.end(), ctrl.begin(), ctrl.end());
 
     // Check target indices distinctness
     std::vector<idx> sorted_target = target;
