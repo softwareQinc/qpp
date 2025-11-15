@@ -69,6 +69,8 @@
 #endif // CTRL
 #endif // __sun
 
+#define QPP_QUBIT_OPTIMIZATIONS
+
 // Quantum++ library headers
 
 #include "qpp/constants.hpp"

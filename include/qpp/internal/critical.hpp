@@ -99,7 +99,7 @@ apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     // parallelization.
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
-#pragma omp parallel for collapse(1)
+#pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx L = 0; L < D; L += jump) {
         // The inner loop (R) iterates over the lower part of the block, from 0
@@ -557,8 +557,11 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
         outer_idx[m] = i_base;
     }
 
-// Main Parallel Loop (Iterate over spectator blocks m)
+    // Main Parallel Loop (Iterate over spectator blocks m)
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
 #pragma omp parallel for
+#endif // QPP_OPENMP
     for (idx m = 0; m < outer_dim; ++m) {
         const idx i_base = outer_idx[m];
 
@@ -628,14 +631,17 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
     const Matrix2 A_block = A;
     const Matrix2 A_dagger = A_block.adjoint();
 
-// The primary optimization: Iterate over D_spec * D_spec blocks directly,
-// eliminating conditional checks inside the loops.
+    // The primary optimization: Iterate over D_spec * D_spec blocks directly,
+    // eliminating conditional checks inside the loops.
 
-// NOTE: This pragma enables multi-threading acceleration for large problems.
+    const idx total_iterations = D_spec * D_spec;
 #ifdef QPP_OPENMP
-#pragma omp parallel for collapse(2)
-#endif
-    for (idx s = 0; s < D_spec; ++s) {
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+    for (idx i = 0; i < total_iterations; ++i) {
+        const idx s = i / D_spec;
+        const idx s_prime = i % D_spec;
         // Calculate Row Indices (r0, r1) from spectator state 's'
         // r0 = index for |s, 0> (inserting '0' at bit p_i)
         const idx s_high_r = s >> p_i;
@@ -643,33 +649,31 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
         const idx r0 = (s_high_r << p_i_plus_1) | s_low_r;
         const idx r1 = r0 + s_i; // r1 = index for |s, 1>
 
-        for (idx s_prime = 0; s_prime < D_spec; ++s_prime) {
-            // Calculate Column Indices (c0, c1) from spectator state
-            // 's_prime' c0 = index for |s', 0> (inserting '0' at bit p_i)
-            const idx s_prime_high_c = s_prime >> p_i;
-            const idx s_prime_low_c = s_prime & low_mask;
-            const idx c0 = (s_prime_high_c << p_i_plus_1) | s_prime_low_c;
-            const idx c1 = c0 + s_i; // c1 = index for |s', 1>
+        // Calculate Column Indices (c0, c1) from spectator state
+        // 's_prime' c0 = index for |s', 0> (inserting '0' at bit p_i)
+        const idx s_prime_high_c = s_prime >> p_i;
+        const idx s_prime_low_c = s_prime & low_mask;
+        const idx c0 = (s_prime_high_c << p_i_plus_1) | s_prime_low_c;
+        const idx c1 = c0 + s_i; // c1 = index for |s', 1>
 
-            // Extract the current 2x2 block rho[r0:r1, c0:c1]
-            // We use Matrix2cd (fixed size) for maximum optimization by Eigen.
-            Matrix2 rho_block;
-            rho_block(0, 0) = state.coeff(r0, c0);
-            rho_block(0, 1) = state.coeff(r0, c1);
-            rho_block(1, 0) = state.coeff(r1, c0);
-            rho_block(1, 1) = state.coeff(r1, c1);
+        // Extract the current 2x2 block rho[r0:r1, c0:c1]
+        // We use Matrix2cd (fixed size) for maximum optimization by Eigen.
+        Matrix2 rho_block;
+        rho_block(0, 0) = state.coeff(r0, c0);
+        rho_block(0, 1) = state.coeff(r0, c1);
+        rho_block(1, 0) = state.coeff(r1, c0);
+        rho_block(1, 1) = state.coeff(r1, c1);
 
-            // Apply the transformation: A * rho_block * A^\dagger
-            // Eigen will fully unroll and vectorize this small matrix
-            // multiplication.
-            const Matrix2 result_block = A_block * rho_block * A_dagger;
+        // Apply the transformation: A * rho_block * A^\dagger
+        // Eigen will fully unroll and vectorize this small matrix
+        // multiplication.
+        const Matrix2 result_block = A_block * rho_block * A_dagger;
 
-            // 5. Write the transformed 2x2 block back
-            result.coeffRef(r0, c0) = result_block(0, 0);
-            result.coeffRef(r0, c1) = result_block(0, 1);
-            result.coeffRef(r1, c0) = result_block(1, 0);
-            result.coeffRef(r1, c1) = result_block(1, 1);
-        }
+        // 5. Write the transformed 2x2 block back
+        result.coeffRef(r0, c0) = result_block(0, 0);
+        result.coeffRef(r0, c1) = result_block(0, 1);
+        result.coeffRef(r1, c0) = result_block(1, 0);
+        result.coeffRef(r1, c1) = result_block(1, 1);
     }
 
     return result;
@@ -727,12 +731,16 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
 
     ComputeMatrixType rho_prime_cd = ComputeMatrixType::Zero(D, D);
 
-// Block Iteration (Parallelized)
-// Parallelize the outermost loop (row-blocks). This is safe as each thread
-// writes to a non-overlapping region of rho_prime_cd.
+    // Block Iteration (Parallelized)
+    // Parallelize the outermost loop (row-blocks). This is safe as each thread
+    // writes to a non-overlapping region of rho_prime_cd.
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
 #pragma omp parallel for default(none) shared(                                 \
         D_rest, n, P_i, P_j, rho_cd, U, U_adj, rho_prime_cd, i_phys, j_phys)
-    for (idx r = 0; r < D_rest; ++r) { // Loop over row-blocks
+#endif // QPP_OPENMP
+    // Loop over row-blocks
+    for (idx r = 0; r < D_rest; ++r) {
 
         // Variables private to this thread
         idx r_base_row = 0;
@@ -866,13 +874,17 @@ apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
 
     ComputeMatrixType rho_prime_cd = ComputeMatrixType::Zero(D, D);
 
-// Block Iteration (Parallelized)
-// Loop over row-blocks (r) and column-blocks (c) corresponding to the rest
-// of the system (D_rest x D_rest blocks). Each block is 8x8.
+    // Block Iteration (Parallelized)
+    // Loop over row-blocks (r) and column-blocks (c) corresponding to the rest
+    // of the system (D_rest x D_rest blocks). Each block is 8x8.
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, P_i, P_j, P_k, rho_cd, U, U_adj, rho_prime_cd, i_phys,   \
                j_phys, k_phys)
-    for (idx r = 0; r < D_rest; ++r) { // Loop over row-blocks (rest index)
+#endif // QPP_OPENMP
+    // Loop over row-blocks (rest index)
+    for (idx r = 0; r < D_rest; ++r) {
 
         // Variables private to this thread
         idx r_base_row = 0;
@@ -1055,10 +1067,14 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     // Block Iteration (Parallelized)
     // Loop over row-blocks (r) and column-blocks (c) corresponding to the
     // rest of the system (D_rest x D_rest blocks). Each block is D_k x D_k.
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, k, rest_phys, target, target_phys, P_gate_basis, rho_cd, \
                U, U_adj, rho_prime_cd, D_k)
-    for (idx r = 0; r < D_rest; ++r) { // Loop over row-blocks (rest index)
+#endif // QPP_OPENMP
+    // Loop over row-blocks (rest index)
+    for (idx r = 0; r < D_rest; ++r) {
 
         // Variables private to this thread
         idx r_base_row = 0;
@@ -1239,7 +1255,7 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     // Pair-wise Amplitude Transformation
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
-#pragma omp parallel for collapse(1)
+#pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx L = 0; L < D; L += jump) {
         // The inner loop (R) iterates over the lower part of the block.
@@ -1354,8 +1370,9 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     // Iterate over every base index where target bits are 0.
     // That visits each 4-amplitude block exactly once.
 #ifdef QPP_OPENMP
+// NOLINTNEXTLINE
 #pragma omp parallel for
-#endif
+#endif // QPP_OPENMP
     for (idx k00 = 0; k00 < D; ++k00) {
         // skip indices that do not have both target bits == 0
         if ((k00 & s_i) || (k00 & s_j)) {
@@ -1543,7 +1560,10 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     }
 
     // Main Parallel Loop (Iterate over spectator blocks m)
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
 #pragma omp parallel for
+#endif // QPP_OPENMP
     for (idx m = 0; m < outer_dim; ++m) {
         const idx i_base = outer_idx[m];
 
@@ -1674,11 +1694,17 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
     const Matrix2 A_block = A;
     const Matrix2 A_dagger = A_block.adjoint();
 
-// Iterate over D_spec * D_spec blocks
+    const idx total_iterations = D_spec * D_spec;
+
+    // Iterate over D_spec * D_spec blocks
 #ifdef QPP_OPENMP
-#pragma omp parallel for collapse(2)
-#endif
-    for (idx s = 0; s < D_spec; ++s) {
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+    for (idx i = 0; i < total_iterations; ++i) {
+        const idx s = i / D_spec;
+        const idx s_prime = i % D_spec;
+
         // Calculate Row Indices (r0, r1) from spectator state 's'
         const idx s_high_r = s >> p_i;
         const idx s_low_r = s & low_mask;
@@ -1687,45 +1713,43 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
 
         const bool row_ctrl = control_is_met(r0);
 
-        for (idx s_prime = 0; s_prime < D_spec; ++s_prime) {
-            // Calculate Column Indices (c0, c1) from spectator state 's_prime'
-            const idx s_prime_high_c = s_prime >> p_i;
-            const idx s_prime_low_c = s_prime & low_mask;
-            const idx c0 = (s_prime_high_c << p_i_plus_1) | s_prime_low_c;
-            const idx c1 = c0 + s_i;
+        // Calculate Column Indices (c0, c1) from spectator state 's_prime'
+        const idx s_prime_high_c = s_prime >> p_i;
+        const idx s_prime_low_c = s_prime & low_mask;
+        const idx c0 = (s_prime_high_c << p_i_plus_1) | s_prime_low_c;
+        const idx c1 = c0 + s_i;
 
-            const bool col_ctrl = control_is_met(c0);
+        const bool col_ctrl = control_is_met(c0);
 
-            // Case 4: Skip if control not met for either row or column
-            if (!row_ctrl && !col_ctrl) {
-                continue;
-            }
-
-            // Extract the current 2x2 block rho[r0:r1, c0:c1]
-            Matrix2 rho_block;
-            rho_block(0, 0) = state.coeff(r0, c0);
-            rho_block(0, 1) = state.coeff(r0, c1);
-            rho_block(1, 0) = state.coeff(r1, c0);
-            rho_block(1, 1) = state.coeff(r1, c1);
-
-            Matrix2 result_block;
-            if (row_ctrl && col_ctrl) {
-                // Case 1: A * rho_block * A^\dagger
-                result_block = A_block * rho_block * A_dagger;
-            } else if (row_ctrl) {
-                // Case 2: A * rho_block * I
-                result_block = A_block * rho_block;
-            } else { // col_ctrl must be true here
-                // Case 3: I * rho_block * A^\dagger
-                result_block = rho_block * A_dagger;
-            }
-
-            // Write the transformed 2x2 block back
-            result.coeffRef(r0, c0) = result_block(0, 0);
-            result.coeffRef(r0, c1) = result_block(0, 1);
-            result.coeffRef(r1, c0) = result_block(1, 0);
-            result.coeffRef(r1, c1) = result_block(1, 1);
+        // Case 4: Skip if control not met for either row or column
+        if (!row_ctrl && !col_ctrl) {
+            continue;
         }
+
+        // Extract the current 2x2 block rho[r0:r1, c0:c1]
+        Matrix2 rho_block;
+        rho_block(0, 0) = state.coeff(r0, c0);
+        rho_block(0, 1) = state.coeff(r0, c1);
+        rho_block(1, 0) = state.coeff(r1, c0);
+        rho_block(1, 1) = state.coeff(r1, c1);
+
+        Matrix2 result_block;
+        if (row_ctrl && col_ctrl) {
+            // Case 1: A * rho_block * A^\dagger
+            result_block = A_block * rho_block * A_dagger;
+        } else if (row_ctrl) {
+            // Case 2: A * rho_block * I
+            result_block = A_block * rho_block;
+        } else { // col_ctrl must be true here
+            // Case 3: I * rho_block * A^\dagger
+            result_block = rho_block * A_dagger;
+        }
+
+        // Write the transformed 2x2 block back
+        result.coeffRef(r0, c0) = result_block(0, 0);
+        result.coeffRef(r0, c1) = result_block(0, 1);
+        result.coeffRef(r1, c0) = result_block(1, 0);
+        result.coeffRef(r1, c1) = result_block(1, 1);
     }
 
     return result;
@@ -1829,11 +1853,15 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
                ((k_base & expected_zero_mask) == 0);
     };
 
-// Block Iteration (Parallelized)
+    // Block Iteration (Parallelized)
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, P_i, P_j, rho_cd, U, U_adj, rho_prime_cd, i_phys,        \
                j_phys, control_is_met)
-    for (idx r = 0; r < D_rest; ++r) { // Loop over row-blocks
+#endif // QPP_OPENMP
+    // Loop over row-blocks
+    for (idx r = 0; r < D_rest; ++r) {
 
         // Variables private to this thread
         idx r_base_row = 0;
@@ -2067,10 +2095,14 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     const ComputeMatrixType& rho_cd = rho_prime_cd;
 
     // Block Iteration (Parallelized)
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, k, rest_phys, P_gate_basis, rho_cd, U, U_adj,            \
                rho_prime_cd, D_k, control_is_met)
-    for (idx r = 0; r < D_rest; ++r) { // Loop over row-blocks (rest index)
+#endif // QPP_OPENMP
+    // Loop over row-blocks (rest index)
+    for (idx r = 0; r < D_rest; ++r) {
 
         // Calculate the 'base' index for the row block (rest qubits)
         idx r_base_row = 0;
@@ -2100,7 +2132,8 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
 
         // Inner loop (col-blocks)
         for (idx c = 0; c < D_rest; ++c) {
-            // Calculate the 'base' index for the column block (rest qubits)
+            // Calculate the 'base' index for the column block (rest
+            // qubits)
             idx r_base_col = 0;
             idx current_c = c;
             for (const auto& q_phys : rest_phys) {
@@ -2112,8 +2145,8 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
 
             const bool col_ctrl = control_is_met(r_base_col);
 
-            // Case 4: Skip if control not met for both (block is I*M*I = M,
-            // already present)
+            // Case 4: Skip if control not met for both (block is I*M*I =
+            // M, already present)
             if (!row_ctrl && !col_ctrl) {
                 continue;
             }
@@ -2134,7 +2167,8 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
                 vec_k_col[m] = r_base_col + target_component;
             }
 
-            // Extract the D_k x D_k block M from the *input* state (rho_cd)
+            // Extract the D_k x D_k block M from the *input* state
+            // (rho_cd)
             for (idx row = 0; row < D_k; ++row) {
                 for (idx col = 0; col < D_k; ++col) {
                     M(row, col) = rho_cd(vec_k_row[row], vec_k_col[col]);

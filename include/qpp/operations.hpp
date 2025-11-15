@@ -135,6 +135,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     idx n = dims.size(); // total number of subsystems
 
     // qubit optimization
+#ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_qubits(dims)) {
         auto nq_target = target.size();
         if (internal::check_cvector(rstate)) {
@@ -166,6 +167,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
             return internal::apply_rho_kq(state, A, target, n);
         }
     }
+#endif // QPP_QUBIT_OPTIMIZATIONS
 
     idx D = static_cast<idx>(rstate.rows()); // total dimension
     idx DA = static_cast<idx>(rA.rows());    // dimension of gate subsystem
@@ -2005,6 +2007,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     }
 
     // qubit optimization
+#ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_qubits(dims)) {
         idx n = dims.size();
         auto nq_target = target.size();
@@ -2033,6 +2036,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
                                                shift.value(), n);
         }
     }
+#endif // QPP_QUBIT_OPTIMIZATIONS
 
     // construct the table of A^k
     std::vector<dyn_mat<typename Derived1::Scalar>> Ak;
