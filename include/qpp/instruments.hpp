@@ -772,11 +772,6 @@ template <typename Derived>
                              expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             std::vector<idx> dims, bool destructive = true) {
-    // typename std::remove_const_t<
-    //     typename Eigen::MatrixBase<Derived>::EvalReturnType>
-    //     rA = A.derived();
-
-    // typename Eigen::MatrixBase<Derived>::EvalReturnType rA = A.derived();
     expr_t<Derived> rA = A.derived();
 
     // EXCEPTION CHECKS

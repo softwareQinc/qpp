@@ -206,8 +206,8 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
 
         // Reconstruct the base index k00
         idx k00 = 0;
-        idx current_block_bit =
-            0; // The current bit position in 'block_idx' (0 to n-3)
+        // The current bit position in 'block_idx' (0 to n-3)
+        idx current_block_bit = 0;
 
         // Iterate over all n physical bit positions (p=0 to n-1, p=0 is
         // MSB/q_n-1)
