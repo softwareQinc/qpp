@@ -18,8 +18,9 @@ repository = "https://github.com/softwareqinc/qpp.git"
 
 [build-system]
 requires = [
-    "pybind11>=2.10.0",
-    "setuptools>=42",
+    "pybind11",
+    "setuptools",
+    "types-setuptools",
     "wheel",
 ]
 build-backend = "setuptools.build_meta"

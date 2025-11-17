@@ -1,44 +1,58 @@
 import subprocess
+import re
 import sys
 
 from pybind11.setup_helpers import Pybind11Extension
 from setuptools import setup
 
-p = subprocess.Popen(
-    "cmake -S pyqpp -B pyqpp/build",
-    shell=True,
+# --------------------------------------------------------------------------- #
+# Run CMake and capture its output
+# --------------------------------------------------------------------------- #
+proc = subprocess.Popen(
+    ["cmake", "-S", "pyqpp", "-B", "pyqpp/build"],
     stdout=subprocess.PIPE,
     stderr=subprocess.STDOUT,
+    text=True,
 )
 
-prefix_eigen = "Eigen3: "
-prefix_pybind11 = "pybind11: "
+assert proc.stdout is not None
+output = proc.stdout.read().splitlines()
+
+# --------------------------------------------------------------------------- #
+# Regex patterns
+# --------------------------------------------------------------------------- #
+# Example expected line:
+#   Installed/Found Eigen3 version 5.0.1: /path/to/eigen3
+re_eigen = re.compile(r"Eigen3 version \d+\.\d+\.\d+:\s*(\S+)")
+# Expected line:
+#   pybind11: /path/to/pybind11
+re_pybind11 = re.compile(r"pybind11:\s*(\S+)")
+
 eigen_path = None
 pybind11_path = None
 
-print("Running cmake -S pyqpp -B pyqpp/build")
-cmake_output = p.stdout.read().decode("ascii").split("\n")
-for line in cmake_output:
-    print(line)
-    pos_eigen = line.find(prefix_eigen)
-    pos_pybind11 = line.find(prefix_pybind11)
-    if pos_eigen != -1:
-        start = pos_eigen + len(prefix_eigen)
-        end = line.find(" ", start)
-        if end == -1:  # no space found, take the rest of the line
-            eigen_path = line[start:]
-        else:
-            eigen_path = line[start:end]
-    if pos_pybind11 != -1:
-        pybind11_path = line[pos_pybind11 + len(prefix_pybind11) :]
+# --------------------------------------------------------------------------- #
+# Parse CMake output
+# --------------------------------------------------------------------------- #
+for line in output:
+    m = re_eigen.search(line)
+    if m:
+        eigen_path = m.group(1)
+    m = re_pybind11.search(line)
+    if m:
+        pybind11_path = m.group(1)
 
 if eigen_path is None:
-    raise Exception("Eigen3 not found!")
+    raise Exception("Eigen3 not found in CMake output!")
 
 if pybind11_path is None:
-    raise Exception("pybind11 not found!")
+    raise Exception("pybind11 not found in CMake output!")
 
+# --------------------------------------------------------------------------- #
+# Build pyqpp
+# --------------------------------------------------------------------------- #
 source_files = ["pyqpp/qpp_wrapper.cpp"]
+
 ext_modules = [
     Pybind11Extension(
         "pyqpp",
