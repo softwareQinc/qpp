@@ -89,7 +89,8 @@ struct QEngineState {
                 "qpp::internal::QEngineState::QEngineState()", "nq");
         }
         // END EXCEPTION CHECKS
-        reset();
+
+        reset(std::nullopt);
     }
 
     // silence -Weffc++ class has pointer data members
@@ -111,7 +112,7 @@ struct QEngineState {
      *
      * \param qstate Optional engine's initial quantum state
      */
-    void reset(std::optional<T> qstate = std::nullopt) {
+    void reset(std::optional<T> qstate) {
         if (qstate.has_value()) {
             idx D = internal::safe_pow(qc_ptr_->get_d(), qc_ptr_->get_nq());
             // EXCEPTION CHECKS

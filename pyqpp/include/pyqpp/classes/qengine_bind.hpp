@@ -94,6 +94,7 @@ void declare_QEngineT(py::module& m) {
                    "True if post-selection was successful (or absent), false "
                    "otherwise");
     pyQEngineT.def("reset", &QEngineT<T>::reset, "Resets the engine",
+                   py::arg("qstate") = std::nullopt,
                    py::arg("reset_stats") = true);
     pyQEngineT.def("reset_stats", &QEngineT<T>::reset_stats,
                    "Resets the collected measurement statistics hash table");

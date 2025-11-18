@@ -21,7 +21,8 @@ TEST(qpp_QNoisyEngineT_execute, AllCircuitWithRepetitions) {}
 ///       QNoisyEngineT::get_noise_results() const
 TEST(qpp_QNoisyEngineT_get_noise_results, AllTests) {}
 
-/// BEGIN QEngineT& QNoisyEngineT::reset(bool reset_stats = true)
+/// BEGIN QEngineT& QNoisyEngineT::reset(std::optional<T> qstate = std::nullopt,
+///       bool reset_stats = true)
 TEST(qpp_QNoisyEngineT_reset, AllTests) {}
 
 /// BEGIN std::string QNoisyEngineT::traits_get_name() const override

@@ -1,4 +1,4 @@
-/*
+/*/
  * This file is part of Quantum++.
  *
  * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
@@ -1220,14 +1220,17 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     /**
      * \brief Resets the engine
      *
-     * Re-initializes everything to zero and sets the initial state to
-     * \f$|0\rangle^{\otimes n}\f$
+     * Resets the engine's internal state. If \a qstate is provided, it becomes
+     * the new initial quantum state; otherwise the engine is initialized to
+     * \f$|0\rangle^{\otimes n}\f$.
      *
-     * \param reset_stats Optional (true by default), resets the collected
-     * measurement statistics hash table
+     * \param qstate Optional initial quantum state for the engine
+     * \param reset_stats Optional (true by default). When true, clears the
+     * collected measurement statistics.
      */
-    virtual QEngineT& reset(bool reset_stats = true) {
-        qeng_st_.reset();
+    virtual QEngineT& reset(std::optional<T> qstate = std::nullopt,
+                            bool reset_stats = true) {
+        qeng_st_.reset(qstate);
 
         if (reset_stats) {
             this->reset_stats();
@@ -1327,10 +1330,11 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
         // END EXCEPTION CHECKS
 
-        // save the engine state
+        // save the initial engine's state
         auto engine_state_copy = qeng_st_;
 
-        this->reset(false); // keep the statistics
+        this->reset(qeng_st_.qstate_, false); // keep the statistics
+        // this->reset(std::nullopt, false);     // keep the statistics
         this->set_ensure_post_selection(
             engine_state_copy.ensure_post_selection_);
         this->set_max_post_selection_reps(

@@ -149,8 +149,9 @@ class QNoisyEngineT : public QEngineT<T> {
      * measurement statistics hash table
      * \return Reference to the current instance
      */
-    QNoisyEngineT& reset(bool reset_stats = true) override {
-        QEngineT<T>::reset(reset_stats);
+    QNoisyEngineT& reset(std::optional<T> qstate = std::nullopt,
+                         bool reset_stats = true) override {
+        QEngineT<T>::reset(qstate, reset_stats);
         noise_results_ = {};
 
         return *this;
