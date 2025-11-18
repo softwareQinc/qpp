@@ -1,7 +1,8 @@
 # Version 6.1.0 - xx November 2025
 
-- Significant performance gains (10× to 1000×) for qubit states and circuits
-  through extensive optimizations of `qpp::apply()` and `qpp::applyCTRL()`
+- Massive performance improvements (10x to 1000x) for qubit state manipulation
+  and qubit circuit execution through extensive optimizations of `qpp::apply()`
+  and `qpp::applyCTRL()`
 - Switched back to MAJOR.MINOR.PATCH release versioning:
   - MAJOR -- introduces significant changes that break backward compatibility
   - MINOR -- may include limited or minor compatibility breaks
