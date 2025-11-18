@@ -1,4 +1,4 @@
-# Version 6.1.0 - xx November 2025
+# Version 7.0.0 - xx November 2025
 
 - Massive performance improvements (10x to 1000x) for qubit state manipulation
   and qubit circuit execution through extensive optimizations of `qpp::apply()`

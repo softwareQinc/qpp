@@ -1,7 +1,7 @@
 [project]
 name = "pyqpp"
 requires-python = ">=3.9"
-version = "6.1.0"
+version = "7.0.0"
 description = "Python 3 wrapper for Quantum++"
 authors = [
     { name = "softwareQ Inc.", email = "info@softwareq.ca" },

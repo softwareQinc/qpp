@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.20)
 # -----------------------------------------------------------------------------
 project(
   qpp
-  VERSION 6.1.0
+  VERSION 7.0.0
   LANGUAGES CXX)
 
 # -----------------------------------------------------------------------------
@@ -23,12 +23,12 @@ if("${PROJECT_VERSION_PATCH}" STREQUAL "")
   set(PROJECT_VERSION_PATCH 0)
 endif()
 # The project() command automatically creates PROJECT_VERSION_MAJOR, _MINOR, and
-# _PATCH. Define QPP_VERSION_NUM as an integer (e.g., 60000 for 6.0.0)
+# _PATCH. Define QPP_VERSION_NUM as an integer (e.g., 70000 for 7.0.0)
 math(EXPR QPP_VERSION_NUM
      "${PROJECT_VERSION_MAJOR}*10000 + ${PROJECT_VERSION_MINOR}*100 +
   ${PROJECT_VERSION_PATCH}")
 # Define QPP_VERSION_STR as the unquoted string representation of
-# ${PROJECT_VERSION}, e.g. 6.1.0
+# ${PROJECT_VERSION}, e.g. 7.0.0
 set(QPP_VERSION_STR ${PROJECT_VERSION})
 
 # -----------------------------------------------------------------------------
