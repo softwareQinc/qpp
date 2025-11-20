@@ -51,13 +51,13 @@ int main(int argc, char* argv[]) {
     return result;
 }
 
-TEST_CASE("qpp::QCircuit::QFT() benchmark", "[benchmark][qft]") {
+TEST_CASE("qpp::QCircuit::TFQ() benchmark", "[benchmark][tfq]") {
     REQUIRE(nq > 0);
-    BENCHMARK_ADVANCED("QFT nq=" + std::to_string(nq))
+    BENCHMARK_ADVANCED("TFQ nq=" + std::to_string(nq))
     (Catch::Benchmark::Chronometer meter) {
         // Setup (NOT measured)
         qpp::QCircuit qc{nq};
-        qc.QFT();
+        qc.TFQ();
         qpp::QEngine qe{qc};
 
         // Benchmarked portion (executed repeatedly)
