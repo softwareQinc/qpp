@@ -33,6 +33,8 @@
 - Bumped CMake minimum required version to 3.20
 - Modernized CMake configuration files
 - Removed `EIGEN3_INSTALL_DIR` CMake flag
+- Examples are now built in `${CMAKE_BUILD_DIR}/bin` instead of `${CMAKE_BUILD_DIR}`
+- Unit tests are now built in `${CMAKE_BUILD_DIR}/tests` instead of `${CMAKE_BUILD_DIR}/unit_tests`
 
 # Version 6.0 - 14 April 2025
 

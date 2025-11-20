@@ -9,10 +9,16 @@
 
 ## Set up and running
 
-Execute from the root of this directory
+Execute
 
-```bash
+```shell
 cmake -B build
 cmake --build build --parallel 4
-./build/bench
+./build/bin/benchmark_executable_name # e.g., ./build/bin/qft
+```
+
+For help, execute
+
+```shell
+./build/bin/benchmark_executable_name --help # e.g., ./build/bin/qft --help
 ```

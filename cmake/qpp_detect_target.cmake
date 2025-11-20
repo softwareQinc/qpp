@@ -12,12 +12,11 @@
 # qpp_detect_target(QPP_TARGET "OpenMP")
 #
 # message(STATUS "Using target ${QPP_TARGET} for OpenMP configuration")
-
-function(qpp_detect_target _result_var)
+function(qpp_detect_target result_var)
   # Optional second argument for feature name
-  set(_feature_name "${ARGV1}")
-  if(NOT _feature_name)
-    set(_feature_name "QPP feature")
+  set(feature_name "${ARGV1}")
+  if(NOT feature_name)
+    set(feature_name "QPP feature")
   endif()
 
   if(TARGET libqpp_internal)
@@ -28,12 +27,12 @@ function(qpp_detect_target _result_var)
     set(target_name libqpp)
   else()
     message(
-      WARNING "Quantum++: No target found for ${_feature_name} configuration")
+      WARNING "Quantum++: No target found for ${feature_name} configuration")
     set(target_name "")
   endif()
 
   # Return detected target name to the caller
-  set(${_result_var}
+  set(${result_var}
       "${target_name}"
       PARENT_SCOPE)
 endfunction()

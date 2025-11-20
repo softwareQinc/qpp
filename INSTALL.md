@@ -50,7 +50,7 @@ To build the
 cmake --build build --target examples --parallel 8
 ```
 
-The above command builds all examples as executables in `./build`. The
+The above command builds all examples as executables in `./build/bin`. The
 `--parallel 8` flag instructs CMake to build in parallel using 8 threads,
 modify accordingly.
 
@@ -75,7 +75,7 @@ cmake --build build --target bb84
 
 The command above builds only the example
 [examples/bb84.cpp](https://github.com/softwareQinc/qpp/tree/main/examples/bb84.cpp)
-and outputs the executable `./build/bb84[.exe]`.
+and outputs the executable `./build/bin/bb84[.exe]`.
 
 ---
 
@@ -181,20 +181,23 @@ project's root directory.
 ```cmake
 cmake_minimum_required(VERSION 3.20)
 project(standalone)
-set(CMAKE_CXX_STANDARD 17)
 
-# If the Quantum++ installation path was non-standard, i.e., specified by
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
+# If Quantum++'s installation path was non-standard, i.e., specified by
 #
 # cmake -B build -DCMAKE_INSTALL_PREFIX=/path/to/installed/qpp
 #
-# then uncomment the following line and replace the installation path with yours
+# uncomment the following line and replace the installation path with yours
 
 # set(CMAKE_PREFIX_PATH "/path/to/installed/qpp")
 
 find_package(qpp REQUIRED)
+
 add_executable(standalone src/main.cpp)
 target_link_libraries(standalone PRIVATE libqpp)
-
 ```
 
 Configure the application in an out-of-source directory by executing
@@ -209,7 +212,7 @@ followed by building the application with
 cmake --build build
 ```
 
-The commands above builds the `standalone` executable inside the `build`
+The commands above builds the `standalone` executable inside the `build/bin`
 directory.
 
 ---
@@ -225,7 +228,7 @@ like below (assumes UNIX/UNIX-like, adapt accordingly for Windows)
 g++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
     -O3 -DNDEBUG -DEIGEN_NO_DEBUG
     -isystem $HOME/eigen3 -I $HOME/qpp/include -I $HOME/qpp/qasmtools/include \
-     src/main.cpp -o my_qpp_app
+     src/main.cpp -o executable_name
 ```
 
 If you intend to go via this route, we assume that you are familiar with how

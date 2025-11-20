@@ -35,7 +35,7 @@ bash run.sh build/qft results
 The results will be written in `results_output_directory/results_$DATE.csv`. If
 the directory `results_output_directory` does not exist, it will be created.
 
-## Python stress tests
+## Python stress tests (DEPRECATED, can not run anymore due to breaking changes in Qiskit and QuTiP)
 
 We wrote some [Qiskit](https://qiskit.org/) and [QuTiP](https://qutip.org/)
 stress tests scripts, all located in the `python` directory. The output format

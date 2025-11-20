@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 project(standalone)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 # If Quantum++'s installation path was non-standard, i.e., specified by
 #
@@ -12,5 +14,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # set(CMAKE_PREFIX_PATH "/path/to/installed/qpp")
 
 find_package(qpp REQUIRED)
+
 add_executable(standalone src/main.cpp)
 target_link_libraries(standalone PRIVATE libqpp)
