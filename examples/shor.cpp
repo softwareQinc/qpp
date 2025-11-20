@@ -13,7 +13,7 @@
 int main() {
     using namespace qpp;
 
-    bigint N = 15;                   // number to factor
+    bigint N = 35;                   // number to factor
     auto a = rand<bigint>(3, N - 1); // random co-prime with N
     while (gcd(a, N) != 1) {
         a = rand<bigint>(3, N - 1);
@@ -25,8 +25,8 @@ int main() {
     auto D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
 
     std::cout << ">> Factoring N = " << N << " with coprime a = " << a << '\n';
-    std::cout << ">> n = " << n << ", D = 2^n = " << D << " and 2^(2n) = ";
-    std::cout << D * D << '\n';
+    std::cout << ">> Using 2*n = " << 2 * n << " qubits, 2^n = " << D
+              << " and 2^(2n) = " << D * D << '\n';
 
     // vector with labels of the first half of the qubits
     std::vector<idx> first_subsys(n);
@@ -69,7 +69,7 @@ int main() {
 
     std::cout << ">> First measurement:  "
               << disp(vect_results1, IOManipContainerOpts{}.set_sep(" "))
-              << " ";
+              << ", ";
     std::cout << "i.e., j = " << n1 << " with probability " << prob1;
     std::cout << '\n';
 
@@ -99,7 +99,7 @@ int main() {
 
     std::cout << ">> Second measurement: "
               << disp(vect_results2, IOManipContainerOpts{}.set_sep(" "))
-              << " ";
+              << ", ";
     std::cout << "i.e., j = " << n2 << " with probability " << prob2;
     std::cout << '\n';
 

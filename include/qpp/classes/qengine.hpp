@@ -540,69 +540,49 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // classically-controlled gate
         if (QCircuit::is_cCTRL(gate_step)) {
             bool is_fan = (gate_step.gate_type_ == GType::cCTRL_FAN);
-            if (!qeng_st_.dits_.empty()) {
-                {
-                    bool should_apply = true;
-                    idx first_dit;
-                    // we have a shift
-                    if (gate_step.shift_.has_value()) {
-                        first_dit =
-                            (qeng_st_.dits_[(gate_step.ctrl_.value())[0]] +
+            bool should_apply = true;
+            idx first_dit;
+            // we have a shift
+            if (gate_step.shift_.has_value()) {
+                first_dit = (qeng_st_.dits_[(gate_step.ctrl_.value())[0]] +
                              gate_step.shift_.value()[0]) %
                             d;
-                        for (idx m = 1; m < static_cast<idx>(
-                                                gate_step.ctrl_.value().size());
-                             ++m) {
-                            if ((qeng_st_.dits_[(gate_step.ctrl_.value())[m]] +
-                                 gate_step.shift_.value()[m]) %
-                                    d !=
-                                first_dit) {
-                                should_apply = false;
-                                break;
-                            }
-                        }
-                    }
-                    // no shift
-                    else {
-                        first_dit =
-                            qeng_st_.dits_[(gate_step.ctrl_.value())[0]];
-                        for (idx m = 1; m < static_cast<idx>(
-                                                gate_step.ctrl_.value().size());
-                             ++m) {
-                            if (qeng_st_.dits_[(gate_step.ctrl_.value())[m]] !=
-                                first_dit) {
-                                should_apply = false;
-                                break;
-                            }
-                        }
-                    }
-                    if (should_apply) {
-                        cmat U = powm(h_tbl[gate_step.gate_hash_], first_dit);
-                        if (is_fan) {
-                            for (idx qudit : target_rel_pos) {
-                                qeng_st_.qstate_ =
-                                    apply(qeng_st_.qstate_, U, {qudit}, d);
-                            }
-                        } else {
-                            qeng_st_.qstate_ = apply(
-                                qeng_st_.qstate_,
-                                powm(h_tbl[gate_step.gate_hash_], first_dit),
-                                target_rel_pos, d);
-                        }
+                for (idx m = 1;
+                     m < static_cast<idx>(gate_step.ctrl_.value().size());
+                     ++m) {
+                    if ((qeng_st_.dits_[(gate_step.ctrl_.value())[m]] +
+                         gate_step.shift_.value()[m]) %
+                            d !=
+                        first_dit) {
+                        should_apply = false;
+                        break;
                     }
                 }
             }
-            // NOTE: check if this can happen (st_.dits_.empty())
+            // no shift
             else {
+                first_dit = qeng_st_.dits_[(gate_step.ctrl_.value())[0]];
+                for (idx m = 1;
+                     m < static_cast<idx>(gate_step.ctrl_.value().size());
+                     ++m) {
+                    if (qeng_st_.dits_[(gate_step.ctrl_.value())[m]] !=
+                        first_dit) {
+                        should_apply = false;
+                        break;
+                    }
+                }
+            }
+            if (should_apply) {
+                cmat U = powm(h_tbl[gate_step.gate_hash_], first_dit);
                 if (is_fan) {
                     for (idx qudit : target_rel_pos) {
                         qeng_st_.qstate_ =
-                            apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
-                                  {qudit}, d);
+                            apply(qeng_st_.qstate_, U, {qudit}, d);
                     }
                 } else {
                     qeng_st_.qstate_ =
-                        apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
+                        apply(qeng_st_.qstate_,
+                              powm(h_tbl[gate_step.gate_hash_], first_dit),
                               target_rel_pos, d);
                 }
             }

@@ -1977,8 +1977,6 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
     ctrlgate.insert(ctrlgate.end(), target.begin(), target.end());
-    // FIXME: if needed, check wrt dims, I think OK, dims are assumed sorted,
-    // and ctrlgate is only used for exception checking
     std::sort(ctrlgate.begin(), ctrlgate.end());
 
     // check that ctrl + gate subsystem is valid
@@ -2330,8 +2328,6 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 
     std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
     ctrlgate.insert(ctrlgate.end(), target.cbegin(), target.cend());
-    // FIXME: if needed, check wrt dims, I think OK, dims are assumed sorted,
-    // and ctrlgate is only used for exception checking
     std::sort(ctrlgate.begin(), ctrlgate.end());
 
     // check that ctrl + gate subsystem is valid
