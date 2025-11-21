@@ -245,7 +245,7 @@ struct QCircuitRuntimeStep : IDisplay {
                 os << ", END: " << end_expr.value();
             }
 
-            // NOTE: comment in production
+            // NOTE: comment the block below in production
             /*
             if (!dit_ctx.empty()) {
                 os << ", dit_ctx: [";

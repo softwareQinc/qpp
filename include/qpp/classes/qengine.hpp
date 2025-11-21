@@ -210,18 +210,32 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     internal::QEngineStatistics
         stats_{}; ///< measurement statistics for multiple runs
 
-    // NOTE: doc
     /**
-     * \brief Executes a contiguous series of projective measurement steps
+     * \brief Executes a contiguous sequence of circuit steps, including
+     * possible measurement operations
      *
-     * \param steps Vector of qpp::QCircuit::iterator
-     * \param pos Index from where the execution starts
-     * \param ensure_post_selection When \a ensure_post_selection is true, the
-     * step is executed repeatedly until the post-selection succeeds, or until
-     * the maximum number of post-selection reps is reached,
-     * see qpp::QEngineT::set_max_post_selection_reps(), in which case the
-     * post-selection is not guaranteed to succeed; check the state of the
-     * engine, see qpp::QEngineT::post_select_ok()
+     * This function iterates over a sequence of steps in a quantum circuit
+     * (typically a block of consecutive measurement-related operations)
+     * starting at the specified position, and executes them on the engine. The
+     * sequence may include projective measurements, controlled jumps, or other
+     * runtime steps.
+     *
+     * If \a ensure_post_selection is true, each measurement step that involves
+     * post-selection is re-executed until the post-selection condition
+     * succeeds, or until the maximum number of attempts is reached (see
+     * qpp::QEngineT::set_max_post_selection_reps()). If post-selection fails at
+     * any step, execution stops immediately. Note that post-selection success
+     * is **not guaranteed**; you should check qpp::QEngineT::post_select_ok().
+     *
+     * The function also tracks whether any measurement was encountered during
+     * execution and updates measurement statistics accordingly.
+     *
+     * \param steps Vector of qpp::QCircuit::iterator representing the circuit
+     * steps to execute
+     * \param pos Starting index in \a steps from which execution begins
+     * \param ensure_post_selection When true, enforces post-selection for each
+     * measurement step by retrying execution until success (or exhaustion of
+     * the configured limit)
      */
     void execute_circuit_steps_once_(std::vector<QCircuit::iterator>& steps,
                                      idx pos, bool ensure_post_selection) {
@@ -282,7 +296,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     }
 
     /**
-     * \brief Executes a contiguous series of projective measurement steps
+     * \brief Executes a contiguous sequence of projective measurement steps
      *
      * \param steps Vector of qpp::QCircuit::iterator
      * \param pos Index from where the execution starts
@@ -321,7 +335,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     }
 
     /**
-     * \brief Executes a contiguous series of projective measurement steps via
+     * \brief Executes a contiguous sequence of projective measurement steps via
      * sampling
      *
      * \param steps Vector of qpp::QCircuit::iterator

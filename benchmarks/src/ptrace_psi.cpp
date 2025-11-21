@@ -39,19 +39,19 @@ int main(int argc, char* argv[]) {
     return session.run();
 }
 
-TEST_CASE("qpp::QCircuit::TFQ() benchmark", "[benchmark][tfq]") {
+TEST_CASE("qpp::ptrace() state vector benchmark",
+          "[benchmark][ptrace-state-vector]") {
     // Setup (NOT measured)
     REQUIRE(nq > 0);
-    qpp::QCircuit qc{nq};
-    qc.TFQ();
-    qpp::QEngine qe{qc};
+    qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
+    qpp::ket psi = qpp::randket(D); // D x 1 random state vector
+    // Test worst-case scenario
+    std::vector<qpp::idx> subsys = {nq - 1};
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("TFQ nq=" + std::to_string(nq)) {
-        // IMPORTANT: engine must be reset after each iteration
-        qe.reset();
+    BENCHMARK("Partial trace (psi) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
-        return qe.execute();
+        return qpp::ptrace(psi, subsys);
     };
 }

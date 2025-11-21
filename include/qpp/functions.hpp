@@ -1455,7 +1455,6 @@ dyn_mat<typename Derived::Scalar> grams(const Eigen::MatrixBase<Derived>& A) {
     return grams<dyn_mat<typename Derived::Scalar>>(input);
 }
 
-// NOTE: check why 2 * internal::maxn
 /**
  * \brief Non-negative integer index to non-negative integer multi-index
  * \see qpp::multiidx2n()
@@ -1500,8 +1499,7 @@ template <typename T, typename U = T, typename V = T>
     }
     // END EXCEPTION CHECKS
 
-    // allocate twice the size for matrices reshaped as vectors
-    idx result[2 * internal::maxn];
+    idx result[internal::maxn];
     internal::n2multiidx(n, dims.size(), dims.data(), result);
 
     return std::vector<T>(std::begin(result),

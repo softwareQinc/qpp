@@ -499,16 +499,17 @@ class QCircuit : public IDisplay, public IJSON {
 
         for (auto&& step : circuit_) {
             if (std::holds_alternative<internal::QCircuitGateStep>(step)) {
-                auto gate_step = std::get<internal::QCircuitGateStep>(step);
+                const auto& gate_step =
+                    std::get<internal::QCircuitGateStep>(step);
                 if (U.has_value() && gate_step.gate_hash_ != hashU) {
                     continue; // we skip this gate_step elem
                 }
 
                 found = true; // gate_step was found in the circuit
 
-                std::vector<idx> ctrl =
+                const std::vector<idx>& ctrl =
                     gate_step.ctrl_.value_or(std::vector<idx>{});
-                std::vector<idx> target = gate_step.target_;
+                const std::vector<idx>& target = gate_step.target_;
                 std::vector<idx> ctrl_target;
                 ctrl_target.reserve(ctrl.size() + target.size());
                 ctrl_target.insert(ctrl_target.end(), ctrl.cbegin(),
@@ -566,13 +567,11 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t hashV = V.has_value() ? hash_eigen(V.value()) : 0;
 
-        // NOTE: check this
-        //
         // iterate over all steps in the circuit
         for (auto&& step : circuit_) {
             if (std::holds_alternative<internal::QCircuitMeasurementStep>(
                     step)) {
-                auto measurement_step =
+                const auto& measurement_step =
                     std::get<internal::QCircuitMeasurementStep>(step);
                 if (V.has_value() && measurement_step.mats_hash_[0] != hashV) {
                     continue; // we skip this measurement_step elem
@@ -580,13 +579,13 @@ class QCircuit : public IDisplay, public IJSON {
 
                 found = true; // measurement_step was found in the circuit
 
-                std::vector<idx> target = measurement_step.target_;
+                const std::vector<idx>& target = measurement_step.target_;
                 idx c_reg = measurement_step.c_reg_;
 
                 idx max_height = 0;
                 switch (measurement_step.measurement_type_) {
                     case internal::QCircuitMeasurementStep::Type::NONE:
-
+                        break;
                     case internal::QCircuitMeasurementStep::Type::MEASURE_V:
                     case internal::QCircuitMeasurementStep::Type::
                         MEASURE_V_JOINT:
@@ -5796,7 +5795,7 @@ inline std::ostream& QCircuit::display(std::ostream& os) const {
         auto circuit_step = circuit_[it.get_ip()];
         if (std::holds_alternative<internal::QCircuitRuntimeStep>(
                 circuit_step)) {
-            auto circuit_step_runtime =
+            const auto& circuit_step_runtime =
                 std::get<internal::QCircuitRuntimeStep>(circuit_step);
             auto conditional_step_type = circuit_step_runtime.runtime_type_;
             switch (conditional_step_type) {
@@ -6935,7 +6934,7 @@ inline bool
 is_projective_measurement(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
-        auto measurement_step =
+        const auto& measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
         return is_projective_measurement(measurement_step);
     }
@@ -6994,7 +6993,7 @@ is_measurement(const internal::QCircuitMeasurementStep& measurement_step) {
 inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
-        auto measurement_step =
+        const auto& measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
         return is_measurement(measurement_step);
     }
@@ -7054,7 +7053,7 @@ inline bool
 is_destructive_measurement(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
-        auto measurement_step =
+        const auto& measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
         return is_destructive_measurement(measurement_step);
     }
@@ -7107,7 +7106,7 @@ inline bool
 is_projective_post_selection(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
-        auto measurement_step =
+        const auto& measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
         return is_projective_post_selection(measurement_step);
     }
@@ -7160,7 +7159,7 @@ is_post_selection(const internal::QCircuitMeasurementStep& measurement_step) {
 inline bool is_post_selection(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
-        auto measurement_step =
+        const auto& measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
         return is_post_selection(measurement_step);
     }
@@ -7211,7 +7210,7 @@ is_discard(const internal::QCircuitMeasurementStep& measurement_step) {
 inline bool is_discard(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
-        auto measurement_step =
+        const auto& measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
         return is_discard(measurement_step);
     }
@@ -7260,7 +7259,7 @@ is_reset(const internal::QCircuitMeasurementStep& measurement_step) {
 inline bool is_reset(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
     if (std::holds_alternative<internal::QCircuitMeasurementStep>(step)) {
-        auto measurement_step =
+        const auto& measurement_step =
             std::get<internal::QCircuitMeasurementStep>(step);
         return is_reset(measurement_step);
     }
@@ -7299,7 +7298,7 @@ inline bool is_cCTRL(const internal::QCircuitGateStep& gate_step) {
 inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
     auto step = elem.get_step();
     if (std::holds_alternative<internal::QCircuitGateStep>(step)) {
-        auto gate_step = std::get<internal::QCircuitGateStep>(step);
+        const auto& gate_step = std::get<internal::QCircuitGateStep>(step);
         return is_cCTRL(gate_step);
     }
 

@@ -51,6 +51,19 @@ class LabelledVectorProxy {
         std::conditional_t<is_const, const std::vector<T>, std::vector<T>>;
     VecType& data_{};
     std::vector<idx> label_{};
+    // Returns the validated, mapped index. Throws if out of bounds.
+    idx validate_index(idx i, const char* caller_name) const {
+        if (i >= static_cast<idx>(label_.size())) {
+            throw exception::OutOfRange{caller_name, "i"};
+        }
+
+        idx mapped_idx = label_[i];
+        if (mapped_idx >= static_cast<idx>(data_.size())) {
+            // This indicates a corrupted proxy state
+            throw exception::OutOfRange{caller_name, "mapped_index"};
+        }
+        return mapped_idx;
+    }
 
   public:
     LabelledVectorProxy(std::vector<T>& data, std::vector<idx> label)
@@ -61,41 +74,19 @@ class LabelledVectorProxy {
         std::iota(label_.begin(), label_.end(), 0);
     }
 
-    const T& operator[](idx i) const {
-        // EXCEPTION CHECKS
-        if (i + 1 > static_cast<idx>(label_.size())) {
-            throw exception::OutOfRange{
-                "qpp::internal::LabelledVectorProxy::operator[]() const", "i"};
-        }
-        if (label_[i] + 1 > static_cast<idx>(data_.size())) {
-            throw exception::OutOfRange{
-                "qpp::internal::LabelledVectorProxy::operator[]() const", "i"};
-        }
-        // END EXCEPTION CHECKS
-
-        return data_[label_[i]];
-    }
-
     // mutable operator[], enabled only if is_const == false
     template <bool B = is_const, typename = std::enable_if_t<!B>>
     T& operator[](idx i) {
-        // NOTE: check operator[] exceptions in LabelledVectorProxy (out of
-        // bounds)
+        idx mapped = validate_index(
+            i, "qpp::internal::LabelledVectorProxy::operator[]()");
+        return data_[mapped];
+    }
 
-        // std::cout << "label_.size(): " << label_.size() << '\n';
-        // std::cout << "data_.size(): " << data_.size() << '\n';
-        // std::cout << "i: " << i << '\n';
-        // std::cout << "label_[i]: " << label_[i] << "\n\n";
-
-        if (i + 1 > static_cast<idx>(label_.size())) {
-            throw exception::OutOfRange{
-                "qpp::internal::LabelledVectorProxy::operator[]()", "i"};
-        }
-        if (label_[i] + 1 > static_cast<idx>(data_.size())) {
-            throw exception::OutOfRange{
-                "qpp::internal::LabelledVectorProxy::operator[]()", "i"};
-        }
-        return data_[label_[i]];
+    // const version
+    const T& operator[](idx i) const {
+        idx mapped = validate_index(
+            i, "qpp::internal::LabelledVectorProxy::operator[]() const");
+        return data_[mapped];
     }
 
     // void set_val(idx i, T val) { this->operator[](i) = val; }
