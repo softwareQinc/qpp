@@ -33,6 +33,4 @@ foreach(SOURCE_FILE ${SRC_FILES})
   get_filename_component(TARGET_NAME ${SOURCE_FILE} NAME_WE)
   add_executable(${TARGET_NAME} ${SOURCE_FILE})
   target_link_libraries(${TARGET_NAME} PRIVATE Catch2::Catch2WithMain libqpp)
-  message(
-    STATUS "Created executable target: ${TARGET_NAME} from ${SOURCE_FILE}")
 endforeach()
