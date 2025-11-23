@@ -41,9 +41,9 @@ jobs:
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            ./examples/standalone/build/bin/${{env.BUILD_TYPE}}/standalone.exe
+            ./examples/standalone/build/examples/${{env.BUILD_TYPE}}/standalone.exe
           else
-            ./examples/standalone/build/bin/standalone
+            ./examples/standalone/build/examples/standalone
           fi
 
       - name: Build examples
