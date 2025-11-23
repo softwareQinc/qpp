@@ -3,7 +3,6 @@ project(standalone)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 # If Quantum++'s installation path was non-standard, i.e., specified by
 #

@@ -27,14 +27,14 @@
   [["examples/circuits/runtime_set_dits.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)]
 - Conditional statements are now indented with tabs when displaying
   qpp::QCircuit instances
-- Added benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
-  in ["benchmarks"](https://github.com/softwareQinc/qpp/blob/main/benchmarks)
 - Bumped Eigen3 minimum required version to 5.0.0
 - Bumped CMake minimum required version to 3.20
 - Modernized CMake configuration files
 - Removed `EIGEN3_INSTALL_DIR` CMake flag
-- Examples are now built in `${CMAKE_BUILD_DIR}/bin` instead of `${CMAKE_BUILD_DIR}`
-- Unit tests are now built in `${CMAKE_BUILD_DIR}/tests` instead of `${CMAKE_BUILD_DIR}/unit_tests`
+- Examples are now built in `${CMAKE_BUILD_DIR}/examples` instead of
+  `${CMAKE_BUILD_DIR}`
+- Added benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
+  in ["benchmarks"](https://github.com/softwareQinc/qpp/blob/main/benchmarks)
 
 # Version 6.0 - 14 April 2025
 

@@ -39,9 +39,9 @@ add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL tests/main.cpp
                                                ${TEST_SOURCES_FILTERED})
 set_target_properties(
   ${TARGET_NAME}
-  PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
-             RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/tests"
-             RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/tests")
+  PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/unit_tests"
+             RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/unit_tests"
+             RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/unit_tests")
 target_link_libraries(${TARGET_NAME} PRIVATE libqpp_internal GTest::gmock)
 
 include(GoogleTest)

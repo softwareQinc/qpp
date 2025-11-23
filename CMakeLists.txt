@@ -67,11 +67,8 @@ target_include_directories(
   INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/qasmtools/include>
             $<INSTALL_INTERFACE:include>)
 
-# Executables are built inside bin
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-
 # -----------------------------------------------------------------------------
-# Optional Features
+# Optional pyqpp development
 # -----------------------------------------------------------------------------
 find_package(Python3 QUIET COMPONENTS Interpreter Development)
 if(Python3_FOUND)
@@ -99,13 +96,20 @@ include(cmake/qpp_MATLAB.cmake)
 # -----------------------------------------------------------------------------
 # Examples
 # -----------------------------------------------------------------------------
-include(cmake/examples.cmake)
+add_custom_target(examples COMMENT "Builds and groups all Quantum++ examples")
+add_subdirectory(examples _examples EXCLUDE_FROM_ALL SYSTEM)
 
 # -----------------------------------------------------------------------------
 # Unit tests
 # -----------------------------------------------------------------------------
 enable_testing()
-add_subdirectory(unit_tests EXCLUDE_FROM_ALL SYSTEM)
+add_subdirectory(unit_tests _unit_tests EXCLUDE_FROM_ALL SYSTEM)
+
+# -----------------------------------------------------------------------------
+# Benchmarks
+# -----------------------------------------------------------------------------
+add_custom_target(benchmarks COMMENT "Benchmarks")
+add_subdirectory(benchmarks _benchmarks EXCLUDE_FROM_ALL SYSTEM)
 
 # -----------------------------------------------------------------------------
 # Installation

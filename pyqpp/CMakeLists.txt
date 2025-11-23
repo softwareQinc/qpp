@@ -10,7 +10,7 @@ find_package(Python3 QUIET COMPONENTS Interpreter Development)
 if(${Python3_FOUND})
   include("../cmake/pybind11.cmake")
 else()
-  message(FATAL_ERROR "Python3 development kit not found, can not build pyqpp.")
+  message(FATAL_ERROR "Python3 development kit not found, can not build pyqpp")
 endif()
 
 include("../cmake/qpp_eigen3.cmake")

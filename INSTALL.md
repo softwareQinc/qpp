@@ -41,7 +41,7 @@ cmake -B build
 
 ---
 
-## Building the examples and/or unit tests
+## Examples
 
 To build the
 [examples](https://github.com/softwareQinc/qpp/tree/main/examples), execute
@@ -50,9 +50,21 @@ To build the
 cmake --build build --target examples --parallel 8
 ```
 
-The above command builds all examples as executables in `./build/bin`. The
+This will compile all benchmarks executables into `./build/examples`. The
 `--parallel 8` flag instructs CMake to build in parallel using 8 threads,
 modify accordingly.
+
+To build **only** a specific target, execute, e.g.,
+
+```shell
+cmake --build build --target bb84
+```
+
+The command above builds only the example
+[examples/bb84.cpp](https://github.com/softwareQinc/qpp/tree/main/examples/bb84.cpp)
+and outputs the executable `./build/examples/bb84[.exe]`.
+
+## Unit tests
 
 To build the
 [unit tests](https://github.com/softwareQinc/qpp/tree/main/unit_tests), execute
@@ -67,15 +79,24 @@ Tu run the unit tests, execute
 ctest --test-dir build
 ```
 
-To build **only** a specific target, execute, e.g.,
+## Benchmarks
+
+Quantum++ includes a benchmarking suite built with [Catch2](https://github.com/catchorg/Catch2).
+
+To build all benchmarks, execute
 
 ```shell
-cmake --build build --target bb84
+cmake --build build --target benchmarks --parallel 8
 ```
 
-The command above builds only the example
-[examples/bb84.cpp](https://github.com/softwareQinc/qpp/tree/main/examples/bb84.cpp)
-and outputs the executable `./build/bin/bb84[.exe]`.
+This will compile all benchmarks executables into `./build/benchmarks`. To run
+a specific benchmark, e.g., `qft_bench`, execute
+
+```shell
+./build/benchmarks/qft_bench
+```
+
+For help and additional options, run any benchmark with the `--help` flag.
 
 ---
 
@@ -184,7 +205,6 @@ project(standalone)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 # If Quantum++'s installation path was non-standard, i.e., specified by
 #
@@ -212,7 +232,7 @@ followed by building the application with
 cmake --build build
 ```
 
-The commands above builds the `standalone` executable inside the `build/bin`
+The commands above builds the `standalone` executable inside the `build`
 directory.
 
 ---
