@@ -20,11 +20,7 @@ endif()
 
 # Detect Python and pybind11
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-if(Python3_FOUND)
-  include("../cmake/pybind11.cmake")
-else()
-  message(FATAL_ERROR "Python3 environment not found, abort building pyqpp")
-endif()
+include("../cmake/pybind11.cmake")
 
 # Detect Eigen3
 include("../cmake/qpp_eigen3.cmake")

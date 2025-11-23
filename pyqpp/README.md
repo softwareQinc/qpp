@@ -8,11 +8,11 @@ and can be installed using `pip`
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-## Creating python stubs for IDE autocompletion and static type checking
+## Creating Python stubs for IDE auto-completion and static type checking
 
 In case autocompletion (or static type checking via
 [mypy](https://www.mypy-lang.org/)) does not work properly in your editor/IDE,
-you may need to create python stubs for the package. To do this, execute
+you may need to create Python stubs for the package. To do this, execute
 
 ```shell
 mkdir ~/python_stubs

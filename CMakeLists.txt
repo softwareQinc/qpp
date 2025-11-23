@@ -70,7 +70,7 @@ target_include_directories(
 # -----------------------------------------------------------------------------
 # Optional pyqpp development
 # -----------------------------------------------------------------------------
-find_package(Python3 QUIET COMPONENTS Interpreter Development)
+find_package(Python3 COMPONENTS Interpreter Development)
 if(Python3_FOUND)
   include(cmake/pybind11.cmake)
   include(cmake/pyqpp.cmake)
