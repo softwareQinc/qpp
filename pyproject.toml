@@ -23,8 +23,6 @@ homepage = "https://github.com/softwareqinc/qpp"
 repository = "https://github.com/softwareqinc/qpp.git"
 
 [tool.scikit-build]
-cmake.minimum-version = "3.20"
-cmake.verbose = true
-
-# Optional: expand universal macOS wheel tags
+cmake.source-dir = "pyqpp"
+wheel.packages = ["pyqpp"]
 wheel.expand-macos-universal-tags = true

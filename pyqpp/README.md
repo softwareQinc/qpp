@@ -8,23 +8,7 @@ and can be installed using `pip`
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-## Creating Python stubs for IDE auto-completion and static type checking
-
-In case autocompletion (or static type checking via
-[mypy](https://www.mypy-lang.org/)) does not work properly in your editor/IDE,
-you may need to create Python stubs for the package. To do this, execute
-
-```shell
-mkdir ~/python_stubs
-export MYPATH=$MYPATH:~/python_subs # put this in your .profile or .bashrc
-. ~/venv/bin/activate
-stubgen -p pyqpp -o ~/python_stubs
-ln -s ~/python_stubs/pyqpp ~/venv/lib/python3.11/site-packages
-```
-
-In the above, we assumed that your platform is UNIX/UNIX-like, and that you
-have **pyqpp** installed in a virtual environment under `~/venv`. Please modify
-accordingly for your system.
+---
 
 ## Overview
 
@@ -32,8 +16,6 @@ accordingly for your system.
 `QNoisyEngineT`, and several other derived Engine classes. Additionally,
 **pyqpp** provides commonly used quantum `gates` and `states`, and some basic
 Eigen operations.
-
----
 
 Example:
 
@@ -87,10 +69,14 @@ print(dirac(psi_out))
 print("Norm difference:\n", norm(psi_out - psi_in))
 ```
 
+---
+
 ## OpenQASM circuits
 
 Use `pyqpp.qasm.read_from_file` to obtain the `QCircuit` representation of an
 OpenQASM 2.0 file.
+
+---
 
 ## Custom Bindings
 
@@ -104,9 +90,6 @@ module &def(const char *name_, Func &&f, const Extra&... extra)
 ```
 
 `Func` can be a plain C++ function, a function pointer, or a lambda function.
-
----
-
 For example, consider the `qpp::randU` method
 
 ```cpp
@@ -125,6 +108,8 @@ PYBIND11_MODULE(pyqpp, m) {
     ...
 }
 ```
+
+---
 
 ## Template methods
 
@@ -168,3 +153,23 @@ PYBIND11_MODULE(pyqpp, m) {
     ...
 }
 ```
+
+---
+
+## Creating Python stubs for IDE auto-completion and static type checking
+
+In case autocompletion (or static type checking via
+[mypy](https://www.mypy-lang.org/)) does not work properly in your editor/IDE,
+you may need to create Python stubs for the package. To do this, execute
+
+```shell
+mkdir ~/python_stubs
+export MYPATH=$MYPATH:~/python_subs # put this in your .profile or .bashrc
+. ~/venv/bin/activate
+stubgen -p pyqpp -o ~/python_stubs
+ln -s ~/python_stubs/pyqpp ~/venv/lib/python3.11/site-packages
+```
+
+In the above, we assumed that your platform is UNIX/UNIX-like, and that you
+have **pyqpp** installed in a virtual environment under `~/venv`. Please modify
+accordingly for your system.
