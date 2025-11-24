@@ -100,18 +100,18 @@ add_custom_target(examples COMMENT "Builds and groups all Quantum++ examples")
 add_subdirectory(examples _examples EXCLUDE_FROM_ALL SYSTEM)
 
 # -----------------------------------------------------------------------------
-# Unit tests
-# -----------------------------------------------------------------------------
-enable_testing()
-add_subdirectory(unit_tests _unit_tests EXCLUDE_FROM_ALL SYSTEM)
-
-# -----------------------------------------------------------------------------
 # Benchmarks
 # -----------------------------------------------------------------------------
 add_custom_target(benchmarks COMMENT "Benchmarks")
 add_subdirectory(benchmarks _benchmarks EXCLUDE_FROM_ALL SYSTEM)
 
 # -----------------------------------------------------------------------------
+# Unit tests
+# -----------------------------------------------------------------------------
+enable_testing()
+add_subdirectory(unit_tests EXCLUDE_FROM_ALL SYSTEM)
+# -----------------------------------------------------------------------------
+
 # Installation
 # -----------------------------------------------------------------------------
 include(GNUInstallDirs)
