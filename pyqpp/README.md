@@ -1,7 +1,16 @@
-# Installation instructions
+# Python3 bindings for Quantum++
 
-[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
-wrapper for Quantum++. **pyqpp** requires the same dependencies as Quantum++,
+[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) provides a
+modern Python 3 interface to the Quantum++ C++ library. It exposes the core
+quantum computing primitives, high-performance circuit simulation engines, and
+utility functions of Quantum++ to Python users through a clean and intuitive
+API built with [pybind11](https://github.com/pybind/pybind11).
+
+---
+
+## Installation instructions
+
+**pyqpp** requires the same dependencies as Quantum++,
 and can be installed using `pip`
 
 ```shell
@@ -12,10 +21,10 @@ pip install git+https://github.com/softwareQinc/qpp
 
 ## Overview
 
-**pyqpp** includes `Bit_circuit`, `Dynamic_bitset`, `QCircuitT`, `QEngineT`,
-`QNoisyEngineT`, and several other derived Engine classes. Additionally,
-**pyqpp** provides commonly used quantum `gates` and `states`, and some basic
-Eigen operations.
+**pyqpp** provides access to core Quantum++ components such as `Bit_circuit`,
+`Dynamic_bitset`, `QCircuitT`, `QEngineT`, `QNoisyEngineT`, and several
+additional engine sub-classes. It also provides common quantum gates,
+predefined states, and basic Eigen-based operations.
 
 Example:
 
@@ -25,43 +34,43 @@ from pyqpp import *
 
 print("Qubit teleportation quantum circuit simulation\n")
 
-# quantum circuit with 3 qubits and 2 classical bits
+# Quantum circuit with 3 qubits and 2 classical bits
 qc = QCircuit(3, 2)
-# set the qubit 0 to a random state
+# Set the qubit 0 to a random state
 U = randU(2)
-# apply the gate U with name randU to qubit 0
+# Apply the gate U named randU to qubit 0
 qc.gate(U, 0, "randU")
 
-# set the MES between qubits 1 and 2
+# Establish a maximally entangled state between qubits 1 and 2
 qc.gate(gates.H, 1)
 qc.CTRL(gates.X, 1, 2)
 
-# perform the Bell measurement between qubits 0 and 1
+# Perform a Bell measurement between qubits 0 and 1
 qc.CTRL(gates.X, 0, 1)
 qc.gate(gates.H, 0)
 qc.measure([0, 1])
 
-# apply the classical controls
+# Apply the classical controls
 qc.cCTRL(gates.X, 1, 2)
 qc.cCTRL(gates.Z, 0, 2)
 
-# initialize the quantum engine with a circuit
+# Initialize the quantum engine with a circuit
 engine = QEngine(qc)
 
-# display the quantum circuit and its corresponding resources
+# Display the quantum circuit and its corresponding resources
 print(qc)
 print()
 print(qc.get_resources())
 print()
 
-# execute the entire circuit
+# Execute the entire circuit
 engine.execute()
 
-# display the measurement statistics
+# Display the measurement statistics
 print(engine)
 print()
 
-# verify that the teleportation was successful
+# Verify that the teleportation was successful
 psi_in = np.matmul(U, states.z0)
 psi_out = engine.get_state()
 print("Teleported state:")
