@@ -15,7 +15,7 @@ requires-python = ">=3.9"
 readme = "pyqpp/README.md"
 license = { text = "MIT" }
 dependencies = [
-    "numpy"
+    "numpy",
 ]
 
 [project.urls]
