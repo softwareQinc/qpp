@@ -1,4 +1,4 @@
-# Examples source file(s) to be compiled, modify as needed
+# Example source file(s) to build and compile; modify as needed
 
 set(EXAMPLE_DIRS
     ${CMAKE_SOURCE_DIR}/examples ${CMAKE_SOURCE_DIR}/examples/circuits

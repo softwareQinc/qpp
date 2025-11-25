@@ -1,3 +1,5 @@
+# pyqpp - Python3 bindings for Quantum++
+
 cmake_minimum_required(VERSION 3.20)
 project(pyqpp LANGUAGES CXX)
 

@@ -6,7 +6,7 @@
 #include <tuple>
 #include <vector>
 
-#include "qpp/qpp.hpp"
+#include <qpp/qpp.hpp>
 
 int main() {
     using namespace qpp;

@@ -84,7 +84,7 @@ include(cmake/qpp_compiler_flags.cmake)
 include(cmake/qpp_eigen3.cmake)
 
 # Internal interface only, do not link against it, use libqpp instead. Used to
-# run examples and unit tests.
+# build examples, benchmarks, and unit tests.
 add_library(libqpp_internal INTERFACE)
 target_link_libraries(libqpp_internal INTERFACE libqpp)
 

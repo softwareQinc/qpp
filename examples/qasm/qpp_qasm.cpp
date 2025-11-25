@@ -10,7 +10,7 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "qpp/qpp.hpp"
+#include <qpp/qpp.hpp>
 
 int main(int argc, char** argv) {
     using namespace qpp;

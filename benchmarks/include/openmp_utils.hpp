@@ -2,6 +2,7 @@
 #define OPENMP_UTILS_HPP_
 
 #ifdef QPP_OPENMP
+
 #include <cstdlib>
 #include <iostream>
 
@@ -42,6 +43,7 @@ inline int set_openmp_threads(int requested = -1) {
     }
 
     omp_set_num_threads(core_count);
+
     return core_count;
 }
 #endif // QPP_OPENMP
