@@ -24,8 +24,8 @@
  * SOFTWARE.
  */
 
-// IMPORTANT: instantiation of global singletons
-// Init, Codes, Gates, States and RandomDevices
+// IMPORTANT: Instantiates global singletons Init, Codes, Gates, States and
+// RandomDevices
 //
 // Any additional singletons should be instantiated here
 // Includes all necessary headers (except "matlab.hpp")
@@ -68,8 +68,6 @@
 #undef CTRL
 #endif // CTRL
 #endif // __sun
-
-#define QPP_QUBIT_OPTIMIZATIONS
 
 // Quantum++ library headers
 

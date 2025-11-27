@@ -50,7 +50,7 @@ TEST_CASE("qpp::syspermute() state vector benchmark",
     std::iota(subsys.rbegin(), subsys.rend(), 0);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Sybsystem permutation (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("Subsystem permutation (psi) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::syspermute(psi, subsys);

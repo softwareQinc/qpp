@@ -44,13 +44,13 @@ TEST_CASE("qpp::syspermute() density matrix benchmark",
     // Setup (NOT measured)
     REQUIRE(nq > 0);
     qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
-    qpp::ket rho = qpp::randrho(D); // D x D random density matrix
+    qpp::cmat rho = qpp::randrho(D); // D x D random density matrix
     // Test worst-case scenario
     std::vector<qpp::idx> subsys(nq);
     std::iota(subsys.rbegin(), subsys.rend(), 0);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Sybsystem permutation (rho) nq=" + std::to_string(nq)) {
+    BENCHMARK("Subsystem permutation (rho) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::syspermute(rho, subsys);
