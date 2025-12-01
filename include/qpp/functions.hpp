@@ -1257,7 +1257,7 @@ dyn_mat<typename Derived1::Scalar> comm(const Eigen::MatrixBase<Derived1>& A,
     }
     // END EXCEPTION CHECKS
 
-    return rA * rB - rB * rA;
+    return (rA * rB) - (rB * rA);
 }
 
 /**
@@ -1307,7 +1307,7 @@ anticomm(const Eigen::MatrixBase<Derived1>& A,
     }
     // END EXCEPTION CHECKS
 
-    return rA * rB + rB * rA;
+    return (rA * rB) + (rB * rA);
 }
 
 /**

@@ -32,8 +32,13 @@
 #ifndef QPP_INTERNAL_CRITICAL_HPP_
 #define QPP_INTERNAL_CRITICAL_HPP_
 
+#define QPP_QUBIT_OPTIMIZATIONS
+
+#include <algorithm>
 #include <cassert>
 #include <vector>
+
+#include "qpp/internal/util.hpp"
 
 #ifndef NDEBUG
 #include <set>
@@ -45,6 +50,46 @@
 
 namespace qpp {
 namespace internal {
+
+/**
+ * @brief Computes the complement of a subset of indices relative to the full
+ * set [0, 1, ..., n-1].
+ * * This is an O(n) time complexity approach using a boolean marker array.
+ * * @param target The subset of indices to exclude (subsystems to trace out).
+ * @param n The total number of subsystems (size of the full set).
+ * @return std::vector<idx> The complement set (subsystems to keep, subsys_bar).
+ */
+inline std::vector<idx> compute_complement(const std::vector<idx>& target,
+                                           idx n) {
+    // 1. Initialize a marker array (equivalent to a bitset) for fast lookup.
+    // std::vector<bool> is highly optimized and space-efficient.
+    std::vector<bool> is_target(n, false);
+
+    // 2. Mark the indices that are present in the target set. O(M) time, where
+    // M is target.size() This loop is parallelized using std::execution::par as
+    // there are no write conflicts.
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+    for (idx i = 0; i < target.size(); ++i) {
+        idx t = target[i];
+        // Assuming 't' is validated to be between 0 and n-1
+        is_target[t] = true;
+    }
+
+    std::vector<idx> subsys_bar;
+    subsys_bar.reserve(n - target.size());
+
+    for (idx i = 0; i < n; ++i) {
+        if (!is_target[i]) {
+            subsys_bar.push_back(i);
+        }
+    }
+
+    return subsys_bar;
+}
+
 /**
  * \brief Applies the 1-qubit gate \a A to the qubit \a i of the
  * multi-partite state vector \a state
@@ -968,7 +1013,6 @@ apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
         } // end col loop
     } // end row loop (parallelized)
 
-    // Return
     // Cast back to the original's scalar type
     return rho_prime_cd.template cast<typename Derived1::Scalar>();
 }
@@ -1157,7 +1201,6 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
         } // end col loop
     } // end row loop (parallelized)
 
-    // Return
     return rho_prime_cd.template cast<typename Derived1::Scalar>();
 }
 
@@ -1315,6 +1358,7 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     using Scalar = typename Derived1::Scalar;
     const idx D = 1ULL << n;
 
+    // Input Validation
 #ifndef NDEBUG
     assert(i < n && j < n && i != j &&
            "Target qubit indices i and j must be distinct and less than n");
@@ -1983,7 +2027,7 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     // Calculate block dimension D_k = 2^k
     const idx D_k = (k == 0) ? 1 : (1ULL << k);
 
-    // --- Input Validation ---
+    // Input Validation
 #ifndef NDEBUG
     const idx D = static_cast<idx>(state.rows());
     // Standard dimension checks
@@ -2198,8 +2242,494 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
         } // end col loop
     } // end row loop (parallelized)
 
-    // Return
     return rho_prime_cd.template cast<typename Derived1::Scalar>();
+}
+
+/**
+ * \brief Qubit state vector subsystem permutation
+ *
+ * Permutes the subsystems of a qubit state vector. The qubit \a perm[\a i] is
+ * permuted to the location \a i.
+ *
+ * \param A Eigen expression
+ * \param perm Permutation
+ * \param n Number of qubits
+ * \return Permuted qubit system, as a dynamic matrix over the same scalar field
+ * as \a A
+ */
+template <typename Derived>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+syspermute_psi_kq(const Eigen::MatrixBase<Derived>& A,
+                  const std::vector<idx>& perm, idx n) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    idx D = static_cast<idx>(rA.rows());
+
+    dyn_mat<typename Derived::Scalar> result(D, 1);
+
+    // Calculate the **inverse permutation** (new_pos -> old_pos).
+    // This allows us to construct the new index bit by bit.
+    std::vector<idx> inv_perm(n);
+    for (idx k = 0; k < n; ++k) {
+        inv_perm[perm[k]] = k;
+    }
+
+    // Define the bit-permutation logic directly in a block to be used inside
+    // the loop to avoid lambda overhead.
+    auto permute_bits = [&inv_perm, n](idx old_index) noexcept -> idx {
+        idx new_index = 0;
+        for (idx k = 0; k < n; ++k) {
+            // k is the new qubit position (new bit position, 0 to n-1)
+            // inv_perm[k] is the old qubit position (old bit position, 0 to
+            // n-1)
+            idx old_pos = inv_perm[k];
+
+            // 1. Extract the bit at old_pos in the old_index
+            idx bit = (old_index >> old_pos) & 1;
+
+            // 2. Set this bit at the new_pos (k) in the new_index
+            new_index |= (bit << k);
+        }
+        return new_index;
+    };
+
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+    for (idx i = 0; i < D; ++i) {
+        // Assign the original element to the calculated permuted index
+        result(permute_bits(i)) = rA.data()[i];
+    }
+
+    return result;
+}
+
+/**
+ * \brief Qubit density matrix subsystem permutation
+ *
+ * Permutes the subsystems of a qubit density matrix. The qubit \a perm[\a i] is
+ * permuted to the location \a i.
+ *
+ * \param A Eigen expression
+ * \param perm Permutation
+ * \param n Number of qubits
+ * \return Permuted qubit system, as a dynamic matrix over the same scalar field
+ * as \a A
+ */
+template <typename Derived>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+syspermute_rho_kq(const Eigen::MatrixBase<Derived>& A,
+                  const std::vector<idx>& perm, idx n) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    idx D = static_cast<idx>(rA.rows());
+
+    dyn_mat<typename Derived::Scalar> result(D, D);
+
+    // Calculate the **inverse permutation** (new_pos -> old_pos).
+    // This allows us to construct the new index bit by bit.
+    std::vector<idx> inv_perm(n);
+    for (idx k = 0; k < n; ++k) {
+        inv_perm[perm[k]] = k;
+    }
+
+    // Define the bit-permutation logic directly in a block to be used inside
+    // the loop to avoid lambda overhead.
+    auto permute_bits = [&inv_perm, n](idx old_index) noexcept -> idx {
+        idx new_index = 0;
+        for (idx k = 0; k < n; ++k) {
+            // k is the new qubit position (new bit position, 0 to n-1)
+            // inv_perm[k] is the old qubit position (old bit position, 0 to
+            // n-1)
+            idx old_pos = inv_perm[k];
+
+            // 1. Extract the bit at old_pos in the old_index
+            idx bit = (old_index >> old_pos) & 1;
+
+            // 2. Set this bit at the new_pos (k) in the new_index
+            new_index |= (bit << k);
+        }
+        return new_index;
+    };
+
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+    for (idx i = 0; i < D * D; ++i) {
+        idx permuted_linear_index;
+
+        // Density matrix: i = row * D + col
+        // Row index is i / D. Col index is i % D.
+        idx row_index = i / D;
+        idx col_index = i % D;
+
+        // Permute row and column indices separately
+        idx new_row_index = permute_bits(row_index);
+        idx new_col_index = permute_bits(col_index);
+
+        // The linear index in the permuted system is new_row * D + new_col
+        permuted_linear_index = (new_row_index * D) + new_col_index;
+
+        // Assign the original element to the calculated permuted index
+        result(permuted_linear_index) = rA.data()[i];
+    }
+
+    return result;
+}
+
+/**
+ * \brief Partial trace (Ket specialized)
+ * \see qpp::ptrace1(), qpp::ptrace2()
+ *
+ * Partial trace of the multi-partite state vector or density matrix over the
+ * list \a target of subsystems
+ *
+ * \param A Eigen expression
+ * \param target Subsystem indexes
+ * \param n Number of qubits
+ * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * in a multi-partite system, as a dynamic matrix over the same scalar field as
+ * \a A
+ */
+template <typename Derived>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
+              const std::vector<idx>& target, idx n) {
+    using Scalar = typename Derived::Scalar;
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    idx D = static_cast<idx>(rA.rows());
+    idx n_subsys = target.size();
+
+    // Fast return for full trace
+    if (n_subsys == n) {
+        dyn_mat<Scalar> result(1, 1);
+        result(0, 0) = (adjoint(rA) * rA).value();
+        return result;
+    }
+
+    // Fast return for empty trace
+    if (n_subsys == 0) {
+        return rA * adjoint(rA);
+    }
+
+    // --- Optimization Setup ---
+    std::vector<idx> subsys_bar = compute_complement(target, n);
+    idx n_subsys_bar = subsys_bar.size();
+
+    idx Dsubsys = internal::safe_pow<idx>(2, target.size());
+    idx Dsubsys_bar = D / Dsubsys;
+
+    dyn_mat<Scalar> result(Dsubsys_bar, Dsubsys_bar);
+
+    // Precompute global strides: 2^(n - 1 - k)
+    std::vector<idx> global_strides(n);
+    for (idx k = 0; k < n; ++k) {
+        global_strides[k] = static_cast<idx>(1) << (n - 1 - k);
+    }
+
+    // Extract strides for Bar (kept) subsystems
+    std::vector<idx> bar_strides(n_subsys_bar);
+    for (idx k = 0; k < n_subsys_bar; ++k) {
+        bar_strides[k] = global_strides[subsys_bar[k]];
+    }
+
+    // Pre-calculate Trace Offsets (Sum of strides for target bits)
+    std::vector<idx> trace_offsets(Dsubsys);
+    for (idx a = 0; a < Dsubsys; ++a) {
+        idx offset = 0;
+        for (idx k = 0; k < n_subsys; ++k) {
+            if ((a >> (n_subsys - 1 - k)) & 1) {
+                offset += global_strides[target[k]];
+            }
+        }
+        trace_offsets[a] = offset;
+    }
+    const idx* trace_offsets_ptr = trace_offsets.data();
+
+    // Lambda: Expand compressed index (0..Dbar-1) to global base offset
+    // using bitmasks
+    auto expand_bits = [&](idx idx_compressed) -> idx {
+        idx expanded = 0;
+        for (idx k = 0; k < n_subsys_bar; ++k) {
+            if ((idx_compressed >> (n_subsys_bar - 1 - k)) & 1) {
+                expanded += bar_strides[k];
+            }
+        }
+        return expanded;
+    };
+
+    // Execution Loop
+    for (idx j = 0; j < Dsubsys_bar; ++j) {
+        idx col_base = expand_bits(j);
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+        for (idx i = 0; i < Dsubsys_bar; ++i) {
+            idx row_base = expand_bits(i);
+            Scalar sm = 0;
+            // Tight inner loop: iterating over pre-computed offsets
+            for (idx k = 0; k < Dsubsys; ++k) {
+                idx offset = trace_offsets_ptr[k];
+                sm += rA(row_base + offset) * std::conj(rA(col_base + offset));
+            }
+            result(i, j) = sm;
+        }
+    }
+
+    return result;
+}
+
+/**
+ * \brief Partial trace (Density Matrix specialized)
+ * \see qpp::ptrace1(), qpp::ptrace2()
+ *
+ * Partial trace of the multi-partite state vector or density matrix over the
+ * list \a target of subsystems
+ *
+ * \param A Eigen expression
+ * \param target Subsystem indexes
+ * \param n Number of qubits
+ * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * in a multi-partite system, as a dynamic matrix over the same scalar field as
+ * \a A
+ */
+template <typename Derived>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+ptrace_rho_kq(const Eigen::MatrixBase<Derived>& A,
+              const std::vector<idx>& target, idx n) {
+    using Scalar = typename Derived::Scalar;
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    idx D = static_cast<idx>(rA.rows());
+    idx n_subsys = target.size();
+
+    // Fast return for full trace
+    if (n_subsys == n) {
+        dyn_mat<Scalar> result(1, 1);
+        result(0, 0) = rA.trace();
+        return result;
+    }
+
+    // Fast return for empty trace
+    if (n_subsys == 0) {
+        return rA;
+    }
+
+    // --- Optimization Setup ---
+    std::vector<idx> subsys_bar = compute_complement(target, n);
+    idx n_subsys_bar = subsys_bar.size();
+
+    idx Dsubsys = internal::safe_pow<idx>(2, target.size());
+    idx Dsubsys_bar = D / Dsubsys;
+
+    dyn_mat<Scalar> result(Dsubsys_bar, Dsubsys_bar);
+
+    // Precompute global strides: 2^(n - 1 - k)
+    std::vector<idx> global_strides(n);
+    for (idx k = 0; k < n; ++k) {
+        global_strides[k] = static_cast<idx>(1) << (n - 1 - k);
+    }
+
+    // Extract strides for Bar (kept) subsystems
+    std::vector<idx> bar_strides(n_subsys_bar);
+    for (idx k = 0; k < n_subsys_bar; ++k) {
+        bar_strides[k] = global_strides[subsys_bar[k]];
+    }
+
+    // Pre-calculate Trace Offsets
+    std::vector<idx> trace_offsets(Dsubsys);
+    for (idx a = 0; a < Dsubsys; ++a) {
+        idx offset = 0;
+        for (idx k = 0; k < n_subsys; ++k) {
+            if ((a >> (n_subsys - 1 - k)) & 1) {
+                offset += global_strides[target[k]];
+            }
+        }
+        trace_offsets[a] = offset;
+    }
+    const idx* trace_offsets_ptr = trace_offsets.data();
+
+    auto expand_bits = [&](idx idx_compressed) -> idx {
+        idx expanded = 0;
+        for (idx k = 0; k < n_subsys_bar; ++k) {
+            if ((idx_compressed >> (n_subsys_bar - 1 - k)) & 1) {
+                expanded += bar_strides[k];
+            }
+        }
+        return expanded;
+    };
+
+    // Execution Loop
+    for (idx j = 0; j < Dsubsys_bar; ++j) {
+        idx col_base = expand_bits(j);
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+        for (idx i = 0; i < Dsubsys_bar; ++i) {
+            idx row_base = expand_bits(i);
+            Scalar sm = 0;
+            // Tight inner loop: iterating over pre-computed offsets
+            for (idx k = 0; k < Dsubsys; ++k) {
+                idx offset = trace_offsets_ptr[k];
+                sm += rA(row_base + offset, col_base + offset);
+            }
+            result(i, j) = sm;
+        }
+    }
+
+    return result;
+}
+
+template <typename Derived>
+dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]]
+ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
+                  const std::vector<idx>& target, idx n) {
+    using scalar_t = typename Derived::Scalar;
+    const auto& rA = A.derived();
+
+    // Input Validation
+#ifndef NDEBUG
+    assert(internal::check_nonzero_size(rA) && "A"); // Zero-size
+    assert(internal::check_cvector(rA) && "A must be a column vector (ket)");
+    assert(n > 0 && "n must be > 0");
+
+    // target must be valid w.r.t. n and contain unique indices
+    for (idx k : target) {
+        assert(k < n && "target must be valid w.r.t. n");
+    }
+    {
+        auto tmp = target;
+        std::sort(tmp.begin(), tmp.end());
+        auto it = std::adjacent_find(tmp.begin(), tmp.end());
+        assert(it == tmp.end() &&
+               "target contains duplicate subsystem indices");
+    }
+
+    // D must equal 2^n for qubits
+    idx D_expected = (1ULL << n);
+    assert(static_cast<idx>(rA.rows()) == D_expected && "A/n size mismatch");
+#endif
+
+    idx D = static_cast<idx>(rA.rows());
+    idx n_subsys = target.size();
+
+    // Trivial cases
+    if (n_subsys == 0) {
+        // no partial transpose requested
+        return rA * rA.adjoint();
+    }
+    if (static_cast<idx>(n_subsys) == n) {
+        // partial transpose over all subsystems == full transpose of density
+        // matrix
+        return (rA * rA.adjoint()).transpose();
+    }
+
+    // build mask M: bit k set means subsystem k is transposed
+    idx M = 0;
+    for (idx k : target) {
+        M |= (1ULL << k);
+    }
+
+    dyn_mat<scalar_t> result(D, D);
+    result.setZero(); // ensure initialized
+
+    // alias psi accessor
+    auto psi = [&](idx t) -> scalar_t const& { return rA(t); };
+
+    // worker lambda computes rho_PT(i,j) = psi[i_T] * conj(psi[j_T])
+    auto worker = [&](idx i, idx j) noexcept -> scalar_t {
+        idx i_T = (i & (~M)) | (j & M);
+        idx j_T = (j & (~M)) | (i & M);
+        return conj(psi(i_T)) * psi(j_T);
+    };
+
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for collapse(2)
+#endif // QPP_OPENMP
+    for (idx i = 0; i < D; ++i) {
+        for (idx j = 0; j < D; ++j) {
+            result(i, j) = worker(i, j);
+        }
+    }
+
+    return result;
+}
+
+template <typename Derived>
+dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]]
+ptranspose_rho_kq(const Eigen::MatrixBase<Derived>& A,
+                  const std::vector<idx>& target, idx n) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // Input Validation
+#ifndef NDEBUG
+    assert(internal::check_nonzero_size(rA) &&
+           "A"); // Corresponds to exception::ZeroSize
+    // check_dims(dims) removed, replaced by n > 0 check if necessary, but D
+    // implies this check_subsys_match_dims simplified to check target is valid
+    // w.r.t. n
+    assert(std::all_of(target.cbegin(), target.cend(),
+                       [&](idx k) { return k < n; }) &&
+           "target must be valid w.r.t. n");
+    assert(internal::check_square_mat(rA) &&
+           "A must be a square matrix (density "
+           "matrix)"); // Corresponds to
+                       // check_square_mat/MatrixNotSquareNorCvector
+    // check_dims_match_mat replaced by check that D = 2^n
+    idx D_expected = (1ULL << n);
+    assert(static_cast<idx>(rA.rows()) == D_expected && "A/n size mismatch");
+#endif
+
+    idx D = static_cast<idx>(rA.rows());
+    idx n_subsys = target.size();
+
+    // Trivial cases
+    if (n_subsys == n) { // Use n instead of dims.size()
+        return rA.transpose();
+    }
+    if (target.empty()) {
+        return rA;
+    }
+
+    dyn_mat<typename Derived::Scalar> result(D, D);
+
+    // OPTIMIZATION: Precompute the partial transpose mask (M)
+    // The mask M has a '1' at the bit positions (subsystem indices) specified
+    // in target. For qubits, the subsystem index is directly the bit position.
+    idx M = 0;
+    for (idx k : target) {
+        M |= (1ULL << k);
+    }
+
+    auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
+        // i' = (i & ~M) | (j & M)
+        idx i_T = (i & (~M)) | (j & M);
+
+        // j' = (j & ~M) | (i & M)
+        idx j_T = (j & (~M)) | (i & M);
+
+        // result(i, j) = A_j'i' (Partial transpose swaps row and column indices
+        // of non-target blocks)
+        return rA(j_T, i_T);
+    }; /* end worker */
+
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for collapse(2)
+#endif // QPP_OPENMP
+    for (idx i = 0; i < D; ++i) {
+        for (idx j = 0; j < D; ++j) {
+            result(i, j) = worker(i, j);
+        }
+    }
+
+    return result;
 }
 
 } /* namespace internal */

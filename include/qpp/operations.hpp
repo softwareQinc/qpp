@@ -134,10 +134,11 @@ apply(const Eigen::MatrixBase<Derived1>& state,
 
     idx n = dims.size(); // total number of subsystems
 
-    // qubit optimization
+    // qubit optimizations
 #ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_qubits(dims)) {
         auto nq_target = target.size();
+        // ket
         if (internal::check_cvector(rstate)) {
             if (nq_target == 1) {
                 return internal::apply_psi_1q(state, A, target[0], n);
@@ -152,7 +153,9 @@ apply(const Eigen::MatrixBase<Derived1>& state,
             }
             return internal::apply_psi_kq(state, A, target, n);
 
-        } else {
+        }
+        // density matrix
+        else {
             if (nq_target == 1) {
                 return internal::apply_rho_1q(state, A, target[0], n);
             }
@@ -1001,26 +1004,9 @@ ptrace1(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
         if (!internal::check_dims_match_cvect(dims, rA)) {
             throw exception::DimsMismatchCvector("qpp::ptrace1()", "A/dims");
         }
-
-        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
-            typename Derived::Scalar sum = 0;
-            for (idx m = 0; m < DA; ++m) {
-                sum += rA(m * DB + i) * std::conj(rA(m * DB + j));
-            }
-
-            return sum;
-        }; /* end worker */
-
-#ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
-       // column major order for speed
-        for (idx j = 0; j < DB; ++j) {
-            for (idx i = 0; i < DB; ++i) {
-                result(i, j) = worker(i, j);
-            }
-        }
+        const Eigen::Map<const dyn_mat<typename Derived::Scalar>> M(rA.data(),
+                                                                    DB, DA);
+        result = M * M.adjoint();
     }
     //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
@@ -1033,7 +1019,7 @@ ptrace1(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
         auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
             typename Derived::Scalar sum = 0;
             for (idx m = 0; m < DA; ++m) {
-                sum += rA(m * DB + i, m * DB + j);
+                sum += rA((m * DB) + i, (m * DB) + j);
             }
 
             return sum;
@@ -1141,26 +1127,9 @@ ptrace2(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
         if (!internal::check_dims_match_cvect(dims, rA)) {
             throw exception::DimsMismatchCvector("qpp::ptrace2()", "A/dims");
         }
-
-        auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
-            typename Derived::Scalar sum = 0;
-            for (idx m = 0; m < DB; ++m) {
-                sum += rA(i * DB + m) * std::conj(rA(j * DB + m));
-            }
-
-            return sum;
-        }; /* end worker */
-
-#ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
-       // column major order for speed
-        for (idx j = 0; j < DA; ++j) {
-            for (idx i = 0; i < DA; ++i) {
-                result(i, j) = worker(i, j);
-            }
-        }
+        const Eigen::Map<const dyn_mat<typename Derived::Scalar>> M(rA.data(),
+                                                                    DA, DB);
+        result = (M.adjoint() * M).transpose();
     }
     //************ density matrix ************//
     else if (internal::check_square_mat(rA)) // we have a density operator
@@ -1177,7 +1146,7 @@ ptrace2(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
        // column major order for speed
         for (idx j = 0; j < DA; ++j) {
             for (idx i = 0; i < DA; ++i) {
-                result(i, j) = trace(rA.block(i * DB, j * DB, DB, DB));
+                result(i, j) = rA.block(i * DB, j * DB, DB, DB).trace();
             }
         }
     }
@@ -1440,6 +1409,460 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  *
  * \param A Eigen expression
  * \param target Subsystem indexes
+ * \param dims Dimensions of the multi-partite system
+ * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * in a multi-partite system, as a dynamic matrix over the same scalar field as
+ * \a A
+ */
+template <typename Derived>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+ptrace_new1(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+            const std::vector<idx>& dims) {
+    using Scalar = typename Derived::Scalar;
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // Constant for exception messages
+    constexpr char func_name[] = "qpp::ptrace()";
+
+    // EXCEPTION CHECKS
+    // check zero-size
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize(func_name, "A");
+    }
+
+    // check that dims is a valid dimension vector
+    if (!internal::check_dims(dims)) {
+        throw exception::DimsInvalid(func_name, "dims");
+    }
+
+    // check that target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims)) {
+        throw exception::SubsysMismatchDims(func_name, "dims/target");
+    }
+
+    // Check state validity and matching dimensions, store state type
+    bool is_cvector = internal::check_cvector(rA);
+    if (is_cvector) {
+        if (!internal::check_dims_match_cvect(dims, rA)) {
+            throw exception::DimsMismatchCvector(func_name, "A/dims");
+        }
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA)) {
+            throw exception::DimsMismatchMatrix(func_name, "A/dims");
+        }
+    } else {
+        throw exception::MatrixNotSquareNorCvector(func_name, "A");
+    }
+    // END EXCEPTION CHECKS
+
+    idx D = static_cast<idx>(rA.rows());
+    idx n = dims.size();
+    idx n_subsys = target.size();
+    idx n_subsys_bar = n - n_subsys;
+
+    // Fast return for full or empty trace
+    if (n_subsys == n) {
+        // Full trace: Tr(A). Result is 1x1 matrix.
+        Scalar trace_value =
+            is_cvector ? (adjoint(rA) * rA).value() : rA.trace();
+        dyn_mat<Scalar> result(1, 1);
+        result(0, 0) = trace_value;
+        return result;
+    }
+
+    if (n_subsys == 0) {
+        // Empty trace: result is the input itself (or |psi><psi| for cvector)
+        return is_cvector ? rA * adjoint(rA) : rA;
+    }
+
+    // --- Pre-calculation and Setup for Partial Trace ---
+
+    std::vector<idx> subsys_bar = complement(target, n);
+
+    // Calculate Dsubsys and Dsubsys_bar
+    idx Dsubsys = 1;
+    for (idx i : target) {
+        Dsubsys *= dims[i];
+    }
+    idx Dsubsys_bar = D / Dsubsys;
+
+    dyn_mat<Scalar> result = dyn_mat<Scalar>::Zero(Dsubsys_bar, Dsubsys_bar);
+
+    // Static/local arrays for performance (used in multiidx conversions)
+    // Note: internal::maxn should be large enough to hold the max number of
+    // subsystems.
+    idx Cdims[internal::maxn];
+    idx Csubsys[internal::maxn];
+    idx Cdimssubsys[internal::maxn];
+    idx Csubsys_bar[internal::maxn];
+    idx Cdimssubsys_bar[internal::maxn];
+
+    std::copy(dims.begin(), dims.end(), std::begin(Cdims));
+    std::copy(target.begin(), target.end(), std::begin(Csubsys));
+    std::copy(subsys_bar.begin(), subsys_bar.end(), std::begin(Csubsys_bar));
+
+    for (idx i = 0; i < n_subsys; ++i) {
+        Cdimssubsys[i] = dims[target[i]];
+    }
+    for (idx i = 0; i < n_subsys_bar; ++i) {
+        Cdimssubsys_bar[i] = dims[subsys_bar[i]];
+    }
+
+    // --- Core Partial Trace Logic ---
+
+    // The worker function computes the matrix element result(i, j)
+    auto worker = [&](idx i, idx j) noexcept -> Scalar {
+        // Static allocation for speed within the loop
+        idx Cmidxrow[internal::maxn];
+        idx Cmidxcol[internal::maxn];
+        idx Cmidxrowsubsys_bar[internal::maxn];
+        idx Cmidxcolsubsys_bar[internal::maxn];
+        idx Cmidxsubsys[internal::maxn];
+
+        /* get the row/col multi-indexes of the complement */
+        internal::n2multiidx(i, n_subsys_bar, Cdimssubsys_bar,
+                             Cmidxrowsubsys_bar);
+        internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
+                             Cmidxcolsubsys_bar);
+
+        /* write them into the global row/col multi-indexes (for subsys_bar) */
+        for (idx k = 0; k < n_subsys_bar; ++k) {
+            Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
+            Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
+        }
+
+        Scalar sm = 0;
+        for (idx a = 0; a < Dsubsys; ++a) {
+            // get the multi-index over which we do the summation (subsys 'a')
+            internal::n2multiidx(a, n_subsys, Cdimssubsys, Cmidxsubsys);
+
+            // write it into the global row/col multi-indexes (for subsys 'a')
+            for (idx k = 0; k < n_subsys; ++k) {
+                Cmidxrow[Csubsys[k]] = Cmidxsubsys[k];
+                Cmidxcol[Csubsys[k]] = Cmidxsubsys[k]; // Tr over 'a' means row
+                                                       // and col indexes match
+            }
+
+            // Get the linear indices for the full Hilbert space
+            idx global_row_idx = internal::multiidx2n(Cmidxrow, n, Cdims);
+            idx global_col_idx = internal::multiidx2n(Cmidxcol, n, Cdims);
+
+            // Now do the sum: Tr_target(|psi><psi|) or Tr_target(rho)
+            if (is_cvector) {
+                sm += rA(global_row_idx) * std::conj(rA(global_col_idx));
+            } else { // Density matrix
+                sm += rA(global_row_idx, global_col_idx);
+            }
+        }
+        return sm;
+    }; /* end worker */
+
+    // Iterate over the result matrix (column major for potential cache
+    // locality)
+    for (idx j = 0; j < Dsubsys_bar; ++j) { // column
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+       // row
+        for (idx i = 0; i < Dsubsys_bar; ++i) {
+            result(i, j) = worker(i, j);
+        }
+    }
+
+    return result;
+}
+
+template <typename Derived>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+ptrace_new2(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+            const std::vector<idx>& dims) {
+    using Scalar = typename Derived::Scalar;
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    constexpr char func_name[] = "qpp::ptrace()";
+
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize(func_name, "A");
+    }
+    if (!internal::check_dims(dims)) {
+        throw exception::DimsInvalid(func_name, "dims");
+    }
+    if (!internal::check_subsys_match_dims(target, dims)) {
+        throw exception::SubsysMismatchDims(func_name, "dims/target");
+    }
+
+    bool is_cvector = internal::check_cvector(rA);
+    if (is_cvector) {
+        if (!internal::check_dims_match_cvect(dims, rA)) {
+            throw exception::DimsMismatchCvector(func_name, "A/dims");
+        }
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA)) {
+            throw exception::DimsMismatchMatrix(func_name, "A/dims");
+        }
+    } else {
+        throw exception::MatrixNotSquareNorCvector(func_name, "A");
+    }
+
+    idx D = static_cast<idx>(rA.rows());
+    idx n = dims.size();
+    idx n_subsys = target.size();
+    idx n_subsys_bar = n - n_subsys;
+
+    if (n_subsys == n) {
+        Scalar trace_value =
+            is_cvector ? (adjoint(rA) * rA).value() : rA.trace();
+        dyn_mat<Scalar> result(1, 1);
+        result(0, 0) = trace_value;
+        return result;
+    }
+
+    if (n_subsys == 0) {
+        return is_cvector ? rA * adjoint(rA) : rA;
+    }
+
+    std::vector<idx> subsys_bar = complement(target, n);
+
+    idx Dsubsys = 1;
+    for (idx i : target) {
+        Dsubsys *= dims[i];
+    }
+    idx Dsubsys_bar = D / Dsubsys;
+
+    dyn_mat<Scalar> result = dyn_mat<Scalar>::Zero(Dsubsys_bar, Dsubsys_bar);
+
+    // Precompute dimension arrays
+    idx Cdims[internal::maxn];
+    idx Csubsys[internal::maxn];
+    idx Cdimssubsys[internal::maxn];
+    idx Csubsys_bar[internal::maxn];
+    idx Cdimssubsys_bar[internal::maxn];
+
+    std::copy(dims.begin(), dims.end(), Cdims);
+    std::copy(target.begin(), target.end(), Csubsys);
+    std::copy(subsys_bar.begin(), subsys_bar.end(), Csubsys_bar);
+    for (idx i = 0; i < n_subsys; ++i) {
+        Cdimssubsys[i] = dims[target[i]];
+    }
+    for (idx i = 0; i < n_subsys_bar; ++i) {
+        Cdimssubsys_bar[i] = dims[subsys_bar[i]];
+    }
+
+    // Precompute all multi-indices for the target subsystem
+    std::vector<std::array<idx, internal::maxn>> target_multiidx(Dsubsys);
+    for (idx a = 0; a < Dsubsys; ++a) {
+        idx tmp[internal::maxn];
+        internal::n2multiidx(a, n_subsys, Cdimssubsys, tmp);
+        std::array<idx, internal::maxn> arr{};
+        for (idx k = 0; k < n_subsys; ++k) {
+            arr[k] = tmp[k];
+        }
+        target_multiidx[a] = arr;
+    }
+
+    // --- Core Partial Trace Logic ---
+    auto worker = [&](idx i, idx j) noexcept -> Scalar {
+        idx Cmidxrow[internal::maxn]{};
+        idx Cmidxcol[internal::maxn]{};
+
+        idx rowsubsys_bar[internal::maxn];
+        idx colsubsys_bar[internal::maxn];
+        internal::n2multiidx(i, n_subsys_bar, Cdimssubsys_bar, rowsubsys_bar);
+        internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar, colsubsys_bar);
+
+        for (idx k = 0; k < n_subsys_bar; ++k) {
+            Cmidxrow[Csubsys_bar[k]] = rowsubsys_bar[k];
+            Cmidxcol[Csubsys_bar[k]] = colsubsys_bar[k];
+        }
+
+        Scalar sm = 0;
+        for (idx a = 0; a < Dsubsys; ++a) {
+            for (idx k = 0; k < n_subsys; ++k) {
+                Cmidxrow[Csubsys[k]] = target_multiidx[a][k];
+                Cmidxcol[Csubsys[k]] = target_multiidx[a][k];
+            }
+
+            idx global_row_idx = internal::multiidx2n(Cmidxrow, n, Cdims);
+            idx global_col_idx = internal::multiidx2n(Cmidxcol, n, Cdims);
+
+            sm += is_cvector
+                      ? rA(global_row_idx) * std::conj(rA(global_col_idx))
+                      : rA(global_row_idx, global_col_idx);
+        }
+        return sm;
+    };
+
+    for (idx j = 0; j < Dsubsys_bar; ++j) {
+#ifdef QPP_OPENMP
+#pragma omp parallel for
+#endif
+        for (idx i = 0; i < Dsubsys_bar; ++i) {
+            result(i, j) = worker(i, j);
+        }
+    }
+
+    return result;
+}
+
+template <typename Derived>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+ptrace_new3(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+            const std::vector<idx>& dims) {
+    using Scalar = typename Derived::Scalar;
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    constexpr char func_name[] = "qpp::ptrace()";
+
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize(func_name, "A");
+    }
+    if (!internal::check_dims(dims)) {
+        throw exception::DimsInvalid(func_name, "dims");
+    }
+    if (!internal::check_subsys_match_dims(target, dims)) {
+        throw exception::SubsysMismatchDims(func_name, "dims/target");
+    }
+
+    bool is_cvector = internal::check_cvector(rA);
+    if (is_cvector) {
+        if (!internal::check_dims_match_cvect(dims, rA)) {
+            throw exception::DimsMismatchCvector(func_name, "A/dims");
+        }
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA)) {
+            throw exception::DimsMismatchMatrix(func_name, "A/dims");
+        }
+    } else {
+        throw exception::MatrixNotSquareNorCvector(func_name, "A");
+    }
+
+    idx D = static_cast<idx>(rA.rows());
+    idx n = dims.size();
+    idx n_subsys = target.size();
+    idx n_subsys_bar = n - n_subsys;
+
+    if (n_subsys == n) {
+        Scalar trace_value =
+            is_cvector ? (adjoint(rA) * rA).value() : rA.trace();
+        dyn_mat<Scalar> result(1, 1);
+        result(0, 0) = trace_value;
+        return result;
+    }
+
+    if (n_subsys == 0) {
+        return is_cvector ? rA * adjoint(rA) : rA;
+    }
+
+    std::vector<idx> subsys_bar = complement(target, n);
+
+    idx Dsubsys = 1;
+    for (idx i : target) {
+        Dsubsys *= dims[i];
+    }
+    idx Dsubsys_bar = D / Dsubsys;
+
+    dyn_mat<Scalar> result = dyn_mat<Scalar>::Zero(Dsubsys_bar, Dsubsys_bar);
+
+    // --- Precompute multi-indices ---
+    idx Cdims[internal::maxn];
+    idx Csubsys[internal::maxn];
+    idx Cdimssubsys[internal::maxn];
+    idx Csubsys_bar[internal::maxn];
+    idx Cdimssubsys_bar[internal::maxn];
+
+    std::copy(dims.begin(), dims.end(), Cdims);
+    std::copy(target.begin(), target.end(), Csubsys);
+    std::copy(subsys_bar.begin(), subsys_bar.end(), Csubsys_bar);
+    for (idx i = 0; i < n_subsys; ++i) {
+        Cdimssubsys[i] = dims[target[i]];
+    }
+    for (idx i = 0; i < n_subsys_bar; ++i) {
+        Cdimssubsys_bar[i] = dims[subsys_bar[i]];
+    }
+
+    // Precompute all target subsystem multi-indices
+    std::vector<std::array<idx, internal::maxn>> target_multiidx(Dsubsys);
+    for (idx a = 0; a < Dsubsys; ++a) {
+        idx tmp[internal::maxn];
+        internal::n2multiidx(a, n_subsys, Cdimssubsys, tmp);
+        std::array<idx, internal::maxn> arr{};
+        for (idx k = 0; k < n_subsys; ++k) {
+            arr[k] = tmp[k];
+        }
+        target_multiidx[a] = arr;
+    }
+
+    // --- Vectorized worker ---
+    auto worker = [&](idx i, idx j) noexcept -> Scalar {
+        idx Cmidxrow[internal::maxn]{};
+        idx Cmidxcol[internal::maxn]{};
+
+        // multi-index for subsys_bar
+        idx rowsubsys_bar[internal::maxn];
+        idx colsubsys_bar[internal::maxn];
+        internal::n2multiidx(i, n_subsys_bar, Cdimssubsys_bar, rowsubsys_bar);
+        internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar, colsubsys_bar);
+
+        for (idx k = 0; k < n_subsys_bar; ++k) {
+            Cmidxrow[Csubsys_bar[k]] = rowsubsys_bar[k];
+            Cmidxcol[Csubsys_bar[k]] = colsubsys_bar[k];
+        }
+
+        // Vectorized sum over target subsystem
+        if (is_cvector) {
+            Eigen::Map<const Eigen::VectorXcd> vec_row(
+                reinterpret_cast<const Scalar*>(rA.data()), D);
+            Scalar sm = 0;
+            for (idx a = 0; a < Dsubsys; ++a) {
+                for (idx k = 0; k < n_subsys; ++k) {
+                    Cmidxrow[Csubsys[k]] = target_multiidx[a][k];
+                    Cmidxcol[Csubsys[k]] = target_multiidx[a][k];
+                }
+                idx idx_row = internal::multiidx2n(Cmidxrow, n, Cdims);
+                idx idx_col = internal::multiidx2n(Cmidxcol, n, Cdims);
+                sm += vec_row(idx_row) * std::conj(vec_row(idx_col));
+            }
+            return sm;
+        } else {
+            Eigen::Map<const Eigen::Matrix<Scalar, Eigen::Dynamic,
+                                           Eigen::Dynamic, Eigen::ColMajor>>
+                mat(rA.derived().data(), D, D);
+            Scalar sm = 0;
+            for (idx a = 0; a < Dsubsys; ++a) {
+                for (idx k = 0; k < n_subsys; ++k) {
+                    Cmidxrow[Csubsys[k]] = target_multiidx[a][k];
+                    Cmidxcol[Csubsys[k]] = target_multiidx[a][k];
+                }
+                idx idx_row = internal::multiidx2n(Cmidxrow, n, Cdims);
+                idx idx_col = internal::multiidx2n(Cmidxcol, n, Cdims);
+                sm += mat(idx_row, idx_col);
+            }
+            return sm;
+        }
+    };
+
+    for (idx j = 0; j < Dsubsys_bar; ++j) {
+#ifdef QPP_OPENMP
+#pragma omp parallel for
+#endif
+        for (idx i = 0; i < Dsubsys_bar; ++i) {
+            result(i, j) = worker(i, j);
+        }
+    }
+
+    return result;
+}
+
+/**
+ * \brief Partial trace
+ * \see qpp::ptrace1(), qpp::ptrace2()
+ *
+ * Partial trace of the multi-partite state vector or density matrix over the
+ * list \a target of subsystems
+ *
+ * \param A Eigen expression
+ * \param target Subsystem indexes
  * \param d Subsystem dimensions
  * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
@@ -1674,6 +2097,179 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     return ptranspose(rA, target, dims);
 }
 
+template <typename Derived>
+dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]]
+ptranspose_new(const Eigen::MatrixBase<Derived>& A,
+               const std::vector<idx>& target, const std::vector<idx>& dims) {
+    const constexpr char func_name[] = "ptranspose()";
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // EXCEPTION CHECKS
+    // check zero-size
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize(func_name, "A");
+    }
+
+    // check that dims is a valid dimension vector
+    if (!internal::check_dims(dims)) {
+        throw exception::DimsInvalid(func_name, "dims");
+    }
+
+    // check that target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims)) {
+        throw exception::SubsysMismatchDims(func_name, "dims/target");
+    }
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
+        if (!internal::check_dims_match_cvect(dims, rA)) {
+            throw exception::DimsMismatchCvector(func_name, "A/dims");
+        }
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA)) {
+            throw exception::DimsMismatchMatrix(func_name, "A/dims");
+        }
+    } else {
+        throw exception::MatrixNotSquareNorCvector(func_name, "A");
+    }
+    // END EXCEPTION CHECKS
+
+    idx D = static_cast<idx>(rA.rows());
+    idx n = dims.size();
+    idx n_subsys = target.size();
+    idx Cdims[internal::maxn];
+    idx Cmidxcol[internal::maxn];
+    // idx Csubsys[internal::maxn]; // Removed: use target directly
+
+    // copy dims in Cdims
+    for (idx i = 0; i < n; ++i) {
+        Cdims[i] = dims[i];
+    }
+    // Csubsys copy removed: use target directly
+
+    dyn_mat<typename Derived::Scalar> result(D, D);
+
+    //************ ket ************//
+    if (internal::check_cvector(rA)) // we have a ket
+    {
+        if (target.size() == dims.size()) {
+            return (rA * adjoint(rA)).transpose();
+        }
+
+        if (target.empty()) {
+            return rA * adjoint(rA);
+        }
+
+        /*
+         * midxcol_target_swapped:
+         * This array holds the multi-index for the column, but with the
+         * components corresponding to the target subsystems swapped with the
+         * corresponding components of the row multi-index (midxrow).
+         */
+        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
+            // use static allocation for speed!
+            idx midxcol_target_swapped[internal::maxn];
+            idx midxrow[internal::maxn];
+
+            /* compute the row multi-index */
+            internal::n2multiidx(i, n, Cdims, midxrow);
+
+            // Copy Cmidxcol, then perform swaps with midxrow for target
+            // subsystems
+            for (idx k = 0; k < n; ++k) {
+                midxcol_target_swapped[k] = Cmidxcol[k];
+            }
+
+            for (idx k = 0; k < n_subsys; ++k) {
+                std::swap(midxcol_target_swapped[target[k]],
+                          midxrow[target[k]]);
+            }
+
+            /* writes the result */
+            return rA(internal::multiidx2n(midxrow, n, Cdims)) *
+                   std::conj(rA(
+                       internal::multiidx2n(midxcol_target_swapped, n, Cdims)));
+        }; /* end worker */
+
+        for (idx j = 0; j < D; ++j) {
+            // compute the column multi-index
+            internal::n2multiidx(j, n, Cdims, Cmidxcol);
+
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+            for (idx i = 0; i < D; ++i) {
+                result(i, j) = worker(i);
+            }
+        }
+    }
+    //************ density matrix ************//
+    else // we have a density operator
+    {
+        if (target.size() == dims.size()) {
+            return rA.transpose();
+        }
+
+        if (target.empty()) {
+            return rA;
+        }
+
+        /*
+         * midxcol_target_swapped:
+         * This array holds the multi-index for the column, but with the
+         * components corresponding to the target subsystems swapped with the
+         * corresponding components of the row multi-index (midxrow).
+         */
+        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
+            // use static allocation for speed!
+            idx midxcol_target_swapped[internal::maxn];
+            idx midxrow[internal::maxn];
+
+            /* compute the row multi-index */
+            internal::n2multiidx(i, n, Cdims, midxrow);
+
+            // Copy Cmidxcol, then perform swaps with midxrow for target
+            // subsystems
+            for (idx k = 0; k < n; ++k) {
+                midxcol_target_swapped[k] = Cmidxcol[k];
+            }
+
+            for (idx k = 0; k < n_subsys; ++k) {
+                std::swap(midxcol_target_swapped[target[k]],
+                          midxrow[target[k]]);
+            }
+
+// silence g++12 bogus warning -Wmaybe-uninitialized in qpp::multiidx2n()
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+            /* writes the result */
+            return rA(internal::multiidx2n(midxrow, n, Cdims),
+                      internal::multiidx2n(midxcol_target_swapped, n, Cdims));
+#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
+#pragma GCC diagnostic pop
+#endif
+        }; /* end worker */
+
+        for (idx j = 0; j < D; ++j) {
+            // compute the column multi-index
+            internal::n2multiidx(j, n, Cdims, Cmidxcol);
+
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+            for (idx i = 0; i < D; ++i) {
+                result(i, j) = worker(i);
+            }
+        }
+    }
+
+    return result;
+}
+
 /**
  * \brief Subsystem permutation
  *
@@ -1859,6 +2455,147 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 }
 
 /**
+ * \brief Subsystem permutation
+ *
+ * Permutes the subsystems of a state vector or density matrix. The qubit
+ * \a perm[\a i] is permuted to the location \a i.
+ *
+ * \param A Eigen expression
+ * \param perm Permutation
+ * \param dims Dimensions of the multi-partite system
+ * \return Permuted system, as a dynamic matrix over the same scalar field as
+ * \a A
+ */
+template <typename Derived>
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
+syspermute_new(const Eigen::MatrixBase<Derived>& A,
+               const std::vector<idx>& perm, const std::vector<idx>& dims) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // Constant for function name in exception messages
+    constexpr char func_name[] = "qpp::syspermute()";
+
+    // EXCEPTION CHECKS
+    // check zero-size
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize(func_name, "A");
+    }
+
+    // check that dims is a valid dimension vector
+    if (!internal::check_dims(dims)) {
+        throw exception::DimsInvalid(func_name, "dims");
+    }
+
+    // check that we have a valid permutation
+    if (!internal::check_perm(perm)) {
+        throw exception::PermInvalid(func_name, "perm");
+    }
+
+    // check that permutation match dimensions
+    if (perm.size() != dims.size()) {
+        throw exception::PermMismatchDims(func_name, "dims/perm");
+    }
+
+    const bool is_cvector = internal::check_cvector(rA);
+    const bool is_square_mat = internal::check_square_mat(rA);
+
+    // check valid state and matching dimensions
+    if (is_cvector) {
+        if (!internal::check_dims_match_cvect(dims, rA)) {
+            throw exception::DimsMismatchCvector(func_name, "A/dims");
+        }
+    } else if (is_square_mat) {
+        if (!internal::check_dims_match_mat(dims, rA)) {
+            throw exception::DimsMismatchMatrix(func_name, "A/dims");
+        }
+    } else {
+        throw exception::MatrixNotSquareNorCvector(func_name, "A");
+    }
+    // END EXCEPTION CHECKS
+
+    idx D = static_cast<idx>(rA.rows());
+    idx n = dims.size();
+
+    // qubit optimizations
+#ifdef QPP_QUBIT_OPTIMIZATIONS
+    if (internal::all_qubits(dims)) {
+        // ket
+        if (is_cvector) {
+            return internal::syspermute_psi_kq(A, perm, n);
+        }
+        // density matrix
+        else {
+            return internal::syspermute_rho_kq(A, perm, n);
+        }
+    }
+#endif // QPP_QUBIT_OPTIMIZATIONS
+
+    // Multiplier is 1 for a column vector (ket), 2 for a square matrix (density
+    // matrix).
+    const idx multiplier = is_cvector ? 1 : 2;
+    const idx total_systems = n * multiplier;
+    const idx total_elements = D * (is_cvector ? 1 : D);
+
+    dyn_mat<typename Derived::Scalar> result;
+    result.resize(total_elements, 1);
+
+    // Static arrays for performance, sized to maximum possible: 2 *
+    // internal::maxn
+    idx Cdims[2 * internal::maxn];
+    idx Cperm[2 * internal::maxn];
+
+    // Populate Cdims and Cperm based on whether it's a ket or a density matrix.
+    for (idx i = 0; i < n; ++i) {
+        // First half (ket/rows)
+        Cdims[i] = dims[i];
+        Cperm[i] = perm[i];
+
+        // Second half for density matrix (columns)
+        if (multiplier == 2) {
+            Cdims[i + n] = dims[i];
+            Cperm[i + n] = perm[i] + n;
+        }
+    }
+
+    // We use a lambda to calculate the permuted index for a given linear index
+    // i.
+    auto worker = [&Cdims, &Cperm, total_systems](idx i) noexcept -> idx {
+        // Use static allocation for speed
+        idx midx[2 * internal::maxn];
+        idx midxtmp[2 * internal::maxn];
+        idx permdims[2 * internal::maxn];
+
+        /* compute the multi-index */
+        internal::n2multiidx(i, total_systems, Cdims, midx);
+
+        for (idx k = 0; k < total_systems; ++k) {
+            permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
+            midxtmp[k] = midx[Cperm[k]];   // permuted multi-indexes
+        }
+
+        return internal::multiidx2n(midxtmp, total_systems, permdims);
+    }; /* end worker */
+
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+    for (idx i = 0; i < total_elements; ++i) {
+        // rA.data()[i] accesses the element at linear index i (column-major
+        // order) and assigns it to the calculated permuted index in the result
+        // vector.
+        result(worker(i)) = rA.data()[i];
+    }
+
+    if (!is_cvector) {
+        // Reshape only for the density matrix case (from D*D x 1 to D x D)
+        result.resize(D, D);
+    }
+
+    return result;
+}
+
+/**
  * \brief Applies the controlled-gate \a A to the part \a target of the
  * multi-partite state vector or density matrix \a state
  * \see qpp::Gates::CTRL()
@@ -2004,11 +2741,12 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         shift = std::vector<idx>(ctrl.size(), 0);
     }
 
-    // qubit optimization
+    // qubit optimizations
 #ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_qubits(dims)) {
         idx n = dims.size();
         auto nq_target = target.size();
+        // ket
         if (internal::check_cvector(rstate)) {
             if (nq_target == 1) {
                 return internal::apply_ctrl_psi_1q(state, A, ctrl, target[0],
@@ -2021,7 +2759,9 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
             return internal::apply_ctrl_psi_kq(state, A, ctrl, target,
                                                shift.value(), n);
 
-        } else {
+        }
+        // density matrix
+        else {
             if (nq_target == 1) {
                 return internal::apply_ctrl_rho_1q(state, A, ctrl, target[0],
                                                    shift.value(), n);

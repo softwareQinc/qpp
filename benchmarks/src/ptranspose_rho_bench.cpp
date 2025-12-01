@@ -39,35 +39,28 @@ int main(int argc, char* argv[]) {
     return session.run();
 }
 
-TEST_CASE("qpp::ptrace() state vector benchmark",
-          "[benchmark][ptrace-state-vector]") {
+TEST_CASE("qpp::ptranspose() density matrix benchmark",
+          "[benchmark][ptranspose-density-matrix]") {
     // Setup (NOT measured)
     REQUIRE(nq > 0);
     qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
-    qpp::ket psi = qpp::randket(D); // D x 1 random state vector
+    qpp::cmat rho = qpp::randrho(D); // D x D random density matrix
     // Test worst-case scenario
-    std::vector<qpp::idx> subsys = {nq - 1};
-
-    std::vector<qpp::idx> dims(nq, 2);
+    qpp::idx mid = nq / 2;
+    std::vector<qpp::idx> subsys(nq - mid);
+    std::iota(subsys.begin(), subsys.end(), mid);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("Partial trannspose (rho) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
-        return qpp::ptrace(psi, subsys);
+        return qpp::ptranspose(rho, subsys);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace new1 (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("Partial transpose qubits (psi) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
-        return qpp::ptrace_new1(psi, subsys, dims);
-    };
-
-    // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace qubits (psi) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::ptrace_psi_kq(psi, subsys, nq);
+        return qpp::internal::ptranspose_rho_kq(rho, subsys, nq);
     };
 }
