@@ -39,28 +39,20 @@ int main(int argc, char* argv[]) {
     return session.run();
 }
 
-TEST_CASE("qpp::ptranspose() density matrix benchmark",
-          "[benchmark][ptranspose-density-matrix]") {
+TEST_CASE("qpp::measure_seq() state vector benchmark",
+          "[benchmark][measure_seq-state-vector]") {
     // Setup (NOT measured)
     REQUIRE(nq > 0);
     qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
-    qpp::cmat rho = qpp::randrho(D); // D x D random density matrix
+    qpp::ket psi = qpp::randket(D); // D x 1 random state vector
     // Test worst-case scenario
-    qpp::idx mid = nq / 2;
-    std::vector<qpp::idx> subsys(nq - mid);
-    std::iota(subsys.begin(), subsys.end(), mid);
+    std::vector<qpp::idx> subsys(nq);
+    std::iota(subsys.begin(), subsys.end(), 0);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial transpose (rho) nq=" + std::to_string(nq)) {
+    BENCHMARK("Sequential measurements (psi) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
-        return qpp::ptranspose(rho, subsys);
-    };
-
-    // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial transpose qubits (rho) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::ptranspose_rho_kq(rho, subsys, nq);
+        return qpp::measure_seq(psi, subsys);
     };
 }

@@ -37,15 +37,13 @@
 #include <algorithm>
 #include <cassert>
 #include <vector>
-
-#include "qpp/internal/util.hpp"
-
 #ifndef NDEBUG
 #include <set>
 #endif
 
 #include <Eigen/Dense>
 
+#include "qpp/internal/util.hpp"
 #include "qpp/types.hpp"
 
 namespace qpp {

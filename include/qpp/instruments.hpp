@@ -360,7 +360,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
     return measure(rA, Ks);
 }
 
-// partial measurements
+// subsystem measurements
 /**
  * \brief  Measures the part \a subsys of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
@@ -450,8 +450,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
             expr_t<Derived> tmp = apply(rA, Ks[i], target, dims);
             probs[i] = std::pow(norm(tmp), 2);
             if (probs[i] > 0) {
-                // normalized output state
-                // corresponding to measurement result i
+                // normalized output state corresponding to
+                // the measurement result i
                 tmp /= std::sqrt(probs[i]);
                 if (destructive) {
                     outstates[i] = ptrace(tmp, target, dims);
@@ -471,8 +471,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
             }
             probs[i] = std::abs(trace(tmp)); // probability
             if (probs[i] > 0) {
-                // normalized output state
-                // corresponding to measurement result i
+                // normalized output state corresponding to
+                // the measurement result i
                 outstates[i] = tmp / probs[i];
             }
         }
@@ -680,8 +680,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
             realT tmp = norm(outstates[i]);
             probs[i] = tmp * tmp;
             if (probs[i] > 0) {
-                // normalized output state
-                // corresponding to measurement result m
+                // normalized output state corresponding to
+                // the measurement result m
                 outstates[i] /= tmp;
             }
         }
@@ -772,37 +772,36 @@ template <typename Derived>
                              expr_t<Derived>>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             std::vector<idx> dims, bool destructive = true) {
+    constexpr char func_name[] = "qpp::measure_seq()";
     expr_t<Derived> rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size
     if (!internal::check_nonzero_size(rA)) {
-        throw exception::ZeroSize("qpp::measure_seq()", "A");
+        throw exception::ZeroSize(func_name, "A");
     }
 
     // check that dimension is valid
     if (!internal::check_dims(dims)) {
-        throw exception::DimsInvalid("qpp::measure_seq()", "dims");
+        throw exception::DimsInvalid(func_name, "dims");
     }
 
     // check valid state and matching dimensions
     if (internal::check_cvector(rA)) {
         if (!internal::check_dims_match_cvect(dims, rA)) {
-            throw exception::DimsMismatchCvector("qpp::measure_seq()",
-                                                 "A/dims");
+            throw exception::DimsMismatchCvector(func_name, "A/dims");
         }
     } else if (internal::check_square_mat(rA)) {
         if (!internal::check_dims_match_mat(dims, rA)) {
-            throw exception::DimsMismatchMatrix("qpp::measure_seq()", "A/dims");
+            throw exception::DimsMismatchMatrix(func_name, "A/dims");
         }
     } else {
-        throw exception::MatrixNotSquareNorCvector("qpp::measure_seq()", "A");
+        throw exception::MatrixNotSquareNorCvector(func_name, "A");
     }
 
     // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims)) {
-        throw exception::SubsysMismatchDims("qpp::measure_seq()",
-                                            "dims/target");
+        throw exception::SubsysMismatchDims(func_name, "dims/target");
     }
     // END EXCEPTION CHECKS
 
@@ -813,32 +812,33 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
     std::vector<idx> idxs(target_size);
     std::iota(idxs.begin(), idxs.end(), 0);
 
-    // tag-sort target in increasing order
+    // OPTIMIZATION: Tag-sort target in DECREASING order.
+    // By processing the highest indices first, we prevent the need to shift
+    // the indices of the remaining subsystems (target[idx_i] -= i),
+    // reducing instruction overhead.
     std::sort(idxs.begin(), idxs.end(),
               [&target](const auto& lhs, const auto& rhs) {
-                  return target[lhs] < target[rhs];
+                  return target[lhs] > target[rhs];
               });
 
     //************ ket or density matrix ************//
     for (idx i = 0; i < target_size; ++i) {
         idx idx_i = idxs[i];
 
-        if (destructive) {
-            // i subsystems were previously removed, relabel current subsystem
-            target[idx_i] -= i;
-        }
-
+        // because we are deleting from the back (highest indices first),
+        // the remaining indices in 'dims' match the original 'target' indices.
         idx curr_subsys_idx = target[idx_i];
 
         auto [m, probs, states] = measure(
             rA, Gates::get_no_thread_local_instance().Id(dims[curr_subsys_idx]),
             {curr_subsys_idx}, dims, destructive);
+
         ms[idx_i] = m;
         ps[idx_i] = probs[m];
-        rA = states[m];
+        rA = std::move(states[m]);
 
         if (destructive) {
-            // remove the lowest indexed subsystem from dims
+            // remove the measured subsystem from dims
             dims.erase(std::next(dims.begin(), curr_subsys_idx));
         }
     }

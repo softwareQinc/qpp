@@ -50,7 +50,7 @@ To build the
 cmake --build build --target examples --parallel 8
 ```
 
-This will compile all benchmarks executables into `./build/examples`. The
+This will compile all example executables into `./build/examples`. The
 `--parallel 8` flag instructs CMake to build in parallel using 8 threads,
 modify accordingly.
 
@@ -89,7 +89,7 @@ To build all benchmarks, execute
 cmake --build build --target benchmarks --parallel 8
 ```
 
-This will compile all benchmarks executables into `./build/benchmarks`. To run
+This will compile all benchmark executables into `./build/benchmarks`. To run
 a specific benchmark, e.g., `qft_bench`, execute
 
 ```shell
