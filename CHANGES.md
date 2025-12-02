@@ -1,12 +1,18 @@
-# Version 7.0.0 - xx November 2025
+# Version 7.0.0 - xx December 2025
 
-- Massive performance improvements (10x to 1000x) for qubit state manipulation
-  and qubit circuit execution through extensive optimizations of `qpp::apply()`
-  and `qpp::applyCTRL()`
-- Switched back to MAJOR.MINOR.PATCH release versioning:
+- Significant performance improvements (10x to 1000x) for qubit state
+  manipulation and qubit circuit execution through extensive optimizations of
+  `qpp::apply()` and `qpp::applyCTRL()`
+- Switched back to MAJOR.MINOR.PATCH release versioning system:
   - MAJOR -- introduces significant changes that break backward compatibility
   - MINOR -- may include limited or minor compatibility breaks
   - PATCH -- fully backward compatible fixes and improvements
+- Renamed the class `internal::QCircuitConditionalStep` to
+  `internal::QCircuitRuntimeStep`, and the corresponding
+  ["qpp/internal/classes/qcircuit_conditional_step.hpp"] to
+  ["qpp/internal/classes/qcircuit_runtime_step.hpp"]
+- Renamed `qpp::QCircuit::has_conditionals()` to
+  `qpp::QCircuit::has_runtime_steps()`
 - New feature: support for setting dits at runtime in
   ["qpp/classes/qcircuit.hpp"], implemented
   `qpp::QCircuit::set_dits_runtime(mutable_dits_functor_t dits)`. Here
@@ -15,14 +21,7 @@
 - Changed `cond_func_t` type alias to `cond_pred_t` for
   Boolean predicates in conditional statements and moved the type alias from
   ["qpp/types.hpp"] to
-  ["qpp/internal/classes/qcircuit_conditional_step.hpp"]; alias to an internal
-  type.
-- Renamed the class `internal::QCircuitConditionalStep` to
-  `internal::QCircuitRuntimeStep`, and the corresponding
-  ["qpp/internal/classes/qcircuit_conditional_step.hpp"] to
-  ["qpp/internal/classes/qcircuit_runtime_step.hpp"]
-- Renamed `qpp::QCircuit::has_conditionals()` to
-  `qpp::QCircuit::has_runtime_steps()`
+  ["qpp/internal/classes/qcircuit_runtime_step.hpp"]; alias to an internal type.
 - Added
   [["examples/circuits/runtime_set_dits.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)]
 - Conditional statements are now indented with tabs when displaying
