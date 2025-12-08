@@ -44,7 +44,7 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 # -----------------------------------------------------------------------------
-# Quantum++ headers and interface library
+# Quantum++ interface library and headers
 # -----------------------------------------------------------------------------
 # Use INTERFACE library for headers-only libraries
 add_library(libqpp INTERFACE)
@@ -84,7 +84,7 @@ include(cmake/qpp_compiler_flags.cmake)
 include(cmake/qpp_eigen3.cmake)
 
 # Internal interface only, do not link against it, use libqpp instead. Used to
-# build examples, benchmarks, and unit tests.
+# build examples and unit tests.
 add_library(libqpp_internal INTERFACE)
 target_link_libraries(libqpp_internal INTERFACE libqpp)
 
@@ -98,12 +98,6 @@ include(cmake/qpp_MATLAB.cmake)
 # -----------------------------------------------------------------------------
 add_custom_target(examples COMMENT "Builds and groups all Quantum++ examples")
 add_subdirectory(examples _examples EXCLUDE_FROM_ALL SYSTEM)
-
-# -----------------------------------------------------------------------------
-# Benchmarks
-# -----------------------------------------------------------------------------
-add_custom_target(benchmarks COMMENT "Benchmarks")
-add_subdirectory(benchmarks _benchmarks EXCLUDE_FROM_ALL SYSTEM)
 
 # -----------------------------------------------------------------------------
 # Unit tests

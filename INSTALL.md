@@ -81,6 +81,10 @@ ctest --test-dir build
 
 ## Benchmarks
 
+See
+[benchmarks/README.md](https://github.com/softwareQinc/qpp/blob/main/benchmarks/README.md)
+for details on how to compile and run the benchmarks.
+
 Quantum++ includes a benchmarking suite built with [Catch2](https://github.com/catchorg/Catch2).
 
 To build all benchmarks, execute
