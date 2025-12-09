@@ -49,6 +49,11 @@ jobs:
       - name: Build examples
         run: cmake --build build --target examples
 
+      - name: Build benchmarks
+        run: |
+          cmake -S benchmarks -B benchmarks/build 
+          cmake --build benchmarks/build
+
       - name: Build unit tests
         run: cmake --build build/unit_tests --target unit_tests
 
