@@ -892,12 +892,13 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * \param A Eigen expression
  * \param target Subsystem indexes that are sampled from
  * \param dims Subsystem dimensions
- * \return Vector of outcome results
+ * \return Tuple of vector of outcome results and its overall associated
+ * probability
  */
 template <typename Derived>
-[[qpp::critical]] std::vector<idx> sample(const Eigen::MatrixBase<Derived>& A,
-                                          const std::vector<idx>& target,
-                                          const std::vector<idx>& dims) {
+[[qpp::critical]] std::tuple<std::vector<idx>, realT>
+sample(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+       const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -956,7 +957,7 @@ template <typename Derived>
                        return sample_midx[pos];
                    });
 
-    return measurement_midx;
+    return {measurement_midx, pbs[sample_dec]};
 }
 
 /**
@@ -966,11 +967,12 @@ template <typename Derived>
  * \param A Eigen expression
  * \param target Subsystem indexes that are sampled from
  * \param d Subsystem dimensions
- * \return Vector of outcome results
+ * \return Tuple of vector of outcome results and its associated probability
  */
 template <typename Derived>
-std::vector<idx> sample(const Eigen::MatrixBase<Derived>& A,
-                        const std::vector<idx>& target, idx d = 2) {
+std::tuple<std::vector<idx>, realT> sample(const Eigen::MatrixBase<Derived>& A,
+                                           const std::vector<idx>& target,
+                                           idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1114,12 +1116,89 @@ sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
     return sample(num_samples, rA, target, dims);
 }
 
+/*
+ * \brief Sequentially measures the part \a target of the multi-partite state
+ * vector or density matrix \a A in the computational basis
+ * \see qpp::measure(), qpp::sample()
+ *
+ * \note If \a destructive is set to true (by default), the measurement is
+ * destructive, i.e., the measured subsystems are traced away.
+ *
+ * \param A Eigen expression
+ * \param target Subsystem indexes that are measured
+ * \param dims Dimensions of the multi-partite system
+ * \param destructive Destructive measurement, true by default
+ * \return Tuple of: 1. Vector of measurement result outcomes, 2. Outcome
+ * probabilities, and 3. Post-measurement normalized state
+ */
+template <typename Derived>
+[[qpp::critical]] std::tuple<std::vector<idx>, std::vector<realT>,
+                             expr_t<Derived>>
+measure_seq_new(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
+                std::vector<idx> dims, bool destructive = true) {
+    constexpr char func_name[] = "qpp::measure_seq()";
+    expr_t<Derived> rA = A.derived();
+
+    // EXCEPTION CHECKS
+    // check zero-size
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize(func_name, "A");
+    }
+
+    // check that dimension is valid
+    if (!internal::check_dims(dims)) {
+        throw exception::DimsInvalid(func_name, "dims");
+    }
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rA)) {
+        if (!internal::check_dims_match_cvect(dims, rA)) {
+            throw exception::DimsMismatchCvector(func_name, "A/dims");
+        }
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA)) {
+            throw exception::DimsMismatchMatrix(func_name, "A/dims");
+        }
+    } else {
+        throw exception::MatrixNotSquareNorCvector(func_name, "A");
+    }
+
+    // check that target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims)) {
+        throw exception::SubsysMismatchDims(func_name, "dims/target");
+    }
+    // END EXCEPTION CHECKS
+
+    idx target_size = target.size();
+    std::vector<idx> ms(target_size);
+    std::vector<realT> ps(target_size);
+
+    std::vector<idx> idxs(target_size);
+    std::iota(idxs.begin(), idxs.end(), 0);
+
+    // Tag-sort target in increasing order
+    std::sort(idxs.begin(), idxs.end(),
+              [&target](const auto& lhs, const auto& rhs) {
+                  return target[lhs] < target[rhs];
+              });
+
+    //************ ket or density matrix ************//
+    auto [midx, prob] =
+        sample(rA, target); // we get something like <[2, 1, 4], 0.2>
+    std::vector<idx> expanded_midx(dims.size(), 0);
+    for (idx i = 0; i < target.size(); ++i) {
+        expanded_midx[target[idxs[i]]] = midx[idxs[i]];
+    }
+    ket outcome = mket(expanded_midx, dims);
+
+    return std::make_tuple(ms, ps, rA);
+}
+
 /**
- * \brief Resets qudits from the multi-partite state vector or density
- * matrix \a A by performing a non-destructive measurement in the
- * computational basis on the \a target qudits and discarding the
- * measurement results, followed by shifting them back to the \f$|0\cdots
- * 0\rangle\f$ state
+ * \brief Resets qudits from the multi-partite state vector or density matrix
+ * \a A by performing a non-destructive measurement in the computational basis
+ * on the \a target qudits and discarding the measurement results, followed by
+ * shifting them back to the \f$|0\cdots 0\rangle\f$ state
  *
  * \param A Eigen expression
  * \param target Target qudit indexes that are reset
@@ -1177,11 +1256,10 @@ reset(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 }
 
 /**
- * \brief Resets qudits from the multi-partite state vector or density
- * matrix \a A by performing a non-destructive measurement in the
- * computational basis on the \a target qudits and discarding the
- * measurement results, followed by shifting them back to the \f$|0\cdots
- * 0\rangle\f$ state
+ * \brief Resets qudits from the multi-partite state vector or density matrix
+ * \a A by performing a non-destructive measurement in the computational basis
+ * on the \a target qudits and discarding the measurement results, followed by
+ * shifting them back to the \f$|0\cdots 0\rangle\f$ state
  *
  * \param A Eigen expression
  * \param target Target qudit indexes that are reset

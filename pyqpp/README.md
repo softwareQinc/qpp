@@ -162,23 +162,3 @@ PYBIND11_MODULE(pyqpp, m) {
     ...
 }
 ```
-
----
-
-## Creating Python stubs for IDE auto-completion and static type checking
-
-In case autocompletion (or static type checking via
-[mypy](https://www.mypy-lang.org/)) does not work properly in your editor/IDE,
-you may need to create Python stubs for the package. To do this, execute
-
-```shell
-mkdir ~/python_stubs
-export MYPATH=$MYPATH:~/python_subs # put this in your .profile or .bashrc
-. ~/venv/bin/activate
-stubgen -p pyqpp -o ~/python_stubs
-ln -s ~/python_stubs/pyqpp ~/venv/lib/python3.11/site-packages
-```
-
-In the above, we assumed that your platform is UNIX/UNIX-like, and that you
-have **pyqpp** installed in a virtual environment under `~/venv`. Please modify
-accordingly for your system.

@@ -2,6 +2,7 @@
 requires = [
     "numpy",
     "pybind11",
+    "pybind11-stubgen",
     "scikit-build-core",
     "wheel",
 ]

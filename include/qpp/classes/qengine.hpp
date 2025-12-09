@@ -389,7 +389,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         REPEAT_POST_SELECT_SAMPLE:
             ++max_post_select_idx;
             // sample from the quantum state
-            std::vector<idx> sample_result_restricted_support = sample(
+            auto [sample_result_restricted_support, _] = sample(
                 engine_state_copy.qstate_, sample_from, this->qc_ptr_->get_d());
 
             // make sure post-selected qudits agree on their values

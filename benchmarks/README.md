@@ -17,3 +17,9 @@ a specific benchmark, e.g., `qft_bench`, execute
 ```
 
 For help and additional options, run any benchmark with the `--help` flag.
+
+> **Note:**
+> All **Quantum++**
+> [CMake flags and arguments](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md#cmake-optional-flags-and-arguments)
+> **do not propagate** to the benchmarks. They must be defined independently if
+> they are needed.

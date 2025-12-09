@@ -85,33 +85,16 @@ See
 [benchmarks/README.md](https://github.com/softwareQinc/qpp/blob/main/benchmarks/README.md)
 for details on how to compile and run the benchmarks.
 
-Quantum++ includes a benchmarking suite built with [Catch2](https://github.com/catchorg/Catch2).
-
-To build all benchmarks, execute
-
-```shell
-cmake --build build --target benchmarks --parallel 8
-```
-
-This will compile all benchmark executables into `./build/benchmarks`. To run
-a specific benchmark, e.g., `qft_bench`, execute
-
-```shell
-./build/benchmarks/qft_bench
-```
-
-For help and additional options, run any benchmark with the `--help` flag.
-
 ---
 
-## CMake optional arguments and flags
+## CMake flags and optional arguments
 
 > **Note:**
 > All CMake flags below **do not propagate** to projects that use **Quantum++**
 > via `find_package(qpp ...)`.
 >
-> Each consumer project must explicitly define these flags in its own
-> `CMakeLists.txt` if needed.
+> Downstream projects linking via `find_package(qpp)` must define these
+> flags independently if they are needed.
 
 | Optional argument       | Value                                  | Description                                                                                                                                                                                                         |
 | ----------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
