@@ -74,11 +74,11 @@ jobs:
         run: |
           python3 -mvenv venv
           if [ "$RUNNER_OS" == "Windows" ]; then
-            venv/Scripts/Activate
-            pip install pybind11-stubgen
+            venv/Scripts/Activate 
+            pip install -e .
           else
             source venv/bin/activate
+            pip install -e .
           fi
-          cd .. && pip3 install qpp/
 
           python -c "import pyqpp; print(pyqpp.dirac(pyqpp.states.zero()))"
