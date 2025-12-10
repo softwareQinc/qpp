@@ -19,18 +19,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure Quantum++
-        run: cmake -B build
-
-      - name: Install Quantum++
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            cmake --install build
-          else
-            sudo cmake --install build
-          fi
-
+      # - name: Configure Quantum++
+      #   run: cmake -B build
+      #
+      # - name: Install Quantum++
+      #   shell: bash
+      #   run: |
+      #     if [ "$RUNNER_OS" == "Windows" ]; then
+      #       cmake --install build
+      #     else
+      #       sudo cmake --install build
+      #     fi
+      #
       # - name: Configure standalone example
       #   run: cmake -S examples/standalone -B examples/standalone/build
       #
