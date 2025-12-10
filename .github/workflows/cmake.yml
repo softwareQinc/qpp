@@ -78,6 +78,6 @@ jobs:
           else
             source venv/bin/activate
           fi
-          pip3 install .
+          cd .. && pip3 install qpp/
 
           python -c "import pyqpp; print(pyqpp.dirac(pyqpp.states.zero()))"
