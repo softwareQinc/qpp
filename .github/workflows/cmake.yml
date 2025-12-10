@@ -75,6 +75,7 @@ jobs:
           python3 -mvenv venv
           if [ "$RUNNER_OS" == "Windows" ]; then
             venv/Scripts/Activate
+            pip install pybind11-stubgen
           else
             source venv/bin/activate
           fi

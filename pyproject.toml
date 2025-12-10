@@ -26,5 +26,10 @@ repository = "https://github.com/softwareqinc/qpp.git"
 [tool.scikit-build]
 cmake.source-dir = "pyqpp"
 wheel.packages = ["pyqpp"]
-wheel.exclude = ["include", "src", "CMakeLists.txt", "README.md"]
+wheel.exclude = [
+    "include",
+    "src",
+    "CMakeLists.txt",
+    "README.md",
+]
 wheel.expand-macos-universal-tags = true
