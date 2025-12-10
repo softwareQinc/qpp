@@ -1,32 +1,35 @@
 # pyqpp - Python3 bindings for Quantum++
 
 [**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) provides a
-modern Python 3 interface to the Quantum++ C++ library. It exposes the core
-quantum computing primitives, high-performance circuit simulation engines, and
-utility functions of Quantum++ to Python users through a clean and intuitive
-API built with [pybind11](https://github.com/pybind/pybind11).
-
----
+modern Python 3 interface to the **Quantum++** C++ library. It exposes quantum
+computing primitives and circuit builders, high-performance circuit simulation
+engines, and utility functions of **Quantum++** to Python users through a clean
+and intuitive API built with [pybind11](https://github.com/pybind/pybind11).
 
 ## Installation instructions
 
-**pyqpp** requires the same dependencies as Quantum++,
+**pyqpp** requires the same dependencies as **Quantum++**,
 and can be installed using `pip`
 
 ```shell
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
----
-
 ## Overview
 
-**pyqpp** provides access to core Quantum++ components such as `Bit_circuit`,
-`Dynamic_bitset`, `QCircuitT`, `QEngineT`, `QNoisyEngineT`, and several
-additional engine sub-classes. It also provides common quantum gates,
-predefined states, and basic Eigen-based operations.
+**pyqpp** provides access to core **Quantum++** quantum circuit related
+components such as `qpp::QCircuit`, `qpp::QEngine`, `qpp::QNoisyEngine`, and
+several additional engine sub-classes. It also provides common quantum gates,
+predefined states, and basic Eigen-based operations. Additionally, it provides
+access to **Quantum++**’s classical reversible circuit functionality by
+wrapping `qpp::Bit_circuit` and `qpp::Dynamic_bitset`.
 
-Example:
+Most other parts of **Quantum++** are currently not accessible from Python, but
+the bindings are easy to extend, see the
+[Custom Bindings](https://github.com/softwareQinc/qpp/blob/main/pyqpp#custom-bindings)
+section for guidance.
+
+A simple illustrative example is provided below.
 
 ```python3
 import numpy as np
