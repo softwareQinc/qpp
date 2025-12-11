@@ -51,15 +51,14 @@ file(MAKE_DIRECTORY "${STUBGEN_OUTPUT_PATH}")
 add_custom_command(
   TARGET pyqpp
   POST_BUILD
-  COMMAND ${Python3_EXECUTABLE} -m pybind11_stubgen pyqpp --output-dir
-          ${STUBGEN_OUTPUT_PATH} --ignore-all-errors
+  # 1. Use ${CMAKE_COMMAND} -E env to correctly set PYTHONPATH
+  # 2. Use $<TARGET_FILE_DIR:pyqpp> to dynamically find the .pyd location
+  #    (Release/Debug)
+  COMMAND
+    ${CMAKE_COMMAND} -E env "PYTHONPATH=$<TARGET_FILE_DIR:pyqpp>"
+    ${Python3_EXECUTABLE} -m pybind11_stubgen pyqpp --output-dir
+    "${STUBGEN_OUTPUT_PATH}" --ignore-all-errors
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Generating Python stubs for pyqpp..."
-  VERBATIM ENV PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}/Release)
-
-# Create an empty "py.typed" file in the build directory
-file(TOUCH "${CMAKE_CURRENT_BINARY_DIR}/py.typed")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/py.typed" DESTINATION pyqpp)
-
-# Install the generated stub directory alongside the module
+  VERBATIM) # Install the generated stub directory alongside the module
 install(DIRECTORY "${STUBGEN_OUTPUT_PATH}/pyqpp/" DESTINATION pyqpp)
