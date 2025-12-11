@@ -45,9 +45,8 @@ target_link_libraries(pyqpp PRIVATE pybind11::module libqpp)
 # Install the module
 install(TARGETS pyqpp LIBRARY DESTINATION pyqpp)
 
-# Generate stubs by running pybind11-stubgen after the library is compiled
+# Generate stubs by running pybind11-stubgen after the module is compiled
 set(STUBGEN_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/stubs")
-
 file(MAKE_DIRECTORY "${STUBGEN_OUTPUT_PATH}")
 
 if(WIN32)
@@ -67,5 +66,7 @@ add_custom_command(
     "${STUBGEN_OUTPUT_PATH}" --ignore-all-errors
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Generating Python stubs for pyqpp..."
-  VERBATIM) # Install the generated stub directory alongside the module
+  VERBATIM)
+
+# Install the generated stub directory alongside the module
 install(DIRECTORY "${STUBGEN_OUTPUT_PATH}/pyqpp/" DESTINATION pyqpp)
