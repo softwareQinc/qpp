@@ -47,6 +47,7 @@ install(TARGETS pyqpp LIBRARY DESTINATION pyqpp)
 
 # Generate stubs by running pybind11-stubgen after the library is compiled
 set(STUBGEN_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/stubs")
+
 file(MAKE_DIRECTORY "${STUBGEN_OUTPUT_PATH}")
 
 if(WIN32)
