@@ -48,14 +48,20 @@ install(TARGETS pyqpp LIBRARY DESTINATION pyqpp)
 # Generate stubs by running pybind11-stubgen after the library is compiled
 set(STUBGEN_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/stubs")
 file(MAKE_DIRECTORY "${STUBGEN_OUTPUT_PATH}")
+
+if(WIN32)
+  set(PYTHONPATH_SEP ";")
+else()
+  set(PYTHONPATH_SEP ":")
+endif()
+
 add_custom_command(
   TARGET pyqpp
   POST_BUILD
-  # 1. Use ${CMAKE_COMMAND} -E env to correctly set PYTHONPATH
-  # 2. Use $<TARGET_FILE_DIR:pyqpp> to dynamically find the .pyd location
-  #    (Release/Debug)
   COMMAND
-    ${CMAKE_COMMAND} -E env "PYTHONPATH=$<TARGET_FILE_DIR:pyqpp>"
+  COMMAND
+    ${CMAKE_COMMAND} -E env
+    "PYTHONPATH=$<TARGET_FILE_DIR:pyqpp>${PYTHONPATH_SEP}$ENV{PYTHONPATH}"
     ${Python3_EXECUTABLE} -m pybind11_stubgen pyqpp --output-dir
     "${STUBGEN_OUTPUT_PATH}" --ignore-all-errors
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
