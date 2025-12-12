@@ -89,24 +89,22 @@ print("Norm difference:\n", norm(psi_out - psi_in))
 
 ## OpenQASM circuits
 
-Use `pyqpp.qasm.read_from_file` to obtain the `QCircuit` representation of an
-OpenQASM 2.0 file.
+Use `pyqpp.qasm.read_from_file()` to obtain the `qpp::QCircuit` representation
+of an OpenQASM 2.0 file.
 
 ---
 
 ## Custom Bindings
 
-**pyqpp** was created using [pybind11](https://github.com/pybind/pybind11), see
-[pyqpp/qpp_wrapper.cpp](https://github.com/softwareQinc/qpp/blob/main/pyqpp/qpp_wrapper.cpp).
-To wrap a custom function, use `pybind11::module::def`.
+To wrap a custom function, use `pybind11::module::def`, such as
 
 ```cpp
 template<typename Func, typename ...Extra>
 module &def(const char *name_, Func &&f, const Extra&... extra)
 ```
 
-`Func` can be a plain C++ function, a function pointer, or a lambda function.
-For example, consider the `qpp::randU` method
+Here `Func` can be a plain C++ function, a function pointer, or a lambda
+function. For example, consider the `qpp::randU()` function
 
 ```cpp
 cmat randU(idx D = 2);
@@ -130,7 +128,7 @@ PYBIND11_MODULE(pyqpp, m) {
 ## Template methods
 
 We cannot wrap templated functions; instead, we must explicitly instantiate
-them. For example, consider the `qpp::norm` method
+them. For example, consider the `qpp::norm()` function
 
 ```cpp
 template <typename Derived>
@@ -150,9 +148,9 @@ PYBIND11_MODULE(pyqpp, m) {
 }
 ```
 
-This creates the overloaded `pyqpp.norm` function, which can accept `cmat`
-or `ket` types. To avoid repetition of boilerplate code, we can templatize the
-binding:
+This creates the overloaded `pyqpp.norm()` function, which can accept
+`qpp::ket` or `qpp::cmat` types. To avoid repetition of boilerplate code, we
+can templatize the binding
 
 ```cpp
 template<typename T>

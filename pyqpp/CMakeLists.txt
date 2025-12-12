@@ -56,7 +56,6 @@ add_custom_command(
   TARGET pyqpp
   POST_BUILD
   COMMAND
-  COMMAND
     ${CMAKE_COMMAND} -E env
     "PYTHONPATH=$<TARGET_FILE_DIR:pyqpp>${PYTHONPATH_SEP}$ENV{PYTHONPATH}"
     ${Python3_EXECUTABLE} -m pybind11_stubgen pyqpp --output-dir
