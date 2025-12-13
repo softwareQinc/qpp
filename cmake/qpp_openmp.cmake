@@ -6,8 +6,8 @@ if(QPP_OPENMP)
   message(STATUS "OpenMP support - ON")
 
   # Determine which target exists
-  include(${CMAKE_CURRENT_LIST_DIR}/qpp_detect_target.cmake)
-  qpp_detect_target(QPP_TARGET "OpenMP")
+  include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
+  qpp_select_target(QPP_TARGET "OpenMP")
 
   find_package(OpenMP 3.0 COMPONENTS CXX)
   if(OpenMP_CXX_FOUND)

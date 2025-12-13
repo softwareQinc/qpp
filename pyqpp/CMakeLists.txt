@@ -12,8 +12,12 @@ if(NOT TARGET libqpp)
   message(STATUS "Defining local libqpp interface target")
   add_library(libqpp INTERFACE)
 
-  include("../cmake/qpp_openmp.cmake")
-  include("../cmake/qpp_MATLAB.cmake")
+  include(../cmake/qpp_types.cmake)
+  include(../cmake/qpp_compiler_flags.cmake)
+  include(../cmake/qpp_eigen3.cmake)
+  include(../cmake/qpp_eigen3.cmake)
+  include(../cmake/qpp_openmp.cmake)
+  include(../cmake/qpp_MATLAB.cmake)
 
   target_include_directories(
     libqpp INTERFACE $<BUILD_INTERFACE: ${CMAKE_SOURCE_DIR}/../include
@@ -23,12 +27,26 @@ if(NOT TARGET libqpp)
                                               QPP_BIGINT_DEFAULT QPP_FP_DEFAULT)
 endif()
 
-# Detect Python and pybind11
+# Detect Python
+message(STATUS "Detecting Python3...")
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-include("../cmake/pybind11.cmake") # adds required dependencies to libqpp
 
-# Detect Eigen3
-include("../cmake/qpp_eigen3.cmake") # adds required dependencies to libqpp
+# Detect pybind11
+message(STATUS "Detecting pybind11...")
+find_package(pybind11 CONFIG)
+if(NOT pybind11_FOUND)
+  include(FetchContent)
+  message(STATUS "pybind11 not detected, fetching it...")
+  FetchContent_Declare(
+    pybind11
+    GIT_REPOSITORY https://github.com/pybind/pybind11
+    GIT_TAG master
+    GIT_PROGRESS TRUE
+    GIT_SHALLOW TRUE)
+  FetchContent_MakeAvailable(pybind11)
+  set(PYBIND11_INCLUDE_DIRS ${pybind11_SOURCE_DIR})
+  message(STATUS "Installed pybind11: ${PYBIND11_INCLUDE_DIRS}")
+endif()
 
 # Add Python extension
 pybind11_add_module(pyqpp src/pyqpp.cpp)

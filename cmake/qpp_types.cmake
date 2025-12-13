@@ -50,9 +50,9 @@ set_property(CACHE QPP_FP PROPERTY STRINGS "default" "float" "double"
 # Print configuration summary
 # ----------------------------------------------------------------------------
 message(STATUS "Quantum++ type configuration")
-message(STATUS "Index type        : ${QPP_IDX}")
-message(STATUS "Big integer type  : ${QPP_BIGINT}")
-message(STATUS "Floating-point    : ${QPP_FP}")
+message(STATUS "  Index type        : ${QPP_IDX}")
+message(STATUS "  Big integer type  : ${QPP_BIGINT}")
+message(STATUS "  Floating-point    : ${QPP_FP}")
 
 # ----------------------------------------------------------------------------
 # Resolve compile-time definitions
