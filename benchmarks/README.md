@@ -44,6 +44,6 @@ For help and additional options, run any benchmark with the `--help` flag.
 
 > **Note:**
 > All **Quantum++**
-> [CMake flags and arguments](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md#cmake-optional-flags-and-arguments)
+> [CMake flags and arguments](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md#cmake-flags-and-optional-arguments)
 > **do not propagate** to the benchmarks. They must be defined independently if
 > they are needed.
