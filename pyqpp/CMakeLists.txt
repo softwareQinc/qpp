@@ -1,4 +1,4 @@
-# pyqpp - Python3 bindings for Quantum++
+# pyqpp - Python 3 bindings for Quantum++
 
 cmake_minimum_required(VERSION 3.20)
 project(pyqpp LANGUAGES CXX)
@@ -7,28 +7,18 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Define libqpp interface if not already defined
-if(NOT TARGET libqpp)
-  message(STATUS "Defining local libqpp interface target")
-  add_library(libqpp INTERFACE)
-
-  include(../cmake/qpp_types.cmake)
-  include(../cmake/qpp_compiler_flags.cmake)
-  include(../cmake/qpp_eigen3.cmake)
-  include(../cmake/qpp_eigen3.cmake)
-  include(../cmake/qpp_openmp.cmake)
-  include(../cmake/qpp_MATLAB.cmake)
-
-  target_include_directories(
-    libqpp INTERFACE $<BUILD_INTERFACE: ${CMAKE_SOURCE_DIR}/../include
-                     ${CMAKE_SOURCE_DIR}/../qasmtools/include>)
-
-  target_compile_definitions(libqpp INTERFACE QPP_IDX_DEFAULT
-                                              QPP_BIGINT_DEFAULT QPP_FP_DEFAULT)
+# Detect Quantum++. Prefer in-tree building from the Quantum++ source tree.
+if(TARGET qpp)
+  set(QPP_TARGET qpp)
+  message(STATUS "pyqpp: using in-tree Quantum++ target")
+else()
+  find_package(qpp CONFIG REQUIRED)
+  set(QPP_TARGET qpp::qpp)
+  message(STATUS "pyqpp: using installed Quantum++ package")
 endif()
 
 # Detect Python
-message(STATUS "Detecting Python3...")
+message(STATUS "Detecting Python 3...")
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
 # Detect pybind11
@@ -55,10 +45,13 @@ pybind11_add_module(pyqpp src/pyqpp.cpp)
 target_include_directories(pyqpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Link libraries
-target_link_libraries(pyqpp PRIVATE pybind11::module libqpp)
+target_link_libraries(pyqpp PRIVATE pybind11::module ${QPP_TARGET})
 
 # Install the module
-install(TARGETS pyqpp LIBRARY DESTINATION pyqpp)
+install(
+  TARGETS pyqpp
+  COMPONENT python
+  LIBRARY DESTINATION pyqpp)
 
 # Generate stubs by running pybind11-stubgen after the module is compiled
 set(STUBGEN_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/stubs")
@@ -83,4 +76,17 @@ add_custom_command(
   VERBATIM)
 
 # Install the generated stub directory alongside the module
-install(DIRECTORY "${STUBGEN_OUTPUT_PATH}/pyqpp/" DESTINATION pyqpp)
+install(
+  DIRECTORY "${STUBGEN_OUTPUT_PATH}/pyqpp/"
+  COMPONENT python
+  DESTINATION pyqpp)
+
+# Create py.typed in the build tree
+set(PY_TYPED_FILE "${CMAKE_CURRENT_BINARY_DIR}/py.typed")
+file(WRITE "${PY_TYPED_FILE}" "")
+
+# Install py.typed
+install(
+  FILES "${PY_TYPED_FILE}"
+  DESTINATION pyqpp
+  COMPONENT python)

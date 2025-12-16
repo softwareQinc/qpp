@@ -4,29 +4,25 @@
 # Selects the appropriate Quantum++ target depending on context
 #
 # If the internal development target `libqpp_internal` exists (i.e., when
-# building inside the Quantum++ source tree), it is selected. Otherwise,
-# the public installed target `libqpp` is used.
+# building inside the Quantum++ source tree), it is selected. Otherwise, the
+# public installed target `qpp` is used.
 #
-# This allows the same configuration logic to work correctly in both:
-#   - build-tree usage (examples, tests, optional components)
+# This allows the same configuration logic to work correctly in both 
+#   - build-tree usage (examples, tests, optional components) 
 #   - install-tree usage (find_package(qpp))
 #
-# Usage:
-#   qpp_select_target(<output_var> [feature_name])
+# Usage: qpp_select_target(<output_var> [feature_name])
 #
-# Arguments:
-#   <output_var>
-#     Name of the variable that will receive the selected target.
+# Arguments: <output_var> Name of the variable that will receive the selected
+# target
 #
-#   [feature_name]
-#     Optional human-readable feature name used only for status messages
-#     (e.g. "OpenMP", "MATLAB", "OpenQASM").
+# [feature_name] Optional human-readable feature name used only for status
+# messages (e.g. "OpenMP", "MATLAB", "OpenQASM")
 #
-# Example:
-#   qpp_select_target(QPP_TARGET "OpenMP")
-#   target_link_libraries(my_target PRIVATE ${QPP_TARGET})
+# Example: qpp_select_target(QPP_TARGET "OpenMP")
+# target_link_libraries(my_target PRIVATE ${QPP_TARGET})
 #
-#   message(STATUS "Configuring OpenMP support using target ${QPP_TARGET}")
+# message(STATUS "Configuring OpenMP support using target ${QPP_TARGET}")
 # ----------------------------------------------------------------------------
 function(qpp_select_target result_var)
   # Optional feature name for status/warning messages
@@ -38,12 +34,14 @@ function(qpp_select_target result_var)
   # Determine which target to use
   if(TARGET libqpp_internal)
     set(target_name libqpp_internal)
-  elseif(TARGET libqpp)
-    set(target_name libqpp)
+  elseif(TARGET qpp::qpp)
+    set(target_name qpp::qpp)
+  elseif(TARGET qpp)
+    set(target_name qpp)
   else()
     message(
-      WARNING "Quantum++: No target found for ${feature_name} configuration")
-    set(target_name "")
+      FATAL_ERROR "Quantum++: No target found for ${feature_name} configuration"
+    )
   endif()
 
   # Return the detected target to the caller

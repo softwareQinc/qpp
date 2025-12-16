@@ -1,12 +1,36 @@
 # Benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
 
-Quantum++ includes a benchmarking suite built with
+**Quantum++** includes a benchmarking suite built using
 [Catch2](https://github.com/catchorg/Catch2).
 
-To build all benchmarks, execute from this directory
+---
+
+## Configuring the system
+
+**Quantum++ is required** to build and run the benchmarks. If it is not
+installed, the benchmarks can be built by first configuring the main project
+from this directory using
 
 ```shell
-cmake -B build && cmake --build build --parallel 8
+cmake -S .. -B build/qpp
+cmake -B build -DCMAKE_PREFIX_PATH=build/qpp
+```
+
+If **Quantum++** is installed on your system, replace the commands above with
+
+```shell
+cmake -B build
+```
+
+---
+
+## Building and running the benchmarks
+
+Once the system is configured, build all benchmarks by executing from this
+directory
+
+```shell
+cmake --build build --parallel 8
 ```
 
 This will compile all benchmark executables into `./build/benchmarks`. To run

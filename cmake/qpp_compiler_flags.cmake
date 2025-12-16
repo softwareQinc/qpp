@@ -1,7 +1,11 @@
 # Compiler flags/options
 
+# Select the target
+include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
+qpp_select_target(QPP_TARGET "qpp_compiler_flags")
+
 target_compile_options(
-  libqpp
+  ${QPP_TARGET}
   INTERFACE
     # MSVC: Disable spurious Eigen warning and enable /bigobj
     $<$<CXX_COMPILER_ID:MSVC>:-D_SILENCE_CXX17_ADAPTOR_TYPEDEFS_DEPRECATION_WARNING;/bigobj>
@@ -39,14 +43,14 @@ target_compile_options(
 
 # Linker options
 target_link_libraries(
-  libqpp
+  ${QPP_TARGET}
   INTERFACE
     $<$<AND:$<PLATFORM_ID:Linux>,$<CXX_COMPILER_ID:Clang>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,4.0>>:supc++>
 )
 
 # Debug macros
 target_compile_definitions(
-  libqpp
+  ${QPP_TARGET}
   INTERFACE # Set the DEBUG macro for the Debug configuration.
             $<$<CONFIG:Debug>:DEBUG>
             # Set the EIGEN_NO_DEBUG macro for all non-Debug configurations

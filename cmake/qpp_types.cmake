@@ -6,6 +6,10 @@
 # selected in <qpp/types.hpp>.
 # ============================================================================
 
+# Select the target
+include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
+qpp_select_target(QPP_TARGET "qpp_types")
+
 # ----------------------------------------------------------------------------
 # Index type
 # ----------------------------------------------------------------------------
@@ -113,13 +117,13 @@ endif()
 # Apply to Quantum++ target
 # ----------------------------------------------------------------------------
 target_compile_definitions(
-  libqpp INTERFACE ${QPP_IDX_DEFINITION} ${QPP_BIGINT_DEFINITION}
-                   ${QPP_FP_DEFINITION})
+  ${QPP_TARGET} INTERFACE ${QPP_IDX_DEFINITION} ${QPP_BIGINT_DEFINITION}
+                          ${QPP_FP_DEFINITION})
 
 # ----------------------------------------------------------------------------
 # Final summary (for clarity in build logs)
 # ----------------------------------------------------------------------------
-message(STATUS "Configured compile definitions:")
+message(STATUS "Quantum++ configured type compile-time definitions")
 message(STATUS "  ${QPP_IDX_DEFINITION}")
 message(STATUS "  ${QPP_BIGINT_DEFINITION}")
 message(STATUS "  ${QPP_FP_DEFINITION}")

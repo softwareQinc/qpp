@@ -6,7 +6,7 @@ option(QASMTOOLS_QASM2_SPECS
 if(QASMTOOLS_QASM2_SPECS)
   message(STATUS "OpenQASM2 specs - ON")
 
-  # Determine which target exists
+  # Select the target
   include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
   qpp_select_target(QPP_TARGET "QASMTOOLS_QASM2_SPECS")
 

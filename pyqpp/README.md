@@ -1,4 +1,4 @@
-# pyqpp - Python3 bindings for Quantum++
+# pyqpp - Python 3 bindings for Quantum++
 
 [**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) provides a
 modern Python 3 interface to the **Quantum++** C++ library. It exposes quantum

@@ -24,7 +24,9 @@ homepage = "https://github.com/softwareqinc/qpp"
 repository = "https://github.com/softwareqinc/qpp.git"
 
 [tool.scikit-build]
-cmake.source-dir = "pyqpp"
+cmake.define = {__INTERNAL_PYQPP_SCIKIT_BUILD__ = "ON"}
+build.targets = ["pyqpp"]
+install.components = ["python"]
 wheel.packages = ["pyqpp"]
 wheel.exclude = [
     "include",

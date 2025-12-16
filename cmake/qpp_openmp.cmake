@@ -5,7 +5,7 @@ option(QPP_OPENMP "Enable OpenMP support" ON)
 if(QPP_OPENMP)
   message(STATUS "OpenMP support - ON")
 
-  # Determine which target exists
+  # Select the target
   include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
   qpp_select_target(QPP_TARGET "OpenMP")
 

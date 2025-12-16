@@ -66,8 +66,20 @@ and outputs the executable `./build/examples/bb84[.exe]`.
 
 ## Unit tests
 
-To build the
-[unit tests](https://github.com/softwareQinc/qpp/tree/main/unit_tests), execute
+**Quantum++** provides a set of
+[unit tests](https://github.com/softwareQinc/qpp/tree/main/unit_tests)
+implemented using [GoogleTest](https://github.com/google/googletest).
+
+### Building the unit tests
+
+**Quantum++** unit tests are disabled by default. To enable and build the unit
+tests, configure CMake with unit testing enabled
+
+```shell
+cmake -B build -DQPP_ENABLE_TESTING=ON
+```
+
+To build the unit tests, execute
 
 ```shell
 cmake --build build/unit_tests --target unit_tests --parallel 8
@@ -87,24 +99,26 @@ for details on how to compile and run the benchmarks.
 
 ---
 
-## CMake flags and optional arguments
+## CMake flags and (optional) arguments
 
 > **Note:**
-> All CMake flags below **do not propagate** to projects that use **Quantum++**
-> via `find_package(qpp ...)`.
+> All CMake flags below **do not propagate** to downstream projects that use
+> **Quantum++** via `find_package(qpp ...)`.
 >
-> Downstream projects linking via `find_package(qpp)` must define these
-> flags independently if they are needed.
+> Projects linking via `find_package(qpp)` must define these flags
+> independently if they are needed.
 
 | Optional argument       | Value                                  | Description                                                                                                                                                                                                         |
 | ----------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `CMAKE_INSTALL_PREFIX`  | `/path/to/install`                     | Specifies a custom installation directory for **Quantum++** header files -- useful when you lack administrative privileges or want a non-default install location                                                   |
 |                         |                                        |                                                                                                                                                                                                                     |
+| `QPP_ENABLE_PYQPP`      | `ON/OFF` [`OFF` by default]            | Enables pyqpp C++ development, disabled by default                                                                                                                                                                  |
+| `QPP_ENABLE_TESTING`    | `ON/OFF` [`OFF` by default]            | Enables unit testing with GoogleTest, disabled by default                                                                                                                                                           |
 | `QPP_MATLAB`            | `ON/OFF` [`OFF` by default]            | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load **Quantum++** matrices and vectors to/from MATLAB. |
 | `QPP_OPENMP`            | `ON/OFF` [`ON` by default]             | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                     |
 | `QASMTOOLS_QASM2_SPECS` | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications -- see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                       |
 |                         |                                        |                                                                                                                                                                                                                     |
-| `QPP_SANITIZE`          | `ON/OFF` [`OFF` by default]            | Enable code sanitizing                                                                                                                                                                                              |
+| `QPP_SANITIZE`          | `ON/OFF` [`OFF` by default]            | Enables code sanitizing                                                                                                                                                                                             |
 |                         |                                        |                                                                                                                                                                                                                     |
 | `QPP_BIGINT`            | `default`, etc. [`default` by default] | Signed big integer type (`qpp::bigint`)                                                                                                                                                                             |
 | `QPP_FP`                | `default`, etc. [`default` by default] | Floating-point type (`qpp::realT`)                                                                                                                                                                                  |
@@ -204,7 +218,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(qpp REQUIRED)
 
 add_executable(standalone src/main.cpp)
-target_link_libraries(standalone PRIVATE libqpp)
+target_link_libraries(standalone PRIVATE qpp)
 ```
 
 Configure the application in an out-of-source directory by executing
@@ -289,7 +303,7 @@ For more details, please see
 
 ### SunOS/OpenIndiana
 
-The Python3 wrapper
+The Python 3 wrapper
 [**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) doesn't
 compile under SunOS/OpenIndiana due to errors in `<cmath>` such as
 
