@@ -287,6 +287,7 @@ class States final : public internal::Singleton<const States> // const Singleton
                        std::sqrt(static_cast<realT>(2.0)));
         z0 << 1, 0;
         z1 << 0, 1;
+
         px0 = x0 * x0.adjoint();
         px1 = x1 * x1.adjoint();
         py0 = y0 * y0.adjoint();

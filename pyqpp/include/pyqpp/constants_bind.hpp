@@ -29,13 +29,15 @@
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Constants from constants.hpp */
+/* Bindings for constants.hpp */
 inline void init_constants(py::module_& m) {
     using namespace qpp;
 
     m.attr("ee") = qpp::ee;
-    m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
+    m.attr("infty") = qpp::infty;
     m.attr("pi") = qpp::pi;
+
+    m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
 }
 
 #endif /* PYQPP_CONSTANTS_BIND_HPP_ */

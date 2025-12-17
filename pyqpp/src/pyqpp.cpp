@@ -27,8 +27,11 @@
 #include "pyqpp/pyqpp_common.hpp"
 
 #include "pyqpp/constants_bind.hpp"
+#include "pyqpp/entanglement_bind.hpp"
+#include "pyqpp/entropies_bind.hpp"
 #include "pyqpp/functions_bind.hpp"
 #include "pyqpp/instruments_bind.hpp"
+#include "pyqpp/operations_bind.hpp"
 #include "pyqpp/random_bind.hpp"
 #include "pyqpp/types_bind.hpp"
 
@@ -49,8 +52,11 @@ PYBIND11_MODULE(pyqpp, m) {
         "Python 3 wrapper for Quantum++ (https://github.com/softwareQinc/qpp)";
 
     init_constants(m);
+    init_entanglement(m);
+    init_entropies(m);
     init_functions(m);
     init_instruments(m);
+    init_operations(m);
     init_random(m);
     init_types(m);
 

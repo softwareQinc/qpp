@@ -34,6 +34,9 @@
   `${CMAKE_BUILD_DIR}`
 - Added benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
   in ["benchmarks"](https://github.com/softwareQinc/qpp/blob/main/benchmarks)
+- Bugfixes for `qpp::QFT()` and `qpp::TFQ()`
+- Finalized pyqpp, now all Quantum++ functions have corresponding bindings in
+  Python
 
 # Version 6.0 - 14 April 2025
 
@@ -114,8 +117,7 @@
   as we now use Markdown format to keep track of changes in new releases
 - Removed Eigen3, pybind11, and GoogleTest dependencies; if not detected,
   they are installed automatically as build dependencies by CMake
-- Bumped GoogleTest version to HEAD latest, as
-  [recommended by Google](https://github.com/google/googletest?tab=readme-ov-file#live-at-head)
+- Updated GoogleTest to the latest HEAD, as recommended by Google
 - Removed `-DWITH_EXAMPLES` and `-DWITH_UNIT_TESTS` CMake flags. Now both
   `examples` and `unit_tests` CMake targets are enabled.
 - Renamed ["qpp/classes/circuits/circuits.hpp"] to

@@ -34,25 +34,32 @@ inline void init_classes_states(py::module_& m) {
     using namespace qpp;
 
     auto states = m.def_submodule("states");
-    states.attr("x0") = qpp::st.x0;
-    states.attr("x1") = qpp::st.x1;
-    states.attr("y0") = qpp::st.y0;
-    states.attr("y1") = qpp::st.y1;
-    states.attr("z0") = qpp::st.z0;
-    states.attr("z1") = qpp::st.z1;
+    states.attr("x0") = qpp::cmat(qpp::st.x0);
+    states.attr("x1") = qpp::cmat(qpp::st.x1);
+    states.attr("y0") = qpp::cmat(qpp::st.y0);
+    states.attr("y1") = qpp::cmat(qpp::st.y1);
+    states.attr("z0") = qpp::cmat(qpp::st.z0);
+    states.attr("z1") = qpp::cmat(qpp::st.z1);
 
-    states.attr("b00") = qpp::st.b00;
-    states.attr("b01") = qpp::st.b01;
-    states.attr("b10") = qpp::st.b10;
-    states.attr("b11") = qpp::st.b11;
+    states.attr("px0") = qpp::st.px0;
+    states.attr("px1") = qpp::st.px1;
+    states.attr("py0") = qpp::st.py0;
+    states.attr("py1") = qpp::st.py1;
+    states.attr("pz0") = qpp::st.pz0;
+    states.attr("pz1") = qpp::st.pz1;
+
+    states.attr("b00") = qpp::cmat(qpp::st.b00);
+    states.attr("b01") = qpp::cmat(qpp::st.b01);
+    states.attr("b10") = qpp::cmat(qpp::st.b10);
+    states.attr("b11") = qpp::cmat(qpp::st.b11);
 
     states.attr("pb00") = qpp::st.pb00;
     states.attr("pb01") = qpp::st.pb01;
     states.attr("pb10") = qpp::st.pb10;
     states.attr("pb11") = qpp::st.pb11;
 
-    states.attr("GHZ") = qpp::st.GHZ;
-    states.attr("W") = qpp::st.W;
+    states.attr("GHZ") = qpp::cmat(qpp::st.GHZ);
+    states.attr("W") = qpp::cmat(qpp::st.W);
 
     states.attr("pGHZ") = qpp::st.pGHZ;
     states.attr("pW") = qpp::st.pW;

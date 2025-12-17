@@ -3536,7 +3536,7 @@ expr_t<Derived> QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
 
     std::vector<idx> subsys(n);
     std::iota(subsys.begin(), subsys.end(), 0);
-    ket result = applyQFT(rA, subsys, d, swap);
+    expr_t<Derived> result = applyQFT(rA, subsys, d, swap);
 
     return result;
 }
@@ -3588,7 +3588,7 @@ expr_t<Derived> TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2,
 
     std::vector<idx> subsys(n);
     std::iota(subsys.begin(), subsys.end(), 0);
-    ket result = applyTFQ(rA, subsys, d, swap);
+    expr_t<Derived> result = applyTFQ(rA, subsys, d, swap);
 
     return result;
 }
