@@ -260,7 +260,7 @@ does.
 
 ## Additional platform-specific instructions
 
-### macOS/OS X specific instructions
+### macOS specific instructions
 
 - We highly recommend installing [clang](https://clang.llvm.org/)
   via [Homebrew](https://brew.sh/), since the native AppleClang does not offer
