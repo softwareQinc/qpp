@@ -1,37 +1,37 @@
-[build-system]
-requires = [
-    "numpy",
-    "pybind11",
-    "pybind11-stubgen",
-    "scikit-build-core",
-    "wheel",
-]
-build-backend = "scikit_build_core.build"
-
 [project]
 name = "pyqpp"
 version = "7.0.0"
 description = "Python 3 wrapper for Quantum++"
-requires-python = ">=3.9"
 readme = "pyqpp/README.md"
+requires-python = ">=3.9"
 license = { text = "MIT" }
 dependencies = [
-    "numpy",
+  "numpy",
 ]
 
 [project.urls]
 homepage = "https://github.com/softwareqinc/qpp"
 repository = "https://github.com/softwareqinc/qpp.git"
 
+[build-system]
+requires = [
+  "numpy",
+  "pybind11",
+  "pybind11-stubgen",
+  "scikit-build-core",
+  "wheel",
+]
+build-backend = "scikit_build_core.build"
+
 [tool.scikit-build]
-cmake.define = {__INTERNAL_PYQPP_SCIKIT_BUILD__ = "ON"}
+cmake.define = { __INTERNAL_PYQPP_SCIKIT_BUILD__ = "ON" }
 build.targets = ["pyqpp"]
 install.components = ["python"]
 wheel.packages = ["pyqpp"]
 wheel.exclude = [
-    "include",
-    "src",
-    "CMakeLists.txt",
-    "README.md",
+  "include",
+  "src",
+  "CMakeLists.txt",
+  "README.md",
 ]
 wheel.expand-macos-universal-tags = true
