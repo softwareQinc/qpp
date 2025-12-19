@@ -24,6 +24,11 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/classes/qcircuit_bind.hpp>
+ * \brief Bindings for <qpp/classes/qcircuit.hpp>
+ */
+
 #ifndef PYQPP_CLASSES_QCIRCUIT_BIND_HPP_
 #define PYQPP_CLASSES_QCIRCUIT_BIND_HPP_
 
@@ -34,9 +39,8 @@
 
 namespace {
 
-class WhileContext
-{
-public:
+class WhileContext {
+  public:
     ~WhileContext() = default;
     WhileContext(WhileContext&&) = default;
 
@@ -45,11 +49,11 @@ public:
 
     py::object enter();
 
-    bool exit(std::optional<pybind11::type> const&   /* exc_type */,
+    bool exit(std::optional<pybind11::type> const& /* exc_type */,
               std::optional<pybind11::object> const& /* exc_value */,
               std::optional<pybind11::object> const& /* traceback */);
 
-private:
+  private:
     qpp::QCircuit& managed;
 
     explicit WhileContext(qpp::QCircuit& qc) : managed(qc) {}
@@ -59,8 +63,7 @@ private:
     WhileContext& operator=(WhileContext const&) = delete;
 };
 
-WhileContext WhileContext::pyCreate(qpp::QCircuit& qc, qpp::cond_pred_t pred)
-{
+WhileContext WhileContext::pyCreate(qpp::QCircuit& qc, qpp::cond_pred_t pred) {
     qc.cond_while(pred);
     return WhileContext(qc);
 }
@@ -72,13 +75,12 @@ py::object WhileContext::enter() {
 
 bool WhileContext::exit(std::optional<pybind11::type> const&,
                         std::optional<pybind11::object> const&,
-                        std::optional<pybind11::object> const&)
-{
+                        std::optional<pybind11::object> const&) {
     managed.cond_end();
     return false; // do not supress exceptions that occurred
 }
 
-} /* anonymous namespace (for context managers in Python wrapping) */
+} // namespace
 
 /* qpp::QCircuit and related free functions */
 inline void init_classes_qcircuit(py::module_& m) {
@@ -124,7 +126,7 @@ inline void init_classes_qcircuit(py::module_& m) {
     // wrap context manager
     auto pyWhileContext = py::class_<WhileContext>(m, "CondWhile");
     pyWhileContext.def("__enter__", &WhileContext::enter)
-                  .def("__exit__", &WhileContext::exit);
+        .def("__exit__", &WhileContext::exit);
 
     pyQCircuit.def("cond_while_ctx", &WhileContext::pyCreate,
                    "Adds conditional while context", py::arg("pred"));

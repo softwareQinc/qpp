@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/constants_bind.hpp>
+ * \brief Bindings for <qpp/constants.hpp>
+ */
+
 #ifndef PYQPP_CONSTANTS_BIND_HPP_
 #define PYQPP_CONSTANTS_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Bindings for constants.hpp */
 inline void init_constants(py::module_& m) {
     using namespace qpp;
 

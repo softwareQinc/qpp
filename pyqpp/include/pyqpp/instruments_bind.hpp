@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/instruments_bind.hpp>
+ * \brief Bindings for <qpp/instruments.hpp>
+ */
+
 #ifndef PYQPP_INSTRUMENTS_BIND_HPP_
 #define PYQPP_INSTRUMENTS_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Bindings for instruments.hpp */
 inline void init_instruments(py::module_& m) {
     using namespace qpp;
 

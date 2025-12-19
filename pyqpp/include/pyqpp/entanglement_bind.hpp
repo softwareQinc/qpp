@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/entanglement_bind.hpp>
+ * \brief Bindings for <qpp/entanglement.hpp>
+ */
+
 #ifndef PYQPP_ENTANGLEMENT_BIND_HPP_
 #define PYQPP_ENTANGLEMENT_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Bindings for entropies.hpp */
 inline void init_entanglement(py::module_& m) {
     using namespace qpp;
 

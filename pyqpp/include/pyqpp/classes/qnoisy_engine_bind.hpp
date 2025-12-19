@@ -24,6 +24,11 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/classes/qnoisy_engine_bind.hpp>
+ * \brief Bindings for <qpp/classes/qnoisy_engine.hpp>
+ */
+
 #ifndef PYQPP_CLASSES_QNOISY_ENGINE_BIND_HPP_
 #define PYQPP_CLASSES_QNOISY_ENGINE_BIND_HPP_
 

@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/operations_bind.hpp>
+ * \brief Bindings for <qpp/operations.hpp>
+ */
+
 #ifndef PYQPP_OPERATIONS_BIND_HPP_
 #define PYQPP_OPERATIONS_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Bindings for operations.hpp */
 inline void init_operations(py::module_& m) {
     using namespace qpp;
 

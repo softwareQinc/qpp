@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/types_bind.hpp>
+ * \brief Bindings for <qpp/types.hpp>
+ */
+
 #ifndef PYQPP_TYPES_BIND_HPP_
 #define PYQPP_TYPES_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Types from types.hpp */
 inline void init_types(py::module_& m) {
     using namespace qpp;
 

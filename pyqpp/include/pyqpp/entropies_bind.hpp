@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/entropies_bind.hpp>
+ * \brief Bindings for <qpp/entropies.hpp>
+ */
+
 #ifndef PYQPP_ENTROPIES_BIND_HPP_
 #define PYQPP_ENTROPIES_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Bindings for entropies.hpp */
 inline void init_entropies(py::module_& m) {
     using namespace qpp;
 

@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/functions_bind.hpp>
+ * \brief Bindings for <qpp/functions.hpp>
+ */
+
 #ifndef PYQPP_FUNCTIONS_BIND_HPP_
 #define PYQPP_FUNCTIONS_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Some free functions (non-exhaustive list) from functions.hpp */
 inline void init_functions(py::module_& m) {
     using namespace qpp;
 

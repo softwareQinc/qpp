@@ -24,6 +24,11 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/qasm/qasm_bind.hpp>
+ * \brief Bindings for <qpp/qasm/qasm.hpp>
+ */
+
 #ifndef PYQPP_QASM_QASM_BIND_HPP_
 #define PYQPP_QASM_QASM_BIND_HPP_
 

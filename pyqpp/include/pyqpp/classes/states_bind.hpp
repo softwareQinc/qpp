@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/classes/states_bind.hpp>
+ * \brief Bindings for <qpp/classes/states.hpp>
+ */
+
 #ifndef PYQPP_CLASSES_STATES_BIND_HPP_
 #define PYQPP_CLASSES_STATES_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* qpp::States */
 inline void init_classes_states(py::module_& m) {
     using namespace qpp;
 

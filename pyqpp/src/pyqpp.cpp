@@ -33,6 +33,7 @@
 #include "pyqpp/instruments_bind.hpp"
 #include "pyqpp/operations_bind.hpp"
 #include "pyqpp/random_bind.hpp"
+#include "pyqpp/statistics_bind.hpp"
 #include "pyqpp/types_bind.hpp"
 
 #include "pyqpp/classes/gates_bind.hpp"
@@ -58,6 +59,7 @@ PYBIND11_MODULE(pyqpp, m) {
     init_instruments(m);
     init_operations(m);
     init_random(m);
+    init_statistics(m);
     init_types(m);
 
     init_classes_gates(m);

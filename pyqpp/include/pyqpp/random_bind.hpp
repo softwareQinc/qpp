@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
+/**
+ * \file <pyqpp/random_bind.hpp>
+ * \brief Bindings for <qpp/random.hpp>
+ */
+
 #ifndef PYQPP_RANDOM_BIND_HPP_
 #define PYQPP_RANDOM_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Some free functions (non-exhaustive list) from random.hpp */
 inline void init_random(py::module_& m) {
     using namespace qpp;
 
