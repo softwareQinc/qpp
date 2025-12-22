@@ -776,6 +776,16 @@ class QCircuitBuilder final : public ast::Visitor {
 };
 
 /**
+ * \brief Internal helper to build a qpp::QCircuit from an AST program
+ */
+inline QCircuit build_qcircuit(const ast::ptr<ast::Program>& program) {
+    QCircuit qc(program->qubits(), program->bits());
+    QCircuitBuilder builder(&qc);
+    program->accept(builder);
+    return qc;
+}
+
+/**
  * \brief Reads an OpenQASM circuit from stdin and returns its qpp::QCircuit
  * representation
  *
@@ -783,13 +793,7 @@ class QCircuitBuilder final : public ast::Visitor {
  */
 inline QCircuit read(std::istream& stream) {
     ast::ptr<ast::Program> program = parser::parse_stream(stream);
-
-    std::unique_ptr<QCircuit> qc(
-        new QCircuit(program->qubits(), program->bits()));
-    QCircuitBuilder builder(qc.get());
-    program->accept(builder);
-
-    return *qc;
+    return build_qcircuit(program);
 }
 
 /**
@@ -801,13 +805,7 @@ inline QCircuit read(std::istream& stream) {
 inline QCircuit read_from_string(std::string qasm_string) {
     std::istringstream stream(qasm_string);
     ast::ptr<ast::Program> program = parser::parse_stream(stream);
-
-    std::unique_ptr<QCircuit> qc(
-        new QCircuit(program->qubits(), program->bits()));
-    QCircuitBuilder builder(qc.get());
-    program->accept(builder);
-
-    return *qc;
+    return build_qcircuit(program);
 }
 
 /**
@@ -818,15 +816,8 @@ inline QCircuit read_from_string(std::string qasm_string) {
  */
 inline QCircuit read_from_file(const std::string& fname) {
     ast::ptr<ast::Program> program = parser::parse_file(fname);
-
-    std::unique_ptr<QCircuit> qc(
-        new QCircuit(program->qubits(), program->bits()));
-    QCircuitBuilder builder(qc.get());
-    program->accept(builder);
-
-    return *qc;
+    return build_qcircuit(program);
 }
-
 } /* namespace qpp::qasm */
 
 #endif /* QPP_QASM_QASM_HPP_ */

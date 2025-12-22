@@ -30,7 +30,9 @@
 #include "pyqpp/entanglement_bind.hpp"
 #include "pyqpp/entropies_bind.hpp"
 #include "pyqpp/functions_bind.hpp"
+#include "pyqpp/input_output_bind.hpp"
 #include "pyqpp/instruments_bind.hpp"
+#include "pyqpp/number_theory_bind.hpp"
 #include "pyqpp/operations_bind.hpp"
 #include "pyqpp/random_bind.hpp"
 #include "pyqpp/statistics_bind.hpp"
@@ -56,7 +58,9 @@ PYBIND11_MODULE(pyqpp, m) {
     init_entanglement(m);
     init_entropies(m);
     init_functions(m);
+    init_input_output(m);
     init_instruments(m);
+    init_number_theory(m);
     init_operations(m);
     init_random(m);
     init_statistics(m);
