@@ -17,6 +17,11 @@ else()
   message(STATUS "pyqpp: using installed Quantum++ package")
 endif()
 
+# Check if a virtual env is active and hint that path to CMake
+if(DEFINED ENV{VIRTUAL_ENV})
+  set(Python3_EXECUTABLE "$ENV{VIRTUAL_ENV}/bin/python")
+endif()
+
 # Detect Python
 message(STATUS "Detecting Python 3...")
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)

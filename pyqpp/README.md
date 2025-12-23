@@ -1,17 +1,11 @@
 # pyqpp - Python 3 bindings for Quantum++
 
-[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) provides a
-modern Python 3 interface to the **Quantum++** C++ library. It exposes quantum
-computing primitives and circuit builders, high-performance circuit simulation
-engines, and utility functions of **Quantum++** to Python users through a clean
-and intuitive API built with [pybind11](https://github.com/pybind/pybind11).
-
 ---
 
 ## Installation instructions
 
-**pyqpp** requires the same dependencies as **Quantum++**,
-and can be installed using `pip`
+[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) shares the
+same dependencies as **Quantum++** and can be installed via `pip`
 
 ```shell
 pip install git+https://github.com/softwareQinc/qpp
@@ -21,15 +15,16 @@ pip install git+https://github.com/softwareQinc/qpp
 
 ## Overview
 
-**pyqpp** provides access to core **Quantum++** quantum circuit related
-components such as `qpp::QCircuit`, `qpp::QEngine`, `qpp::QNoisyEngine`, and
-several additional engine sub-classes. It also provides common quantum gates,
-predefined states, and basic Eigen-based operations. Additionally, it provides
-access to **Quantum++**’s classical reversible circuit functionality by
-wrapping `qpp::Bit_circuit` and `qpp::Dynamic_bitset`.
+**pyqpp** is a modern Python 3 interface to the **Quantum++** C++ library. It
+provides Python users with complete access to the full **Quantum++** API,
+including quantum computing primitives, circuit construction and manipulation
+tools, high-performance circuit simulation engines, and the full suite of
+utility functions. The interface is implemented using
+[pybind11](https://github.com/pybind/pybind11), offering a clean, intuitive,
+and high-performance Pythonic experience while preserving the power and
+efficiency of the underlying C++ implementation.
 
-Most other parts of **Quantum++** are currently not accessible from Python, but
-the bindings are easy to extend, see the
+The bindings are easy to extend; see the
 [Custom Bindings](https://github.com/softwareQinc/qpp/blob/main/pyqpp#custom-bindings)
 section for guidance.
 
