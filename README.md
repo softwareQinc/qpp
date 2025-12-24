@@ -46,7 +46,7 @@ concise
 [ASCII quick reference with MATLAB comparisons](https://libeigen.gitlab.io/eigen/docs-nightly/AsciiQuickReference.txt)
 is also available.
 
-Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
 
 ---
 
