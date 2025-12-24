@@ -11,13 +11,13 @@ int main() {
 
     std::cout << ">> Classical reversible circuits (1)\n";
 
-    Dynamic_bitset bits{4};                             // 4 classical bits
+    DynamicBitset bits{4};                             // 4 classical bits
     std::cout << ">> Initial bitset: " << bits << '\n'; // display them
 
     bits.rand(); // randomize the bits
     std::cout << ">> After randomization: " << bits << '\n'; // display them
 
-    Bit_circuit bc{bits}; // construct a bit circuit out of a bit set
+    BitCircuit bc{bits}; // construct a bit circuit out of a bit set
     std::cout << ">> Bit circuit (constructed from the above bitset):\n"
               << bc << '\n';
 

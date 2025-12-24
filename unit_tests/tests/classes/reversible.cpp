@@ -6,105 +6,105 @@ using namespace qpp;
 
 // Unit testing "qpp/classes/reversible.hpp"
 
-/// BEGIN Bit_circuit& Bit_circuit::CNOT(const std::vector<idx>& pos)
-TEST(qpp_Bit_circuit_CNOT, AllTests) {}
+/// BEGIN BitCircuit& BitCircuit::CNOT(const std::vector<idx>& pos)
+TEST(qpp_BitCircuit_CNOT, AllTests) {}
 
-/// BEGIN Bit_circuit& Bit_circuit::FRED(const std::vector<idx>& pos)
-TEST(qpp_Bit_circuit_FRED, AllTests) {}
+/// BEGIN BitCircuit& BitCircuit::FRED(const std::vector<idx>& pos)
+TEST(qpp_BitCircuit_FRED, AllTests) {}
 
-/// BEGIN idx Bit_circuit::get_gate_count(std::optional<std::string> name =
+/// BEGIN idx BitCircuit::get_gate_count(std::optional<std::string> name =
 ///       std::nullopt) const
-TEST(qpp_Bit_circuit_get_gate_count, TotalGateCount) {}
-TEST(qpp_Bit_circuit_get_gate_count, SpecificGateCount) {}
+TEST(qpp_BitCircuit_get_gate_count, TotalGateCount) {}
+TEST(qpp_BitCircuit_get_gate_count, SpecificGateCount) {}
 
-/// BEGIN idx Bit_circuit::get_gate_depth(std::optional<std::string> name =
+/// BEGIN idx BitCircuit::get_gate_depth(std::optional<std::string> name =
 ///       std::nullopt) const
-TEST(qpp_Bit_circuit_get_gate_depth, TotalGateDepth) {}
-TEST(qpp_Bit_circuit_get_gate_depth, SpecificGateDepth) {}
+TEST(qpp_BitCircuit_get_gate_depth, TotalGateDepth) {}
+TEST(qpp_BitCircuit_get_gate_depth, SpecificGateDepth) {}
 
-/// BEGIN Bit_circuit& Bit_circuit::NOT(idx pos)
-TEST(qpp_Bit_circuit_NOT, AllTests) {}
+/// BEGIN BitCircuit& BitCircuit::NOT(idx pos)
+TEST(qpp_BitCircuit_NOT, AllTests) {}
 
-/// BEGIN Bit_circuit& Bit_circuit::clear() noexcept override
-TEST(qpp_Bit_circuit_reset, AllTests) {}
+/// BEGIN BitCircuit& BitCircuit::clear() noexcept override
+TEST(qpp_BitCircuit_reset, AllTests) {}
 
-/// BEGIN Bit_circuit& Bit_circuit::SWAP(const std::vector<idx>& pos)
-TEST(qpp_Bit_circuit_SWAP, AllTests) {}
+/// BEGIN BitCircuit& BitCircuit::SWAP(const std::vector<idx>& pos)
+TEST(qpp_BitCircuit_SWAP, AllTests) {}
 
-/// BEGIN std::string Bit_circuit::to_JSON(
+/// BEGIN std::string BitCircuit::to_JSON(
 ///       bool enclosed_in_curly_brackets = true) const override
-TEST(qpp_Bit_circuit_to_JSON, AllTests) {}
+TEST(qpp_BitCircuit_to_JSON, AllTests) {}
 
-/// BEGIN std::string Bit_circuit::to_string(char zero = '0', char one = '1')
+/// BEGIN std::string BitCircuit::to_string(char zero = '0', char one = '1')
 ///       const override
-TEST(qpp_Bit_circuit_to_string, AllTests) {}
+TEST(qpp_BitCircuit_to_string, AllTests) {}
 
-/// BEGIN Bit_circuit& Bit_circuit::TOF(const std::vector<idx>& pos)
-TEST(qpp_Bit_circuit_TOF, AllTests) {}
+/// BEGIN BitCircuit& BitCircuit::TOF(const std::vector<idx>& pos)
+TEST(qpp_BitCircuit_TOF, AllTests) {}
 
-/// BEGIN Bit_circuit& Bit_circuit::X(idx pos)
-TEST(qpp_Bit_circuit_X, AllTests) {}
+/// BEGIN BitCircuit& BitCircuit::X(idx pos)
+TEST(qpp_BitCircuit_X, AllTests) {}
 
-/// BEGIN bool Dynamic_bitset::all() const noexcept
-TEST(qpp_Dynamic_bitset_all, AllTests) {}
+/// BEGIN bool DynamicBitset::all() const noexcept
+TEST(qpp_DynamicBitset_all, AllTests) {}
 
-/// BEGIN bool Dynamic_bitset::any() const noexcept
-TEST(qpp_Dynamic_bitset_any, AllTests) {}
+/// BEGIN bool DynamicBitset::any() const noexcept
+TEST(qpp_DynamicBitset_any, AllTests) {}
 
-/// BEGIN idx Dynamic_bitset::count() const noexcept
-TEST(qpp_Dynamic_bitset_count, AllTests) {}
+/// BEGIN idx DynamicBitset::count() const noexcept
+TEST(qpp_DynamicBitset_count, AllTests) {}
 
-/// BEGIN const storage_type& Dynamic_bitset::data() const
-TEST(qpp_Dynamic_bitset_data, AllTests) {}
+/// BEGIN const storage_type& DynamicBitset::data() const
+TEST(qpp_DynamicBitset_data, AllTests) {}
 
-/// BEGIN Dynamic_bitset& Dynamic_bitset::flip() noexcept
-TEST(qpp_Dynamic_bitset_flip, AllBits) {}
+/// BEGIN DynamicBitset& DynamicBitset::flip() noexcept
+TEST(qpp_DynamicBitset_flip, AllBits) {}
 
-/// BEGIN Dynamic_bitset& Dynamic_bitset::flip(idx pos)
-TEST(qpp_Dynamic_bitset_flip, SpecificBit) {}
+/// BEGIN DynamicBitset& DynamicBitset::flip(idx pos)
+TEST(qpp_DynamicBitset_flip, SpecificBit) {}
 
-/// BEGIN bool Dynamic_bitset::get(idx pos) const noexcept
-TEST(qpp_Dynamic_bitset_get, AllTests) {}
+/// BEGIN bool DynamicBitset::get(idx pos) const noexcept
+TEST(qpp_DynamicBitset_get, AllTests) {}
 
-/// BEGIN bool Dynamic_bitset::none() const noexcept
-TEST(qpp_Dynamic_bitset_none, AllTests) {}
+/// BEGIN bool DynamicBitset::none() const noexcept
+TEST(qpp_DynamicBitset_none, AllTests) {}
 
-/// BEGIN bool Dynamic_bitset::operator!=(const Dynamic_bitset& rhs) const
+/// BEGIN bool DynamicBitset::operator!=(const DynamicBitset& rhs) const
 ///       noexcept
-TEST(qpp_Dynamic_bitset_operator_noneq, AllTests) {}
+TEST(qpp_DynamicBitset_operator_noneq, AllTests) {}
 
-/// BEGIN idx Dynamic_bitset::operator-(const Dynamic_bitset& rhs) const
+/// BEGIN idx DynamicBitset::operator-(const DynamicBitset& rhs) const
 ///       noexcept
-TEST(qpp_Dynamic_bitset_operator_minus, AllTests) {}
+TEST(qpp_DynamicBitset_operator_minus, AllTests) {}
 
-/// BEGIN bool Dynamic_bitset::operator==(const Dynamic_bitset& rhs) const
+/// BEGIN bool DynamicBitset::operator==(const DynamicBitset& rhs) const
 ///       noexcept
-TEST(qpp_Dynamic_bitset_operator_eq, AllTests) {}
+TEST(qpp_DynamicBitset_operator_eq, AllTests) {}
 
-/// BEGIN Dynamic_bitset& Dynamic_bitset::rand(realT p = 0.5)
-TEST(qpp_Dynamic_bitset_rand_default, AllBits) {}
+/// BEGIN DynamicBitset& DynamicBitset::rand(realT p = 0.5)
+TEST(qpp_DynamicBitset_rand_default, AllBits) {}
 
-/// BEGIN Dynamic_bitset& Dynamic_bitset::rand(idx pos, realT p = 0.5)
-TEST(qpp_Dynamic_bitset_rand, SpecificBit) {}
+/// BEGIN DynamicBitset& DynamicBitset::rand(idx pos, realT p = 0.5)
+TEST(qpp_DynamicBitset_rand, SpecificBit) {}
 
-/// BEGIN virtual Dynamic_bitset& Dynamic_bitset::reset() noexcept
-TEST(qpp_Dynamic_bitset_reset, AllBits) {}
+/// BEGIN virtual DynamicBitset& DynamicBitset::reset() noexcept
+TEST(qpp_DynamicBitset_reset, AllBits) {}
 
-/// BEGIN Dynamic_bitset& Dynamic_bitset::reset(idx pos)
-TEST(qpp_Dynamic_bitset_reset, SpecificBit) {}
+/// BEGIN DynamicBitset& DynamicBitset::reset(idx pos)
+TEST(qpp_DynamicBitset_reset, SpecificBit) {}
 
-/// BEGIN Dynamic_bitset& Dynamic_bitset::set() noexcept
-TEST(qpp_Dynamic_bitset_set, AllBits) {}
+/// BEGIN DynamicBitset& DynamicBitset::set() noexcept
+TEST(qpp_DynamicBitset_set, AllBits) {}
 
-/// BEGIN Dynamic_bitset& Dynamic_bitset::set(idx pos, bool value = true)
-TEST(qpp_Dynamic_bitset_set, SpecificBit) {}
+/// BEGIN DynamicBitset& DynamicBitset::set(idx pos, bool value = true)
+TEST(qpp_DynamicBitset_set, SpecificBit) {}
 
-/// BEGIN idx Dynamic_bitset::size() const noexcept
-TEST(qpp_Dynamic_bitset_size, AllTests) {}
+/// BEGIN idx DynamicBitset::size() const noexcept
+TEST(qpp_DynamicBitset_size, AllTests) {}
 
-/// BEGIN idx Dynamic_bitset::storage_size() const noexcept
-TEST(qpp_Dynamic_bitset_storage_size, AllTests) {}
+/// BEGIN idx DynamicBitset::storage_size() const noexcept
+TEST(qpp_DynamicBitset_storage_size, AllTests) {}
 
-/// BEGIN virtual std::string Dynamic_bitset::to_string(char zero = '0',
+/// BEGIN virtual std::string DynamicBitset::to_string(char zero = '0',
 ///       char one = '1') const
-TEST(qpp_Dynamic_bitset_to_string, AllTests) {}
+TEST(qpp_DynamicBitset_to_string, AllTests) {}

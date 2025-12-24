@@ -3,10 +3,14 @@
 - Significant performance improvements (10x to 1000x) for qubit state
   manipulation and qubit circuit execution through extensive optimizations of
   `qpp::apply()` and `qpp::applyCTRL()`
+- **pyqpp** is now feature complete, providing Python users with
+  complete access to the full **Quantum++** API
 - Switched back to MAJOR.MINOR.PATCH release versioning system:
   - MAJOR -- introduces significant changes that break backward compatibility
   - MINOR -- may include limited or minor compatibility breaks
   - PATCH -- fully backward compatible fixes and improvements
+- Renamed the `qpp::Bit_circuit` to `qpp::BitCircuit` and
+  `qpp::Dynamic_bitset` to `qpp::DynamicBitset` in ["qpp/classes/reversible.hpp"]
 - Renamed the class `internal::QCircuitConditionalStep` to
   `internal::QCircuitRuntimeStep`, and the corresponding
   ["qpp/internal/classes/qcircuit_conditional_step.hpp"] to
@@ -23,7 +27,7 @@
   ["qpp/types.hpp"] to
   ["qpp/internal/classes/qcircuit_runtime_step.hpp"]; alias to an internal type.
 - Added
-  [["examples/circuits/runtime_set_dits.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)]
+  ["examples/circuits/runtime_set_dits.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)
 - Conditional statements are now indented with tabs when displaying
   qpp::QCircuit instances
 - Bumped Eigen3 minimum required version to 5.0.0
@@ -408,7 +412,7 @@
     significantly faster than its `qpp::measure()`-type
     functions.
 - Added copy/deepcopy support for all **pyqpp** classes:
-  - `QCircuit`, `QEngine`, `QNoisyEngine<>`, `Dynamic_Bitset`, `Bit_circuit`
+  - `QCircuit`, `QEngine`, `QNoisyEngine<>`, `Dynamic_Bitset`, `BitCircuit`
 - Added `context` to exception throwing, so now it is obvious which argument
   triggers an exception
 - `EIGEN3_INSTALL_DIR` can now be set as an OS environment variable (in
@@ -422,8 +426,8 @@
   custom attributes). Warnings are explicitly disabled for
   Clang/GCC/MSVC/Intel. If your compiler emits a warning, please disable it
   with the corresponding `#pragma` directive at the beginning of ["qpp.h"]
-- Added from-string constructor for `qpp::Bit_circuit` and
-  `qpp::Dynamic_bitset`
+- Added from-string constructor for `qpp::BitCircuit` and
+  `qpp::DynamicBitset`
 - When building with CMake, the new `QPP_VERSION_NUM` (numeric) and
   `QPP_VERSION_STR` (string) preprocessor definitions are automatically
   injected in the code
@@ -458,9 +462,9 @@
     measurements
   - `is_measurement_dit()` - whether a classical dit participated in a
     measurement
-- Changed the ordering of bits in `qpp::Bit_circuit::display()`, so that the
+- Changed the ordering of bits in `qpp::BitCircuit::display()`, so that the
   zero-th bit (top bit) is now the leftmost bit in the textual
-  representation. That is, `qpp::Bit_circuit` assumes big-endian order.
+  representation. That is, `qpp::BitCircuit` assumes big-endian order.
 - Bugfixes
 
 # Version 3.0 - 5 October 2021
@@ -677,7 +681,7 @@
   [https://github.com/softwareQinc/qpp/issues/70](https://github.com/softwareQinc/qpp/issues/70)
 - Minor API change in the `QEngine::execute()`, `reset()`, `reset_stats()`, now
   they all return a reference to `*this`
-- Added `Bit_circuit::display()` and `Bit_circuit::to_JSON()` in
+- Added `BitCircuit::display()` and `BitCircuit::to_JSON()` in
   ["reversible.h"]
 - Added the option for shifted control gates in:
   - `qpp::applyCTRL()`
@@ -759,7 +763,7 @@
   - `add_circuit()` - adds a quantum circuit description to the current one
   - `replicate()` - replicates (repeats) the current quantum circuit
     description
-- Implemented `qpp::Bit_circuit::`:
+- Implemented `qpp::BitCircuit::`:
   - `get_gate_count()` - classical reversible circuit gate count
   - `get_depth()` - classical reversible circuit gate depth
 
@@ -832,8 +836,8 @@
 
 - Added full support for reversible classical circuits, added
   ["classes/reversible.h"] header file that contains the following classes:
-  - `qpp::Dynamic_bitset` - bitsets of variable length
-  - `qpp::Bit_circuit` - classical reversible circuits
+  - `qpp::DynamicBitset` - bitsets of variable length
+  - `qpp::BitCircuit` - classical reversible circuits
 - Added ["examples/reversible.cpp"] example
 - The path to MATLAB can now be specified in the CMake command line (not hard
   coded anymore), such as
@@ -857,8 +861,8 @@
 - Added support for AppVeyor continuous integration
 - Added support for reversible classical circuits, via the following classes in
   ["experimental.h"]:
-  - `qpp::experimental::Dynamic_bitset` - bitsets of variable length
-  - `qpp::experimental::Bit_circuit` - classical reversible circuits
+  - `qpp::experimental::DynamicBitset` - bitsets of variable length
+  - `qpp::experimental::BitCircuit` - classical reversible circuits
 - Added `qpp::ket operator "" \_q()` helper in ["functions.h"] for constructing
   multi-partite qubit kets
 - Added comprehensive Wiki instead of the quick starting guide

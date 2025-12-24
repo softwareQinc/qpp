@@ -34,131 +34,131 @@
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* qpp::Dynamic_bitset and qpp::Bit_circuit */
+/* qpp::DynamicBitset and qpp::BitCircuit */
 inline void init_classes_reversible(py::module_& m) {
     using namespace qpp;
 
-    /* qpp::Dynamic_bitset */
-    auto pyDynamic_bitset = py::class_<Dynamic_bitset>(m, "Dynamic_bitset");
+    /* qpp::DynamicBitset */
+    auto pyDynamicBitset = py::class_<DynamicBitset>(m, "DynamicBitset");
 
-    pyDynamic_bitset.def(py::init<idx>(), py::arg("n"));
-    pyDynamic_bitset.def(py::init<std::string, char, char>(), py::arg("str"),
+    pyDynamicBitset.def(py::init<idx>(), py::arg("n"));
+    pyDynamicBitset.def(py::init<std::string, char, char>(), py::arg("str"),
                          py::arg("zero") = '0', py::arg("one") = '1');
 
-    pyDynamic_bitset.def("all", &Dynamic_bitset::all,
+    pyDynamicBitset.def("all", &DynamicBitset::all,
                          "True if all of the bits are set");
-    pyDynamic_bitset.def("any", &Dynamic_bitset::any,
+    pyDynamicBitset.def("any", &DynamicBitset::any,
                          "True if any of the bits is set");
-    pyDynamic_bitset.def(
-        "count", &Dynamic_bitset::count,
+    pyDynamicBitset.def(
+        "count", &DynamicBitset::count,
         "Number of bits set to one in the bitset (Hamming weight)");
-    pyDynamic_bitset.def("flip", py::overload_cast<>(&Dynamic_bitset::flip),
+    pyDynamicBitset.def("flip", py::overload_cast<>(&DynamicBitset::flip),
                          "Flips all bits");
-    pyDynamic_bitset.def("flip", py::overload_cast<idx>(&Dynamic_bitset::flip),
+    pyDynamicBitset.def("flip", py::overload_cast<idx>(&DynamicBitset::flip),
                          "Flips the bit at position pos", py::arg("pos"));
-    pyDynamic_bitset.def("get", &Dynamic_bitset::get,
+    pyDynamicBitset.def("get", &DynamicBitset::get,
                          "The value of the bit at position pos",
                          py::arg("pos"));
-    pyDynamic_bitset.def("none", &Dynamic_bitset::none,
+    pyDynamicBitset.def("none", &DynamicBitset::none,
                          "True if none of the bits are set");
-    pyDynamic_bitset.def(
-        "rand", py::overload_cast<realT>(&Dynamic_bitset::rand),
+    pyDynamicBitset.def(
+        "rand", py::overload_cast<realT>(&DynamicBitset::rand),
         "Sets all bits according to a Bernoulli(p) distribution",
         py::arg("p") = 0.5);
-    pyDynamic_bitset.def(
-        "rand", py::overload_cast<idx, realT>(&Dynamic_bitset::rand),
+    pyDynamicBitset.def(
+        "rand", py::overload_cast<idx, realT>(&DynamicBitset::rand),
         "Sets the bit at position pos according to a Bernoulli(p) "
         "distribution",
         py::arg("pos"), py::arg("p") = 0.5);
-    pyDynamic_bitset.def("reset", py::overload_cast<>(&Dynamic_bitset::reset),
+    pyDynamicBitset.def("reset", py::overload_cast<>(&DynamicBitset::reset),
                          "Sets all bits to false");
-    pyDynamic_bitset.def(
-        "reset", py::overload_cast<idx>(&Dynamic_bitset::reset),
+    pyDynamicBitset.def(
+        "reset", py::overload_cast<idx>(&DynamicBitset::reset),
         "Sets the bit at position pos to false", py::arg("pos"));
-    pyDynamic_bitset.def("set", py::overload_cast<>(&Dynamic_bitset::set),
+    pyDynamicBitset.def("set", py::overload_cast<>(&DynamicBitset::set),
                          "Sets all bits to true");
-    pyDynamic_bitset.def("set",
-                         py::overload_cast<idx, bool>(&Dynamic_bitset::set),
+    pyDynamicBitset.def("set",
+                         py::overload_cast<idx, bool>(&DynamicBitset::set),
                          "Sets the bit at position pos", py::arg("pos"),
                          py::arg("value") = true);
-    pyDynamic_bitset.def("size", &Dynamic_bitset::size,
+    pyDynamicBitset.def("size", &DynamicBitset::size,
                          "Number of bits stored in the bitset");
-    pyDynamic_bitset.def(
-        "storage_size", &Dynamic_bitset::storage_size,
+    pyDynamicBitset.def(
+        "storage_size", &DynamicBitset::storage_size,
         "Size of the underlying storage space (in units of "
-        "qpp::Dynamic_bitset::value_type, unsigned int by default)");
-    pyDynamic_bitset.def("to_string", &Dynamic_bitset::to_string,
+        "qpp::DynamicBitset::value_type, unsigned int by default)");
+    pyDynamicBitset.def("to_string", &DynamicBitset::to_string,
                          "String representation", py::arg("zero") = '0',
                          py::arg("one") = '1');
 
-    pyDynamic_bitset.def(py::self == py::self);
-    pyDynamic_bitset.def(py::self != py::self);
-    pyDynamic_bitset.def("__copy__", [](const Dynamic_bitset& self) {
-        return Dynamic_bitset(self);
+    pyDynamicBitset.def(py::self == py::self);
+    pyDynamicBitset.def(py::self != py::self);
+    pyDynamicBitset.def("__copy__", [](const DynamicBitset& self) {
+        return DynamicBitset(self);
     });
-    pyDynamic_bitset.def("__deepcopy__",
-                         [](const Dynamic_bitset& self, py::dict) {
-                             return Dynamic_bitset(self);
+    pyDynamicBitset.def("__deepcopy__",
+                         [](const DynamicBitset& self, py::dict) {
+                             return DynamicBitset(self);
                          });
-    pyDynamic_bitset.def("__repr__", [](const Dynamic_bitset& self) {
+    pyDynamicBitset.def("__repr__", [](const DynamicBitset& self) {
         std::ostringstream oss;
         oss << self;
         return oss.str();
     });
-    pyDynamic_bitset.def(
-        "__sub__", &Dynamic_bitset::operator-,
+    pyDynamicBitset.def(
+        "__sub__", &DynamicBitset::operator-,
         "Number of places the two bitsets differ (Hamming distance)");
 
-    /* qpp::Bit_circuit */
-    auto pyBit_circuit =
-        py::class_<Bit_circuit, Dynamic_bitset>(m, "Bit_circuit");
+    /* qpp::BitCircuit */
+    auto pyBitCircuit =
+        py::class_<BitCircuit, DynamicBitset>(m, "BitCircuit");
 
-    pyBit_circuit.def(py::init<idx>(), py::arg("n"));
-    pyBit_circuit.def(py::init<std::string, char, char>(), py::arg("str"),
+    pyBitCircuit.def(py::init<idx>(), py::arg("n"));
+    pyBitCircuit.def(py::init<std::string, char, char>(), py::arg("str"),
                       py::arg("zero") = '0', py::arg("one") = '1');
-    pyBit_circuit.def(py::init<const Dynamic_bitset&>(),
+    pyBitCircuit.def(py::init<const DynamicBitset&>(),
                       py::keep_alive<1, 2>());
 
-    pyBit_circuit.def("CNOT", &Bit_circuit::CNOT, "Controlled-NOT gate",
+    pyBitCircuit.def("CNOT", &BitCircuit::CNOT, "Controlled-NOT gate",
                       py::arg("ctrl"), py::arg("target"));
-    pyBit_circuit.def("FRED", &Bit_circuit::FRED,
+    pyBitCircuit.def("FRED", &BitCircuit::FRED,
                       " Fredkin gate (Controlled-SWAP)", py::arg("i"),
                       py::arg("j"), py::arg("k"));
-    pyBit_circuit.def(
-        "get_gate_count", &Bit_circuit::get_gate_count,
+    pyBitCircuit.def(
+        "get_gate_count", &BitCircuit::get_gate_count,
         "(Total) Bit circuit gate count. Possible names are NOT (X), "
         "CNOT, SWAP, TOF, FRED",
         py::arg("name") = std::nullopt);
-    pyBit_circuit.def(
-        "get_gate_depth", &Bit_circuit::get_gate_depth,
+    pyBitCircuit.def(
+        "get_gate_depth", &BitCircuit::get_gate_depth,
         "(Total) Bit circuit gate depth. Possible names are NOT (X), "
         "CNOT, SWAP, TOF, FRED",
         py::arg("name") = std::nullopt);
-    pyBit_circuit.def("NOT", &Bit_circuit::NOT, "NOT gate (bit flip)",
+    pyBitCircuit.def("NOT", &BitCircuit::NOT, "NOT gate (bit flip)",
                       py::arg("i"));
-    pyBit_circuit.def("reset", &Bit_circuit::reset,
+    pyBitCircuit.def("reset", &BitCircuit::reset,
                       "Resets the circuit to all-zero, clears all gates");
-    pyBit_circuit.def("SWAP", &Bit_circuit::SWAP, "Swap gate", py::arg("i"),
+    pyBitCircuit.def("SWAP", &BitCircuit::SWAP, "Swap gate", py::arg("i"),
                       py::arg("j"));
-    pyBit_circuit.def("to_JSON", &Bit_circuit::to_JSON,
+    pyBitCircuit.def("to_JSON", &BitCircuit::to_JSON,
                       "Displays the bit circuit in JSON format",
                       py::arg("enclosed_in_curly_brackets") = true);
-    pyBit_circuit.def("to_string", &Bit_circuit::to_string,
+    pyBitCircuit.def("to_string", &BitCircuit::to_string,
                       "String representation", py::arg("zero") = '0',
                       py::arg("one") = '1');
-    pyBit_circuit.def("TOF", &Bit_circuit::TOF, "Toffoli gate", py::arg("i"),
+    pyBitCircuit.def("TOF", &BitCircuit::TOF, "Toffoli gate", py::arg("i"),
                       py::arg("j"), py::arg("k"));
-    pyBit_circuit.def("X", &Bit_circuit::X, "NOT gate (bit flip)",
+    pyBitCircuit.def("X", &BitCircuit::X, "NOT gate (bit flip)",
                       py::arg("i"));
 
-    pyBit_circuit.def(py::self == py::self);
-    pyBit_circuit.def(py::self != py::self);
-    pyBit_circuit.def(
-        "__copy__", [](const Bit_circuit& self) { return Bit_circuit(self); });
-    pyBit_circuit.def("__deepcopy__", [](const Bit_circuit& self, py::dict) {
-        return Bit_circuit(self);
+    pyBitCircuit.def(py::self == py::self);
+    pyBitCircuit.def(py::self != py::self);
+    pyBitCircuit.def(
+        "__copy__", [](const BitCircuit& self) { return BitCircuit(self); });
+    pyBitCircuit.def("__deepcopy__", [](const BitCircuit& self, py::dict) {
+        return BitCircuit(self);
     });
-    pyBit_circuit.def("__repr__", [](const Bit_circuit& self) {
+    pyBitCircuit.def("__repr__", [](const BitCircuit& self) {
         std::ostringstream oss;
         oss << self;
         return oss.str();
