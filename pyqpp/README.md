@@ -89,7 +89,7 @@ of an OpenQASM 2.0 file.
 
 ---
 
-## Custom Bindings
+## Custom bindings
 
 To wrap a custom function, use `pybind11::module::def`, such as
 
@@ -120,7 +120,7 @@ PYBIND11_MODULE(pyqpp, m) {
 
 ---
 
-## Template methods
+## Template functions
 
 We cannot wrap templated functions; instead, we must explicitly instantiate
 them. For example, consider the `qpp::norm()` function
