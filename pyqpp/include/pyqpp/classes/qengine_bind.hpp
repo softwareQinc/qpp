@@ -77,8 +77,10 @@ void declare_QEngineT(py::module& m) {
         "Vector of qudit indexes that were not measured destructively");
     pyQEngineT.def("get_probs", &QEngineT<T>::get_probs,
                    "Underlying measurement outcome probabilities");
-    pyQEngineT.def("get_state", &QEngineT<T>::get_state,
-                   "Underlying quantum state");
+    pyQEngineT.def(
+        "get_state",
+        [](const QEngineT<T>& self) -> qpp::cmat { return self.get_state(); },
+        "Underlying quantum state");
     pyQEngineT.def(
         "get_stats",
         [](const QEngineT<T>& qe) {
