@@ -97,6 +97,10 @@ void declare_QEngineT(py::module& m) {
             return result;
         },
         "Measurement statistics for multiple runs");
+    pyQEngineT.def(
+        "get_stats_to_JSON",
+        [](const QEngineT<T>& qe) { return qe.get_stats().to_JSON(); },
+        "Measurement statistics for multiple runs, JSON format");
     pyQEngineT.def("post_select_ok", &QEngineT<T>::post_select_ok,
                    "True if post-selection was successful (or absent), false "
                    "otherwise");

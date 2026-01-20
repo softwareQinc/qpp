@@ -39,6 +39,8 @@
 - Added benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
   in ["benchmarks"](https://github.com/softwareQinc/qpp/blob/main/benchmarks)
 - Bugfixes for `qpp::QFT()` and `qpp::TFQ()`
+- Added `pyqpp.QEngine.get_stats_to_JSON()` to display the measurement
+  statistics in JSON format from `pyqpp`
 - Finalized pyqpp, now all Quantum++ functions have corresponding bindings in
   Python
 
