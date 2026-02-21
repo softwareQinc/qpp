@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/classes/exception.hpp
- * \brief Exceptions
+ * @file qpp/classes/exception.hpp
+ * @brief Exceptions
  */
 
 #ifndef QPP_CLASSES_EXCEPTION_HPP_
@@ -40,12 +40,12 @@
 namespace qpp {
 /**
  * \namespace qpp::exception
- * \brief Quantum++ exception hierarchy namespace
+ * @brief Quantum++ exception hierarchy namespace
  */
 namespace exception {
 /**
- * \class qpp::exception::Exception
- * \brief Base class for generating Quantum++ custom exceptions
+ * @class qpp::exception::Exception
+ * @brief Base class for generating Quantum++ custom exceptions
  *
  * Derive from this class if more exceptions are needed, making sure to override
  * qpp::exception::Exception::description() in the derived class and to inherit
@@ -53,7 +53,7 @@ namespace exception {
  * newly defined exception classes in the namespace qpp::exception.
  *
  * Example:
- * \code
+ * @code
  * namespace qpp
  * {
  * namespace exception
@@ -81,19 +81,19 @@ class Exception : public std::exception {
 
   public:
     /**
-     * \brief Constructs an exception
+     * @brief Constructs an exception
      *
-     * \param where Text representing where the exception occurred
-     * \param context Optional context-dependent message
+     * @param where Text representing where the exception occurred
+     * @param context Optional context-dependent message
      */
     explicit Exception(std::string where,
                        std::optional<std::string> context = std::nullopt)
         : where_{std::move(where)}, msg_{}, context_{std::move(context)} {}
 
     /**
-     * \brief Overrides std::exception::what()
+     * @brief Overrides std::exception::what()
      *
-     * \return Exception description
+     * @return Exception description
      */
     const char* what() const noexcept override {
         msg_.clear();
@@ -108,9 +108,9 @@ class Exception : public std::exception {
     }
 
     /**
-     * \brief Exception description
+     * @brief Exception description
      *
-     * \return Exception description
+     * @return Exception description
      */
     virtual std::string description() const = 0;
 }; /* class Exception */
@@ -120,8 +120,8 @@ inline std::string Exception::description() const {
 }
 
 /**
- * \class qpp::exception::Unknown
- * \brief Unknown exception
+ * @class qpp::exception::Unknown
+ * @brief Unknown exception
  *
  * Thrown when no other exception is suitable (not recommended, it is better to
  * define another suitable exception type)
@@ -134,8 +134,8 @@ class Unknown : public Exception {
 };
 
 /**
- * \class qpp::exception::ZeroSize
- * \brief Object has zero size exception
+ * @class qpp::exception::ZeroSize
+ * @brief Object has zero size exception
  *
  * Zero sized object, e.g., empty Eigen::Matrix or std::vector<> with no
  * elements
@@ -148,8 +148,8 @@ class ZeroSize : public Exception {
 };
 
 /**
- * \class qpp::exception::MatrixNotSquare
- * \brief Matrix is not square exception
+ * @class qpp::exception::MatrixNotSquare
+ * @brief Matrix is not square exception
  *
  * Eigen::Matrix is not a square matrix
  */
@@ -161,8 +161,8 @@ class MatrixNotSquare : public Exception {
 };
 
 /**
- * \class qpp::exception::MatrixNotCvector
- * \brief Matrix is not a column vector exception
+ * @class qpp::exception::MatrixNotCvector
+ * @brief Matrix is not a column vector exception
  *
  * Eigen::Matrix is not a column vector
  */
@@ -176,8 +176,8 @@ class MatrixNotCvector : public Exception {
 };
 
 /**
- * \class qpp::exception::MatrixNotRvector
- * \brief Matrix is not a row vector exception
+ * @class qpp::exception::MatrixNotRvector
+ * @brief Matrix is not a row vector exception
  *
  * Eigen::Matrix is not a row vector
  */
@@ -191,8 +191,8 @@ class MatrixNotRvector : public Exception {
 };
 
 /**
- * \class qpp::exception::MatrixNotVector
- * \brief Matrix is not a vector exception
+ * @class qpp::exception::MatrixNotVector
+ * @brief Matrix is not a vector exception
  *
  * Eigen::Matrix is not a row or column vector
  */
@@ -206,8 +206,8 @@ class MatrixNotVector : public Exception {
 };
 
 /**
- * \class qpp::exception::MatrixNotSquareNorCvector
- * \brief Matrix is not square nor column vector exception
+ * @class qpp::exception::MatrixNotSquareNorCvector
+ * @brief Matrix is not square nor column vector exception
  *
  * Eigen::Matrix is not a square matrix nor a column vector
  */
@@ -221,8 +221,8 @@ class MatrixNotSquareNorCvector : public Exception {
 };
 
 /**
- * \class qpp::exception::MatrixNotSquareNorRvector
- * \brief Matrix is not square nor row vector exception
+ * @class qpp::exception::MatrixNotSquareNorRvector
+ * @brief Matrix is not square nor row vector exception
  *
  * Eigen::Matrix is not a square matrix nor a row vector
  */
@@ -236,8 +236,8 @@ class MatrixNotSquareNorRvector : public Exception {
 };
 
 /**
- * \class qpp::exception::MatrixNotSquareNorVector
- * \brief Matrix is not square nor vector exception
+ * @class qpp::exception::MatrixNotSquareNorVector
+ * @brief Matrix is not square nor vector exception
  *
  * Eigen::Matrix is not a square matrix nor a row/column vector
  */
@@ -251,8 +251,8 @@ class MatrixNotSquareNorVector : public Exception {
 };
 
 /**
- * \class qpp::exception::MatrixMismatchSubsys
- * \brief Matrix mismatch subsystems exception
+ * @class qpp::exception::MatrixMismatchSubsys
+ * @brief Matrix mismatch subsystems exception
  *
  * Matrix size mismatch subsystem sizes (e.g., in qpp::apply())
  */
@@ -266,8 +266,8 @@ class MatrixMismatchSubsys : public Exception {
 };
 
 /**
- * \class qpp::exception::DimsInvalid
- * \brief Invalid dimension(s) exception
+ * @class qpp::exception::DimsInvalid
+ * @brief Invalid dimension(s) exception
  *
  * std::vector<idx> of dimensions has zero size or contains zeros, or any other
  * related exception where some dimension(s) is(are) invalid
@@ -280,8 +280,8 @@ class DimsInvalid : public Exception {
 };
 
 /**
- * \class qpp::exception::DimsNotEqual
- * \brief Dimensions not equal exception
+ * @class qpp::exception::DimsNotEqual
+ * @brief Dimensions not equal exception
  *
  * Local/global dimensions are not equal
  */
@@ -293,8 +293,8 @@ class DimsNotEqual : public Exception {
 };
 
 /**
- * \class qpp::exception::DimsMismatchMatrix
- * \brief Dimension(s) mismatch matrix size exception
+ * @class qpp::exception::DimsMismatchMatrix
+ * @brief Dimension(s) mismatch matrix size exception
  *
  * Product of the elements of std::vector<idx> of dimensions is not equal to
  * the number of rows of the Eigen::Matrix (assumed to be a square matrix)
@@ -309,8 +309,8 @@ class DimsMismatchMatrix : public Exception {
 };
 
 /**
- * \class qpp::exception::DimsMismatchCvector
- * \brief Dimension(s) mismatch column vector size exception
+ * @class qpp::exception::DimsMismatchCvector
+ * @brief Dimension(s) mismatch column vector size exception
  *
  * Product of the elements of std::vector<idx> of dimensions is not equal to
  * the number of elements of the Eigen::Matrix (assumed to be a column vector)
@@ -325,8 +325,8 @@ class DimsMismatchCvector : public Exception {
 };
 
 /**
- * \class qpp::exception::DimsMismatchRvector
- * \brief Dimension(s) mismatch row vector size exception
+ * @class qpp::exception::DimsMismatchRvector
+ * @brief Dimension(s) mismatch row vector size exception
  *
  * Product of the elements of std::vector<idx> of dimensions is not equal to
  * the number of elements of the Eigen::Matrix (assumed to be a row vector)
@@ -341,8 +341,8 @@ class DimsMismatchRvector : public Exception {
 };
 
 /**
- * \class qpp::exception::DimsMismatchVector
- * \brief Dimension(s) mismatch vector size exception
+ * @class qpp::exception::DimsMismatchVector
+ * @brief Dimension(s) mismatch vector size exception
  *
  * Product of the elements of std::vector<idx> of dimensions is not equal to
  * the number of elements of the Eigen::Matrix (assumed to be a row/column
@@ -358,8 +358,8 @@ class DimsMismatchVector : public Exception {
 };
 
 /**
- * \class qpp::exception::SubsysMismatchDims
- * \brief Subsystems mismatch dimensions exception
+ * @class qpp::exception::SubsysMismatchDims
+ * @brief Subsystems mismatch dimensions exception
  *
  * std::vector<idx> of subsystem labels has duplicates, or has entries that are
  * larger than the size of the std::vector<idx> of dimensions
@@ -374,8 +374,8 @@ class SubsysMismatchDims : public Exception {
 };
 
 /**
- * \class qpp::exception::PermInvalid
- * \brief Invalid permutation exception
+ * @class qpp::exception::PermInvalid
+ * @brief Invalid permutation exception
  *
  * std::vector<idx> does note represent a valid permutation
  */
@@ -387,8 +387,8 @@ class PermInvalid : public Exception {
 };
 
 /**
- * \class qpp::exception::PermMismatchDims
- * \brief Permutation mismatch dimensions exception
+ * @class qpp::exception::PermMismatchDims
+ * @brief Permutation mismatch dimensions exception
  *
  * Size of the std::vector<idx> representing the permutation is different from
  * the size of the std::vector<idx> of dimensions
@@ -403,8 +403,8 @@ class PermMismatchDims : public Exception {
 };
 
 /**
- * \class qpp::exception::NotQubitMatrix
- * \brief Matrix is not 2 x 2 exception
+ * @class qpp::exception::NotQubitMatrix
+ * @brief Matrix is not 2 x 2 exception
  *
  * Eigen::Matrix is not 2 x 2
  */
@@ -416,8 +416,8 @@ class NotQubitMatrix : public Exception {
 };
 
 /**
- * \class qpp::exception::NotQubitCvector
- * \brief Column vector is not 2 x 1 exception
+ * @class qpp::exception::NotQubitCvector
+ * @brief Column vector is not 2 x 1 exception
  *
  * Eigen::Matrix is not 2 x 1
  */
@@ -431,8 +431,8 @@ class NotQubitCvector : public Exception {
 };
 
 /**
- * \class qpp::exception::NotQubitRvector
- * \brief Row vector is not 1 x 2 exception
+ * @class qpp::exception::NotQubitRvector
+ * @brief Row vector is not 1 x 2 exception
  *
  * Eigen::Matrix is not 1 x 2
  */
@@ -446,8 +446,8 @@ class NotQubitRvector : public Exception {
 };
 
 /**
- * \class qpp::exception::NotQubitVector
- * \brief Vector is not 2 x 1 nor 1 x 2 exception
+ * @class qpp::exception::NotQubitVector
+ * @brief Vector is not 2 x 1 nor 1 x 2 exception
  *
  * Eigen::Matrix is not 2 x 1 nor 1 x 2
  */
@@ -461,8 +461,8 @@ class NotQubitVector : public Exception {
 };
 
 /**
- * \class qpp::exception::NotQubitSubsys
- * \brief Subsystems are not qubits exception
+ * @class qpp::exception::NotQubitSubsys
+ * @brief Subsystems are not qubits exception
  *
  * Subsystems are not 2-dimensional (qubits)
  */
@@ -476,8 +476,8 @@ class NotQubitSubsys : public Exception {
 };
 
 /**
- * \class qpp::exception::NotBipartite
- * \brief Not bi-partite exception
+ * @class qpp::exception::NotBipartite
+ * @brief Not bi-partite exception
  *
  * std::vector<idx> of dimensions has size different from 2
  */
@@ -489,8 +489,8 @@ class NotBipartite : public Exception {
 };
 
 /**
- * \class qpp::exception::NoCodeword
- * \brief Codeword does not exist exception
+ * @class qpp::exception::NoCodeword
+ * @brief Codeword does not exist exception
  *
  * Codeword does not exist, thrown when calling qpp::Codes::codeword() with an
  * invalid index
@@ -505,8 +505,8 @@ class NoCodeword : public Exception {
 };
 
 /**
- * \class qpp::exception::OutOfRange
- * \brief Argument out of range exception
+ * @class qpp::exception::OutOfRange
+ * @brief Argument out of range exception
  *
  * Argument out of range
  */
@@ -518,8 +518,8 @@ class OutOfRange : public Exception {
 };
 
 /**
- * \class qpp::exception::NotFound
- * \brief Element not found
+ * @class qpp::exception::NotFound
+ * @brief Element not found
  *
  * Element not found
  */
@@ -531,8 +531,8 @@ class NotFound : public Exception {
 };
 
 /**
- * \class qpp::exception::TypeMismatch
- * \brief Type mismatch exception
+ * @class qpp::exception::TypeMismatch
+ * @brief Type mismatch exception
  *
  * Scalar types do not match
  */
@@ -544,8 +544,8 @@ class TypeMismatch : public Exception {
 };
 
 /**
- * \class qpp::exception::SizeMismatch
- * \brief Size mismatch exception
+ * @class qpp::exception::SizeMismatch
+ * @brief Size mismatch exception
  *
  * Sizes do not match
  */
@@ -557,8 +557,8 @@ class SizeMismatch : public Exception {
 };
 
 /**
- * \class qpp::exception::UndefinedType
- * \brief Not defined for this type exception
+ * @class qpp::exception::UndefinedType
+ * @brief Not defined for this type exception
  *
  * Templated specialization is not defined for this type
  */
@@ -572,8 +572,8 @@ class UndefinedType : public Exception {
 };
 
 /**
- * \class qpp::exception::QuditAlreadyMeasured
- * \brief Qudit was already measured exception
+ * @class qpp::exception::QuditAlreadyMeasured
+ * @brief Qudit was already measured exception
  *
  * The qudit was already measured (destructively) and cannot be measured again
  */
@@ -587,8 +587,8 @@ class QuditAlreadyMeasured : public Exception {
 };
 
 /**
- * \class qpp::exception::Duplicates
- * \brief System (e.g., std::vector<>) contains duplicates exception
+ * @class qpp::exception::Duplicates
+ * @brief System (e.g., std::vector<>) contains duplicates exception
  *
  * System (vector/matrix etc.) contains duplicate elements
  *
@@ -603,8 +603,8 @@ class Duplicates : public Exception {
 };
 
 /**
- * \class qpp::exception::CustomException
- * \brief Custom exception
+ * @class qpp::exception::CustomException
+ * @brief Custom exception
  *
  * Custom exception, the user must provide a custom message
  */
@@ -616,8 +616,8 @@ class CustomException : public Exception {
 };
 
 /**
- * \class qpp::exception::NotImplemented
- * \brief Code not yet implemented
+ * @class qpp::exception::NotImplemented
+ * @brief Code not yet implemented
  */
 class NotImplemented : public Exception {
   public:
@@ -627,8 +627,8 @@ class NotImplemented : public Exception {
 };
 
 /**
- * \class qpp::exception::InvalidIterator
- * \brief Invalid iterator
+ * @class qpp::exception::InvalidIterator
+ * @brief Invalid iterator
  */
 class InvalidIterator : public Exception {
   public:
@@ -638,8 +638,8 @@ class InvalidIterator : public Exception {
 };
 
 /**
- * \class qpp::exception::InvalidConditional
- * \brief Invalid conditional
+ * @class qpp::exception::InvalidConditional
+ * @brief Invalid conditional
  */
 class InvalidConditional : public Exception {
   public:
@@ -649,8 +649,8 @@ class InvalidConditional : public Exception {
 };
 
 /**
- * \class qpp::exception::CircuitContainsConditionals
- * \brief Circuit contains conditional statements
+ * @class qpp::exception::CircuitContainsConditionals
+ * @brief Circuit contains conditional statements
  */
 class CircuitContainsConditionals : public Exception {
   public:

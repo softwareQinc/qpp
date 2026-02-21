@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/internal/classes/qcircuit_nop_step.hpp
- * \brief qpp::internal::QCircuitNOPStep
+ * @file qpp/internal/classes/qcircuit_nop_step.hpp
+ * @brief qpp::internal::QCircuitNOPStep
  */
 
 #ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_NOP_STEP_HPP_
@@ -37,20 +37,20 @@
 namespace qpp {
 namespace internal {
 /**
- * \brief No-op
+ * @brief No-op
  */
 struct QCircuitNOPStep : IDisplay {
     /**
-     * \brief Equality operator
+     * @brief Equality operator
      *
-     * \return True (always)
+     * @return True (always)
      */
     bool operator==(const QCircuitNOPStep&) const noexcept { return true; }
 
     /**
-     * \brief Inequality operator
+     * @brief Inequality operator
      *
-     * \return False (always)
+     * @return False (always)
      */
     bool operator!=(const QCircuitNOPStep& rhs) const noexcept {
         return !(*this == rhs);
@@ -58,13 +58,13 @@ struct QCircuitNOPStep : IDisplay {
 
   private:
     /**
-     * \brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the
      * \a qpp::internal::QCircuitNOPStep instance
      *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
+     * @param os Output stream passed by reference
+     * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         os << "NOP";

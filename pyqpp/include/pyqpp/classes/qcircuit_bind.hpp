@@ -25,8 +25,8 @@
  */
 
 /**
- * \file <pyqpp/classes/qcircuit_bind.hpp>
- * \brief Bindings for <qpp/classes/qcircuit.hpp>
+ * @file <pyqpp/classes/qcircuit_bind.hpp>
+ * @brief Bindings for <qpp/classes/qcircuit.hpp>
  */
 
 #ifndef PYQPP_CLASSES_QCIRCUIT_BIND_HPP_

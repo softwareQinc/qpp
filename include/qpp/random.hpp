@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/random.hpp
- * \brief Randomness-related functions
+ * @file qpp/random.hpp
+ * @brief Randomness-related functions
  */
 
 #ifndef QPP_RANDOM_HPP_
@@ -42,13 +42,13 @@
 
 namespace qpp {
 /**
- * \brief Generates a random number in the interval [a, b] for integer types,
+ * @brief Generates a random number in the interval [a, b] for integer types,
  * and in the interval [a, b) for floating-point types
  *
- * \tparam T Arithmetic type
- * \param a Beginning of the interval
- * \param b End of the interval
- * \return Random number uniformly distributed in the interval [a, b)/[a, b]
+ * @tparam T Arithmetic type
+ * @param a Beginning of the interval
+ * @param b End of the interval
+ * @return Random number uniformly distributed in the interval [a, b)/[a, b]
  */
 template <typename T,
           typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
@@ -73,17 +73,17 @@ T rand(T a, T b) {
 }
 
 /**
- * \brief Generates a random real or complex matrix with entries uniformly
+ * @brief Generates a random real or complex matrix with entries uniformly
  * distributed in the interval [a, b)
  *
- * \note The template parameter cannot be automatically deduced and must be
+ * @note The template parameter cannot be automatically deduced and must be
  * explicitly provided. It is only specialized for qpp::rmat and qpp::cmat.
  *
- * \note If complex, then both real and imaginary parts are uniformly
+ * @note If complex, then both real and imaginary parts are uniformly
  * distributed in [a, b)
  *
  * Example:
- * \code
+ * @code
  * // generates a 3 x 3 random Eigen::MatrixX over qpp::realT,
  * // with entries uniformly distributed in [-1,1)
  * rmat mat = rand<rmat>(3, 3, -1, 1);
@@ -93,12 +93,12 @@ T rand(T a, T b) {
  * cmat mat = rand<cmat>(3, 3, -1, 1);
  * \endcode
  *
- * \tparam Derived Matrix type, must be either qpp::rmat or qpp::cmat
- * \param rows Number of rows of the randomly generated matrix
- * \param cols Number of columns of the randomly generated matrix
- * \param a Beginning of the interval, belongs to it
- * \param b End of the interval, does not belong to it
- * \return Random real (qpp::rmat specialization) or complex
+ * @tparam Derived Matrix type, must be either qpp::rmat or qpp::cmat
+ * @param rows Number of rows of the randomly generated matrix
+ * @param cols Number of columns of the randomly generated matrix
+ * @param a Beginning of the interval, belongs to it
+ * @param b End of the interval, does not belong to it
+ * @return Random real (qpp::rmat specialization) or complex
  * (qpp::cmat specialization) matrix
  */
 template <typename Derived,
@@ -142,13 +142,13 @@ inline cmat rand(idx rows, idx cols, realT a, realT b) {
 /// \endcond
 
 /**
- * \brief Generates a random real number normally distributed in
+ * @brief Generates a random real number normally distributed in
  * N(mean, sigma)
  *
- * \tparam T Arithmetic type
- * \param mean Mean
- * \param sigma Standard deviation
- * \return Random real number normally distributed in N(mean, sigma)
+ * @tparam T Arithmetic type
+ * @param mean Mean
+ * @param sigma Standard deviation
+ * @return Random real number normally distributed in N(mean, sigma)
  */
 template <typename T,
           typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
@@ -160,17 +160,17 @@ T randn(T mean = 0, T sigma = 1) {
 }
 
 /**
- * \brief Generates a random real or complex matrix with entries normally
+ * @brief Generates a random real or complex matrix with entries normally
  * distributed in N(mean, sigma).
  *
- * \note The template parameter cannot be automatically deduced and must be
+ * @note The template parameter cannot be automatically deduced and must be
  * explicitly provided. It is only specialized for qpp::rmat and qpp::cmat.
  *
- * \note If complex, then both real and imaginary parts are normally distributed
+ * @note If complex, then both real and imaginary parts are normally distributed
  * in N(mean, sigma)
  *
  * Example:
- * \code
+ * @code
  * // generates a 3 x 3 random Eigen::MatrixX over qpp::realT,
  * // with entries normally distributed in N(0,2)
  * rmat mat = randn<rmat>(3, 3, 0, 2);
@@ -180,12 +180,12 @@ T randn(T mean = 0, T sigma = 1) {
  * cmat mat = randn<cmat>(3, 3, 0, 2);
  * \endcode
  *
- * \tparam Derived Matrix type, must be either qpp::rmat or qpp::cmat
- * \param rows Number of rows of the randomly generated matrix
- * \param cols Number of columns of the randomly generated matrix
- * \param mean Mean
- * \param sigma Standard deviation
- * \return Random real (qpp::rmat specialization) or complex
+ * @tparam Derived Matrix type, must be either qpp::rmat or qpp::cmat
+ * @param rows Number of rows of the randomly generated matrix
+ * @param cols Number of columns of the randomly generated matrix
+ * @param mean Mean
+ * @param sigma Standard deviation
+ * @return Random real (qpp::rmat specialization) or complex
  * (qpp::cmat specialization) matrix
  */
 template <typename Derived,
@@ -227,12 +227,12 @@ inline cmat randn(idx rows, idx cols, realT mean, realT sigma) {
 /// \endcond
 
 /**
- * \brief Generates a random index (idx) uniformly distributed in the interval
+ * @brief Generates a random index (idx) uniformly distributed in the interval
  * [a, b]
  *
- * \param a Beginning of the interval, belongs to it
- * \param b End of the interval, belongs to it
- * \return Random index (idx) uniformly distributed in the interval [a, b]
+ * @param a Beginning of the interval, belongs to it
+ * @param b End of the interval, belongs to it
+ * @return Random index (idx) uniformly distributed in the interval [a, b]
  */
 inline idx randidx(idx a = std::numeric_limits<idx>::min(),
                    idx b = std::numeric_limits<idx>::max()) {
@@ -249,10 +249,10 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
 }
 
 /**
- * \brief Generates a random unitary matrix
+ * @brief Generates a random unitary matrix
  *
- * \param D Dimension of the Hilbert space
- * \return Random unitary
+ * @param D Dimension of the Hilbert space
+ * @return Random unitary
  */
 inline cmat randU(idx D = 2)
 // ~3 times slower than Toby Cubitt's MATLAB corresponding routine,
@@ -283,11 +283,11 @@ inline cmat randU(idx D = 2)
 }
 
 /**
- * \brief Generates a random isometry matrix
+ * @brief Generates a random isometry matrix
  *
- * \param Din Size of the input Hilbert space
- * \param Dout Size of the output Hilbert space
- * \return Random isometry matrix
+ * @param Din Size of the input Hilbert space
+ * @param Dout Size of the output Hilbert space
+ * @return Random isometry matrix
  */
 inline cmat randV(idx Din, idx Dout) {
     // EXCEPTION CHECKS
@@ -300,19 +300,19 @@ inline cmat randV(idx Din, idx Dout) {
 }
 
 /**
- * \brief Generates a set of random Kraus operators from an input space of
+ * @brief Generates a set of random Kraus operators from an input space of
  * dimension \a Din to an output space of dimension \a Dout
  *
- * \note The set of Kraus operators satisfies the closure condition
+ * @note The set of Kraus operators satisfies the closure condition
  * \f$\sum_i K_i^\dagger K_i = I\f$. The Kraus operators can have their range
  * different from their domain (i.e., they can be rectangular matrices). The
  * dimensions \a Din, \a Dout and the number of Kraus operators \a N must be
  * chosen so that \f$D_{out}N/D_{in}\f$ is a positive integer.
  *
- * \param N Number of Kraus operators
- * \param Din Dimension of the input Hilbert space
- * \param Dout Dimension of the output Hilbert space
- * \return Set of \a N Kraus operators satisfying the closure condition
+ * @param N Number of Kraus operators
+ * @param Din Dimension of the input Hilbert space
+ * @param Dout Dimension of the output Hilbert space
+ * @return Set of \a N Kraus operators satisfying the closure condition
  */
 [[qpp::parallel]] inline std::vector<cmat> randkraus(idx N, idx Din, idx Dout) {
     // EXCEPTION CHECKS
@@ -352,26 +352,26 @@ inline cmat randV(idx Din, idx Dout) {
 }
 
 /**
- * \brief Generates a set of random Kraus operators from an input space of
+ * @brief Generates a set of random Kraus operators from an input space of
  * dimension \a Din to an output space of dimension \a Dout
  *
- * \note The set of Kraus operators satisfies the closure condition
+ * @note The set of Kraus operators satisfies the closure condition
  * \f$\sum_i K_i^\dagger K_i = I\f$. The Kraus operators are assumed to have
  * their range equal to their domain (i.e., they are square matrices).
  *
- * \param N Number of Kraus operators
- * \param D Dimension of the Kraus input and output Hilbert space
- * \return Set of \a N Kraus operators satisfying the closure condition
+ * @param N Number of Kraus operators
+ * @param D Dimension of the Kraus input and output Hilbert space
+ * @return Set of \a N Kraus operators satisfying the closure condition
  */
 inline std::vector<cmat> randkraus(idx N, idx D = 2) {
     return randkraus(N, D, D);
 }
 
 /**
- * \brief Generates a random Hermitian matrix
+ * @brief Generates a random Hermitian matrix
  *
- * \param D Dimension of the Hilbert space
- * \return Random Hermitian matrix
+ * @param D Dimension of the Hilbert space
+ * @return Random Hermitian matrix
  */
 inline cmat randH(idx D = 2) {
     // EXCEPTION CHECKS
@@ -387,10 +387,10 @@ inline cmat randH(idx D = 2) {
 }
 
 /**
- * \brief Generates a random normalized ket (pure state vector)
+ * @brief Generates a random normalized ket (pure state vector)
  *
- * \param D Dimension of the Hilbert space
- * \return Random normalized ket
+ * @param D Dimension of the Hilbert space
+ * @return Random normalized ket
  */
 inline ket randket(idx D = 2) {
     // EXCEPTION CHECKS
@@ -412,10 +412,10 @@ inline ket randket(idx D = 2) {
 }
 
 /**
- * \brief Generates a random density matrix
+ * @brief Generates a random density matrix
  *
- * \param D Dimension of the Hilbert space
- * \return Random density matrix
+ * @param D Dimension of the Hilbert space
+ * @return Random density matrix
  */
 inline cmat randrho(idx D = 2) {
     // EXCEPTION CHECKS
@@ -431,13 +431,13 @@ inline cmat randrho(idx D = 2) {
 }
 
 /**
- * \brief Generates a random uniformly distributed permutation
+ * @brief Generates a random uniformly distributed permutation
  *
  * Uses the **Knuth (Fisher–Yates) shuffle** algorithm (as implemented by
  * `std::shuffle`), ensuring that all permutations are equally probable
  *
- * \param N Size of the permutation
- * \return A random permutation of the integers [0, 1, ..., N - 1]
+ * @param N Size of the permutation
+ * @return A random permutation of the integers [0, 1, ..., N - 1]
  */
 inline std::vector<idx> randperm(idx N) {
     // EXCEPTION CHECKS
@@ -459,11 +459,11 @@ inline std::vector<idx> randperm(idx N) {
 }
 
 /**
- * \brief Generates a random probability vector uniformly distributed over the
+ * @brief Generates a random probability vector uniformly distributed over the
  * probability simplex
  *
- * \param N Size of the probability vector
- * \return Random probability vector
+ * @param N Size of the probability vector
+ * @return Random probability vector
  */
 inline std::vector<realT> randprob(idx N) {
     // EXCEPTION CHECKS
@@ -491,11 +491,11 @@ inline std::vector<realT> randprob(idx N) {
 }
 
 /**
- *\brief Generates a random boolean drawn from a Bernoulli-\f$p\f$ distribution
- *\note Outputs always false for \a p == 0, and always true for \a p == 1
+ *@brief Generates a random boolean drawn from a Bernoulli-\f$p\f$ distribution
+ *@note Outputs always false for \a p == 0, and always true for \a p == 1
  *
- * \param p Probability bias (0.5 by default)
- * \return Boolean drawn from a Bernoulli-\f$p\f$ distribution
+ * @param p Probability bias (0.5 by default)
+ * @return Boolean drawn from a Bernoulli-\f$p\f$ distribution
  */
 inline bool bernoulli(realT p = 0.5) {
     std::bernoulli_distribution bd(p);

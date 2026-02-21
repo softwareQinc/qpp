@@ -25,8 +25,8 @@
  */
 
 /**
- * \file <pyqpp/classes/reversible_bind.hpp>
- * \brief Bindings for <qpp/classes/reversible.hpp>
+ * @file <pyqpp/classes/reversible_bind.hpp>
+ * @brief Bindings for <qpp/classes/reversible.hpp>
  */
 
 #ifndef PYQPP_CLASSES_REVERSIBLE_BIND_HPP_

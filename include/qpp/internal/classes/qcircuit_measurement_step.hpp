@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/internal/classes/qcircuit_measurement_step.hpp
- * \brief qpp::internal::QCircuitMeasurementStep
+ * @file qpp/internal/classes/qcircuit_measurement_step.hpp
+ * @brief qpp::internal::QCircuitMeasurementStep
  */
 
 #ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_MEASUREMENT_STEP_HPP_
@@ -39,11 +39,11 @@
 namespace qpp {
 namespace internal {
 /**
- * \brief One step consisting only of measurements in the circuit
+ * @brief One step consisting only of measurements in the circuit
  */
 struct QCircuitMeasurementStep : IDisplay {
     /**
-     * \brief Type of measurement being executed in a measurement step
+     * @brief Type of measurement being executed in a measurement step
      */
     enum class Type {
         NONE, ///< represents no measurement
@@ -114,13 +114,13 @@ struct QCircuitMeasurementStep : IDisplay {
     };
 
     /**
-     * \brief Extraction operator overload for
+     * @brief Extraction operator overload for
      * qpp::internal::QCircuitMeasurementStep::Type enum class
      *
-     * \param os Output stream passed by reference
-     * \param measure_type qpp::internal::QCircuitMeasurementStep::Type enum
+     * @param os Output stream passed by reference
+     * @param measure_type qpp::internal::QCircuitMeasurementStep::Type enum
      * class
-     * \return Reference to the output stream
+     * @return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
                                     const Type& measure_type) {
@@ -203,20 +203,20 @@ struct QCircuitMeasurementStep : IDisplay {
     std::optional<std::string> name_{}; ///< custom name of the measurement(s)
 
     /**
-     * \brief Default constructor
+     * @brief Default constructor
      */
     QCircuitMeasurementStep() = default;
 
     /**
-     * \brief Constructs a measurement step instance
+     * @brief Constructs a measurement step instance
      *
-     * \param measurement_type Measurement type
-     * \param mats_hash Vector of hashes of the measurement matrix/matrices
-     * \param target Target qudit indexes
-     * \param c_reg Classical register where the value of the measurement is
+     * @param measurement_type Measurement type
+     * @param mats_hash Vector of hashes of the measurement matrix/matrices
+     * @param target Target qudit indexes
+     * @param c_reg Classical register where the value of the measurement is
      * stored
-     * \param name Optional gate name
-     * \param ps_vals Optional post-selection values
+     * @param name Optional gate name
+     * @param ps_vals Optional post-selection values
      */
     explicit QCircuitMeasurementStep(
         Type measurement_type, std::vector<std::size_t> mats_hash,
@@ -228,12 +228,12 @@ struct QCircuitMeasurementStep : IDisplay {
           ps_vals_{std::move(ps_vals)}, name_{std::move(name)} {}
 
     /**
-     * \brief Equality operator
-     * \note Ignores measurement names
+     * @brief Equality operator
+     * @note Ignores measurement names
      *
-     * \param rhs qpp::internal::QCircuitMeasurementStep against which the
+     * @param rhs qpp::internal::QCircuitMeasurementStep against which the
      * equality is being tested
-     * \return True if the qpp::internal::QCircuitMeasurementStep(s) are equal,
+     * @return True if the qpp::internal::QCircuitMeasurementStep(s) are equal,
      * false otherwise
      */
     bool operator==(const QCircuitMeasurementStep& rhs) const noexcept {
@@ -244,12 +244,12 @@ struct QCircuitMeasurementStep : IDisplay {
     }
 
     /**
-     * \brief Inequality operator
-     * \note Ignores measurement names
+     * @brief Inequality operator
+     * @note Ignores measurement names
      *
-     * \param rhs qpp::internal::QCircuitMeasurementStep against which the
+     * @param rhs qpp::internal::QCircuitMeasurementStep against which the
      * inequality is being tested
-     * \return True if the qpp::internal::QCircuitMeasurementStep(s) are not
+     * @return True if the qpp::internal::QCircuitMeasurementStep(s) are not
      * equal, false otherwise
      */
     bool operator!=(const QCircuitMeasurementStep& rhs) const noexcept {
@@ -258,13 +258,13 @@ struct QCircuitMeasurementStep : IDisplay {
 
   private:
     /**
-     * \brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the
      * \a qpp::internal::QCircuitMeasurementStep instance
      *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
+     * @param os Output stream passed by reference
+     * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         os << measurement_type_ << ", ";

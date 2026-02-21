@@ -25,8 +25,8 @@
  */
 
 /**
- * \file <pyqpp/entanglement_bind.hpp>
- * \brief Bindings for <qpp/entanglement.hpp>
+ * @file <pyqpp/entanglement_bind.hpp>
+ * @brief Bindings for <qpp/entanglement.hpp>
  */
 
 #ifndef PYQPP_ENTANGLEMENT_BIND_HPP_

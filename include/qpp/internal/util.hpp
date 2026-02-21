@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/internal/util.hpp
- * \brief Internal utility functions
+ * @file qpp/internal/util.hpp
+ * @brief Internal utility functions
  */
 
 #ifndef QPP_INTERNAL_UTIL_HPP_
@@ -50,7 +50,7 @@
 namespace qpp {
 /**
  * \namespace qpp::internal
- * \brief Internal functions, do not use them directly or modify them
+ * @brief Internal functions, do not use them directly or modify them
  */
 namespace internal {
 // integer index to multi-index, use C-style array for speed

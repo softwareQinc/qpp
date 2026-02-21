@@ -25,8 +25,8 @@
  */
 
 /**
- * \file <pyqpp/types_bind.hpp>
- * \brief Bindings for <qpp/types.hpp>
+ * @file <pyqpp/types_bind.hpp>
+ * @brief Bindings for <qpp/types.hpp>
  */
 
 #ifndef PYQPP_TYPES_BIND_HPP_

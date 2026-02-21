@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/classes/idisplay.hpp
- * \brief Textual representation interface
+ * @file qpp/classes/idisplay.hpp
+ * @brief Textual representation interface
  */
 
 #ifndef QPP_CLASSES_IDISPLAY_HPP_
@@ -44,8 +44,8 @@
 
 namespace qpp {
 /**
- * \class qpp::IDisplay
- * \brief Abstract class (interface) that mandates the definition of
+ * @class qpp::IDisplay
+ * @brief Abstract class (interface) that mandates the definition of
  * virtual std::ostream& display(std::ostream& os) const
  *
  * This class defines
@@ -55,7 +55,7 @@ namespace qpp {
  */
 class IDisplay {
     /**
-     * \brief Must be overridden by all derived classes
+     * @brief Must be overridden by all derived classes
      *
      * The actual stream extraction processing is performed by the overridden
      * member function in the derived class. This function is automatically
@@ -66,12 +66,12 @@ class IDisplay {
 
   public:
     /**
-     * \brief Default virtual destructor
+     * @brief Default virtual destructor
      */
     virtual ~IDisplay() = default;
 
     /**
-     * \brief Overloads the extraction operator
+     * @brief Overloads the extraction operator
      *
      * Delegates the work to the virtual function qpp::IDisplay::display()
      */

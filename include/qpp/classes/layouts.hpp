@@ -25,9 +25,9 @@
  */
 
 /**
- * \file qpp/classes/layouts.hpp
- * \see qpp::ILayout
- * \brief Various qudit placement layouts, all must implement the interface
+ * @file qpp/classes/layouts.hpp
+ * @see qpp::ILayout
+ * @brief Various qudit placement layouts, all must implement the interface
  * \a qpp::ILayout
  */
 
@@ -45,57 +45,57 @@
 namespace qpp {
 
 /**
- * \class qpp::ILayout
- * \brief Mandatory interface for qudit placement layouts
+ * @class qpp::ILayout
+ * @brief Mandatory interface for qudit placement layouts
  *
- * \note A layout is a bijection (surjection when there are periodic boundary
+ * @note A layout is a bijection (surjection when there are periodic boundary
  * conditions) between the set of indexes and layout coordinates
  */
 class ILayout {
   public:
     /**
-     * \brief Computes the index of the point represented by \a xs in the
+     * @brief Computes the index of the point represented by \a xs in the
      * layout coordinate system (bijection)
      *
-     * \param xs Vector of coordinates in the layout coordinate system
-     * \return Index of the point represented by \a xs in the layout coordinate
+     * @param xs Vector of coordinates in the layout coordinate system
+     * @return Index of the point represented by \a xs in the layout coordinate
      * system
      */
     virtual idx operator()(const std::vector<idx>& xs) const = 0;
 
     /**
-     * \brief Converts index to coordinates (bijection)
+     * @brief Converts index to coordinates (bijection)
      *
-     * \param i Index
-     * \return Coordinates of the point with index \a i
+     * @param i Index
+     * @return Coordinates of the point with index \a i
      */
     virtual std::vector<idx> to_coordinates(idx i) const = 0;
 
     /**
-     * \brief Layout coordinate system dimensions
+     * @brief Layout coordinate system dimensions
      *
-     * \return Layout coordinate system dimensions
+     * @return Layout coordinate system dimensions
      */
     virtual std::vector<idx> get_dims() const = 0;
 
     /**
-     * \brief Default virtual destructor
+     * @brief Default virtual destructor
      */
     virtual ~ILayout() = default;
 }; /* class ILayout */
 
 /**
- * \class qpp::Lattice
- * \brief N-dimensional orthogonal lattice coordinate system
- * \see qpp::PeriodicBoundaryLattice
+ * @class qpp::Lattice
+ * @brief N-dimensional orthogonal lattice coordinate system
+ * @see qpp::PeriodicBoundaryLattice
  */
 class Lattice : public ILayout {
   protected:
     std::vector<idx> dims_; ///< lattice dimensions
   public:
     /**
-     * \brief Constructor
-     * \param dims Vector of lattice dimensions
+     * @brief Constructor
+     * @param dims Vector of lattice dimensions
      */
     explicit Lattice(const std::vector<idx>& dims) : dims_{dims} {
         // EXCEPTION CHECKS
@@ -106,21 +106,21 @@ class Lattice : public ILayout {
     }
 
     /**
-     * \brief Variadic constructor
+     * @brief Variadic constructor
      *
-     * \tparam Ts Variadic type list
-     * \param ds Lattice dimensions
+     * @tparam Ts Variadic type list
+     * @param ds Lattice dimensions
      */
     template <typename... Ts>
     explicit Lattice(Ts... ds)
         : Lattice(std::vector<idx>{static_cast<idx>(ds)...}) {}
 
     /**
-     * \brief Computes the index of the point represented by \a xs in the
+     * @brief Computes the index of the point represented by \a xs in the
      * lattice coordinate system
      *
-     * \param xs Vector of coordinates in the lattice coordinate system
-     * \return Index of the point represented by \a xs in the lattice coordinate
+     * @param xs Vector of coordinates in the lattice coordinate system
+     * @return Index of the point represented by \a xs in the lattice coordinate
      * system
      */
     idx operator()(const std::vector<idx>& xs) const override {
@@ -139,12 +139,12 @@ class Lattice : public ILayout {
     }
 
     /**
-     * \brief Computes the index of the point represented by \a xs in the
+     * @brief Computes the index of the point represented by \a xs in the
      * lattice coordinate system
 
-     * \tparam Ts Variadic type list
-     * \param xs Coordinates in the lattice coordinate system
-     * \return Index of the point represented by \a xs in the lattice coordinate
+     * @tparam Ts Variadic type list
+     * @param xs Coordinates in the lattice coordinate system
+     * @return Index of the point represented by \a xs in the lattice coordinate
      * system
      */
     template <typename... Ts>
@@ -153,10 +153,10 @@ class Lattice : public ILayout {
     }
 
     /**
-     * \brief Converts index to lattice coordinates
+     * @brief Converts index to lattice coordinates
      *
-     * \param i Index
-     * \return Lattice coordinates of the point with index \a i
+     * @param i Index
+     * @return Lattice coordinates of the point with index \a i
      */
     std::vector<idx> to_coordinates(idx i) const override {
         // EXCEPTION CHECKS
@@ -172,18 +172,18 @@ class Lattice : public ILayout {
     }
 
     /**
-     * \brief Lattice dimensions
+     * @brief Lattice dimensions
      *
-     * \return Lattice dimensions
+     * @return Lattice dimensions
      */
     std::vector<idx> get_dims() const override { return dims_; }
 }; /* class Lattice */
 
 /**
- * \class qpp::PeriodicBoundaryLattice
- * \brief N-dimensional orthogonal lattice coordinate system with periodic
+ * @class qpp::PeriodicBoundaryLattice
+ * @brief N-dimensional orthogonal lattice coordinate system with periodic
  * boundary conditions
- * \see qpp::Lattice
+ * @see qpp::Lattice
  */
 class PeriodicBoundaryLattice : public Lattice {
   public:
@@ -191,11 +191,11 @@ class PeriodicBoundaryLattice : public Lattice {
     using Lattice::operator();
 
     /**
-     * \brief Computes the index of the point represented by \a xs in the
+     * @brief Computes the index of the point represented by \a xs in the
      * lattice coordinate system
      *
-     * \param xs Vector of coordinates in the lattice coordinate system
-     * \return Index of the point represented by \a xs in the lattice coordinate
+     * @param xs Vector of coordinates in the lattice coordinate system
+     * @return Index of the point represented by \a xs in the lattice coordinate
      * system
      */
     idx operator()(const std::vector<idx>& xs) const override {

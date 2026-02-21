@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/internal/classes/qengine_statistics.hpp
- * \brief Quantum engine statistics
+ * @file qpp/internal/classes/qengine_statistics.hpp
+ * @brief Quantum engine statistics
  */
 
 #ifndef QPP_INTERNAL_CLASSES_QENGINE_STATISTICS_HPP_
@@ -45,34 +45,34 @@
 namespace qpp {
 namespace internal {
 /**
- * \class qpp::internal::QEngineStatistics
- * \brief Sampling/measurement statistics
+ * @class qpp::internal::QEngineStatistics
+ * @brief Sampling/measurement statistics
  */
 class QEngineStatistics : public IDisplay, public IJSON {
     /**
-     * \brief Measurement/sampling statistics
+     * @brief Measurement/sampling statistics
      */
     using stats_t_ = std::map<std::vector<idx>, idx>;
     mutable stats_t_ stats_data_{}; ///< statistics data
 
   public:
     /**
-     * \brief Default constructor
+     * @brief Default constructor
      */
     QEngineStatistics() = default;
 
     /**
-     * \brief Constructor
+     * @brief Constructor
      *
-     * \param stats Instance of qpp::QEngine::Statistics
+     * @param stats Instance of qpp::QEngine::Statistics
      */
     explicit QEngineStatistics(stats_t_ stats)
         : stats_data_{std::move(stats)} {}
 
     /**
-     * \brief Number of samples
+     * @brief Number of samples
      *
-     * \return Number of samples
+     * @return Number of samples
      */
     idx get_num_reps() const {
         idx result = 0;
@@ -83,27 +83,27 @@ class QEngineStatistics : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Number of distinct outcomes
+     * @brief Number of distinct outcomes
      *
-     * \return Number of distinct outcomes
+     * @return Number of distinct outcomes
      */
     idx get_num_outcomes() const { return stats_data_.size(); }
 
     /**
-     * \brief Raw data structure representing the statistics
+     * @brief Raw data structure representing the statistics
      *
-     * \return Raw data structure representing the statistics
+     * @return Raw data structure representing the statistics
      */
     stats_t_& data() const& { return stats_data_; }
 
     /**
-     * \brief qpp::IJSON::to_JSON() override
+     * @brief qpp::IJSON::to_JSON() override
      *
      * Displays the statistics in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in
+     * @param enclosed_in_curly_brackets If true, encloses the result in
      * curly brackets
-     * \return String containing the JSON representation of the statistics
+     * @return String containing the JSON representation of the statistics
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
         std::string result;
@@ -140,13 +140,13 @@ class QEngineStatistics : public IDisplay, public IJSON {
 
   private:
     /**
-     * \brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the
      * statistics
      *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
+     * @param os Output stream passed by reference
+     * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         os << "[Statistics]\n";

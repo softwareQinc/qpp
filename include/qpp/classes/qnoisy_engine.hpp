@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/classes/qnoisy_engine.hpp
- * \brief Noisy quantum engines
+ * @file qpp/classes/qnoisy_engine.hpp
+ * @brief Noisy quantum engines
  */
 
 #ifndef QPP_CLASSES_ENGINES_HPP_
@@ -44,16 +44,16 @@
 
 namespace qpp {
 /**
- * \class qpp::QNoisyEngineT
- * \brief Noisy quantum circuit engine, executes qpp::QCircuit
- * \see qpp::QEngineT, qpp::NoiseBase, qpp::QCircuit
+ * @class qpp::QNoisyEngineT
+ * @brief Noisy quantum circuit engine, executes qpp::QCircuit
+ * @see qpp::QEngineT, qpp::NoiseBase, qpp::QCircuit
  *
  * Assumes an uncorrelated noise model that is applied to each non-measured
  * qubit before every non-measurement step in the logical circuit. To add
  * noise before a measurement, insert a no-op via qpp::QCircuit::nop().
  *
- * \tparam T Engine's state underlying type, qpp::ket or qpp::cmat
- * \tparam NoiseModel Quantum noise model, should be derived from
+ * @tparam T Engine's state underlying type, qpp::ket or qpp::cmat
+ * @tparam NoiseModel Quantum noise model, should be derived from
  * qpp::NoiseBase
  */
 template <typename T, typename NoiseModel>
@@ -63,11 +63,11 @@ class QNoisyEngineT : public QEngineT<T> {
   public:
     using QBaseEngine<T, QCircuit>::execute;
     /**
-     * \brief Constructs a noisy quantum engine out of a quantum circuit
+     * @brief Constructs a noisy quantum engine out of a quantum circuit
      * description
      *
-     * \param qc Quantum circuit description
-     * \param noise Quantum noise model
+     * @param qc Quantum circuit description
+     * @param noise Quantum noise model
      */
     explicit QNoisyEngineT(const QCircuit& qc, const NoiseModel& noise)
         : QEngineT<T>{qc}, noise_{noise}, noise_results_(qc.get_step_count()) {
@@ -82,24 +82,24 @@ class QNoisyEngineT : public QEngineT<T> {
 
     // traits
     /**
-     * \brief qpp::IQEngineTraits::traits_get_name() override
+     * @brief qpp::IQEngineTraits::traits_get_name() override
      */
     std::string traits_get_name() const override { return "QNoisyEngineT"; }
 
     /**
-     * \brief qpp::IQEngineTraits::traits_is_noisy() override
+     * @brief qpp::IQEngineTraits::traits_is_noisy() override
      */
     bool traits_is_noisy() const override { return true; }
     // end traits
 
     /**
-     * \brief Executes one step in the quantum circuit description
+     * @brief Executes one step in the quantum circuit description
      *
-     * \note Override only this member function in every derived class to
+     * @note Override only this member function in every derived class to
      * achieve the desired behaviour
      *
-     * \param it Iterator pointing to the step to be executed
-     * \return Reference to the current instance
+     * @param it Iterator pointing to the step to be executed
+     * @return Reference to the current instance
      */
     QNoisyEngineT&
     execute(typename QCircuitTraits<QCircuit>::iterator_type& it) override {
@@ -121,10 +121,10 @@ class QNoisyEngineT : public QEngineT<T> {
     }
 
     /**
-     * \brief Executes the entire quantum circuit description
+     * @brief Executes the entire quantum circuit description
      *
-     * \param reps Number of repetitions
-     * \return Reference to the current instance
+     * @param reps Number of repetitions
+     * @return Reference to the current instance
      */
     QNoisyEngineT& execute(idx reps = 1) override {
         // EXCEPTION CHECKS
@@ -140,14 +140,14 @@ class QNoisyEngineT : public QEngineT<T> {
     }
 
     /**
-     * \brief Resets the engine
+     * @brief Resets the engine
      *
      * Re-initializes everything to zero and sets the initial state to
      * \f$|0\rangle^{\otimes n}\f$
      *
-     * \param reset_stats Optional (true by default), resets the collected
+     * @param reset_stats Optional (true by default), resets the collected
      * measurement statistics hash table
-     * \return Reference to the current instance
+     * @return Reference to the current instance
      */
     QNoisyEngineT& reset(std::optional<T> qstate = std::nullopt,
                          bool reset_stats = true) override {
@@ -159,17 +159,17 @@ class QNoisyEngineT : public QEngineT<T> {
 
     // getters
     /**
-     * \brief Vector of noise results obtained before every step in the
+     * @brief Vector of noise results obtained before every step in the
      * circuit
      *
-     * \note The first vector contains the noise measurement results
+     * @note The first vector contains the noise measurement results
      * obtained before applying the first step in the circuit, and so on,
      * ordered by non-measured qudits. That is, the first element in the
      * vector corresponding to noise obtained before a given step in the
      * circuit represents the noise result obtained on the first
      * non-measured qudit etc.
      *
-     * \return Vector of noise results
+     * @return Vector of noise results
      */
     std::vector<std::vector<idx>> get_noise_results() const {
         return noise_results_;
@@ -178,17 +178,17 @@ class QNoisyEngineT : public QEngineT<T> {
 }; /* class QNoisyEngineT */
 
 /**
- * \class qpp::QNoisyEngine
- * \brief Pure state noisy quantum engine
- * \note Kept for backwards compatibility, use qpp::QKetNoisyEngine
- * \see qpp::QNoisyEngineT
+ * @class qpp::QNoisyEngine
+ * @brief Pure state noisy quantum engine
+ * @note Kept for backwards compatibility, use qpp::QKetNoisyEngine
+ * @see qpp::QNoisyEngineT
  */
 template <typename NoiseModel>
 struct QNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
     using QNoisyEngineT<ket, NoiseModel>::QNoisyEngineT;
     // traits
     /**
-     * \brief qpp::IQEngineTraits::traits_get_name() override
+     * @brief qpp::IQEngineTraits::traits_get_name() override
      */
     std::string traits_get_name() const override { return "QNoisyEngine"; }
     // end traits
@@ -199,16 +199,16 @@ QNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
     -> QNoisyEngine<NoiseModel>;
 
 /**
- * \class qpp::QKetNoisyEngine
- * \brief Pure state noisy quantum engine
- * \see qpp::QNoisyEngineT
+ * @class qpp::QKetNoisyEngine
+ * @brief Pure state noisy quantum engine
+ * @see qpp::QNoisyEngineT
  */
 template <typename NoiseModel>
 struct QKetNoisyEngine : public QNoisyEngineT<ket, NoiseModel> {
     using QNoisyEngineT<ket, NoiseModel>::QNoisyEngineT;
     // traits
     /**
-     * \brief qpp::IQEngineTraits::traits_get_name() override
+     * @brief qpp::IQEngineTraits::traits_get_name() override
      */
     std::string traits_get_name() const override { return "QKetNoisyEngine"; }
     // end traits
@@ -219,16 +219,16 @@ QKetNoisyEngine(const qpp::QCircuit& qc, const NoiseModel& noise)
     -> QKetNoisyEngine<NoiseModel>;
 
 /**
- * \class qpp::QDensityNoisyEngine
- * \brief Mixed state noisy quantum engine
- * \see qpp::QNoisyEngineT
+ * @class qpp::QDensityNoisyEngine
+ * @brief Mixed state noisy quantum engine
+ * @see qpp::QNoisyEngineT
  */
 template <typename NoiseModel>
 struct QDensityNoisyEngine : public QNoisyEngineT<cmat, NoiseModel> {
     using QNoisyEngineT<cmat, NoiseModel>::QNoisyEngineT;
     // traits
     /**
-     * \brief qpp::IQEngineTraits::traits_get_name() override
+     * @brief qpp::IQEngineTraits::traits_get_name() override
      */
     std::string traits_get_name() const override {
         return "QDensityNoisyEngine";

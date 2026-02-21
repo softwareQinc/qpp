@@ -25,8 +25,8 @@
  */
 
 /**
- * \file <pyqpp/input_output_bind.hpp>
- * \brief Bindings for <qpp/input_output.hpp>
+ * @file <pyqpp/input_output_bind.hpp>
+ * @brief Bindings for <qpp/input_output.hpp>
  */
 
 #ifndef PYQPP_INPUT_OUTPUT_BIND_HPP_

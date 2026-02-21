@@ -25,8 +25,8 @@
  */
 
 /**
- * \file <pyqpp/constants_bind.hpp>
- * \brief Bindings for <qpp/constants.hpp>
+ * @file <pyqpp/constants_bind.hpp>
+ * @brief Bindings for <qpp/constants.hpp>
  */
 
 #ifndef PYQPP_CONSTANTS_BIND_HPP_

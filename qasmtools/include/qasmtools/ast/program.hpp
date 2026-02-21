@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qasmtools/ast/program.hpp
- * \brief OpenQASM programs
+ * @file qasmtools/ast/program.hpp
+ * @brief OpenQASM programs
  */
 
 #ifndef QASMTOOLS_AST_PROGRAM_HPP_
@@ -38,8 +38,8 @@ namespace qasmtools {
 namespace ast {
 
 /**
- * \class qasmtools::ast::Program
- * \brief Program class
+ * @class qasmtools::ast::Program
+ * @brief Program class
  */
 class Program : public ASTNode {
     bool std_include_;          ///< whether the program includes qelib1
@@ -49,13 +49,13 @@ class Program : public ASTNode {
 
   public:
     /**
-     * \brief Constructs a QASM program
+     * @brief Constructs a QASM program
      *
-     * \param pos The source position
-     * \param std_include Whether the standard library has been included
-     * \param body The program body
-     * \param bits The number of bits
-     * \param qubits The number of qubits
+     * @param pos The source position
+     * @param std_include Whether the standard library has been included
+     * @param body The program body
+     * @param bits The number of bits
+     * @param qubits The number of qubits
      */
     Program(parser::Position pos, bool std_include, std::list<ptr<Stmt>>&& body,
             int bits, int qubits)
@@ -63,7 +63,7 @@ class Program : public ASTNode {
           bits_(bits), qubits_(qubits) {}
 
     /**
-     * \brief Protected heap-allocated construction
+     * @brief Protected heap-allocated construction
      */
     static ptr<Program> create(parser::Position pos, bool std_include,
                                std::list<ptr<Stmt>>&& body, int bits,
@@ -73,30 +73,30 @@ class Program : public ASTNode {
     }
 
     /**
-     * \brief Get the program body
+     * @brief Get the program body
      *
-     * \return Reference to the body as a list of statements
+     * @return Reference to the body as a list of statements
      */
     std::list<ptr<Stmt>>& body() { return body_; }
 
     /**
-     * \brief Get the number of bits
+     * @brief Get the number of bits
      *
-     * \return The number of bits
+     * @return The number of bits
      */
     int bits() { return bits_; }
 
     /**
-     * \brief Get the number of qubits
+     * @brief Get the number of qubits
      *
-     * \return The number of qubits
+     * @return The number of qubits
      */
     int qubits() { return qubits_; }
 
     /**
-     * \brief Apply a function to each statement in order
+     * @brief Apply a function to each statement in order
      *
-     * \param f Void function accepting a reference to a statement
+     * @param f Void function accepting a reference to a statement
      */
     void foreach_stmt(std::function<void(Stmt&)> f) {
         for (auto it = body_.begin(); it != body_.end(); it++) {
@@ -105,16 +105,16 @@ class Program : public ASTNode {
     }
 
     /**
-     * \brief Get an iterator to the beginning of the body
+     * @brief Get an iterator to the beginning of the body
      *
-     * \return std::list iterator
+     * @return std::list iterator
      */
     std::list<ptr<Stmt>>::iterator begin() { return body_.begin(); }
 
     /**
-     * \brief Get an iterator to the end of the body
+     * @brief Get an iterator to the end of the body
      *
-     * \return std::list iterator
+     * @return std::list iterator
      */
     std::list<ptr<Stmt>>::iterator end() { return body_.end(); }
 

@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qasmtools/ast/var.hpp
- * \brief OpenQASM variable utilities
+ * @file qasmtools/ast/var.hpp
+ * @brief OpenQASM variable utilities
  */
 
 #ifndef QASMTOOLS_AST_VAR_HPP_
@@ -41,8 +41,8 @@ namespace qasmtools {
 namespace ast {
 
 /**
- * \class qasmtools::ast::VarAccess
- * \brief Class for variable accesses
+ * @class qasmtools::ast::VarAccess
+ * @brief Class for variable accesses
  *
  * Represents accesses into a register by the register name and an optional
  * offset or index into the register. If the offset is empty, the entire
@@ -60,11 +60,11 @@ class VarAccess final : public ASTNode {
     friend std::hash<VarAccess>; ///< Hash function
 
     /**
-     * \brief Construct a variable access
+     * @brief Construct a variable access
      *
-     * \param pos The source position
-     * \param var The register name
-     * \param offset Optional integer offset into the register (default =
+     * @param pos The source position
+     * @param var The register name
+     * @param offset Optional integer offset into the register (default =
      * std::nullopt)
      */
     VarAccess(parser::Position pos, symbol var,
@@ -72,27 +72,27 @@ class VarAccess final : public ASTNode {
         : ASTNode(pos), var_(var), offset_(offset) {}
 
     /**
-     * \brief Copy constructor
+     * @brief Copy constructor
      */
     VarAccess(const VarAccess& va)
         : ASTNode(va.pos_), var_(va.var_), offset_(va.offset_) {}
 
     /**
-     * \brief Get the register name
+     * @brief Get the register name
      *
      * return Const reference to the register name
      */
     const symbol& var() const { return var_; }
 
     /**
-     * \brief Get the offset
+     * @brief Get the offset
      *
      * return std::optional integer offset
      */
     std::optional<int> offset() const { return offset_; }
 
     /**
-     * \brief Copy assignment overload
+     * @brief Copy assignment overload
      */
     VarAccess& operator=(const VarAccess& v) {
         var_ = v.var_;
@@ -101,14 +101,14 @@ class VarAccess final : public ASTNode {
     }
 
     /**
-     * \brief Equal operator overload
+     * @brief Equal operator overload
      */
     bool operator==(const VarAccess& v) const {
         return var_ == v.var_ && offset_ == v.offset_;
     }
 
     /**
-     * \brief Less operator overload
+     * @brief Less operator overload
      *
      * Used to allow variable accesses as keys in ordered maps
      */
@@ -121,14 +121,14 @@ class VarAccess final : public ASTNode {
     }
 
     /**
-     * \brief Check whether the variable access contains another
+     * @brief Check whether the variable access contains another
      *
      * A variable access u contains v if u == v or if u is a register
      * and v is an offset into that register. Mainly useful for determining
      * dependencies between gates in the "sugared" source
      *
-     * \param v Const reference to a variable access
-     * \return true if the variable access contains v
+     * @param v Const reference to a variable access
+     * @return true if the variable access contains v
      */
     bool contains(const VarAccess& v) const {
         if (offset_) {
@@ -139,13 +139,13 @@ class VarAccess final : public ASTNode {
     }
 
     /**
-     * \brief Return the root of a variable access
+     * @brief Return the root of a variable access
      *
      * Strips any dereferences and returns a new variable access.
      * Satisfies root(v).contains(v) == true
      *
-     * \param v Const reference to a variable access
-     * \return var access for the root variable
+     * @param v Const reference to a variable access
+     * @return var access for the root variable
      */
     VarAccess root() const { return VarAccess(pos_, var_); }
 
@@ -176,7 +176,7 @@ class VarAccess final : public ASTNode {
 
 namespace std {
 /**
- * \brief Hash function for variable accesses
+ * @brief Hash function for variable accesses
  *
  * Allows variable accesses to be used as keys in std::unordered_map.
  * Implementation and magic numbers taken from boost::hash_combine.

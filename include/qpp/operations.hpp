@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/operations.hpp
- * \brief Quantum operation functions
+ * @file qpp/operations.hpp
+ * @brief Quantum operation functions
  */
 
 #ifndef QPP_OPERATIONS_HPP_
@@ -53,16 +53,16 @@
 
 namespace qpp {
 /**
- * \brief Applies the gate \a A to the part \a target of the multi-partite state
+ * @brief Applies the gate \a A to the part \a target of the multi-partite state
  * vector or density matrix \a state
  *
- * \note The dimension of the gate \a A must match the dimension of \a target
+ * @note The dimension of the gate \a A must match the dimension of \a target
  *
- * \param state Eigen expression
- * \param A Eigen expression
- * \param target Subsystem indexes where the gate \a A is applied
- * \param dims Dimensions of the multi-partite system
- * \return Gate \a A applied to the part \a target of \a state
+ * @param state Eigen expression
+ * @param A Eigen expression
+ * @param target Subsystem indexes where the gate \a A is applied
+ * @param dims Dimensions of the multi-partite system
+ * @return Gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -365,16 +365,16 @@ apply(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the gate \a A to the part \a target of the multi-partite state
+ * @brief Applies the gate \a A to the part \a target of the multi-partite state
  * vector or density matrix \a state
  *
- * \note The dimension of the gate \a A must match the dimension of \a target
+ * @note The dimension of the gate \a A must match the dimension of \a target
  *
- * \param state Eigen expression
- * \param A Eigen expression
- * \param target Subsystem indexes where the gate \a A is applied
- * \param d Subsystem dimensions
- * \return Gate \a A applied to the part \a target of \a state
+ * @param state Eigen expression
+ * @param A Eigen expression
+ * @param target Subsystem indexes where the gate \a A is applied
+ * @param d Subsystem dimensions
+ * @return Gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 expr_t<Derived1> apply(const Eigen::MatrixBase<Derived1>& state,
@@ -402,15 +402,15 @@ expr_t<Derived1> apply(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the channel specified by the set of Kraus operators \a Ks to
+ * @brief Applies the channel specified by the set of Kraus operators \a Ks to
  * the density matrix \a A
  *
- * \note The Kraus operators can have their range different from their domain
+ * @note The Kraus operators can have their range different from their domain
  * (i.e., they can be rectangular matrices)
  *
- * \param A Eigen expression
- * \param Ks Set of Kraus operators
- * \return Output density matrix after the action of the channel
+ * @param A Eigen expression
+ * @param Ks Set of Kraus operators
+ * @return Output density matrix after the action of the channel
  */
 template <typename Derived>
 [[qpp::parallel]] cmat apply(const Eigen::MatrixBase<Derived>& A,
@@ -457,14 +457,14 @@ template <typename Derived>
 }
 
 /**
- * \brief Applies the channel specified by the set of Kraus operators \a Ks to
+ * @brief Applies the channel specified by the set of Kraus operators \a Ks to
  * the part \a target of the multi-partite density matrix \a A
  *
- * \param A Eigen expression
- * \param Ks Set of Kraus operators
- * \param target Subsystem indexes where the Kraus operators \a Ks are applied
- * \param dims Dimensions of the multi-partite system
- * \return Output density matrix after the action of the channel
+ * @param A Eigen expression
+ * @param Ks Set of Kraus operators
+ * @param target Subsystem indexes where the Kraus operators \a Ks are applied
+ * @param dims Dimensions of the multi-partite system
+ * @return Output density matrix after the action of the channel
  */
 template <typename Derived>
 [[qpp::parallel]] cmat
@@ -553,14 +553,14 @@ apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 }
 
 /**
- * \brief Applies the channel specified by the set of Kraus operators \a Ks to
+ * @brief Applies the channel specified by the set of Kraus operators \a Ks to
  * the part \a target of the multi-partite density matrix \a A
  *
- * \param A Eigen expression
- * \param Ks Set of Kraus operators
- * \param target Subsystem indexes where the Kraus operators \a Ks are applied
- * \param d Subsystem dimensions
- * \return Output density matrix after the action of the channel
+ * @param A Eigen expression
+ * @param Ks Set of Kraus operators
+ * @param target Subsystem indexes where the Kraus operators \a Ks are applied
+ * @param d Subsystem dimensions
+ * @return Output density matrix after the action of the channel
  */
 template <typename Derived>
 cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
@@ -586,20 +586,20 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 }
 
 /**
- * \brief Choi matrix
- * \see qpp::choi2kraus()
+ * @brief Choi matrix
+ * @see qpp::choi2kraus()
  *
  * Constructs the Choi matrix of the channel specified by the set of Kraus
  * operators \a Ks in the standard operator basis \f$\{|i\rangle\langle j|\}\f$
  * ordered in lexicographical order, i.e.
  * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
  *
- * \note The Kraus operators can have their range different from their domain
+ * @note The Kraus operators can have their range different from their domain
  * (i.e., they can be rectangular matrices). The superoperator matrix \f$S\f$
  * and the Choi matrix \f$C\f$ are related by \f$S_{ab,mn} = C_{ma,nb}\f$.
  *
- * \param Ks Set of Kraus operators
- * \return Choi matrix
+ * @param Ks Set of Kraus operators
+ * @return Choi matrix
  */
 [[qpp::parallel]] inline cmat kraus2choi(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
@@ -653,20 +653,20 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 }
 
 /**
- * \brief Orthogonal Kraus operators from Choi matrix
- * \see qpp::kraus2choi()
+ * @brief Orthogonal Kraus operators from Choi matrix
+ * @see qpp::kraus2choi()
  *
  * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
  * operators from the Choi matrix \a A
  *
- * \note The Kraus operators can have their range different from their domain
+ * @note The Kraus operators can have their range different from their domain
  * (i.e., they can be rectangular matrices). The Kraus operators satisfy
  * \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$ for all \f$i\neq j\f$.
  *
- * \param A Choi matrix
- * \param Din Dimension of the Kraus input Hilbert space
- * \param Dout Dimension of the Kraus output Hilbert space
- * \return Set of orthogonal Kraus operators
+ * @param A Choi matrix
+ * @param Din Dimension of the Kraus input Hilbert space
+ * @param Dout Dimension of the Kraus output Hilbert space
+ * @return Set of orthogonal Kraus operators
  */
 inline std::vector<cmat> choi2kraus(const cmat& A, idx Din, idx Dout) {
     // EXCEPTION CHECKS
@@ -697,18 +697,18 @@ inline std::vector<cmat> choi2kraus(const cmat& A, idx Din, idx Dout) {
 }
 
 /**
- * \brief Orthogonal Kraus operators from Choi matrix
- * \see qpp::kraus2choi()
+ * @brief Orthogonal Kraus operators from Choi matrix
+ * @see qpp::kraus2choi()
  *
  * Extracts a set of orthogonal (under Hilbert-Schmidt operator norm) Kraus
  * operators from the Choi matrix \a A
  *
- * \note The Kraus operators are assumed to have their range equal to their
+ * @note The Kraus operators are assumed to have their range equal to their
  * domain (i.e., they are square matrices). The Kraus operators satisfy
  * \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$ for all \f$i\neq j\f$.
  *
- * \param A Choi matrix
- * \return Set of orthogonal Kraus operators
+ * @param A Choi matrix
+ * @return Set of orthogonal Kraus operators
  */
 inline std::vector<cmat> choi2kraus(const cmat& A) {
     // EXCEPTION CHECKS
@@ -729,16 +729,16 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
 }
 
 /**
- * \brief Converts Choi matrix to superoperator matrix
- * \see qpp::super2choi()
+ * @brief Converts Choi matrix to superoperator matrix
+ * @see qpp::super2choi()
  *
- * \note The superoperator can have its range different from its domain
+ * @note The superoperator can have its range different from its domain
  * (i.e., it can be a rectangular matrix)
  *
- * \param A Choi matrix
- * \param Din Dimension of the Kraus input Hilbert space
- * \param Dout Dimension of the Kraus output Hilbert space
- * \return Superoperator matrix
+ * @param A Choi matrix
+ * @param Din Dimension of the Kraus input Hilbert space
+ * @param Dout Dimension of the Kraus output Hilbert space
+ * @return Superoperator matrix
  */
 [[qpp::parallel]] inline cmat choi2super(const cmat& A, idx Din, idx Dout) {
     // EXCEPTION CHECKS
@@ -775,14 +775,14 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
 }
 
 /**
- * \brief Converts Choi matrix to superoperator matrix
- * \see qpp::super2choi()
+ * @brief Converts Choi matrix to superoperator matrix
+ * @see qpp::super2choi()
  *
- * \note The superoperator is assumed to have the its range equal to its domain
+ * @note The superoperator is assumed to have the its range equal to its domain
  * (i.e., its Kraus operators are square matrices).
  *
- * \param A Choi matrix
- * \return Superoperator matrix
+ * @param A Choi matrix
+ * @return Superoperator matrix
  */
 inline cmat choi2super(const cmat& A) {
     // EXCEPTION CHECKS
@@ -803,14 +803,14 @@ inline cmat choi2super(const cmat& A) {
 }
 
 /**
- * \brief Converts superoperator matrix to Choi matrix
- * \see qpp::choi2super()
+ * @brief Converts superoperator matrix to Choi matrix
+ * @see qpp::choi2super()
  *
- * \note The superoperator can have its range different from its domain
+ * @note The superoperator can have its range different from its domain
  * (i.e., it can be a rectangular matrix)
  *
- * \param A Superoperator matrix
- * \return Choi matrix
+ * @param A Superoperator matrix
+ * @return Choi matrix
  */
 [[qpp::parallel]] inline cmat super2choi(const cmat& A) {
     // EXCEPTION CHECKS
@@ -849,19 +849,19 @@ inline cmat choi2super(const cmat& A) {
 }
 
 /**
- * \brief Superoperator matrix
- * \see qpp::super2kraus()
+ * @brief Superoperator matrix
+ * @see qpp::super2kraus()
  *
  * Constructs the superoperator matrix of the channel specified by the set of
  * Kraus operators \a Ks in the standard operator basis
  * \f$\{|i\rangle\langle j|\}\f$ ordered in lexicographical order, i.e.
  * \f$|0\rangle\langle 0|\f$, \f$|0\rangle\langle 1|\f$ etc.
  *
- * \note The Kraus operators can have their range different from their domain
+ * @note The Kraus operators can have their range different from their domain
  * (i.e., they can be rectangular matrices)
  *
- * \param Ks Set of Kraus operators
- * \return Superoperator matrix
+ * @param Ks Set of Kraus operators
+ * @return Superoperator matrix
  */
 [[qpp::parallel]] inline cmat kraus2super(const std::vector<cmat>& Ks) {
     // EXCEPTION CHECKS
@@ -924,18 +924,18 @@ inline cmat choi2super(const cmat& A) {
 }
 
 /**
- * \brief Orthogonal Kraus operators from superoperator matrix
- * \see qpp::kraus2super()
+ * @brief Orthogonal Kraus operators from superoperator matrix
+ * @see qpp::kraus2super()
  *
  * Extracts a set of orthogonal (under the Hilbert-Schmidt operator norm) Kraus
  * operators from the superoperator matrix \a A
  *
- * \note The superoperator can have its range different from its domain
+ * @note The superoperator can have its range different from its domain
  * (i.e., it can be a rectangular matrix). The Kraus operators satisfy
  * \f$Tr(K_i^\dagger K_j)=\delta_{ij}\f$ for all \f$i\neq j\f$.
  *
- * \param A Superoperator matrix
- * \return Set of orthogonal Kraus operators
+ * @param A Superoperator matrix
+ * @return Set of orthogonal Kraus operators
  */
 inline std::vector<cmat> super2kraus(const cmat& A) {
     // EXCEPTION CHECKS
@@ -957,15 +957,15 @@ inline std::vector<cmat> super2kraus(const cmat& A) {
 }
 
 /**
- * \brief Partial trace
- * \see qpp::ptrace2()
+ * @brief Partial trace
+ * @see qpp::ptrace2()
  *
  * Partial trace over the first subsystem of bi-partite state vector or density
  * matrix
  *
- * \param A Eigen expression
- * \param dims Dimensions of the bi-partite system
- * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
+ * @param A Eigen expression
+ * @param dims Dimensions of the bi-partite system
+ * @return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$
  * in a bi-partite system \f$A\otimes B\f$, as a dynamic matrix over the same
  * scalar field as \a A
  */
@@ -1045,15 +1045,15 @@ ptrace1(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
 }
 
 /**
- * \brief Partial trace
- * \see qpp::ptrace2()
+ * @brief Partial trace
+ * @see qpp::ptrace2()
  *
  * Partial trace over the first subsystem of bi-partite state vector or density
  * matrix
  *
- * \param A Eigen expression
- * \param d Subsystem dimensions
- * \return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$ in
+ * @param A Eigen expression
+ * @param d Subsystem dimensions
+ * @return Partial trace \f$Tr_{A}(\cdot)\f$ over the first subsytem \f$A\f$ in
  * a bi-partite system \f$A\otimes B\f$, as a dynamic matrix over the same
  * scalar field as \a A
  */
@@ -1080,15 +1080,15 @@ dyn_mat<typename Derived::Scalar> ptrace1(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Partial trace
- * \see qpp::ptrace1()
+ * @brief Partial trace
+ * @see qpp::ptrace1()
  *
  * Partial trace over the second subsystem of bi-partite state vector or density
  * matrix
  *
- * \param A Eigen expression
- * \param dims Dimensions of the bi-partite system
- * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$ in
+ * @param A Eigen expression
+ * @param dims Dimensions of the bi-partite system
+ * @return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$ in
  * a bi-partite system \f$A\otimes B\f$, as a dynamic matrix over the same
  * scalar field as \a A
  */
@@ -1159,15 +1159,15 @@ ptrace2(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
 }
 
 /**
- * \brief Partial trace
- * \see qpp::ptrace1()
+ * @brief Partial trace
+ * @see qpp::ptrace1()
  *
  * Partial trace over the second subsystem of bi-partite state vector or density
  * matrix
  *
- * \param A Eigen expression
- * \param d Subsystem dimensions
- * \return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$ in
+ * @param A Eigen expression
+ * @param d Subsystem dimensions
+ * @return Partial trace \f$Tr_{B}(\cdot)\f$ over the second subsytem \f$B\f$ in
  * a bi-partite system \f$A\otimes B\f$, as a dynamic matrix over the same
  * scalar field as \a A
  */
@@ -1194,16 +1194,16 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Partial trace
- * \see qpp::ptrace1(), qpp::ptrace2()
+ * @brief Partial trace
+ * @see qpp::ptrace1(), qpp::ptrace2()
  *
  * Partial trace of the multi-partite state vector or density matrix over the
  * list \a target of subsystems
  *
- * \param A Eigen expression
- * \param target Subsystem indexes
- * \param dims Dimensions of the multi-partite system
- * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * @param A Eigen expression
+ * @param target Subsystem indexes
+ * @param dims Dimensions of the multi-partite system
+ * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
  * \a A
  */
@@ -1401,16 +1401,16 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 }
 
 /**
- * \brief Partial trace
- * \see qpp::ptrace1(), qpp::ptrace2()
+ * @brief Partial trace
+ * @see qpp::ptrace1(), qpp::ptrace2()
  *
  * Partial trace of the multi-partite state vector or density matrix over the
  * list \a target of subsystems
  *
- * \param A Eigen expression
- * \param target Subsystem indexes
- * \param dims Dimensions of the multi-partite system
- * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * @param A Eigen expression
+ * @param target Subsystem indexes
+ * @param dims Dimensions of the multi-partite system
+ * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
  * \a A
  */
@@ -1855,16 +1855,16 @@ ptrace_new3(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 }
 
 /**
- * \brief Partial trace
- * \see qpp::ptrace1(), qpp::ptrace2()
+ * @brief Partial trace
+ * @see qpp::ptrace1(), qpp::ptrace2()
  *
  * Partial trace of the multi-partite state vector or density matrix over the
  * list \a target of subsystems
  *
- * \param A Eigen expression
- * \param target Subsystem indexes
- * \param d Subsystem dimensions
- * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * @param A Eigen expression
+ * @param target Subsystem indexes
+ * @param d Subsystem dimensions
+ * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
  * \a A
  */
@@ -1893,15 +1893,15 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Partial transpose
+ * @brief Partial transpose
  *
  * Partial transpose of the multi-partite state vector or density matrix over
  * the list \a target of subsystems
  *
- * \param A Eigen expression
- * \param target Subsystem indexes
- * \param dims Dimensions of the multi-partite system
- * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
+ * @param A Eigen expression
+ * @param target Subsystem indexes
+ * @param dims Dimensions of the multi-partite system
+ * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
  * \a target in a multi-partite system, as a dynamic matrix over the same scalar
  * field as \a A
  */
@@ -2061,15 +2061,15 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
 }
 
 /**
- * \brief Partial transpose
+ * @brief Partial transpose
  *
  * Partial transpose of the multi-partite state vector or density matrix over
  * the list \a target of subsystems
  *
- * \param A Eigen expression
- * \param target Subsystem indexes
- * \param d Subsystem dimensions
- * \return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
+ * @param A Eigen expression
+ * @param target Subsystem indexes
+ * @param d Subsystem dimensions
+ * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
  * \a target in a multi-partite system, as a dynamic matrix over the same scalar
  * field as \a A
  */
@@ -2271,15 +2271,15 @@ ptranspose_new(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Subsystem permutation
+ * @brief Subsystem permutation
  *
  * Permutes the subsystems of a state vector or density matrix. The qubit
  * \a perm[\a i] is permuted to the location \a i.
  *
- * \param A Eigen expression
- * \param perm Permutation
- * \param dims Dimensions of the multi-partite system
- * \return Permuted system, as a dynamic matrix over the same scalar field as
+ * @param A Eigen expression
+ * @param perm Permutation
+ * @param dims Dimensions of the multi-partite system
+ * @return Permuted system, as a dynamic matrix over the same scalar field as
  * \a A
  */
 template <typename Derived>
@@ -2419,15 +2419,15 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 }
 
 /**
- * \brief Subsystem permutation
+ * @brief Subsystem permutation
  *
  * Permutes the subsystems of a state vector or density matrix. The qubit
  * \a perm[\a i] is permuted to the location \a i.
  *
- * \param A Eigen expression
- * \param perm Permutation
- * \param d Subsystem dimensions
- * \return Permuted system, as a dynamic matrix over the same scalar field as
+ * @param A Eigen expression
+ * @param perm Permutation
+ * @param d Subsystem dimensions
+ * @return Permuted system, as a dynamic matrix over the same scalar field as
  * \a A
  */
 template <typename Derived>
@@ -2455,15 +2455,15 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 }
 
 /**
- * \brief Subsystem permutation
+ * @brief Subsystem permutation
  *
  * Permutes the subsystems of a state vector or density matrix. The qubit
  * \a perm[\a i] is permuted to the location \a i.
  *
- * \param A Eigen expression
- * \param perm Permutation
- * \param dims Dimensions of the multi-partite system
- * \return Permuted system, as a dynamic matrix over the same scalar field as
+ * @param A Eigen expression
+ * @param perm Permutation
+ * @param dims Dimensions of the multi-partite system
+ * @return Permuted system, as a dynamic matrix over the same scalar field as
  * \a A
  */
 template <typename Derived>
@@ -2596,25 +2596,25 @@ syspermute_new(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Applies the controlled-gate \a A to the part \a target of the
+ * @brief Applies the controlled-gate \a A to the part \a target of the
  * multi-partite state vector or density matrix \a state
- * \see qpp::Gates::CTRL()
+ * @see qpp::Gates::CTRL()
  *
- * \note The dimension of the gate \a A must match the dimension of \a target.
+ * @note The dimension of the gate \a A must match the dimension of \a target.
  * Also, all control subsystems in \a ctrl must have the same dimension.
  *
- * \param state Eigen expression
- * \param A Eigen expression
- * \param ctrl Control subsystem indexes
- * \param target Subsystem indexes where the gate \a A is applied
- * \param dims Dimensions of the multi-partite system
- * \param shift Optional, performs the control as if the \a ctrl qudits were
+ * @param state Eigen expression
+ * @param A Eigen expression
+ * @param ctrl Control subsystem indexes
+ * @param target Subsystem indexes where the gate \a A is applied
+ * @param dims Dimensions of the multi-partite system
+ * @param shift Optional, performs the control as if the \a ctrl qudits were
  * \f$X\f$-incremented component-wise by \a shift (in the order given by
  * \a ctrl). For example, for two qutrits (D=3), applying a control gate on the
  * initial state \f$|00\rangle\f$ with first qutrit as control, second qutrit as
  * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If present,
  * the size of \a shift must be the same as the size of \a ctrl.
- * \return CTRL-\a A gate applied to the part \a target of \a state
+ * @return CTRL-\a A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -2889,26 +2889,26 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the controlled-gate \a A to the part \a target of the
+ * @brief Applies the controlled-gate \a A to the part \a target of the
  * multi-partite state vector or density matrix \a state
- * \see qpp::Gates::CTRL()
+ * @see qpp::Gates::CTRL()
  *
- * \note The dimension of the gate \a A must match the dimension of \a
+ * @note The dimension of the gate \a A must match the dimension of \a
  * target. Also, all control subsystems in \a ctrl must have the same
  * dimension.
  *
- * \param state Eigen expression
- * \param A Eigen expression
- * \param ctrl Control subsystem indexes
- * \param target Subsystem indexes where the gate \a A is applied
- * \param d Subsystem dimensions
- * \param shift Optional, performs the control as if the \a ctrl qudits were
+ * @param state Eigen expression
+ * @param A Eigen expression
+ * @param ctrl Control subsystem indexes
+ * @param target Subsystem indexes where the gate \a A is applied
+ * @param d Subsystem dimensions
+ * @param shift Optional, performs the control as if the \a ctrl qudits were
  * \f$X\f$-incremented component-wise by \a shift. For example, for two qutrits
  * (D=3), applying a control gate on the initial state \f$|00\rangle\f$ with
  * first qutrit as control, second qutrit as target, and \a shift = {1}, yields
  * the state \f$|01\rangle\f$. If present, the size of \a shift must be the same
  * as the size of \a ctrl.
- * \return CTRL-\a A gate applied to the part \a target of \a state
+ * @return CTRL-\a A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 expr_t<Derived1>
@@ -2938,27 +2938,27 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the single qudit controlled-gate \a A with multiple
+ * @brief Applies the single qudit controlled-gate \a A with multiple
  * control qudits listed in \a ctrl on every qudit listed in \a target,
  * i.e., CTRL-\a A-\a A-...-\a A.
- * \see qpp::Gates::CTRL()
+ * @see qpp::Gates::CTRL()
  *
- * \note The dimension of the gate \a A must match the dimension of every qudit
+ * @note The dimension of the gate \a A must match the dimension of every qudit
  * in \a target. All control subsystems in \a ctrl must have the same dimension.
  *
- * \param state Eigen expression
- * \param A Eigen expression, single qudit quantum gate
- * \param ctrl Control subsystem indexes
- * \param target Target qudit indexes; the gate \a A is applied on every
+ * @param state Eigen expression
+ * @param A Eigen expression, single qudit quantum gate
+ * @param ctrl Control subsystem indexes
+ * @param target Target qudit indexes; the gate \a A is applied on every
  * one of them depending on the values of the control qudits
- * \param dims Dimensions of the multi-partite system
- * \param shift Optional, performs the control as if the \a ctrl qudits were
+ * @param dims Dimensions of the multi-partite system
+ * @param shift Optional, performs the control as if the \a ctrl qudits were
  * \f$X\f$-incremented component-wise by \a shift (in the order given by
  * \a ctrl). For example, for two qutrits (D=3), applying a control gate on the
  * initial state \f$|00\rangle\f$ with first qutrit as control, second qutrit as
  * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If present,
  * the size of \a shift must be the same as the size of \a ctrl.
- * \return CTRL-\a A-\a A-...-\a A gate applied to every \a target qudit in
+ * @return CTRL-\a A-\a A-...-\a A gate applied to every \a target qudit in
  * \a state
  */
 template <typename Derived1, typename Derived2>
@@ -3209,27 +3209,27 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * \brief Applies the single qudit controlled-gate \a A with multiple
+ * @brief Applies the single qudit controlled-gate \a A with multiple
  * control qudits listed in \a ctrl on every qudit listed in \a target,
  * i.e., CTRL-\a A-\a A-...-\a A.
- * \see qpp::Gates::CTRL()
+ * @see qpp::Gates::CTRL()
  *
- * \note The dimension of the gate \a A must match the dimension of every qudit
+ * @note The dimension of the gate \a A must match the dimension of every qudit
  * in \a target. All control subsystems in \a ctrl must have the same dimension.
  *
- * \param state Eigen expression
- * \param A Eigen expression, single qudit quantum gate
- * \param ctrl Control subsystem indexes
- * \param target Target qudit indexes; the gate \a A is applied on every
+ * @param state Eigen expression
+ * @param A Eigen expression, single qudit quantum gate
+ * @param ctrl Control subsystem indexes
+ * @param target Target qudit indexes; the gate \a A is applied on every
  * one of them depending on the values of the control qudits
- * \param d Subsystem dimensions
- * \param shift Optional, performs the control as if the \a ctrl qudits were
+ * @param d Subsystem dimensions
+ * @param shift Optional, performs the control as if the \a ctrl qudits were
  * \f$X\f$-incremented component-wise by \a shift (in the order given by
  * \a ctrl). For example, for two qutrits (D=3), applying a control gate on the
  * initial state \f$|00\rangle\f$ with first qutrit as control, second qutrit as
  * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If present,
  * the size of \a shift must be the same as the size of \a ctrl.
- * \return CTRL-\a A-\a A-...-\a A gate applied to every \a target qudit in
+ * @return CTRL-\a A-\a A-...-\a A gate applied to every \a target qudit in
  * \a state
  */
 template <typename Derived1, typename Derived2>
@@ -3261,15 +3261,15 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 
 // as in https://arxiv.org/abs/1707.08834
 /**
- * \brief Applies the qudit quantum Fourier transform to the part \a target
+ * @brief Applies the qudit quantum Fourier transform to the part \a target
  * of the multi-partite state vector or density matrix \a A
- * \see qpp::QFT()
+ * @see qpp::QFT()
  *
- * \param A Eigen expression
- * \param target Subsystem indexes where the QFT is applied
- * \param d Subsystem dimensions
- * \param swap Swaps the qubits/qudits at the end (true by default)
- * \return Qudit Quantum Fourier transform applied to the part \a target of
+ * @param A Eigen expression
+ * @param target Subsystem indexes where the QFT is applied
+ * @param d Subsystem dimensions
+ * @param swap Swaps the qubits/qudits at the end (true by default)
+ * @return Qudit Quantum Fourier transform applied to the part \a target of
  * \a A
  */
 template <typename Derived>
@@ -3376,15 +3376,15 @@ template <typename Derived>
 
 // as in https://arxiv.org/abs/1707.08834
 /**
- * \brief Applies the inverse (adjoint) qudit quantum Fourier transform to
+ * @brief Applies the inverse (adjoint) qudit quantum Fourier transform to
  * the part \a target of the multi-partite state vector or density matrix \a A
- * \see qpp::TFQ()
+ * @see qpp::TFQ()
  *
- * \param A Eigen expression
- * \param target Subsystem indexes where the TFQ is applied
- * \param d Subsystem dimensions
- * \param swap Swaps the qubits/qudits at the end (true by default)
- * \return Inverse (adjoint) qudit Quantum Fourier transform applied to the
+ * @param A Eigen expression
+ * @param target Subsystem indexes where the TFQ is applied
+ * @param d Subsystem dimensions
+ * @param swap Swaps the qubits/qudits at the end (true by default)
+ * @return Inverse (adjoint) qudit Quantum Fourier transform applied to the
  * part \a target of \a A
  */
 template <typename Derived>
@@ -3491,13 +3491,13 @@ template <typename Derived>
 
 // as in https://arxiv.org/abs/1707.08834
 /**
- * \brief Qudit quantum Fourier transform
- * \see qpp::applyQFT()
+ * @brief Qudit quantum Fourier transform
+ * @see qpp::applyQFT()
  *
- * \param A Eigen expression
- * \param d Subsystem dimensions
- * \param swap Swaps the qubits/qudits at the end (true by default)
- * \return Qudit quantum Fourier transform applied on \a A
+ * @param A Eigen expression
+ * @param d Subsystem dimensions
+ * @param swap Swaps the qubits/qudits at the end (true by default)
+ * @return Qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
 expr_t<Derived> QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
@@ -3543,13 +3543,13 @@ expr_t<Derived> QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
 
 // as in https://arxiv.org/abs/1707.08834
 /**
- * \brief Inverse (adjoint) qudit quantum Fourier transform
- * \see qpp::applyTFQ()
+ * @brief Inverse (adjoint) qudit quantum Fourier transform
+ * @see qpp::applyTFQ()
  *
- * \param A Eigen expression
- * \param d Subsystem dimensions
- * \param swap Swaps the qubits/qudits at the end (true by default)
- * \return Inverse (adjoint) qudit quantum Fourier transform applied on \a A
+ * @param A Eigen expression
+ * @param d Subsystem dimensions
+ * @param swap Swaps the qubits/qudits at the end (true by default)
+ * @return Inverse (adjoint) qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
 expr_t<Derived> TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2,
@@ -3594,21 +3594,21 @@ expr_t<Derived> TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2,
 }
 
 /**
- * \brief Quantumly-accessible Random Access Memory (qRAM) over classical
+ * @brief Quantumly-accessible Random Access Memory (qRAM) over classical
  data,
  * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\longrightarrow}
    \sum_j\alpha_j|j\rangle|m_j\rangle\f$
  *
- * \see
+ * @see
  * <a
  href="https://iopscience.iop.org/article/10.1088/1367-2630/17/12/123010">
  * New Journal of Physics, Vol. 17, No. 12, Pp. 123010 (2015)</a>
  *
- * \param psi Column vector Eigen expression, input amplitudes
- * \param data Vector storing the classical data
- * \param DqRAM qRAM subsystem dimension (must be at least 1 + maximum value
+ * @param psi Column vector Eigen expression, input amplitudes
+ * @param data Vector storing the classical data
+ * @param DqRAM qRAM subsystem dimension (must be at least 1 + maximum value
  * stored in the qRAM)
- * \return Superposition over the qRAM values
+ * @return Superposition over the qRAM values
  */
 template <typename Derived>
 [[qpp::parallel]] dyn_col_vect<typename Derived::Scalar>
@@ -3659,23 +3659,23 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM) {
 }
 
 /**
- * \brief Quantumly-accessible Random Access Memory (qRAM) over classical
+ * @brief Quantumly-accessible Random Access Memory (qRAM) over classical
  data,
  * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\longrightarrow}
    \sum_j\alpha_j|j\rangle|m_j\rangle\f$
  *
- * \see
+ * @see
  * <a
  href="https://iopscience.iop.org/article/10.1088/1367-2630/17/12/123010">
  * New Journal of Physics, Vol. 17, No. 12, Pp. 123010 (2015)</a>
  *
- * \note The qRAM subsystem dimension is set to 1 + maximum value stored in
+ * @note The qRAM subsystem dimension is set to 1 + maximum value stored in
  the
  * qRAM
  *
- * \param psi Column vector Eigen expression, input amplitudes
- * \param data Vector storing the classical data
- * \return Superposition over the qRAM values
+ * @param psi Column vector Eigen expression, input amplitudes
+ * @param data Vector storing the classical data
+ * @return Superposition over the qRAM values
  */
 template <typename Derived>
 dyn_col_vect<typename Derived::Scalar>

@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/classes/qdummy_engine.hpp
- * \brief No-op (dummy) quantum engines
+ * @file qpp/classes/qdummy_engine.hpp
+ * @brief No-op (dummy) quantum engines
  */
 
 #ifndef QPP_CLASSES_QDUMMY_ENGINE_HPP_
@@ -43,29 +43,29 @@
 namespace qpp {
 
 /**
- * \class qpp::QDummyEngine
- * \brief No-op (dummy) quantum engine
- * \see qpp::QBaseEngine
+ * @class qpp::QDummyEngine
+ * @brief No-op (dummy) quantum engine
+ * @see qpp::QBaseEngine
  *
- * \tparam T Engine's state underlying type
- * \tparam QCT Circuit underlying type
+ * @tparam T Engine's state underlying type
+ * @tparam QCT Circuit underlying type
  */
 template <typename T, typename QCT>
 struct QDummyEngine : public QBaseEngine<T, QCT> {
     using QBaseEngine<T, QCT>::QBaseEngine;
     // traits
     /**
-     * \brief qpp::IQEngineTraits::traits_get_name() override
+     * @brief qpp::IQEngineTraits::traits_get_name() override
      */
     std::string traits_get_name() const override { return "QDummyEngine"; }
 
     /**
-     * \brief qpp::IQEngineTraits::traits_is_noisy() override
+     * @brief qpp::IQEngineTraits::traits_is_noisy() override
      */
     bool traits_is_noisy() const override { return false; }
 
     /**
-     * \brief qpp::IQEngineTraits::traits_is_pure() override
+     * @brief qpp::IQEngineTraits::traits_is_pure() override
      */
     bool traits_is_pure() const override {
         if (std::is_same_v<T, cmat>) {
@@ -80,9 +80,9 @@ struct QDummyEngine : public QBaseEngine<T, QCT> {
 }; /* struct QDummyEngine */
 
 /**
- * \class qpp::QKetDummyEngine
- * \brief Pure state no-op (dummy) quantum engine for qpp::QCircuit
- * \see qpp::QDummyEngine
+ * @class qpp::QKetDummyEngine
+ * @brief Pure state no-op (dummy) quantum engine for qpp::QCircuit
+ * @see qpp::QDummyEngine
  */
 struct QKetDummyEngine : public QDummyEngine<ket, QCircuit> {
     using QDummyEngine<ket, QCircuit>::QDummyEngine;
@@ -92,9 +92,9 @@ struct QKetDummyEngine : public QDummyEngine<ket, QCircuit> {
 };
 
 /**
- * \class qpp::QDensityDummyEngine
- * \brief Mixed state no-op (dummy) quantum engine for qpp::QCircuit
- * \see qpp::QDummyEngine
+ * @class qpp::QDensityDummyEngine
+ * @brief Mixed state no-op (dummy) quantum engine for qpp::QCircuit
+ * @see qpp::QDummyEngine
  */
 struct QDensityDummyEngine : public QDummyEngine<cmat, QCircuit> {
     using QDummyEngine<cmat, QCircuit>::QDummyEngine;

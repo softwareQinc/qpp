@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/classes/random_devices.hpp
- * \brief Random devices
+ * @file qpp/classes/random_devices.hpp
+ * @brief Random devices
  */
 
 #ifndef QPP_CLASSES_RANDOM_DEVICES_HPP_
@@ -40,8 +40,8 @@
 
 namespace qpp {
 /**
- * \class qpp::RandomDevices
- * \brief Singleton class that manages the source of randomness in the library
+ * @class qpp::RandomDevices
+ * @brief Singleton class that manages the source of randomness in the library
  *
  * Consists of a wrapper around an std::mt19937 Mersenne twister random number
  * generator engine and an std::random_device engine. The latter is used to seed
@@ -59,33 +59,33 @@ class RandomDevices final : public internal::Singleton<RandomDevices> {
     std::mt19937 prng_;     ///< Mersenne twister random number generator
   public:
     /**
-     * \brief Returns a reference to the internal PRNG object
-     * \return Reference to the internal PRNG object
+     * @brief Returns a reference to the internal PRNG object
+     * @return Reference to the internal PRNG object
      */
     std::mt19937& get_prng() { return prng_; }
 
     /**
-     * \brief Loads the state of the PRNG from an input stream
-     * \param is Input stream
-     * \return Input stream
+     * @brief Loads the state of the PRNG from an input stream
+     * @param is Input stream
+     * @return Input stream
      */
     std::istream& load(std::istream& is) { return is >> prng_; }
 
     /**
-     * \brief Saves the state of the PRNG to an output stream
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
+     * @brief Saves the state of the PRNG to an output stream
+     * @param os Output stream passed by reference
+     * @return Reference to the output stream
      */
     std::ostream& save(std::ostream& os) const { return os << prng_; }
 
   private:
     /**
-     * \brief Initializes and seeds the random number generators
+     * @brief Initializes and seeds the random number generators
      */
     RandomDevices() : rd_{}, prng_{rd_()} {}
 
     /**
-     * \brief Default destructor
+     * @brief Default destructor
      */
     ~RandomDevices() override = default;
 }; /* class RandomDevices */

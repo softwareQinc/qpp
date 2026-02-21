@@ -25,8 +25,8 @@
  */
 
 /**
- * \file <pyqpp/classes/gates_bind.hpp>
- * \brief Bindings for <qpp/classes/gates.hpp>
+ * @file <pyqpp/classes/gates_bind.hpp>
+ * @brief Bindings for <qpp/classes/gates.hpp>
  */
 
 #ifndef PYQPP_CLASSES_GATES_BIND_HPP_

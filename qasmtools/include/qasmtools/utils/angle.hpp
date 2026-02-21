@@ -27,8 +27,8 @@
  */
 
 /**
- * \file qasmtools/utils/angle.hpp
- * \brief Either symbolic or concrete representation of rotation angles
+ * @file qasmtools/utils/angle.hpp
+ * @brief Either symbolic or concrete representation of rotation angles
  */
 
 #ifndef QASMTOOLS_UTILS_ANGLE_HPP_
@@ -44,12 +44,12 @@ namespace qasmtools {
 namespace utils {
 
 /**
- * \brief \f$ \pi \f$
+ * @brief \f$ \pi \f$
  */
 constexpr double pi = 3.141592653589793238462643383279502884;
 
 /**
- * \brief Simple class to represent rotation angles
+ * @brief Simple class to represent rotation angles
  *
  * A angle can be defined symbolically or numerically. When defined symbolic the
  * angle is always a multiple of pi, i.e., the symbolic value will always
@@ -81,17 +81,17 @@ class Angle {
     }
     constexpr Angle(double angle) : value_(angle) {}
 
-    /** \brief Returns true if this angle is symbolically defined. */
+    /** @brief Returns true if this angle is symbolically defined. */
     constexpr bool is_symbolic() const {
         return std::holds_alternative<fraction>(value_);
     }
 
-    /*! \brief Returns true if this angle is symbolically defined. */
+    /*! @brief Returns true if this angle is symbolically defined. */
     constexpr bool is_numeric() const {
         return std::holds_alternative<double>(value_);
     }
 
-    /*! \brief Returns the symbolic value of this angle. */
+    /*! @brief Returns the symbolic value of this angle. */
     constexpr std::optional<fraction> symbolic_value() const {
         if (std::holds_alternative<fraction>(value_)) {
             return std::get<fraction>(value_);
@@ -100,7 +100,7 @@ class Angle {
         }
     }
 
-    /*! \brief Returns the numeric value of this angle. */
+    /*! @brief Returns the numeric value of this angle. */
     constexpr double numeric_value() const {
         if (std::holds_alternative<fraction>(value_)) {
             auto frac = std::get<fraction>(value_);
@@ -255,13 +255,13 @@ class Angle {
 };
 
 namespace angles {
-/*! \brief identity */
+/*! @brief identity */
 constexpr Angle zero(0, 1);
-/*! \brief rotation angle of a T gate */
+/*! @brief rotation angle of a T gate */
 constexpr Angle pi_quarter(1, 4);
-/*! \brief rotation angle of a S gate (phase gate) */
+/*! @brief rotation angle of a S gate (phase gate) */
 constexpr Angle pi_half(1, 2);
-/*! \brief rotation angle of a Pauli-Z gate, Pauli-X (NOT) */
+/*! @brief rotation angle of a Pauli-Z gate, Pauli-X (NOT) */
 constexpr Angle pi(1, 1);
 } /* namespace angles */
 

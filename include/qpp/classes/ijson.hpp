@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/classes/ijson.hpp
- * \brief Basic JSON serialization
+ * @file qpp/classes/ijson.hpp
+ * @brief Basic JSON serialization
  */
 
 #ifndef QPP_CLASSES_IJSON_HPP_
@@ -36,22 +36,22 @@
 
 namespace qpp {
 /**
- * \class qpp::IJSON
- * \brief Abstract class (interface) that mandates the definition of
+ * @class qpp::IJSON
+ * @brief Abstract class (interface) that mandates the definition of
  * very basic JSON serialization support
  */
 class IJSON {
   public:
     /**
-     * \brief Default virtual destructor
+     * @brief Default virtual destructor
      */
     virtual ~IJSON() = default;
 
     /**
-     * \brief JSON representation of the derived instance, must be overridden by
+     * @brief JSON representation of the derived instance, must be overridden by
      * all derived classes
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in curly
+     * @param enclosed_in_curly_brackets If true, encloses the result in curly
      * brackets
      */
     virtual std::string

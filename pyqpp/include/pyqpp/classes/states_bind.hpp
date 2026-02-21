@@ -25,8 +25,8 @@
  */
 
 /**
- * \file <pyqpp/classes/states_bind.hpp>
- * \brief Bindings for <qpp/classes/states.hpp>
+ * @file <pyqpp/classes/states_bind.hpp>
+ * @brief Bindings for <qpp/classes/states.hpp>
  */
 
 #ifndef PYQPP_CLASSES_STATES_BIND_HPP_
