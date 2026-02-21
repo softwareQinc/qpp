@@ -6481,8 +6481,8 @@ inline QCircuit replicate(QCircuit qc, idx n,
  * @param one_qudit_gate_set Optional set of one qudit gates, must be
  * specified for \a d > 2
  * @param two_qudit_gate_set Optional set of two qudit gates, must be
- * specified for \a d > 2 @param one_qudit_gate_names Optional one qudit
- * gate names
+ * specified for \a d > 2
+ * @param one_qudit_gate_names Optional one qudit gate names
  * @param two_qudit_gate_names Optional two qudit gate names
  * @return Instance of random qpp::QCircuit for fixed gate count
  */
