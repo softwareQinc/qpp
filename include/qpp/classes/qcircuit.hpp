@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/classes/qcircuit.hpp
- * \brief Quantum circuits
+ * @file qpp/classes/qcircuit.hpp
+ * @file qpp/classes/qcircuit.hpp
+ * @brief Quantum circuits
+ * @brief Quantum circuits
  */
 
 #ifndef QPP_CLASSES_QCIRCUIT_HPP_
@@ -75,9 +77,12 @@ void inc_conditional_stack(conditional_stack_t& cs, idx i);
 } /* namespace internal */
 
 /**
- * \class qpp::QCircuit
- * \brief Quantum circuit description
- * \see qpp::QEngineT
+ * @class qpp::QCircuit
+ * @class qpp::QCircuit
+ * @brief Quantum circuit description
+ * @brief Quantum circuit description
+ * @see qpp::QEngineT
+ * @see qpp::QEngineT
  */
 class QCircuit : public IDisplay, public IJSON {
     friend class internal::QCircuitIterator;
@@ -112,13 +117,16 @@ class QCircuit : public IDisplay, public IJSON {
         outer_while_pos_{}; ///< location of the outermost while statement
 
     /**
-     * \brief Adds matrix to the hash table
+     * @brief Adds matrix to the hash table
+     * @brief Adds matrix to the hash table
      *
      * \note Throws if a hash collision is detected, i.e., if two different
      * matrices have the same hash value
      *
-     * \param hashU Hash value of U
-     * \param U Complex matrix
+     * @param hashU Hash value of U
+     * @param hashU Hash value of U
+     * @param U Complex matrix
+     * @param U Complex matrix
      */
     void add_hash_(std::size_t hashU, const cmat& U) {
         // EXCEPTION CHECKS
@@ -144,45 +152,61 @@ class QCircuit : public IDisplay, public IJSON {
 
   protected:
     /**
-     * \brief Visits a qpp::QCircuit::VarStep variant
+     * @brief Visits a qpp::QCircuit::VarStep variant
+     * @brief Visits a qpp::QCircuit::VarStep variant
      *
-     * \tparam Fns Callable(s) matching the variant
+     * @tparam Fns Callable(s) matching the variant
+     * @tparam Fns Callable(s) matching the variant
      *
-     * \param circuit_step qpp::QCircuit::VarStep variant
-     * \param fns Callable(s) matching the variant
+     * @param circuit_step qpp::QCircuit::VarStep variant
+     * @param circuit_step qpp::QCircuit::VarStep variant
+     * @param fns Callable(s) matching the variant
+     * @param fns Callable(s) matching the variant
      */
     template <class... Fns>
     void visit_circuit_step_(VarStep& circuit_step, Fns&&... fns);
 
     /**
-     * \brief Visits a qpp::QCircuit::VarStep variant
+     * @brief Visits a qpp::QCircuit::VarStep variant
+     * @brief Visits a qpp::QCircuit::VarStep variant
      *
-     * \tparam Fns Callable(s) matching the variant
+     * @tparam Fns Callable(s) matching the variant
+     * @tparam Fns Callable(s) matching the variant
      *
-     * \param circuit_step qpp::QCircuit::VarStep variant
-     * \param fns Callable(s) matching the variant
+     * @param circuit_step qpp::QCircuit::VarStep variant
+     * @param circuit_step qpp::QCircuit::VarStep variant
+     * @param fns Callable(s) matching the variant
+     * @param fns Callable(s) matching the variant
      */
     template <class... Fns>
     void visit_circuit_step_(const VarStep& circuit_step, Fns&&... fns) const;
 
     /**
-     * \brief Visits a vector of qpp::QCircuit::VarStep variants
+     * @brief Visits a vector of qpp::QCircuit::VarStep variants
+     * @brief Visits a vector of qpp::QCircuit::VarStep variants
      *
-     * \tparam Fns Callable(s) matching the variant
+     * @tparam Fns Callable(s) matching the variant
+     * @tparam Fns Callable(s) matching the variant
      *
-     * \param circuit Vector of qpp::QCircuit::VarStep variants
-     * \param fns Callable(s) matching the variant
+     * @param circuit Vector of qpp::QCircuit::VarStep variants
+     * @param circuit Vector of qpp::QCircuit::VarStep variants
+     * @param fns Callable(s) matching the variant
+     * @param fns Callable(s) matching the variant
      */
     template <class... Fns>
     void visit_circuit_(std::vector<VarStep>& circuit, Fns&&... fns);
 
     /**
-     * \brief Visits a vector of qpp::QCircuit::VarStep variants
+     * @brief Visits a vector of qpp::QCircuit::VarStep variants
+     * @brief Visits a vector of qpp::QCircuit::VarStep variants
      *
-     * \tparam Fns Callable(s) matching the variant
+     * @tparam Fns Callable(s) matching the variant
+     * @tparam Fns Callable(s) matching the variant
      *
-     * \param circuit Vector of qpp::QCircuit::VarStep variants
-     * \param fns Callable(s) matching the variant
+     * @param circuit Vector of qpp::QCircuit::VarStep variants
+     * @param circuit Vector of qpp::QCircuit::VarStep variants
+     * @param fns Callable(s) matching the variant
+     * @param fns Callable(s) matching the variant
      */
     template <class... Fns>
     void visit_circuit_(const std::vector<VarStep>& circuit,
@@ -194,58 +218,75 @@ class QCircuit : public IDisplay, public IJSON {
     using const_iterator = iterator;
 
     /**
-     * \brief Iterator to the first element
+     * @brief Iterator to the first element
+     * @brief Iterator to the first element
      *
-     * \return Iterator to the first element
+     * @return Iterator to the first element
+     * @return Iterator to the first element
      */
     iterator begin() noexcept;
 
     /**
-     * \brief Iterator to the next to the last element
+     * @brief Iterator to the next to the last element
+     * @brief Iterator to the next to the last element
      *
-     * \return Iterator to the next to the last element
+     * @return Iterator to the next to the last element
+     * @return Iterator to the next to the last element
      */
     iterator end() noexcept;
 
     /**
-     * \brief Constant iterator to the first element
+     * @brief Constant iterator to the first element
+     * @brief Constant iterator to the first element
      *
-     * \return Constant iterator to the first element
+     * @return Constant iterator to the first element
+     * @return Constant iterator to the first element
      */
     const_iterator begin() const noexcept;
 
     /**
-     * \brief Constant iterator to the next to the last element
+     * @brief Constant iterator to the next to the last element
+     * @brief Constant iterator to the next to the last element
      *
-     * \return Constant iterator to the next to the last element
+     * @return Constant iterator to the next to the last element
+     * @return Constant iterator to the next to the last element
      */
     const_iterator end() const noexcept;
 
     /**
-     * \brief Constant iterator to the first element
+     * @brief Constant iterator to the first element
+     * @brief Constant iterator to the first element
      *
-     * \return Constant iterator to the first element
+     * @return Constant iterator to the first element
+     * @return Constant iterator to the first element
      */
     const_iterator cbegin() const noexcept;
 
     /**
-     * \brief Constant iterator to the next to the last element
+     * @brief Constant iterator to the next to the last element
+     * @brief Constant iterator to the next to the last element
      *
-     * \return Constant iterator to the next to the last element
+     * @return Constant iterator to the next to the last element
+     * @return Constant iterator to the next to the last element
      */
     const_iterator cend() const noexcept;
 
     /**
-     * \brief Constructs a quantum circuit description
+     * @brief Constructs a quantum circuit description
+     * @brief Constructs a quantum circuit description
      *
      * \note The measurement results can only be stored in the classical
      * dits of which number is specified by \a nc
      *
-     * \param nq Number of qudits (defaults to 1 so qpp::QCircuit is
+     * @param nq Number of qudits (defaults to 1 so qpp::QCircuit is
+     * @param nq Number of qudits (defaults to 1 so qpp::QCircuit is
      * default-constructible)
-     * \param nc Number of classical dits
-     * \param d Subsystem dimensions (default is qubit, i.e., \a d =2)
-     * \param name Optional circuit name
+     * @param nc Number of classical dits
+     * @param nc Number of classical dits
+     * @param d Subsystem dimensions (default is qubit, i.e., \a d =2)
+     * @param d Subsystem dimensions (default is qubit, i.e., \a d =2)
+     * @param name Optional circuit name
+     * @param name Optional circuit name
      */
     explicit QCircuit(idx nq = 1, idx nc = 0, idx d = 2,
                       std::optional<std::string> name = std::nullopt)
@@ -264,15 +305,18 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Default virtual destructor
+     * @brief Default virtual destructor
+     * @brief Default virtual destructor
      */
     ~QCircuit() override = default;
 
     // static member functions
     /**
-     * \brief Checks whether a gate step is a controlled gate
+     * @brief Checks whether a gate step is a controlled gate
+     * @brief Checks whether a gate step is a controlled gate
      *
-     * \return True if the gate step is a controlled gate, false otherwise
+     * @return True if the gate step is a controlled gate, false otherwise
+     * @return True if the gate step is a controlled gate, false otherwise
      */
     static bool is_CTRL(const internal::QCircuitGateStep& gate_step) {
         switch (gate_step.gate_type_) {
@@ -285,9 +329,11 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Checks whether a gate step is a classically-controlled gate
+     * @brief Checks whether a gate step is a classically-controlled gate
+     * @brief Checks whether a gate step is a classically-controlled gate
      *
-     * \return True if the gate step is a classically-controlled gate, false
+     * @return True if the gate step is a classically-controlled gate, false
+     * @return True if the gate step is a classically-controlled gate, false
      * otherwise
      */
     static bool is_cCTRL(const internal::QCircuitGateStep& gate_step) {
@@ -302,9 +348,11 @@ class QCircuit : public IDisplay, public IJSON {
 
     // getters
     /**
-     * \brief Hash table with the matrices used in the circuit
+     * @brief Hash table with the matrices used in the circuit
+     * @brief Hash table with the matrices used in the circuit
      *
-     * \return Hash table with the matrices used in the circuit
+     * @return Hash table with the matrices used in the circuit
+     * @return Hash table with the matrices used in the circuit
      */
     const std::unordered_map<std::size_t, cmat>&
     get_cmat_hash_tbl() const noexcept {
@@ -312,38 +360,49 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Total number of qudits in the circuit
+     * @brief Total number of qudits in the circuit
+     * @brief Total number of qudits in the circuit
      *
-     * \return Total number of qudits
+     * @return Total number of qudits
+     * @return Total number of qudits
      */
     idx get_nq() const noexcept { return nq_; }
 
     /**
-     * \brief Total number of classical dits in the circuit
+     * @brief Total number of classical dits in the circuit
+     * @brief Total number of classical dits in the circuit
      *
-     * \return Total number of classical dits
+     * @return Total number of classical dits
+     * @return Total number of classical dits
      */
     idx get_nc() const noexcept { return nc_; }
 
     /**
-     * \brief Dimension of the comprising qudits
+     * @brief Dimension of the comprising qudits
+     * @brief Dimension of the comprising qudits
      *
-     * \return Qudit dimension
+     * @return Qudit dimension
+     * @return Qudit dimension
      */
     idx get_d() const noexcept { return d_; }
 
     /**
-     * \brief Quantum circuit description name
+     * @brief Quantum circuit description name
+     * @brief Quantum circuit description name
      *
-     * \return Quantum circuit description name
+     * @return Quantum circuit description name
+     * @return Quantum circuit description name
      */
     std::optional<std::string> get_name() const { return name_; }
 
     /**
-     * \brief Check whether qudit \a i was already measured (destructively)
+     * @brief Check whether qudit \a i was already measured (destructively)
+     * @brief Check whether qudit \a i was already measured (destructively)
      *
-     * \param i Qudit index
-     * \return True if qudit \a i was already measured (destructively),
+     * @param i Qudit index
+     * @param i Qudit index
+     * @return True if qudit \a i was already measured (destructively),
+     * @return True if qudit \a i was already measured (destructively),
      * false otherwise
      */
     bool was_measured_d(idx i) const {
@@ -357,9 +416,11 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Vector of already measured (destructively) qudit indexes
+     * @brief Vector of already measured (destructively) qudit indexes
+     * @brief Vector of already measured (destructively) qudit indexes
      *
-     * \return Vector of already measured (destructively) qudit indexes
+     * @return Vector of already measured (destructively) qudit indexes
+     * @return Vector of already measured (destructively) qudit indexes
      */
     std::vector<idx> get_measured_d() const {
         std::vector<idx> result;
@@ -373,10 +434,13 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Check whether qudit \a i was already measured (non-destructively)
+     * @brief Check whether qudit \a i was already measured (non-destructively)
+     * @brief Check whether qudit \a i was already measured (non-destructively)
      *
-     * \param i Qudit index
-     * \return True if qudit \a i was already measured (non-destructively),
+     * @param i Qudit index
+     * @param i Qudit index
+     * @return True if qudit \a i was already measured (non-destructively),
+     * @return True if qudit \a i was already measured (non-destructively),
      * false otherwise
      */
     bool was_measured_nd(idx i) const {
@@ -391,9 +455,11 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Vector of already measured (non-destructively) qudit indexes
+     * @brief Vector of already measured (non-destructively) qudit indexes
+     * @brief Vector of already measured (non-destructively) qudit indexes
      *
-     * \return Vector of already measured (non-destructively) qudit indexes
+     * @return Vector of already measured (non-destructively) qudit indexes
+     * @return Vector of already measured (non-destructively) qudit indexes
      */
     std::vector<idx> get_measured_nd() const {
         std::vector<idx> result;
@@ -407,9 +473,11 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Vector of non-measured (destructively) qudit indexes
+     * @brief Vector of non-measured (destructively) qudit indexes
+     * @brief Vector of non-measured (destructively) qudit indexes
      *
-     * \return Vector of non-measured (destructively) qudit indexes
+     * @return Vector of non-measured (destructively) qudit indexes
+     * @return Vector of non-measured (destructively) qudit indexes
      */
     std::vector<idx> get_non_measured_d() const {
         std::vector<idx> result;
@@ -423,10 +491,12 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Vector of classical dits that were used to store results of
+     * @brief Vector of classical dits that were used to store results of
+     * @brief Vector of classical dits that were used to store results of
      * measurements (either destructive or non-destructive)
      *
-     * \return Vector of classical dits that participate in measurements
+     * @return Vector of classical dits that participate in measurements
+     * @return Vector of classical dits that participate in measurements
      */
     std::vector<idx> get_measurement_dits() const {
         std::vector<idx> result;
@@ -440,11 +510,14 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit description gate count
+     * @brief Quantum circuit description gate count
+     * @brief Quantum circuit description gate count
      *
-     * \param U Optional, gate. If absent (default), this function computes the
+     * @param U Optional, gate. If absent (default), this function computes the
+     * @param U Optional, gate. If absent (default), this function computes the
      * total circuit gate count.
-     * \return Gate count
+     * @return Gate count
+     * @return Gate count
      */
     idx get_gate_count(std::optional<cmat> U = std::nullopt) const {
         // EXCEPTION CHECKS
@@ -477,11 +550,14 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit description gate depth
+     * @brief Quantum circuit description gate depth
+     * @brief Quantum circuit description gate depth
      *
-     * \param U Optional, gate. If absent (default), this function computes the
+     * @param U Optional, gate. If absent (default), this function computes the
+     * @param U Optional, gate. If absent (default), this function computes the
      * total circuit gate depth.
-     * \return Gate depth
+     * @return Gate depth
+     * @return Gate depth
      */
     idx get_gate_depth(std::optional<cmat> U = std::nullopt) const {
         // EXCEPTION CHECKS
@@ -554,12 +630,15 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit description measurement depth
+     * @brief Quantum circuit description measurement depth
+     * @brief Quantum circuit description measurement depth
      *
-     * \param V Optional, orthonormal basis or rank-1 projectors specified by
+     * @param V Optional, orthonormal basis or rank-1 projectors specified by
+     * @param V Optional, orthonormal basis or rank-1 projectors specified by
      * the columns of matrix \a V. If absent (default), this function computes
      * the total circuit measurement depth.
-     * \return Measurement depth
+     * @return Measurement depth
+     * @return Measurement depth
      */
     idx get_measurement_depth(std::optional<cmat> V = std::nullopt) const {
         bool found = false;
@@ -667,19 +746,24 @@ class QCircuit : public IDisplay, public IJSON {
     // computes the depth greedily, measuring the "height" (depth) of the
     // "pieces" (gates) placed in a Tetris-like style
     /**
-     * \brief Quantum circuit description total depth
+     * @brief Quantum circuit description total depth
+     * @brief Quantum circuit description total depth
      *
-     * \return Gate/measurement total depth
+     * @return Gate/measurement total depth
+     * @return Gate/measurement total depth
      */
     idx get_depth() const { return get_gate_depth() + get_measurement_depth(); }
 
     /**
-     * \brief Quantum circuit description measurement count
+     * @brief Quantum circuit description measurement count
+     * @brief Quantum circuit description measurement count
      *
-     * \param V Optional, orthonormal basis or rank-1 projectors specified by
+     * @param V Optional, orthonormal basis or rank-1 projectors specified by
+     * @param V Optional, orthonormal basis or rank-1 projectors specified by
      * the columns of matrix \a V. If absent (default), this function computes
      * the total circuit measurement count.
-     * \return Measurement count
+     * @return Measurement count
+     * @return Measurement count
      */
     idx get_measurement_count(std::optional<cmat> V = std::nullopt) const {
         // EXCEPTION CHECKS
@@ -705,17 +789,21 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit total steps count, i.e., the sum of gate count
+     * @brief Quantum circuit total steps count, i.e., the sum of gate count
+     * @brief Quantum circuit total steps count, i.e., the sum of gate count
      * and measurement count
      *
-     * \return Total (gates + measurements) count
+     * @return Total (gates + measurements) count
+     * @return Total (gates + measurements) count
      */
     idx get_step_count() const noexcept { return circuit_.size(); }
 
     /**
-     * \brief No-op count
+     * @brief No-op count
+     * @brief No-op count
      *
-     * \return No-op count
+     * @return No-op count
+     * @return No-op count
      */
     idx get_nop_count() const {
         return std::count_if(circuit_.begin(), circuit_.end(), [](auto&& arg) {
@@ -724,9 +812,11 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Quantum circuit resources
+     * @brief Quantum circuit resources
+     * @brief Quantum circuit resources
      *
-     * \return Instance of \a internal::QCircuitResources
+     * @return Instance of \a internal::QCircuitResources
+     * @return Instance of \a internal::QCircuitResources
      */
     internal::QCircuitResources get_resources() const {
         internal::QCircuitResources result;
@@ -745,9 +835,11 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /*
-     * \brief Validates the conditional if/else/while (runtime) statements
+     * @brief Validates the conditional if/else/while (runtime) statements
+     * @brief Validates the conditional if/else/while (runtime) statements
      *
-     * \return True if valid conditionals, false otherwise
+     * @return True if valid conditionals, false otherwise
+     * @return True if valid conditionals, false otherwise
      */
     bool validate_conditionals() const {
         return conditional_stack_.empty() ? true : false;
@@ -756,10 +848,13 @@ class QCircuit : public IDisplay, public IJSON {
 
     // setters
     /**
-     * \brief Sets name for the quantum circuit description
+     * @brief Sets name for the quantum circuit description
+     * @brief Sets name for the quantum circuit description
      *
-     * \param name Quantum circuit description name
-     * \return Reference to the current instance
+     * @param name Quantum circuit description name
+     * @param name Quantum circuit description name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& set_name(const std::string& name) {
         name_ = name;
@@ -768,14 +863,18 @@ class QCircuit : public IDisplay, public IJSON {
     // end setters
 
     /**
-     * \brief Adds \a n additional qudits before qudit \a pos
+     * @brief Adds \a n additional qudits before qudit \a pos
+     * @brief Adds \a n additional qudits before qudit \a pos
      *
      * \note Qudits with indexes greater or equal than the newly inserted
      * ones have their indexes automatically incremented
      *
-     * \param n Number of qudits
-     * \param pos Qudit index
-     * \return Reference to the current instance
+     * @param n Number of qudits
+     * @param n Number of qudits
+     * @param pos Qudit index
+     * @param pos Qudit index
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& add_qudit(idx n, idx pos) {
         // EXCEPTION CHECKS
@@ -845,22 +944,29 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Adds \a n additional qudits after the last qudit
+     * @brief Adds \a n additional qudits after the last qudit
+     * @brief Adds \a n additional qudits after the last qudit
      *
-     * \param n Number of qudits
-     * \return Reference to the current instance
+     * @param n Number of qudits
+     * @param n Number of qudits
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& add_qudit(idx n = 1) { return add_qudit(n, nq_); }
 
     /**
-     * \brief Adds \a n additional classical dits before dit \a pos
+     * @brief Adds \a n additional classical dits before dit \a pos
+     * @brief Adds \a n additional classical dits before dit \a pos
      *
      * \note Classical dits with indexes greater or equal than the newly
      * inserted ones have their indexes automatically incremented
      *
-     * \param n Number of classical dits
-     * \param pos Classical dit index
-     * \return Reference to the current instance
+     * @param n Number of classical dits
+     * @param n Number of classical dits
+     * @param pos Classical dit index
+     * @param pos Classical dit index
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& add_dit(idx n, idx pos) {
         // EXCEPTION CHECKS
@@ -915,19 +1021,24 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Adds \a n additional classical dits after the last dit
+     * @brief Adds \a n additional classical dits after the last dit
+     * @brief Adds \a n additional classical dits after the last dit
      *
-     * \param n Number of classical dits
-     * \return Reference to the current instance
+     * @param n Number of classical dits
+     * @param n Number of classical dits
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& add_dit(idx n = 1) { return add_dit(n, nc_); }
 
     /**
-     * \brief Conditional WHILE, repeats the circuit steps starting with this
+     * @brief Conditional WHILE, repeats the circuit steps starting with this
+     * @brief Conditional WHILE, repeats the circuit steps starting with this
      * step and ending with a qpp::QCircuit::cond_end() step while the
      * predicate \a pred is true
      *
-     * \see qpp::QCircuit::cond_end()
+     * @see qpp::QCircuit::cond_end()
+     * @see qpp::QCircuit::cond_end()
      *
      * \note This member function is not as general as a typical while statement
      * in a programming language. The instructions enclosed within cond_while()
@@ -940,7 +1051,8 @@ class QCircuit : public IDisplay, public IJSON {
      * circuit, but at runtime the quantum engine skips it because the predicate
      * is trivially false.
      *
-     * \code
+     * @code
+     * @code
      * qc.cond_while([](auto dits) { return false; });
      *     qc.add_dit(10);
      *     qc.gate(gt.X, 0);
@@ -952,18 +1064,21 @@ class QCircuit : public IDisplay, public IJSON {
      * by iterating, as in a range-based loop, conditional statements are
      * ignored.
      *
-     * \param pred Boolean predicate
+     * @param pred Boolean predicate
+     * @param pred Boolean predicate
      * qpp::internal::const_proxy_to_engine_dits_t -> bool. The classical dits
      * can be read at runtime, when the circuit is being run by a quantum
      * engine. Example of a predicate:
-     * \code
+     * @code
+     * @code
      * auto pred = [](auto dits) {
      *     return dits[0] == 1; // true if the classical dit 0 equals 1 at
      * runtime
      * }
      * \endcode
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& cond_while(cond_pred_t pred) {
         if (!outer_while_pos_.has_value()) {
@@ -982,10 +1097,12 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Conditional IF, executes the circuit steps starting with this
+     * @brief Conditional IF, executes the circuit steps starting with this
+     * @brief Conditional IF, executes the circuit steps starting with this
      * step and ending with a qpp::QCircuit::cond_end() step if the predicate
      * \a pred is true
-     * \see qpp::QCircuit::cond_else(), qpp::QCircuit::cond_end()
+     * @see qpp::QCircuit::cond_else(), qpp::QCircuit::cond_end()
+     * @see qpp::QCircuit::cond_else(), qpp::QCircuit::cond_end()
      *
      * \note This member function is not as general as a typical if statement in
      * a programming language. The instructions enclosed within cond_if() and
@@ -998,7 +1115,8 @@ class QCircuit : public IDisplay, public IJSON {
      * circuit, but at runtime the quantum engine skips it because the predicate
      * is trivially false.
      *
-     * \code
+     * @code
+     * @code
      * qc.cond_if([](auto dits) { return false; });
      *     qc.add_dit(10);
      *     qc.gate(gt.X, 0);
@@ -1010,18 +1128,21 @@ class QCircuit : public IDisplay, public IJSON {
      * by iterating, as in a range-based loop, conditional statements are
      * ignored.
      *
-     * \param pred Boolean predicate
+     * @param pred Boolean predicate
+     * @param pred Boolean predicate
      * qpp::internal::const_proxy_to_engine_dits_t -> bool. The classical dits
      * can be read at runtime, when the circuit is being run by a quantum
      * engine. Example of a predicate:
-     * \code
+     * @code
+     * @code
      * auto pred = [](auto dits) {
      *     return dits[0] == 1; // true if the classical dit 0 equals 1 at
      *                          // runtime
      * }
      * \endcode
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& cond_if(cond_pred_t pred) {
         internal::QCircuitRuntimeStep::Context ctx{};
@@ -1036,10 +1157,13 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Conditional ELSE, alternative branch of a conditional IF
-     * \see qpp::QCircuit::cond_if(), qpp::QCircuit::cond_end()
+     * @brief Conditional ELSE, alternative branch of a conditional IF
+     * @brief Conditional ELSE, alternative branch of a conditional IF
+     * @see qpp::QCircuit::cond_if(), qpp::QCircuit::cond_end()
+     * @see qpp::QCircuit::cond_if(), qpp::QCircuit::cond_end()
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& cond_else() {
         // EXCEPTION CHECKS
@@ -1072,10 +1196,13 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Ends conditional IF/ELSE and WHILE blocks
-     * \see qpp::QCircuit::cond_if(), qpp::QCircuit::cond_while()
+     * @brief Ends conditional IF/ELSE and WHILE blocks
+     * @brief Ends conditional IF/ELSE and WHILE blocks
+     * @see qpp::QCircuit::cond_if(), qpp::QCircuit::cond_while()
+     * @see qpp::QCircuit::cond_if(), qpp::QCircuit::cond_while()
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& cond_end() {
         // EXCEPTION CHECKS
@@ -1132,19 +1259,23 @@ class QCircuit : public IDisplay, public IJSON {
         return *this;
     }
 
-    /** \brief Set dits at runtime (when running with a quantum engine)
+    /** @brief Set dits at runtime (when running with a quantum engine)
+    /** @brief Set dits at runtime (when running with a quantum engine)
      *
-     * \param functor Functor qpp::internal::proxy_to_engine_dits_t -> bool.
+     * @param functor Functor qpp::internal::proxy_to_engine_dits_t -> bool.
+     * @param functor Functor qpp::internal::proxy_to_engine_dits_t -> bool.
      * The classical dits can be read/written at runtime, when the circuit is
      * being run by a quantum engine. Example of a functor:
      *
-     * \code
+     * @code
+     * @code
      * auto functor= [](auto dits) {
      *     dits[0] == 1; // set dit 0 of the quantum engine
      * }
      * \endcode
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& set_dits_runtime(mutable_dits_functor_t functor) {
         internal::QCircuitRuntimeStep::Context ctx{};
@@ -1156,12 +1287,17 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Applies the single qudit gate \a U on single qudit \a i
+     * @brief Applies the single qudit gate \a U on single qudit \a i
+     * @brief Applies the single qudit gate \a U on single qudit \a i
      *
-     * \param U Single qudit quantum gate
-     * \param i Qudit index
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param i Qudit index
+     * @param i Qudit index
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& gate(const cmat& U, idx i,
                    std::optional<std::string> name = std::nullopt) {
@@ -1209,13 +1345,19 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Applies the two qudit gate \a U on qudits \a i and \a j
+     * @brief Applies the two qudit gate \a U on qudits \a i and \a j
+     * @brief Applies the two qudit gate \a U on qudits \a i and \a j
      *
-     * \param U Two qudit quantum gate
-     * \param i Qudit index
-     * \param j Qudit index
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param U Two qudit quantum gate
+     * @param U Two qudit quantum gate
+     * @param i Qudit index
+     * @param i Qudit index
+     * @param j Qudit index
+     * @param j Qudit index
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& gate(const cmat& U, idx i, idx j,
                    std::optional<std::string> name = std::nullopt) {
@@ -1262,15 +1404,22 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Applies the three qudit gate \a U on qudits \a i, \a j and \a
+     * @brief Applies the three qudit gate \a U on qudits \a i, \a j and \a
+     * @brief Applies the three qudit gate \a U on qudits \a i, \a j and \a
      * k
      *
-     * \param U Three qudit quantum gate
-     * \param i Qudit index
-     * \param j Qudit index
-     * \param k Qudit index
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param U Three qudit quantum gate
+     * @param U Three qudit quantum gate
+     * @param i Qudit index
+     * @param i Qudit index
+     * @param j Qudit index
+     * @param j Qudit index
+     * @param k Qudit index
+     * @param k Qudit index
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& gate(const cmat& U, idx i, idx j, idx k,
                    std::optional<std::string> name = std::nullopt) {
@@ -1318,14 +1467,19 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Applies the single qudit gate \a U on every qudit listed in
+     * @brief Applies the single qudit gate \a U on every qudit listed in
+     * @brief Applies the single qudit gate \a U on every qudit listed in
      * \a target
      *
-     * \param U Single qudit quantum gate
-     * \param target Target qudit indexes; the gate \a U is applied on every one
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param target Target qudit indexes; the gate \a U is applied on every one
+     * @param target Target qudit indexes; the gate \a U is applied on every one
      * of them
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& gate_fan(const cmat& U, const std::vector<idx>& target,
                        std::optional<std::string> name = std::nullopt) {
@@ -1389,14 +1543,19 @@ class QCircuit : public IDisplay, public IJSON {
     // see
     // https://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
     /**
-     * \brief Applies the single qudit gate \a U on every qudit listed in
+     * @brief Applies the single qudit gate \a U on every qudit listed in
+     * @brief Applies the single qudit gate \a U on every qudit listed in
      * \a target
      *
-     * \param U Single qudit quantum gate
-     * \param target Target qudit indexes; the gate \a U is applied on every
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param target Target qudit indexes; the gate \a U is applied on every
+     * @param target Target qudit indexes; the gate \a U is applied on every
      * one of them
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& gate_fan(const cmat& U, const std::initializer_list<idx>& target,
                        std::optional<std::string> name = std::nullopt) {
@@ -1404,12 +1563,16 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Applies the single qudit gate \a U on all of the remaining
+     * @brief Applies the single qudit gate \a U on all of the remaining
+     * @brief Applies the single qudit gate \a U on all of the remaining
      * non-measured qudits
      *
-     * \param U Single qudit quantum gate
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& gate_fan(const cmat& U,
                        std::optional<std::string> name = std::nullopt) {
@@ -1433,13 +1596,18 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Jointly applies the multiple-qudit gate \a U on the qudit
+     * @brief Jointly applies the multiple-qudit gate \a U on the qudit
+     * @brief Jointly applies the multiple-qudit gate \a U on the qudit
      * indexes specified by \a target
      *
-     * \param U Multiple qudit quantum gate
-     * \param target Subsystem indexes where the gate \a U is applied
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param U Multiple qudit quantum gate
+     * @param U Multiple qudit quantum gate
+     * @param target Subsystem indexes where the gate \a U is applied
+     * @param target Subsystem indexes where the gate \a U is applied
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& gate(const cmat& U, const std::vector<idx>& target,
                    std::optional<std::string> name = std::nullopt) {
@@ -1503,13 +1671,17 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Applies the quantum Fourier transform (as a series of gates)
+     * @brief Applies the quantum Fourier transform (as a series of gates)
+     * @brief Applies the quantum Fourier transform (as a series of gates)
      * on the qudit indexes specified by \a target
      *
-     * \param target Subsystem indexes where the quantum Fourier transform
+     * @param target Subsystem indexes where the quantum Fourier transform
+     * @param target Subsystem indexes where the quantum Fourier transform
      * is applied
-     * \param swap Swaps the qubits at the end (true by default)
-     * \return Reference to the current instance
+     * @param swap Swaps the qubits at the end (true by default)
+     * @param swap Swaps the qubits at the end (true by default)
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& QFT(const std::vector<idx>& target, bool swap = true) {
         // EXCEPTION CHECKS
@@ -1595,35 +1767,46 @@ class QCircuit : public IDisplay, public IJSON {
 
     // std::initializer_list overload, avoids ambiguity for {idx} -> bool
     /**
-     * \brief Applies the quantum Fourier transform (as a series of gates)
+     * @brief Applies the quantum Fourier transform (as a series of gates)
+     * @brief Applies the quantum Fourier transform (as a series of gates)
      * on the qudit indexes specified by \a target
      *
-     * \param target Subsystem indexes where the quantum Fourier transform
+     * @param target Subsystem indexes where the quantum Fourier transform
+     * @param target Subsystem indexes where the quantum Fourier transform
      * is applied
-     * \param swap Swaps the qubits at the end (true by default)
-     * \return Reference to the current instance
+     * @param swap Swaps the qubits at the end (true by default)
+     * @param swap Swaps the qubits at the end (true by default)
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& QFT(const std::initializer_list<idx>& target, bool swap = true) {
         return QFT(std::vector<idx>(target), swap);
     }
 
     /**
-     * \brief Applies the quantum Fourier transform (as a series of gates)
+     * @brief Applies the quantum Fourier transform (as a series of gates)
+     * @brief Applies the quantum Fourier transform (as a series of gates)
      * on all of remaining non-measured qudits
      *
-     * \param swap Swaps the qubits at the end (true by default)
-     * \return Reference to the current instance
+     * @param swap Swaps the qubits at the end (true by default)
+     * @param swap Swaps the qubits at the end (true by default)
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& QFT(bool swap = true) { return QFT(get_non_measured_d(), swap); }
 
     /**
-     * \brief Applies the inverse quantum Fourier transform (as a series of
+     * @brief Applies the inverse quantum Fourier transform (as a series of
+     * @brief Applies the inverse quantum Fourier transform (as a series of
      * gates) on the qudit indexes specified by \a target
      *
-     * \param target Subsystem indexes where the inverse quantum Fourier
+     * @param target Subsystem indexes where the inverse quantum Fourier
+     * @param target Subsystem indexes where the inverse quantum Fourier
      * transform is applied
-     * \param swap Swaps the qubits at the end (true by default)
-     * \return Reference to the current instance
+     * @param swap Swaps the qubits at the end (true by default)
+     * @param swap Swaps the qubits at the end (true by default)
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& TFQ(const std::vector<idx>& target,
                   [[maybe_unused]] bool swap = true) {
@@ -1710,41 +1893,55 @@ class QCircuit : public IDisplay, public IJSON {
 
     // std::initializer_list overload, avoids ambiguity for {idx} -> bool
     /**
-     * \brief Applies the inverse quantum Fourier transform (as a series of
+     * @brief Applies the inverse quantum Fourier transform (as a series of
+     * @brief Applies the inverse quantum Fourier transform (as a series of
      * gates) on the qudit indexes specified by \a target
      *
-     * \param target Subsystem indexes where the inverse quantum Fourier
+     * @param target Subsystem indexes where the inverse quantum Fourier
+     * @param target Subsystem indexes where the inverse quantum Fourier
      * transform is applied
-     * \param swap Swaps the qubits at the end (true by default)
-     * \return Reference to the current instance
+     * @param swap Swaps the qubits at the end (true by default)
+     * @param swap Swaps the qubits at the end (true by default)
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& TFQ(const std::initializer_list<idx>& target, bool swap = true) {
         return TFQ(std::vector<idx>(target), swap);
     }
 
     /**
-     * \brief Applies the inverse quantum Fourier transform (as a series of
+     * @brief Applies the inverse quantum Fourier transform (as a series of
+     * @brief Applies the inverse quantum Fourier transform (as a series of
      * gates) on all of remaining non-measured qudits
      *
-     * \param swap Swaps the qubits at the end (true by default)
-     * \return Reference to the current instance
+     * @param swap Swaps the qubits at the end (true by default)
+     * @param swap Swaps the qubits at the end (true by default)
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& TFQ(bool swap = true) { return TFQ(get_non_measured_d(), swap); }
 
     // single ctrl multiple targets
     /**
-     * \brief Applies the single qudit controlled gate \a U with control
+     * @brief Applies the single qudit controlled gate \a U with control
+     * @brief Applies the single qudit controlled gate \a U with control
      * qudit \a ctrl on every qudit listed in \a target, i.e.,
      * CTRL-U-U-...-U
      *
-     * \param U Single qudit quantum gate
-     * \param ctrl Control qudit index
-     * \param target Target qudit indexes; the gate \a U is applied on every
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param ctrl Control qudit index
+     * @param ctrl Control qudit index
+     * @param target Target qudit indexes; the gate \a U is applied on every
+     * @param target Target qudit indexes; the gate \a U is applied on every
      * one of them depending on the values of the control qudits
-     * \param shift Optional, performs the control as if the \a ctrl qudit state
+     * @param shift Optional, performs the control as if the \a ctrl qudit state
+     * @param shift Optional, performs the control as if the \a ctrl qudit state
      * was \f$X\f$-incremented by \a shift
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& CTRL_fan(const cmat& U, idx ctrl, const std::vector<idx>& target,
                        std::optional<idx> shift = std::nullopt,
@@ -1839,20 +2036,27 @@ class QCircuit : public IDisplay, public IJSON {
 
     // multiple ctrl multiple targets
     /**
-     * \brief Applies the single qudit controlled gate \a U with multiple
+     * @brief Applies the single qudit controlled gate \a U with multiple
+     * @brief Applies the single qudit controlled gate \a U with multiple
      * control qudits listed in \a ctrl on every qudit listed in \a target,
      * i.e., CTRL-CTRL-...-CTRL-U-U-...-U
      *
-     * \param U Single qudit quantum gate
-     * \param ctrl Control qudit indexes
-     * \param target Target qudit indexes; the gate \a U is applied on every
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param ctrl Control qudit indexes
+     * @param ctrl Control qudit indexes
+     * @param target Target qudit indexes; the gate \a U is applied on every
+     * @param target Target qudit indexes; the gate \a U is applied on every
      * one of them depending on the values of the control qudits
-     * \param shift Performs the control as if the \a ctrl qudit states were
+     * @param shift Performs the control as if the \a ctrl qudit states were
+     * @param shift Performs the control as if the \a ctrl qudit states were
      * \f$X\f$-incremented component-wise by \a shift. If non-empty
      * (default), the size of \a shift must be the same as the size of \a
      * ctrl.
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& CTRL_fan(const cmat& U, const std::vector<idx>& ctrl,
                        const std::vector<idx>& target,
@@ -1968,19 +2172,26 @@ class QCircuit : public IDisplay, public IJSON {
 
     // multiple ctrl joint target
     /**
-     * \brief Jointly applies the multiple-qudit controlled gate \a U with
+     * @brief Jointly applies the multiple-qudit controlled gate \a U with
+     * @brief Jointly applies the multiple-qudit controlled gate \a U with
      * multiple control qudits listed in \a ctrl on the qudit indexes
      * specified by \a target, i.e., CTRL-CTRL-...-CTRL-U_{joint}
      *
-     * \param U Multiple-qudit quantum gate
-     * \param ctrl Control qudit indexes
-     * \param target Target qudit indexes where the gate \a U is applied
+     * @param U Multiple-qudit quantum gate
+     * @param U Multiple-qudit quantum gate
+     * @param ctrl Control qudit indexes
+     * @param ctrl Control qudit indexes
+     * @param target Target qudit indexes where the gate \a U is applied
+     * @param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the control qudits
-     * \param shift Optional, performs the control as if the \a ctrl qudit
+     * @param shift Optional, performs the control as if the \a ctrl qudit
+     * @param shift Optional, performs the control as if the \a ctrl qudit
      * states were \f$X\f$-incremented component-wise by \a shift. If present,
      * the size of \a shift must be the same as the size of \a ctrl.
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl,
                    const std::vector<idx>& target,
@@ -2092,18 +2303,25 @@ class QCircuit : public IDisplay, public IJSON {
 
     // multiple ctrl single target
     /**
-     * \brief Applies the multiple-qudit controlled gate \a U with
+     * @brief Applies the multiple-qudit controlled gate \a U with
+     * @brief Applies the multiple-qudit controlled gate \a U with
      * multiple control qudits listed in \a ctrl on the target qudit
      * specified by \a target, i.e., CTRL-CTRL-...-CTRL-U
      *
-     * \param U Single qudit quantum gate
-     * \param ctrl Control qudit indexes
-     * \param target Target qudit index
-     * \param shift Optional, performs the control as if the \a ctrl qudit
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param ctrl Control qudit indexes
+     * @param ctrl Control qudit indexes
+     * @param target Target qudit index
+     * @param target Target qudit index
+     * @param shift Optional, performs the control as if the \a ctrl qudit
+     * @param shift Optional, performs the control as if the \a ctrl qudit
      * states were \f$X\f$-incremented component-wise by \a shift. If present,
      * the size of \a shift must be the same as the size of \a ctrl.
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, const std::vector<idx>& ctrl, idx target,
                    std::optional<std::vector<idx>> shift = std::nullopt,
@@ -2201,18 +2419,25 @@ class QCircuit : public IDisplay, public IJSON {
 
     // single ctrl joint target
     /**
-     * \brief Jointly applies the single qudit controlled gate \a U with
+     * @brief Jointly applies the single qudit controlled gate \a U with
+     * @brief Jointly applies the single qudit controlled gate \a U with
      * control qudit \a ctrl on the qudit indexes specified by \a target,
      * i.e., CTRL-U_{joint}
      *
-     * \param U Multiple-qudit quantum gate
-     * \param ctrl Control qudit index
-     * \param target Target qudit indexes; the gate \a U is applied on every
+     * @param U Multiple-qudit quantum gate
+     * @param U Multiple-qudit quantum gate
+     * @param ctrl Control qudit index
+     * @param ctrl Control qudit index
+     * @param target Target qudit indexes; the gate \a U is applied on every
+     * @param target Target qudit indexes; the gate \a U is applied on every
      * one of them depending on the values of the control qudits
-     * \param shift Optional, performs the control as if the \a ctrl qudit state
+     * @param shift Optional, performs the control as if the \a ctrl qudit state
+     * @param shift Optional, performs the control as if the \a ctrl qudit state
      * was \f$X\f$-incremented by \a shift
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, idx ctrl, const std::vector<idx>& target,
                    std::optional<idx> shift = std::nullopt,
@@ -2308,16 +2533,23 @@ class QCircuit : public IDisplay, public IJSON {
 
     // single ctrl single target
     /**
-     * \brief Applies the single qudit controlled gate \a U with control
+     * @brief Applies the single qudit controlled gate \a U with control
+     * @brief Applies the single qudit controlled gate \a U with control
      * qudit \a ctrl and target qudit \a target, i.e., CTRL-U
      *
-     * \param U Single qudit quantum gate
-     * \param ctrl Control qudit index
-     * \param target Target qudit index
-     * \param shift Optional, performs the control as if the \a ctrl qudit state
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param ctrl Control qudit index
+     * @param ctrl Control qudit index
+     * @param target Target qudit index
+     * @param target Target qudit index
+     * @param shift Optional, performs the control as if the \a ctrl qudit state
+     * @param shift Optional, performs the control as if the \a ctrl qudit state
      * was \f$X\f$-incremented by \a shift
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& CTRL(const cmat& U, idx ctrl, idx target,
                    std::optional<idx> shift = std::nullopt,
@@ -2379,18 +2611,25 @@ class QCircuit : public IDisplay, public IJSON {
 
     // single cctrl multiple targets
     /**
-     * \brief Applies the single qudit controlled gate \a U with classical
+     * @brief Applies the single qudit controlled gate \a U with classical
+     * @brief Applies the single qudit controlled gate \a U with classical
      * control dit \a ctrl on every qudit listed in \a target, i.e.,
      * cCTRL-U-U-...-U
      *
-     * \param U Single qudit quantum gate
-     * \param ctrl_dit Classical control dit index
-     * \param target Target qudit indexes; the gate \a U is applied on every
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param ctrl_dit Classical control dit index
+     * @param ctrl_dit Classical control dit index
+     * @param target Target qudit indexes; the gate \a U is applied on every
+     * @param target Target qudit indexes; the gate \a U is applied on every
      * one of them depending on the values of the classical control dits
-     * \param shift Optional, performs the control as if the \a ctrl_dit
+     * @param shift Optional, performs the control as if the \a ctrl_dit
+     * @param shift Optional, performs the control as if the \a ctrl_dit
      * classical dit was incremented by \a shift
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& cCTRL_fan(const cmat& U, idx ctrl_dit,
                         const std::vector<idx>& target,
@@ -2474,19 +2713,26 @@ class QCircuit : public IDisplay, public IJSON {
 
     // multiple cctrl multiple targets
     /**
-     * \brief Applies the single qudit controlled gate \a U with multiple
+     * @brief Applies the single qudit controlled gate \a U with multiple
+     * @brief Applies the single qudit controlled gate \a U with multiple
      * classical control dits listed in \a ctrl on every qudit listed in
      * \a target, i.e., cCTRL-cCTRL-...-cCTRL-U-U-...-U
      *
-     * \param U Single qudit quantum gate
-     * \param ctrl_dits Classical control dits indexes
-     * \param target Target qudit indexes; the gate \a U is applied on every
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param ctrl_dits Classical control dits indexes
+     * @param ctrl_dits Classical control dits indexes
+     * @param target Target qudit indexes; the gate \a U is applied on every
+     * @param target Target qudit indexes; the gate \a U is applied on every
      * one of them depending on the values of the classical control dits
-     * \param shift Optional, performs the control as if the \a ctrl_dits
+     * @param shift Optional, performs the control as if the \a ctrl_dits
+     * @param shift Optional, performs the control as if the \a ctrl_dits
      * classical dits were incremented component-wise by \a shift. If present,
      * the size of \a shift must be the same as the size of \a ctrl_dits.
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& cCTRL_fan(const cmat& U, const std::vector<idx>& ctrl_dits,
                         const std::vector<idx>& target,
@@ -2587,19 +2833,26 @@ class QCircuit : public IDisplay, public IJSON {
 
     // multiple cctrl joint target
     /**
-     * \brief Jointly applies the multiple-qudit controlled gate \a U with
+     * @brief Jointly applies the multiple-qudit controlled gate \a U with
+     * @brief Jointly applies the multiple-qudit controlled gate \a U with
      * multiple classical control dits listed in \a ctrl on the qudit
      * indexes specified by \a target, i.e., cCTRL-cCTRL-...-cCTRL-U_{joint}
      *
-     * \param U Multiple-qudit quantum gate
-     * \param ctrl_dits Classical control dits indexes
-     * \param target Target qudit indexes where the gate \a U is applied
+     * @param U Multiple-qudit quantum gate
+     * @param U Multiple-qudit quantum gate
+     * @param ctrl_dits Classical control dits indexes
+     * @param ctrl_dits Classical control dits indexes
+     * @param target Target qudit indexes where the gate \a U is applied
+     * @param target Target qudit indexes where the gate \a U is applied
      * depending on the values of the classical control dits
-     * \param shift Optional, performs the control as if the \a ctrl_dits
+     * @param shift Optional, performs the control as if the \a ctrl_dits
+     * @param shift Optional, performs the control as if the \a ctrl_dits
      * classical dits were incremented component-wise by \a shift. If present,
      * the size of \a shift must be the same as the size of \a ctrl_dits.
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
                     const std::vector<idx>& target,
@@ -2702,18 +2955,25 @@ class QCircuit : public IDisplay, public IJSON {
 
     // multiple cctrl single target
     /**
-     * \brief Applies the single qudit controlled gate \a U with multiple
+     * @brief Applies the single qudit controlled gate \a U with multiple
+     * @brief Applies the single qudit controlled gate \a U with multiple
      * classical control dits listed in \a ctrl on the target qudit \a
      * target, i.e., cCTRL-cCTRL-...-cCTRL-U
      *
-     * \param U Single qudit quantum gate
-     * \param ctrl_dits Classical control dits indexes
-     * \param target Target qudit index
-     * \param shift Optional, performs the control as if the \a ctrl_dits
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param ctrl_dits Classical control dits indexes
+     * @param ctrl_dits Classical control dits indexes
+     * @param target Target qudit index
+     * @param target Target qudit index
+     * @param shift Optional, performs the control as if the \a ctrl_dits
+     * @param shift Optional, performs the control as if the \a ctrl_dits
      * classical dits were incremented component-wise by \a shift. If present,
      * the size of \a shift must be the same as the size of \a ctrl_dits.
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, const std::vector<idx>& ctrl_dits,
                     idx target,
@@ -2801,18 +3061,25 @@ class QCircuit : public IDisplay, public IJSON {
 
     // single cctrl joint target
     /**
-     * \brief Jointly applies the single qudit controlled gate \a U with
+     * @brief Jointly applies the single qudit controlled gate \a U with
+     * @brief Jointly applies the single qudit controlled gate \a U with
      * classical control dit \a ctrl on the qudit indexes specified by \a
      * target, i.e., cCTRL-U_{joint}
      *
-     * \param U Multiple-qudit quantum gate
-     * \param ctrl_dit Classical control dit index
-     * \param target Target qudit indexes; the gate \a U is applied on every
+     * @param U Multiple-qudit quantum gate
+     * @param U Multiple-qudit quantum gate
+     * @param ctrl_dit Classical control dit index
+     * @param ctrl_dit Classical control dit index
+     * @param target Target qudit indexes; the gate \a U is applied on every
+     * @param target Target qudit indexes; the gate \a U is applied on every
      * one of them depending on the values of the classical control dits
-     * \param shift Optional, performs the control as if the \a ctrl_dit
+     * @param shift Optional, performs the control as if the \a ctrl_dit
+     * @param shift Optional, performs the control as if the \a ctrl_dit
      * classical dit was incremented by \a shift
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, idx ctrl_dit, const std::vector<idx>& target,
                     std::optional<idx> shift = std::nullopt,
@@ -2897,16 +3164,23 @@ class QCircuit : public IDisplay, public IJSON {
 
     // single cctrl single target
     /**
-     * \brief Applies the single qubit controlled gate \a U with classical
+     * @brief Applies the single qubit controlled gate \a U with classical
+     * @brief Applies the single qubit controlled gate \a U with classical
      * control dit \a ctrl and target qudit \a target, i.e., cCTRL-U
      *
-     * \param U Single qudit quantum gate
-     * \param ctrl_dit Classical control dit index
-     * \param target Target qudit index
-     * \param shift Optional, performs the control as if the \a ctrl_dit
+     * @param U Single qudit quantum gate
+     * @param U Single qudit quantum gate
+     * @param ctrl_dit Classical control dit index
+     * @param ctrl_dit Classical control dit index
+     * @param target Target qudit index
+     * @param target Target qudit index
+     * @param shift Optional, performs the control as if the \a ctrl_dit
+     * @param shift Optional, performs the control as if the \a ctrl_dit
      * classical dit was incremented by \a shift
-     * \param name Optional gate name
-     * \return Reference to the current instance
+     * @param name Optional gate name
+     * @param name Optional gate name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& cCTRL(const cmat& U, idx ctrl_dit, idx target,
                     std::optional<idx> shift = std::nullopt,
@@ -2971,14 +3245,20 @@ class QCircuit : public IDisplay, public IJSON {
 
     // Z measurement of single qudit
     /**
-     * \brief Measures single qudit in the computational basis (Z-basis)
+     * @brief Measures single qudit in the computational basis (Z-basis)
+     * @brief Measures single qudit in the computational basis (Z-basis)
      *
-     * \param target Target qudit index that is measured
-     * \param c_reg Classical register where the value of the measurement is
+     * @param target Target qudit index that is measured
+     * @param target Target qudit index that is measured
+     * @param c_reg Classical register where the value of the measurement is
+     * @param c_reg Classical register where the value of the measurement is
      * being stored
-     * \param destructive Destructive measurement, true by default
-     * \param name Optional measurement name, default is "mZ"
-     * \return Reference to the current instance
+     * @param destructive Destructive measurement, true by default
+     * @param destructive Destructive measurement, true by default
+     * @param name Optional measurement name, default is "mZ"
+     * @param name Optional measurement name, default is "mZ"
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& measure(idx target, idx c_reg, bool destructive = true,
                       std::optional<std::string> name = "mZ") {
@@ -3037,16 +3317,22 @@ class QCircuit : public IDisplay, public IJSON {
 
     // Z measurement of multiple qudits
     /**
-     * \brief Measures multiple qudits in the computational basis (Z-basis)
+     * @brief Measures multiple qudits in the computational basis (Z-basis)
+     * @brief Measures multiple qudits in the computational basis (Z-basis)
      *
-     * \param target Target qudit indexes that are measured
-     * \param c_reg Classical register where the values of the measurements
+     * @param target Target qudit indexes that are measured
+     * @param target Target qudit indexes that are measured
+     * @param c_reg Classical register where the values of the measurements
+     * @param c_reg Classical register where the values of the measurements
      * are being stored in order, that is, the measurement result
      * corresponding to target[0] is stored in \a c_reg, the one
      * corresponding to target[1] is stored in \a c_reg + 1 and so on
-     * \param destructive Destructive measurement, true by default
-     * \param name Optional measurement name, default is "mZ"
-     * \return Reference to the current instance
+     * @param destructive Destructive measurement, true by default
+     * @param destructive Destructive measurement, true by default
+     * @param name Optional measurement name, default is "mZ"
+     * @param name Optional measurement name, default is "mZ"
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& measure(const std::vector<idx>& target, idx c_reg = 0,
                       bool destructive = true,
@@ -3121,17 +3407,22 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Measures all remaining measurable qudits in the computational
+     * @brief Measures all remaining measurable qudits in the computational
+     * @brief Measures all remaining measurable qudits in the computational
      * basis (Z-basis)
      *
-     * \param c_reg Classical register where the values of the measurements
+     * @param c_reg Classical register where the values of the measurements
+     * @param c_reg Classical register where the values of the measurements
      * are being stored in order, that is, the measurement result
      * corresponding to the first measurable qudit is stored in \a c_reg,
      * the one corresponding to the second measurable qudit is stored in \a
      * c_reg + 1 and so on
-     * \param destructive Destructive measurement, true by default
-     * \param name Optional measurement name, default is "mZ"
-     * \return Reference to the current instance
+     * @param destructive Destructive measurement, true by default
+     * @param destructive Destructive measurement, true by default
+     * @param name Optional measurement name, default is "mZ"
+     * @param name Optional measurement name, default is "mZ"
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& measure_all(idx c_reg = 0, bool destructive = true,
                           std::optional<std::string> name = "mZ") {
@@ -3157,17 +3448,24 @@ class QCircuit : public IDisplay, public IJSON {
     // measurement of single qudit in the orthonormal basis or rank-1
     // projectors specified by the columns of matrix V
     /**
-     * \brief Measures single qudit in the orthonormal basis or rank-1
+     * @brief Measures single qudit in the orthonormal basis or rank-1
+     * @brief Measures single qudit in the orthonormal basis or rank-1
      * projectors specified by the columns of matrix \a V
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * @param V Orthonormal basis or rank-1 projectors specified by the
+     * @param V Orthonormal basis or rank-1 projectors specified by the
      * columns of matrix \a V
-     * \param target Target qudit index that is measured
-     * \param c_reg Classical register where the value of the measurement is
+     * @param target Target qudit index that is measured
+     * @param target Target qudit index that is measured
+     * @param c_reg Classical register where the value of the measurement is
+     * @param c_reg Classical register where the value of the measurement is
      * stored
-     * \param destructive Destructive measurement, true by default
-     * \param name Optional measurement name
-     * \return Reference to the current instance
+     * @param destructive Destructive measurement, true by default
+     * @param destructive Destructive measurement, true by default
+     * @param name Optional measurement name
+     * @param name Optional measurement name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& measureV(const cmat& V, idx target, idx c_reg,
                        bool destructive = true,
@@ -3243,17 +3541,24 @@ class QCircuit : public IDisplay, public IJSON {
     // measurement of multiple qudits in the orthonormal basis or rank-1
     // projectors specified by the columns of matrix V
     /**
-     * \brief Jointly measures multiple qudits in the orthonormal basis or
+     * @brief Jointly measures multiple qudits in the orthonormal basis or
+     * @brief Jointly measures multiple qudits in the orthonormal basis or
      * rank-1 projectors specified by the columns of matrix \a V
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * @param V Orthonormal basis or rank-1 projectors specified by the
+     * @param V Orthonormal basis or rank-1 projectors specified by the
      * columns of matrix \a V
-     * \param target Target qudit indexes that are jointly measured
-     * \param c_reg Classical register where the value of the measurement is
+     * @param target Target qudit indexes that are jointly measured
+     * @param target Target qudit indexes that are jointly measured
+     * @param c_reg Classical register where the value of the measurement is
+     * @param c_reg Classical register where the value of the measurement is
      * stored
-     * \param destructive Destructive measurement, true by default
-     * \param name Optional measurement name
-     * \return Reference to the current instance
+     * @param destructive Destructive measurement, true by default
+     * @param destructive Destructive measurement, true by default
+     * @param name Optional measurement name
+     * @param name Optional measurement name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& measureV(const cmat& V, const std::vector<idx>& target, idx c_reg,
                        bool destructive = true,
@@ -3351,15 +3656,22 @@ class QCircuit : public IDisplay, public IJSON {
 
     // Z post-selection of single qudit
     /**
-     * \brief Post-selects single qudit in the computational basis (Z-basis)
+     * @brief Post-selects single qudit in the computational basis (Z-basis)
+     * @brief Post-selects single qudit in the computational basis (Z-basis)
      *
-     * \param target Target qudit index that is post-selected
-     * \param ps_val Post-election value
-     * \param c_reg Classical register where the value of the measurement is
+     * @param target Target qudit index that is post-selected
+     * @param target Target qudit index that is post-selected
+     * @param ps_val Post-election value
+     * @param ps_val Post-election value
+     * @param c_reg Classical register where the value of the measurement is
+     * @param c_reg Classical register where the value of the measurement is
      * being stored
-     * \param destructive Destructive measurement, true by default
-     * \param name Optional measurement name, default is "pZ"
-     * \return Reference to the current instance
+     * @param destructive Destructive measurement, true by default
+     * @param destructive Destructive measurement, true by default
+     * @param name Optional measurement name, default is "pZ"
+     * @param name Optional measurement name, default is "pZ"
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& post_select(idx target, idx ps_val, idx c_reg,
                           bool destructive = true,
@@ -3423,17 +3735,24 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Post-selects multiple qudits in the computational basis (Z-basis)
+     * @brief Post-selects multiple qudits in the computational basis (Z-basis)
+     * @brief Post-selects multiple qudits in the computational basis (Z-basis)
      *
-     * \param target Target qudit indexes that are post-selected
-     * \param ps_vals Post-election values
-     * \param c_reg Classical register where the values of the measurements
+     * @param target Target qudit indexes that are post-selected
+     * @param target Target qudit indexes that are post-selected
+     * @param ps_vals Post-election values
+     * @param ps_vals Post-election values
+     * @param c_reg Classical register where the values of the measurements
+     * @param c_reg Classical register where the values of the measurements
      * are being stored in order, that is, the measurement result
      * corresponding to target[0] is stored in \a c_reg, the one
      * corresponding to target[1] is stored in \a c_reg + 1 and so on
-     * \param destructive Destructive measurement, true by default
-     * \param name Optional post-selection name, default is "pZ"
-     * \return Reference to the current instance
+     * @param destructive Destructive measurement, true by default
+     * @param destructive Destructive measurement, true by default
+     * @param name Optional post-selection name, default is "pZ"
+     * @param name Optional post-selection name, default is "pZ"
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& post_select(const std::vector<idx>& target,
                           const std::vector<idx>& ps_vals, idx c_reg,
@@ -3521,18 +3840,26 @@ class QCircuit : public IDisplay, public IJSON {
     // post-selection of single qudit in the orthonormal basis or rank-1
     // projectors specified by the columns of matrix V
     /**
-     * \brief Post-selects single qudit in the orthonormal basis or rank-1
+     * @brief Post-selects single qudit in the orthonormal basis or rank-1
+     * @brief Post-selects single qudit in the orthonormal basis or rank-1
      * projectors specified by the columns of matrix \a V
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * @param V Orthonormal basis or rank-1 projectors specified by the
+     * @param V Orthonormal basis or rank-1 projectors specified by the
      * columns of matrix \a V
-     * \param target Target qudit index that is post-selected
-     * \param ps_val Post-election value
-     * \param c_reg Classical register where the value of the measurement is
+     * @param target Target qudit index that is post-selected
+     * @param target Target qudit index that is post-selected
+     * @param ps_val Post-election value
+     * @param ps_val Post-election value
+     * @param c_reg Classical register where the value of the measurement is
+     * @param c_reg Classical register where the value of the measurement is
      * stored
-     * \param destructive Destructive measurement, true by default
-     * \param name Optional measurement name
-     * \return Reference to the current instance
+     * @param destructive Destructive measurement, true by default
+     * @param destructive Destructive measurement, true by default
+     * @param name Optional measurement name
+     * @param name Optional measurement name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& post_selectV(const cmat& V, idx target, idx ps_val, idx c_reg,
                            bool destructive = true,
@@ -3613,18 +3940,26 @@ class QCircuit : public IDisplay, public IJSON {
     // post-selection of multiple qudits in the orthonormal basis or rank-1
     // projectors specified by the columns of matrix V
     /**
-     * \brief Jointly post-select multiple qudits in the orthonormal basis or
+     * @brief Jointly post-select multiple qudits in the orthonormal basis or
+     * @brief Jointly post-select multiple qudits in the orthonormal basis or
      * rank-1 projectors specified by the columns of matrix \a V
      *
-     * \param V Orthonormal basis or rank-1 projectors specified by the
+     * @param V Orthonormal basis or rank-1 projectors specified by the
+     * @param V Orthonormal basis or rank-1 projectors specified by the
      * columns of matrix \a V
-     * \param target Target qudit indexes that are jointly post-selected
-     * \param ps_val Post-election value
-     * \param c_reg Classical register where the value of the measurement is
+     * @param target Target qudit indexes that are jointly post-selected
+     * @param target Target qudit indexes that are jointly post-selected
+     * @param ps_val Post-election value
+     * @param ps_val Post-election value
+     * @param c_reg Classical register where the value of the measurement is
+     * @param c_reg Classical register where the value of the measurement is
      * stored
-     * \param destructive Destructive measurement, true by default
-     * \param name Optional post-selection name
-     * \return Reference to the current instance
+     * @param destructive Destructive measurement, true by default
+     * @param destructive Destructive measurement, true by default
+     * @param name Optional post-selection name
+     * @param name Optional post-selection name
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& post_selectV(const cmat& V, const std::vector<idx>& target,
                            idx ps_val, idx c_reg, bool destructive = true,
@@ -3731,12 +4066,16 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Discards single qudit by measuring it destructively in the
+     * @brief Discards single qudit by measuring it destructively in the
+     * @brief Discards single qudit by measuring it destructively in the
      * computational basis (Z-basis) and discarding the measurement result
      *
-     * \param target Target qudit index that is discarded
-     * \param name Optional discard operation name, default is "discard"
-     * \return Reference to the current instance
+     * @param target Target qudit index that is discarded
+     * @param target Target qudit index that is discarded
+     * @param name Optional discard operation name, default is "discard"
+     * @param name Optional discard operation name, default is "discard"
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& discard(idx target, std::optional<std::string> name = "discard") {
         // EXCEPTION CHECKS
@@ -3775,13 +4114,17 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Discards multiple qudits by measuring them destructively in
+     * @brief Discards multiple qudits by measuring them destructively in
+     * @brief Discards multiple qudits by measuring them destructively in
      * the computational basis (Z-basis) and discarding the measurement
      * result
      *
-     * \param target Target qudit indexes that are discarded
-     * \param name Optional discard operation name, default is "discard"
-     * \return Reference to the current instance
+     * @param target Target qudit indexes that are discarded
+     * @param target Target qudit indexes that are discarded
+     * @param name Optional discard operation name, default is "discard"
+     * @param name Optional discard operation name, default is "discard"
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& discard(const std::vector<idx>& target,
                       std::optional<std::string> name = "discard") {
@@ -3832,12 +4175,14 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief No operation (no-op)
+     * @brief No operation (no-op)
+     * @brief No operation (no-op)
      *
      * \note If the underlying step is executed on a noisy engine, then the
      * noise acts before it
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& nop() {
         circuit_.emplace_back(internal::QCircuitNOPStep{});
@@ -3847,13 +4192,17 @@ class QCircuit : public IDisplay, public IJSON {
 
     // reset single qudit
     /**
-     * \brief Resets single qudit by first measuring it non-destructively in
+     * @brief Resets single qudit by first measuring it non-destructively in
+     * @brief Resets single qudit by first measuring it non-destructively in
      * the computational basis and discarding the measurement result,
      * followed by shifting it back to the \f$|0\rangle\f$ state
      *
-     * \param target Target qudit index that is reset
-     * \param name Optional reset operation name, default is "reset"
-     * \return Reference to the current instance
+     * @param target Target qudit index that is reset
+     * @param target Target qudit index that is reset
+     * @param name Optional reset operation name, default is "reset"
+     * @param name Optional reset operation name, default is "reset"
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& reset(idx target, std::optional<std::string> name = "reset") {
         // EXCEPTION CHECKS
@@ -3884,14 +4233,18 @@ class QCircuit : public IDisplay, public IJSON {
 
     // reset multiple qudits
     /**
-     * \brief Resets multiple qudits by first measuring them
+     * @brief Resets multiple qudits by first measuring them
+     * @brief Resets multiple qudits by first measuring them
      * non-destructively in the computational basis and discarding the
      * measurement results, followed by shifting them back to the
      * \f$|0\cdots 0\rangle\f$ state
      *
-     * \param target Target qudit indexes that are reset
-     * \param name Optional measurement name, default is "reset"
-     * \return Reference to the current instance
+     * @param target Target qudit indexes that are reset
+     * @param target Target qudit indexes that are reset
+     * @param name Optional measurement name, default is "reset"
+     * @param name Optional measurement name, default is "reset"
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& reset(const std::vector<idx>& target,
                     std::optional<std::string> name = "reset") {
@@ -3929,12 +4282,15 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Replicates the circuit, in place
+     * @brief Replicates the circuit, in place
+     * @brief Replicates the circuit, in place
      * \note The circuit should not contain measurement steps
      *
-     * \param n Number of repetitions. If \a n == 1, returns the original
+     * @param n Number of repetitions. If \a n == 1, returns the original
+     * @param n Number of repetitions. If \a n == 1, returns the original
      * circuit.
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& replicate(idx n) {
         // EXCEPTION CHECKS
@@ -3977,9 +4333,11 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Composes (appends) a quantum circuit description to the end of
+     * @brief Composes (appends) a quantum circuit description to the end of
+     * @brief Composes (appends) a quantum circuit description to the end of
      * the current one
-     * \see qpp::QCircuit::couple_circuit_left() and
+     * @see qpp::QCircuit::couple_circuit_left() and
+     * @see qpp::QCircuit::couple_circuit_left() and
      * qpp::QCircuit::couple_circuit_right()
      *
      * \note If the qudit indexes of the added quantum circuit description
@@ -3987,20 +4345,24 @@ class QCircuit : public IDisplay, public IJSON {
      * circuit description, then the required number of additional qudits
      * are automatically added to the current quantum circuit description
      *
-     * \param other Quantum circuit description
-     * \param pos_qudit The index of the first/top qudit of \a other quantum
+     * @param other Quantum circuit description
+     * @param other Quantum circuit description
+     * @param pos_qudit The index of the first/top qudit of \a other quantum
+     * @param pos_qudit The index of the first/top qudit of \a other quantum
      * circuit description relative to the index of the first/top qudit of
      * the current quantum circuit description, with the rest following in
      * order. If negative or greater than the total number of qudits of the
      * current quantum circuit description, then the required number of
      * additional qudits are automatically added to the current quantum
      * circuit description.
-     * \param pos_dit Optional, the first classical dit of \a other quantum
+     * @param pos_dit Optional, the first classical dit of \a other quantum
+     * @param pos_dit Optional, the first classical dit of \a other quantum
      * circuit description is inserted before the \a pos_dit classical dit
      * index of the current quantum circuit description (in the classical
      * dits array), the rest following in order. If absent (default),
      * insertion is performed at the end.
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& compose_circuit(QCircuit other, bigint pos_qudit,
                               std::optional<idx> pos_dit = std::nullopt) {
@@ -4188,11 +4550,13 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Couples in-place a quantum circuit description to the current
+     * @brief Couples in-place a quantum circuit description to the current
+     * @brief Couples in-place a quantum circuit description to the current
      * quantum circuit description, with the to-be-added quantum circuit
      * description placed at the left (beginning) of the current quantum
      * circuit description
-     * \see qpp::QCircuit::couple_circuit_right() and
+     * @see qpp::QCircuit::couple_circuit_right() and
+     * @see qpp::QCircuit::couple_circuit_right() and
      * qpp::QCircuit::compose_circuit()
      *
      * \note The added quantum circuit description should not contain any
@@ -4204,17 +4568,21 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \note The classical dits are not relabeled
      *
-     * \param other Quantum circuit description
-     * \param target Qudit indexes of the current circuit description where
+     * @param other Quantum circuit description
+     * @param other Quantum circuit description
+     * @param target Qudit indexes of the current circuit description where
+     * @param target Qudit indexes of the current circuit description where
      * the qudits of \a other are being coupled, i.e., the first/top qudit
      * of \a other quantum circuit description is coupled with the target[0]
      * qudit of the current circuit description, and so on
-     * \param pos_dit Optional, the first classical dit of \a other quantum
+     * @param pos_dit Optional, the first classical dit of \a other quantum
+     * @param pos_dit Optional, the first classical dit of \a other quantum
      * circuit description is inserted before the \a pos_dit classical dit
      * index of the current quantum circuit description (in the classical
      * dits array), the rest following in order. If absent (default),
      * insertion is performed at the end.
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& couple_circuit_left(QCircuit other,
                                   const std::vector<idx>& target,
@@ -4404,11 +4772,13 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Couples in-place a quantum circuit description to the current
+     * @brief Couples in-place a quantum circuit description to the current
+     * @brief Couples in-place a quantum circuit description to the current
      * quantum circuit description, with the to-be-added quantum circuit
      * description placed at the right (end) of the current quantum circuit
      * description
-     * \see qpp::QCircuit::couple_circuit_left() and
+     * @see qpp::QCircuit::couple_circuit_left() and
+     * @see qpp::QCircuit::couple_circuit_left() and
      * qpp::QCircuit::compose_circuit()
      *
      * \note The added quantum circuit description cannot be larger than
@@ -4419,17 +4789,21 @@ class QCircuit : public IDisplay, public IJSON {
      *
      * \note The classical dits are not relabeled
      *
-     * \param other Quantum circuit description
-     * \param target Qudit indexes of the current circuit description where
+     * @param other Quantum circuit description
+     * @param other Quantum circuit description
+     * @param target Qudit indexes of the current circuit description where
+     * @param target Qudit indexes of the current circuit description where
      * the qudits of \a other are being coupled, i.e., the first/top qudit
      * of \a other quantum circuit description is coupled with the target[0]
      * qudit of the current circuit description, and so on
-     * \param pos_dit Optional, the first classical dit of \a other quantum
+     * @param pos_dit Optional, the first classical dit of \a other quantum
+     * @param pos_dit Optional, the first classical dit of \a other quantum
      * circuit description is inserted before the \a pos_dit classical dit
      * index of the current quantum circuit description (in the classical
      * dits array), the rest following in order. If absent (default),
      * insertion is performed at the end.
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& couple_circuit_right(QCircuit other,
                                    const std::vector<idx>& target,
@@ -4605,10 +4979,12 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Composes (appends) a controlled quantum circuit description to
+     * @brief Composes (appends) a controlled quantum circuit description to
+     * @brief Composes (appends) a controlled quantum circuit description to
      * the end of the current one, with the current instance acting as the
      * control
-     * \see qpp::QCircuit::compose_circuit()
+     * @see qpp::QCircuit::compose_circuit()
+     * @see qpp::QCircuit::compose_circuit()
      *
      * \note For each gate or controlled-gate in the target circuit
      * description, a control is being added from the control circuit
@@ -4621,23 +4997,29 @@ class QCircuit : public IDisplay, public IJSON {
      * circuit description, then the required number of additional qudits
      * are automatically added to the current quantum circuit description
      *
-     * \param ctrl Control qubits
-     * \param qc_target Quantum circuit description
-     * \param pos_qudit The index of the first/top qudit of \a qc_target
+     * @param ctrl Control qubits
+     * @param ctrl Control qubits
+     * @param qc_target Quantum circuit description
+     * @param qc_target Quantum circuit description
+     * @param pos_qudit The index of the first/top qudit of \a qc_target
+     * @param pos_qudit The index of the first/top qudit of \a qc_target
      * quantum circuit description relative to the index of the first/top
      * qudit of the current quantum circuit description, with the rest
      * following in order. If negative or greater than the total number of
      * qudits of the current quantum circuit description, then the required
      * number of additional qudits are automatically added to the current
      * quantum circuit description.
-     * \param shift Optional, performs the control as if the \a ctrl qudit
+     * @param shift Optional, performs the control as if the \a ctrl qudit
+     * @param shift Optional, performs the control as if the \a ctrl qudit
      * state was \f$X\f$-incremented by \a shift
-     * \param pos_dit Optional, the first classical dit of \a qc_target quantum
+     * @param pos_dit Optional, the first classical dit of \a qc_target quantum
+     * @param pos_dit Optional, the first classical dit of \a qc_target quantum
      * circuit description is inserted before the \a pos_dit classical dit index
      * of the current quantum circuit description (in the classical dits array),
      * the rest following in order. If absent (default), insertion is performed
      * at the end.
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit&
     compose_CTRL_circuit(const std::vector<idx>& ctrl, QCircuit qc_target,
@@ -4834,11 +5216,14 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Kronecker product with another quantum circuit description, in
+     * @brief Kronecker product with another quantum circuit description, in
+     * @brief Kronecker product with another quantum circuit description, in
      * place
      *
-     * \param qc Quantum circuit description
-     * \return Reference to the current instance
+     * @param qc Quantum circuit description
+     * @param qc Quantum circuit description
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& kron(QCircuit qc) {
         compose_circuit(std::move(qc), static_cast<bigint>(nq_));
@@ -4847,10 +5232,12 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Returns true if the quantum circuit description contains
+     * @brief Returns true if the quantum circuit description contains
+     * @brief Returns true if the quantum circuit description contains
      * measurements, false otherwise
      *
-     * \return True if the quantum circuit description contains measurements,
+     * @return True if the quantum circuit description contains measurements,
+     * @return True if the quantum circuit description contains measurements,
      * false otherwise
      */
     bool has_measurements() const noexcept {
@@ -4861,10 +5248,12 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Returns true if the quantum circuit description contains
+     * @brief Returns true if the quantum circuit description contains
+     * @brief Returns true if the quantum circuit description contains
      * runtime steps, false otherwise
      *
-     * \return True if the quantum circuit description contains runtime steps,
+     * @return True if the quantum circuit description contains runtime steps,
+     * @return True if the quantum circuit description contains runtime steps,
      * false otherwise
      */
     bool has_runtime_steps() const noexcept {
@@ -4875,10 +5264,12 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Returns true if the quantum circuit description contains
+     * @brief Returns true if the quantum circuit description contains
+     * @brief Returns true if the quantum circuit description contains
      * operations/measurements that remove qudits, false otherwise
      *
-     * \return True if the quantum circuit description contains
+     * @return True if the quantum circuit description contains
+     * @return True if the quantum circuit description contains
      * operations/measurements that remove qudits, false otherwise
      */
     bool removes_qudits() const noexcept {
@@ -4917,10 +5308,12 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Adjoint quantum circuit description, in place
+     * @brief Adjoint quantum circuit description, in place
+     * @brief Adjoint quantum circuit description, in place
      * \note The circuit should not contain measurement steps
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& adjoint() {
         // EXCEPTION CHECKS
@@ -4969,13 +5362,17 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Checks whether a qudit in the circuit was used before
+     * @brief Checks whether a qudit in the circuit was used before
+     * @brief Checks whether a qudit in the circuit was used before
      * or not
-     * \see qpp::QCircuit::get_clean_qudits(),
+     * @see qpp::QCircuit::get_clean_qudits(),
+     * @see qpp::QCircuit::get_clean_qudits(),
      * qpp::QCircuit::get_dirty_qudits()
      *
-     * \param i Qudit index
-     * \return True if the qudit \a i was used before (by a gate
+     * @param i Qudit index
+     * @param i Qudit index
+     * @return True if the qudit \a i was used before (by a gate
+     * @return True if the qudit \a i was used before (by a gate
      * and/or measurement, either destructive or non-destructive),
      * false otherwise
      */
@@ -4991,12 +5388,16 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Checks whether a classical dit in the circuit was used before
+     * @brief Checks whether a classical dit in the circuit was used before
+     * @brief Checks whether a classical dit in the circuit was used before
      * or not
-     * \see qpp::QCircuit::get_clean_dits(), qpp::QCircuit::get_dirty_dits()
+     * @see qpp::QCircuit::get_clean_dits(), qpp::QCircuit::get_dirty_dits()
+     * @see qpp::QCircuit::get_clean_dits(), qpp::QCircuit::get_dirty_dits()
      *
-     * \param i Classical dit index
-     * \return True if the classical dit \a i was used before (by a cCTRL
+     * @param i Classical dit index
+     * @param i Classical dit index
+     * @return True if the classical dit \a i was used before (by a cCTRL
+     * @return True if the classical dit \a i was used before (by a cCTRL
      * gate and/or measurement, either destructive or non-destructive),
      * false otherwise
      */
@@ -5012,13 +5413,17 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Checks whether a classical dit in the circuit was used to
+     * @brief Checks whether a classical dit in the circuit was used to
+     * @brief Checks whether a classical dit in the circuit was used to
      * store the result of a measurement (either destructive or
      * non-destructive)
-     * \see qpp::QCircuit::get_measurement_dits()
+     * @see qpp::QCircuit::get_measurement_dits()
+     * @see qpp::QCircuit::get_measurement_dits()
      *
-     * \param i Classical dit index
-     * \return True if the classical dit \a i was used before to
+     * @param i Classical dit index
+     * @param i Classical dit index
+     * @return True if the classical dit \a i was used before to
+     * @return True if the classical dit \a i was used before to
      * store the result of a measurement, false otherwise
      */
     bool is_measurement_dit(idx i) const {
@@ -5034,11 +5439,14 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Vector of clean qudits
-     * \see qpp::QCircuit::is_clean_qudit(),
+     * @brief Vector of clean qudits
+     * @brief Vector of clean qudits
+     * @see qpp::QCircuit::is_clean_qudit(),
+     * @see qpp::QCircuit::is_clean_qudit(),
      * qpp::QCircuit::get_dirty_qudits()
      *
-     * \return Vector of clean qudits
+     * @return Vector of clean qudits
+     * @return Vector of clean qudits
      */
     std::vector<idx> get_clean_qudits() const {
         std::vector<idx> result;
@@ -5052,22 +5460,28 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Vector of dirty qudits
-     * \see qpp::QCircuit::is_clean_qudit(),
+     * @brief Vector of dirty qudits
+     * @brief Vector of dirty qudits
+     * @see qpp::QCircuit::is_clean_qudit(),
+     * @see qpp::QCircuit::is_clean_qudit(),
      * qpp::QCircuit::get_clean_qudits()
      *
-     * \return Vector of dirty qudits
+     * @return Vector of dirty qudits
+     * @return Vector of dirty qudits
      */
     std::vector<idx> get_dirty_qudits() const {
         return complement(get_clean_qudits(), get_nq());
     }
 
     /**
-     * \brief Vector of clean classical dits
-     * \see qpp::QCircuit::is_clean_dit(),
+     * @brief Vector of clean classical dits
+     * @brief Vector of clean classical dits
+     * @see qpp::QCircuit::is_clean_dit(),
+     * @see qpp::QCircuit::is_clean_dit(),
      * qpp::QCircuit::get_dirty_dits()
      *
-     * \return Vector of clean classical dits
+     * @return Vector of clean classical dits
+     * @return Vector of clean classical dits
      */
     std::vector<idx> get_clean_dits() const {
         std::vector<idx> result;
@@ -5081,24 +5495,31 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Vector of dirty classical dits
-     * \see qpp::QCircuit::is_clean_dit(),
+     * @brief Vector of dirty classical dits
+     * @brief Vector of dirty classical dits
+     * @see qpp::QCircuit::is_clean_dit(),
+     * @see qpp::QCircuit::is_clean_dit(),
      * qpp::QCircuit::get_clean_dits()
      *
-     * \return Vector of dirty classical dits
+     * @return Vector of dirty classical dits
+     * @return Vector of dirty classical dits
      */
     std::vector<idx> get_dirty_dits() const {
         return complement(get_clean_dits(), get_nc());
     }
 
     /**
-     * \brief Removes clean qudit from the quantum circuit
+     * @brief Removes clean qudit from the quantum circuit
+     * @brief Removes clean qudit from the quantum circuit
      * description and relabels the rest of the qudits accordingly
-     * \see qpp::QCircuit::is_clean_qudit(),
+     * @see qpp::QCircuit::is_clean_qudit(),
+     * @see qpp::QCircuit::is_clean_qudit(),
      * qpp::QCircuit::compress()
      *
-     * \param target Target clean qudit index that is removed
-     * \return Reference to the current instance
+     * @param target Target clean qudit index that is removed
+     * @param target Target clean qudit index that is removed
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& remove_clean_qudit(idx target) {
         // EXCEPTION CHECKS
@@ -5146,13 +5567,17 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Removes clean classical dit from the quantum circuit
+     * @brief Removes clean classical dit from the quantum circuit
+     * @brief Removes clean classical dit from the quantum circuit
      * description and relabels the rest of the classical dits accordingly
-     * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::compress()
+     * @see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::compress()
+     * @see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::compress()
      *
-     * \param target Target clean classical dit index that is
+     * @param target Target clean classical dit index that is
+     * @param target Target clean classical dit index that is
      * removed
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& remove_clean_dit(idx target) {
         // EXCEPTION CHECKS
@@ -5193,12 +5618,16 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Removes list of clean qudits from the quantum circuit
+     * @brief Removes list of clean qudits from the quantum circuit
+     * @brief Removes list of clean qudits from the quantum circuit
      * description and relabels the rest of the qudits accordingly
-     * \see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::compress()
+     * @see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::compress()
+     * @see qpp::QCircuit::is_clean_qudit(), qpp::QCircuit::compress()
      *
-     * \param target Target clean qudit indexes that are removed
-     * \return Reference to the current instance
+     * @param target Target clean qudit indexes that are removed
+     * @param target Target clean qudit indexes that are removed
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& remove_clean_qudits(std::vector<idx> target) {
         // EXCEPTION CHECKS
@@ -5224,14 +5653,18 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Removes list of clean classical dits from the quantum circuit
+     * @brief Removes list of clean classical dits from the quantum circuit
+     * @brief Removes list of clean classical dits from the quantum circuit
      * description and relabels the rest of the classical dits accordingly
      *
-     * \see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::compress()
+     * @see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::compress()
+     * @see qpp::QCircuit::is_clean_dit(), qpp::QCircuit::compress()
      *
-     * \param target Target clean classical dit indexes that are
+     * @param target Target clean classical dit indexes that are
+     * @param target Target clean classical dit indexes that are
      * removed
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& remove_clean_dits(std::vector<idx> target) {
         // EXCEPTION CHECKS
@@ -5257,14 +5690,18 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Removes all clean qudits form the quantum circuit
+     * @brief Removes all clean qudits form the quantum circuit
+     * @brief Removes all clean qudits form the quantum circuit
      * description and relabels the rest of the qudits accordingly
-     * \see qpp::QCircuit::remove_clean_qudits(),
+     * @see qpp::QCircuit::remove_clean_qudits(),
+     * @see qpp::QCircuit::remove_clean_qudits(),
      * qpp::QCircuit::remove_clean_dits()
      *
-     * \param compress_dits If true, removes clean classical dits, false by
+     * @param compress_dits If true, removes clean classical dits, false by
+     * @param compress_dits If true, removes clean classical dits, false by
      * default.
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuit& compress(bool compress_dits = false) {
         remove_clean_qudits(get_clean_qudits());
@@ -5276,7 +5713,8 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Equality operator
+     * @brief Equality operator
+     * @brief Equality operator
      * \note Ignores names (e.g., circuit names, gate names etc.)
      * and does not perform any circuit simplifications, in other
      * words the circuits have to have the exact same number of
@@ -5285,9 +5723,11 @@ class QCircuit : public IDisplay, public IJSON {
      * \f$X_1 Z_2\f$ is considered different from \f$Z_2 X_1\f$,
      * although logically they are the same.
      *
-     * \param rhs Quantum circuit description against which the
+     * @param rhs Quantum circuit description against which the
+     * @param rhs Quantum circuit description against which the
      * equality is being tested
-     * \return True if the quantum circuit descriptions are equal, false
+     * @return True if the quantum circuit descriptions are equal, false
+     * @return True if the quantum circuit descriptions are equal, false
      * otherwise
      */
     bool operator==(const QCircuit& rhs) const noexcept {
@@ -5298,11 +5738,14 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief Inequality operator
+     * @brief Inequality operator
+     * @brief Inequality operator
      *
-     * \param rhs Quantum circuit description against which the
+     * @param rhs Quantum circuit description against which the
+     * @param rhs Quantum circuit description against which the
      * inequality is being tested
-     * \return True if the quantum circuit descriptions are not equal, false
+     * @return True if the quantum circuit descriptions are not equal, false
+     * @return True if the quantum circuit descriptions are not equal, false
      * otherwise
      */
     bool operator!=(const QCircuit& rhs) const noexcept {
@@ -5310,26 +5753,32 @@ class QCircuit : public IDisplay, public IJSON {
     }
 
     /**
-     * \brief qpp::IJSON::to_JSON() override
+     * @brief qpp::IJSON::to_JSON() override
+     * @brief qpp::IJSON::to_JSON() override
      *
      * Displays the quantum circuit description in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the
+     * @param enclosed_in_curly_brackets If true, encloses the
+     * @param enclosed_in_curly_brackets If true, encloses the
      * result in curly brackets
-     * \return String containing the JSON representation of the quantum
+     * @return String containing the JSON representation of the quantum
+     * @return String containing the JSON representation of the quantum
      * circuit description
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override;
 
   private:
     /**
-     * \brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the
      * quantum circuit
      *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
+     * @param os Output stream passed by reference
+     * @param os Output stream passed by reference
+     * @return Reference to the output stream
+     * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override;
 }; /* class QCircuit */
@@ -5363,15 +5812,19 @@ void QCircuit::visit_circuit_(const std::vector<VarStep>& circuit,
 
 namespace internal {
 /**
- * \class qpp::internal::QCircuitIterator
- * \brief Quantum circuit description bound-checking (safe) forward iterator
+ * @class qpp::internal::QCircuitIterator
+ * @class qpp::internal::QCircuitIterator
+ * @brief Quantum circuit description bound-checking (safe) forward iterator
+ * @brief Quantum circuit description bound-checking (safe) forward iterator
  *
  * \note The iterator is a const_iterator by default
  */
 class QCircuitIterator {
     /**
-     * \class qpp::internal::QCircuitIterator::value_type_
-     * \brief Value type class for qpp::internal::QCircuitIterator
+     * @class qpp::internal::QCircuitIterator::value_type_
+     * @class qpp::internal::QCircuitIterator::value_type_
+     * @brief Value type class for qpp::internal::QCircuitIterator
+     * @brief Value type class for qpp::internal::QCircuitIterator
      */
     class value_type_ : public IDisplay /*, IJSON*/ {
         ///< non-owning pointer to the grand-parent const quantum circuit
@@ -5381,11 +5834,15 @@ class QCircuitIterator {
         QCircuit::VarStep step_; ///< current circuit step
       public:
         /**
-         * \brief Constructor
+         * @brief Constructor
+         * @brief Constructor
          *
-         * \param qc_ptr Pointer to constant quantum circuit description
-         * \param ip Instruction pointer
-         * \param step Circuit step
+         * @param qc_ptr Pointer to constant quantum circuit description
+         * @param qc_ptr Pointer to constant quantum circuit description
+         * @param ip Instruction pointer
+         * @param ip Instruction pointer
+         * @param step Circuit step
+         * @param step Circuit step
          */
         explicit value_type_(const QCircuit* qc_ptr, idx ip,
                              QCircuit::VarStep step)
@@ -5393,23 +5850,29 @@ class QCircuitIterator {
 
         // silence -Weffc++ class has pointer data members
         /**
-         * \brief Default copy constructor
+         * @brief Default copy constructor
+         * @brief Default copy constructor
          */
         value_type_(const value_type_&) = default;
 
         // silence -Weffc++ class has pointer data members
         /**
-         * \brief Default copy assignment operator
+         * @brief Default copy assignment operator
+         * @brief Default copy assignment operator
          *
-         * \return Reference to the current instance
+         * @return Reference to the current instance
+         * @return Reference to the current instance
          */
         value_type_& operator=(const value_type_&) = default;
 
         /**
-         * \brief Equality operator
+         * @brief Equality operator
+         * @brief Equality operator
          *
-         * \param rhs Instance against which the equality is being tested
-         * \return True if the instances not are equal (bitwise), false
+         * @param rhs Instance against which the equality is being tested
+         * @param rhs Instance against which the equality is being tested
+         * @return True if the instances not are equal (bitwise), false
+         * @return True if the instances not are equal (bitwise), false
          * otherwise
          */
         bool operator==(const value_type_& rhs) {
@@ -5418,41 +5881,52 @@ class QCircuitIterator {
         }
 
         /**
-         * \brief Inequality operator
+         * @brief Inequality operator
+         * @brief Inequality operator
          *
-         * \param rhs Instance against which the inequality is being tested
-         * \return True if the instances are not equal (bit by bit), false
+         * @param rhs Instance against which the inequality is being tested
+         * @param rhs Instance against which the inequality is being tested
+         * @return True if the instances are not equal (bit by bit), false
+         * @return True if the instances are not equal (bit by bit), false
          * otherwise
          */
         bool operator!=(const value_type_& rhs) { return !(*this == rhs); }
 
         /**
-         * \brief Arrow de-reference operator
+         * @brief Arrow de-reference operator
+         * @brief Arrow de-reference operator
          *
-         * \return Pointer to itself
+         * @return Pointer to itself
+         * @return Pointer to itself
          */
         value_type_* operator->() { return this; }
 
         // getters
         /**
-         * \brief Pointer to underlying quantum circuit description
-         * \return Pointer to underlying quantum circuit description
+         * @brief Pointer to underlying quantum circuit description
+         * @brief Pointer to underlying quantum circuit description
+         * @return Pointer to underlying quantum circuit description
+         * @return Pointer to underlying quantum circuit description
          */
         const QCircuit* get_qc_ptr() const { return qc_ptr_; }
 
         /**
-         * \brief Current quantum circuit description instruction
+         * @brief Current quantum circuit description instruction
+         * @brief Current quantum circuit description instruction
          * pointer
          *
-         * \return Current quantum circuit description instruction
+         * @return Current quantum circuit description instruction
+         * @return Current quantum circuit description instruction
          * pointer
          */
         idx get_ip() const { return ip_; }
 
         /**
-         * \brief Current quantum circuit description step
+         * @brief Current quantum circuit description step
+         * @brief Current quantum circuit description step
          *
-         * \return Current quantum circuit description step
+         * @return Current quantum circuit description step
+         * @return Current quantum circuit description step
          */
         QCircuit::VarStep get_step() const { return step_; }
 
@@ -5553,37 +6027,46 @@ class QCircuitIterator {
     using iterator_category = std::forward_iterator_tag; ///< iterator trait
 
     /**
-     * \brief Default constructor
+     * @brief Default constructor
+     * @brief Default constructor
      */
     QCircuitIterator() = default;
 
     /**
-     * \brief Explicit constructor
+     * @brief Explicit constructor
+     * @brief Explicit constructor
      *
-     * \param qc_ptr Pointer to underlying quantum circuit description
-     * \param ip Quantum circuit description instruction pointer
+     * @param qc_ptr Pointer to underlying quantum circuit description
+     * @param qc_ptr Pointer to underlying quantum circuit description
+     * @param ip Quantum circuit description instruction pointer
+     * @param ip Quantum circuit description instruction pointer
      */
     explicit QCircuitIterator(const QCircuit* qc_ptr, idx ip)
         : qc_ptr_{qc_ptr}, ip_{ip} {}
 
     // silence -Weffc++ class has pointer data members
     /**
-     * \brief Default copy constructor
+     * @brief Default copy constructor
+     * @brief Default copy constructor
      */
     QCircuitIterator(const QCircuitIterator&) = default;
 
     // silence -Weffc++ class has pointer data members
     /**
-     * \brief Default copy assignment operator
+     * @brief Default copy assignment operator
+     * @brief Default copy assignment operator
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuitIterator& operator=(const QCircuitIterator&) = default;
 
     /**
-     * \brief Prefix increment operator
+     * @brief Prefix increment operator
+     * @brief Prefix increment operator
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuitIterator& operator++() {
         // EXCEPTION CHECKS
@@ -5616,9 +6099,11 @@ class QCircuitIterator {
     }
 
     /**
-     * \brief Postfix increment operator
+     * @brief Postfix increment operator
+     * @brief Postfix increment operator
      *
-     * \return Copy of the current instance before the increment
+     * @return Copy of the current instance before the increment
+     * @return Copy of the current instance before the increment
      */
     QCircuitIterator operator++(int) {
         QCircuitIterator retval{*this};
@@ -5628,20 +6113,26 @@ class QCircuitIterator {
     }
 
     /**
-     * \brief Equality operator
+     * @brief Equality operator
+     * @brief Equality operator
      *
-     * \param rhs Iterator against which the equality is being tested
-     * \return True if the iterators are equal, false otherwise
+     * @param rhs Iterator against which the equality is being tested
+     * @param rhs Iterator against which the equality is being tested
+     * @return True if the iterators are equal, false otherwise
+     * @return True if the iterators are equal, false otherwise
      */
     bool operator==(const QCircuitIterator& rhs) const noexcept {
         return std::tie(ip_, qc_ptr_) == std::tie(rhs.ip_, rhs.qc_ptr_);
     }
 
     /**
-     * \brief Inequality operator
+     * @brief Inequality operator
+     * @brief Inequality operator
      *
-     * \param rhs Iterator against which the inequality is being tested
-     * \return True if the iterators are not equal (bitwise), false
+     * @param rhs Iterator against which the inequality is being tested
+     * @param rhs Iterator against which the inequality is being tested
+     * @return True if the iterators are not equal (bitwise), false
+     * @return True if the iterators are not equal (bitwise), false
      * otherwise
      */
     bool operator!=(const QCircuitIterator& rhs) const noexcept {
@@ -5649,9 +6140,11 @@ class QCircuitIterator {
     }
 
     /**
-     * \brief Safe de-referencing operator
+     * @brief Safe de-referencing operator
+     * @brief Safe de-referencing operator
      *
-     * \return De-referenced iterator element
+     * @return De-referenced iterator element
+     * @return De-referenced iterator element
      */
     value_type operator*() const {
         // EXCEPTION CHECKS
@@ -5679,17 +6172,22 @@ class QCircuitIterator {
     }
 
     /**
-     * \brief Safe arrow operator
+     * @brief Safe arrow operator
+     * @brief Safe arrow operator
      *
-     * \return Pointer to de-referenced iterator element
+     * @return Pointer to de-referenced iterator element
+     * @return Pointer to de-referenced iterator element
      */
     value_type operator->() const { return **this; }
 
     /**
-     * \brief Advance the iterator forward
+     * @brief Advance the iterator forward
+     * @brief Advance the iterator forward
      *
-     * \param n Number of steps
-     * \return Reference to the current instance
+     * @param n Number of steps
+     * @param n Number of steps
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     QCircuitIterator& advance(idx n) {
         // EXCEPTION CHECKS
@@ -5719,9 +6217,11 @@ class QCircuitIterator {
     }
 
     /**
-     * \brief Current quantum circuit description instruction pointer
+     * @brief Current quantum circuit description instruction pointer
+     * @brief Current quantum circuit description instruction pointer
      *
-     * \return Current quantum circuit description instruction pointer
+     * @return Current quantum circuit description instruction pointer
+     * @return Current quantum circuit description instruction pointer
      */
     idx get_ip() const { return ip_; }
 
@@ -5985,15 +6485,19 @@ inline std::string QCircuit::to_JSON(bool enclosed_in_curly_brackets) const {
 } /* QCircuit::to_JSON() */
 
 /**
- * \class qpp::QCircuitTraits
- * \brief Generic type traits for classes that describe quantum circuits
+ * @class qpp::QCircuitTraits
+ * @class qpp::QCircuitTraits
+ * @brief Generic type traits for classes that describe quantum circuits
+ * @brief Generic type traits for classes that describe quantum circuits
  */
 template <typename T>
 struct QCircuitTraits;
 
 /**
- * \class qpp::QCircuitTraits<QCircuit>
- * \brief Specialization type traits for qpp::QCircuit
+ * @class qpp::QCircuitTraits<QCircuit>
+ * @class qpp::QCircuitTraits<QCircuit>
+ * @brief Specialization type traits for qpp::QCircuit
+ * @brief Specialization type traits for qpp::QCircuit
  */
 template <>
 struct QCircuitTraits<QCircuit> {
@@ -6004,30 +6508,38 @@ struct QCircuitTraits<QCircuit> {
 // QCircuit free functions
 
 /**
- * \brief Composes (appends) a quantum circuit description to the end of
+ * @brief Composes (appends) a quantum circuit description to the end of
+ * @brief Composes (appends) a quantum circuit description to the end of
  * another one
- * \see qpp::couple_circuit_left() and qpp::couple_circuit_right()
+ * @see qpp::couple_circuit_left() and qpp::couple_circuit_right()
+ * @see qpp::couple_circuit_left() and qpp::couple_circuit_right()
  *
  * \note If qudit indexes of the second quantum circuit description do
  * not totally overlap with the indexes of the first quantum circuit
  * description, then the required number of additional qudits are
  * automatically added to the output quantum circuit description
  *
- * \param qc1 Quantum circuit description
- * \param qc2 Quantum circuit description
- * \param pos_qudit The index of the first/top qudit of \a qc2 quantum
+ * @param qc1 Quantum circuit description
+ * @param qc1 Quantum circuit description
+ * @param qc2 Quantum circuit description
+ * @param qc2 Quantum circuit description
+ * @param pos_qudit The index of the first/top qudit of \a qc2 quantum
+ * @param pos_qudit The index of the first/top qudit of \a qc2 quantum
  * circuit description relative to the index of the first/top qudit of the
  * \a qc1 quantum circuit description, with the rest following in order.
  * If negative or greater than the total number of qudits of \a qc1,
  * then the required number of additional qudits are automatically added
  * to the output quantum circuit description.
- * \param name Optional result's circuit name
- * \param pos_dit Optional, the first classical dit of \a qc2 quantum
+ * @param name Optional result's circuit name
+ * @param name Optional result's circuit name
+ * @param pos_dit Optional, the first classical dit of \a qc2 quantum
+ * @param pos_dit Optional, the first classical dit of \a qc2 quantum
  * circuit description is inserted before the \a pos_dit classical dit index
  * of the \a qc1 quantum circuit description (in the classical dits array),
  * the rest following in order. If absent (default), insertion is performed
  * at the end.
- * \return Combined quantum circuit description, with \a qc2 added at the
+ * @return Combined quantum circuit description, with \a qc2 added at the
+ * @return Combined quantum circuit description, with \a qc2 added at the
  * end of \a qc1
  */
 inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
@@ -6082,11 +6594,13 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
 }
 
 /**
- * \brief Couples in-place a quantum circuit description \a qc2 to another
+ * @brief Couples in-place a quantum circuit description \a qc2 to another
+ * @brief Couples in-place a quantum circuit description \a qc2 to another
  * quantum circuit description \a qc1, with the \a qc2 quantum circuit
  * description placed at the left (beginning) of the first quantum circuit
  * description
- * \see qpp::couple_circuit_right() and qpp::compose_circuit()
+ * @see qpp::couple_circuit_right() and qpp::compose_circuit()
+ * @see qpp::couple_circuit_right() and qpp::compose_circuit()
  *
  * \note The added quantum circuit description \a qc2 cannot be larger than
  * the \a qc1 quantum circuit description, i.e., all qudit indexes of the
@@ -6096,19 +6610,25 @@ inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
  *
  * \note The classical dits are not relabeled
  *
- * \param qc1 Quantum circuit description
- * \param qc2 Quantum circuit description
- * \param target Qudit indexes of the \a qc1 circuit description where the
+ * @param qc1 Quantum circuit description
+ * @param qc1 Quantum circuit description
+ * @param qc2 Quantum circuit description
+ * @param qc2 Quantum circuit description
+ * @param target Qudit indexes of the \a qc1 circuit description where the
+ * @param target Qudit indexes of the \a qc1 circuit description where the
  * qudits of \a qc2 are being coupled, i.e., the first/top qudit of
  * \a qc2 quantum circuit description is coupled with the target[0] qudit
  * of the \a qc1 circuit description, and so on
- * \param name Optional result's circuit name
- * \param pos_dit Optional, the first classical dit of \a qc2 quantum
+ * @param name Optional result's circuit name
+ * @param name Optional result's circuit name
+ * @param pos_dit Optional, the first classical dit of \a qc2 quantum
+ * @param pos_dit Optional, the first classical dit of \a qc2 quantum
  * circuit description is inserted before the \a pos_dit classical dit index
  * of the \a qc1 quantum circuit description (in the classical dits array),
  * the rest following in order. If absent (default), insertion is performed
  * at the end.
- * \return Combined quantum circuit description
+ * @return Combined quantum circuit description
+ * @return Combined quantum circuit description
  */
 inline QCircuit
 couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
@@ -6165,11 +6685,13 @@ couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
 }
 
 /**
- * \brief Couples in-place a quantum circuit description \a qc2 to another
+ * @brief Couples in-place a quantum circuit description \a qc2 to another
+ * @brief Couples in-place a quantum circuit description \a qc2 to another
  * quantum circuit description \a qc1, with the \a qc2 quantum circuit
  * description placed at the right (end) of the first quantum circuit
  * description
- * \see qpp::couple_circuit_left() and qpp::compose_circuit()
+ * @see qpp::couple_circuit_left() and qpp::compose_circuit()
+ * @see qpp::couple_circuit_left() and qpp::compose_circuit()
  *
  * \note The added quantum circuit description \a qc2 cannot be larger than
  * the \a qc1 quantum circuit description, i.e., all qudit indexes of the
@@ -6179,19 +6701,25 @@ couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
  *
  * \note The classical dits are not relabeled
  *
- * \param qc1 Quantum circuit description
- * \param qc2 Quantum circuit description
- * \param target Qudit indexes of the \a qc1 circuit description where the
+ * @param qc1 Quantum circuit description
+ * @param qc1 Quantum circuit description
+ * @param qc2 Quantum circuit description
+ * @param qc2 Quantum circuit description
+ * @param target Qudit indexes of the \a qc1 circuit description where the
+ * @param target Qudit indexes of the \a qc1 circuit description where the
  * qudits of \a qc2 are being coupled, i.e., the first/top qudit of \a qc2
  * quantum circuit description is coupled with the target[0] qudit of the
  * \a qc1 circuit description, and so on
- * \param name Optional result's circuit name
- * \param pos_dit Optional, the first classical dit of \a qc2 quantum
+ * @param name Optional result's circuit name
+ * @param name Optional result's circuit name
+ * @param pos_dit Optional, the first classical dit of \a qc2 quantum
+ * @param pos_dit Optional, the first classical dit of \a qc2 quantum
  * circuit description is inserted before the \a pos_dit classical dit index
  * of the \a qc1 quantum circuit description (in the classical dits array),
  * the rest following in order. If absent (default), insertion is performed
  * at the end.
- * \return Combined quantum circuit description
+ * @return Combined quantum circuit description
+ * @return Combined quantum circuit description
  */
 inline QCircuit
 couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
@@ -6245,10 +6773,12 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
 }
 
 /**
- * \brief Composes (appends) the \a qc_target controlled quantum circuit
+ * @brief Composes (appends) the \a qc_target controlled quantum circuit
+ * @brief Composes (appends) the \a qc_target controlled quantum circuit
  * description to the end of the \a qc_ctrl quantum circuit description;
  * \a qc_ctrl controls the \a qc_target.
- * \see qpp::compose_circuit()
+ * @see qpp::compose_circuit()
+ * @see qpp::compose_circuit()
  *
  * \note For each gate or controlled-gate in the target circuit description,
  * a control is being added from the control circuit description control
@@ -6260,24 +6790,32 @@ couple_circuit_right(QCircuit qc1, const QCircuit& qc2,
  * description, then the required number of additional qudits are
  * automatically added to the output quantum circuit description
  *
- * \param qc_ctrl Control quantum circuit description
- * \param ctrl Control qubits
- * \param qc_target Target quantum circuit description
- * \param pos_qudit The index of the first/top qudit of \a qc_target quantum
+ * @param qc_ctrl Control quantum circuit description
+ * @param qc_ctrl Control quantum circuit description
+ * @param ctrl Control qubits
+ * @param ctrl Control qubits
+ * @param qc_target Target quantum circuit description
+ * @param qc_target Target quantum circuit description
+ * @param pos_qudit The index of the first/top qudit of \a qc_target quantum
+ * @param pos_qudit The index of the first/top qudit of \a qc_target quantum
  * circuit description relative to the index of the first/top qudit of the
  * \a qc_ctrl quantum circuit description, with the rest following in order.
  * If negative or greater than the total number of qudits of \a qc_ctrl,
  * then the required number of additional qudits are automatically added
  * to the output quantum circuit description.
- * \param shift Optional, performs the control as if the \a ctrl qudit state
+ * @param shift Optional, performs the control as if the \a ctrl qudit state
+ * @param shift Optional, performs the control as if the \a ctrl qudit state
  * was \f$X\f$-incremented by \a shift
- * \param pos_dit Optional, the first classical dit of \a qc_target quantum
+ * @param pos_dit Optional, the first classical dit of \a qc_target quantum
+ * @param pos_dit Optional, the first classical dit of \a qc_target quantum
  * circuit description is inserted before the \a pos_dit classical dit index
  * of the \a qc_ctrl quantum circuit description (in the classical dits
  * array), the rest following in order. If absent (default), insertion is
  * performed at the end.
- * \param name Optional result's circuit name
- * \return Combined quantum circuit description, with \a qc_target added at
+ * @param name Optional result's circuit name
+ * @param name Optional result's circuit name
+ * @return Combined quantum circuit description, with \a qc_target added at
+ * @return Combined quantum circuit description, with \a qc_target added at
  * the end of \a qc_ctrl
  */
 inline QCircuit
@@ -6392,11 +6930,15 @@ compose_CTRL_circuit(QCircuit qc_ctrl, const std::vector<idx>& ctrl,
 }
 
 /**
- * \brief Adjoint quantum circuit description
+ * @brief Adjoint quantum circuit description
+ * @brief Adjoint quantum circuit description
  *
- * \param qc Quantum circuit description
- * \param name Optional result's circuit name
- * \return Adjoint quantum circuit description
+ * @param qc Quantum circuit description
+ * @param qc Quantum circuit description
+ * @param name Optional result's circuit name
+ * @param name Optional result's circuit name
+ * @return Adjoint quantum circuit description
+ * @return Adjoint quantum circuit description
  */
 inline QCircuit adjoint(QCircuit qc,
                         std::optional<std::string> name = std::nullopt) {
@@ -6417,12 +6959,17 @@ inline QCircuit adjoint(QCircuit qc,
 }
 
 /**
- * \brief Kronecker product between two quantum circuit descriptions
+ * @brief Kronecker product between two quantum circuit descriptions
+ * @brief Kronecker product between two quantum circuit descriptions
  *
- * \param qc1 Quantum circuit description
- * \param qc2 Quantum circuit description
- * \param name Optional result's circuit name
- * \return Quantum circuit description of the Kronecker product of \a qc1
+ * @param qc1 Quantum circuit description
+ * @param qc1 Quantum circuit description
+ * @param qc2 Quantum circuit description
+ * @param qc2 Quantum circuit description
+ * @param name Optional result's circuit name
+ * @param name Optional result's circuit name
+ * @return Quantum circuit description of the Kronecker product of \a qc1
+ * @return Quantum circuit description of the Kronecker product of \a qc1
  * with \a qc2
  */
 inline QCircuit kron(QCircuit qc1, const QCircuit& qc2,
@@ -6435,14 +6982,19 @@ inline QCircuit kron(QCircuit qc1, const QCircuit& qc2,
 }
 
 /**
- * \brief Replicates a quantum circuit description
+ * @brief Replicates a quantum circuit description
+ * @brief Replicates a quantum circuit description
  * \note The circuit should not contain steps that remove qudits
  *
- * \param qc Quantum circuit description
- * \param n Number of repetitions. If \a n == 1, returns the original
+ * @param qc Quantum circuit description
+ * @param qc Quantum circuit description
+ * @param n Number of repetitions. If \a n == 1, returns the original
+ * @param n Number of repetitions. If \a n == 1, returns the original
  * circuit.
- * \param name Optional result's circuit name
- * \return Replicated quantum circuit description
+ * @param name Optional result's circuit name
+ * @param name Optional result's circuit name
+ * @return Replicated quantum circuit description
+ * @return Replicated quantum circuit description
  */
 inline QCircuit replicate(QCircuit qc, idx n,
                           std::optional<std::string> name = std::nullopt) {
@@ -6466,25 +7018,36 @@ inline QCircuit replicate(QCircuit qc, idx n,
 }
 
 /**
- * \brief Random quantum circuit description generator for fixed gate count
+ * @brief Random quantum circuit description generator for fixed gate count
+ * @brief Random quantum circuit description generator for fixed gate count
  *
- * \param nq Number of qudits
- * \param d Subsystem dimensions
- * \param gate_count Circuit gate count
- * \param p_two Optional, probability of applying a two qudit gate, must
+ * @param nq Number of qudits
+ * @param nq Number of qudits
+ * @param d Subsystem dimensions
+ * @param d Subsystem dimensions
+ * @param gate_count Circuit gate count
+ * @param gate_count Circuit gate count
+ * @param p_two Optional, probability of applying a two qudit gate, must
+ * @param p_two Optional, probability of applying a two qudit gate, must
  * belong to the interval (0,1). If the two qudit gate set has more than one
  * element, then the gate is chosen at random from the set.
- * \param with_respect_to_gate Optional, if present, gate count is
+ * @param with_respect_to_gate Optional, if present, gate count is
+ * @param with_respect_to_gate Optional, if present, gate count is
  * calculated with respect to this particular gate (absent by default, so by
  * default gate count is calculated with respect to all gates in the
  * circuit)
- * \param one_qudit_gate_set Optional set of one qudit gates, must be
+ * @param one_qudit_gate_set Optional set of one qudit gates, must be
+ * @param one_qudit_gate_set Optional set of one qudit gates, must be
  * specified for \a d > 2
- * \param two_qudit_gate_set Optional set of two qudit gates, must be
- * specified for \a d > 2 \param one_qudit_gate_names Optional one qudit
+ * @param two_qudit_gate_set Optional set of two qudit gates, must be
+ * @param two_qudit_gate_set Optional set of two qudit gates, must be
+ * specified for \a d > 2 @param one_qudit_gate_names Optional one qudit
+ * specified for \a d > 2 @param one_qudit_gate_names Optional one qudit
  * gate names
- * \param two_qudit_gate_names Optional two qudit gate names
- * \return Instance of random qpp::QCircuit for fixed gate count
+ * @param two_qudit_gate_names Optional two qudit gate names
+ * @param two_qudit_gate_names Optional two qudit gate names
+ * @return Instance of random qpp::QCircuit for fixed gate count
+ * @return Instance of random qpp::QCircuit for fixed gate count
  */
 inline QCircuit random_circuit_count(
     idx nq, idx d, idx gate_count, std::optional<realT> p_two,
@@ -6653,25 +7216,36 @@ inline QCircuit random_circuit_count(
 }
 
 /**
- * \brief Random quantum circuit description generator for fixed gate depth
+ * @brief Random quantum circuit description generator for fixed gate depth
+ * @brief Random quantum circuit description generator for fixed gate depth
  *
- * \param nq Number of qudits
- * \param d Subsystem dimensions
- * \param gate_depth Circuit gate depth
- * \param p_two Optional, probability of applying a two qudit gate, must
+ * @param nq Number of qudits
+ * @param nq Number of qudits
+ * @param d Subsystem dimensions
+ * @param d Subsystem dimensions
+ * @param gate_depth Circuit gate depth
+ * @param gate_depth Circuit gate depth
+ * @param p_two Optional, probability of applying a two qudit gate, must
+ * @param p_two Optional, probability of applying a two qudit gate, must
  * belong to the interval (0,1). If the two qudit gate set has more than one
  * element, then the gate is chosen at random from the set.
- * \param with_respect_to_gate Optional, if present, gate depth is
+ * @param with_respect_to_gate Optional, if present, gate depth is
+ * @param with_respect_to_gate Optional, if present, gate depth is
  * calculated with respect to this particular gate (absent by default, so by
  * default gate depth is calculated with respect to all gates in the
  * circuit)
- * \param one_qudit_gate_set Set of one qudit gates (optional, must be
+ * @param one_qudit_gate_set Set of one qudit gates (optional, must be
+ * @param one_qudit_gate_set Set of one qudit gates (optional, must be
  * specified for \a d > 2)
- * \param two_qudit_gate_set Set of two qudit gates (optional, must be
+ * @param two_qudit_gate_set Set of two qudit gates (optional, must be
+ * @param two_qudit_gate_set Set of two qudit gates (optional, must be
  * specified for \a d > 2);
- * \param one_qudit_gate_names One qudit gate names (optional)
- * \param two_qudit_gate_names Two qudit gate names (optional)
- * \return Instance of random qpp::QCircuit for fixed circuit gate depth
+ * @param one_qudit_gate_names One qudit gate names (optional)
+ * @param one_qudit_gate_names One qudit gate names (optional)
+ * @param two_qudit_gate_names Two qudit gate names (optional)
+ * @param two_qudit_gate_names Two qudit gate names (optional)
+ * @return Instance of random qpp::QCircuit for fixed circuit gate depth
+ * @return Instance of random qpp::QCircuit for fixed circuit gate depth
  */
 inline QCircuit random_circuit_depth(
     idx nq, idx d, idx gate_depth, std::optional<realT> p_two,
@@ -6840,19 +7414,26 @@ inline QCircuit random_circuit_depth(
 }
 
 /**
- * \brief Constructs a quantum phase estimation circuit with a \n bits of
+ * @brief Constructs a quantum phase estimation circuit with a \n bits of
+ * @brief Constructs a quantum phase estimation circuit with a \n bits of
  * precision
  * \note The number of classical bits will be equal with the number of
  * ancillas
  *
- * \param U Unitary matrix
- * \param n Number of ancilla qubits (translates to number of bits of
+ * @param U Unitary matrix
+ * @param U Unitary matrix
+ * @param n Number of ancilla qubits (translates to number of bits of
+ * @param n Number of ancilla qubits (translates to number of bits of
  * precision)
- * \param omit_measurements Optional (true by default); if true, omits
+ * @param omit_measurements Optional (true by default); if true, omits
+ * @param omit_measurements Optional (true by default); if true, omits
  * measurements of the ancilla qubits
- * \param d Subsystem dimensions (default is qubit, i.e., \a d =2)
- * \param name Optional ("qpe" by default) circuit name
- * \return Quantum phase estimation circuit with \a n bits of precision
+ * @param d Subsystem dimensions (default is qubit, i.e., \a d =2)
+ * @param d Subsystem dimensions (default is qubit, i.e., \a d =2)
+ * @param name Optional ("qpe" by default) circuit name
+ * @param name Optional ("qpe" by default) circuit name
+ * @return Quantum phase estimation circuit with \a n bits of precision
+ * @return Quantum phase estimation circuit with \a n bits of precision
  */
 inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
                             idx d = 2,
@@ -6897,12 +7478,15 @@ inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
 
 namespace internal {
 /**
- * \brief True if the qpp::internal::QCircuitMeasurementStep is a projective
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a projective
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a projective
  * measurement step (including post-selection), false otherwise
  *
- * \param measurement_step Instance of
+ * @param measurement_step Instance of
+ * @param measurement_step Instance of
  * qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a
  * projective measurement step (including post-selection), false otherwise
  */
 inline bool is_projective_measurement(
@@ -6923,11 +7507,14 @@ inline bool is_projective_measurement(
 }
 
 /**
- * \brief True if the quantum circuit step is a projective measurement step
+ * @brief True if the quantum circuit step is a projective measurement step
+ * @brief True if the quantum circuit step is a projective measurement step
  * (including post-selection), false otherwise
  *
- * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a projective measurement
+ * @param elem Quantum circuit step
+ * @param elem Quantum circuit step
+ * @return True if the quantum circuit step is a projective measurement
+ * @return True if the quantum circuit step is a projective measurement
  * step (including post-selection), false otherwise
  */
 inline bool
@@ -6943,11 +7530,14 @@ is_projective_measurement(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a projective
+ * @brief True if the quantum circuit iterator points to a projective
+ * @brief True if the quantum circuit iterator points to a projective
  * measurement step (including post-selection), false otherwise
  *
- * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a projective
+ * @param it Quantum circuit iterator
+ * @param it Quantum circuit iterator
+ * @return True if the quantum circuit iterator points to a projective
+ * @return True if the quantum circuit iterator points to a projective
  * measurement step (including post-selection), false otherwise
  */
 inline bool is_projective_measurement(QCircuit::iterator it) {
@@ -6955,13 +7545,16 @@ inline bool is_projective_measurement(QCircuit::iterator it) {
 }
 
 /**
- * \brief True if the qpp::internal::QCircuitMeasurementStep is a
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a
  * measurement step (projective or not, including post-selection), false
  * otherwise
  *
- * \param measurement_step Instance of
+ * @param measurement_step Instance of
+ * @param measurement_step Instance of
  * qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a
  * measurement step (projective or not, including post-selection), false
  * otherwise
  */
@@ -6983,11 +7576,14 @@ is_measurement(const internal::QCircuitMeasurementStep& measurement_step) {
 }
 
 /**
- * \brief True if the quantum circuit step is a measurement step (projective
+ * @brief True if the quantum circuit step is a measurement step (projective
+ * @brief True if the quantum circuit step is a measurement step (projective
  * or not, including post-selection), false otherwise
  *
- * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a measurement step
+ * @param elem Quantum circuit step
+ * @param elem Quantum circuit step
+ * @return True if the quantum circuit step is a measurement step
+ * @return True if the quantum circuit step is a measurement step
  * (projective or not, including post-selection), false otherwise
  */
 inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
@@ -7002,11 +7598,14 @@ inline bool is_measurement(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a measurement step
+ * @brief True if the quantum circuit iterator points to a measurement step
+ * @brief True if the quantum circuit iterator points to a measurement step
  * (projective or not, including post-selection), false otherwise
  *
- * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a measurement step
+ * @param it Quantum circuit iterator
+ * @param it Quantum circuit iterator
+ * @return True if the quantum circuit iterator points to a measurement step
+ * @return True if the quantum circuit iterator points to a measurement step
  * (projective or not, including post-selection), false otherwise
  */
 inline bool is_measurement(QCircuit::iterator it) {
@@ -7014,13 +7613,16 @@ inline bool is_measurement(QCircuit::iterator it) {
 }
 
 /**
- * \brief True if the qpp::internal::QCircuitMeasurementStep performs a
+ * @brief True if the qpp::internal::QCircuitMeasurementStep performs a
+ * @brief True if the qpp::internal::QCircuitMeasurementStep performs a
  * destructive measurement of any kind (including post-selection), false
  * otherwise
  *
- * \param measurement_step Instance of
+ * @param measurement_step Instance of
+ * @param measurement_step Instance of
  * qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep performs a
+ * @return True if the qpp::internal::QCircuitMeasurementStep performs a
+ * @return True if the qpp::internal::QCircuitMeasurementStep performs a
  * destructive measurement of any kind (including post-selection), false
  * otherwise
  */
@@ -7042,11 +7644,14 @@ inline bool is_destructive_measurement(
 }
 
 /**
- * \brief True if the quantum circuit step performs a destructive
+ * @brief True if the quantum circuit step performs a destructive
+ * @brief True if the quantum circuit step performs a destructive
  * measurement of any kind (including post-selection), false otherwise
  *
- * \param elem Quantum circuit step
- * \return True if the quantum circuit step performs a destructive
+ * @param elem Quantum circuit step
+ * @param elem Quantum circuit step
+ * @return True if the quantum circuit step performs a destructive
+ * @return True if the quantum circuit step performs a destructive
  * measurement of any kind (including post-selection), false otherwise
  */
 inline bool
@@ -7061,11 +7666,14 @@ is_destructive_measurement(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a destructive
+ * @brief True if the quantum circuit iterator points to a destructive
+ * @brief True if the quantum circuit iterator points to a destructive
  * measurement step of any kind (including post-selection), false otherwise
  *
- * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a destructive
+ * @param it Quantum circuit iterator
+ * @param it Quantum circuit iterator
+ * @return True if the quantum circuit iterator points to a destructive
+ * @return True if the quantum circuit iterator points to a destructive
  * measurement step of any kind (including post-selection), false otherwise
  */
 inline bool is_destructive_measurement(QCircuit::iterator it) {
@@ -7073,12 +7681,15 @@ inline bool is_destructive_measurement(QCircuit::iterator it) {
 }
 
 /**
- * \brief True if the qpp::internal::QCircuitMeasurementStep is a projective
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a projective
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a projective
  * post-selection step, false otherwise
  *
- * \param measurement_step Instance of
+ * @param measurement_step Instance of
+ * @param measurement_step Instance of
  * qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a
  * projective post-selection step, false otherwise
  */
 inline bool is_projective_post_selection(
@@ -7095,11 +7706,14 @@ inline bool is_projective_post_selection(
 }
 
 /**
- * \brief True if the quantum circuit step is a projective post-selection
+ * @brief True if the quantum circuit step is a projective post-selection
+ * @brief True if the quantum circuit step is a projective post-selection
  * step, false otherwise
  *
- * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a projective post-selection
+ * @param elem Quantum circuit step
+ * @param elem Quantum circuit step
+ * @return True if the quantum circuit step is a projective post-selection
+ * @return True if the quantum circuit step is a projective post-selection
  * step, false otherwise
  */
 inline bool
@@ -7115,11 +7729,14 @@ is_projective_post_selection(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a projective
+ * @brief True if the quantum circuit iterator points to a projective
+ * @brief True if the quantum circuit iterator points to a projective
  * post-selection step, false otherwise
  *
- * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a projective
+ * @param it Quantum circuit iterator
+ * @param it Quantum circuit iterator
+ * @return True if the quantum circuit iterator points to a projective
+ * @return True if the quantum circuit iterator points to a projective
  * post-selection step, false otherwise
  */
 inline bool is_projective_post_selection(QCircuit::iterator it) {
@@ -7127,12 +7744,15 @@ inline bool is_projective_post_selection(QCircuit::iterator it) {
 }
 
 /**
- * \brief True if the qpp::internal::QCircuitMeasurementStep is a
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a
  * post-selection step (projective or not), false otherwise
  *
- * \param measurement_step Instance of
+ * @param measurement_step Instance of
+ * @param measurement_step Instance of
  * qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a
  * post-selection step (projective or not), false otherwise
  */
 inline bool
@@ -7149,11 +7769,14 @@ is_post_selection(const internal::QCircuitMeasurementStep& measurement_step) {
 }
 
 /**
- * \brief True if the quantum circuit step is a post-selection step
+ * @brief True if the quantum circuit step is a post-selection step
+ * @brief True if the quantum circuit step is a post-selection step
  * (projective or not), false otherwise
  *
- * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a post-selection step
+ * @param elem Quantum circuit step
+ * @param elem Quantum circuit step
+ * @return True if the quantum circuit step is a post-selection step
+ * @return True if the quantum circuit step is a post-selection step
  * (projective or not), false otherwise
  */
 inline bool is_post_selection(const QCircuit::iterator::value_type& elem) {
@@ -7168,11 +7791,14 @@ inline bool is_post_selection(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a post-selection
+ * @brief True if the quantum circuit iterator points to a post-selection
+ * @brief True if the quantum circuit iterator points to a post-selection
  * step (projective or not), false otherwise
  *
- * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a post-selection
+ * @param it Quantum circuit iterator
+ * @param it Quantum circuit iterator
+ * @return True if the quantum circuit iterator points to a post-selection
+ * @return True if the quantum circuit iterator points to a post-selection
  * step (projective or not), false otherwise
  */
 inline bool is_post_selection(QCircuit::iterator it) {
@@ -7180,12 +7806,15 @@ inline bool is_post_selection(QCircuit::iterator it) {
 }
 
 /**
- * \brief True if the qpp::internal::QCircuitMeasurementStep is a discard
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a discard
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a discard
  * step, false otherwise
  *
- * \param measurement_step Instance of
+ * @param measurement_step Instance of
+ * @param measurement_step Instance of
  * qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a discard
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a discard
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a discard
  * step, false otherwise
  */
 inline bool
@@ -7200,11 +7829,14 @@ is_discard(const internal::QCircuitMeasurementStep& measurement_step) {
 }
 
 /**
- * \brief True if the quantum circuit step is a discard step, false
+ * @brief True if the quantum circuit step is a discard step, false
+ * @brief True if the quantum circuit step is a discard step, false
  * otherwise
  *
- * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a discard step, false
+ * @param elem Quantum circuit step
+ * @param elem Quantum circuit step
+ * @return True if the quantum circuit step is a discard step, false
+ * @return True if the quantum circuit step is a discard step, false
  * otherwise
  */
 inline bool is_discard(const QCircuit::iterator::value_type& elem) {
@@ -7219,22 +7851,28 @@ inline bool is_discard(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a discard step,
+ * @brief True if the quantum circuit iterator points to a discard step,
+ * @brief True if the quantum circuit iterator points to a discard step,
  * false otherwise
  *
- * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a discard step,
+ * @param it Quantum circuit iterator
+ * @param it Quantum circuit iterator
+ * @return True if the quantum circuit iterator points to a discard step,
+ * @return True if the quantum circuit iterator points to a discard step,
  * false otherwise
  */
 inline bool is_discard(QCircuit::iterator it) { return is_discard(*it); }
 
 /**
- * \brief True if the qpp::internal::QCircuitMeasurementStep is a reset
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a reset
+ * @brief True if the qpp::internal::QCircuitMeasurementStep is a reset
  * step, false otherwise
  *
- * \param measurement_step Instance of
+ * @param measurement_step Instance of
+ * @param measurement_step Instance of
  * qpp::internal::QCircuitMeasurementStep
- * \return True if the qpp::internal::QCircuitMeasurementStep is a reset
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a reset
+ * @return True if the qpp::internal::QCircuitMeasurementStep is a reset
  * step, false otherwise
  */
 inline bool
@@ -7249,11 +7887,14 @@ is_reset(const internal::QCircuitMeasurementStep& measurement_step) {
 }
 
 /**
- * \brief True if the quantum circuit step is a reset step,
+ * @brief True if the quantum circuit step is a reset step,
+ * @brief True if the quantum circuit step is a reset step,
  * false otherwise
  *
- * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a reset step,
+ * @param elem Quantum circuit step
+ * @param elem Quantum circuit step
+ * @return True if the quantum circuit step is a reset step,
+ * @return True if the quantum circuit step is a reset step,
  * false otherwise
  */
 inline bool is_reset(const QCircuit::iterator::value_type& elem) {
@@ -7268,31 +7909,40 @@ inline bool is_reset(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a reset step, false
+ * @brief True if the quantum circuit iterator points to a reset step, false
+ * @brief True if the quantum circuit iterator points to a reset step, false
  * otherwise
  *
- * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a reset step,
+ * @param it Quantum circuit iterator
+ * @param it Quantum circuit iterator
+ * @return True if the quantum circuit iterator points to a reset step,
+ * @return True if the quantum circuit iterator points to a reset step,
  * false otherwise
  */
 inline bool is_reset(QCircuit::iterator it) { return is_reset(*it); }
 
-/** \brief True if the qpp::internal::QCircuitGateStep is a classical CTRL
+/** @brief True if the qpp::internal::QCircuitGateStep is a classical CTRL
+/** @brief True if the qpp::internal::QCircuitGateStep is a classical CTRL
  * step, false otherwise
  *
- * \param gate_step Instance of qpp::internal::QCircuitGateStep
- * \return True if the qpp::internal::QCircuitGateStep is a classical CTRL
+ * @param gate_step Instance of qpp::internal::QCircuitGateStep
+ * @param gate_step Instance of qpp::internal::QCircuitGateStep
+ * @return True if the qpp::internal::QCircuitGateStep is a classical CTRL
+ * @return True if the qpp::internal::QCircuitGateStep is a classical CTRL
  * step, false otherwise
  */
 inline bool is_cCTRL(const internal::QCircuitGateStep& gate_step) {
     return QCircuit::is_cCTRL(gate_step);
 }
 
-/** \brief True if the quantum circuit step is a classical CTRL step, false
+/** @brief True if the quantum circuit step is a classical CTRL step, false
+/** @brief True if the quantum circuit step is a classical CTRL step, false
  * otherwise
  *
- * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a classical CTRL step, false
+ * @param elem Quantum circuit step
+ * @param elem Quantum circuit step
+ * @return True if the quantum circuit step is a classical CTRL step, false
+ * @return True if the quantum circuit step is a classical CTRL step, false
  * otherwise
  */
 inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
@@ -7306,21 +7956,27 @@ inline bool is_cCTRL(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a classical CTRL
+ * @brief True if the quantum circuit iterator points to a classical CTRL
+ * @brief True if the quantum circuit iterator points to a classical CTRL
  * step, false otherwise
  *
- * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a classical CTRL
+ * @param it Quantum circuit iterator
+ * @param it Quantum circuit iterator
+ * @return True if the quantum circuit iterator points to a classical CTRL
+ * @return True if the quantum circuit iterator points to a classical CTRL
  * step, false otherwise
  */
 inline bool is_cCTRL(QCircuit::iterator it) { return is_cCTRL(*it); }
 
 /**
- * \brief True if the quantum circuit step is a runtime step, false
+ * @brief True if the quantum circuit step is a runtime step, false
+ * @brief True if the quantum circuit step is a runtime step, false
  * otherwise
  *
- * \param elem Quantum circuit step
- * \return True if the quantum circuit step is a runtime step, false
+ * @param elem Quantum circuit step
+ * @param elem Quantum circuit step
+ * @return True if the quantum circuit step is a runtime step, false
+ * @return True if the quantum circuit step is a runtime step, false
  * otherwise
  */
 inline bool is_runtime_step(const QCircuit::iterator::value_type& elem) {
@@ -7333,22 +7989,28 @@ inline bool is_runtime_step(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief True if the quantum circuit iterator points to a runtime step, false
+ * @brief True if the quantum circuit iterator points to a runtime step, false
+ * @brief True if the quantum circuit iterator points to a runtime step, false
  * otherwise
  *
- * \param it Quantum circuit iterator
- * \return True if the quantum circuit iterator points to a runtime step, false
+ * @param it Quantum circuit iterator
+ * @param it Quantum circuit iterator
+ * @return True if the quantum circuit iterator points to a runtime step, false
+ * @return True if the quantum circuit iterator points to a runtime step, false
  * otherwise
  */
 inline bool is_runtime_step(QCircuit::iterator it) {
     return is_runtime_step(*it);
 }
 /**
- * \brief Extracts ctrl, target, ps_vals, and c_reg vectors (in this order)
+ * @brief Extracts ctrl, target, ps_vals, and c_reg vectors (in this order)
+ * @brief Extracts ctrl, target, ps_vals, and c_reg vectors (in this order)
  * from a quantum circuit step, as a tuple
  *
- * \param elem Quantum circuit step
- * \return Tuple with vectors representing (in this order) ctrl, target, and
+ * @param elem Quantum circuit step
+ * @param elem Quantum circuit step
+ * @return Tuple with vectors representing (in this order) ctrl, target, and
+ * @return Tuple with vectors representing (in this order) ctrl, target, and
  * c_reg, respectively
  */
 inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>,
@@ -7425,11 +8087,14 @@ extract_ctrl_target_ps_vals_c_reg(const QCircuit::iterator::value_type& elem) {
 }
 
 /**
- * \brief Extracts ctrl, target, and c_reg vectors (in this order) from a
+ * @brief Extracts ctrl, target, and c_reg vectors (in this order) from a
+ * @brief Extracts ctrl, target, and c_reg vectors (in this order) from a
  * quantum circuit iterator, as a tuple
  *
- * \param it Quantum circuit iterator
- * \return Tuple with vectors representing (in this order) ctrl, target, and
+ * @param it Quantum circuit iterator
+ * @param it Quantum circuit iterator
+ * @return Tuple with vectors representing (in this order) ctrl, target, and
+ * @return Tuple with vectors representing (in this order) ctrl, target, and
  * c_reg, respectively
  */
 inline std::tuple<std::vector<idx>, std::vector<idx>, std::vector<idx>,
@@ -7439,12 +8104,16 @@ extract_ctrl_target_ps_vals_c_reg(QCircuit::iterator it) {
 }
 
 /**
- * \brief True if two quantum circuit steps (assumed added via the
+ * @brief True if two quantum circuit steps (assumed added via the
+ * @brief True if two quantum circuit steps (assumed added via the
  * qpp::QCircuit API) can be swapped, false otherwise
  *
- * \param elem1 Quantum circuit step
- * \param elem2 Quantum circuit step
- * \return True if two quantum circuit steps can be swapped,
+ * @param elem1 Quantum circuit step
+ * @param elem1 Quantum circuit step
+ * @param elem2 Quantum circuit step
+ * @param elem2 Quantum circuit step
+ * @return True if two quantum circuit steps can be swapped,
+ * @return True if two quantum circuit steps can be swapped,
  * false otherwise
  */
 inline bool can_swap(const QCircuit::iterator::value_type& elem1,
@@ -7477,25 +8146,33 @@ inline bool can_swap(const QCircuit::iterator::value_type& elem1,
 }
 
 /**
- * \brief True if two quantum circuit steps (assumed added via the
+ * @brief True if two quantum circuit steps (assumed added via the
+ * @brief True if two quantum circuit steps (assumed added via the
  * qpp::QCircuit API) can be swapped, false otherwise
  *
- * \param it1 Quantum circuit iterator pointing to a quantum circuit step
- * \param it2 Quantum circuit iterator pointing to a quantum circuit step
- * \return True if two quantum circuit steps can be swapped, false otherwise
+ * @param it1 Quantum circuit iterator pointing to a quantum circuit step
+ * @param it1 Quantum circuit iterator pointing to a quantum circuit step
+ * @param it2 Quantum circuit iterator pointing to a quantum circuit step
+ * @param it2 Quantum circuit iterator pointing to a quantum circuit step
+ * @return True if two quantum circuit steps can be swapped, false otherwise
+ * @return True if two quantum circuit steps can be swapped, false otherwise
  */
 inline bool can_swap(QCircuit::iterator it1, QCircuit::iterator it2) {
     return can_swap(*it1, *it2);
 }
 
 /**
- * \brief Converts a qpp::QCircuit::iterator range [\a start, \a finish) to
+ * @brief Converts a qpp::QCircuit::iterator range [\a start, \a finish) to
+ * @brief Converts a qpp::QCircuit::iterator range [\a start, \a finish) to
  * a vector of quantum circuit iterators
  *
- * \param start Quantum circuit iterator pointing to the first element
- * \param finish Quantum circuit iterator pointing to the last element (not
+ * @param start Quantum circuit iterator pointing to the first element
+ * @param start Quantum circuit iterator pointing to the first element
+ * @param finish Quantum circuit iterator pointing to the last element (not
+ * @param finish Quantum circuit iterator pointing to the last element (not
  * included)
- * \return Vector of quantum circuit iterators
+ * @return Vector of quantum circuit iterators
+ * @return Vector of quantum circuit iterators
  */
 inline std::vector<QCircuit::iterator>
 circuit_as_iterators(QCircuit::iterator start, QCircuit::iterator finish) {
@@ -7508,11 +8185,14 @@ circuit_as_iterators(QCircuit::iterator start, QCircuit::iterator finish) {
 }
 
 /**
- * \brief Converts a quantum circuit description to a vector of quantum
+ * @brief Converts a quantum circuit description to a vector of quantum
+ * @brief Converts a quantum circuit description to a vector of quantum
  * circuit iterators
  *
- * \param qc Quantum circuit description
- * \return Vector of quantum circuit iterators
+ * @param qc Quantum circuit description
+ * @param qc Quantum circuit description
+ * @return Vector of quantum circuit iterators
+ * @return Vector of quantum circuit iterators
  */
 inline std::vector<QCircuit::iterator>
 circuit_as_iterators(const QCircuit& qc) {
@@ -7520,7 +8200,8 @@ circuit_as_iterators(const QCircuit& qc) {
 }
 
 /**
- * \brief Puts a quantum (sub)-circuit description in the canonical form,
+ * @brief Puts a quantum (sub)-circuit description in the canonical form,
+ * @brief Puts a quantum (sub)-circuit description in the canonical form,
  * i.e., pushes all cCTRLs followed by measurements to the end of the
  * circuit, so, if possible, the circuit will be of the form [Gates, cCTRLs,
  * Measurements]
@@ -7531,10 +8212,13 @@ circuit_as_iterators(const QCircuit& qc) {
  * \note This function has no effect if the circuit description contains
  * runtime statements
  *
- * \param start Quantum circuit iterator pointing to the first element
- * \param finish Quantum circuit iterator pointing to the last element (not
+ * @param start Quantum circuit iterator pointing to the first element
+ * @param start Quantum circuit iterator pointing to the first element
+ * @param finish Quantum circuit iterator pointing to the last element (not
+ * @param finish Quantum circuit iterator pointing to the last element (not
  * included)
- * \return Quantum circuit canonical form represented as a vector of quantum
+ * @return Quantum circuit canonical form represented as a vector of quantum
+ * @return Quantum circuit canonical form represented as a vector of quantum
  * circuit iterators
  */
 inline std::vector<QCircuit::iterator>
@@ -7602,7 +8286,8 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
 }
 
 /**
- * \brief Puts a quantum (sub)-circuit description in the canonical form,
+ * @brief Puts a quantum (sub)-circuit description in the canonical form,
+ * @brief Puts a quantum (sub)-circuit description in the canonical form,
  * i.e., pushes all cCTRLs followed by measurements to the end of the
  * circuit, so, if possible, the circuit will be of the form [Gates, cCTRLs,
  * Measurements]
@@ -7612,8 +8297,10 @@ canonical_form(QCircuit::iterator start, QCircuit::iterator finish) {
  *
  * \note This function does not push across runtime statements
  *
- * \param qc Quantum circuit description
- * \return Quantum circuit canonical form represented as a vector of quantum
+ * @param qc Quantum circuit description
+ * @param qc Quantum circuit description
+ * @return Quantum circuit canonical form represented as a vector of quantum
+ * @return Quantum circuit canonical form represented as a vector of quantum
  * circuit iterators
  */
 inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
@@ -7621,11 +8308,14 @@ inline std::vector<QCircuit::iterator> canonical_form(const QCircuit& qc) {
 }
 
 /**
- * \brief Increments by \a i all conditional if/else/while locations in the
+ * @brief Increments by \a i all conditional if/else/while locations in the
+ * @brief Increments by \a i all conditional if/else/while locations in the
  * conditional stack \a cs
  *
- * \param cs Conditional stack
- * \param i Non-negative integer
+ * @param cs Conditional stack
+ * @param cs Conditional stack
+ * @param i Non-negative integer
+ * @param i Non-negative integer
  */
 inline void inc_conditional_stack(conditional_stack_t& cs, idx i) {
     for (auto& elem : cs) {
@@ -7634,13 +8324,17 @@ inline void inc_conditional_stack(conditional_stack_t& cs, idx i) {
 }
 
 /**
- * \brief True if the qpp::QCircuit::iterator range [\a start, \a finish)
+ * @brief True if the qpp::QCircuit::iterator range [\a start, \a finish)
+ * @brief True if the qpp::QCircuit::iterator range [\a start, \a finish)
  * contains runtime statements, false otherwise
  *
- * \param start Quantum circuit iterator pointing to the first element
- * \param finish Quantum circuit iterator pointing to the last element (not
+ * @param start Quantum circuit iterator pointing to the first element
+ * @param start Quantum circuit iterator pointing to the first element
+ * @param finish Quantum circuit iterator pointing to the last element (not
+ * @param finish Quantum circuit iterator pointing to the last element (not
  included)
- * \return True if the qpp::QCircuit::iterator range [\a start, \a finish)
+ * @return True if the qpp::QCircuit::iterator range [\a start, \a finish)
+ * @return True if the qpp::QCircuit::iterator range [\a start, \a finish)
  * contains runtime statements, false otherwise
 
  */

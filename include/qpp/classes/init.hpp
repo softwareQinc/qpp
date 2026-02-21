@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/classes/init.hpp
- * \brief Initialization
+ * @file qpp/classes/init.hpp
+ * @file qpp/classes/init.hpp
+ * @brief Initialization
+ * @brief Initialization
  */
 
 #ifndef QPP_CLASSES_INIT_HPP_
@@ -36,8 +38,10 @@
 
 namespace qpp {
 /**
- * \class qpp::Init
- * \brief const Singleton class that performs
+ * @class qpp::Init
+ * @class qpp::Init
+ * @brief const Singleton class that performs
+ * @brief const Singleton class that performs
  * additional initializations/cleanups
  */
 class Init final : public internal::Singleton<const Init> // const Singleton
@@ -46,12 +50,14 @@ class Init final : public internal::Singleton<const Init> // const Singleton
 
   private:
     /**
-     * \brief Additional initializations
+     * @brief Additional initializations
+     * @brief Additional initializations
      */
     Init() = default; // modify this for custom initialization stuff
 
     /**
-     * \brief Cleanups
+     * @brief Cleanups
+     * @brief Cleanups
      */
     ~Init() override = default;
     // {}

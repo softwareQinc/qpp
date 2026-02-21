@@ -25,7 +25,8 @@
  */
 
 /**
- * \file qasmtools/ast/ast.hpp
+ * @file qasmtools/ast/ast.hpp
+ * @file qasmtools/ast/ast.hpp
  */
 
 #ifndef QASMTOOLS_AST_AST_HPP_

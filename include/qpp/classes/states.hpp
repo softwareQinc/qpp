@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/classes/states.hpp
- * \brief Quantum states
+ * @file qpp/classes/states.hpp
+ * @file qpp/classes/states.hpp
+ * @brief Quantum states
+ * @brief Quantum states
  */
 
 #ifndef QPP_CLASSES_STATES_HPP_
@@ -43,8 +45,10 @@
 
 namespace qpp {
 /**
- * \class qpp::States
- * \brief const Singleton class that implements most commonly used states
+ * @class qpp::States
+ * @class qpp::States
+ * @brief const Singleton class that implements most commonly used states
+ * @brief const Singleton class that implements most commonly used states
  */
 class States final : public internal::Singleton<const States> // const Singleton
 {
@@ -98,10 +102,13 @@ class States final : public internal::Singleton<const States> // const Singleton
     cmat pW{cmat::Zero(8, 8)};   ///< Projector onto the W state
 
     /**
-     * \brief Maximally entangled state of 2 qudits
+     * @brief Maximally entangled state of 2 qudits
+     * @brief Maximally entangled state of 2 qudits
      *
-     * \param d Subsystem dimensions
-     * \return Maximally entangled state
+     * @param d Subsystem dimensions
+     * @param d Subsystem dimensions
+     * @return Maximally entangled state
+     * @return Maximally entangled state
      * \f$\frac{1}{\sqrt{d}}\sum_{j=0}^{d-1}|jj\rangle\f$ of 2 qudits
      */
     ket mes(idx d = 2) const {
@@ -121,12 +128,17 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-     * \brief Zero state of \a n qudits
-     * \see qpp::States::one()
+     * @brief Zero state of \a n qudits
+     * @brief Zero state of \a n qudits
+     * @see qpp::States::one()
+     * @see qpp::States::one()
      *
-     * \param n Positive integer, 1 by default
-     * \param d Subsystem dimensions
-     * \return Zero state \f$|0\rangle^{\otimes n}\f$ of \a n qudits
+     * @param n Positive integer, 1 by default
+     * @param n Positive integer, 1 by default
+     * @param d Subsystem dimensions
+     * @param d Subsystem dimensions
+     * @return Zero state \f$|0\rangle^{\otimes n}\f$ of \a n qudits
+     * @return Zero state \f$|0\rangle^{\otimes n}\f$ of \a n qudits
      */
     ket zero(idx n = 1, idx d = 2) const {
         // EXCEPTION CHECKS
@@ -148,12 +160,17 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-     * \brief One state of \a n qudits
-     * \see qpp::States::zero()
+     * @brief One state of \a n qudits
+     * @brief One state of \a n qudits
+     * @see qpp::States::zero()
+     * @see qpp::States::zero()
      *
-     * \param n Positive integer, 1 by default
-     * \param d Subsystem dimensions
-     * \return One state \f$|1\rangle^{\otimes n}\f$ of \a n qudits
+     * @param n Positive integer, 1 by default
+     * @param n Positive integer, 1 by default
+     * @param d Subsystem dimensions
+     * @param d Subsystem dimensions
+     * @return One state \f$|1\rangle^{\otimes n}\f$ of \a n qudits
+     * @return One state \f$|1\rangle^{\otimes n}\f$ of \a n qudits
      */
     ket one(idx n = 1, idx d = 2) const {
         // EXCEPTION CHECKS
@@ -174,13 +191,19 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-     * \brief \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
-     * \see qpp::States::j()
+     * @brief \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
+     * @brief \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
+     * @see qpp::States::j()
+     * @see qpp::States::j()
      *
-     * \param j Non-negative integer
-     * \param n Positive integer, 1 by default
-     * \param d Subsystem dimensions
-     * \return \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
+     * @param j Non-negative integer
+     * @param j Non-negative integer
+     * @param n Positive integer, 1 by default
+     * @param n Positive integer, 1 by default
+     * @param d Subsystem dimensions
+     * @param d Subsystem dimensions
+     * @return \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
+     * @return \f$|j\rangle^{\otimes n}\f$ state of \a n qudits
      */
     ket jn(idx j, idx n = 1, idx d = 2) const {
         // EXCEPTION CHECKS
@@ -205,12 +228,17 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-     * \brief \f$|j\rangle\f$ computational basis state of a single qudit
-     * \see qpp::States::jn()
+     * @brief \f$|j\rangle\f$ computational basis state of a single qudit
+     * @brief \f$|j\rangle\f$ computational basis state of a single qudit
+     * @see qpp::States::jn()
+     * @see qpp::States::jn()
      *
-     * \param j Non-negative integer
-     * \param D System dimension
-     * \return \f$|j\rangle\f$ computational basis state of a single qudit
+     * @param j Non-negative integer
+     * @param j Non-negative integer
+     * @param D System dimension
+     * @param D System dimension
+     * @return \f$|j\rangle\f$ computational basis state of a single qudit
+     * @return \f$|j\rangle\f$ computational basis state of a single qudit
      */
     ket j(idx j, idx D = 2) const {
         // EXCEPTION CHECKS
@@ -231,11 +259,15 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-     * \brief Plus state of \a n qubits
-     * \see qpp::States::minus()
+     * @brief Plus state of \a n qubits
+     * @brief Plus state of \a n qubits
+     * @see qpp::States::minus()
+     * @see qpp::States::minus()
      *
-     * \param n Positive integer, 1 by default
-     * \return Plus state \f$|+\rangle^{\otimes n}\f$ of \a n qubits
+     * @param n Positive integer, 1 by default
+     * @param n Positive integer, 1 by default
+     * @return Plus state \f$|+\rangle^{\otimes n}\f$ of \a n qubits
+     * @return Plus state \f$|+\rangle^{\otimes n}\f$ of \a n qubits
      */
     ket plus(idx n = 1) const {
         // EXCEPTION CHECKS
@@ -252,11 +284,15 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-     * \brief Minus state of \a n qubits
-     * \see qpp::States::plus()
+     * @brief Minus state of \a n qubits
+     * @brief Minus state of \a n qubits
+     * @see qpp::States::plus()
+     * @see qpp::States::plus()
      *
-     * \param n Positive integer, 1 by default
-     * \return Minus state \f$|-\rangle^{\otimes n}\f$ of \a n qubits
+     * @param n Positive integer, 1 by default
+     * @param n Positive integer, 1 by default
+     * @return Minus state \f$|-\rangle^{\otimes n}\f$ of \a n qubits
+     * @return Minus state \f$|-\rangle^{\otimes n}\f$ of \a n qubits
      */
     ket minus(idx n = 1) const {
         // EXCEPTION CHECKS
@@ -326,7 +362,8 @@ class States final : public internal::Singleton<const States> // const Singleton
     }
 
     /**
-     * \brief Default destructor
+     * @brief Default destructor
+     * @brief Default destructor
      */
     ~States() override = default;
 }; /* class States */

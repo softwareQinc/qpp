@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/classes/gates.hpp
- * \brief Quantum gates
+ * @file qpp/classes/gates.hpp
+ * @file qpp/classes/gates.hpp
+ * @brief Quantum gates
+ * @brief Quantum gates
  */
 
 #ifndef QPP_CLASSES_GATES_HPP_
@@ -51,8 +53,10 @@
 
 namespace qpp {
 /**
- * \class qpp::Gates
- * \brief const Singleton class that implements most commonly used gates
+ * @class qpp::Gates
+ * @class qpp::Gates
+ * @brief const Singleton class that implements most commonly used gates
+ * @brief const Singleton class that implements most commonly used gates
  */
 class Gates final : public internal::Singleton<const Gates> // const Singleton
 {
@@ -83,7 +87,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     cmat FRED{cmat::Identity(8, 8)}; ///< Fredkin gate
   private:
     /**
-     * \brief Initializes the gates
+     * @brief Initializes the gates
+     * @brief Initializes the gates
      */
     Gates() {
         H << 1 / std::sqrt(static_cast<realT>(2.0)),
@@ -117,7 +122,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Default destructor
+     * @brief Default destructor
+     * @brief Default destructor
      */
     ~Gates() override = default;
 
@@ -127,12 +133,16 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     // one qubit gates
 
     /**
-     * \brief Qubit rotation of \a theta about the 3-dimensional real (unit)
+     * @brief Qubit rotation of \a theta about the 3-dimensional real (unit)
+     * @brief Qubit rotation of \a theta about the 3-dimensional real (unit)
      * vector \a n
      *
-     * \param theta Rotation angle
-     * \param n 3-dimensional real (unit) vector
-     * \return Rotation gate
+     * @param theta Rotation angle
+     * @param theta Rotation angle
+     * @param n 3-dimensional real (unit) vector
+     * @param n 3-dimensional real (unit) vector
+     * @return Rotation gate
+     * @return Rotation gate
      */
     cmat Rn(realT theta, const std::array<realT, 3>& n) const {
         cmat result(2, 2);
@@ -144,10 +154,13 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Qubit rotation of \a theta about the X axis
+     * @brief Qubit rotation of \a theta about the X axis
+     * @brief Qubit rotation of \a theta about the X axis
      *
-     * \param theta Rotation angle
-     * \return Rotation gate
+     * @param theta Rotation angle
+     * @param theta Rotation angle
+     * @return Rotation gate
+     * @return Rotation gate
      */
     cmat RX(realT theta) const {
         // EXCEPTION CHECKS
@@ -157,10 +170,13 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Qubit rotation of \a theta about the Y axis
+     * @brief Qubit rotation of \a theta about the Y axis
+     * @brief Qubit rotation of \a theta about the Y axis
      *
-     * \param theta Rotation angle
-     * \return Rotation gate
+     * @param theta Rotation angle
+     * @param theta Rotation angle
+     * @return Rotation gate
+     * @return Rotation gate
      */
     cmat RY(realT theta) const {
         // EXCEPTION CHECKS
@@ -170,10 +186,13 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Qubit rotation of \a theta about the Z axis
+     * @brief Qubit rotation of \a theta about the Z axis
+     * @brief Qubit rotation of \a theta about the Z axis
      *
-     * \param theta Rotation angle
-     * \return Rotation gate
+     * @param theta Rotation angle
+     * @param theta Rotation angle
+     * @return Rotation gate
+     * @return Rotation gate
      */
     cmat RZ(realT theta) const {
         // EXCEPTION CHECKS
@@ -185,13 +204,16 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     // one quDit gates
 
     /**
-     * \brief Generalized Z gate for qudits
+     * @brief Generalized Z gate for qudits
+     * @brief Generalized Z gate for qudits
      *
      * \note Defined as \f$Z = \sum_{j=0}^{D-1} \exp(2\pi \mathrm{i} j/D)
      * |j\rangle\langle j|\f$
      *
-     * \param D Dimension of the Hilbert space
-     * \return Generalized Z gate for qudits
+     * @param D Dimension of the Hilbert space
+     * @param D Dimension of the Hilbert space
+     * @return Generalized Z gate for qudits
+     * @return Generalized Z gate for qudits
      */
     cmat Zd(idx D = 2) const {
         // EXCEPTION CHECKS
@@ -214,10 +236,13 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief SWAP gate for qudits
+     * @brief SWAP gate for qudits
+     * @brief SWAP gate for qudits
      *
-     * \param D Dimension of the Hilbert space
-     * \return SWAP gate for qudits
+     * @param D Dimension of the Hilbert space
+     * @param D Dimension of the Hilbert space
+     * @return SWAP gate for qudits
+     * @return SWAP gate for qudits
      */
     [[qpp::parallel]] cmat SWAPd(idx D = 2) const {
         // EXCEPTION CHECKS
@@ -248,14 +273,17 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Quantum Fourier transform gate for qudits
+     * @brief Quantum Fourier transform gate for qudits
+     * @brief Quantum Fourier transform gate for qudits
      *
      * \note Defined as
      * \f$F = \sum_{j,k=0}^{D-1} \exp(2\pi \mathrm{i} jk/D) |j\rangle\langle k|
      * \f$
      *
-     * \param D Dimension of the Hilbert space
-     * \return Fourier transform gate for qudits
+     * @param D Dimension of the Hilbert space
+     * @param D Dimension of the Hilbert space
+     * @return Fourier transform gate for qudits
+     * @return Fourier transform gate for qudits
      */
     [[qpp::parallel]] cmat Fd(idx D = 2) const {
         // EXCEPTION CHECKS
@@ -287,7 +315,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Modular multiplication gate for qubits
+     * @brief Modular multiplication gate for qubits
+     * @brief Modular multiplication gate for qubits
      * Implements \f$|x\rangle  \longrightarrow |ax \mathrm{ mod } N\rangle\f$
      *
      * \note For the gate to be unitary, \a a and \a N should be co-prime. The
@@ -296,10 +325,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * \note The number of qubits required to implement the gate should satisfy
      * \f$n \geq \lceil\log_2(N)\rceil\f$
      *
-     * \param a Positive integer less than \a N
-     * \param N Positive integer
-     * \param n Number of qubits required for implementing the gate
-     * \return Modular multiplication gate
+     * @param a Positive integer less than \a N
+     * @param a Positive integer less than \a N
+     * @param N Positive integer
+     * @param N Positive integer
+     * @param n Number of qubits required for implementing the gate
+     * @param n Number of qubits required for implementing the gate
+     * @return Modular multiplication gate
+     * @return Modular multiplication gate
      */
     [[qpp::parallel]] cmat MODMUL(idx a, idx N, idx n) const {
         // check co-primality (unitarity) only in DEBUG version
@@ -349,13 +382,16 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Generalized X gate for qudits
+     * @brief Generalized X gate for qudits
+     * @brief Generalized X gate for qudits
      *
      * \note Defined as \f$X = \sum_{j=0}^{D-1} |j\oplus 1\rangle\langle j|\f$,
      * i.e., raising operator \f$X|j\rangle = |j\oplus 1\rangle\f$
      *
-     * \param D Dimension of the Hilbert space
-     * \return Generalized X gate for qudits
+     * @param D Dimension of the Hilbert space
+     * @param D Dimension of the Hilbert space
+     * @return Generalized X gate for qudits
+     * @return Generalized X gate for qudits
      */
     cmat Xd(idx D = 2) const {
         // EXCEPTION CHECKS
@@ -373,13 +409,16 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Identity gate
+     * @brief Identity gate
+     * @brief Identity gate
      *
      * \note Can change the return type from complex matrix (default) by
      * explicitly specifying the template parameter
      *
-     * \param D Dimension of the Hilbert space
-     * \return Identity gate on a Hilbert space of dimension \a D
+     * @param D Dimension of the Hilbert space
+     * @param D Dimension of the Hilbert space
+     * @return Identity gate on a Hilbert space of dimension \a D
+     * @return Identity gate on a Hilbert space of dimension \a D
      */
     template <typename Derived = cmat>
     Derived Id(idx D = 2) const {
@@ -394,16 +433,22 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Generates the multi-partite \a A gate in matrix form
-     * \see qpp::apply()
+     * @brief Generates the multi-partite \a A gate in matrix form
+     * @brief Generates the multi-partite \a A gate in matrix form
+     * @see qpp::apply()
+     * @see qpp::apply()
      *
      * \note The dimension of the gate \a A must match the dimension of
      * \a target
      *
-     * \param A Eigen expression
-     * \param target Target subsystem indexes where the gate \a A is applied
-     * \param dims Dimensions of the multi-partite system
-     * \return \a A gate, as a matrix over the same scalar field as \a A
+     * @param A Eigen expression
+     * @param A Eigen expression
+     * @param target Target subsystem indexes where the gate \a A is applied
+     * @param target Target subsystem indexes where the gate \a A is applied
+     * @param dims Dimensions of the multi-partite system
+     * @param dims Dimensions of the multi-partite system
+     * @return \a A gate, as a matrix over the same scalar field as \a A
+     * @return \a A gate, as a matrix over the same scalar field as \a A
      */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar> GATE(const Eigen::MatrixBase<Derived>& A,
@@ -543,17 +588,24 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Generates the multi-partite \a A gate in matrix form
-     * \see qpp::apply()
+     * @brief Generates the multi-partite \a A gate in matrix form
+     * @brief Generates the multi-partite \a A gate in matrix form
+     * @see qpp::apply()
+     * @see qpp::apply()
      *
      * \note The dimension of the gate \a A must match the dimension of
      * \a target
      *
-     * \param A Eigen expression
-     * \param target Target subsystem indexes where the gate \a A is applied
-     * \param n Total number of subsystems
-     * \param d Subsystem dimensions
-     * \return \a A gate, as a matrix over the same scalar field as \a A
+     * @param A Eigen expression
+     * @param A Eigen expression
+     * @param target Target subsystem indexes where the gate \a A is applied
+     * @param target Target subsystem indexes where the gate \a A is applied
+     * @param n Total number of subsystems
+     * @param n Total number of subsystems
+     * @param d Subsystem dimensions
+     * @param d Subsystem dimensions
+     * @return \a A gate, as a matrix over the same scalar field as \a A
+     * @return \a A gate, as a matrix over the same scalar field as \a A
      */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar> GATE(const Eigen::MatrixBase<Derived>& A,
@@ -570,22 +622,31 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Generates the multi-partite multiple-controlled-\a A gate in
+     * @brief Generates the multi-partite multiple-controlled-\a A gate in
+     * @brief Generates the multi-partite multiple-controlled-\a A gate in
      * matrix form
-     * \see qpp::applyCTRL()
+     * @see qpp::applyCTRL()
+     * @see qpp::applyCTRL()
      *
      * \note The dimension of the gate \a A must match the dimension of
      * \a target. All subsystems must have the same dimension.
      *
-     * \param A Eigen expression
-     * \param ctrl Control subsystem indexes
-     * \param target Target subsystem indexes where the gate \a A is applied
-     * \param n Total number of subsystems
-     * \param d Subsystem dimensions
-     * \param shift Optional, performs the control as if the \a ctrl qudit
+     * @param A Eigen expression
+     * @param A Eigen expression
+     * @param ctrl Control subsystem indexes
+     * @param ctrl Control subsystem indexes
+     * @param target Target subsystem indexes where the gate \a A is applied
+     * @param target Target subsystem indexes where the gate \a A is applied
+     * @param n Total number of subsystems
+     * @param n Total number of subsystems
+     * @param d Subsystem dimensions
+     * @param d Subsystem dimensions
+     * @param shift Optional, performs the control as if the \a ctrl qudit
+     * @param shift Optional, performs the control as if the \a ctrl qudit
      * states were \f$X\f$-incremented component-wise by \a shift. If present,
      * the size of \a shift must be the same as the size of \a ctrl.
-     * \return CTRL-A gate, as a matrix over the same scalar field as \a A
+     * @return CTRL-A gate, as a matrix over the same scalar field as \a A
+     * @return CTRL-A gate, as a matrix over the same scalar field as \a A
      */
     template <typename Derived>
     dyn_mat<typename Derived::Scalar>
@@ -727,16 +788,22 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Expands out
-     * \see qpp::kron()
+     * @brief Expands out
+     * @brief Expands out
+     * @see qpp::kron()
+     * @see qpp::kron()
      *
      * Expands out \a A as a matrix in a multi-partite system. Faster than using
      * qpp::kron(I, I, ..., I, \a A, I, ..., I).
      *
-     * \param A Eigen expression
-     * \param pos Position
-     * \param dims Dimensions of the multi-partite system
-     * \return Tensor product
+     * @param A Eigen expression
+     * @param A Eigen expression
+     * @param pos Position
+     * @param pos Position
+     * @param dims Dimensions of the multi-partite system
+     * @param dims Dimensions of the multi-partite system
+     * @return Tensor product
+     * @return Tensor product
      * \f$I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
      * with \a A on position \a pos, as a dynamic matrix over the same scalar
      * field as \a A
@@ -779,8 +846,10 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Expands out
-     * \see qpp::kron()
+     * @brief Expands out
+     * @brief Expands out
+     * @see qpp::kron()
+     * @see qpp::kron()
      *
      * Expands out \a A as a matrix in a multi-partite system. Faster than using
      * qpp::kron(I, I, ..., I, \a A, I, ..., I).
@@ -791,10 +860,14 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
      * which has the net effect of picking the wrong (non-vector)
      * qpp::expandout() overload
      *
-     * \param A Eigen expression
-     * \param pos Position
-     * \param dims Dimensions of the multi-partite system
-     * \return Tensor product
+     * @param A Eigen expression
+     * @param A Eigen expression
+     * @param pos Position
+     * @param pos Position
+     * @param dims Dimensions of the multi-partite system
+     * @param dims Dimensions of the multi-partite system
+     * @return Tensor product
+     * @return Tensor product
      * \f$I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
      * with \a A on position \a pos, as a dynamic matrix over the same scalar
      * field as \a A
@@ -807,17 +880,24 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     }
 
     /**
-     * \brief Expands out
-     * \see qpp::kron()
+     * @brief Expands out
+     * @brief Expands out
+     * @see qpp::kron()
+     * @see qpp::kron()
      *
      * Expands out \a A as a matrix in a multi-partite system. Faster than using
      * qpp::kron(I, I, ..., I, \a A, I, ..., I).
      *
-     * \param A Eigen expression
-     * \param pos Position
-     * \param n Number of subsystems
-     * \param d Subsystem dimensions
-     * \return Tensor product
+     * @param A Eigen expression
+     * @param A Eigen expression
+     * @param pos Position
+     * @param pos Position
+     * @param n Number of subsystems
+     * @param n Number of subsystems
+     * @param d Subsystem dimensions
+     * @param d Subsystem dimensions
+     * @return Tensor product
+     * @return Tensor product
      * \f$I\otimes\cdots\otimes I\otimes A \otimes I \otimes\cdots\otimes I\f$,
      * with \a A on position \a pos, as a dynamic matrix over the same scalar
      * field as \a A
@@ -844,13 +924,16 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
     // getters
 
     /**
-     * \brief Get the name of the most common qubit gates
+     * @brief Get the name of the most common qubit gates
+     * @brief Get the name of the most common qubit gates
      *
      * \note Assumes that the gate \a U is represented by a square matrix. If
      * not, returns the empty string
      *
-     * \param U Complex matrix representing the quantum gate
-     * \return Optional name of the gate
+     * @param U Complex matrix representing the quantum gate
+     * @param U Complex matrix representing the quantum gate
+     * @return Optional name of the gate
+     * @return Optional name of the gate
      */
     std::optional<std::string> get_name(const cmat& U) const {
         // EXCEPTION CHECKS

@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qasmtools/ast/replacer.hpp
- * \brief Node replacement for syntax trees
+ * @file qasmtools/ast/replacer.hpp
+ * @file qasmtools/ast/replacer.hpp
+ * @brief Node replacement for syntax trees
+ * @brief Node replacement for syntax trees
  */
 
 #ifndef QASMTOOLS_AST_REPLACER_HPP_
@@ -40,9 +42,12 @@
 namespace qasmtools {
 namespace ast {
 /**
- * \class qasmtools::ast::Replacer
- * \brief Generic complete traversal with post-order node replacement
- * \see qasmtools::ast::Visitor
+ * @class qasmtools::ast::Replacer
+ * @class qasmtools::ast::Replacer
+ * @brief Generic complete traversal with post-order node replacement
+ * @brief Generic complete traversal with post-order node replacement
+ * @see qasmtools::ast::Visitor
+ * @see qasmtools::ast::Visitor
  *
  * The replacer provides a visitor-style interface where the visitor
  * of a node optionally returns a node of the same base type (in the
@@ -337,9 +342,12 @@ class Replacer : public Visitor {
 };
 
 /**
- * \class qasmtools::ast::GateReplacer
- * \brief Bulk gate replacement
- * \see qasmtools::ast::Replacer
+ * @class qasmtools::ast::GateReplacer
+ * @class qasmtools::ast::GateReplacer
+ * @brief Bulk gate replacement
+ * @brief Bulk gate replacement
+ * @see qasmtools::ast::Replacer
+ * @see qasmtools::ast::Replacer
  *
  * Implements bulk replacement of gates given by a hash map. Use the
  * functional interface qasmtools::ast::replace_gates rather than
@@ -378,15 +386,18 @@ class GateReplacer final : public Replacer {
 };
 
 /**
- * \brief Replaces the specified gates within an AST
+ * @brief Replaces the specified gates within an AST
+ * @brief Replaces the specified gates within an AST
  *
  * Used to perform a list of gate replacements in one traversal. All keys in the
  * hash map should refer to gates (U, CNOT, barrier or a declared gate).
  * For replacement of other types of nodes, use the Replacer class.
  *
- * \param node Reference to the root of the AST in which replacement will take
+ * @param node Reference to the root of the AST in which replacement will take
+ * @param node Reference to the root of the AST in which replacement will take
  * place
- * \param replacements Hash map from gate UID's to a list of gates which
+ * @param replacements Hash map from gate UID's to a list of gates which
+ * @param replacements Hash map from gate UID's to a list of gates which
  * should replace it
  */
 inline void

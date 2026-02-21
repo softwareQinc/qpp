@@ -27,8 +27,10 @@
  */
 
 /**
- * \file qasmtools/parser/preprocessor.hpp
- * \brief Manages includes for OpenQASM parsing
+ * @file qasmtools/parser/preprocessor.hpp
+ * @file qasmtools/parser/preprocessor.hpp
+ * @brief Manages includes for OpenQASM parsing
+ * @brief Manages includes for OpenQASM parsing
  */
 
 #ifndef QASMTOOLS_PARSER_PREPROCESSOR_HPP_
@@ -45,7 +47,8 @@ namespace parser {
 
 #if QASMTOOLS_QASM2_SPECS
 /**
- * \brief OpenQASM 2.0 standard library (qelib1.inc) as a string constant
+ * @brief OpenQASM 2.0 standard library (qelib1.inc) as a string constant
+ * @brief OpenQASM 2.0 standard library (qelib1.inc) as a string constant
  */
 static const std::string std_include =
     "gate u3(theta,phi,lambda) q { U(theta,phi,lambda) q; }\n"
@@ -79,7 +82,8 @@ static const std::string std_include =
     "u3(-theta/2,0,-(phi+lambda)/2) t;  cx c,t;  u3(theta/2,phi,0) t;}\n";
 #else
 /**
- * \brief OpenQASM 2.0 standard library + r and cswap gates, as a string
+ * @brief OpenQASM 2.0 standard library + r and cswap gates, as a string
+ * @brief OpenQASM 2.0 standard library + r and cswap gates, as a string
  * constant, as defined by Qiskit in
  * https://github.com/Qiskit/qiskit-terra/tree/master/qiskit/circuit/library/standard_gates
  */
@@ -124,9 +128,12 @@ static const std::string std_include =
 #endif
 
 /**
- * \class qasmtools::parser::Preprocessor
- * \brief OpenQASM preprocessor class
- * \see qasmtools::parser::Lexer
+ * @class qasmtools::parser::Preprocessor
+ * @class qasmtools::parser::Preprocessor
+ * @brief OpenQASM preprocessor class
+ * @brief OpenQASM preprocessor class
+ * @see qasmtools::parser::Lexer
+ * @see qasmtools::parser::Lexer
  *
  * The preprocessor acts as a wrapper around the lexer, providing a token stream
  * that matches the stream produced by explicitly inserting included code.
@@ -142,18 +149,22 @@ class Preprocessor {
 
   public:
     /**
-     * \brief Default constructor
+     * @brief Default constructor
+     * @brief Default constructor
      */
     Preprocessor() = default;
 
     /**
-     * \brief Inserts a file into the current lexing context
+     * @brief Inserts a file into the current lexing context
+     * @brief Inserts a file into the current lexing context
      *
      * Buffers the given file, then pushes the current buffer onto
      * the stack and sets the new buffer as the current buffer
      *
-     * \param file_path The file to insert
-     * \return True on success
+     * @param file_path The file to insert
+     * @param file_path The file to insert
+     * @return True on success
+     * @return True on success
      */
     bool add_target_file(const std::string& file_path) {
         std::shared_ptr<std::ifstream> ifs(new std::ifstream);
@@ -172,13 +183,16 @@ class Preprocessor {
     }
 
     /**
-     * \brief Inserts a buffer into the current lexing context
+     * @brief Inserts a buffer into the current lexing context
+     * @brief Inserts a buffer into the current lexing context
      *
      * Pushes the current buffer onto the stack and sets the new buffer as the
      * current buffer
      *
-     * \param buffer Shared pointer to an input buffer
-     * \param fname Filename associated with the buffer (optional)
+     * @param buffer Shared pointer to an input buffer
+     * @param buffer Shared pointer to an input buffer
+     * @param fname Filename associated with the buffer (optional)
+     * @param fname Filename associated with the buffer (optional)
      */
     void add_target_stream(std::shared_ptr<std::istream> buffer,
                            const std::string& fname = "") {
@@ -189,13 +203,15 @@ class Preprocessor {
     }
 
     /**
-     * \brief Gets the next token in the current buffer
+     * @brief Gets the next token in the current buffer
+     * @brief Gets the next token in the current buffer
      * \note Returns unknown token if there is no buffer to lex
      *
      * Lexes and returns the next token from the current buffer,
      * popping the next buffer off the stack if necessary
      *
-     * \return The next lexed token
+     * @return The next lexed token
+     * @return The next lexed token
      */
     Token next_token() {
         if (current_lexer_ == nullptr) {
@@ -218,7 +234,8 @@ class Preprocessor {
     }
 
     /**
-     * \brief Prints and consumes all tokens buffered
+     * @brief Prints and consumes all tokens buffered
+     * @brief Prints and consumes all tokens buffered
      */
     void print_all_tokens() {
         Token current = next_token();
@@ -234,7 +251,8 @@ class Preprocessor {
 
   private:
     /**
-     * \brief Handles include statements
+     * @brief Handles include statements
+     * @brief Handles include statements
      * \note Expects STRING SEMICOLON
      *
      * Reads a filename from a string token and attempts to open and switch

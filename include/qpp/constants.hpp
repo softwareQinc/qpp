@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/constants.hpp
- * \brief Constants
+ * @file qpp/constants.hpp
+ * @file qpp/constants.hpp
+ * @brief Constants
+ * @brief Constants
  */
 
 #ifndef QPP_CONSTANTS_HPP_
@@ -43,36 +45,44 @@
 namespace qpp {
 inline namespace literals {
 /**
- * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
+ * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
+ * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
  *
- * Example: \code cplx z = 4_i; // type of z is std::complex<realT> \endcode
+ * Example: @code cplx z = 4_i; // type of z is std::complex<realT> \endcode
+ * Example: @code cplx z = 4_i; // type of z is std::complex<realT> \endcode
  */
 constexpr cplx operator""_i(unsigned long long int x) noexcept {
     return {0., static_cast<cplx::value_type>(x)};
 }
 
 /**
- * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
+ * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
+ * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
  *
- * Example: \code cplx z = 4.5_i; // type of z is std::complex<realT> \endcode
+ * Example: @code cplx z = 4.5_i; // type of z is std::complex<realT> \endcode
+ * Example: @code cplx z = 4.5_i; // type of z is std::complex<realT> \endcode
  */
 constexpr cplx operator""_i(long double x) noexcept {
     return {0., static_cast<cplx::value_type>(x)};
 }
 
 /**
- * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
+ * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
+ * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
  *
- * Example: \code auto z = 4_if; // type of z is std::complex<float> \endcode
+ * Example: @code auto z = 4_if; // type of z is std::complex<float> \endcode
+ * Example: @code auto z = 4_if; // type of z is std::complex<float> \endcode
  */
 constexpr std::complex<float> operator""_if(unsigned long long int x) noexcept {
     return {0., static_cast<float>(x)};
 }
 
 /**
- * \brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
+ * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
+ * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
  *
- * Example: \code auto z = 4.5_if; // type of z is std::complex<float> \endcode
+ * Example: @code auto z = 4.5_if; // type of z is std::complex<float> \endcode
+ * Example: @code auto z = 4.5_if; // type of z is std::complex<float> \endcode
  */
 constexpr std::complex<float> operator""_if(long double x) noexcept {
     return {0., static_cast<float>(x)};
@@ -81,24 +91,30 @@ constexpr std::complex<float> operator""_if(long double x) noexcept {
 } /* namespace literals */
 
 /**
- * \brief \f$\pi\f$
+ * @brief \f$\pi\f$
+ * @brief \f$\pi\f$
  */
 constexpr realT pi = 3.141592653589793238462643383279502884;
 /**
- * \brief Base of natural logarithm, \f$e\f$
+ * @brief Base of natural logarithm, \f$e\f$
+ * @brief Base of natural logarithm, \f$e\f$
  */
 constexpr realT ee = 2.718281828459045235360287471352662497;
 
 /**
- * \brief Used to denote infinity in realT precision
+ * @brief Used to denote infinity in realT precision
+ * @brief Used to denote infinity in realT precision
  */
 constexpr realT infty = std::numeric_limits<realT>::infinity();
 
 /**
- * \brief D-th root of unity
+ * @brief D-th root of unity
+ * @brief D-th root of unity
  *
- * \param D Non-negative integer
- * \return D-th root of unity \f$\exp(2\pi i/D)\f$
+ * @param D Non-negative integer
+ * @param D Non-negative integer
+ * @return D-th root of unity \f$\exp(2\pi i/D)\f$
+ * @return D-th root of unity \f$\exp(2\pi i/D)\f$
  */
 inline cplx omega(idx D) {
     if (D == 0) {
@@ -110,7 +126,8 @@ inline cplx omega(idx D) {
 }
 
 /**
- * \brief Constants to be used by std::get<> on the result of qpp::measure(),
+ * @brief Constants to be used by std::get<> on the result of qpp::measure(),
+ * @brief Constants to be used by std::get<> on the result of qpp::measure(),
  * qpp::measure_seq() etc.
  */
 enum {

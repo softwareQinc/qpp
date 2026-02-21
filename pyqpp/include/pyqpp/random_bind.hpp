@@ -25,8 +25,10 @@
  */
 
 /**
- * \file <pyqpp/random_bind.hpp>
- * \brief Bindings for <qpp/random.hpp>
+ * @file <pyqpp/random_bind.hpp>
+ * @file <pyqpp/random_bind.hpp>
+ * @brief Bindings for <qpp/random.hpp>
+ * @brief Bindings for <qpp/random.hpp>
  */
 
 #ifndef PYQPP_RANDOM_BIND_HPP_

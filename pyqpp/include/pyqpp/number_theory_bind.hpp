@@ -25,8 +25,10 @@
  */
 
 /**
- * \file <pyqpp/number_theory_bind.hpp>
- * \brief Bindings for <qpp/number_theory.hpp>
+ * @file <pyqpp/number_theory_bind.hpp>
+ * @file <pyqpp/number_theory_bind.hpp>
+ * @brief Bindings for <qpp/number_theory.hpp>
+ * @brief Bindings for <qpp/number_theory.hpp>
  */
 
 #ifndef PYQPP_NUMBER_THEORY_BIND_HPP_

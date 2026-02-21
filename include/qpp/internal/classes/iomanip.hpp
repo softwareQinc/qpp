@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/internal/classes/iomanip.hpp
- * \brief Input/output manipulators
+ * @file qpp/internal/classes/iomanip.hpp
+ * @file qpp/internal/classes/iomanip.hpp
+ * @brief Input/output manipulators
+ * @brief Input/output manipulators
  */
 
 #ifndef QPP_INTERNAL_CLASSES_IOMANIP_HPP_

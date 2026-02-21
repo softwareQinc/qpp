@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/classes/reversible.hpp
- * \brief Support for classical reversible circuits
+ * @file qpp/classes/reversible.hpp
+ * @file qpp/classes/reversible.hpp
+ * @brief Support for classical reversible circuits
+ * @brief Support for classical reversible circuits
  */
 
 #ifndef QPP_CLASSES_REVERSIBLE_HPP_
@@ -45,8 +47,10 @@
 
 namespace qpp {
 /**
- * \class qpp::DynamicBitset
- * \brief Dynamic bitset class, allows the specification of the number of bits
+ * @class qpp::DynamicBitset
+ * @class qpp::DynamicBitset
+ * @brief Dynamic bitset class, allows the specification of the number of bits
+ * @brief Dynamic bitset class, allows the specification of the number of bits
  * at runtime
  *
  * \note qpp::DynamicBitset assumes that the first bit (location 0 in the
@@ -67,21 +71,27 @@ class DynamicBitset : public IDisplay {
     std::vector<value_type> v_; ///< storage space
 
     /**
-     * \brief Index of the \a pos bit in the storage space
+     * @brief Index of the \a pos bit in the storage space
+     * @brief Index of the \a pos bit in the storage space
      *
-     * \param pos Bit location
-     * \return Index of the \a pos bit in the storage space
+     * @param pos Bit location
+     * @param pos Bit location
+     * @return Index of the \a pos bit in the storage space
+     * @return Index of the \a pos bit in the storage space
      */
     inline static idx index_(idx pos) {
         return pos / (sizeof(value_type) * CHAR_BIT);
     }
 
     /**
-     * \brief Offset of the \a pos bit in the storage space relative to its
+     * @brief Offset of the \a pos bit in the storage space relative to its
+     * @brief Offset of the \a pos bit in the storage space relative to its
      * index
      *
-     * \param pos Bit location
-     * \return Offset of the \a pos bit in the storage space relative to its
+     * @param pos Bit location
+     * @param pos Bit location
+     * @return Offset of the \a pos bit in the storage space relative to its
+     * @return Offset of the \a pos bit in the storage space relative to its
      * index
      */
     inline static idx offset_(idx pos) {
@@ -90,9 +100,11 @@ class DynamicBitset : public IDisplay {
 
   public:
     /**
-     * \brief Constructor, initializes all bits to false (zero)
+     * @brief Constructor, initializes all bits to false (zero)
+     * @brief Constructor, initializes all bits to false (zero)
      *
-     * \param n Number of bits in the bitset
+     * @param n Number of bits in the bitset
+     * @param n Number of bits in the bitset
      */
     explicit DynamicBitset(idx n)
         : storage_size_{static_cast<idx>(n / (sizeof(value_type) * CHAR_BIT) +
@@ -100,12 +112,16 @@ class DynamicBitset : public IDisplay {
           n_{n}, v_(storage_size_) {}
 
     /**
-     * \brief Constructs a dynamic bitset instance out of a string
+     * @brief Constructs a dynamic bitset instance out of a string
+     * @brief Constructs a dynamic bitset instance out of a string
      *
-     * \param str String, \a str[0] corresponds to the left bit (most
+     * @param str String, \a str[0] corresponds to the left bit (most
+     * @param str String, \a str[0] corresponds to the left bit (most
      * significant) in the bitset, i.e., corresponds to the bit at position n-1
-     * \param zero Character representing false (zero)
-     * \param one Character representing true (one)
+     * @param zero Character representing false (zero)
+     * @param zero Character representing false (zero)
+     * @param one Character representing true (one)
+     * @param one Character representing true (one)
      */
     explicit DynamicBitset(std::string str, char zero = '0',
                             [[maybe_unused]] char one = '1')
@@ -118,38 +134,47 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Default virtual destructor
+     * @brief Default virtual destructor
+     * @brief Default virtual destructor
      */
     ~DynamicBitset() override = default;
 
     /* getters */
 
     /**
-     * \brief Raw storage space of the bitset
+     * @brief Raw storage space of the bitset
+     * @brief Raw storage space of the bitset
      *
-     * \return Const reference to the underlying storage space
+     * @return Const reference to the underlying storage space
+     * @return Const reference to the underlying storage space
      */
     const storage_type& data() const { return v_; }
 
     /**
-     * \brief Number of bits stored in the bitset
+     * @brief Number of bits stored in the bitset
+     * @brief Number of bits stored in the bitset
      *
-     * \return Number of bits stored in the bitset
+     * @return Number of bits stored in the bitset
+     * @return Number of bits stored in the bitset
      */
     idx size() const noexcept { return n_; }
 
     /**
-     * \brief Size of the underlying storage space (in units of value_type,
+     * @brief Size of the underlying storage space (in units of value_type,
+     * @brief Size of the underlying storage space (in units of value_type,
      * unsigned int by default)
      *
-     * \return Size of the underlying storage space
+     * @return Size of the underlying storage space
+     * @return Size of the underlying storage space
      */
     idx storage_size() const noexcept { return storage_size_; }
 
     /**
-     * \brief Number of bits set to one in the bitset (Hamming weight)
+     * @brief Number of bits set to one in the bitset (Hamming weight)
+     * @brief Number of bits set to one in the bitset (Hamming weight)
      *
-     * \return Hamming weight
+     * @return Hamming weight
+     * @return Hamming weight
      */
     idx count() const noexcept {
         idx result = 0;
@@ -164,10 +189,13 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief The value of the bit at position \a pos
+     * @brief The value of the bit at position \a pos
+     * @brief The value of the bit at position \a pos
      *
-     * \param pos Position in the bitset
-     * \return Value of the bit at position \a pos
+     * @param pos Position in the bitset
+     * @param pos Position in the bitset
+     * @return Value of the bit at position \a pos
+     * @return Value of the bit at position \a pos
      */
     bool get(idx pos) const noexcept {
         assert(pos < size());
@@ -176,9 +204,11 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Checks whether none of the bits are set
+     * @brief Checks whether none of the bits are set
+     * @brief Checks whether none of the bits are set
      *
-     * \return True if none of the bits are set
+     * @return True if none of the bits are set
+     * @return True if none of the bits are set
      */
     bool none() const noexcept {
         bool result = true;
@@ -193,9 +223,11 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Checks whether all bits are set
+     * @brief Checks whether all bits are set
+     * @brief Checks whether all bits are set
      *
-     * \return True if all of the bits are set
+     * @return True if all of the bits are set
+     * @return True if all of the bits are set
      */
     bool all() const noexcept {
         bool result = true;
@@ -210,19 +242,25 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Checks whether any bit is set
+     * @brief Checks whether any bit is set
+     * @brief Checks whether any bit is set
      *
-     * \return True if any of the bits is set
+     * @return True if any of the bits is set
+     * @return True if any of the bits is set
      */
     bool any() const noexcept { return !(none()); }
 
     /* setters */
     /**
-     * \brief Sets the bit at position \a pos
+     * @brief Sets the bit at position \a pos
+     * @brief Sets the bit at position \a pos
      *
-     * \param pos Position in the bitset
-     * \param value Bit value
-     * \return Reference to the current instance
+     * @param pos Position in the bitset
+     * @param pos Position in the bitset
+     * @param value Bit value
+     * @param value Bit value
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     DynamicBitset& set(idx pos, bool value = true) {
         assert(pos < size());
@@ -239,9 +277,11 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Set all bits to true
+     * @brief Set all bits to true
+     * @brief Set all bits to true
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     DynamicBitset& set() noexcept {
         idx bitset_storage_size = storage_size();
@@ -253,12 +293,16 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Sets the bit at position \a pos according to a Bernoulli(p)
+     * @brief Sets the bit at position \a pos according to a Bernoulli(p)
+     * @brief Sets the bit at position \a pos according to a Bernoulli(p)
      * distribution
      *
-     * \param pos Position in the bitset
-     * \param p Probability
-     * \return Reference to the current instance
+     * @param pos Position in the bitset
+     * @param pos Position in the bitset
+     * @param p Probability
+     * @param p Probability
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     DynamicBitset& rand(idx pos, realT p = 0.5) {
         assert(pos < size());
@@ -273,10 +317,13 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Sets all bits according to a Bernoulli(p) distribution
+     * @brief Sets all bits according to a Bernoulli(p) distribution
+     * @brief Sets all bits according to a Bernoulli(p) distribution
      *
-     * \param p Probability
-     * \return Reference to the current instance
+     * @param p Probability
+     * @param p Probability
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     DynamicBitset& rand(realT p = 0.5) {
         idx bitset_size = size();
@@ -288,10 +335,13 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Sets the bit at position \a pos to false
+     * @brief Sets the bit at position \a pos to false
+     * @brief Sets the bit at position \a pos to false
      *
-     * \param pos Position in the bitset
-     * \return Reference to the current instance
+     * @param pos Position in the bitset
+     * @param pos Position in the bitset
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     DynamicBitset& reset(idx pos) {
         assert(pos < size());
@@ -302,9 +352,11 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Set all bits to false
+     * @brief Set all bits to false
+     * @brief Set all bits to false
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     virtual DynamicBitset& reset() noexcept {
         idx bitset_storage_size = storage_size();
@@ -316,10 +368,13 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Flips the bit at position \a pos
+     * @brief Flips the bit at position \a pos
+     * @brief Flips the bit at position \a pos
      *
-     * \param pos Position in the bitset
-     * \return Reference to the current instance
+     * @param pos Position in the bitset
+     * @param pos Position in the bitset
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     DynamicBitset& flip(idx pos) {
         assert(pos < size());
@@ -330,9 +385,11 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Flips all bits
+     * @brief Flips all bits
+     * @brief Flips all bits
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     DynamicBitset& flip() noexcept {
         idx bitset_storage_size = storage_size();
@@ -345,10 +402,13 @@ class DynamicBitset : public IDisplay {
 
     /* operators */
     /**
-     * \brief Equality operator
+     * @brief Equality operator
+     * @brief Equality operator
      *
-     * \param rhs DynamicBitset against which the equality is being tested
-     * \return True if the bitsets are equal (bit by bit), false otherwise
+     * @param rhs DynamicBitset against which the equality is being tested
+     * @param rhs DynamicBitset against which the equality is being tested
+     * @return True if the bitsets are equal (bit by bit), false otherwise
+     * @return True if the bitsets are equal (bit by bit), false otherwise
      */
     bool operator==(const DynamicBitset& rhs) const noexcept {
         assert(size() == rhs.size());
@@ -365,21 +425,27 @@ class DynamicBitset : public IDisplay {
     }
 
     /**
-     * \brief Inequality operator
+     * @brief Inequality operator
+     * @brief Inequality operator
      *
-     * \param rhs DynamicBitset against which the inequality is being tested
-     * \return True if the bitsets are not equal (bit by bit), false otherwise
+     * @param rhs DynamicBitset against which the inequality is being tested
+     * @param rhs DynamicBitset against which the inequality is being tested
+     * @return True if the bitsets are not equal (bit by bit), false otherwise
+     * @return True if the bitsets are not equal (bit by bit), false otherwise
      */
     bool operator!=(const DynamicBitset& rhs) const noexcept {
         return !(*this == rhs);
     }
 
     /**
-     * \brief Number of places the two bitsets differ (Hamming distance)
+     * @brief Number of places the two bitsets differ (Hamming distance)
+     * @brief Number of places the two bitsets differ (Hamming distance)
      *
-     * \param rhs DynamicBitset against which the the Hamming distance is
+     * @param rhs DynamicBitset against which the the Hamming distance is
+     * @param rhs DynamicBitset against which the the Hamming distance is
      * computed
-     * \return Hamming distance
+     * @return Hamming distance
+     * @return Hamming distance
      */
     idx operator-(const DynamicBitset& rhs) const noexcept {
         idx result = 0;
@@ -397,11 +463,15 @@ class DynamicBitset : public IDisplay {
 
     /* input/output */
     /**
-     * \brief String representation
+     * @brief String representation
+     * @brief String representation
      *
-     * \param zero Character representing false (zero)
-     * \param one Character representing true (one)
-     * \return Bitset as a string
+     * @param zero Character representing false (zero)
+     * @param zero Character representing false (zero)
+     * @param one Character representing true (one)
+     * @param one Character representing true (one)
+     * @return Bitset as a string
+     * @return Bitset as a string
      */
     virtual std::string to_string(char zero = '0', char one = '1') const {
         std::string result;
@@ -417,7 +487,8 @@ class DynamicBitset : public IDisplay {
 
   protected:
     /**
-     * \brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the bitset
      * (displays the bitset bit by bit), with the first bit (location 0 in the
@@ -425,8 +496,10 @@ class DynamicBitset : public IDisplay {
      * n-1 in the bitset) on the left (most significant bit); that is,
      * little-endian order.
      *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
+     * @param os Output stream passed by reference
+     * @param os Output stream passed by reference
+     * @return Reference to the output stream
+     * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         return os << this->to_string();
@@ -434,8 +507,10 @@ class DynamicBitset : public IDisplay {
 }; /* class DynamicBitset */
 
 /**
- * \class qpp::BitCircuit
- * \brief Classical reversible circuit simulator
+ * @class qpp::BitCircuit
+ * @class qpp::BitCircuit
+ * @brief Classical reversible circuit simulator
+ * @brief Classical reversible circuit simulator
  *
  * \note Computations are done on-the-fly, that is, gates are not stored, but
  * applied at once on the internal bit state of the circuit. This allows
@@ -455,21 +530,27 @@ class BitCircuit : public DynamicBitset, public IJSON {
 
   public:
     /**
-     * \brief Constructs a bit circuit instance
+     * @brief Constructs a bit circuit instance
+     * @brief Constructs a bit circuit instance
      *
-     * \param n Number of classical bits
+     * @param n Number of classical bits
+     * @param n Number of classical bits
      */
     explicit BitCircuit(idx n)
         : DynamicBitset{n}, bNOT_{n}, bCNOT_{n}, bSWAP_{n}, bTOF_{n},
           bFRED_{n}, btotal_{n} {}
 
     /**
-     * \brief Constructs a bit circuit instance out of a string
+     * @brief Constructs a bit circuit instance out of a string
+     * @brief Constructs a bit circuit instance out of a string
      *
-     * \param str String, with \a str[0] corresponding to the top bit 0 (most
+     * @param str String, with \a str[0] corresponding to the top bit 0 (most
+     * @param str String, with \a str[0] corresponding to the top bit 0 (most
      * significant) in the circuit, i.e., the bit at position 0
-     * \param zero Character representing false (zero)
-     * \param one Character representing true (one)
+     * @param zero Character representing false (zero)
+     * @param zero Character representing false (zero)
+     * @param one Character representing true (one)
+     * @param one Character representing true (one)
      */
     explicit BitCircuit(std::string str, char zero = '0',
                          [[maybe_unused]] char one = '1')
@@ -484,21 +565,27 @@ class BitCircuit : public DynamicBitset, public IJSON {
     }
 
     /**
-     * \brief Explicit conversion constructor, used to initialize a
+     * @brief Explicit conversion constructor, used to initialize a
+     * @brief Explicit conversion constructor, used to initialize a
      * qpp::BitCircuit with a qpp::DynamicBitset
      *
-     * \param dynamic_bitset Dynamic bitset
+     * @param dynamic_bitset Dynamic bitset
+     * @param dynamic_bitset Dynamic bitset
      */
     explicit BitCircuit(const DynamicBitset& dynamic_bitset)
         : DynamicBitset{dynamic_bitset}, bNOT_{size()}, bCNOT_{size()},
           bSWAP_{size()}, bTOF_{size()}, bFRED_{size()}, btotal_{size()} {}
 
     /**
-     * \brief Not gate (bit flip)
-     * \see qpp::BitCircuit::NOT()
+     * @brief Not gate (bit flip)
+     * @brief Not gate (bit flip)
+     * @see qpp::BitCircuit::NOT()
+     * @see qpp::BitCircuit::NOT()
      *
-     * \param i Bit position in the circuit
-     * \return Reference to the current instance
+     * @param i Bit position in the circuit
+     * @param i Bit position in the circuit
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     BitCircuit& X(idx i) {
         assert(i < size());
@@ -509,16 +596,21 @@ class BitCircuit : public DynamicBitset, public IJSON {
     }
 
     /**
-     * \brief Default virtual destructor
+     * @brief Default virtual destructor
+     * @brief Default virtual destructor
      */
     ~BitCircuit() override = default;
 
     /**
-     * \brief NOT gate (bit flip)
-     * \see qpp::BitCircuit::X()
+     * @brief NOT gate (bit flip)
+     * @brief NOT gate (bit flip)
+     * @see qpp::BitCircuit::X()
+     * @see qpp::BitCircuit::X()
      *
-     * \param i Bit position in the circuit
-     * \return Reference to the current instance
+     * @param i Bit position in the circuit
+     * @param i Bit position in the circuit
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     BitCircuit& NOT(idx i) {
         assert(i < size());
@@ -561,11 +653,15 @@ class BitCircuit : public DynamicBitset, public IJSON {
     }
 
     /**
-     * \brief Controlled-NOT gate
+     * @brief Controlled-NOT gate
+     * @brief Controlled-NOT gate
      *
-     * \param ctrl Control bit index
-     * \param target Target bit index
-     * \return Reference to the current instance
+     * @param ctrl Control bit index
+     * @param ctrl Control bit index
+     * @param target Target bit index
+     * @param target Target bit index
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     BitCircuit& CNOT(idx ctrl, idx target) {
         [[maybe_unused]] auto n = size();
@@ -612,12 +708,17 @@ class BitCircuit : public DynamicBitset, public IJSON {
     }
 
     /**
-     * \brief Toffoli gate
+     * @brief Toffoli gate
+     * @brief Toffoli gate
      *
-     * \param i Control first bit index
-     * \param j Control second bit index
-     * \param k Target bit index
-     * \return Reference to the current instance
+     * @param i Control first bit index
+     * @param i Control first bit index
+     * @param j Control second bit index
+     * @param j Control second bit index
+     * @param k Target bit index
+     * @param k Target bit index
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     BitCircuit& TOF(idx i, idx j, idx k) {
         [[maybe_unused]] auto n = size();
@@ -665,11 +766,15 @@ class BitCircuit : public DynamicBitset, public IJSON {
     }
 
     /**
-     * \brief Swap gate
+     * @brief Swap gate
+     * @brief Swap gate
      *
-     * \param i Bit index
-     * \param j Bit index
-     * \return Reference to the current instance
+     * @param i Bit index
+     * @param i Bit index
+     * @param j Bit index
+     * @param j Bit index
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     BitCircuit& SWAP(idx i, idx j) {
         [[maybe_unused]] auto n = size();
@@ -717,12 +822,17 @@ class BitCircuit : public DynamicBitset, public IJSON {
     }
 
     /**
-     * \brief Fredkin gate (Controlled-SWAP)
+     * @brief Fredkin gate (Controlled-SWAP)
+     * @brief Fredkin gate (Controlled-SWAP)
      *
-     * \param i Control bit index
-     * \param j Target first bit index
-     * \param k Target second bit index
-     * \return Reference to the current instance
+     * @param i Control bit index
+     * @param i Control bit index
+     * @param j Target first bit index
+     * @param j Target first bit index
+     * @param k Target second bit index
+     * @param k Target second bit index
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     BitCircuit& FRED(idx i, idx j, idx k) {
         [[maybe_unused]] auto n = size();
@@ -769,9 +879,11 @@ class BitCircuit : public DynamicBitset, public IJSON {
     }
 
     /**
-     * \brief Resets the circuit to all-zero, clears all gates
+     * @brief Resets the circuit to all-zero, clears all gates
+     * @brief Resets the circuit to all-zero, clears all gates
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     BitCircuit& reset() noexcept override {
         *this = BitCircuit{n_};
@@ -781,12 +893,15 @@ class BitCircuit : public DynamicBitset, public IJSON {
 
     // getters
     /**
-     * \brief Bit circuit gate count
+     * @brief Bit circuit gate count
+     * @brief Bit circuit gate count
      *
-     * \param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
+     * @param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
+     * @param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
      * TOF, FRED. If absent (default), this function computes the total circuit
      * gate count
-     * \return Gate count
+     * @return Gate count
+     * @return Gate count
      */
     idx get_gate_count(std::optional<std::string> name = std::nullopt) const {
         idx result;
@@ -810,12 +925,15 @@ class BitCircuit : public DynamicBitset, public IJSON {
     }
 
     /**
-     * \brief Bit circuit gate depth
+     * @brief Bit circuit gate depth
+     * @brief Bit circuit gate depth
      *
-     * \param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
+     * @param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
+     * @param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
      * TOF, FRED. If absent (default), this function computes the total circuit
      * gate depth
-     * \return Gate depth
+     * @return Gate depth
+     * @return Gate depth
      */
     idx get_gate_depth(std::optional<std::string> name = std::nullopt) const {
         idx result;
@@ -840,13 +958,16 @@ class BitCircuit : public DynamicBitset, public IJSON {
     // end getters
 
     /**
-     * \brief qpp::IJSON::to_JSON() override
+     * @brief qpp::IJSON::to_JSON() override
+     * @brief qpp::IJSON::to_JSON() override
      *
      * Displays the bit circuit in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in curly
+     * @param enclosed_in_curly_brackets If true, encloses the result in curly
+     * @param enclosed_in_curly_brackets If true, encloses the result in curly
      * brackets
-     * \return String containing the JSON representation of the state of the
+     * @return String containing the JSON representation of the state of the
+     * @return String containing the JSON representation of the state of the
      * engine
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
@@ -873,11 +994,15 @@ class BitCircuit : public DynamicBitset, public IJSON {
 
     /* input/output */
     /**
-     * \brief String representation
+     * @brief String representation
+     * @brief String representation
      *
-     * \param zero Character representing false (zero)
-     * \param one Character representing true (one)
-     * \return Bits in the bit circuit as a string
+     * @param zero Character representing false (zero)
+     * @param zero Character representing false (zero)
+     * @param one Character representing true (one)
+     * @param one Character representing true (one)
+     * @return Bits in the bit circuit as a string
+     * @return Bits in the bit circuit as a string
      */
     std::string to_string(char zero = '0', char one = '1') const override {
         std::string result;
@@ -893,7 +1018,8 @@ class BitCircuit : public DynamicBitset, public IJSON {
 
   private:
     /**
-     * \brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the bit circuit,
      * with the first bit (at position 0, or top of the circuit) on the left
@@ -901,8 +1027,10 @@ class BitCircuit : public DynamicBitset, public IJSON {
      * the circuit) on the right (least significant bit); that is, big-endian
      * order.
      *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
+     * @param os Output stream passed by reference
+     * @param os Output stream passed by reference
+     * @return Reference to the output stream
+     * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         os << "n = " << n_ << '\n';

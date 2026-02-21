@@ -25,8 +25,10 @@
  */
 
 /**
- * \file <pyqpp/entropies_bind.hpp>
- * \brief Bindings for <qpp/entropies.hpp>
+ * @file <pyqpp/entropies_bind.hpp>
+ * @file <pyqpp/entropies_bind.hpp>
+ * @brief Bindings for <qpp/entropies.hpp>
+ * @brief Bindings for <qpp/entropies.hpp>
  */
 
 #ifndef PYQPP_ENTROPIES_BIND_HPP_

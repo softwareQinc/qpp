@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/options.hpp
- * \brief Options
+ * @file qpp/options.hpp
+ * @file qpp/options.hpp
+ * @brief Options
+ * @brief Options
  */
 
 #ifndef QPP_OPTIONS_HPP_
@@ -39,14 +41,17 @@
 
 namespace qpp {
 /**
- * \brief  Used in qpp::disp() for setting to zero  numbers that have their
+ * @brief  Used in qpp::disp() for setting to zero  numbers that have their
+ * @brief  Used in qpp::disp() for setting to zero  numbers that have their
  * absolute value smaller than qpp::chop
  */
 constexpr realT chop = 1e-14;
 
 /*
- * \brief Formatting options for scalars
- * \see qpp::disp()
+ * @brief Formatting options for scalars
+ * @brief Formatting options for scalars
+ * @see qpp::disp()
+ * @see qpp::disp()
  */
 struct IOManipScalarOpts {
     std::string left = "";  ///< left delimiter
@@ -55,31 +60,40 @@ struct IOManipScalarOpts {
                             ///<  w.r.t. some norm
     // setters
 
-    /* \brief Sets left delimiter
+    /* @brief Sets left delimiter
+    /* @brief Sets left delimiter
      *
-     * \param left_delimiter Left delimiter
-     * \return Reference to the current instance
+     * @param left_delimiter Left delimiter
+     * @param left_delimiter Left delimiter
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipScalarOpts& set_left(std::string left_delimiter) {
         left = std::move(left_delimiter);
         return *this;
     }
 
-    /* \brief Sets right delimiter
+    /* @brief Sets right delimiter
+    /* @brief Sets right delimiter
      *
-     * \param right_delimiter Right delimiter
-     * \return Reference to the current instance
+     * @param right_delimiter Right delimiter
+     * @param right_delimiter Right delimiter
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipScalarOpts& set_right(std::string right_delimiter) {
         right = std::move(right_delimiter);
         return *this;
     }
 
-    /* \brief Sets chopping threshold
+    /* @brief Sets chopping threshold
+    /* @brief Sets chopping threshold
      *
-     * \param chop_at Chopping threshold, sets to zero coefficients (real or
+     * @param chop_at Chopping threshold, sets to zero coefficients (real or
+     * @param chop_at Chopping threshold, sets to zero coefficients (real or
      * imaginary) smaller than this
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipScalarOpts& set_chop(realT chop_at) {
         chop = chop_at;
@@ -88,8 +102,10 @@ struct IOManipScalarOpts {
 };
 
 /*
- * \brief Formatting options for std::complex<T>
- * \see qpp::disp()
+ * @brief Formatting options for std::complex<T>
+ * @brief Formatting options for std::complex<T>
+ * @see qpp::disp()
+ * @see qpp::disp()
  */
 struct IOManipComplexOpts {
     std::string im_suffix =
@@ -102,61 +118,79 @@ struct IOManipComplexOpts {
                                   ///<  imaginary) smaller than this
     // setters
 
-    /* \brief Sets imaginary symbol
+    /* @brief Sets imaginary symbol
+    /* @brief Sets imaginary symbol
      *
-     * \param imaginary_suffix Imaginary symbol for the complex number "i"
-     * \return Reference to the current instance
+     * @param imaginary_suffix Imaginary symbol for the complex number "i"
+     * @param imaginary_suffix Imaginary symbol for the complex number "i"
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipComplexOpts& set_im_suffix(std::string imaginary_suffix) {
         im_suffix = std::move(imaginary_suffix);
         return *this;
     }
 
-    /* \brief Sets plus operator
+    /* @brief Sets plus operator
+    /* @brief Sets plus operator
      *
-     * \param plus_operator Plus operator
-     * \return Reference to the current instance
+     * @param plus_operator Plus operator
+     * @param plus_operator Plus operator
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipComplexOpts& set_plus_op(std::string plus_operator) {
         plus_op = std::move(plus_operator);
         return *this;
     }
 
-    /* \brief Sets minus operator
+    /* @brief Sets minus operator
+    /* @brief Sets minus operator
      *
-     * \param minus_operator Minus operator
-     * \return Reference to the current instance
+     * @param minus_operator Minus operator
+     * @param minus_operator Minus operator
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipComplexOpts& set_minus_op(std::string minus_operator) {
         minus_op = std::move(minus_operator);
         return *this;
     }
 
-    /* \brief Sets left delimiter
+    /* @brief Sets left delimiter
+    /* @brief Sets left delimiter
      *
-     * \param left_delimiter Left delimiter
-     * \return Reference to the current instance
+     * @param left_delimiter Left delimiter
+     * @param left_delimiter Left delimiter
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipComplexOpts& set_left(std::string left_delimiter) {
         left = std::move(left_delimiter);
         return *this;
     }
 
-    /* \brief Sets right delimiter
+    /* @brief Sets right delimiter
+    /* @brief Sets right delimiter
      *
-     * \param right_delimiter Right delimiter
-     * \return Reference to the current instance
+     * @param right_delimiter Right delimiter
+     * @param right_delimiter Right delimiter
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipComplexOpts& set_right(std::string right_delimiter) {
         right = std::move(right_delimiter);
         return *this;
     }
 
-    /* \brief Sets chopping threshold
+    /* @brief Sets chopping threshold
+    /* @brief Sets chopping threshold
      *
-     * \param chop_at Chopping threshold, sets to zero coefficients (real or
+     * @param chop_at Chopping threshold, sets to zero coefficients (real or
+     * @param chop_at Chopping threshold, sets to zero coefficients (real or
      * imaginary) smaller than this
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipComplexOpts& set_chop(realT chop_at) {
         chop = chop_at;
@@ -165,18 +199,23 @@ struct IOManipComplexOpts {
 };
 
 /*
- * \brief Formatting options for Eigen::MatrixBase<Derived>
- * \see qpp::disp()
+ * @brief Formatting options for Eigen::MatrixBase<Derived>
+ * @brief Formatting options for Eigen::MatrixBase<Derived>
+ * @see qpp::disp()
+ * @see qpp::disp()
  */
 struct IOManipEigenOpts {
     IOManipComplexOpts cplx_opts{};
 
     // setters
 
-    /* \brief Sets std::complex<T> formatting options
+    /* @brief Sets std::complex<T> formatting options
+    /* @brief Sets std::complex<T> formatting options
      *
-     * \param complex_opts Instance of qpp::IOManipComplexOpts
-     * \return Reference to the current instance
+     * @param complex_opts Instance of qpp::IOManipComplexOpts
+     * @param complex_opts Instance of qpp::IOManipComplexOpts
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipEigenOpts& set_complex_opts(IOManipComplexOpts complex_opts) {
         cplx_opts = std::move(complex_opts);
@@ -185,8 +224,10 @@ struct IOManipEigenOpts {
 };
 
 /*
- * \brief Formatting options for iterable objects
- * \see qpp::disp()
+ * @brief Formatting options for iterable objects
+ * @brief Formatting options for iterable objects
+ * @see qpp::disp()
+ * @see qpp::disp()
  */
 struct IOManipRangeOpts {
     std::string sep = " ";   ///< separator
@@ -196,41 +237,53 @@ struct IOManipRangeOpts {
                              ///<  smaller than this
     // setters
 
-    /* \brief Sets separator
+    /* @brief Sets separator
+    /* @brief Sets separator
      *
-     * \param separator Separator
-     * \return Reference to the current instance
+     * @param separator Separator
+     * @param separator Separator
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipRangeOpts& set_sep(std::string separator) {
         sep = std::move(separator);
         return *this;
     }
 
-    /* \brief Sets left delimiter
+    /* @brief Sets left delimiter
+    /* @brief Sets left delimiter
      *
-     * \param left_delimiter Left delimiter
-     * \return Reference to the current instance
+     * @param left_delimiter Left delimiter
+     * @param left_delimiter Left delimiter
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipRangeOpts& set_left(std::string left_delimiter) {
         left = std::move(left_delimiter);
         return *this;
     }
 
-    /* \brief Sets right delimiter
+    /* @brief Sets right delimiter
+    /* @brief Sets right delimiter
      *
-     * \param right_delimiter Right delimiter
-     * \return Reference to the current instance
+     * @param right_delimiter Right delimiter
+     * @param right_delimiter Right delimiter
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipRangeOpts& set_right(std::string right_delimiter) {
         right = std::move(right_delimiter);
         return *this;
     }
 
-    /* \brief Sets chopping threshold
+    /* @brief Sets chopping threshold
+    /* @brief Sets chopping threshold
      *
-     * \param chop_at Chopping threshold, sets to zero coefficients (real or
+     * @param chop_at Chopping threshold, sets to zero coefficients (real or
+     * @param chop_at Chopping threshold, sets to zero coefficients (real or
      * imaginary) smaller than this
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipRangeOpts& set_chop(realT chop_at) {
         chop = chop_at;
@@ -239,8 +292,10 @@ struct IOManipRangeOpts {
 };
 
 /*
- * \brief Formatting options for containers
- * \see qpp::disp()
+ * @brief Formatting options for containers
+ * @brief Formatting options for containers
+ * @see qpp::disp()
+ * @see qpp::disp()
  */
 struct IOManipContainerOpts {
     std::string sep = " ";   ///< separator
@@ -251,41 +306,53 @@ struct IOManipContainerOpts {
 
     // setters
 
-    /* \brief Sets separator
+    /* @brief Sets separator
+    /* @brief Sets separator
      *
-     * \param separator Separator
-     * \return Reference to the current instance
+     * @param separator Separator
+     * @param separator Separator
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipContainerOpts& set_sep(std::string separator) {
         sep = std::move(separator);
         return *this;
     }
 
-    /* \brief Sets left delimiter
+    /* @brief Sets left delimiter
+    /* @brief Sets left delimiter
      *
-     * \param left_delimiter Left delimiter
-     * \return Reference to the current instance
+     * @param left_delimiter Left delimiter
+     * @param left_delimiter Left delimiter
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipContainerOpts& set_left(std::string left_delimiter) {
         left = std::move(left_delimiter);
         return *this;
     }
 
-    /* \brief Sets right delimiter
+    /* @brief Sets right delimiter
+    /* @brief Sets right delimiter
      *
-     * \param right_delimiter Right delimiter
-     * \return Reference to the current instance
+     * @param right_delimiter Right delimiter
+     * @param right_delimiter Right delimiter
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipContainerOpts& set_right(std::string right_delimiter) {
         right = std::move(right_delimiter);
         return *this;
     }
 
-    /* \brief Sets chopping threshold
+    /* @brief Sets chopping threshold
+    /* @brief Sets chopping threshold
      *
-     * \param chop_at Chopping threshold, sets to zero coefficients (real or
+     * @param chop_at Chopping threshold, sets to zero coefficients (real or
+     * @param chop_at Chopping threshold, sets to zero coefficients (real or
      * imaginary) smaller than this
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipContainerOpts& set_chop(realT chop_at) {
         chop = chop_at;
@@ -293,7 +360,8 @@ struct IOManipContainerOpts {
     }
 
     /*
-     * \brief Conversion operator to qpp::IOManipRange
+     * @brief Conversion operator to qpp::IOManipRange
+     * @brief Conversion operator to qpp::IOManipRange
      */
     operator IOManipRangeOpts() {
         IOManipRangeOpts range_opts;
@@ -307,8 +375,10 @@ struct IOManipContainerOpts {
 };
 
 /*
- * \brief Formatting options for C-style pointers
- * \see qpp::disp()
+ * @brief Formatting options for C-style pointers
+ * @brief Formatting options for C-style pointers
+ * @see qpp::disp()
+ * @see qpp::disp()
  */
 struct IOManipPointerOpts {
     std::string sep = " ";   ///< separator
@@ -318,41 +388,53 @@ struct IOManipPointerOpts {
                              ///<  smaller than this
     // setters
 
-    /* \brief Sets separator
+    /* @brief Sets separator
+    /* @brief Sets separator
      *
-     * \param separator Separator
-     * \return Reference to the current instance
+     * @param separator Separator
+     * @param separator Separator
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipPointerOpts& set_sep(std::string separator) {
         sep = std::move(separator);
         return *this;
     }
 
-    /* \brief Sets left delimiter
+    /* @brief Sets left delimiter
+    /* @brief Sets left delimiter
      *
-     * \param left_delimiter Left delimiter
-     * \return Reference to the current instance
+     * @param left_delimiter Left delimiter
+     * @param left_delimiter Left delimiter
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipPointerOpts& set_left(std::string left_delimiter) {
         left = std::move(left_delimiter);
         return *this;
     }
 
-    /* \brief Sets right delimiter
+    /* @brief Sets right delimiter
+    /* @brief Sets right delimiter
      *
-     * \param right_delimiter Right delimiter
-     * \return Reference to the current instance
+     * @param right_delimiter Right delimiter
+     * @param right_delimiter Right delimiter
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipPointerOpts& set_right(std::string right_delimiter) {
         right = std::move(right_delimiter);
         return *this;
     }
 
-    /* \brief Sets chopping threshold
+    /* @brief Sets chopping threshold
+    /* @brief Sets chopping threshold
      *
-     * \param chop_at Chopping threshold, sets to zero coefficients (real or
+     * @param chop_at Chopping threshold, sets to zero coefficients (real or
+     * @param chop_at Chopping threshold, sets to zero coefficients (real or
      * imaginary) smaller than this
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipPointerOpts& set_chop(realT chop_at) {
         chop = chop_at;
@@ -361,8 +443,10 @@ struct IOManipPointerOpts {
 };
 
 /**
- * \brief Formatting options for qpp::dirac_t objects
- * \see qpp::disp()
+ * @brief Formatting options for qpp::dirac_t objects
+ * @brief Formatting options for qpp::dirac_t objects
+ * @see qpp::disp()
+ * @see qpp::disp()
  */
 struct IOManipDiracOpts {
     IOManipComplexOpts cplx_opts{};
@@ -374,41 +458,53 @@ struct IOManipDiracOpts {
 
     // setters
 
-    /* \brief Sets std::complex<T> formatting options
+    /* @brief Sets std::complex<T> formatting options
+    /* @brief Sets std::complex<T> formatting options
      *
-     * \param complex_opts Instance of qpp::IOManipComplexOpts
-     * \return Reference to the current instance
+     * @param complex_opts Instance of qpp::IOManipComplexOpts
+     * @param complex_opts Instance of qpp::IOManipComplexOpts
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipDiracOpts& set_complex_opts(IOManipComplexOpts complex_opts) {
         cplx_opts = std::move(complex_opts);
         return *this;
     }
 
-    /* \brief Sets plus operator
+    /* @brief Sets plus operator
+    /* @brief Sets plus operator
      *
-     * \param plus_operator Plus operator
-     * \return Reference to the current instance
+     * @param plus_operator Plus operator
+     * @param plus_operator Plus operator
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipDiracOpts& set_plus_op(std::string plus_operator) {
         plus_op = std::move(plus_operator);
         return *this;
     }
 
-    /* \brief Sets multiplication operator
+    /* @brief Sets multiplication operator
+    /* @brief Sets multiplication operator
      *
-     * \param mul_operator Multiplication operator
-     * \return Reference to the current instance
+     * @param mul_operator Multiplication operator
+     * @param mul_operator Multiplication operator
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipDiracOpts& set_mul_op(std::string mul_operator) {
         mul_op = std::move(mul_operator);
         return *this;
     }
 
-    /* \brief Sets amplitudes after
+    /* @brief Sets amplitudes after
+    /* @brief Sets amplitudes after
      *
-     * \param show_amplitudes_after If true, amplitudes are displayed after
+     * @param show_amplitudes_after If true, amplitudes are displayed after
+     * @param show_amplitudes_after If true, amplitudes are displayed after
      * bra/kets
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
 
     IOManipDiracOpts& set_amplitudes_after(bool show_amplitudes_after) {
@@ -416,11 +512,14 @@ struct IOManipDiracOpts {
         return *this;
     }
 
-    /* \brief Sets discarding zeros
+    /* @brief Sets discarding zeros
+    /* @brief Sets discarding zeros
      *
-     * \param discarding_zeros If true, do not display real/imag parts of the
+     * @param discarding_zeros If true, do not display real/imag parts of the
+     * @param discarding_zeros If true, do not display real/imag parts of the
      * coefficients that are smaller than this->cplx_opts.chop
-     * \return Reference to the current instance
+     * @return Reference to the current instance
+     * @return Reference to the current instance
      */
     IOManipDiracOpts& set_discard_zeros(bool discarding_zeros) {
         discard_zeros = discarding_zeros;
@@ -430,7 +529,8 @@ struct IOManipDiracOpts {
 
 namespace internal {
 /**
- * \brief Maximum number of allowed qubits/qudits (subsystems)
+ * @brief Maximum number of allowed qubits/qudits (subsystems)
+ * @brief Maximum number of allowed qubits/qudits (subsystems)
  *
  * Used internally to allocate arrays on the stack (for performance reasons)
  */

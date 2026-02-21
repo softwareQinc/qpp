@@ -25,8 +25,10 @@
  */
 
 /**
- * \file <pyqpp/operations_bind.hpp>
- * \brief Bindings for <qpp/operations.hpp>
+ * @file <pyqpp/operations_bind.hpp>
+ * @file <pyqpp/operations_bind.hpp>
+ * @brief Bindings for <qpp/operations.hpp>
+ * @brief Bindings for <qpp/operations.hpp>
  */
 
 #ifndef PYQPP_OPERATIONS_BIND_HPP_

@@ -27,8 +27,10 @@
  */
 
 /**
- * \file qasmtools/parser/parser.hpp
- * \brief OpenQASM parsing
+ * @file qasmtools/parser/parser.hpp
+ * @file qasmtools/parser/parser.hpp
+ * @brief OpenQASM parsing
+ * @brief OpenQASM parsing
  */
 
 #ifndef QASMTOOLS_PARSER_PARSER_HPP_
@@ -43,8 +45,10 @@ namespace qasmtools {
 namespace parser {
 
 /**
- * \class qasmtools::parser::ParseError
- * \brief Exception class for parse errors
+ * @class qasmtools::parser::ParseError
+ * @class qasmtools::parser::ParseError
+ * @brief Exception class for parse errors
+ * @brief Exception class for parse errors
  */
 class ParseError : public std::exception {
   public:
@@ -54,9 +58,12 @@ class ParseError : public std::exception {
 };
 
 /**
- * \class qasmtools::parser::Parser
- * \brief OpenQASM parser class
- * \see qasmtools::parser::Preprocessor
+ * @class qasmtools::parser::Parser
+ * @class qasmtools::parser::Parser
+ * @brief OpenQASM parser class
+ * @brief OpenQASM parser class
+ * @see qasmtools::parser::Preprocessor
+ * @see qasmtools::parser::Preprocessor
  */
 class Parser {
     Preprocessor& pp_lexer_; ///< preprocessed, tokenized input stream
@@ -69,17 +76,21 @@ class Parser {
 
   public:
     /**
-     * \brief Constructs a parser for a given preprocessor stream
+     * @brief Constructs a parser for a given preprocessor stream
+     * @brief Constructs a parser for a given preprocessor stream
      *
-     * \param pp_lexer The preprocessed lexer stream to be parsed
+     * @param pp_lexer The preprocessed lexer stream to be parsed
+     * @param pp_lexer The preprocessed lexer stream to be parsed
      */
     Parser(Preprocessor& pp_lexer)
         : pp_lexer_(pp_lexer), current_token_(pp_lexer_.next_token()) {}
 
     /**
-     * \brief Parses the tokenized stream as a QCircuit object
+     * @brief Parses the tokenized stream as a QCircuit object
+     * @brief Parses the tokenized stream as a QCircuit object
      *
-     * \return A unique pointer to a QCircuit object
+     * @return A unique pointer to a QCircuit object
+     * @return A unique pointer to a QCircuit object
      */
     ast::ptr<ast::Program> parse(bool check = true) {
         // Parse the program
@@ -98,9 +109,11 @@ class Parser {
 
   private:
     /**
-     * \brief Consume a token and retrieve the next one
+     * @brief Consume a token and retrieve the next one
+     * @brief Consume a token and retrieve the next one
      *
-     * \param reset Whether to unsupress errors (optional, default is false)
+     * @param reset Whether to unsupress errors (optional, default is false)
+     * @param reset Whether to unsupress errors (optional, default is false)
      */
     void consume_token(bool reset = false) {
         current_token_ = pp_lexer_.next_token();
@@ -110,14 +123,17 @@ class Parser {
     }
 
     /**
-     * \brief Consume a particular type of token
+     * @brief Consume a particular type of token
+     * @brief Consume a particular type of token
      *
      * Checks that the current token is of type given by the argument
      * and consumes the token, setting the error flag if it is not
      * of the correct type
      *
-     * \param expected The type of token to be consumed
-     * \return The current token
+     * @param expected The type of token to be consumed
+     * @param expected The type of token to be consumed
+     * @return The current token
+     * @return The current token
      */
     Token expect_and_consume_token(Token::Kind expected) {
         if (current_token_.is_not(expected)) {
@@ -138,13 +154,16 @@ class Parser {
     }
 
     /**
-     * \brief Consume tokens until a particular token is found
+     * @brief Consume tokens until a particular token is found
+     * @brief Consume tokens until a particular token is found
      *
      * Repeatedly skips tokens, setting the error flag if necessary,
      * until the given token or eof is found
      *
-     * \param expected The type of token to be consumed
-     * \return The next expected token, or eof
+     * @param expected The type of token to be consumed
+     * @param expected The type of token to be consumed
+     * @return The next expected token, or eof
+     * @return The next expected token, or eof
      */
     Token consume_until(Token::Kind expected) {
         while (current_token_.is_not(expected) &&
@@ -166,13 +185,16 @@ class Parser {
     }
 
     /**
-     * \brief Try to consume a particular type of token
+     * @brief Try to consume a particular type of token
+     * @brief Try to consume a particular type of token
      *
      * Attempts to parse a particular type of token, only consuming
      * the token if it is of the correct type
      *
-     * \param expected The type of token to be consumed
-     * \return True if and only if a token of type expected was consumed
+     * @param expected The type of token to be consumed
+     * @param expected The type of token to be consumed
+     * @return True if and only if a token of type expected was consumed
+     * @return True if and only if a token of type expected was consumed
      */
     bool try_and_consume_token(Token::Kind expected) {
         if (current_token_.is_not(expected)) {
@@ -183,7 +205,8 @@ class Parser {
     }
 
     /**
-     * \brief Parse an OpenQASM 2.0 program
+     * @brief Parse an OpenQASM 2.0 program
+     * @brief Parse an OpenQASM 2.0 program
      *
      * <mainprogram> = OPENQASM <real> ; <program>
      * <program>     = <statement> | <program> <statement>
@@ -195,7 +218,8 @@ class Parser {
      *               | if ( <id> == <nninteger> ) <qop>
      *               | barrier <anylist> ;
      *
-     * \return A QASM AST object
+     * @return A QASM AST object
+     * @return A QASM AST object
      */
     ast::ptr<ast::Program> parse_program() {
         auto pos = current_token_.position();
@@ -265,7 +289,8 @@ class Parser {
     }
 
     /**
-     * \brief Parse an OpenQASM 2.0 header
+     * @brief Parse an OpenQASM 2.0 header
+     * @brief Parse an OpenQASM 2.0 header
      *
      * OPENQASM <nninteger> ;
      */
@@ -277,13 +302,15 @@ class Parser {
     }
 
     /**
-     * \brief Parse a register declaration
+     * @brief Parse a register declaration
+     * @brief Parse a register declaration
      * \note <regdecl>
      *
      * <regdecl> = qreg <id> [ <nninteger> ] ;
      *           | creg <id> [ <nninteger> ] ;
      *
-     * \return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
      */
     ast::ptr<ast::Stmt> parse_reg_decl(bool quantum) {
         auto pos = current_token_.position();
@@ -301,13 +328,15 @@ class Parser {
     }
 
     /**
-     * \brief Parse an ancilla declaration
+     * @brief Parse an ancilla declaration
+     * @brief Parse an ancilla declaration
      * \note <ancdecl>
      *
      * <ancdecl> = ancilla <id> [ <nninteger> ] ;
      *           | dirty ancilla <id> [ <nninteger> ] ;
      *
-     * \return Unique pointer to a (gate) statement object
+     * @return Unique pointer to a (gate) statement object
+     * @return Unique pointer to a (gate) statement object
      */
     ast::ptr<ast::Gate> parse_ancilla_decl() {
         bool dirty = false;
@@ -329,14 +358,16 @@ class Parser {
     }
 
     /**
-     * \brief Parse a gate declaration
+     * @brief Parse a gate declaration
+     * @brief Parse a gate declaration
      * \note <gatedecl>
      *
      * <gatedecl> = gate <id> <idlist> {
      *            | gate <id> ( ) <idlist> {
      *            | gate <id> ( <idlist> ) <idlist> {
      *
-     * \return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
      */
     ast::ptr<ast::Stmt> parse_gate_decl() {
         auto pos = current_token_.position();
@@ -364,14 +395,16 @@ class Parser {
     }
 
     /**
-     * \brief Parse an opaque gate declaration
+     * @brief Parse an opaque gate declaration
+     * @brief Parse an opaque gate declaration
      * \note <opaquedecl>
      *
      * <opaquedecl> = opaque <id> <idlist> ;
      *              | opaque <id> ( ) <idlist> ;
      *              | opaque <id> ( <idlist> ) <idlist> ;
      *
-     * \return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
      */
     ast::ptr<ast::Stmt> parse_opaque_decl() {
         auto pos = current_token_.position();
@@ -393,12 +426,14 @@ class Parser {
     }
 
     /**
-     * \brief Parse an oracle declaration
+     * @brief Parse an oracle declaration
+     * @brief Parse an oracle declaration
      * \note <oracledecl>
      *
      * <oracledecl> = oracle <id> <idlist> { <string> }
      *
-     * \return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
      */
     ast::ptr<ast::Stmt> parse_oracle_decl() {
         auto pos = current_token_.position();
@@ -415,13 +450,15 @@ class Parser {
     }
 
     /**
-     * \brief Parse a list of gate operations
+     * @brief Parse a list of gate operations
+     * @brief Parse a list of gate operations
      * \note <goplist>
      *
      * <goplist> = <gop>
      *           | <goplist> <gop>
      *
-     * \return Vector of gate objects
+     * @return Vector of gate objects
+     * @return Vector of gate objects
      */
     std::list<ast::ptr<ast::Gate>> parse_goplist() {
         std::list<ast::ptr<ast::Gate>> ret;
@@ -448,14 +485,16 @@ class Parser {
     }
 
     /**
-     * \brief Parse a quantum operation
+     * @brief Parse a quantum operation
+     * @brief Parse a quantum operation
      * \note <qop>
      *
      * <qop> = <gop>
      *       | measure <argument> -> <argument> ;
      *       | reset <argument> ;
      *
-     * \return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
      */
     ast::ptr<ast::Stmt> parse_qop() {
         switch (current_token_.kind()) {
@@ -485,7 +524,8 @@ class Parser {
     }
 
     /**
-     * \brief Parse a gate operation
+     * @brief Parse a gate operation
+     * @brief Parse a gate operation
      * \note <gop>
      *
      * <gop> = U ( <explist> ) <argument> ;
@@ -495,7 +535,8 @@ class Parser {
      *       | <id> ( <explist> ) <anylist> ;
      *       | barrier <idlist> ;
      *
-     * \return Unique pointer to a gate object
+     * @return Unique pointer to a gate object
+     * @return Unique pointer to a gate object
      */
     ast::ptr<ast::Gate> parse_gop() {
         switch (current_token_.kind()) {
@@ -530,13 +571,15 @@ class Parser {
     }
 
     /**
-     * \brief Parse a list of identifiers
+     * @brief Parse a list of identifiers
+     * @brief Parse a list of identifiers
      * \note <idlist>
      *
      * <idlist> = <id>
      *          | <idlist> , <id>
      *
-     * \return Vector of identifiers
+     * @return Vector of identifiers
+     * @return Vector of identifiers
      */
     std::vector<ast::symbol> parse_idlist() {
         std::vector<ast::symbol> ret;
@@ -554,13 +597,15 @@ class Parser {
     }
 
     /**
-     * \brief Parse a variable expression
+     * @brief Parse a variable expression
+     * @brief Parse a variable expression
      * \note <var>
      *
      * <var> = <id>
      *       | <id> [ <nninteger> ]
      *
-     * \return Variable object
+     * @return Variable object
+     * @return Variable object
      */
     ast::VarAccess parse_argument() {
         auto pos = current_token_.position();
@@ -577,13 +622,15 @@ class Parser {
     }
 
     /**
-     * \brief Parse a list of variable expressions
+     * @brief Parse a list of variable expressions
+     * @brief Parse a list of variable expressions
      * \note <varlist>
      *
      * <varlist> = <var>
      *           | <varlist> , <var>
      *
-     * \return Vector of variable objects
+     * @return Vector of variable objects
+     * @return Vector of variable objects
      */
     std::vector<ast::VarAccess> parse_anylist() {
         std::vector<ast::VarAccess> ret;
@@ -600,13 +647,15 @@ class Parser {
     }
 
     /**
-     * \brief Parse a list of expressions
+     * @brief Parse a list of expressions
+     * @brief Parse a list of expressions
      * \note <explist>
      *
      * <explist> = <exp>
      *           | <explist> , <exp>
      *
-     * \return Vector of expressions
+     * @return Vector of expressions
+     * @return Vector of expressions
      */
     std::vector<ast::ptr<ast::Expr>> parse_explist() {
         // doesn't accept empty lists
@@ -623,7 +672,8 @@ class Parser {
     }
 
     /**
-     * \brief Parse an expression
+     * @brief Parse an expression
+     * @brief Parse an expression
      * \note <exp>
      *
      * <exp> = <real> | <nninteger> | pi | <id>
@@ -634,7 +684,8 @@ class Parser {
      *       | ( <exp> )
      *       | <unaryop> ( <exp> )
      *
-     * \return Unique pointer to an expression object
+     * @return Unique pointer to an expression object
+     * @return Unique pointer to an expression object
      */
     ast::ptr<ast::Expr> parse_exp(int min_precedence = 1) {
         auto pos = current_token_.position();
@@ -693,10 +744,13 @@ class Parser {
     }
 
     /**
-     * \brief Parse an atomic expression
-     * \see qpp:qasmtools::Parser::parse_exp()
+     * @brief Parse an atomic expression
+     * @brief Parse an atomic expression
+     * @see qpp:qasmtools::Parser::parse_exp()
+     * @see qpp:qasmtools::Parser::parse_exp()
      *
-     * \return Unique pointer to an expression object
+     * @return Unique pointer to an expression object
+     * @return Unique pointer to an expression object
      */
     ast::ptr<ast::Expr> parse_atom() {
         auto pos = current_token_.position();
@@ -768,10 +822,13 @@ class Parser {
     }
 
     /**
-     * \brief Parse a binary operator
-     * \see qpp:qasmtools::Parser::parse_exp()
+     * @brief Parse a binary operator
+     * @brief Parse a binary operator
+     * @see qpp:qasmtools::Parser::parse_exp()
+     * @see qpp:qasmtools::Parser::parse_exp()
      *
-     * \return Binary operator
+     * @return Binary operator
+     * @return Binary operator
      */
     ast::BinaryOp parse_binaryop() {
         switch (current_token_.kind()) {
@@ -805,10 +862,13 @@ class Parser {
     }
 
     /**
-     * \brief Parse a unary operator
-     * \see qpp:qasmtools::Parser::parse_exp()
+     * @brief Parse a unary operator
+     * @brief Parse a unary operator
+     * @see qpp:qasmtools::Parser::parse_exp()
+     * @see qpp:qasmtools::Parser::parse_exp()
      *
-     * \return Unary operator
+     * @return Unary operator
+     * @return Unary operator
      */
     ast::UnaryOp parse_unaryop() {
         switch (current_token_.kind()) {
@@ -845,11 +905,13 @@ class Parser {
     }
 
     /**
-     * \brief Parse a CNOT gate
+     * @brief Parse a CNOT gate
+     * @brief Parse a CNOT gate
      *
      * CX <var> , <var> ;
      *
-     * \return Unique pointer to a gate object
+     * @return Unique pointer to a gate object
+     * @return Unique pointer to a gate object
      */
     ast::ptr<ast::Gate> parse_cnot() {
         auto pos = current_token_.position();
@@ -864,11 +926,13 @@ class Parser {
     }
 
     /**
-     * \brief Parse a single qubit U gate
+     * @brief Parse a single qubit U gate
+     * @brief Parse a single qubit U gate
      *
      * U ( <exp> , <exp> , <exp> ) <var> ;
      *
-     * \return Unique pointer to a gate object
+     * @return Unique pointer to a gate object
+     * @return Unique pointer to a gate object
      */
     ast::ptr<ast::Gate> parse_unitary() {
         auto pos = current_token_.position();
@@ -889,12 +953,14 @@ class Parser {
     }
 
     /**
-     * \brief Parse a declared gate application
+     * @brief Parse a declared gate application
+     * @brief Parse a declared gate application
      *
      * <id> <varlist> ;
      * <id> ( <explist> ) <varlist> ;
      *
-     * \return Unique pointer to a gate object
+     * @return Unique pointer to a gate object
+     * @return Unique pointer to a gate object
      */
     ast::ptr<ast::Gate> parse_gate_statement() {
         auto pos = current_token_.position();
@@ -914,11 +980,13 @@ class Parser {
     }
 
     /**
-     * \brief Parse a measurement
+     * @brief Parse a measurement
+     * @brief Parse a measurement
      *
      * measure <var> -> <var> ;
      *
-     * \return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
      */
     ast::ptr<ast::Stmt> parse_measure() {
         auto pos = current_token_.position();
@@ -934,11 +1002,13 @@ class Parser {
     }
 
     /**
-     * \brief Parse a reset statement
+     * @brief Parse a reset statement
+     * @brief Parse a reset statement
      *
      * reset <var> ;
      *
-     * \return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
      */
     ast::ptr<ast::Stmt> parse_reset() {
         auto pos = current_token_.position();
@@ -951,11 +1021,13 @@ class Parser {
     }
 
     /**
-     * \brief Parse a barrier statement
+     * @brief Parse a barrier statement
+     * @brief Parse a barrier statement
      *
      * barrier <varlist> ;
      *
-     * \return Unique pointer to a gate object
+     * @return Unique pointer to a gate object
+     * @return Unique pointer to a gate object
      */
     ast::ptr<ast::Gate> parse_barrier() {
         auto pos = current_token_.position();
@@ -968,11 +1040,13 @@ class Parser {
     }
 
     /**
-     * \brief Parse an if statement
+     * @brief Parse an if statement
+     * @brief Parse an if statement
      *
      * if ( <id> == <nninteger> ) <qop>
      *
-     * \return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
+     * @return Unique pointer to a statement object
      */
     ast::ptr<ast::Stmt> parse_if() {
         auto pos = current_token_.position();
@@ -991,7 +1065,8 @@ class Parser {
 };
 
 /**
- * \brief Parse a specified file
+ * @brief Parse a specified file
+ * @brief Parse a specified file
  */
 inline ast::ptr<ast::Program> parse_file(std::string fname) {
     Preprocessor pp;
@@ -1012,7 +1087,8 @@ inline ast::ptr<ast::Program> parse_file(std::string fname) {
 }
 
 /**
- * \brief Parse input from stdin
+ * @brief Parse input from stdin
+ * @brief Parse input from stdin
  */
 inline ast::ptr<ast::Program> parse_stdin(std::string name = "") {
     Preprocessor pp;
@@ -1027,7 +1103,8 @@ inline ast::ptr<ast::Program> parse_stdin(std::string name = "") {
 }
 
 /**
- * \brief Parse input stream
+ * @brief Parse input stream
+ * @brief Parse input stream
  */
 inline ast::ptr<ast::Program> parse_stream(std::istream& stream) {
     Preprocessor pp;
@@ -1041,7 +1118,8 @@ inline ast::ptr<ast::Program> parse_stream(std::istream& stream) {
 }
 
 /**
- * \brief Parse a string
+ * @brief Parse a string
+ * @brief Parse a string
  * \note For small programs
  */
 inline ast::ptr<ast::Program> parse_string(const std::string& str,

@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/classes/codes.hpp
- * \brief Quantum error correcting codes
+ * @file qpp/classes/codes.hpp
+ * @file qpp/classes/codes.hpp
+ * @brief Quantum error correcting codes
+ * @brief Quantum error correcting codes
  */
 
 #ifndef QPP_CLASSES_CODES_HPP_
@@ -42,8 +44,10 @@
 
 namespace qpp {
 /**
- * \class qpp::Codes
- * \brief const Singleton class that defines quantum error correcting codes
+ * @class qpp::Codes
+ * @class qpp::Codes
+ * @brief const Singleton class that defines quantum error correcting codes
+ * @brief const Singleton class that defines quantum error correcting codes
  */
 class Codes final : public internal::Singleton<const Codes> // const Singleton
 {
@@ -51,8 +55,10 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
 
   public:
     /**
-     * \brief Code types, add more codes here if needed
-     * \see qpp::Codes::codeword()
+     * @brief Code types, add more codes here if needed
+     * @brief Code types, add more codes here if needed
+     * @see qpp::Codes::codeword()
+     * @see qpp::Codes::codeword()
      */
     enum class Type {
         FIVE_QUBIT,         ///< [[5,1,3]] qubit code
@@ -62,23 +68,30 @@ class Codes final : public internal::Singleton<const Codes> // const Singleton
 
   private:
     /**
-     * \brief Default constructor
+     * @brief Default constructor
+     * @brief Default constructor
      */
     Codes() = default;
 
     /**
-     * \brief Default destructor
+     * @brief Default destructor
+     * @brief Default destructor
      */
     ~Codes() override = default;
 
   public:
     /**
-     * \brief Returns the codeword of the specified code type
-     * \see qpp::Codes::Type
+     * @brief Returns the codeword of the specified code type
+     * @brief Returns the codeword of the specified code type
+     * @see qpp::Codes::Type
+     * @see qpp::Codes::Type
      *
-     * \param type Code type
-     * \param i Codeword index
-     * \return \a i-th codeword  of the code \a type
+     * @param type Code type
+     * @param type Code type
+     * @param i Codeword index
+     * @param i Codeword index
+     * @return \a i-th codeword  of the code \a type
+     * @return \a i-th codeword  of the code \a type
      */
     static ket codeword(Type type, idx i) {
         ket result;

@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qasmtools/tools/ast_printer.hpp
- * \brief Direct AST printer for debugging
+ * @file qasmtools/tools/ast_printer.hpp
+ * @file qasmtools/tools/ast_printer.hpp
+ * @brief Direct AST printer for debugging
+ * @brief Direct AST printer for debugging
  */
 
 #ifndef QASMTOOLS_TOOLS_ASTPRINTER_HPP_

@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/classes/qcircuit_traits.hpp
- * \brief Quantum circuit traits (compile-time)
+ * @file qpp/classes/qcircuit_traits.hpp
+ * @file qpp/classes/qcircuit_traits.hpp
+ * @brief Quantum circuit traits (compile-time)
+ * @brief Quantum circuit traits (compile-time)
  */
 
 #ifndef QPP_CLASSES_QCIRCUIT_TRAITS_HPP_
@@ -34,8 +36,10 @@
 
 namespace qpp {
 /**
- * \class qpp::QCircuitTraits
- * \brief Generic type traits for quantum circuits, resolved at compile-time
+ * @class qpp::QCircuitTraits
+ * @class qpp::QCircuitTraits
+ * @brief Generic type traits for quantum circuits, resolved at compile-time
+ * @brief Generic type traits for quantum circuits, resolved at compile-time
  * \note All quantum circuit description classes should specialize this trait
  */
 template <typename T>

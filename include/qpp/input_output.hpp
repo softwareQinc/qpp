@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qpp/input_output.hpp
- * \brief Input/output functions
+ * @file qpp/input_output.hpp
+ * @file qpp/input_output.hpp
+ * @brief Input/output functions
+ * @brief Input/output functions
  */
 
 #ifndef QPP_INPUT_OUTPUT_HPP_
@@ -51,12 +53,17 @@
 namespace qpp {
 
 /**
- * \brief Scalar std::ostream manipulator
- * \see qpp::IOManipScalarOpts
+ * @brief Scalar std::ostream manipulator
+ * @brief Scalar std::ostream manipulator
+ * @see qpp::IOManipScalarOpts
+ * @see qpp::IOManipScalarOpts
  *
- * \param scalar Scalar, must satisfy the std::is_arithmetic<> type trait
- * \param opts Formatting options
- * \return Instance of qpp::internal::IOManipScalar
+ * @param scalar Scalar, must satisfy the std::is_arithmetic<> type trait
+ * @param scalar Scalar, must satisfy the std::is_arithmetic<> type trait
+ * @param opts Formatting options
+ * @param opts Formatting options
+ * @return Instance of qpp::internal::IOManipScalar
+ * @return Instance of qpp::internal::IOManipScalar
  */
 template <typename Scalar,
           typename std::enable_if_t<std::is_arithmetic_v<Scalar>>* = nullptr>
@@ -66,13 +73,18 @@ inline internal::IOManipScalar<Scalar> disp(Scalar scalar,
 }
 
 /**
- * \brief Complex number std::ostream manipulator
- * \see qpp::IOManipComplexOpts
+ * @brief Complex number std::ostream manipulator
+ * @brief Complex number std::ostream manipulator
+ * @see qpp::IOManipComplexOpts
+ * @see qpp::IOManipComplexOpts
  *
- * \param z Complex number (or any other type implicitly cast-able to
+ * @param z Complex number (or any other type implicitly cast-able to
+ * @param z Complex number (or any other type implicitly cast-able to
  * std::complex<T>)
- * \param opts Formatting options
- * \return Instance of qpp::internal::IOManipScalar<std::complex<T>>
+ * @param opts Formatting options
+ * @param opts Formatting options
+ * @return Instance of qpp::internal::IOManipScalar<std::complex<T>>
+ * @return Instance of qpp::internal::IOManipScalar<std::complex<T>>
  */
 template <typename T>
 inline internal::IOManipScalar<std::complex<T>>
@@ -81,13 +93,19 @@ disp(std::complex<T> z, IOManipComplexOpts opts = {}) {
 }
 
 /**
- * \brief Range std::ostream manipulator
- * \see qpp::IOManipRangeOpts
+ * @brief Range std::ostream manipulator
+ * @brief Range std::ostream manipulator
+ * @see qpp::IOManipRangeOpts
+ * @see qpp::IOManipRangeOpts
  *
- * \param first Iterator to the first element of the range
- * \param last  Iterator to the last element of the range
- * \param opts Formatting options
- * \return Instance of qpp::internal::IOManipRange
+ * @param first Iterator to the first element of the range
+ * @param first Iterator to the first element of the range
+ * @param last  Iterator to the last element of the range
+ * @param last  Iterator to the last element of the range
+ * @param opts Formatting options
+ * @param opts Formatting options
+ * @return Instance of qpp::internal::IOManipRange
+ * @return Instance of qpp::internal::IOManipRange
  */
 template <typename InputIterator>
 internal::IOManipRange<InputIterator>
@@ -96,14 +114,19 @@ disp(InputIterator first, InputIterator last, IOManipRangeOpts opts = {}) {
 }
 
 /**
- * \brief Standard container std::ostream manipulator. The container must
+ * @brief Standard container std::ostream manipulator. The container must
+ * @brief Standard container std::ostream manipulator. The container must
  * support std::begin(), std::end() and forward iteration, and shouldn't be a
  * matrix expression
- * \see qpp::IOManipContainerOpts
+ * @see qpp::IOManipContainerOpts
+ * @see qpp::IOManipContainerOpts
  *
- * \param c Container
- * \param opts Formatting options
- * \return Instance of qpp::internal::IOManipRange
+ * @param c Container
+ * @param c Container
+ * @param opts Formatting options
+ * @param opts Formatting options
+ * @return Instance of qpp::internal::IOManipRange
+ * @return Instance of qpp::internal::IOManipRange
  */
 template <typename Container>
 internal::IOManipRange<typename Container::const_iterator>
@@ -116,13 +139,19 @@ disp(const Container& c, IOManipContainerOpts opts = {},
 }
 
 /**
- * \brief C-style pointer std::ostream manipulator
- * \see qpp::IOManipPointerOpts
+ * @brief C-style pointer std::ostream manipulator
+ * @brief C-style pointer std::ostream manipulator
+ * @see qpp::IOManipPointerOpts
+ * @see qpp::IOManipPointerOpts
  *
- * \param p Pointer to the first element
- * \param N Number of elements to be displayed
- * \param opts Formatting options
- * \return Instance of qpp::internal::IOManipPointer
+ * @param p Pointer to the first element
+ * @param p Pointer to the first element
+ * @param N Number of elements to be displayed
+ * @param N Number of elements to be displayed
+ * @param opts Formatting options
+ * @param opts Formatting options
+ * @return Instance of qpp::internal::IOManipPointer
+ * @return Instance of qpp::internal::IOManipPointer
  */
 template <typename PointerType>
 internal::IOManipPointer<PointerType> disp(const PointerType* p, idx N,
@@ -131,11 +160,15 @@ internal::IOManipPointer<PointerType> disp(const PointerType* p, idx N,
 }
 
 /**
- * \brief Eigen expression std::ostream manipulator
+ * @brief Eigen expression std::ostream manipulator
+ * @brief Eigen expression std::ostream manipulator
  *
- * \param A Eigen expression
- * \param opts Display options
- * \return Instance of qpp::internal::IOManipEigen
+ * @param A Eigen expression
+ * @param A Eigen expression
+ * @param opts Display options
+ * @param opts Display options
+ * @return Instance of qpp::internal::IOManipEigen
+ * @return Instance of qpp::internal::IOManipEigen
  */
 template <typename Derived>
 internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
@@ -144,12 +177,16 @@ internal::IOManipEigen disp(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Dirac (braket) representation std::ostream manipulator
+ * @brief Dirac (braket) representation std::ostream manipulator
+ * @brief Dirac (braket) representation std::ostream manipulator
  * manipulator
- * \see qpp::dirac()
+ * @see qpp::dirac()
+ * @see qpp::dirac()
  *
- * \param A Eigen expression
- * \param opts Optional qpp::dirac_t_disp_opts display options
+ * @param A Eigen expression
+ * @param A Eigen expression
+ * @param opts Optional qpp::dirac_t_disp_opts display options
+ * @param opts Optional qpp::dirac_t_disp_opts display options
  */
 template <typename Scalar>
 internal::IOManipDirac<Scalar> disp(const dirac_t<Scalar>& A,
@@ -158,20 +195,25 @@ internal::IOManipDirac<Scalar> disp(const dirac_t<Scalar>& A,
 }
 
 /**
- * \brief Saves Eigen expression to a text stream in corresponding machine
+ * @brief Saves Eigen expression to a text stream in corresponding machine
+ * @brief Saves Eigen expression to a text stream in corresponding machine
  * precision
- * \see qpp::load()
+ * @see qpp::load()
+ * @see qpp::load()
  *
  * Example:
- * \code
+ * @code
+ * @code
  * // saves an Eigen dynamic complex matrix to a text stream
  * std::ofstream fout("mat.txt");
  * cmat mat = rand<cmat>(2, 2); // a 2 x 2 random complex matrix
  * save(mat, fout);
  * \endcode
  *
- * \param A Eigen expression
- * \param os Output text stream
+ * @param A Eigen expression
+ * @param A Eigen expression
+ * @param os Output text stream
+ * @param os Output text stream
  */
 template <typename Derived>
 void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
@@ -210,21 +252,25 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
 }
 
 /**
- * \brief Loads a complex Eigen matrix from a text stream in corresponding
+ * @brief Loads a complex Eigen matrix from a text stream in corresponding
+ * @brief Loads a complex Eigen matrix from a text stream in corresponding
  * machine precision
- * \see qpp::save()
+ * @see qpp::save()
+ * @see qpp::save()
  *
  * The template parameter cannot be automatically deduced and must be explicitly
  * provided, depending on the scalar field of the matrix that is being loaded
  *
  * Example:
- * \code
+ * @code
+ * @code
  * // loads a complex Eigen dynamic complex matrix from a text stream
  * std::ifstream fin("mat.txt");
  * cmat mat = load<cmat>(fin);
  * \endcode
  *
- * \param is Input text stream
+ * @param is Input text stream
+ * @param is Input text stream
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -255,21 +301,25 @@ load(std::istream& is,
 }
 
 /**
- * \brief Loads a real Eigen matrix from a text stream in corresponding machine
+ * @brief Loads a real Eigen matrix from a text stream in corresponding machine
+ * @brief Loads a real Eigen matrix from a text stream in corresponding machine
  * precision
- * \see qpp::save()
+ * @see qpp::save()
+ * @see qpp::save()
  *
  * The template parameter cannot be automatically deduced and must be explicitly
  * provided, depending on the scalar field of the matrix that is being loaded
  *
  * Example:
- * \code
+ * @code
+ * @code
  * // loads a real Eigen dynamic complex matrix from a text stream
  * std::ifstream fin("mat.txt");
  * rmat mat = load<rmat>(fin);
  * \endcode
  *
- * \param is Input text stream
+ * @param is Input text stream
+ * @param is Input text stream
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -298,21 +348,26 @@ load(std::istream& is,
 // obsolete code, do not rely on it
 namespace obsolete {
 /**
- * \brief Saves an Eigen expression to a binary stream (internal format) in
+ * @brief Saves an Eigen expression to a binary stream (internal format) in
+ * @brief Saves an Eigen expression to a binary stream (internal format) in
  * realT precision
- * \see qpp::obsolete::load()
+ * @see qpp::obsolete::load()
+ * @see qpp::obsolete::load()
  *
  * Example:
  *
- * \code
+ * @code
+ * @code
  * // saves an Eigen dynamic complex matrix to a binary stream
  * std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
  * cmat mat = rand<cmat>(2, 2); // a 2 x 2 random complex matrix
  * save(mat, fout);
  * \endcode
  *
- * \param A Eigen expression
- * \param os Output binary stream
+ * @param A Eigen expression
+ * @param A Eigen expression
+ * @param os Output binary stream
+ * @param os Output binary stream
  */
 template <typename Derived>
 void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
@@ -343,22 +398,26 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
 }
 
 /**
- * \brief Loads an Eigen matrix from a binary stream (internal format) in realT
+ * @brief Loads an Eigen matrix from a binary stream (internal format) in realT
+ * @brief Loads an Eigen matrix from a binary stream (internal format) in realT
  * precision
- * \see qpp::obsolete::save()
+ * @see qpp::obsolete::save()
+ * @see qpp::obsolete::save()
  *
  * The template parameter cannot be automatically deduced and must be explicitly
  * provided, depending on the scalar field of the matrix that is being loaded
  *
  * Example:
  *
- * \code
+ * @code
+ * @code
  * // loads an Eigen dynamic complex matrix from a binary stream
  * std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
  * cmat mat = load<cmat>(fin);
  * \endcode
  *
- * \param is Input binary stream
+ * @param is Input binary stream
+ * @param is Input binary stream
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> load(std::istream& is) {

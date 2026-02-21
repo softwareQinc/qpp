@@ -25,8 +25,10 @@
  */
 
 /**
- * \file <pyqpp/instruments_bind.hpp>
- * \brief Bindings for <qpp/instruments.hpp>
+ * @file <pyqpp/instruments_bind.hpp>
+ * @file <pyqpp/instruments_bind.hpp>
+ * @brief Bindings for <qpp/instruments.hpp>
+ * @brief Bindings for <qpp/instruments.hpp>
  */
 
 #ifndef PYQPP_INSTRUMENTS_BIND_HPP_

@@ -27,8 +27,10 @@
  */
 
 /**
- * \file qasmtools/parser/lexer.hpp
- * \brief Lexical analysis
+ * @file qasmtools/parser/lexer.hpp
+ * @file qasmtools/parser/lexer.hpp
+ * @brief Lexical analysis
+ * @brief Lexical analysis
  */
 
 #ifndef QASMTOOLS_PARSER_LEXER_HPP_
@@ -43,8 +45,10 @@ namespace qasmtools {
 namespace parser {
 
 /**
- * \class qasmtools::parser::Lexer
- * \brief openPARSER lexer class
+ * @class qasmtools::parser::Lexer
+ * @class qasmtools::parser::Lexer
+ * @brief openPARSER lexer class
+ * @brief openPARSER lexer class
  *
  * The Lexer reads from (a shared_ptr to) an istream object given during
  * initialization. Rather than lex the entire buffer at once, tokens are
@@ -59,11 +63,13 @@ class Lexer {
         : pos_(fname, 1, 1), buf_(buffer) {}
 
     /**
-     * \brief Lex and return the next token
+     * @brief Lex and return the next token
+     * @brief Lex and return the next token
      *
      * \note Advances the buffer to the position after the consumed token
      *
-     * \return The token that was lexed
+     * @return The token that was lexed
+     * @return The token that was lexed
      */
     Token next_token() { return lex(); }
 
@@ -72,9 +78,11 @@ class Lexer {
     std::shared_ptr<std::istream> buf_; ///< stream buffer being lexed
 
     /**
-     * \brief Skips the specified number of characters
+     * @brief Skips the specified number of characters
+     * @brief Skips the specified number of characters
      *
-     * \param n The number of characters to skip ahead (optional, default is 1)
+     * @param n The number of characters to skip ahead (optional, default is 1)
+     * @param n The number of characters to skip ahead (optional, default is 1)
      */
     void skip_char(int n = 1) {
         buf_->ignore(n);
@@ -82,9 +90,11 @@ class Lexer {
     }
 
     /**
-     * \brief Skips over whitespace
+     * @brief Skips over whitespace
+     * @brief Skips over whitespace
      *
-     * \return True if and only if whitespace was actually consumed
+     * @return True if and only if whitespace was actually consumed
+     * @return True if and only if whitespace was actually consumed
      */
     bool skip_whitespace() {
         int consumed = 0;
@@ -103,7 +113,8 @@ class Lexer {
     }
 
     /**
-     * \brief Skips the rest of the line
+     * @brief Skips the rest of the line
+     * @brief Skips the rest of the line
      */
     void skip_line_comment() {
         int consumed = 0;
@@ -119,12 +130,15 @@ class Lexer {
     }
 
     /**
-     * \brief Lex a numeric constant
+     * @brief Lex a numeric constant
+     * @brief Lex a numeric constant
      *
      * \note [0-9]+(.[0-9]*)([eE][+-][0-9]+)?
      *
-     * \param tok_start The position of the beginning of the token
-     * \return An integer or real type token
+     * @param tok_start The position of the beginning of the token
+     * @param tok_start The position of the beginning of the token
+     * @return An integer or real type token
+     * @return An integer or real type token
      */
     Token lex_numeric_constant(Position tok_start) {
         std::string str;
@@ -174,12 +188,15 @@ class Lexer {
     }
 
     /**
-     * \brief Lex an identifier
+     * @brief Lex an identifier
+     * @brief Lex an identifier
      *
      * \note [A-Za-z][_A-Za-z0-9]*
      *
-     * \param tok_start The position of the beginning of the token
-     * \return An identifier type token
+     * @param tok_start The position of the beginning of the token
+     * @param tok_start The position of the beginning of the token
+     * @return An identifier type token
+     * @return An identifier type token
      */
     Token lex_identifier(Position tok_start) {
         std::string str;
@@ -201,12 +218,15 @@ class Lexer {
     }
 
     /**
-     * \brief Lex a string literal
+     * @brief Lex a string literal
+     * @brief Lex a string literal
      *
      * \note "[.]*"
      *
-     * \param tok_start The position of the beginning of the token
-     * \return A string type token
+     * @param tok_start The position of the beginning of the token
+     * @param tok_start The position of the beginning of the token
+     * @return A string type token
+     * @return A string type token
      */
     Token lex_string(Position tok_start) {
         std::string str;
@@ -228,11 +248,13 @@ class Lexer {
     }
 
     /**
-     * \brief Lex a token
+     * @brief Lex a token
+     * @brief Lex a token
      *
      * \note See arXiv:1707.03429 for the full grammar
      *
-     * \return The lexed token
+     * @return The lexed token
+     * @return The lexed token
      */
     Token lex() {
         Position tok_start = pos_;

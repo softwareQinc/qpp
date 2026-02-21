@@ -25,8 +25,10 @@
  */
 
 /**
- * \file qasmtools/ast/traversal.hpp
- * \brief Node traversal for syntax trees
+ * @file qasmtools/ast/traversal.hpp
+ * @file qasmtools/ast/traversal.hpp
+ * @brief Node traversal for syntax trees
+ * @brief Node traversal for syntax trees
  */
 
 #ifndef QASMTOOLS_AST_TRAVERSAL_HPP_
@@ -39,9 +41,12 @@ namespace qasmtools {
 namespace ast {
 
 /**
- * \class qasmtools::ast::Traverse
- * \brief Generic complete traversal of ASTs
- * \see qasmtools::ast::Visitor
+ * @class qasmtools::ast::Traverse
+ * @class qasmtools::ast::Traverse
+ * @brief Generic complete traversal of ASTs
+ * @brief Generic complete traversal of ASTs
+ * @see qasmtools::ast::Visitor
+ * @see qasmtools::ast::Visitor
  *
  * Implements a generic, pass-through traversal of the entire
  * AST. Standard usage is to derive from this class and override only

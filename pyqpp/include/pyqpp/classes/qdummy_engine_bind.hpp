@@ -25,8 +25,10 @@
  */
 
 /**
- * \file <pyqpp/classes/qdummy_engine_bind.hpp>
- * \brief Bindings for <qpp/classes/qdummy_engine.hpp>
+ * @file <pyqpp/classes/qdummy_engine_bind.hpp>
+ * @file <pyqpp/classes/qdummy_engine_bind.hpp>
+ * @brief Bindings for <qpp/classes/qdummy_engine.hpp>
+ * @brief Bindings for <qpp/classes/qdummy_engine.hpp>
  */
 
 #ifndef PYQPP_CLASSES_QDUMMY_ENGINE_BIND_HPP_
