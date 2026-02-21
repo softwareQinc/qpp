@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qasmtools/ast/semantic.hpp
- * @file qasmtools/ast/semantic.hpp
- * @brief Semantic analysis for syntax trees
- * @brief Semantic analysis for syntax trees
+ * \file qasmtools/ast/semantic.hpp
+ * \brief Semantic analysis for syntax trees
  */
 
 #ifndef QASMTOOLS_AST_SEMANTIC_HPP_
@@ -46,10 +44,8 @@ namespace qasmtools {
 namespace ast {
 
 /**
- * @class qasmtools::ast::SemanticError
- * @class qasmtools::ast::SemanticError
- * @brief Exception class for semantic errors
- * @brief Exception class for semantic errors
+ * \class qasmtools::ast::SemanticError
+ * \brief Exception class for semantic errors
  */
 class SemanticError : public std::exception {
   public:
@@ -59,18 +55,14 @@ class SemanticError : public std::exception {
 };
 
 /**
- * @class qasmtools::ast::BitType
- * @class qasmtools::ast::BitType
- * @brief Enum for types of bits
- * @brief Enum for types of bits
+ * \class qasmtools::ast::BitType
+ * \brief Enum for types of bits
  */
 enum class BitType { Cbit, Qubit };
 
 /**
- * @struct qasmtools::ast::GateType
- * @struct qasmtools::ast::GateType
- * @brief Data struct for gate types
- * @brief Data struct for gate types
+ * \struct qasmtools::ast::GateType
+ * \brief Data struct for gate types
  */
 struct GateType {
     int num_c_params;
@@ -78,10 +70,8 @@ struct GateType {
 };
 
 /**
- * @struct qasmtools::ast::RegisterType
- * @struct qasmtools::ast::RegisterType
- * @brief Data struct for register types
- * @brief Data struct for register types
+ * \struct qasmtools::ast::RegisterType
+ * \brief Data struct for register types
  */
 struct RegisterType {
     BitType type;
@@ -89,16 +79,13 @@ struct RegisterType {
 };
 
 /**
- * @struct qasmtools::ast::RealType
- * @struct qasmtools::ast::RealType
- * @brief Empty structure denoting a real type
- * @brief Empty structure denoting a real type
+ * \struct qasmtools::ast::RealType
+ * \brief Empty structure denoting a real type
  */
 struct RealType {};
 
 /**
- * @brief OpenQASM types as a std::variant
- * @brief OpenQASM types as a std::variant
+ * \brief OpenQASM types as a std::variant
  *
  * Functional-style syntax trees in C++17 as a simpler alternative
  * to inheritance hierarchy. Support is still lacking for large-scale.
@@ -106,12 +93,9 @@ struct RealType {};
 using Type = std::variant<BitType, GateType, RegisterType, RealType>;
 
 /**
- * @class qasmtools::ast::SemanticChecker
- * @class qasmtools::ast::SemanticChecker
- * @brief Implementation of the semantic analysis compiler phase
- * @brief Implementation of the semantic analysis compiler phase
- * @see qasmtools::ast::Visitor
- * @see qasmtools::ast::Visitor
+ * \class qasmtools::ast::SemanticChecker
+ * \brief Implementation of the semantic analysis compiler phase
+ * \see qasmtools::ast::Visitor
  *
  * Checks for anything that could cause a run-time error -- notably,
  * type errors, invalid uniform gates, etc. Use the functional
@@ -299,28 +283,23 @@ class SemanticChecker final : public Visitor {
         {}}; ///< a stack of symbol tables
 
     /**
-     * @brief Enters a new scope
-     * @brief Enters a new scope
+     * \brief Enters a new scope
      */
     void push_scope() { symbol_table_.push_front({}); }
 
     /**
-     * @brief Exits the current scope
-     * @brief Exits the current scope
+     * \brief Exits the current scope
      */
     void pop_scope() { symbol_table_.pop_front(); }
 
     /**
-     * @brief Looks up a symbol in the symbol table
-     * @brief Looks up a symbol in the symbol table
+     * \brief Looks up a symbol in the symbol table
      *
      * Lookup checks in each symbol table going backwards up the enclosing
      * scopes.
      *
-     * @param id Const reference to a symbol
-     * @param id Const reference to a symbol
-     * @return The type of the symbol, if found
-     * @return The type of the symbol, if found
+     * \param id Const reference to a symbol
+     * \return The type of the symbol, if found
      */
     std::optional<Type> lookup(const ast::symbol& id) {
         for (auto& table : symbol_table_) {
@@ -332,13 +311,10 @@ class SemanticChecker final : public Visitor {
     }
 
     /**
-     * @brief Looks up a symbol in the local scope.
-     * @brief Looks up a symbol in the local scope.
+     * \brief Looks up a symbol in the local scope.
      *
-     * @param id Const reference to a symbol
-     * @param id Const reference to a symbol
-     * @return The type of the symbol, if found
-     * @return The type of the symbol, if found
+     * \param id Const reference to a symbol
+     * \return The type of the symbol, if found
      */
     std::optional<Type> lookup_local(const ast::symbol& id) {
         if (!(symbol_table_.empty())) {
@@ -351,13 +327,10 @@ class SemanticChecker final : public Visitor {
     }
 
     /**
-     * @brief Assigns a symbol in the current scope
-     * @brief Assigns a symbol in the current scope
+     * \brief Assigns a symbol in the current scope
      *
-     * @param id Const reference to a symbol
-     * @param id Const reference to a symbol
-     * @param typ The type of the symbol
-     * @param typ The type of the symbol
+     * \param id Const reference to a symbol
+     * \param typ The type of the symbol
      */
     void set(const ast::symbol& id, Type typ) {
         if (symbol_table_.empty()) {
@@ -368,8 +341,7 @@ class SemanticChecker final : public Visitor {
     }
 
     /**
-     * @brief Checks a vector of bit accesses
-     * @brief Checks a vector of bit accesses
+     * \brief Checks a vector of bit accesses
      *
      * Given a vector of variable access and a vector of optional bit types,
      * checks that each variable access is well-formed, is of the correct type
@@ -386,10 +358,8 @@ class SemanticChecker final : public Visitor {
      *     CX q,r;
      * will not.
      *
-     * @param args Const reference to a vector of arguments
-     * @param args Const reference to a vector of arguments
-     * @param types Const reference to a vector of optional bit types
-     * @param types Const reference to a vector of optional bit types
+     * \param args Const reference to a vector of arguments
+     * \param types Const reference to a vector of optional bit types
      * \note Sets the error flag if an error is found
      */
     void check_uniform(const std::vector<VarAccess>& args,
@@ -494,8 +464,7 @@ class SemanticChecker final : public Visitor {
 };
 
 /**
- * @brief Checks a program for semantic errors
- * @brief Checks a program for semantic errors
+ * \brief Checks a program for semantic errors
  */
 inline void check_source(Program& prog) {
     SemanticChecker analysis;

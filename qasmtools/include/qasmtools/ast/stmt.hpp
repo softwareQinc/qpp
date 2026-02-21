@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qasmtools/ast/stmt.hpp
- * @file qasmtools/ast/stmt.hpp
- * @brief OpenQASM statements
- * @brief OpenQASM statements
+ * \file qasmtools/ast/stmt.hpp
+ * \brief OpenQASM statements
  */
 
 #ifndef QASMTOOLS_AST_STMT_HPP_
@@ -45,10 +43,8 @@ namespace qasmtools {
 namespace ast {
 
 /**
- * @class qasmtools::ast::Stmt
- * @class qasmtools::ast::Stmt
- * @brief Base class for OpenQASM statements
- * @brief Base class for OpenQASM statements
+ * \class qasmtools::ast::Stmt
+ * \brief Base class for OpenQASM statements
  */
 class Stmt : public ASTNode {
   public:
@@ -56,12 +52,10 @@ class Stmt : public ASTNode {
     virtual ~Stmt() = default;
 
     /**
-     * @brief Internal pretty-printer which can suppress the output of the
-     * @brief Internal pretty-printer which can suppress the output of the
+     * \brief Internal pretty-printer which can suppress the output of the
      * stdlib
      *
-     * @param suppress_std Whether to suppress output of the standard library
-     * @param suppress_std Whether to suppress output of the standard library
+     * \param suppress_std Whether to suppress output of the standard library
      */
     virtual std::ostream& pretty_print(std::ostream& os,
                                        bool suppress_std) const = 0;
@@ -75,12 +69,9 @@ class Stmt : public ASTNode {
 };
 
 /**
- * @class qasmtools::ast::MeasureStmt
- * @class qasmtools::ast::MeasureStmt
- * @brief Class for measurement statements
- * @brief Class for measurement statements
- * @see qasmtools::ast::Stmt
- * @see qasmtools::ast::Stmt
+ * \class qasmtools::ast::MeasureStmt
+ * \brief Class for measurement statements
+ * \see qasmtools::ast::Stmt
  */
 class MeasureStmt final : public Stmt {
     VarAccess q_arg_; ///< the quantum bit|register
@@ -88,22 +79,17 @@ class MeasureStmt final : public Stmt {
 
   public:
     /**
-     * @brief Constructs a measurement statement
-     * @brief Constructs a measurement statement
+     * \brief Constructs a measurement statement
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param q_arg Rvalue reference to the quantum argument
-     * @param q_arg Rvalue reference to the quantum argument
-     * @param c_arg Rvalue reference to the classical argument
-     * @param c_arg Rvalue reference to the classical argument
+     * \param pos The source position
+     * \param q_arg Rvalue reference to the quantum argument
+     * \param c_arg Rvalue reference to the classical argument
      */
     MeasureStmt(parser::Position pos, VarAccess&& q_arg, VarAccess&& c_arg)
         : Stmt(pos), q_arg_(std::move(q_arg)), c_arg_(std::move(c_arg)) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<MeasureStmt> create(parser::Position pos, VarAccess&& q_arg,
                                    VarAccess&& c_arg) {
@@ -112,38 +98,30 @@ class MeasureStmt final : public Stmt {
     }
 
     /**
-     * @brief Get the quantum argument
-     * @brief Get the quantum argument
+     * \brief Get the quantum argument
      *
-     * @return Reference to the quantum argument
-     * @return Reference to the quantum argument
+     * \return Reference to the quantum argument
      */
     VarAccess& q_arg() { return q_arg_; }
 
     /**
-     * @brief Get the classical argument
-     * @brief Get the classical argument
+     * \brief Get the classical argument
      *
-     * @return Reference to the classical argument
-     * @return Reference to the classical argument
+     * \return Reference to the classical argument
      */
     VarAccess& c_arg() { return c_arg_; }
 
     /**
-     * @brief Set the quantum argument
-     * @brief Set the quantum argument
+     * \brief Set the quantum argument
      *
-     * @param arg Const reference to a new argument
-     * @param arg Const reference to a new argument
+     * \param arg Const reference to a new argument
      */
     void set_qarg(const VarAccess& arg) { q_arg_ = arg; }
 
     /**
-     * @brief Set the classical argument
-     * @brief Set the classical argument
+     * \brief Set the classical argument
      *
-     * @param arg Const reference to a new argument
-     * @param arg Const reference to a new argument
+     * \param arg Const reference to a new argument
      */
     void set_carg(const VarAccess& arg) { c_arg_ = arg; }
 
@@ -160,52 +138,41 @@ class MeasureStmt final : public Stmt {
 };
 
 /**
- * @class qasmtools::ast::ResetStmt
- * @class qasmtools::ast::ResetStmt
- * @brief Class for reset statements
- * @brief Class for reset statements
- * @see qasmtools::ast::Stmt
- * @see qasmtools::ast::Stmt
+ * \class qasmtools::ast::ResetStmt
+ * \brief Class for reset statements
+ * \see qasmtools::ast::Stmt
  */
 class ResetStmt final : public Stmt {
     VarAccess arg_; ///< the qbit|qreg
 
   public:
     /**
-     * @brief Constructs a reset statement
-     * @brief Constructs a reset statement
+     * \brief Constructs a reset statement
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param arg Rvalue reference to the argument
-     * @param arg Rvalue reference to the argument
+     * \param pos The source position
+     * \param arg Rvalue reference to the argument
      */
     ResetStmt(parser::Position pos, VarAccess&& arg)
         : Stmt(pos), arg_(std::move(arg)) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<ResetStmt> create(parser::Position pos, VarAccess&& arg) {
         return std::make_unique<ResetStmt>(pos, std::move(arg));
     }
 
     /**
-     * @brief Get the argument
-     * @brief Get the argument
+     * \brief Get the argument
      *
-     * @return Reference to the argument
-     * @return Reference to the argument
+     * \return Reference to the argument
      */
     VarAccess& arg() { return arg_; }
 
     /**
-     * @brief Set the argument
-     * @brief Set the argument
+     * \brief Set the argument
      *
-     * @param arg Const reference to a new argument
-     * @param arg Const reference to a new argument
+     * \param arg Const reference to a new argument
      */
     void set_arg(const VarAccess& arg) { arg_ = arg; }
 
@@ -222,12 +189,9 @@ class ResetStmt final : public Stmt {
 };
 
 /**
- * @class qasmtools::ast::IfStmt
- * @class qasmtools::ast::IfStmt
- * @brief Class for if statements
- * @brief Class for if statements
- * @see qasmtools::ast::Stmt
- * @see qasmtools::ast::Stmt
+ * \class qasmtools::ast::IfStmt
+ * \brief Class for if statements
+ * \see qasmtools::ast::Stmt
  */
 class IfStmt final : public Stmt {
     symbol var_;     ///< classical register name
@@ -236,24 +200,18 @@ class IfStmt final : public Stmt {
 
   public:
     /**
-     * @brief Constructs an if statement
-     * @brief Constructs an if statement
+     * \brief Constructs an if statement
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param var The variable (classical register) being tested
-     * @param var The variable (classical register) being tested
-     * @param cond The integer value to test against
-     * @param cond The integer value to test against
-     * @param then The statement to execute in the then branch
-     * @param then The statement to execute in the then branch
+     * \param pos The source position
+     * \param var The variable (classical register) being tested
+     * \param cond The integer value to test against
+     * \param then The statement to execute in the then branch
      */
     IfStmt(parser::Position pos, symbol var, int cond, ptr<Stmt> then)
         : Stmt(pos), var_(var), cond_(cond), then_(std::move(then)) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<IfStmt> create(parser::Position pos, symbol var, int cond,
                               ptr<Stmt> then) {
@@ -261,38 +219,30 @@ class IfStmt final : public Stmt {
     }
 
     /**
-     * @brief Get the tested variable
-     * @brief Get the tested variable
+     * \brief Get the tested variable
      *
-     * @return Const reference to the variable name
-     * @return Const reference to the variable name
+     * \return Const reference to the variable name
      */
     const symbol& var() const { return var_; }
 
     /**
-     * @brief Get the integer condition
-     * @brief Get the integer condition
+     * \brief Get the integer condition
      *
-     * @return The integer tested against
-     * @return The integer tested against
+     * \return The integer tested against
      */
     int cond() const { return cond_; }
 
     /**
-     * @brief Get the then branch
-     * @brief Get the then branch
+     * \brief Get the then branch
      *
-     * @return Reference to the "then" statement
-     * @return Reference to the "then" statement
+     * \return Reference to the "then" statement
      */
     Stmt& then() { return *then_; }
 
     /**
-     * @brief Set the then branch
-     * @brief Set the then branch
+     * \brief Set the then branch
      *
-     * @param then The new statement
-     * @param then The new statement
+     * \param then The new statement
      */
     void set_then(ptr<Stmt> then) { then_ = std::move(then); }
 
@@ -309,10 +259,8 @@ class IfStmt final : public Stmt {
 };
 
 /**
- * @class qasmtools::ast::Gate
- * @class qasmtools::ast::Gate
- * @brief Statement sub-class for gate
- * @brief Statement sub-class for gate
+ * \class qasmtools::ast::Gate
+ * \brief Statement sub-class for gate
  */
 class Gate : public Stmt {
   public:
@@ -324,12 +272,9 @@ class Gate : public Stmt {
 };
 
 /**
- * @class qasmtools::ast::UGate
- * @class qasmtools::ast::UGate
- * @brief Class for U gates
- * @brief Class for U gates
- * @see qasmtools::ast::Gate
- * @see qasmtools::ast::Gate
+ * \class qasmtools::ast::UGate
+ * \brief Class for U gates
+ * \see qasmtools::ast::Gate
  */
 class UGate final : public Gate {
     ptr<Expr> theta_;  ///< theta angle
@@ -340,19 +285,13 @@ class UGate final : public Gate {
 
   public:
     /**
-     * @brief Constructs a U gate
-     * @brief Constructs a U gate
+     * \brief Constructs a U gate
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param theta The theta angle
-     * @param theta The theta angle
-     * @param phi The phi angle
-     * @param phi The phi angle
-     * @param lambda The lambda angle
-     * @param lambda The lambda angle
-     * @param arg Rvalue reference to the quantum argument
-     * @param arg Rvalue reference to the quantum argument
+     * \param pos The source position
+     * \param theta The theta angle
+     * \param phi The phi angle
+     * \param lambda The lambda angle
+     * \param arg Rvalue reference to the quantum argument
      */
     UGate(parser::Position pos, ptr<Expr> theta, ptr<Expr> phi,
           ptr<Expr> lambda, VarAccess&& arg)
@@ -360,8 +299,7 @@ class UGate final : public Gate {
           lambda_(std::move(lambda)), arg_(std::move(arg)) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<UGate> create(parser::Position pos, ptr<Expr> theta,
                              ptr<Expr> phi, ptr<Expr> lambda, VarAccess&& arg) {
@@ -370,74 +308,58 @@ class UGate final : public Gate {
     }
 
     /**
-     * @brief Get the theta angle
-     * @brief Get the theta angle
+     * \brief Get the theta angle
      *
-     * @return Reference to the angle expression
-     * @return Reference to the angle expression
+     * \return Reference to the angle expression
      */
     Expr& theta() { return *theta_; }
 
     /**
-     * @brief Get the phi angle
-     * @brief Get the phi angle
+     * \brief Get the phi angle
      *
-     * @return Reference to the angle expression
-     * @return Reference to the angle expression
+     * \return Reference to the angle expression
      */
     Expr& phi() { return *phi_; }
 
     /**
-     * @brief Get the lambda angle
-     * @brief Get the lambda angle
+     * \brief Get the lambda angle
      *
-     * @return Reference to the angle expression
-     * @return Reference to the angle expression
+     * \return Reference to the angle expression
      */
     Expr& lambda() { return *lambda_; }
 
     /**
-     * @brief Get the argument
-     * @brief Get the argument
+     * \brief Get the argument
      *
-     * @return Reference to the quantum argument
-     * @return Reference to the quantum argument
+     * \return Reference to the quantum argument
      */
     VarAccess& arg() { return arg_; }
 
     /**
-     * @brief Set the theta angle
-     * @brief Set the theta angle
+     * \brief Set the theta angle
      *
-     * @param theta The new angle expression
-     * @param theta The new angle expression
+     * \param theta The new angle expression
      */
     void set_theta(ptr<Expr> theta) { theta_ = std::move(theta); }
 
     /**
-     * @brief Set the phi angle
-     * @brief Set the phi angle
+     * \brief Set the phi angle
      *
-     * @param theta The new angle expression
-     * @param theta The new angle expression
+     * \param theta The new angle expression
      */
     void set_phi(ptr<Expr> phi) { phi_ = std::move(phi); }
 
     /**
-     * @brief Set the lambda angle
-     * @brief Set the lambda angle
+     * \brief Set the lambda angle
      *
-     * @param theta The new angle expression
-     * @param theta The new angle expression
+     * \param theta The new angle expression
      */
     void set_lambda(ptr<Expr> lambda) { lambda_ = std::move(lambda); }
 
     /**
-     * @brief Set the argument
-     * @brief Set the argument
+     * \brief Set the argument
      *
-     * @param arg The new argument
-     * @param arg The new argument
+     * \param arg The new argument
      */
     void set_arg(const VarAccess& arg) { arg_ = arg; }
 
@@ -456,12 +378,9 @@ class UGate final : public Gate {
 };
 
 /**
- * @class qasmtools::ast::CNOTGate
- * @class qasmtools::ast::CNOTGate
- * @brief Class for CX gates
- * @brief Class for CX gates
- * @see qasmtools::ast::Gate
- * @see qasmtools::ast::Gate
+ * \class qasmtools::ast::CNOTGate
+ * \brief Class for CX gates
+ * \see qasmtools::ast::Gate
  */
 class CNOTGate final : public Gate {
     VarAccess ctrl_; ///< control qubit|qreg
@@ -469,22 +388,17 @@ class CNOTGate final : public Gate {
 
   public:
     /**
-     * @brief Constructs a CNOT gate
-     * @brief Constructs a CNOT gate
+     * \brief Constructs a CNOT gate
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param ctrl Rvalue reference to the control argument
-     * @param ctrl Rvalue reference to the control argument
-     * @param tgt Rvalue reference to the target argument
-     * @param tgt Rvalue reference to the target argument
+     * \param pos The source position
+     * \param ctrl Rvalue reference to the control argument
+     * \param tgt Rvalue reference to the target argument
      */
     CNOTGate(parser::Position pos, VarAccess&& ctrl, VarAccess&& tgt)
         : Gate(pos), ctrl_(std::move(ctrl)), tgt_(std::move(tgt)) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<CNOTGate> create(parser::Position pos, VarAccess&& ctrl,
                                 VarAccess&& tgt) {
@@ -492,38 +406,30 @@ class CNOTGate final : public Gate {
     }
 
     /**
-     * @brief Get the control argument
-     * @brief Get the control argument
+     * \brief Get the control argument
      *
-     * @return Reference to the quantum argument
-     * @return Reference to the quantum argument
+     * \return Reference to the quantum argument
      */
     VarAccess& ctrl() { return ctrl_; }
 
     /**
-     * @brief Get the target argument
-     * @brief Get the target argument
+     * \brief Get the target argument
      *
-     * @return Reference to the quantum argument
-     * @return Reference to the quantum argument
+     * \return Reference to the quantum argument
      */
     VarAccess& tgt() { return tgt_; }
 
     /**
-     * @brief Set the control argument
-     * @brief Set the control argument
+     * \brief Set the control argument
      *
-     * @param ctrl The new argument
-     * @param ctrl The new argument
+     * \param ctrl The new argument
      */
     void set_ctrl(const VarAccess& ctrl) { ctrl_ = ctrl; }
 
     /**
-     * @brief Set the target argument
-     * @brief Set the target argument
+     * \brief Set the target argument
      *
-     * @param tgt The new argument
-     * @param tgt The new argument
+     * \param tgt The new argument
      */
     void set_tgt(const VarAccess& tgt) { tgt_ = tgt; }
 
@@ -540,32 +446,25 @@ class CNOTGate final : public Gate {
 };
 
 /**
- * @class qasmtools::ast::BarrierGate
- * @class qasmtools::ast::BarrierGate
- * @brief Class for barrier gates
- * @brief Class for barrier gates
- * @see qasmtools::ast::Gate
- * @see qasmtools::ast::Gate
+ * \class qasmtools::ast::BarrierGate
+ * \brief Class for barrier gates
+ * \see qasmtools::ast::Gate
  */
 class BarrierGate final : public Gate {
     std::vector<VarAccess> args_; ///< list of quantum bits|registers
 
   public:
     /**
-     * @brief Constructs a barrier gate
-     * @brief Constructs a barrier gate
+     * \brief Constructs a barrier gate
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param args Rvalue reference to a list of arguments
-     * @param args Rvalue reference to a list of arguments
+     * \param pos The source position
+     * \param args Rvalue reference to a list of arguments
      */
     BarrierGate(parser::Position pos, std::vector<VarAccess>&& args)
         : Gate(pos), args_(std::move(args)) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<BarrierGate> create(parser::Position pos,
                                    std::vector<VarAccess>&& args) {
@@ -573,40 +472,31 @@ class BarrierGate final : public Gate {
     }
 
     /**
-     * @brief Get the number of arguments
-     * @brief Get the number of arguments
+     * \brief Get the number of arguments
      *
-     * @return The number of arguments
-     * @return The number of arguments
+     * \return The number of arguments
      */
     int num_args() const { return static_cast<int>(args_.size()); }
 
     /**
-     * @brief Get the list of arguments
-     * @brief Get the list of arguments
+     * \brief Get the list of arguments
      *
-     * @return Reference to the list of arguments
-     * @return Reference to the list of arguments
+     * \return Reference to the list of arguments
      */
     std::vector<VarAccess>& args() { return args_; }
 
     /**
-     * @brief Get the ith argument
-     * @brief Get the ith argument
+     * \brief Get the ith argument
      *
-     * @param i The number of the argument (0 indexed)
-     * @param i The number of the argument (0 indexed)
-     * @return Reference to the ith argument
-     * @return Reference to the ith argument
+     * \param i The number of the argument (0 indexed)
+     * \return Reference to the ith argument
      */
     VarAccess& arg(int i) { return args_[i]; }
 
     /**
-     * @brief Apply a function to each argument
-     * @brief Apply a function to each argument
+     * \brief Apply a function to each argument
      *
-     * @param f Void function accepting a reference to the argument
-     * @param f Void function accepting a reference to the argument
+     * \param f Void function accepting a reference to the argument
      */
     void foreach_arg(std::function<void(VarAccess&)> f) {
         for (auto it = args_.begin(); it != args_.end(); it++) {
@@ -615,13 +505,10 @@ class BarrierGate final : public Gate {
     }
 
     /**
-     * @brief Set the ith argument
-     * @brief Set the ith argument
+     * \brief Set the ith argument
      *
-     * @param i The number of the argument (0 indexed)
-     * @param i The number of the argument (0 indexed)
-     * @param arg The new argument
-     * @param arg The new argument
+     * \param i The number of the argument (0 indexed)
+     * \param arg The new argument
      */
     void set_arg(int i, const VarAccess& arg) { args_[i] = arg; }
 
@@ -642,12 +529,9 @@ class BarrierGate final : public Gate {
 };
 
 /**
- * @class qasmtools::ast::DeclaredGate
- * @class qasmtools::ast::DeclaredGate
- * @brief Class for declared gate applications
- * @brief Class for declared gate applications
- * @see qasmtools::ast::Gate
- * @see qasmtools::ast::Gate
+ * \class qasmtools::ast::DeclaredGate
+ * \brief Class for declared gate applications
+ * \see qasmtools::ast::Gate
  */
 class DeclaredGate final : public Gate {
     symbol name_;                   ///< gate identifier
@@ -656,17 +540,12 @@ class DeclaredGate final : public Gate {
 
   public:
     /**
-     * @brief Constructs an application of a declared gate
-     * @brief Constructs an application of a declared gate
+     * \brief Constructs an application of a declared gate
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param name The gate name
-     * @param name The gate name
-     * @param c_args Rvalue reference to a list of classical arguments
-     * @param c_args Rvalue reference to a list of classical arguments
-     * @param q_args Rvalue reference to a list of quantum arguments
-     * @param q_args Rvalue reference to a list of quantum arguments
+     * \param pos The source position
+     * \param name The gate name
+     * \param c_args Rvalue reference to a list of classical arguments
+     * \param q_args Rvalue reference to a list of quantum arguments
      */
     DeclaredGate(parser::Position pos, symbol name,
                  std::vector<ptr<Expr>>&& c_args,
@@ -675,8 +554,7 @@ class DeclaredGate final : public Gate {
           q_args_(std::move(q_args)) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<DeclaredGate> create(parser::Position pos, symbol name,
                                     std::vector<ptr<Expr>>&& c_args,
@@ -686,69 +564,53 @@ class DeclaredGate final : public Gate {
     }
 
     /**
-     * @brief Get the gate name
-     * @brief Get the gate name
+     * \brief Get the gate name
      *
-     * @return Const reference to the gate name
-     * @return Const reference to the gate name
+     * \return Const reference to the gate name
      */
     const symbol& name() const { return name_; }
 
     /**
-     * @brief Get the number of classical arguments
-     * @brief Get the number of classical arguments
+     * \brief Get the number of classical arguments
      *
-     * @return The number of arguments
-     * @return The number of arguments
+     * \return The number of arguments
      */
     int num_cargs() const { return static_cast<int>(c_args_.size()); }
 
     /**
-     * @brief Get the number of quantum arguments
-     * @brief Get the number of quantum arguments
+     * \brief Get the number of quantum arguments
      *
-     * @return The number of arguments
-     * @return The number of arguments
+     * \return The number of arguments
      */
     int num_qargs() const { return static_cast<int>(q_args_.size()); }
 
     /**
-     * @brief Get the ith classical argument
-     * @brief Get the ith classical argument
+     * \brief Get the ith classical argument
      *
-     * @param i The number of the argument, 0-indexed
-     * @param i The number of the argument, 0-indexed
-     * @return Reference to an expression
-     * @return Reference to an expression
+     * \param i The number of the argument, 0-indexed
+     * \return Reference to an expression
      */
     Expr& carg(int i) { return *(c_args_[i]); }
 
     /**
-     * @brief Get the ith quantum argument
-     * @brief Get the ith quantum argument
+     * \brief Get the ith quantum argument
      *
-     * @param i The number of the argument, 0-indexed
-     * @param i The number of the argument, 0-indexed
-     * @return Reference to the argument
-     * @return Reference to the argument
+     * \param i The number of the argument, 0-indexed
+     * \return Reference to the argument
      */
     VarAccess& qarg(int i) { return q_args_[i]; }
 
     /**
-     * @brief Get the list of quantum arguments
-     * @brief Get the list of quantum arguments
+     * \brief Get the list of quantum arguments
      *
-     * @return Reference to the list of arguments
-     * @return Reference to the list of arguments
+     * \return Reference to the list of arguments
      */
     std::vector<VarAccess>& qargs() { return q_args_; }
 
     /**
-     * @brief Apply a function to each classical argument
-     * @brief Apply a function to each classical argument
+     * \brief Apply a function to each classical argument
      *
-     * @param f Void function accepting an expression reference
-     * @param f Void function accepting an expression reference
+     * \param f Void function accepting an expression reference
      */
     void foreach_carg(std::function<void(Expr&)> f) {
         for (auto it = c_args_.begin(); it != c_args_.end(); it++) {
@@ -757,11 +619,9 @@ class DeclaredGate final : public Gate {
     }
 
     /**
-     * @brief Apply a function to each quantum argument
-     * @brief Apply a function to each quantum argument
+     * \brief Apply a function to each quantum argument
      *
-     * @param f Void function accepting a reference to an argument
-     * @param f Void function accepting a reference to an argument
+     * \param f Void function accepting a reference to an argument
      */
     void foreach_qarg(std::function<void(VarAccess&)> f) {
         for (auto it = q_args_.begin(); it != q_args_.end(); it++) {
@@ -770,24 +630,18 @@ class DeclaredGate final : public Gate {
     }
 
     /**
-     * @brief Set the ith classical argument
-     * @brief Set the ith classical argument
+     * \brief Set the ith classical argument
      *
-     * @param i The number of the argument, 0-indexed
-     * @param i The number of the argument, 0-indexed
-     * @param expr An expression giving the new argument
-     * @param expr An expression giving the new argument
+     * \param i The number of the argument, 0-indexed
+     * \param expr An expression giving the new argument
      */
     void set_carg(int i, ptr<Expr> expr) { c_args_[i] = std::move(expr); }
 
     /**
-     * @brief Set the ith quantum argument
-     * @brief Set the ith quantum argument
+     * \brief Set the ith quantum argument
      *
-     * @param i The number of the argument, 0-indexed
-     * @param i The number of the argument, 0-indexed
-     * @param arg The new argument
-     * @param arg The new argument
+     * \param i The number of the argument, 0-indexed
+     * \param arg The new argument
      */
     void set_qarg(int i, const VarAccess& arg) { q_args_[i] = arg; }
 

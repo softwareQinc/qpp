@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qpp/traits.hpp
- * @file qpp/traits.hpp
- * @brief Type traits
- * @brief Type traits
+ * \file qpp/traits.hpp
+ * \brief Type traits
  */
 
 #ifndef QPP_TRAITS_HPP_
@@ -40,11 +38,9 @@
 
 namespace qpp {
 /**
- * @brief Checks whether the type is compatible with an STL-like iterable
- * @brief Checks whether the type is compatible with an STL-like iterable
+ * \brief Checks whether the type is compatible with an STL-like iterable
  * container
- * @see qpp::is_iterable_v
- * @see qpp::is_iterable_v
+ * \see qpp::is_iterable_v
  *
  * Provides the constant member \a value which is equal to \a true, if \a T is
  * compatible with an iterable container, i.e., provides at least \a begin()
@@ -65,8 +61,7 @@ struct is_iterable : std::false_type {};
 #endif
 
 /**
- * @brief Checks whether the type is compatible with an STL-like iterable
- * @brief Checks whether the type is compatible with an STL-like iterable
+ * \brief Checks whether the type is compatible with an STL-like iterable
  * container, specialization for STL-like iterable containers
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
@@ -86,20 +81,16 @@ struct is_iterable<T, std::void_t<decltype(std::declval<T>().begin()),
 #endif
 
 /**
- * @brief Checks whether the type is compatible with an STL-like iterable
- * @brief Checks whether the type is compatible with an STL-like iterable
+ * \brief Checks whether the type is compatible with an STL-like iterable
  * container, helper variable template
- * @see qpp::is_iterable
- * @see qpp::is_iterable
+ * \see qpp::is_iterable
  */
 template <typename T>
 inline constexpr bool is_iterable_v = is_iterable<T>::value;
 
 /**
- * @brief Checks whether the type is an Eigen matrix expression
- * @brief Checks whether the type is an Eigen matrix expression
- * @see qpp::is_matrix_expression_v
- * @see qpp::is_matrix_expression_v
+ * \brief Checks whether the type is an Eigen matrix expression
+ * \see qpp::is_matrix_expression_v
  *
  * Provides the constant member \a value which is equal to \a true, if the type
  * is an Eigen matrix expression of type \a Eigen::MatrixBase<Derived>.
@@ -122,20 +113,16 @@ struct is_matrix_expression
 #endif
 
 /**
- * @brief Checks whether the type is an Eigen matrix expression, helper variable
- * @brief Checks whether the type is an Eigen matrix expression, helper variable
+ * \brief Checks whether the type is an Eigen matrix expression, helper variable
  * template
- * @see qpp::is_matrix_expression
- * @see qpp::is_matrix_expression
+ * \see qpp::is_matrix_expression
  */
 template <typename T>
 inline constexpr bool is_matrix_expression_v = is_matrix_expression<T>::value;
 
 /**
- * @brief Checks whether the type is a complex type
- * @brief Checks whether the type is a complex type
- * @see qpp::is_complex_v
- * @see qpp::is_complex_v
+ * \brief Checks whether the type is a complex type
+ * \see qpp::is_complex_v
  *
  * Provides the constant member \a value which is equal to \a true, if the type
  * is a complex type, i.e., \a std::complex<T>
@@ -154,8 +141,7 @@ struct is_complex : std::false_type {};
 #endif
 
 /**
- * @brief Checks whether the type is a complex number type, specialization for
- * @brief Checks whether the type is a complex number type, specialization for
+ * \brief Checks whether the type is a complex number type, specialization for
  * complex types
  */
 // silence g++4.8.x warning about non-virtual destructor in inherited class
@@ -172,19 +158,16 @@ struct is_complex<std::complex<T>> : std::true_type {};
 #endif
 
 /**
- * @brief Checks whether the type is a complex number type, helper variable
- * @brief Checks whether the type is a complex number type, helper variable
+ * \brief Checks whether the type is a complex number type, helper variable
  * template
- * @see qpp::is_complex
- * @see qpp::is_complex
+ * \see qpp::is_complex
  */
 template <typename T>
 inline constexpr bool is_complex_v = is_complex<T>::value;
 
 namespace internal {
 /**
- * @brief Eigen type (ket/bra/density matrix) deduced from the expression
- * @brief Eigen type (ket/bra/density matrix) deduced from the expression
+ * \brief Eigen type (ket/bra/density matrix) deduced from the expression
  * Derived
  */
 template <typename Derived>
@@ -193,8 +176,7 @@ using eval_t =
 } /* namespace internal */
 
 /**
- * @brief Detect if the expression Derived is a row vector (bra) at compile time
- * @brief Detect if the expression Derived is a row vector (bra) at compile time
+ * \brief Detect if the expression Derived is a row vector (bra) at compile time
  */
 template <typename Derived>
 bool constexpr is_bra_v() {
@@ -202,8 +184,7 @@ bool constexpr is_bra_v() {
 }
 
 /**
- * @brief Detect if the expression Derived is a column vector(ket) at compile
- * @brief Detect if the expression Derived is a column vector(ket) at compile
+ * \brief Detect if the expression Derived is a column vector(ket) at compile
  * time
  */
 template <typename Derived>

@@ -32,10 +32,8 @@
 // ALWAYS include it in main.cpp
 
 /**
- * @file qpp/qpp.hpp
- * @file qpp/qpp.hpp
- * @brief Quantum++ main header file, includes all other required headers
- * @brief Quantum++ main header file, includes all other required headers
+ * \file qpp/qpp.hpp
+ * \brief Quantum++ main header file, includes all other required headers
  */
 
 #ifndef QPP_QPP_HPP_
@@ -113,21 +111,18 @@
 
 /**
  * \namespace qpp
- * @brief Quantum++ main namespace
- * @brief Quantum++ main namespace
+ * \brief Quantum++ main namespace
  */
 namespace qpp {
 /**
- * @brief qpp::Init const Singleton
- * @brief qpp::Init const Singleton
+ * \brief qpp::Init const Singleton
  *
  * Additional initializations/cleanups, see the class qpp::Init
  */
 static const Init& init [[maybe_unused]] = Init::get_no_thread_local_instance();
 
 /**
- * @brief qpp::Codes const Singleton
- * @brief qpp::Codes const Singleton
+ * \brief qpp::Codes const Singleton
  *
  * Initializes the codes, see the class qpp::Codes
  */
@@ -135,16 +130,14 @@ static const Codes& codes [[maybe_unused]] =
     Codes::get_no_thread_local_instance();
 
 /**
- * @brief qpp::Gates const Singleton
- * @brief qpp::Gates const Singleton
+ * \brief qpp::Gates const Singleton
  *
  * Initializes the gates, see the class qpp::Gates
  */
 static const Gates& gt [[maybe_unused]] = Gates::get_no_thread_local_instance();
 
 /**
- * @brief qpp::States const Singleton
- * @brief qpp::States const Singleton
+ * \brief qpp::States const Singleton
  *
  * Initializes the states, see the class qpp::States
  */
@@ -152,8 +145,7 @@ static const States& st [[maybe_unused]] =
     States::get_no_thread_local_instance();
 
 /**
- * @brief qpp::RandomDevices Singleton
- * @brief qpp::RandomDevices Singleton
+ * \brief qpp::RandomDevices Singleton
  *
  * Initializes the random devices, see the class qpp::RandomDevices
  *
@@ -170,8 +162,7 @@ thread_local
 
 /**
  * \namespace qpp::obsolete
- * @brief Obsolete/deprecated code, may be removed without notice in future
- * @brief Obsolete/deprecated code, may be removed without notice in future
+ * \brief Obsolete/deprecated code, may be removed without notice in future
  * releases
  */
 namespace obsolete {} /* namespace obsolete */

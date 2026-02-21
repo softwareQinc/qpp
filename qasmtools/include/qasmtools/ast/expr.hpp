@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qasmtools/ast/expr.hpp
- * @file qasmtools/ast/expr.hpp
- * @brief OpenQASM expressions
- * @brief OpenQASM expressions
+ * \file qasmtools/ast/expr.hpp
+ * \brief OpenQASM expressions
  */
 
 #ifndef QASMTOOLS_AST_EXPR_HPP_
@@ -44,8 +42,7 @@ namespace qasmtools {
 namespace ast {
 
 /**
- * @brief Enum of binary operators
- * @brief Enum of binary operators
+ * \brief Enum of binary operators
  */
 enum class BinaryOp { Plus, Minus, Times, Divide, Pow };
 inline std::ostream& operator<<(std::ostream& os, const BinaryOp& bop) {
@@ -70,8 +67,7 @@ inline std::ostream& operator<<(std::ostream& os, const BinaryOp& bop) {
 }
 
 /**
- * @brief Enum of unary operators
- * @brief Enum of unary operators
+ * \brief Enum of unary operators
  */
 enum class UnaryOp { Neg, Sin, Cos, Tan, Ln, Sqrt, Exp };
 inline std::ostream& operator<<(std::ostream& os, const UnaryOp& uop) {
@@ -102,10 +98,8 @@ inline std::ostream& operator<<(std::ostream& os, const UnaryOp& uop) {
 }
 
 /**
- * @class qasmtools::ast::Expr
- * @class qasmtools::ast::Expr
- * @brief Base class for OpenQASM expressions
- * @brief Base class for OpenQASM expressions
+ * \class qasmtools::ast::Expr
+ * \brief Base class for OpenQASM expressions
  */
 class Expr : public ASTNode {
   public:
@@ -113,23 +107,19 @@ class Expr : public ASTNode {
     virtual ~Expr() = default;
 
     /**
-     * @brief Evaluate constant expressions
-     * @brief Evaluate constant expressions
+     * \brief Evaluate constant expressions
      *
      * All sub-classes must override this
      *
-     * @return Returns the value of the expression if it
-     * @return Returns the value of the expression if it
+     * \return Returns the value of the expression if it
      *         is constant, or nullopt otherwise
      */
     virtual std::optional<double> constant_eval() const = 0;
 
     /**
-     * @brief Internal pretty-printer with associative context
-     * @brief Internal pretty-printer with associative context
+     * \brief Internal pretty-printer with associative context
      *
-     * @param ctx Whether the current associative context is ambiguous
-     * @param ctx Whether the current associative context is ambiguous
+     * \param ctx Whether the current associative context is ambiguous
      */
     virtual std::ostream& pretty_print(std::ostream& os, bool ctx) const = 0;
     std::ostream& pretty_print(std::ostream& os) const override {
@@ -141,12 +131,9 @@ class Expr : public ASTNode {
 };
 
 /**
- * @class qasmtools::ast::BExpr
- * @class qasmtools::ast::BExpr
- * @brief Class for binary operator expressions
- * @brief Class for binary operator expressions
- * @see qasmtools::ast::Expr
- * @see qasmtools::ast::Expr
+ * \class qasmtools::ast::BExpr
+ * \brief Class for binary operator expressions
+ * \see qasmtools::ast::Expr
  */
 class BExpr final : public Expr {
     ptr<Expr> lexp_; ///< the left sub-expression
@@ -155,24 +142,18 @@ class BExpr final : public Expr {
 
   public:
     /**
-     * @brief Constructs a Binary expression
-     * @brief Constructs a Binary expression
+     * \brief Constructs a Binary expression
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param lexp The left sub-expression
-     * @param lexp The left sub-expression
-     * @param op The binary operator
-     * @param op The binary operator
-     * @param rexp The right sub-expression
-     * @param rexp The right sub-expression
+     * \param pos The source position
+     * \param lexp The left sub-expression
+     * \param op The binary operator
+     * \param rexp The right sub-expression
      */
     BExpr(parser::Position pos, ptr<Expr> lexp, BinaryOp op, ptr<Expr> rexp)
         : Expr(pos), lexp_(std::move(lexp)), op_(op), rexp_(std::move(rexp)) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<BExpr> create(parser::Position pos, ptr<Expr> lexp, BinaryOp op,
                              ptr<Expr> rexp) {
@@ -181,47 +162,37 @@ class BExpr final : public Expr {
     }
 
     /**
-     * @brief Get the binary operator
-     * @brief Get the binary operator
+     * \brief Get the binary operator
      *
-     * @return A binary operator enum
-     * @return A binary operator enum
+     * \return A binary operator enum
      */
     BinaryOp op() const { return op_; }
 
     /**
-     * @brief Get the left sub-expression
-     * @brief Get the left sub-expression
+     * \brief Get the left sub-expression
      *
-     * @return A reference to the left sub-expression
-     * @return A reference to the left sub-expression
+     * \return A reference to the left sub-expression
      */
     Expr& lexp() { return *lexp_; }
 
     /**
-     * @brief Get the right sub-expression
-     * @brief Get the right sub-expression
+     * \brief Get the right sub-expression
      *
-     * @return A reference to the right sub-expression
-     * @return A reference to the right sub-expression
+     * \return A reference to the right sub-expression
      */
     Expr& rexp() { return *rexp_; }
 
     /**
-     * @brief Set the left sub-expression
-     * @brief Set the left sub-expression
+     * \brief Set the left sub-expression
      *
-     * @param exp The new left sub-expression
-     * @param exp The new left sub-expression
+     * \param exp The new left sub-expression
      */
     void set_lexp(ptr<Expr> exp) { lexp_ = std::move(exp); }
 
     /**
-     * @brief Set the right sub-expression
-     * @brief Set the right sub-expression
+     * \brief Set the right sub-expression
      *
-     * @param exp The new right sub-expression
-     * @param exp The new right sub-expression
+     * \param exp The new right sub-expression
      */
     void set_rexp(ptr<Expr> exp) { rexp_ = std::move(exp); }
 
@@ -273,12 +244,9 @@ class BExpr final : public Expr {
 };
 
 /**
- * @class qasmtools::ast::UExpr
- * @class qasmtools::ast::UExpr
- * @brief Class for unary operator expressions
- * @brief Class for unary operator expressions
- * @see qasmtools::ast::Expr
- * @see qasmtools::ast::Expr
+ * \class qasmtools::ast::UExpr
+ * \brief Class for unary operator expressions
+ * \see qasmtools::ast::Expr
  */
 class UExpr final : public Expr {
     UnaryOp op_;    ///< the unary operator
@@ -286,51 +254,40 @@ class UExpr final : public Expr {
 
   public:
     /**
-     * @brief Constructs a Unary expression
-     * @brief Constructs a Unary expression
+     * \brief Constructs a Unary expression
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param op The unary operator
-     * @param op The unary operator
-     * @param exp The sub-expression
-     * @param exp The sub-expression
+     * \param pos The source position
+     * \param op The unary operator
+     * \param exp The sub-expression
      */
     UExpr(parser::Position pos, UnaryOp op, ptr<Expr> exp)
         : Expr(pos), op_(op), exp_(std::move(exp)) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<UExpr> create(parser::Position pos, UnaryOp op, ptr<Expr> exp) {
         return std::make_unique<UExpr>(pos, op, std::move(exp));
     }
 
     /**
-     * @brief Get the operator
-     * @brief Get the operator
+     * \brief Get the operator
      *
-     * @return A unary operator enum
-     * @return A unary operator enum
+     * \return A unary operator enum
      */
     UnaryOp op() const { return op_; }
 
     /**
-     * @brief Get the sub-expression
-     * @brief Get the sub-expression
+     * \brief Get the sub-expression
      *
-     * @return A reference to the sub-expression
-     * @return A reference to the sub-expression
+     * \return A reference to the sub-expression
      */
     Expr& subexp() { return *exp_; }
 
     /**
-     * @brief Set the sub-expression
-     * @brief Set the sub-expression
+     * \brief Set the sub-expression
      *
-     * @param exp The new sub-expression
-     * @param exp The new sub-expression
+     * \param exp The new sub-expression
      */
     void set_subexp(ptr<Expr> exp) { exp_ = std::move(exp); }
 
@@ -383,28 +340,22 @@ class UExpr final : public Expr {
 };
 
 /**
- * @class qasmtools::ast::PiExpr
- * @class qasmtools::ast::PiExpr
- * @brief Class for pi constants
- * @brief Class for pi constants
- * @see qasmtools::ast::Expr
- * @see qasmtools::ast::Expr
+ * \class qasmtools::ast::PiExpr
+ * \brief Class for pi constants
+ * \see qasmtools::ast::Expr
  */
 class PiExpr final : public Expr {
 
   public:
     /**
-     * @brief Construct a Pi expression
-     * @brief Construct a Pi expression
+     * \brief Construct a Pi expression
      *
-     * @param pos The source position
-     * @param pos The source position
+     * \param pos The source position
      */
     PiExpr(parser::Position pos) : Expr(pos) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<PiExpr> create(parser::Position pos) {
         return std::make_unique<PiExpr>(pos);
@@ -424,42 +375,33 @@ class PiExpr final : public Expr {
 };
 
 /**
- * @class qasmtools::ast::IntExpr
- * @class qasmtools::ast::IntExpr
- * @brief Class for integer literal expressions
- * @brief Class for integer literal expressions
- * @see qasmtools::ast::Expr
- * @see qasmtools::ast::Expr
+ * \class qasmtools::ast::IntExpr
+ * \brief Class for integer literal expressions
+ * \see qasmtools::ast::Expr
  */
 class IntExpr final : public Expr {
     int value_; ///< the integer value
 
   public:
     /**
-     * @brief Construct an integer expression
-     * @brief Construct an integer expression
+     * \brief Construct an integer expression
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param val The integer value
-     * @param val The integer value
+     * \param pos The source position
+     * \param val The integer value
      */
     IntExpr(parser::Position pos, int value) : Expr(pos), value_(value) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<IntExpr> create(parser::Position pos, int value) {
         return std::make_unique<IntExpr>(pos, value);
     }
 
     /**
-     * @brief Get the integer value
-     * @brief Get the integer value
+     * \brief Get the integer value
      *
-     * @return The integer value
-     * @return The integer value
+     * \return The integer value
      */
     int value() const { return value_; }
 
@@ -479,42 +421,33 @@ class IntExpr final : public Expr {
 };
 
 /**
- * @class qasmtools::ast::RealExpr
- * @class qasmtools::ast::RealExpr
- * @brief Class for floating point literal expressions
- * @brief Class for floating point literal expressions
- * @see qasmtools::ast::Expr
- * @see qasmtools::ast::Expr
+ * \class qasmtools::ast::RealExpr
+ * \brief Class for floating point literal expressions
+ * \see qasmtools::ast::Expr
  */
 class RealExpr final : public Expr {
     double value_; ///< the floating point value
 
   public:
     /**
-     * @brief Construct a real-value expression
-     * @brief Construct a real-value expression
+     * \brief Construct a real-value expression
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param val The floating point value
-     * @param val The floating point value
+     * \param pos The source position
+     * \param val The floating point value
      */
     RealExpr(parser::Position pos, double value) : Expr(pos), value_(value) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<RealExpr> create(parser::Position pos, double value) {
         return std::make_unique<RealExpr>(pos, value);
     }
 
     /**
-     * @brief Get the real value
-     * @brief Get the real value
+     * \brief Get the real value
      *
-     * @return The floating point value
-     * @return The floating point value
+     * \return The floating point value
      */
     double value() const { return value_; }
 
@@ -533,42 +466,33 @@ class RealExpr final : public Expr {
 };
 
 /**
- * @class qasmtools::ast::VarExpr
- * @class qasmtools::ast::VarExpr
- * @brief Class for variable expressions
- * @brief Class for variable expressions
- * @see qasmtools::ast::Expr
- * @see qasmtools::ast::Expr
+ * \class qasmtools::ast::VarExpr
+ * \brief Class for variable expressions
+ * \see qasmtools::ast::Expr
  */
 class VarExpr final : public Expr {
     symbol var_; ///< the identifier
 
   public:
     /**
-     * @brief Construct a variable expression
-     * @brief Construct a variable expression
+     * \brief Construct a variable expression
      *
-     * @param pos The source position
-     * @param pos The source position
-     * @param var The variable name
-     * @param var The variable name
+     * \param pos The source position
+     * \param var The variable name
      */
     VarExpr(parser::Position pos, symbol var) : Expr(pos), var_(var) {}
 
     /**
-     * @brief Protected heap-allocated construction
-     * @brief Protected heap-allocated construction
+     * \brief Protected heap-allocated construction
      */
     static ptr<VarExpr> create(parser::Position pos, symbol var) {
         return std::make_unique<VarExpr>(pos, var);
     }
 
     /**
-     * @brief Get the variable name
-     * @brief Get the variable name
+     * \brief Get the variable name
      *
-     * @return Constant reference to the name
-     * @return Constant reference to the name
+     * \return Constant reference to the name
      */
     const symbol& var() const { return var_; }
 
@@ -587,13 +511,10 @@ class VarExpr final : public Expr {
 };
 
 /**
- * @brief Returns an Expr representing the given angle
- * @brief Returns an Expr representing the given angle
+ * \brief Returns an Expr representing the given angle
  *
- * @param theta The angle
- * @param theta The angle
- * @return The equivalent QASM expression
- * @return The equivalent QASM expression
+ * \param theta The angle
+ * \return The equivalent QASM expression
  */
 inline ptr<Expr> angle_to_expr(const utils::Angle& theta) {
     parser::Position pos;

@@ -25,10 +25,8 @@
  */
 
 /**
- * @file <pyqpp/statistics_bind.hpp>
- * @file <pyqpp/statistics_bind.hpp>
- * @brief Bindings for <qpp/statistics.hpp>
- * @brief Bindings for <qpp/statistics.hpp>
+ * \file <pyqpp/statistics_bind.hpp>
+ * \brief Bindings for <qpp/statistics.hpp>
  */
 
 #ifndef PYQPP_STATISTICS_BIND_HPP_

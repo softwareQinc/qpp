@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qpp/internal/classes/qcircuit_runtime_step.hpp
- * @file qpp/internal/classes/qcircuit_runtime_step.hpp
- * @brief qpp::internal::QCircuitRuntimeStep
- * @brief qpp::internal::QCircuitRuntimeStep
+ * \file qpp/internal/classes/qcircuit_runtime_step.hpp
+ * \brief qpp::internal::QCircuitRuntimeStep
  */
 
 #ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_RUNTIME_STEP_HPP_
@@ -47,16 +45,14 @@
 
 namespace qpp {
 /**
- * @brief Conditional functor type (boolean predicate) in qpp::QCircuit
- * @brief Conditional functor type (boolean predicate) in qpp::QCircuit
+ * \brief Conditional functor type (boolean predicate) in qpp::QCircuit
  * conditional (runtime) statements
  */
 using cond_pred_t = std::function<bool(internal::const_proxy_to_engine_dits_t)>;
 // using cond_pred_t = std::function<bool(std::vector<idx>&)>;
 
 /**
- * @brief Functor type in qpp::QCircuit used for overwriting quantum engine
- * @brief Functor type in qpp::QCircuit used for overwriting quantum engine
+ * \brief Functor type in qpp::QCircuit used for overwriting quantum engine
  * dits at runtime
  */
 using mutable_dits_functor_t =
@@ -64,14 +60,12 @@ using mutable_dits_functor_t =
 
 namespace internal {
 /**
- * @brief One step consisting only of runtime statements such as
- * @brief One step consisting only of runtime statements such as
+ * \brief One step consisting only of runtime statements such as
  * if/while/set_dits_runtime etc.
  */
 struct QCircuitRuntimeStep : IDisplay {
     /**
-     * @brief Type of runtime statement being executed in a runtime step
-     * @brief Type of runtime statement being executed in a runtime step
+     * \brief Type of runtime statement being executed in a runtime step
      */
     enum class Type {
         NONE, ///< no statement
@@ -90,17 +84,13 @@ struct QCircuitRuntimeStep : IDisplay {
     };
 
     /**
-     * @brief Extraction operator overload for
-     * @brief Extraction operator overload for
+     * \brief Extraction operator overload for
      * qpp::internal::QCircuitRuntimeStep::Type enum class
      *
-     * @param os Output stream passed by reference
-     * @param os Output stream passed by reference
-     * @param runtime_type qpp::internal::QCircuitRuntimeStep::Type enum
-     * @param runtime_type qpp::internal::QCircuitRuntimeStep::Type enum
+     * \param os Output stream passed by reference
+     * \param runtime_type qpp::internal::QCircuitRuntimeStep::Type enum
      * class
-     * @return Reference to the output stream
-     * @return Reference to the output stream
+     * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os,
                                     const Type& runtime_type) {
@@ -132,22 +122,18 @@ struct QCircuitRuntimeStep : IDisplay {
     }
 
     /**
-     * @class qpp::internal::QCircuitRuntimeStep::Context
-     * @class qpp::internal::QCircuitRuntimeStep::Context
-     * @brief Keeps track of the location of runtime statements
-     * @brief Keeps track of the location of runtime statements
+     * \class qpp::internal::QCircuitRuntimeStep::Context
+     * \brief Keeps track of the location of runtime statements
      */
     struct Context : IDisplay {
         /**
-         * @brief Vector of pairs (offset, length) that keep track of where
-         * @brief Vector of pairs (offset, length) that keep track of where
+         * \brief Vector of pairs (offset, length) that keep track of where
          * classical dits were added by QCircuit::add_dit() or when composing
          * quantum circuit descriptions
          */
         std::vector<std::pair<idx, idx>> dit_ctx{};
         /**
-         * @brief location of if/while statement and corresponding condition
-         * @brief location of if/while statement and corresponding condition
+         * \brief location of if/while statement and corresponding condition
          * functor (boolean predicate)
          */
         std::optional<std::pair<idx, cond_pred_t>> start_expr{};
@@ -157,15 +143,12 @@ struct QCircuitRuntimeStep : IDisplay {
             set_dits_func{}; ///< functor that overwrites engine dits at runtime
 
         /**
-         * @brief Given a vector of pairs (offset, length) that keep tracks of
-         * @brief Given a vector of pairs (offset, length) that keep tracks of
+         * \brief Given a vector of pairs (offset, length) that keep tracks of
          * where additional classical dits were added, restore the vector of
          * dits to its original form
          *
-         * @param dits Vector of classical dits
-         * @param dits Vector of classical dits
-         * @return Vector of classical dits, with the additional dits listed in
-         * @return Vector of classical dits, with the additional dits listed in
+         * \param dits Vector of classical dits
+         * \return Vector of classical dits, with the additional dits listed in
          * \a dit_ctx removed
          */
         std::vector<idx>
@@ -184,11 +167,9 @@ struct QCircuitRuntimeStep : IDisplay {
         }
 
         /**
-         * @brief Increments each offset in the \a dit_ctx by \a i
-         * @brief Increments each offset in the \a dit_ctx by \a i
+         * \brief Increments each offset in the \a dit_ctx by \a i
          *
-         * @param i Non-negative integer
-         * @param i Non-negative integer
+         * \param i Non-negative integer
          */
         void inc_offset_dit_ctx(idx i) {
             for (auto& elem : dit_ctx) {
@@ -197,11 +178,9 @@ struct QCircuitRuntimeStep : IDisplay {
         }
 
         /**
-         * @brief Increments conditional locations by \a i
-         * @brief Increments conditional locations by \a i
+         * \brief Increments conditional locations by \a i
          *
-         * @param i Non-negative integer
-         * @param i Non-negative integer
+         * \param i Non-negative integer
          */
         void inc_cond_locs(idx i) {
             if (start_expr.has_value()) {
@@ -216,14 +195,11 @@ struct QCircuitRuntimeStep : IDisplay {
         }
 
         /**
-         * @brief Equality operator
-         * @brief Equality operator
+         * \brief Equality operator
          * \note Does not test equality of the comparison functions
          *
-         * @param rhs Context against which the equality is being tested
-         * @param rhs Context against which the equality is being tested
-         * @return True if the contexts are equal, false otherwise
-         * @return True if the contexts are equal, false otherwise
+         * \param rhs Context against which the equality is being tested
+         * \return True if the contexts are equal, false otherwise
          */
         bool operator==(const Context& rhs) const {
             if (dit_ctx != rhs.dit_ctx) {
@@ -251,13 +227,10 @@ struct QCircuitRuntimeStep : IDisplay {
         }
 
         /**
-         * @brief qpp::IDisplay::display() override
-         * @brief qpp::IDisplay::display() override
+         * \brief qpp::IDisplay::display() override
          *
-         * @param os Output stream passed by reference
-         * @param os Output stream passed by reference
-         * @return Reference to the output stream
-         * @return Reference to the output stream
+         * \param os Output stream passed by reference
+         * \return Reference to the output stream
          */
         std::ostream& display(std::ostream& os) const override {
             if (start_expr.has_value()) {
@@ -297,32 +270,25 @@ struct QCircuitRuntimeStep : IDisplay {
     Context ctx_{};                  ///< additional context
 
     /**
-     * @brief Default constructor
-     * @brief Default constructor
+     * \brief Default constructor
      */
     QCircuitRuntimeStep() = default;
 
     /**
-     * @brief Constructs a runtime step instance
-     * @brief Constructs a runtime step instance
+     * \brief Constructs a runtime step instance
      *
-     * @param runtime_type Runtime type
-     * @param runtime_type Runtime type
-     * @param ctx Context
-     * @param ctx Context
+     * \param runtime_type Runtime type
+     * \param ctx Context
      */
     explicit QCircuitRuntimeStep(Type runtime_type, Context ctx)
         : runtime_type_{runtime_type}, ctx_(std::move(ctx)) {}
 
     /**
-     * @brief Equality operator
-     * @brief Equality operator
+     * \brief Equality operator
      *
-     * @param rhs qpp::internal::QCircuitRuntimeStep against which the
-     * @param rhs qpp::internal::QCircuitRuntimeStep against which the
+     * \param rhs qpp::internal::QCircuitRuntimeStep against which the
      * equality is being tested
-     * @return True if the qpp::internal::QCircuitRuntimeStep(s) are
-     * @return True if the qpp::internal::QCircuitRuntimeStep(s) are
+     * \return True if the qpp::internal::QCircuitRuntimeStep(s) are
      * equal, false otherwise
      */
     bool operator==(const QCircuitRuntimeStep& rhs) const noexcept {
@@ -331,14 +297,11 @@ struct QCircuitRuntimeStep : IDisplay {
     }
 
     /**
-     * @brief Inequality operator
-     * @brief Inequality operator
+     * \brief Inequality operator
      *
-     * @param rhs qpp::internal::QCircuitRuntimeStep against which the
-     * @param rhs qpp::internal::QCircuitRuntimeStep against which the
+     * \param rhs qpp::internal::QCircuitRuntimeStep against which the
      * inequality is being tested
-     * @return True if the qpp::internal::QCircuitRuntimeStep(s) are not
-     * @return True if the qpp::internal::QCircuitRuntimeStep(s) are not
+     * \return True if the qpp::internal::QCircuitRuntimeStep(s) are not
      * equal, false otherwise
      */
     bool operator!=(const QCircuitRuntimeStep& rhs) const noexcept {
@@ -347,16 +310,13 @@ struct QCircuitRuntimeStep : IDisplay {
 
   private:
     /**
-     * @brief qpp::IDisplay::display() override
-     * @brief qpp::IDisplay::display() override
+     * \brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the
      * \a qpp::internal::QCircuitRuntimeStep instance
      *
-     * @param os Output stream passed by reference
-     * @param os Output stream passed by reference
-     * @return Reference to the output stream
-     * @return Reference to the output stream
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         os << runtime_type_;

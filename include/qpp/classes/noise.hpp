@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qpp/classes/noise.hpp
- * @file qpp/classes/noise.hpp
- * @brief Noise models
- * @brief Noise models
+ * \file qpp/classes/noise.hpp
+ * \brief Noise models
  */
 
 #ifndef QPP_QPP_CLASSES_NOISE_HPP_
@@ -53,33 +51,25 @@
 
 namespace qpp {
 /**
- * @class qpp::NoiseType
- * @class qpp::NoiseType
- * @brief Contains template tags used to specify the noise type
- * @brief Contains template tags used to specify the noise type
+ * \class qpp::NoiseType
+ * \brief Contains template tags used to specify the noise type
  */
 struct NoiseType {
     /**
-     * @class qpp::NoiseType::StateDependent
-     * @class qpp::NoiseType::StateDependent
-     * @brief Template tag, used whenever the noise is state-dependent
-     * @brief Template tag, used whenever the noise is state-dependent
+     * \class qpp::NoiseType::StateDependent
+     * \brief Template tag, used whenever the noise is state-dependent
      */
     struct StateDependent;
 
     /**
-     * @class qpp::NoiseType::StateIndependent
-     * @class qpp::NoiseType::StateIndependent
-     * @brief Template tag, used whenever the noise is state-independent
-     * @brief Template tag, used whenever the noise is state-independent
+     * \class qpp::NoiseType::StateIndependent
+     * \brief Template tag, used whenever the noise is state-independent
      */
     struct StateIndependent;
 };
 /**
- * @class qpp::NoiseBase
- * @class qpp::NoiseBase
- * @brief Base class for all noise models, derive your particular noise model
- * @brief Base class for all noise models, derive your particular noise model
+ * \class qpp::NoiseBase
+ * \brief Base class for all noise models, derive your particular noise model
  */
 template <typename T>
 class NoiseBase {
@@ -99,16 +89,12 @@ class NoiseBase {
                                     ///< state-independent
 
     /**
-     * @brief Compute probability outcomes for StateDependent noise type,
-     * @brief Compute probability outcomes for StateDependent noise type,
+     * \brief Compute probability outcomes for StateDependent noise type,
      * otherwise returns without performing any operation (no-op)
      *
-     * @param state State vector or density matrix
-     * @param state State vector or density matrix
-     * @param target Target qudit indexes where the noise is applied
-     * @param target Target qudit indexes where the noise is applied
-     * @param caller Optional caller name
-     * @param caller Optional caller name
+     * \param state State vector or density matrix
+     * \param target Target qudit indexes where the noise is applied
+     * \param caller Optional caller name
      */
     void
     compute_probs_(const cmat& state, const std::vector<idx>& target,
@@ -135,17 +121,12 @@ class NoiseBase {
     } /* compute_probs_() */
 
     /**
-     * @brief Compute the resulting state after the noise was applied
-     * @brief Compute the resulting state after the noise was applied
+     * \brief Compute the resulting state after the noise was applied
      *
-     * @param state State vector or density matrix
-     * @param state State vector or density matrix
-     * @param target Target qudit indexes where the noise is applied
-     * @param target Target qudit indexes where the noise is applied
-     * @param caller Optional caller name
-     * @param caller Optional caller name
-     * @return Resulting state after the noise was applied
-     * @return Resulting state after the noise was applied
+     * \param state State vector or density matrix
+     * \param target Target qudit indexes where the noise is applied
+     * \param caller Optional caller name
+     * \return Resulting state after the noise was applied
      */
     cmat
     compute_state_(const cmat& state, const std::vector<idx>& target,
@@ -180,13 +161,11 @@ class NoiseBase {
 
   public:
     /**
-     * @brief Constructs a noise instance for StateDependent noise type
-     * @brief Constructs a noise instance for StateDependent noise type
+     * \brief Constructs a noise instance for StateDependent noise type
      *
      * \note SFINAEd-out for StateIndependent noise
      *
-     * @param Ks Vector of noise (Kraus) operators that specify the noise
-     * @param Ks Vector of noise (Kraus) operators that specify the noise
+     * \param Ks Vector of noise (Kraus) operators that specify the noise
      */
     template <typename U = noise_type>
     explicit NoiseBase(
@@ -217,15 +196,12 @@ class NoiseBase {
     }
 
     /**
-     * @brief Constructs a noise instance for StateIndependent noise type
-     * @brief Constructs a noise instance for StateIndependent noise type
+     * \brief Constructs a noise instance for StateIndependent noise type
      *
      * \note SFINAEd-out for StateDependent noise
      *
-     * @param Ks Vector of noise (Kraus) operators that specify the noise
-     * @param Ks Vector of noise (Kraus) operators that specify the noise
-     * @param probs Vector of probabilities corresponding to each Kraus operator
-     * @param probs Vector of probabilities corresponding to each Kraus operator
+     * \param Ks Vector of noise (Kraus) operators that specify the noise
+     * \param probs Vector of probabilities corresponding to each Kraus operator
      */
     template <typename U = noise_type>
     explicit NoiseBase(
@@ -267,36 +243,29 @@ class NoiseBase {
     }
 
     /**
-     * @brief Default virtual destructor
-     * @brief Default virtual destructor
+     * \brief Default virtual destructor
      */
     virtual ~NoiseBase() = default;
 
     // getters
     /**
-     * @brief Qudit dimension
-     * @brief Qudit dimension
+     * \brief Qudit dimension
      *
-     * @return Qudit dimension
-     * @return Qudit dimension
+     * \return Qudit dimension
      */
     idx get_d() const noexcept { return D_; };
 
     /**
-     * @brief Vector of noise operators
-     * @brief Vector of noise operators
+     * \brief Vector of noise operators
      *
-     * @return Vector of noise operators
-     * @return Vector of noise operators
+     * \return Vector of noise operators
      */
     std::vector<cmat> get_Ks() const { return Ks_; }
 
     /**
-     * @brief Vector of probabilities corresponding to each noise operator
-     * @brief Vector of probabilities corresponding to each noise operator
+     * \brief Vector of probabilities corresponding to each noise operator
      *
-     * @return Probability vector
-     * @return Probability vector
+     * \return Probability vector
      */
     std::vector<realT> get_probs() const {
         if (generated_ ||
@@ -310,11 +279,9 @@ class NoiseBase {
     }
 
     /**
-     * @brief Index of the last occurring noise element
-     * @brief Index of the last occurring noise element
+     * \brief Index of the last occurring noise element
      *
-     * @return Index of the last occurring noise element
-     * @return Index of the last occurring noise element
+     * \return Index of the last occurring noise element
      */
     idx get_last_idx() const {
         if (generated_) {
@@ -327,11 +294,9 @@ class NoiseBase {
     }
 
     /**
-     * @brief Probability of the last occurring noise element
-     * @brief Probability of the last occurring noise element
+     * \brief Probability of the last occurring noise element
      *
-     * @return Probability of the last occurring noise element
-     * @return Probability of the last occurring noise element
+     * \return Probability of the last occurring noise element
      */
     realT get_last_p() const {
         if (generated_) {
@@ -344,11 +309,9 @@ class NoiseBase {
     }
 
     /**
-     * @brief Last occurring noise element
-     * @brief Last occurring noise element
+     * \brief Last occurring noise element
      *
-     * @return Last occurring noise element
-     * @return Last occurring noise element
+     * \return Last occurring noise element
      */
     cmat get_last_K() const {
         if (generated_) {
@@ -362,14 +325,11 @@ class NoiseBase {
     // end getters
 
     /**
-     * @brief Function invocation operator, applies the underlying noise model
-     * @brief Function invocation operator, applies the underlying noise model
+     * \brief Function invocation operator, applies the underlying noise model
      * on the state vector or density matrix \a state
      *
-     * @param state State vector or density matrix
-     * @param state State vector or density matrix
-     * @return Resulting state vector or density matrix
-     * @return Resulting state vector or density matrix
+     * \param state State vector or density matrix
+     * \return Resulting state vector or density matrix
      */
     virtual cmat operator()(const cmat& state) const {
         cmat result;
@@ -382,17 +342,13 @@ class NoiseBase {
     }
 
     /**
-     * @brief Function invocation operator, applies the underlying noise
-     * @brief Function invocation operator, applies the underlying noise
+     * \brief Function invocation operator, applies the underlying noise
      * model on qudit \a target of the multi-partite state vector or density
      * matrix \a state
      *
-     * @param state Multi-partite state vector or density matrix
-     * @param state Multi-partite state vector or density matrix
-     * @param target Target qudit index where the noise is applied
-     * @param target Target qudit index where the noise is applied
-     * @return Resulting state vector or density matrix
-     * @return Resulting state vector or density matrix
+     * \param state Multi-partite state vector or density matrix
+     * \param target Target qudit index where the noise is applied
+     * \return Resulting state vector or density matrix
      */
     virtual cmat operator()(const cmat& state, idx target) const {
         cmat result;
@@ -405,17 +361,13 @@ class NoiseBase {
     }
 
     /**
-     * @brief Function invocation operator, applies the underlying correlated
-     * @brief Function invocation operator, applies the underlying correlated
+     * \brief Function invocation operator, applies the underlying correlated
      * noise model on qudits specified by \a target of the multi-partite state
      * vector or density matrix \a state
      *
-     * @param state Multi-partite state vector or density matrix
-     * @param state Multi-partite state vector or density matrix
-     * @param target Target qudit indexes where the correlated noise is applied
-     * @param target Target qudit indexes where the correlated noise is applied
-     * @return Resulting state vector or density matrix
-     * @return Resulting state vector or density matrix
+     * \param state Multi-partite state vector or density matrix
+     * \param target Target qudit indexes where the correlated noise is applied
+     * \return Resulting state vector or density matrix
      */
     virtual cmat operator()(const cmat& state,
                             const std::vector<idx>& target) const {
@@ -430,19 +382,15 @@ class NoiseBase {
 // qubit noise models
 
 /**
- * @class qpp::QubitDepolarizingNoise
- * @class qpp::QubitDepolarizingNoise
- * @brief Qubit depolarizing noise
- * @brief Qubit depolarizing noise
+ * \class qpp::QubitDepolarizingNoise
+ * \brief Qubit depolarizing noise
  */
 class QubitDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
   public:
     /**
-     * @brief Qubit depolarizing noise constructor
-     * @brief Qubit depolarizing noise constructor
+     * \brief Qubit depolarizing noise constructor
      *
-     * @param p Noise probability
-     * @param p Noise probability
+     * \param p Noise probability
      */
     explicit QubitDepolarizingNoise(realT p)
         : NoiseBase({Gates::get_no_thread_local_instance().Id2,
@@ -460,19 +408,15 @@ class QubitDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
 }; /* class QubitDepolarizingNoise */
 
 /**
- * @class qpp::QubitPhaseFlipNoise
- * @class qpp::QubitPhaseFlipNoise
- * @brief Qubit phase flip (dephasing) noise
- * @brief Qubit phase flip (dephasing) noise
+ * \class qpp::QubitPhaseFlipNoise
+ * \brief Qubit phase flip (dephasing) noise
  */
 class QubitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
   public:
     /**
-     * @brief Qubit phase flip (dephasing) noise constructor
-     * @brief Qubit phase flip (dephasing) noise constructor
+     * \brief Qubit phase flip (dephasing) noise constructor
      *
-     * @param p Noise probability
-     * @param p Noise probability
+     * \param p Noise probability
      */
     explicit QubitPhaseFlipNoise(realT p)
         : NoiseBase({Gates::get_no_thread_local_instance().Id2,
@@ -488,19 +432,15 @@ class QubitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
 }; /* class QubitPhaseFlipNoise */
 
 /**
- * @class qpp::QubitBitFlipNoise
- * @class qpp::QubitBitFlipNoise
- * @brief Qubit bit flip noise
- * @brief Qubit bit flip noise
+ * \class qpp::QubitBitFlipNoise
+ * \brief Qubit bit flip noise
  */
 class QubitBitFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
   public:
     /**
-     * @brief Qubit bit flip noise constructor
-     * @brief Qubit bit flip noise constructor
+     * \brief Qubit bit flip noise constructor
      *
-     * @param p Noise probability
-     * @param p Noise probability
+     * \param p Noise probability
      */
     explicit QubitBitFlipNoise(realT p)
         : NoiseBase({Gates::get_no_thread_local_instance().Id2,
@@ -516,19 +456,15 @@ class QubitBitFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
 }; /* class QubitBitFlipNoise */
 
 /**
- * @class qpp::QubitBitPhaseFlipNoise
- * @class qpp::QubitBitPhaseFlipNoise
- * @brief Qubit bit-phase flip (dephasing) noise
- * @brief Qubit bit-phase flip (dephasing) noise
+ * \class qpp::QubitBitPhaseFlipNoise
+ * \brief Qubit bit-phase flip (dephasing) noise
  */
 class QubitBitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
   public:
     /**
-     * @brief Qubit bit-phase flip noise constructor
-     * @brief Qubit bit-phase flip noise constructor
+     * \brief Qubit bit-phase flip noise constructor
      *
-     * @param p Noise probability
-     * @param p Noise probability
+     * \param p Noise probability
      */
     explicit QubitBitPhaseFlipNoise(realT p)
         : NoiseBase({Gates::get_no_thread_local_instance().Id2,
@@ -544,19 +480,15 @@ class QubitBitPhaseFlipNoise : public NoiseBase<NoiseType::StateIndependent> {
 }; /* class QubitBitPhaseFlipNoise */
 
 /**
- * @class qpp::QubitAmplitudeDampingNoise
- * @class qpp::QubitAmplitudeDampingNoise
- * @brief Qubit amplitude damping noise, as described in Nielsen and Chuang
- * @brief Qubit amplitude damping noise, as described in Nielsen and Chuang
+ * \class qpp::QubitAmplitudeDampingNoise
+ * \brief Qubit amplitude damping noise, as described in Nielsen and Chuang
  */
 class QubitAmplitudeDampingNoise : public NoiseBase<NoiseType::StateDependent> {
   public:
     /**
-     * @brief Qubit amplitude damping noise constructor
-     * @brief Qubit amplitude damping noise constructor
+     * \brief Qubit amplitude damping noise constructor
      *
-     * @param gamma Amplitude damping coefficient
-     * @param gamma Amplitude damping coefficient
+     * \param gamma Amplitude damping coefficient
      */
     explicit QubitAmplitudeDampingNoise(realT gamma)
         : NoiseBase(std::vector<cmat>{
@@ -573,19 +505,15 @@ class QubitAmplitudeDampingNoise : public NoiseBase<NoiseType::StateDependent> {
 }; /* class QubitAmplitudeDampingNoise */
 
 /**
- * @class qpp::QubitPhaseDampingNoise
- * @class qpp::QubitPhaseDampingNoise
- * @brief Qubit phase damping noise, as described in Nielsen and Chuang
- * @brief Qubit phase damping noise, as described in Nielsen and Chuang
+ * \class qpp::QubitPhaseDampingNoise
+ * \brief Qubit phase damping noise, as described in Nielsen and Chuang
  */
 class QubitPhaseDampingNoise : public NoiseBase<NoiseType::StateDependent> {
   public:
     /**
-     * @brief Qubit phase damping noise constructor
-     * @brief Qubit phase damping noise constructor
+     * \brief Qubit phase damping noise constructor
      *
-     * @param lambda Phase damping coefficient
-     * @param lambda Phase damping coefficient
+     * \param lambda Phase damping coefficient
      */
     explicit QubitPhaseDampingNoise(realT lambda)
         : NoiseBase(std::vector<cmat>{
@@ -604,20 +532,15 @@ class QubitPhaseDampingNoise : public NoiseBase<NoiseType::StateDependent> {
 // qudit noise models
 
 /**
- * @class qpp::QuditDepolarizingNoise
- * @class qpp::QuditDepolarizingNoise
- * @brief Qudit depolarizing noise
- * @brief Qudit depolarizing noise
+ * \class qpp::QuditDepolarizingNoise
+ * \brief Qudit depolarizing noise
  */
 class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
     /**
-     * @brief Constructs the vector of Kraus operators
-     * @brief Constructs the vector of Kraus operators
+     * \brief Constructs the vector of Kraus operators
      *
-     * @param D Qudit dimension
-     * @param D Qudit dimension
-     * @return Vector of Kraus operators representing the depolarizing noise
-     * @return Vector of Kraus operators representing the depolarizing noise
+     * \param D Qudit dimension
+     * \return Vector of Kraus operators representing the depolarizing noise
      */
     static std::vector<cmat> fill_Ks_(idx D) {
         std::vector<cmat> Ks(D * D);
@@ -634,15 +557,11 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
     }
 
     /**
-     * @brief Fills the probability vector
-     * @brief Fills the probability vector
+     * \brief Fills the probability vector
      *
-     * @param p Probability
-     * @param p Probability
-     * @param D Qudit dimension
-     * @param D Qudit dimension
-     * @return Probability vector
-     * @return Probability vector
+     * \param p Probability
+     * \param D Qudit dimension
+     * \return Probability vector
      */
     static std::vector<realT> fill_probs_(realT p, idx D) {
         std::vector<realT> probs(D * D);
@@ -657,13 +576,10 @@ class QuditDepolarizingNoise : public NoiseBase<NoiseType::StateIndependent> {
 
   public:
     /**
-     * @brief Qudit depolarizing noise constructor
-     * @brief Qudit depolarizing noise constructor
+     * \brief Qudit depolarizing noise constructor
      *
-     * @param p Noise probability
-     * @param p Noise probability
-     * @param D Qudit dimension
-     * @param D Qudit dimension
+     * \param p Noise probability
+     * \param D Qudit dimension
      */
     explicit QuditDepolarizingNoise(realT p, idx D)
         : NoiseBase(fill_Ks_(D), fill_probs_(p, D)) {

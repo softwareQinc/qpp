@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qpp/internal/critical.hpp
- * @file qpp/internal/critical.hpp
- * @brief Internal highly optimized critical functions
- * @brief Internal highly optimized critical functions
+ * \file qpp/internal/critical.hpp
+ * \brief Internal highly optimized critical functions
  */
 
 #ifndef QPP_INTERNAL_CRITICAL_HPP_
@@ -91,20 +89,14 @@ inline std::vector<idx> compute_complement(const std::vector<idx>& target,
 }
 
 /**
- * @brief Applies the 1-qubit gate \a A to the qubit \a i of the
- * @brief Applies the 1-qubit gate \a A to the qubit \a i of the
+ * \brief Applies the 1-qubit gate \a A to the qubit \a i of the
  * multi-partite state vector \a state
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (2x2 matrix)
- * @param A Eigen expression (2x2 matrix)
- * @param i Subsystem index where the gate \a A is applied
- * @param i Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Gate \a A applied to the qubit \a i of \a state
- * @return Gate \a A applied to the qubit \a i of \a state
+ * \param state Eigen expression
+ * \param A Eigen expression (2x2 matrix)
+ * \param i Subsystem index where the gate \a A is applied
+ * \param n Number of qubits
+ * \return Gate \a A applied to the qubit \a i of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -179,22 +171,15 @@ apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the 2-qubit gate \a A to the qubits \a i and \a j of the
- * @brief Applies the 2-qubit gate \a A to the qubits \a i and \a j of the
+ * \brief Applies the 2-qubit gate \a A to the qubits \a i and \a j of the
  * multi-partite state vector \a state
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (4x4 matrix)
- * @param A Eigen expression (4x4 matrix)
- * @param i Subsystem index where the gate \a A is applied
- * @param i Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Gate \a A applied to the qubit \a i and \a j of \a state
- * @return Gate \a A applied to the qubit \a i and \a j of \a state
+ * \param state Eigen expression
+ * \param A Eigen expression (4x4 matrix)
+ * \param i Subsystem index where the gate \a A is applied
+ * \param j Subsystem index where the gate \a A is applied
+ * \param n Number of qubits
+ * \return Gate \a A applied to the qubit \a i and \a j of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -323,24 +308,16 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the 3-qubit gate \a A to the qubit \a i, \a j, and \a k of the
- * @brief Applies the 3-qubit gate \a A to the qubit \a i, \a j, and \a k of the
+ * \brief Applies the 3-qubit gate \a A to the qubit \a i, \a j, and \a k of the
  * multi-partite state vector \a state
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (8x8 matrix)
- * @param A Eigen expression (8x8 matrix)
- * @param i Subsystem index where the gate \a A is applied
- * @param i Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param k Subsystem index where the gate \a A is applied
- * @param k Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Gate \a A applied to the qubit \a i, \a j, and \a k of \a state
- * @return Gate \a A applied to the qubit \a i, \a j, and \a k of \a state
+ * \param state Eigen expression
+ * \param A Eigen expression (8x8 matrix)
+ * \param i Subsystem index where the gate \a A is applied
+ * \param j Subsystem index where the gate \a A is applied
+ * \param k Subsystem index where the gate \a A is applied
+ * \param n Number of qubits
+ * \return Gate \a A applied to the qubit \a i, \a j, and \a k of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -526,20 +503,14 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the multi-qubit gate \a A to the part \a target of the
- * @brief Applies the multi-qubit gate \a A to the part \a target of the
+ * \brief Applies the multi-qubit gate \a A to the part \a target of the
  * multi-partite state vector \a state
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression
- * @param A Eigen expression
- * @param target Subsystem indexes where the gate \a A is applied
- * @param target Subsystem indexes where the gate \a A is applied
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Gate \a A applied to the part \a target of \a state
- * @return Gate \a A applied to the part \a target of \a state
+ * \param state Eigen expression
+ * \param A Eigen expression
+ * \param target Subsystem indexes where the gate \a A is applied
+ * \param n Number of qubits
+ * \return Gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] qpp::expr_t<Derived1>
@@ -663,20 +634,14 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the 1-qubit gate \a A to the qubit \a i of the
- * @brief Applies the 1-qubit gate \a A to the qubit \a i of the
+ * \brief Applies the 1-qubit gate \a A to the qubit \a i of the
  * multi-partite density matrix \a state
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (2x2 matrix)
- * @param A Eigen expression (2x2 matrix)
- * @param i Subsystem index where the gate \a A is applied
- * @param i Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Gate \a A applied to the qubit \a i of \a state
- * @return Gate \a A applied to the qubit \a i of \a state
+ * \param state Eigen expression
+ * \param A Eigen expression (2x2 matrix)
+ * \param i Subsystem index where the gate \a A is applied
+ * \param n Number of qubits
+ * \return Gate \a A applied to the qubit \a i of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -758,22 +723,15 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the 2-qubit gate \a A to the qubits \a i and \a j of the
- * @brief Applies the 2-qubit gate \a A to the qubits \a i and \a j of the
+ * \brief Applies the 2-qubit gate \a A to the qubits \a i and \a j of the
  * multi-partite density matrix \a state
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (4x4 matrix)
- * @param A Eigen expression (4x4 matrix)
- * @param i Subsystem index where the gate \a A is applied
- * @param i Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Gate \a A applied to the qubits \a i and \a j of \a state
- * @return Gate \a A applied to the qubits \a i and \a j of \a state
+ * \param state Eigen expression
+ * \param A Eigen expression (4x4 matrix)
+ * \param i Subsystem index where the gate \a A is applied
+ * \param j Subsystem index where the gate \a A is applied
+ * \param n Number of qubits
+ * \return Gate \a A applied to the qubits \a i and \a j of \a state
  */
 template <typename Derived1, typename Derived2>
 expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
@@ -903,24 +861,16 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the 3-qubit gate \a A to the qubit \a i, \a j, and \a k of the
- * @brief Applies the 3-qubit gate \a A to the qubit \a i, \a j, and \a k of the
+ * \brief Applies the 3-qubit gate \a A to the qubit \a i, \a j, and \a k of the
  * multi-partite density matrix \a state
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (8x8 matrix)
- * @param A Eigen expression (8x8 matrix)
- * @param i Subsystem index where the gate \a A is applied
- * @param i Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param k Subsystem index where the gate \a A is applied
- * @param k Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Gate \a A applied to the qubit \a target of \a state
- * @return Gate \a A applied to the qubit \a target of \a state
+ * \param state Eigen expression
+ * \param A Eigen expression (8x8 matrix)
+ * \param i Subsystem index where the gate \a A is applied
+ * \param j Subsystem index where the gate \a A is applied
+ * \param k Subsystem index where the gate \a A is applied
+ * \param n Number of qubits
+ * \return Gate \a A applied to the qubit \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -1066,18 +1016,13 @@ apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the multi-qubit gate \a A to the part \a target of the
- * @brief Applies the multi-qubit gate \a A to the part \a target of the
+ * \brief Applies the multi-qubit gate \a A to the part \a target of the
  * multi-partite density matrix \a state
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression
- * @param A Eigen expression
- * @param target Subsystem indexes where the gate \a A is applied
- * @param target Subsystem indexes where the gate \a A is applied
- * @return Gate \a A applied to the part \a target of \a state
- * @return Gate \a A applied to the part \a target of \a state
+ * \param state Eigen expression
+ * \param A Eigen expression
+ * \param target Subsystem indexes where the gate \a A is applied
+ * \return Gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -1258,28 +1203,20 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
+ * \brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
  * multi-partite state vector \a state
  *
  * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (2x2 matrix)
- * @param A Eigen expression (2x2 matrix)
- * @param i Target subsystem index
- * @param i Target subsystem index
- * @param ctrl Vector of control qubit indices
- * @param ctrl Vector of control qubit indices
- * @param shift Vector of control values (0: positive/|1> control, 1:
- * @param shift Vector of control values (0: positive/|1> control, 1:
+ * \param state Eigen expression
+ * \param A Eigen expression (2x2 matrix)
+ * \param i Target subsystem index
+ * \param ctrl Vector of control qubit indices
+ * \param shift Vector of control values (0: positive/|1> control, 1:
  * negative/|0> control)
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the qubit \a i of \a state
- * @return Controlled gate \a A applied to the qubit \a i of \a state
+ * \param n Number of qubits
+ * \return Controlled gate \a A applied to the qubit \a i of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -1394,30 +1331,21 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
- * @brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
+ * \brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
  * of the multi-partite state vector \a state
  *
  * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (4x4 matrix)
- * @param A Eigen expression (4x4 matrix)
- * @param ctrl Vector of control qubit indices
- * @param ctrl Vector of control qubit indices
- * @param i Target subsystem index
- * @param i Target subsystem index
- * @param j Target subsystem index
- * @param j Target subsystem index
- * @param shift Vector of control values (0: positive/|1> control, 1:
- * @param shift Vector of control values (0: positive/|1> control, 1:
+ * \param state Eigen expression
+ * \param A Eigen expression (4x4 matrix)
+ * \param ctrl Vector of control qubit indices
+ * \param i Target subsystem index
+ * \param j Target subsystem index
+ * \param shift Vector of control values (0: positive/|1> control, 1:
  * negative/|0> control)
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the qubits \a i and \a j of \a state
- * @return Controlled gate \a A applied to the qubits \a i and \a j of \a state
+ * \param n Number of qubits
+ * \return Controlled gate \a A applied to the qubits \a i and \a j of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -1527,28 +1455,20 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the multi-controlled qubit gate \a A to the part \a target of
- * @brief Applies the multi-controlled qubit gate \a A to the part \a target of
+ * \brief Applies the multi-controlled qubit gate \a A to the part \a target of
  * the multi-partite state vector \a state
  *
  * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (4x4 matrix)
- * @param A Eigen expression (4x4 matrix)
- * @param ctrl Vector of control qubit indices
- * @param ctrl Vector of control qubit indices
- * @param target Subsystem indexes where the gate \a A is applied
- * @param target Subsystem indexes where the gate \a A is applied
- * @param shift Vector of control values (0: positive/|1> control, 1:
- * @param shift Vector of control values (0: positive/|1> control, 1:
+ * \param state Eigen expression
+ * \param A Eigen expression (4x4 matrix)
+ * \param ctrl Vector of control qubit indices
+ * \param target Subsystem indexes where the gate \a A is applied
+ * \param shift Vector of control values (0: positive/|1> control, 1:
  * negative/|0> control)
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the part \a target of \a state
- * @return Controlled gate \a A applied to the part \a target of \a state
+ * \param n Number of qubits
+ * \return Controlled gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] qpp::expr_t<Derived1>
@@ -1727,28 +1647,20 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
+ * \brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
  * multi-partite density matrix \a state
  *
  * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (2x2 matrix)
- * @param A Eigen expression (2x2 matrix)
- * @param i Target subsystem index
- * @param i Target subsystem index
- * @param ctrl Vector of control qubit indices
- * @param ctrl Vector of control qubit indices
- * @param shift Vector of control values (0: positive/|1> control, 1:
- * @param shift Vector of control values (0: positive/|1> control, 1:
+ * \param state Eigen expression
+ * \param A Eigen expression (2x2 matrix)
+ * \param i Target subsystem index
+ * \param ctrl Vector of control qubit indices
+ * \param shift Vector of control values (0: positive/|1> control, 1:
  * negative/|0> control)
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the qubits \a i of \a state
- * @return Controlled gate \a A applied to the qubits \a i of \a state
+ * \param n Number of qubits
+ * \return Controlled gate \a A applied to the qubits \a i of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -1886,30 +1798,21 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
- * @brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
+ * \brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
  * of the multi-partite density matrix \a state
  *
  * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression (4x4 matrix)
- * @param A Eigen expression (4x4 matrix)
- * @param i Target subsystem index
- * @param i Target subsystem index
- * @param j Target subsystem index
- * @param j Target subsystem index
- * @param ctrl Vector of control qubit indices
- * @param ctrl Vector of control qubit indices
- * @param shift Vector of control values (0: positive/|1> control, 1:
- * @param shift Vector of control values (0: positive/|1> control, 1:
+ * \param state Eigen expression
+ * \param A Eigen expression (4x4 matrix)
+ * \param i Target subsystem index
+ * \param j Target subsystem index
+ * \param ctrl Vector of control qubit indices
+ * \param shift Vector of control values (0: positive/|1> control, 1:
  * negative/|0> control)
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the qubits \a i and \a j of \a state
- * @return Controlled gate \a A applied to the qubits \a i and \a j of \a state
+ * \param n Number of qubits
+ * \return Controlled gate \a A applied to the qubits \a i and \a j of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -2093,28 +1996,20 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the controlled multi-qubit gate \a A to the part \a target of
- * @brief Applies the controlled multi-qubit gate \a A to the part \a target of
+ * \brief Applies the controlled multi-qubit gate \a A to the part \a target of
  * the multi-partite density matrix \a state
  *
  * The gate is applied only if the state of the control qubits \a ctrl matches
  * the pattern defined by \a shift (0 for |1> control, 1 for |0> control)
  *
- * @param state Eigen expression
- * @param state Eigen expression
- * @param A Eigen expression
- * @param A Eigen expression
- * @param target Subsystem indexes where the gate \a A is applied
- * @param target Subsystem indexes where the gate \a A is applied
- * @param ctrl Vector of control qubit indices
- * @param ctrl Vector of control qubit indices
- * @param shift Vector of control values (0: positive/|1> control, 1:
- * @param shift Vector of control values (0: positive/|1> control, 1:
+ * \param state Eigen expression
+ * \param A Eigen expression
+ * \param target Subsystem indexes where the gate \a A is applied
+ * \param ctrl Vector of control qubit indices
+ * \param shift Vector of control values (0: positive/|1> control, 1:
  * negative/|0> control)
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the part \a target of \a state
- * @return Controlled gate \a A applied to the part \a target of \a state
+ * \param n Number of qubits
+ * \return Controlled gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
@@ -2349,20 +2244,15 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Qubit state vector subsystem permutation
- * @brief Qubit state vector subsystem permutation
+ * \brief Qubit state vector subsystem permutation
  *
  * Permutes the subsystems of a qubit state vector. The qubit \a perm[\a i] is
  * permuted to the location \a i.
  *
- * @param A Eigen expression
- * @param A Eigen expression
- * @param perm Permutation
- * @param perm Permutation
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Permuted qubit system, as a dynamic matrix over the same scalar field
- * @return Permuted qubit system, as a dynamic matrix over the same scalar field
+ * \param A Eigen expression
+ * \param perm Permutation
+ * \param n Number of qubits
+ * \return Permuted qubit system, as a dynamic matrix over the same scalar field
  * as \a A
  */
 template <typename Derived>
@@ -2414,20 +2304,15 @@ syspermute_psi_kq(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * @brief Qubit density matrix subsystem permutation
- * @brief Qubit density matrix subsystem permutation
+ * \brief Qubit density matrix subsystem permutation
  *
  * Permutes the subsystems of a qubit density matrix. The qubit \a perm[\a i] is
  * permuted to the location \a i.
  *
- * @param A Eigen expression
- * @param A Eigen expression
- * @param perm Permutation
- * @param perm Permutation
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Permuted qubit system, as a dynamic matrix over the same scalar field
- * @return Permuted qubit system, as a dynamic matrix over the same scalar field
+ * \param A Eigen expression
+ * \param perm Permutation
+ * \param n Number of qubits
+ * \return Permuted qubit system, as a dynamic matrix over the same scalar field
  * as \a A
  */
 template <typename Derived>
@@ -2493,22 +2378,16 @@ syspermute_rho_kq(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * @brief Partial trace (Ket specialized)
- * @brief Partial trace (Ket specialized)
- * @see qpp::ptrace1(), qpp::ptrace2()
- * @see qpp::ptrace1(), qpp::ptrace2()
+ * \brief Partial trace (Ket specialized)
+ * \see qpp::ptrace1(), qpp::ptrace2()
  *
  * Partial trace of the multi-partite state vector or density matrix over the
  * list \a target of subsystems
  *
- * @param A Eigen expression
- * @param A Eigen expression
- * @param target Subsystem indexes
- * @param target Subsystem indexes
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * \param A Eigen expression
+ * \param target Subsystem indexes
+ * \param n Number of qubits
+ * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
  * \a A
  */
@@ -2603,22 +2482,16 @@ ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * @brief Partial trace (Density Matrix specialized)
- * @brief Partial trace (Density Matrix specialized)
- * @see qpp::ptrace1(), qpp::ptrace2()
- * @see qpp::ptrace1(), qpp::ptrace2()
+ * \brief Partial trace (Density Matrix specialized)
+ * \see qpp::ptrace1(), qpp::ptrace2()
  *
  * Partial trace of the multi-partite state vector or density matrix over the
  * list \a target of subsystems
  *
- * @param A Eigen expression
- * @param A Eigen expression
- * @param target Subsystem indexes
- * @param target Subsystem indexes
- * @param n Number of qubits
- * @param n Number of qubits
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * \param A Eigen expression
+ * \param target Subsystem indexes
+ * \param n Number of qubits
+ * \return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
  * \a A
  */

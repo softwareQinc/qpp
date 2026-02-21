@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qpp/internal/classes/qcircuit_resources.hpp
- * @file qpp/internal/classes/qcircuit_resources.hpp
- * @brief qpp::internal::QCircuitResources
- * @brief qpp::internal::QCircuitResources
+ * \file qpp/internal/classes/qcircuit_resources.hpp
+ * \brief qpp::internal::QCircuitResources
  */
 
 #ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_RESOURCES_HPP_
@@ -40,8 +38,7 @@
 namespace qpp {
 namespace internal {
 /**
- * @brief Quantum circuit resources
- * @brief Quantum circuit resources
+ * \brief Quantum circuit resources
  */
 struct QCircuitResources : IDisplay, IJSON {
     idx nq{}, nc{}, d{};
@@ -54,16 +51,13 @@ struct QCircuitResources : IDisplay, IJSON {
     idx total_depth{};
 
     /**
-     * @brief qpp::IJSON::to_JSON() override
-     * @brief qpp::IJSON::to_JSON() override
+     * \brief qpp::IJSON::to_JSON() override
      *
      * Displays the quantum circuit resources in JSON format
      *
-     * @param enclosed_in_curly_brackets If true, encloses the result in
-     * @param enclosed_in_curly_brackets If true, encloses the result in
+     * \param enclosed_in_curly_brackets If true, encloses the result in
      * curly brackets
-     * @return String containing the JSON representation of the quantum
-     * @return String containing the JSON representation of the quantum
+     * \return String containing the JSON representation of the quantum
      * circuit resources
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
@@ -95,16 +89,13 @@ struct QCircuitResources : IDisplay, IJSON {
 
   private:
     /**
-     * @brief qpp::IDisplay::display() override
-     * @brief qpp::IDisplay::display() override
+     * \brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the quantum
      * circuit resources
      *
-     * @param os Output stream passed by reference
-     * @param os Output stream passed by reference
-     * @return Reference to the output stream
-     * @return Reference to the output stream
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         os << "[QCircuitResources]\n";

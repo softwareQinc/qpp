@@ -12,14 +12,11 @@
 inline int cli_core_count = -1;
 
 /**
- * @brief Detects/sets the number of OpenMP threads
- * @brief Detects/sets the number of OpenMP threads
- * @param requested Optional requested thread count; uses \a cli_core_count by
- * @param requested Optional requested thread count; uses \a cli_core_count by
+ * \brief Detects/sets the number of OpenMP threads
+ * \param requested Optional requested thread count; uses \a cli_core_count by
  * default
  *
- * @return Final number of threads used
- * @return Final number of threads used
+ * \return Final number of threads used
  */
 inline int set_openmp_threads(int requested = -1) {
     int core_count = (requested >= 0) ? requested : cli_core_count;

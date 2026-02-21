@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qpp/internal/classes/qengine_state.hpp
- * @file qpp/internal/classes/qengine_state.hpp
- * @brief Quantum engine state
- * @brief Quantum engine state
+ * \file qpp/internal/classes/qengine_state.hpp
+ * \brief Quantum engine state
  */
 
 #ifndef QPP_INTERNAL_CLASSES_QENGINE_STATE_HPP_
@@ -45,13 +43,10 @@
 namespace qpp {
 namespace internal {
 /**
- * @class qpp::internal::QEngineState
- * @class qpp::internal::QEngineState
- * @brief Current state of qpp::QEngineT and derived
- * @brief Current state of qpp::QEngineT and derived
+ * \class qpp::internal::QEngineState
+ * \brief Current state of qpp::QEngineT and derived
  *
- * @tparam T State underlying type, qpp::ket or qpp::cmat
- * @tparam T State underlying type, qpp::ket or qpp::cmat
+ * \tparam T State underlying type, qpp::ket or qpp::cmat
  */
 template <typename T>
 struct QEngineState {
@@ -82,11 +77,9 @@ struct QEngineState {
                               ///< multiple repetitions
 
     /**
-     * @brief Constructor
-     * @brief Constructor
+     * \brief Constructor
      *
-     * @param qc_ptr Non-owning pointer to the parent const quantum circuit
-     * @param qc_ptr Non-owning pointer to the parent const quantum circuit
+     * \param qc_ptr Non-owning pointer to the parent const quantum circuit
      * description
      */
     explicit QEngineState(const QCircuit* qc_ptr) : qc_ptr_{qc_ptr} {
@@ -102,27 +95,22 @@ struct QEngineState {
 
     // silence -Weffc++ class has pointer data members
     /**
-     * @brief Default copy constructor
-     * @brief Default copy constructor
+     * \brief Default copy constructor
      */
     QEngineState(const QEngineState&) = default;
 
     // silence -Weffc++ class has pointer data members
     /**
-     * @brief Default copy assignment operator
-     * @brief Default copy assignment operator
+     * \brief Default copy assignment operator
      *
-     * @return Reference to the current instance
-     * @return Reference to the current instance
+     * \return Reference to the current instance
      */
     QEngineState& operator=(const QEngineState&) = default;
 
     /**
-     * @brief Resets the engine state
-     * @brief Resets the engine state
+     * \brief Resets the engine state
      *
-     * @param qstate Optional engine's initial quantum state
-     * @param qstate Optional engine's initial quantum state
+     * \param qstate Optional engine's initial quantum state
      */
     void reset(std::optional<T> qstate) {
         if (qstate.has_value()) {

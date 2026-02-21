@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qpp/qasm/qasm.hpp
- * @file qpp/qasm/qasm.hpp
- * @brief OpenQASM to QCircuit interface
- * @brief OpenQASM to QCircuit interface
+ * \file qpp/qasm/qasm.hpp
+ * \brief OpenQASM to QCircuit interface
  */
 
 #ifndef QPP_QASM_QASM_HPP_
@@ -202,10 +200,8 @@ static std::unordered_map<ast::symbol,
          }}};
 
 /**
- * @class qpp::qasm::Value
- * @class qpp::qasm::Value
- * @brief Interface class for OpenQASM values during evaluation
- * @brief Interface class for OpenQASM values during evaluation
+ * \class qpp::qasm::Value
+ * \brief Interface class for OpenQASM values during evaluation
  *
  * Allows environments to contain different types of mappings depending on
  * the type of variable. See deriving classes
@@ -216,12 +212,9 @@ class Value {
 };
 
 /**
- * @class qpp::qasm::Circuit
- * @class qpp::qasm::Circuit
- * @brief QASM circuit values
- * @brief QASM circuit values
- * @see qpp::qasm::Value
- * @see qpp::qasm::Value
+ * \class qpp::qasm::Circuit
+ * \brief QASM circuit values
+ * \see qpp::qasm::Value
  */
 class Circuit : public Value {
   public:
@@ -236,12 +229,9 @@ class Circuit : public Value {
 };
 
 /**
- * @class qpp::qasm::Register
- * @class qpp::qasm::Register
- * @brief QASM register values
- * @brief QASM register values
- * @see qpp::qasm::Value
- * @see qpp::qasm::Value
+ * \class qpp::qasm::Register
+ * \brief QASM register values
+ * \see qpp::qasm::Value
  */
 class Register : public Value {
   public:
@@ -253,12 +243,9 @@ class Register : public Value {
 };
 
 /**
- * @class qpp::qasm::Qubit
- * @class qpp::qasm::Qubit
- * @brief QASM qubit values
- * @brief QASM qubit values
- * @see qpp::qasm::Value
- * @see qpp::qasm::Value
+ * \class qpp::qasm::Qubit
+ * \brief QASM qubit values
+ * \see qpp::qasm::Value
  */
 class Qubit : public Value {
   public:
@@ -268,12 +255,9 @@ class Qubit : public Value {
 };
 
 /**
- * @class qpp::qasm::Number
- * @class qpp::qasm::Number
- * @brief QASM number values
- * @brief QASM number values
- * @see qpp::qasm::Value
- * @see qpp::qasm::Value
+ * \class qpp::qasm::Number
+ * \brief QASM number values
+ * \see qpp::qasm::Value
  */
 class Number : public Value {
   public:
@@ -283,10 +267,8 @@ class Number : public Value {
 };
 
 /**
- * @class qpp::qasm::Context
- * @class qpp::qasm::Context
- * @brief QCircuit translation context
- * @brief QCircuit translation context
+ * \class qpp::qasm::Context
+ * \brief QCircuit translation context
  *
  * Stores all information relevant to execution (i.e., generation of a
  * QCircuit). Each classical and quantum bit in the AST is mapped to a unique
@@ -315,43 +297,35 @@ class Context {
 
   public:
     /**
-     * @brief Constructs a translation context with a given target QCircuit
-     * @brief Constructs a translation context with a given target QCircuit
+     * \brief Constructs a translation context with a given target QCircuit
      *
-     * @param qc Pointer to a QCircuit object
-     * @param qc Pointer to a QCircuit object
+     * \param qc Pointer to a QCircuit object
      */
     explicit Context(QCircuit* qc) : circuit_(qc) {}
 
     /**
-     * @brief Disables copy constructor
-     * @brief Disables copy constructor
+     * \brief Disables copy constructor
      */
     Context(const Context&) = delete;
 
     /**
-     * @brief Disables assignment
-     * @brief Disables assignment
+     * \brief Disables assignment
      */
     Context& operator=(const Context&) = delete;
 
     /**
-     * @brief The accumulating QCircuit
-     * @brief The accumulating QCircuit
+     * \brief The accumulating QCircuit
      *
-     * @return Pointer to the QCircuit object
-     * @return Pointer to the QCircuit object
+     * \return Pointer to the QCircuit object
      */
     QCircuit* get_circuit() { return circuit_; }
 
     /*-------------- (Qu)bit management & allocation ---------------*/
 
     /**
-     * @brief Allocate a classical bit
-     * @brief Allocate a classical bit
+     * \brief Allocate a classical bit
      *
-     * @return Index of a fresh classical bit
-     * @return Index of a fresh classical bit
+     * \return Index of a fresh classical bit
      */
     idx alloc_bit() {
         if (max_bit_ == std::numeric_limits<idx>::max()) { // safe wrap around
@@ -368,11 +342,9 @@ class Context {
     }
 
     /**
-     * @brief Allocate a virtual qubit
-     * @brief Allocate a virtual qubit
+     * \brief Allocate a virtual qubit
      *
-     * @return Index of a fresh qubit
-     * @return Index of a fresh qubit
+     * \return Index of a fresh qubit
      */
     idx alloc_qubit() {
         if (max_qubit_ == std::numeric_limits<idx>::max()) { // safe wrap around
@@ -390,30 +362,24 @@ class Context {
 
     /*------------------ Environment management --------------*/
     /**
-     * @brief Enter a new scope
-     * @brief Enter a new scope
+     * \brief Enter a new scope
      */
     void enter_scope() { env_.emplace_back(); }
 
     /**
-     * @brief Exit current scope
-     * @brief Exit current scope
+     * \brief Exit current scope
      */
     void exit_scope() { env_.pop_back(); }
 
     /**
-     * @brief Lookup an identifier in the environment
-     * @brief Lookup an identifier in the environment
+     * \brief Lookup an identifier in the environment
      *
      * Traverses all scopes from inner-most to outer-most and returns
      * the first mapping
      *
-     * @param id Const reference to an identifier
-     * @param id Const reference to an identifier
-     * @param loc Const reference to the location in the source file
-     * @param loc Const reference to the location in the source file
-     * @return Pointer to a value
-     * @return Pointer to a value
+     * \param id Const reference to an identifier
+     * \param loc Const reference to the location in the source file
+     * \return Pointer to a value
      */
     Value* lookup(const ast::symbol& id, const parser::Position& loc) {
         for (auto table = env_.rbegin(); table != env_.rend(); table++) {
@@ -431,14 +397,11 @@ class Context {
     }
 
     /**
-     * @brief Set the value of an identifier in the current scope
-     * @brief Set the value of an identifier in the current scope
+     * \brief Set the value of an identifier in the current scope
      * \note Assumes ownership of the value
      *
-     * @param id Const reference to an identifier
-     * @param id Const reference to an identifier
-     * @param val Unique pointer to a value
-     * @param val Unique pointer to a value
+     * \param id Const reference to an identifier
+     * \param val Unique pointer to a value
      */
     void set(const ast::symbol& id, std::unique_ptr<Value> val) {
         if (env_.empty()) {
@@ -449,11 +412,9 @@ class Context {
 };
 
 /**
- * @class qpp::qasm::QCircuitBuilder
- * @class qpp::qasm::QCircuitBuilder
+ * \class qpp::qasm::QCircuitBuilder
  *
- * @brief Visitor for converting a QASM AST to a QCircuit
- * @brief Visitor for converting a QASM AST to a QCircuit
+ * \brief Visitor for converting a QASM AST to a QCircuit
  */
 class QCircuitBuilder final : public ast::Visitor {
     Context ctx; ///< qpp::QCircuit translation context
@@ -463,11 +424,9 @@ class QCircuitBuilder final : public ast::Visitor {
 
   public:
     /**
-     * @brief Constructs a QCircuit builder for a given accumulating QCircuit
-     * @brief Constructs a QCircuit builder for a given accumulating QCircuit
+     * \brief Constructs a QCircuit builder for a given accumulating QCircuit
      *
-     * @param qc Pointer to the accumulating QCircuit
-     * @param qc Pointer to the accumulating QCircuit
+     * \param qc Pointer to the accumulating QCircuit
      */
     explicit QCircuitBuilder(QCircuit* qc) : ctx(qc) {}
 
@@ -769,13 +728,10 @@ class QCircuitBuilder final : public ast::Visitor {
 
   private:
     /**
-     * @brief Interpret the access as a classical register
-     * @brief Interpret the access as a classical register
+     * \brief Interpret the access as a classical register
      *
-     * @param ap The variable access
-     * @param ap The variable access
-     * @return List of bit indices corresponding to the variable access
-     * @return List of bit indices corresponding to the variable access
+     * \param ap The variable access
+     * \return List of bit indices corresponding to the variable access
      */
     std::vector<idx> var_access_as_creg(ast::VarAccess& ap) {
         auto reg =
@@ -791,13 +747,10 @@ class QCircuitBuilder final : public ast::Visitor {
     }
 
     /**
-     * @brief Interpret the access as a quantum register
-     * @brief Interpret the access as a quantum register
+     * \brief Interpret the access as a quantum register
      *
-     * @param ctx The variable access
-     * @param ctx The variable access
-     * @return List of virtual qubit indices corresponding to the variable
-     * @return List of virtual qubit indices corresponding to the variable
+     * \param ctx The variable access
+     * \return List of virtual qubit indices corresponding to the variable
      * access
      */
     std::vector<idx> var_access_as_qreg(ast::VarAccess& ap) {
@@ -823,8 +776,7 @@ class QCircuitBuilder final : public ast::Visitor {
 };
 
 /**
- * @brief Internal helper to build a qpp::QCircuit from an AST program
- * @brief Internal helper to build a qpp::QCircuit from an AST program
+ * \brief Internal helper to build a qpp::QCircuit from an AST program
  */
 inline QCircuit build_qcircuit(const ast::ptr<ast::Program>& program) {
     QCircuit qc(program->qubits(), program->bits());
@@ -834,12 +786,10 @@ inline QCircuit build_qcircuit(const ast::ptr<ast::Program>& program) {
 }
 
 /**
- * @brief Reads an OpenQASM circuit from stdin and returns its qpp::QCircuit
- * @brief Reads an OpenQASM circuit from stdin and returns its qpp::QCircuit
+ * \brief Reads an OpenQASM circuit from stdin and returns its qpp::QCircuit
  * representation
  *
- * @return qpp::QCircuit
- * @return qpp::QCircuit
+ * \return qpp::QCircuit
  */
 inline QCircuit read(std::istream& stream) {
     ast::ptr<ast::Program> program = parser::parse_stream(stream);
@@ -847,12 +797,10 @@ inline QCircuit read(std::istream& stream) {
 }
 
 /**
- * @brief Reads an OpenQASM circuit from a string and returns its qpp::QCircuit
- * @brief Reads an OpenQASM circuit from a string and returns its qpp::QCircuit
+ * \brief Reads an OpenQASM circuit from a string and returns its qpp::QCircuit
  * representation
  *
- * @return qpp::QCircuit
- * @return qpp::QCircuit
+ * \return qpp::QCircuit
  */
 inline QCircuit read_from_string(std::string qasm_string) {
     std::istringstream stream(qasm_string);
@@ -861,12 +809,10 @@ inline QCircuit read_from_string(std::string qasm_string) {
 }
 
 /**
- * @brief Reads an OpenQASM circuit from a file and returns its qpp::QCircuit
- * @brief Reads an OpenQASM circuit from a file and returns its qpp::QCircuit
+ * \brief Reads an OpenQASM circuit from a file and returns its qpp::QCircuit
  * representation
  *
- * @return qpp::QCircuit
- * @return qpp::QCircuit
+ * \return qpp::QCircuit
  */
 inline QCircuit read_from_file(const std::string& fname) {
     ast::ptr<ast::Program> program = parser::parse_file(fname);

@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qpp/classes/timer.hpp
- * @file qpp/classes/timer.hpp
- * @brief Timing
- * @brief Timing
+ * \file qpp/classes/timer.hpp
+ * \brief Timing
  */
 
 #ifndef QPP_CLASSES_TIMER_HPP_
@@ -41,16 +39,12 @@
 
 namespace qpp {
 /**
- * @class qpp::Timer
- * @class qpp::Timer
- * @brief Chronometer
- * @brief Chronometer
+ * \class qpp::Timer
+ * \brief Chronometer
  *
- * @tparam T Tics duration, default is std::chrono::duration<double>, i.e.
- * @tparam T Tics duration, default is std::chrono::duration<double>, i.e.
+ * \tparam T Tics duration, default is std::chrono::duration<double>, i.e.
  * seconds in double precision
- * @tparam CLOCK_T Clock's type, default is std::chrono::steady_clock, not
- * @tparam CLOCK_T Clock's type, default is std::chrono::steady_clock, not
+ * \tparam CLOCK_T Clock's type, default is std::chrono::steady_clock, not
  * affected by wall clock changes during runtime
  */
 template <typename T = std::chrono::duration<double>,
@@ -61,25 +55,21 @@ class Timer : public IDisplay {
 
   public:
     /**
-     * @brief Constructs an instance with the current time as the starting point
-     * @brief Constructs an instance with the current time as the starting point
+     * \brief Constructs an instance with the current time as the starting point
      */
     Timer() noexcept : start_{CLOCK_T::now()}, end_{start_} {}
 
     /**
-     * @brief Default virtual destructor
-     * @brief Default virtual destructor
+     * \brief Default virtual destructor
      */
     ~Timer() override = default;
 
     /**
-     * @brief Resets the chronometer
-     * @brief Resets the chronometer
+     * \brief Resets the chronometer
      *
      * Resets the starting/ending point to the current time
      *
-     * @return Reference to the current instance
-     * @return Reference to the current instance
+     * \return Reference to the current instance
      */
     Timer& tic() noexcept {
         start_ = end_ = CLOCK_T::now();
@@ -88,13 +78,11 @@ class Timer : public IDisplay {
     }
 
     /**
-     * @brief Stops the chronometer
-     * @brief Stops the chronometer
+     * \brief Stops the chronometer
      *
      * Sets the current time as the ending point
      *
-     * @return Reference to the current instance
-     * @return Reference to the current instance
+     * \return Reference to the current instance
      */
     Timer& toc() noexcept {
         end_ = CLOCK_T::now();
@@ -103,11 +91,9 @@ class Timer : public IDisplay {
     }
 
     /**
-     * @brief Time passed in the duration specified by T
-     * @brief Time passed in the duration specified by T
+     * \brief Time passed in the duration specified by T
      *
-     * @return Number of tics (specified by T) that passed between the
-     * @return Number of tics (specified by T) that passed between the
+     * \return Number of tics (specified by T) that passed between the
      * instantiation/reset and invocation of qpp::Timer::toc()
      */
     double tics() const noexcept {
@@ -116,15 +102,12 @@ class Timer : public IDisplay {
     }
 
     /**
-     * @brief Duration specified by U
-     * @brief Duration specified by U
+     * \brief Duration specified by U
      *
-     * @tparam U Duration, default is T, which defaults to
-     * @tparam U Duration, default is T, which defaults to
+     * \tparam U Duration, default is T, which defaults to
      * std::chrono::duration<double>, i.e., seconds in double precision
      *
-     * @return Duration that passed between the instantiation/reset and
-     * @return Duration that passed between the instantiation/reset and
+     * \return Duration that passed between the instantiation/reset and
      * invocation of qpp::Timer::toc()
      */
     template <typename U = T>
@@ -134,17 +117,14 @@ class Timer : public IDisplay {
 
   private:
     /**
-     * @brief qpp::IDisplay::display() override
-     * @brief qpp::IDisplay::display() override
+     * \brief qpp::IDisplay::display() override
      *
      * Writes to the output stream the number of tics (specified by T) that
      * passed between the instantiation/reset and invocation of
      * qpp::Timer::toc()
      *
-     * @param os Output stream passed by reference
-     * @param os Output stream passed by reference
-     * @return Reference to the output stream
-     * @return Reference to the output stream
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         return os << tics();

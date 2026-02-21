@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qasmtools/ast/base.hpp
- * @file qasmtools/ast/base.hpp
- * @brief OpenQASM syntax trees
- * @brief OpenQASM syntax trees
+ * \file qasmtools/ast/base.hpp
+ * \brief OpenQASM syntax trees
  */
 
 #ifndef QASMTOOLS_AST_BASE_HPP_
@@ -51,10 +49,8 @@ using ptr = std::unique_ptr<T>;
 using symbol = std::string;
 
 /**
- * @class qasmtools::ast::ASTNode
- * @class qasmtools::ast::ASTNode
- * @brief Base class for AST nodes
- * @brief Base class for AST nodes
+ * \class qasmtools::ast::ASTNode
+ * \brief Base class for AST nodes
  */
 class ASTNode : public object::cloneable<ASTNode> {
     static int& max_uid_() {
@@ -71,48 +67,38 @@ class ASTNode : public object::cloneable<ASTNode> {
     virtual ~ASTNode() = default;
 
     /**
-     * @brief Get the ID of the node
-     * @brief Get the ID of the node
+     * \brief Get the ID of the node
      *
-     * @return The node's unique ID
-     * @return The node's unique ID
+     * \return The node's unique ID
      */
     int uid() const { return uid_; }
 
     /**
-     * @brief Get the position of the node
-     * @brief Get the position of the node
+     * \brief Get the position of the node
      *
-     * @return The node's position in source
-     * @return The node's position in source
+     * \return The node's position in source
      */
     parser::Position pos() const { return pos_; }
 
     /**
-     * @brief Provides dispatch for the Visitor pattern
-     * @brief Provides dispatch for the Visitor pattern
+     * \brief Provides dispatch for the Visitor pattern
      */
     virtual void accept(Visitor& visitor) = 0;
 
     /**
-     * @brief Print the formatted QASM source code of the node
-     * @brief Print the formatted QASM source code of the node
+     * \brief Print the formatted QASM source code of the node
      *
-     * @param os Output stream
-     * @param os Output stream
+     * \param os Output stream
      */
     virtual std::ostream& pretty_print(std::ostream& os) const = 0;
 
     /**
-     * @brief Extraction operator override
-     * @brief Extraction operator override
+     * \brief Extraction operator override
      *
      * Extraction is non-virtual and delegates to pretty_print
      *
-     * @param os Output stream
-     * @param os Output stream
-     * @param node Node to print
-     * @param node Node to print
+     * \param os Output stream
+     * \param node Node to print
      */
     friend std::ostream& operator<<(std::ostream& os, const ASTNode& node) {
         return node.pretty_print(os);

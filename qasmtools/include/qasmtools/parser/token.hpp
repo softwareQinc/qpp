@@ -27,10 +27,8 @@
  */
 
 /**
- * @file qasmtools/parser/token.hpp
- * @file qasmtools/parser/token.hpp
- * @brief Tokens
- * @brief Tokens
+ * \file qasmtools/parser/token.hpp
+ * \brief Tokens
  */
 
 #ifndef QASMTOOLS_PARSER_TOKEN_HPP_
@@ -45,18 +43,14 @@ namespace qasmtools {
 namespace parser {
 
 /**
- * @class qasmtools::parser::Token
- * @class qasmtools::parser::Token
- * @brief OpenQASM token class
- * @brief OpenQASM token class
- * @see qasmtools::parser::Lexer
- * @see qasmtools::parser::Lexer
+ * \class qasmtools::parser::Token
+ * \brief OpenQASM token class
+ * \see qasmtools::parser::Lexer
  */
 class Token {
   public:
     /**
-     * @brief Token types
-     * @brief Token types
+     * \brief Token types
      */
     enum class Kind {
         error,
@@ -108,15 +102,11 @@ class Token {
     };
 
     /**
-     * @brief Extraction operator overload
-     * @brief Extraction operator overload
+     * \brief Extraction operator overload
      *
-     * @param os Output stream passed by reference
-     * @param os Output stream passed by reference
-     * @param k qasmtools::parser::Kind enum class
-     * @param k qasmtools::parser::Kind enum class
-     * @return Reference to the output stream
-     * @return Reference to the output stream
+     * \param os Output stream passed by reference
+     * \param k qasmtools::parser::Kind enum class
+     * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const Kind& k) {
         switch (k) {
@@ -268,105 +258,83 @@ class Token {
         : pos_(pos), kind_(k), str_(str), value_(value) {}
 
     /**
-     * @brief Contextually return the token kind
-     * @brief Contextually return the token kind
+     * \brief Contextually return the token kind
      *
      * Allows switching directly on the token
      */
     operator Kind() const { return kind_; }
 
     /**
-     * @brief Get the type of token
-     * @brief Get the type of token
+     * \brief Get the type of token
      *
-     * @return The token type
-     * @return The token type
+     * \return The token type
      */
     Kind kind() const { return kind_; }
 
     /**
-     * @brief Check whether the token is a particular type
-     * @brief Check whether the token is a particular type
+     * \brief Check whether the token is a particular type
      *
-     * @param k The token type to compare against
-     * @param k The token type to compare against
-     * @return True if and only if the token is of type k
-     * @return True if and only if the token is of type k
+     * \param k The token type to compare against
+     * \return True if and only if the token is of type k
      */
     bool is(Kind k) const { return kind_ == k; }
 
     /**
-     * @brief Check whether the token is not a particular type
-     * @brief Check whether the token is not a particular type
+     * \brief Check whether the token is not a particular type
      *
-     * @param k The token type to compare against
-     * @param k The token type to compare against
-     * @return True if and only if the token is not of type k
-     * @return True if and only if the token is not of type k
+     * \param k The token type to compare against
+     * \return True if and only if the token is not of type k
      */
     bool is_not(Kind k) const { return kind_ != k; }
 
     /**
-     * @brief User-defined conversion to int
-     * @brief User-defined conversion to int
+     * \brief User-defined conversion to int
      *
      * \note Does not perform validity checks
      *
-     * @return The value of the token as an integer
-     * @return The value of the token as an integer
+     * \return The value of the token as an integer
      */
     int as_int() const { return std::get<int>(value_); }
 
     /**
-     * @brief Get the floating point value
-     * @brief Get the floating point value
+     * \brief Get the floating point value
      *
      * \note Does not perform validity checks
      *
-     * @return The value of the token as a floating point number
-     * @return The value of the token as a floating point number
+     * \return The value of the token as a floating point number
      */
     double as_real() const { return std::get<double>(value_); }
 
     /**
-     * @brief Get the string value
-     * @brief Get the string value
+     * \brief Get the string value
      *
      * \note Does not perform validity checks
      *
-     * @return The value of the token as a string
-     * @return The value of the token as a string
+     * \return The value of the token as a string
      */
     std::string as_string() const { return std::get<std::string>(value_); }
 
     /**
-     * @brief Return the position of the token
-     * @brief Return the position of the token
+     * \brief Return the position of the token
      *
-     * @return Const reference to the token position
-     * @return Const reference to the token position
+     * \return Const reference to the token position
      */
     const Position& position() const { return pos_; }
 
     /**
-     * @brief Get the raw string
-     * @brief Get the raw string
+     * \brief Get the raw string
      *
-     * @return The raw source string
-     * @return The raw source string
+     * \return The raw source string
      */
     const std::string& raw() const { return str_; }
 
     /**
-     * @brief Extraction operator override
-     * @brief Extraction operator override
+     * \brief Extraction operator override
      *
      * Writes to the output stream a textual representation of the token
      *
-     * @param os Output stream passed by reference
-     * @param os Output stream passed by reference
-     * @return Reference to the output stream
-     * @return Reference to the output stream
+     * \param os Output stream passed by reference
+     * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const Token& t) {
         os << t.kind_;
@@ -392,8 +360,7 @@ class Token {
 };
 
 /**
- * @brief Hash-map of OpenQASM keywords and their token type
- * @brief Hash-map of OpenQASM keywords and their token type
+ * \brief Hash-map of OpenQASM keywords and their token type
  */
 static const std::unordered_map<std::string, Token::Kind> keywords{
     {"include", Token::Kind::kw_include},

@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qpp/classes/qengine_traits.hpp
- * @file qpp/classes/qengine_traits.hpp
- * @brief Quantum engine traits (run-time)
- * @brief Quantum engine traits (run-time)
+ * \file qpp/classes/qengine_traits.hpp
+ * \brief Quantum engine traits (run-time)
  */
 
 #ifndef QPP_CLASSES_QENGINE_TRAITS_HPP_
@@ -38,43 +36,34 @@
 
 namespace qpp {
 /**
- * @class qpp::IQEngineTraits
- * @class qpp::IQEngineTraits
- * @brief Traits for quantum engines, resolved at run-time
- * @brief Traits for quantum engines, resolved at run-time
+ * \class qpp::IQEngineTraits
+ * \brief Traits for quantum engines, resolved at run-time
  * \note All engines must implement this trait (i.e., inherit from it)
  */
 struct IQEngineTraits {
     /**
-     * @brief Engine name
-     * @brief Engine name
+     * \brief Engine name
      *
-     * @return Engine name
-     * @return Engine name
+     * \return Engine name
      */
     virtual std::string traits_get_name() const = 0;
 
     /**
-     * @brief Determines if the engine is noisy
-     * @brief Determines if the engine is noisy
+     * \brief Determines if the engine is noisy
      *
-     * @return True if the engine simulates noisy execution, false if not
-     * @return True if the engine simulates noisy execution, false if not
+     * \return True if the engine simulates noisy execution, false if not
      */
 
     virtual bool traits_is_noisy() const = 0;
     /**
-     * @brief Determines if the engine operates on pure states
-     * @brief Determines if the engine operates on pure states
+     * \brief Determines if the engine operates on pure states
      *
-     * @return True if the engine operates on pure states, false otherwise
-     * @return True if the engine operates on pure states, false otherwise
+     * \return True if the engine operates on pure states, false otherwise
      */
     virtual bool traits_is_pure() const = 0;
 
     /**
-     * @brief Default virtual destructor
-     * @brief Default virtual destructor
+     * \brief Default virtual destructor
      */
     virtual ~IQEngineTraits() = default;
 };

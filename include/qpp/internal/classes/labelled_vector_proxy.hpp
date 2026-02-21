@@ -25,10 +25,8 @@
  */
 
 /**
- * @file qpp/internal/classes/labelled_vector_proxy.hpp
- * @file qpp/internal/classes/labelled_vector_proxy.hpp
- * @brief qpp::internal::LabelledVectorProxy
- * @brief qpp::internal::LabelledVectorProxy
+ * \file qpp/internal/classes/labelled_vector_proxy.hpp
+ * \brief qpp::internal::LabelledVectorProxy
  */
 
 #ifndef QPP_INTERNAL_CLASSES_LABELLED_VECTOR_PROXY_HPP_
@@ -95,14 +93,12 @@ class LabelledVectorProxy {
 };
 
 /**
- * @brief Mutable proxy to quantum engine dits
- * @brief Mutable proxy to quantum engine dits
+ * \brief Mutable proxy to quantum engine dits
  */
 using proxy_to_engine_dits_t = internal::LabelledVectorProxy<idx, false>;
 
 /**
- * @brief Const proxy to quantum engine dits
- * @brief Const proxy to quantum engine dits
+ * \brief Const proxy to quantum engine dits
  */
 using const_proxy_to_engine_dits_t = internal::LabelledVectorProxy<idx, true>;
 } /* namespace internal */

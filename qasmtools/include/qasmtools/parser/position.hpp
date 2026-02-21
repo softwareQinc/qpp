@@ -25,8 +25,7 @@
  */
 
 /**
- * @file qasmtools/parser/position.hpp
- * @file qasmtools/parser/position.hpp
+ * \file qasmtools/parser/position.hpp
  */
 
 #ifndef QASMTOOLS_PARSER_POSITION_HPP_
@@ -39,10 +38,8 @@ namespace qasmtools {
 namespace parser {
 
 /**
- * @class qasmtools::parser::Position
- * @class qasmtools::parser::Position
- * @brief Positions in source code
- * @brief Positions in source code
+ * \class qasmtools::parser::Position
+ * \brief Positions in source code
  */
 class Position {
     std::string fname_ = ""; ///< name of the containing file
@@ -51,35 +48,26 @@ class Position {
 
   public:
     /**
-     * @brief Default constructor
-     * @brief Default constructor
+     * \brief Default constructor
      */
     Position() = default;
 
     /**
-     * @brief Constructs a position within a file
-     * @brief Constructs a position within a file
+     * \brief Constructs a position within a file
      *
-     * @param fname Filename
-     * @param fname Filename
-     * @param line Line number
-     * @param line Line number
-     * @param column Column number
-     * @param column Column number
+     * \param fname Filename
+     * \param line Line number
+     * \param column Column number
      */
     Position(const std::string& fname, int line, int column)
         : fname_(fname), line_(line), column_(column) {}
 
     /**
-     * @brief Extraction operator overload
-     * @brief Extraction operator overload
+     * \brief Extraction operator overload
      *
-     * @param os Output stream
-     * @param os Output stream
-     * @param pos qasmtools::parser::Position
-     * @param pos qasmtools::parser::Position
-     * @return Reference to the output stream
-     * @return Reference to the output stream
+     * \param os Output stream
+     * \param pos qasmtools::parser::Position
+     * \return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const Position& pos) {
         os << pos.fname_ << ":" << pos.line_ << ":" << pos.column_;
@@ -87,40 +75,32 @@ class Position {
     }
 
     /**
-     * @brief The name of the containing file
-     * @brief The name of the containing file
+     * \brief The name of the containing file
      *
-     * @return Const reference to the filename
-     * @return Const reference to the filename
+     * \return Const reference to the filename
      */
     const std::string& get_filename() const { return fname_; }
 
     /**
-     * @brief The line of the position
-     * @brief The line of the position
+     * \brief The line of the position
      *
-     * @return The line number
-     * @return The line number
+     * \return The line number
      */
     int get_linenum() const { return line_; }
 
     /**
-     * @brief The column of the position
-     * @brief The column of the position
+     * \brief The column of the position
      *
-     * @return The column number
-     * @return The column number
+     * \return The column number
      */
     int get_column() const { return column_; }
 
     /**
-     * @brief Advance the line number by a specified amount
-     * @brief Advance the line number by a specified amount
+     * \brief Advance the line number by a specified amount
      *
      * \note Sets the column to 0
      *
-     * @param num Number of lines to advance (optional, default is 1)
-     * @param num Number of lines to advance (optional, default is 1)
+     * \param num Number of lines to advance (optional, default is 1)
      */
     void advance_line(int num = 1) {
         line_ += num;
@@ -128,11 +108,9 @@ class Position {
     }
 
     /**
-     * @brief Advance the column number by a specified amount
-     * @brief Advance the column number by a specified amount
+     * \brief Advance the column number by a specified amount
      *
-     * @param num Number of columns to advance (optional, default is 1)
-     * @param num Number of columns to advance (optional, default is 1)
+     * \param num Number of columns to advance (optional, default is 1)
      */
     void advance_column(int num = 1) { column_ += num; }
 };

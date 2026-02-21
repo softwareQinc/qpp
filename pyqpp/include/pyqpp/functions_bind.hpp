@@ -25,10 +25,8 @@
  */
 
 /**
- * @file <pyqpp/functions_bind.hpp>
- * @file <pyqpp/functions_bind.hpp>
- * @brief Bindings for <qpp/functions.hpp>
- * @brief Bindings for <qpp/functions.hpp>
+ * \file <pyqpp/functions_bind.hpp>
+ * \brief Bindings for <qpp/functions.hpp>
  */
 
 #ifndef PYQPP_FUNCTIONS_BIND_HPP_
