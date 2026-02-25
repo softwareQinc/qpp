@@ -45,7 +45,7 @@ inline namespace literals {
 /**
  * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
  *
- * Example: @code cplx z = 4_i; // type of z is std::complex<realT> \endcode
+ * Example: @code cplx z = 4_i; // type of z is std::complex<realT> @endcode
  */
 constexpr cplx operator""_i(unsigned long long int x) noexcept {
     return {0., static_cast<cplx::value_type>(x)};
@@ -54,7 +54,7 @@ constexpr cplx operator""_i(unsigned long long int x) noexcept {
 /**
  * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
  *
- * Example: @code cplx z = 4.5_i; // type of z is std::complex<realT> \endcode
+ * Example: @code cplx z = 4.5_i; // type of z is std::complex<realT> @endcode
  */
 constexpr cplx operator""_i(long double x) noexcept {
     return {0., static_cast<cplx::value_type>(x)};
@@ -63,7 +63,7 @@ constexpr cplx operator""_i(long double x) noexcept {
 /**
  * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (integer overload)
  *
- * Example: @code auto z = 4_if; // type of z is std::complex<float> \endcode
+ * Example: @code auto z = 4_if; // type of z is std::complex<float> @endcode
  */
 constexpr std::complex<float> operator""_if(unsigned long long int x) noexcept {
     return {0., static_cast<float>(x)};
@@ -72,7 +72,7 @@ constexpr std::complex<float> operator""_if(unsigned long long int x) noexcept {
 /**
  * @brief User-defined literal for complex \f$i=\sqrt{-1}\f$ (real overload)
  *
- * Example: @code auto z = 4.5_if; // type of z is std::complex<float> \endcode
+ * Example: @code auto z = 4.5_if; // type of z is std::complex<float> @endcode
  */
 constexpr std::complex<float> operator""_if(long double x) noexcept {
     return {0., static_cast<float>(x)};

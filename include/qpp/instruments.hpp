@@ -365,15 +365,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
  * @brief  Measures the part \a subsys of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
  *
- * @note The dimension of all \a Ks must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of all \a Ks must match the dimension of \a target
  *
  * @param A Eigen expression
  * @param Ks Set of Kraus operators (must be square)
  * @param target Subsystem indexes that are measured
  * @param dims Dimensions of the multi-partite system
- * @param destructive Destructive measurement, true by default
+ * @param destructive If true, measured subsystems are traced away
  * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
@@ -492,15 +490,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  * @brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
  *
- * @note The dimension of all \a Ks must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of all \a Ks must match the dimension of \a target
  *
  * @param A Eigen expression
  * @param Ks Set of Kraus operators
  * @param target Subsystem indexes that are measured
  * @param dims Dimensions of the multi-partite system
- * @param destructive Destructive measurement, true by default
+ * @param destructive If true, measured subsystems are traced away
  * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
@@ -516,15 +512,13 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * @brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
  *
- * @note The dimension of all \a Ks must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of all \a Ks must match the dimension of \a target
  *
  * @param A Eigen expression
  * @param Ks Set of Kraus operators (must be square)
  * @param target Subsystem indexes that are measured
  * @param d Subsystem dimensions
- * @param destructive Destructive measurement, true by default
+ * @param destructive If true, measured subsystems are traced away
  * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
@@ -558,15 +552,13 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  * @brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
  *
- * @note The dimension of all \a Ks must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of all \a Ks must match the dimension of \a target
  *
  * @param A Eigen expression
  * @param Ks Set of Kraus operators
  * @param target Subsystem indexes that are measured
  * @param d Subsystem dimensions
- * @param destructive Destructive measurement, true by default
+ * @param destructive If true, measured subsystems are traced away
  * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
@@ -584,9 +576,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * by the columns of the matrix \a V
  * @see qpp::measure_seq(), qpp::sample()
  *
- * @note The dimension of \a V must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of \a V must match the dimension of \a target
  *
  * @note The number of column vectors of \a V can be smaller than the dimension
  * of \a target. If that is the case, then the measurement probabilities sum up
@@ -597,7 +587,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
  * ket parts of the rank-1 projectors
  * @param target Subsystem indexes that are measured
  * @param dims Dimensions of the multi-partite system
- * @param destructive Destructive measurement, true by default
+ * @param destructive If true, measured subsystems are traced away
  * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
@@ -711,9 +701,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * by the columns of the matrix \a V
  * @see qpp::measure_seq(), qpp::sample()
  *
- * @note The dimension of \a V must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of \a V must match the dimension of \a target
  *
  * @note The number of column vectors of \a V can be smaller than the dimension
  * of \a target. If that is the case, then the measurement probabilities sum up
@@ -724,7 +712,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
  * ket parts of the rank-1 projectors
  * @param target Subsystem indexes that are measured
  * @param d Subsystem dimensions
- * @param destructive Destructive measurement, true by default
+ * @param destructive If true, measured subsystems are traced away
  * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
@@ -750,139 +738,6 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return measure(rA, V, target, dims, destructive);
-}
-
-/**
- * @brief Sequentially measures the part \a target of the multi-partite state
- * vector or density matrix \a A in the computational basis
- * @see qpp::measure(), qpp::sample()
- *
- * @note If \a destructive is set to true (by default), the measurement is
- * destructive, i.e., the measured subsystems are traced away.
- *
- * @param A Eigen expression
- * @param target Subsystem indexes that are measured
- * @param dims Dimensions of the multi-partite system
- * @param destructive Destructive measurement, true by default
- * @return Tuple of: 1. Vector of measurement result outcomes, 2. Outcome
- * probabilities, and 3. Post-measurement normalized state
- */
-template <typename Derived>
-[[qpp::critical]] std::tuple<std::vector<idx>, std::vector<realT>,
-                             expr_t<Derived>>
-measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
-            std::vector<idx> dims, bool destructive = true) {
-    constexpr char func_name[] = "qpp::measure_seq()";
-    expr_t<Derived> rA = A.derived();
-
-    // EXCEPTION CHECKS
-    // check zero-size
-    if (!internal::check_nonzero_size(rA)) {
-        throw exception::ZeroSize(func_name, "A");
-    }
-
-    // check that dimension is valid
-    if (!internal::check_dims(dims)) {
-        throw exception::DimsInvalid(func_name, "dims");
-    }
-
-    // check valid state and matching dimensions
-    if (internal::check_cvector(rA)) {
-        if (!internal::check_dims_match_cvect(dims, rA)) {
-            throw exception::DimsMismatchCvector(func_name, "A/dims");
-        }
-    } else if (internal::check_square_mat(rA)) {
-        if (!internal::check_dims_match_mat(dims, rA)) {
-            throw exception::DimsMismatchMatrix(func_name, "A/dims");
-        }
-    } else {
-        throw exception::MatrixNotSquareNorCvector(func_name, "A");
-    }
-
-    // check that target is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(target, dims)) {
-        throw exception::SubsysMismatchDims(func_name, "dims/target");
-    }
-    // END EXCEPTION CHECKS
-
-    idx target_size = target.size();
-    std::vector<idx> ms(target_size);
-    std::vector<realT> ps(target_size);
-
-    std::vector<idx> idxs(target_size);
-    std::iota(idxs.begin(), idxs.end(), 0);
-
-    // OPTIMIZATION: Tag-sort target in DECREASING order.
-    // By processing the highest indices first, we prevent the need to shift
-    // the indices of the remaining subsystems (target[idx_i] -= i),
-    // reducing instruction overhead.
-    std::sort(idxs.begin(), idxs.end(),
-              [&target](const auto& lhs, const auto& rhs) {
-                  return target[lhs] > target[rhs];
-              });
-
-    //************ ket or density matrix ************//
-    for (idx i = 0; i < target_size; ++i) {
-        idx idx_i = idxs[i];
-
-        // because we are deleting from the back (highest indices first),
-        // the remaining indices in 'dims' match the original 'target' indices.
-        idx curr_subsys_idx = target[idx_i];
-
-        auto [m, probs, states] = measure(
-            rA, Gates::get_no_thread_local_instance().Id(dims[curr_subsys_idx]),
-            {curr_subsys_idx}, dims, destructive);
-
-        ms[idx_i] = m;
-        ps[idx_i] = probs[m];
-        rA = std::move(states[m]);
-
-        if (destructive) {
-            // remove the measured subsystem from dims
-            dims.erase(std::next(dims.begin(), curr_subsys_idx));
-        }
-    }
-
-    return std::make_tuple(ms, ps, rA);
-}
-
-/**
- * @brief Sequentially measures the part \a target of the multi-partite
- * state vector or density matrix \a A in the computational basis
- * @see qpp::measure(), qpp::sample()
- *
- * @note If \a destructive is set to true (by default), the measurement is
- * destructive, i.e., the measured subsystems are traced away.
- *
- * @param A Eigen expression
- * @param target Subsystem indexes that are measured
- * @param d Subsystem dimensions
- * @param destructive Destructive measurement, true by default
- * @return Tuple of: 1. Vector of measurement result outcomes, 2. Outcome
- * probabilities, and 3. Post-measurement normalized state
- */
-template <typename Derived>
-std::tuple<std::vector<idx>, std::vector<realT>, expr_t<Derived>>
-measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
-            idx d = 2, bool destructive = true) {
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
-
-    // EXCEPTION CHECKS
-    // check zero size
-    if (!internal::check_nonzero_size(rA)) {
-        throw exception::ZeroSize("qpp::measure_seq()", "A");
-    }
-
-    // check valid dims
-    if (d < 2) {
-        throw exception::DimsInvalid("qpp::measure_seq()", "d");
-    }
-    // END EXCEPTION CHECKS
-
-    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(n, d); // local dimensions vector
-
-    return measure_seq(rA, target, dims, destructive);
 }
 
 /**
@@ -933,7 +788,7 @@ sample(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 
     idx D = prod(dims); // total dimension
 
-    bool is_ket = internal::check_cvector(rA);
+    const bool is_ket = internal::check_cvector(rA);
     std::vector<realT> pbs;
     if (is_ket) {
         pbs = qpp::abssq(rA);
@@ -1116,42 +971,42 @@ sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
     return sample(num_samples, rA, target, dims);
 }
 
-/*
+/**
  * @brief Sequentially measures the part \a target of the multi-partite state
  * vector or density matrix \a A in the computational basis
  * @see qpp::measure(), qpp::sample()
  *
- * @note If \a destructive is set to true (by default), the measurement is
- * destructive, i.e., the measured subsystems are traced away.
+ * * Optimized with a hybrid strategy:
+ * 1. For small density matrices (<= 10 qubits), it uses bulk operations to
+ * maximize L3 cache hits and minimize memory allocations.
+ * 2. For kets and large density matrices, it shrinks the state at each step
+ * to avoid exponential complexity.
  *
  * @param A Eigen expression
- * @param target Subsystem indexes that are measured
+ * @param target Subsystem indexes to be measured
  * @param dims Dimensions of the multi-partite system
- * @param destructive Destructive measurement, true by default
+ * @param destructive If true, measured subsystems are traced away
  * @return Tuple of: 1. Vector of measurement result outcomes, 2. Outcome
  * probabilities, and 3. Post-measurement normalized state
  */
 template <typename Derived>
 [[qpp::critical]] std::tuple<std::vector<idx>, std::vector<realT>,
                              expr_t<Derived>>
-measure_seq_new(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
-                std::vector<idx> dims, bool destructive = true) {
+measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
+            std::vector<idx> dims, bool destructive = true) {
     constexpr char func_name[] = "qpp::measure_seq()";
     expr_t<Derived> rA = A.derived();
 
-    // EXCEPTION CHECKS
-    // check zero-size
+    // --- EXCEPTION CHECKS ---
     if (!internal::check_nonzero_size(rA)) {
         throw exception::ZeroSize(func_name, "A");
     }
-
-    // check that dimension is valid
     if (!internal::check_dims(dims)) {
         throw exception::DimsInvalid(func_name, "dims");
     }
 
-    // check valid state and matching dimensions
-    if (internal::check_cvector(rA)) {
+    bool is_ket = internal::check_cvector(rA);
+    if (is_ket) {
         if (!internal::check_dims_match_cvect(dims, rA)) {
             throw exception::DimsMismatchCvector(func_name, "A/dims");
         }
@@ -1163,35 +1018,127 @@ measure_seq_new(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
         throw exception::MatrixNotSquareNorCvector(func_name, "A");
     }
 
-    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims)) {
         throw exception::SubsysMismatchDims(func_name, "dims/target");
     }
-    // END EXCEPTION CHECKS
+    // --- END EXCEPTION CHECKS ---
 
-    idx target_size = target.size();
-    std::vector<idx> ms(target_size);
+    // Sample the outcomes once to determine the collapse path
+    auto [res_midx, prob] = sample(rA, target, dims);
+    const idx target_size = target.size();
     std::vector<realT> ps(target_size);
 
-    std::vector<idx> idxs(target_size);
-    std::iota(idxs.begin(), idxs.end(), 0);
+    // If destructive, sort targets in DESCENDING order.
+    // We must keep track of original positions to map back the
+    // probabilities/results correctly.
+    std::vector<idx> indices(target_size);
+    std::iota(indices.begin(), indices.end(), 0);
 
-    // Tag-sort target in increasing order
-    std::sort(idxs.begin(), idxs.end(),
-              [&target](const auto& lhs, const auto& rhs) {
-                  return target[lhs] < target[rhs];
-              });
-
-    //************ ket or density matrix ************//
-    auto [midx, prob] =
-        sample(rA, target); // we get something like <[2, 1, 4], 0.2>
-    std::vector<idx> expanded_midx(dims.size(), 0);
-    for (idx i = 0; i < target.size(); ++i) {
-        expanded_midx[target[idxs[i]]] = midx[idxs[i]];
+    if (destructive) {
+        std::sort(indices.begin(), indices.end(),
+                  [&](idx a, idx b) { return target[a] > target[b]; });
     }
-    ket outcome = mket(expanded_midx, dims);
 
-    return std::make_tuple(ms, ps, rA);
+    // CASE 1: Small Density Matrices (The "Cache-Friendly" Path)
+    // At n <= 10, the matrix (16MB) fits in L3 cache. It is faster to do math
+    // on the full matrix than to pay the overhead of repeated memory
+    // re-allocations and strided pointer math from ptrace().
+    if (!is_ket && dims.size() <= 10) {
+        for (idx cnt = 0; cnt < target_size; ++cnt) {
+            const idx i = target[cnt];
+            const cmat prj_i = mprj({res_midx[cnt]}, {dims[i]});
+            rA = apply(rA, prj_i, {i}, dims);
+
+            const realT p = trace(rA).real();
+            ps[cnt] = p;
+            rA /= p; // Normalize
+        }
+
+        if (destructive) {
+            rA = ptrace(rA, target, dims);
+        }
+        return std::make_tuple(res_midx, ps, rA);
+    }
+
+    // CASE 2: Kets and Large Density Matrices (The "Shrink" Path)
+    // For kets or large matrices (> 10 qubits), we must shrink the state
+    // immediately to prevent exponential blowup in subsequent iterations.
+    for (idx cnt = 0; cnt < target_size; ++cnt) {
+        // Use the sorted index if destructive to avoid shifting dims manually
+        const idx idx_ptr = destructive ? indices[cnt] : cnt;
+        const idx i = target[idx_ptr];
+        const idx dim_i = dims[i];
+        const idx res_i = res_midx[idx_ptr];
+
+        if (is_ket && destructive) {
+            // PURE STATE OPTIMIZATION:
+            // Contract with the basis bra <m| directly. This projects and
+            // reduces the system in one step, avoiding apply() entirely.
+            const ket basis_i = mket({res_i}, dim_i);
+            rA = ip(basis_i, static_cast<ket>(rA), {i}, dims);
+
+            const realT p = rA.squaredNorm();
+            ps[idx_ptr] = p;
+            rA /= std::sqrt(p);
+        } else {
+            // Mixed state or non-destructive path
+            const cmat prj_i = mprj({res_i}, dim_i);
+            rA = apply(rA, prj_i, {i}, dims);
+
+            const realT p = is_ket ? rA.squaredNorm() : trace(rA).real();
+            ps[idx_ptr] = p;
+            rA /= (is_ket ? std::sqrt(p) : p);
+
+            if (destructive) {
+                rA = ptrace(rA, {i}, dims);
+            }
+        }
+
+        // Update local dimensions and targets if system shrank
+        if (destructive) {
+            // OPTIMIZATION: By sorting target descending, dims.erase(i)
+            // does not invalidate the indices of the remaining targets.
+            dims.erase(dims.begin() + static_cast<std::ptrdiff_t>(i));
+        }
+    }
+
+    return std::make_tuple(res_midx, ps, rA);
+}
+
+/**
+ * @brief Sequentially measures the part \a target of the multi-partite
+ * state vector or density matrix \a A in the computational basis
+ * @see qpp::measure(), qpp::sample()
+ *
+ * @param A Eigen expression
+ * @param target Subsystem indexes that are measured
+ * @param d Subsystem dimensions
+ * @param destructive If true, measured subsystems are traced away
+ * @return Tuple of: 1. Vector of measurement result outcomes, 2. Outcome
+ * probabilities, and 3. Post-measurement normalized state
+ */
+template <typename Derived>
+std::tuple<std::vector<idx>, std::vector<realT>, expr_t<Derived>>
+measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+            idx d = 2, bool destructive = true) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // EXCEPTION CHECKS
+    // check zero size
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize("qpp::measure_seq()", "A");
+    }
+
+    // check valid dims
+    if (d < 2) {
+        throw exception::DimsInvalid("qpp::measure_seq()", "d");
+    }
+    // END EXCEPTION CHECKS
+
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
+
+    return measure_seq(rA, target, dims, destructive);
 }
 
 /**

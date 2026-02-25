@@ -57,7 +57,7 @@ namespace qpp {
  * // loads a previously saved Eigen ket
  * // from the MATLAB file "input.mat"
  * ket psi = load_MATLAB<ket>("input.mat");
- * \endcode
+ * @endcode
  *
  * @tparam Derived Complex Eigen type
  * @param mat_file MATLAB .mat file
@@ -140,7 +140,7 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
  * // loads a previously saved Eigen dynamic double matrix
  * // from the MATLAB file "input.mat"
  * rmat mat = load_MATLAB<rmat>("input.mat");
- * \endcode
+ * @endcode
  *
  * @tparam Derived Non-complex Eigen type
  * @param mat_file MATLAB .mat file

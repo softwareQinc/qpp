@@ -133,7 +133,7 @@ using cplx = std::complex<realT>;
  * @code
  * // type of mat is Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>
  * dyn_mat<float> mat(2, 3);
- * \endcode
+ * @endcode
  */
 template <typename Scalar> // Eigen::MatrixX_type (where type = Scalar)
 using dyn_mat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
@@ -145,7 +145,7 @@ using dyn_mat = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
  * @code
  * // type of col_vect is Eigen::Matrix<float, Eigen::Dynamic, 1>
  * dyn_col_vect<float> col_vect(2);
- * \endcode
+ * @endcode
  */
 template <typename Scalar> // Eigen::VectorX_type (where type = Scalar)
 using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
@@ -157,7 +157,7 @@ using dyn_col_vect = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
  * @code
  * // type of row_vect is Eigen::Matrix<float, 1, Eigen::Dynamic>
  * dyn_row_vect<float> row_vect(3);
- * \endcode
+ * @endcode
  */
 template <typename Scalar> // Eigen::RowVectorX_type (where type = Scalar)
 using dyn_row_vect = Eigen::Matrix<Scalar, 1, Eigen::Dynamic>;

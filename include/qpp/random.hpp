@@ -91,7 +91,7 @@ T rand(T a, T b) {
  * // generates a 3 x 3 random Eigen::MatrixX over qpp::cplx,
  * // with entries (both real and imaginary) uniformly distributed in [-1,1)
  * cmat mat = rand<cmat>(3, 3, -1, 1);
- * \endcode
+ * @endcode
  *
  * @tparam Derived Matrix type, must be either qpp::rmat or qpp::cmat
  * @param rows Number of rows of the randomly generated matrix
@@ -178,7 +178,7 @@ T randn(T mean = 0, T sigma = 1) {
  * // generates a 3 x 3 random Eigen::MatrixX over qpp::cplx,
  * // with entries (both real and imaginary) normally distributed in N(0,2)
  * cmat mat = randn<cmat>(3, 3, 0, 2);
- * \endcode
+ * @endcode
  *
  * @tparam Derived Matrix type, must be either qpp::rmat or qpp::cmat
  * @param rows Number of rows of the randomly generated matrix

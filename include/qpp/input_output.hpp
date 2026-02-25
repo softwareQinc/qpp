@@ -168,7 +168,7 @@ internal::IOManipDirac<Scalar> disp(const dirac_t<Scalar>& A,
  * std::ofstream fout("mat.txt");
  * cmat mat = rand<cmat>(2, 2); // a 2 x 2 random complex matrix
  * save(mat, fout);
- * \endcode
+ * @endcode
  *
  * @param A Eigen expression
  * @param os Output text stream
@@ -222,7 +222,7 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
  * // loads a complex Eigen dynamic complex matrix from a text stream
  * std::ifstream fin("mat.txt");
  * cmat mat = load<cmat>(fin);
- * \endcode
+ * @endcode
  *
  * @param is Input text stream
  */
@@ -267,7 +267,7 @@ load(std::istream& is,
  * // loads a real Eigen dynamic complex matrix from a text stream
  * std::ifstream fin("mat.txt");
  * rmat mat = load<rmat>(fin);
- * \endcode
+ * @endcode
  *
  * @param is Input text stream
  */
@@ -309,7 +309,7 @@ namespace obsolete {
  * std::ofstream fout("mat.dat", std::ios::out | std::ios::binary);
  * cmat mat = rand<cmat>(2, 2); // a 2 x 2 random complex matrix
  * save(mat, fout);
- * \endcode
+ * @endcode
  *
  * @param A Eigen expression
  * @param os Output binary stream
@@ -356,7 +356,7 @@ void save(const Eigen::MatrixBase<Derived>& A, std::ostream& os) {
  * // loads an Eigen dynamic complex matrix from a binary stream
  * std::ifstream fin("mat.dat", std::ios::in | std::ios::binary);
  * cmat mat = load<cmat>(fin);
- * \endcode
+ * @endcode
  *
  * @param is Input binary stream
  */

@@ -1,15 +1,15 @@
-# Version 7.0.0 - xx December 2025
+# Version 7.0.0 - xx March 2026
 
 - Significant performance improvements (10x to 1000x) for qubit state
   manipulation and qubit circuit execution through extensive optimizations of
-  `qpp::apply()` and `qpp::applyCTRL()`
+  `qpp::apply()`, `qpp::applyCTRL()`, and `qpp::measure_seq()`.
 - **pyqpp** is now feature complete, providing Python users with
   complete access to the full **Quantum++** API
-- Switched back to MAJOR.MINOR.PATCH release versioning system:
+- Switched to MAJOR.MINOR.PATCH release versioning system:
   - MAJOR -- introduces significant changes that break backward compatibility
   - MINOR -- may include limited or minor compatibility breaks
   - PATCH -- fully backward compatible fixes and improvements
-- Renamed the `qpp::Bit_circuit` to `qpp::BitCircuit` and
+- Renamed the class `qpp::Bit_circuit` to `qpp::BitCircuit` and the class
   `qpp::Dynamic_bitset` to `qpp::DynamicBitset` in ["qpp/classes/reversible.hpp"]
 - Renamed the class `internal::QCircuitConditionalStep` to
   `internal::QCircuitRuntimeStep`, and the corresponding
@@ -22,14 +22,16 @@
   `qpp::QCircuit::set_dits_runtime(mutable_dits_functor_t dits)`. Here
   `mutable_dits_functor_t` is an alias to an internal mutable functor defined
   in ["qpp/internal/classes/qcircuit_runtime_step.hpp"]
-- Changed `cond_func_t` type alias to `cond_pred_t` for
-  Boolean predicates in conditional statements and moved the type alias from
+- Changed `cond_func_t` type alias to `cond_pred_t` for Boolean predicates in
+  conditional statements and moved the type alias from
   ["qpp/types.hpp"] to
   ["qpp/internal/classes/qcircuit_runtime_step.hpp"]; alias to an internal type.
 - Added
   ["examples/circuits/runtime_set_dits.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)
 - Conditional statements are now indented with tabs when displaying
-  qpp::QCircuit instances
+  `qpp::QCircuit` instances
+- API change in `qpp::sample(A, target, dims)` overload, added the overall
+  outcome probability to its return type `std::tuple<std::vector<idx>, realT>`
 - Bumped Eigen3 minimum required version to 5.0.0
 - Bumped CMake minimum required version to 3.20
 - Modernized CMake configuration files
@@ -40,9 +42,9 @@
   in ["benchmarks"](https://github.com/softwareQinc/qpp/blob/main/benchmarks)
 - Bugfixes for `qpp::QFT()` and `qpp::TFQ()`
 - Added `pyqpp.QEngine.get_stats_to_JSON()` to display the measurement
-  statistics in JSON format from `pyqpp`
-- Finalized pyqpp, now all Quantum++ functions have corresponding bindings in
-  Python
+  statistics in JSON format from **pyqpp**
+- **pyqpp** is feature-complete, now all Quantum++ functions have corresponding
+  bindings in Python
 
 # Version 6.0 - 14 April 2025
 

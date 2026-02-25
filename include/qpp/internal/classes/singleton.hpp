@@ -74,7 +74,7 @@ namespace qpp::internal // internal class, do not modify
  * thread_local MySingleton& tls = MySingleton::get_thread_local_instance();
  * // Get a thread_local instance
  *
- * \endcode
+ * @endcode
  *
  * @see Code of qpp::Codes, qpp::Gates, qpp::Init, qpp::RandomDevices,
  * qpp::States or qpp.h for real world examples of usage.

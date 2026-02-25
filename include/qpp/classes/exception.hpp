@@ -71,7 +71,7 @@ namespace exception {
  *     };
  * } // namespace exception
  * } // namespace qpp
- * \endcode
+ * @endcode
  */
 class Exception : public std::exception {
   protected:

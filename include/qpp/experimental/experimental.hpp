@@ -57,13 +57,10 @@ namespace qpp::experimental {
  * vector or density matrix \a A in the computational basis
  * @see qpp::measure()
  *
- * @note If \a destructive is set to true (by default), the measurement is
- * destructive, i.e., the measured subsystems are traced away.
- *
  * @param A Eigen expression
  * @param target Subsystem indexes that are measured
  * @param dims Dimensions of the multi-partite system
- * @param destructive Destructive measurement, true by default
+ * @param destructive If true, measured subsystems are traced away
  * @return Tuple of: 1. Vector of outcome results of the measurement (ordered in
  * increasing order with respect to \a target, i.e., first measurement result
  * corresponds to the subsystem with the smallest index), 2. Outcome
@@ -267,13 +264,10 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
  * vector or density matrix \a A in the computational basis
  * @see qpp::measure()
  *
- * @note If \a destructive is set to true (by default), the measurement is
- * destructive, i.e., the measured subsystems are traced away.
- *
  * @param A Eigen expression
  * @param target Subsystem indexes that are measured
  * @param d Subsystem dimensions
- * @param destructive Destructive measurement, true by default
+ * @param destructive If true, measured subsystems are traced away
  * @return Tuple of: 1. Vector of outcome results of the measurement (ordered in
  * increasing order with respect to \a target, i.e., first measurement result
  * corresponds to the subsystem with the smallest index), 2. Outcome

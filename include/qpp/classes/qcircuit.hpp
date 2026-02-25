@@ -945,7 +945,7 @@ class QCircuit : public IDisplay, public IJSON {
      *     qc.add_dit(10);
      *     qc.gate(gt.X, 0);
      * qc.cond_end();
-     * \endcode
+     * @endcode
      *
      * @note Currently, conditional statements are executed only by
      * qpp::QEngine::execute(idx reps). If one executes the circuit step by step
@@ -961,7 +961,7 @@ class QCircuit : public IDisplay, public IJSON {
      *     return dits[0] == 1; // true if the classical dit 0 equals 1 at
      * runtime
      * }
-     * \endcode
+     * @endcode
      *
      * @return Reference to the current instance
      */
@@ -1003,7 +1003,7 @@ class QCircuit : public IDisplay, public IJSON {
      *     qc.add_dit(10);
      *     qc.gate(gt.X, 0);
      * qc.cond_end();
-     * \endcode
+     * @endcode
      *
      * @note Currently, conditional statements are executed only by
      * qpp::QEngine::execute(idx reps). If one executes the circuit step by step
@@ -1019,7 +1019,7 @@ class QCircuit : public IDisplay, public IJSON {
      *     return dits[0] == 1; // true if the classical dit 0 equals 1 at
      *                          // runtime
      * }
-     * \endcode
+     * @endcode
      *
      * @return Reference to the current instance
      */
@@ -1142,7 +1142,7 @@ class QCircuit : public IDisplay, public IJSON {
      * auto functor= [](auto dits) {
      *     dits[0] == 1; // set dit 0 of the quantum engine
      * }
-     * \endcode
+     * @endcode
      *
      * @return Reference to the current instance
      */
@@ -1586,6 +1586,138 @@ class QCircuit : public IDisplay, public IJSON {
                 for (idx i = 0; i < n_subsys / 2; ++i) {
                     gate(Gates::get_no_thread_local_instance().SWAPd(d_),
                          target[i], target[n_subsys - i - 1], "SWAPd");
+                }
+            }
+        }
+
+        return *this;
+    }
+
+    /**
+     * @brief Applies the quantum Fourier transform (as a series of gates)
+     * on the qudit indexes specified by \a target
+     *
+     * @param target Subsystem indexes where the quantum Fourier transform
+     * is applied
+     * @param swap Swaps the qubits at the end (true by default)
+     * @return Reference to the current instance
+     */
+    QCircuit& QFT_new(const std::vector<idx>& target, bool swap = true,
+                      bool phase_fold = true) {
+
+        // constexpr error string (factor out repeated literal)
+        static constexpr const char* QFT_ERR = "qpp::QCircuit::QFT()";
+
+        // EXCEPTION CHECKS
+        std::string context{"Step " + std::to_string(get_step_count())};
+
+        // check valid target
+        if (target.empty()) {
+            throw exception::ZeroSize(QFT_ERR, context + ": target");
+        }
+        for (idx elem : target) {
+            if (elem >= nq_) {
+                throw exception::OutOfRange(QFT_ERR, context + ": target");
+            }
+            // check target was not measured before
+            if (was_measured_d(elem)) {
+                throw exception::QuditAlreadyMeasured(QFT_ERR,
+                                                      context + ": target");
+            }
+        }
+        // check no duplicates target
+        if (!internal::check_no_duplicates(target)) {
+            throw exception::Duplicates(QFT_ERR, context + ": target");
+        }
+        // END EXCEPTION CHECKS
+
+        const idx n_subsys = static_cast<idx>(target.size());
+        auto& gates = Gates::get_no_thread_local_instance();
+        const cplx::value_type two_pi = static_cast<cplx::value_type>(2.0 * pi);
+
+        if (d_ == 2) // qubits
+        {
+            for (idx i = 0; i < n_subsys; ++i) {
+                // apply Hadamard on qubit i
+                gate(gates.H, target[i]);
+
+                // apply controlled rotations
+                for (idx j = 2; j <= n_subsys - i; ++j) {
+                    // denom = 2^j via bit-shift
+                    const unsigned long long denom = (1ULL << j);
+                    cplx::value_type angle =
+                        two_pi / static_cast<cplx::value_type>(denom);
+
+                    if (phase_fold) {
+                        if (!(angle >= 0 && angle < two_pi)) {
+                            angle = std::fmod(angle, two_pi);
+                            if (angle < 0) {
+                                angle += two_pi;
+                            }
+                        }
+                    }
+
+                    cmat Rj(2, 2);
+                    Rj(0, 0) = cplx{1.0, 0.0};
+                    Rj(0, 1) = cplx{0.0, 0.0};
+                    Rj(1, 0) = cplx{0.0, 0.0};
+                    Rj(1, 1) = std::exp(1_i * angle);
+
+                    CTRL(Rj, target[i + j - 1], target[i], {},
+                         "CTRL-R" + std::to_string(j));
+                }
+            }
+
+            if (swap) {
+                for (idx i = 0; i < n_subsys / 2; ++i) {
+                    gate(gates.SWAP, target[i], target[n_subsys - i - 1]);
+                }
+            }
+
+        } else { // qudits
+            for (idx i = 0; i < n_subsys; ++i) {
+                // apply qudit Fourier on qudit i
+                gate(gates.Fd(d_), target[i], "Fd");
+
+                // apply controlled rotations
+                for (idx j = 2; j <= n_subsys - i; ++j) {
+
+                    // compute d_^j via integer multiply
+                    unsigned long long denom_d = 1ULL;
+                    for (idx t = 0; t < j; ++t) {
+                        denom_d *= static_cast<unsigned long long>(d_);
+                    }
+
+                    cplx::value_type base_angle =
+                        two_pi / static_cast<cplx::value_type>(denom_d);
+
+                    if (phase_fold) {
+                        if (!(base_angle >= 0 && base_angle < two_pi)) {
+                            base_angle = std::fmod(base_angle, two_pi);
+                            if (base_angle < 0) {
+                                base_angle += two_pi;
+                            }
+                        }
+                    }
+
+                    cplx base_exp = std::exp(1_i * base_angle);
+                    cmat Rj = cmat::Zero(d_, d_);
+
+                    cplx cur = cplx{1.0, 0.0};
+                    for (idx m = 0; m < d_; ++m) {
+                        Rj(m, m) = cur;
+                        cur *= base_exp;
+                    }
+
+                    CTRL(Rj, target[i + j - 1], target[i], {},
+                         "CTRL-R" + std::to_string(j) + "d");
+                }
+            }
+
+            if (swap) {
+                for (idx i = 0; i < n_subsys / 2; ++i) {
+                    gate(gates.SWAPd(d_), target[i], target[n_subsys - i - 1],
+                         "SWAPd");
                 }
             }
         }
@@ -2976,7 +3108,7 @@ class QCircuit : public IDisplay, public IJSON {
      * @param target Target qudit index that is measured
      * @param c_reg Classical register where the value of the measurement is
      * being stored
-     * @param destructive Destructive measurement, true by default
+     * @param destructive If true, measured subsystems are traced away
      * @param name Optional measurement name, default is "mZ"
      * @return Reference to the current instance
      */
@@ -3044,7 +3176,7 @@ class QCircuit : public IDisplay, public IJSON {
      * are being stored in order, that is, the measurement result
      * corresponding to target[0] is stored in \a c_reg, the one
      * corresponding to target[1] is stored in \a c_reg + 1 and so on
-     * @param destructive Destructive measurement, true by default
+     * @param destructive If true, measured subsystems are traced away
      * @param name Optional measurement name, default is "mZ"
      * @return Reference to the current instance
      */
@@ -3129,7 +3261,7 @@ class QCircuit : public IDisplay, public IJSON {
      * corresponding to the first measurable qudit is stored in \a c_reg,
      * the one corresponding to the second measurable qudit is stored in \a
      * c_reg + 1 and so on
-     * @param destructive Destructive measurement, true by default
+     * @param destructive If true, measured subsystems are traced away
      * @param name Optional measurement name, default is "mZ"
      * @return Reference to the current instance
      */
@@ -3165,7 +3297,7 @@ class QCircuit : public IDisplay, public IJSON {
      * @param target Target qudit index that is measured
      * @param c_reg Classical register where the value of the measurement is
      * stored
-     * @param destructive Destructive measurement, true by default
+     * @param destructive If true, measured subsystems are traced away
      * @param name Optional measurement name
      * @return Reference to the current instance
      */
@@ -3251,7 +3383,7 @@ class QCircuit : public IDisplay, public IJSON {
      * @param target Target qudit indexes that are jointly measured
      * @param c_reg Classical register where the value of the measurement is
      * stored
-     * @param destructive Destructive measurement, true by default
+     * @param destructive If true, measured subsystems are traced away
      * @param name Optional measurement name
      * @return Reference to the current instance
      */
@@ -3357,7 +3489,7 @@ class QCircuit : public IDisplay, public IJSON {
      * @param ps_val Post-election value
      * @param c_reg Classical register where the value of the measurement is
      * being stored
-     * @param destructive Destructive measurement, true by default
+     * @param destructive If true, measured subsystems are traced away
      * @param name Optional measurement name, default is "pZ"
      * @return Reference to the current instance
      */
@@ -3431,7 +3563,7 @@ class QCircuit : public IDisplay, public IJSON {
      * are being stored in order, that is, the measurement result
      * corresponding to target[0] is stored in \a c_reg, the one
      * corresponding to target[1] is stored in \a c_reg + 1 and so on
-     * @param destructive Destructive measurement, true by default
+     * @param destructive If true, measured subsystems are traced away
      * @param name Optional post-selection name, default is "pZ"
      * @return Reference to the current instance
      */
@@ -3530,7 +3662,7 @@ class QCircuit : public IDisplay, public IJSON {
      * @param ps_val Post-election value
      * @param c_reg Classical register where the value of the measurement is
      * stored
-     * @param destructive Destructive measurement, true by default
+     * @param destructive If true, measured subsystems are traced away
      * @param name Optional measurement name
      * @return Reference to the current instance
      */
@@ -3622,7 +3754,7 @@ class QCircuit : public IDisplay, public IJSON {
      * @param ps_val Post-election value
      * @param c_reg Classical register where the value of the measurement is
      * stored
-     * @param destructive Destructive measurement, true by default
+     * @param destructive If true, measured subsystems are traced away
      * @param name Optional post-selection name
      * @return Reference to the current instance
      */
