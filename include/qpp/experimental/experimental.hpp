@@ -48,7 +48,7 @@
 #include "qpp/internal/util.hpp"
 
 /**
- * \namespace qpp::experimental
+ * @namespace qpp::experimental
  * @brief Experimental/test functions/classes, do not use or modify
  */
 namespace qpp::experimental {

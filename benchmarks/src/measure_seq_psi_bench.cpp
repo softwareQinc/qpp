@@ -14,10 +14,10 @@ qpp::idx nq = 10; // default number of qubits if none provided at runtime
 int main(int argc, char* argv[]) {
     Catch::Session session;
 
-    auto cli =
-        session.cli() | Catch::Clara::Opt(nq, "nq")["--nq"]("Number of qubits");
+    auto cli = session.cli() |
+               Catch::Clara::Opt(nq, "qubits")["--nq"]("Number of qubits");
 #ifdef QPP_OPENMP
-    cli |= Catch::Clara::Opt(cli_core_count, "core_count")["--core_count"](
+    cli |= Catch::Clara::Opt(cli_threads, "threads")["--threads"](
         "Number of OpenMP threads/cores (ignored if the environment variable "
         "OMP_NUM_THREADS is set)");
 #endif // QPP_OPENMP

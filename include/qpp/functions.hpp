@@ -2451,7 +2451,6 @@ struct EqualEigen {
     }
 };
 } /* namespace internal */
-
 } /* namespace qpp */
 
 #endif /* QPP_FUNCTIONS_HPP_ */

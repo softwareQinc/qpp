@@ -29,6 +29,8 @@
  * @brief Quantum operation functions
  */
 
+#define QPP_QUBIT_OPTIMIZATIONS
+
 #ifndef QPP_OPERATIONS_HPP_
 #define QPP_OPERATIONS_HPP_
 
@@ -48,7 +50,11 @@
 
 #include "qpp/classes/exception.hpp"
 #include "qpp/classes/gates.hpp"
-#include "qpp/internal/critical.hpp"
+#include "qpp/internal/kernels/qubit/apply.hpp"
+#include "qpp/internal/kernels/qubit/apply_ctrl.hpp"
+#include "qpp/internal/kernels/qubit/ptrace.hpp"
+#include "qpp/internal/kernels/qubit/ptranspose.hpp"
+#include "qpp/internal/kernels/qubit/syspermute.hpp"
 #include "qpp/internal/util.hpp"
 
 namespace qpp {
@@ -141,33 +147,35 @@ apply(const Eigen::MatrixBase<Derived1>& state,
         // ket
         if (internal::check_cvector(rstate)) {
             if (nq_target == 1) {
-                return internal::apply_psi_1q(state, A, target[0], n);
+                return internal::kernels::qubit::apply_psi_1q(state, A,
+                                                              target[0], n);
             }
             if (nq_target == 2) {
-                return internal::apply_psi_2q(state, A, target[0], target[1],
-                                              n);
+                return internal::kernels::qubit::apply_psi_2q(
+                    state, A, target[0], target[1], n);
             }
             if (nq_target == 3) {
-                return internal::apply_psi_3q(state, A, target[0], target[1],
-                                              target[2], n);
+                return internal::kernels::qubit::apply_psi_3q(
+                    state, A, target[0], target[1], target[2], n);
             }
-            return internal::apply_psi_kq(state, A, target, n);
+            return internal::kernels::qubit::apply_psi_kq(state, A, target, n);
 
         }
         // density matrix
         else {
             if (nq_target == 1) {
-                return internal::apply_rho_1q(state, A, target[0], n);
+                return internal::kernels::qubit::apply_rho_1q(state, A,
+                                                              target[0], n);
             }
             if (nq_target == 2) {
-                return internal::apply_rho_2q(state, A, target[0], target[1],
-                                              n);
+                return internal::kernels::qubit::apply_rho_2q(
+                    state, A, target[0], target[1], n);
             }
             if (nq_target == 3) {
-                return internal::apply_rho_3q(state, A, target[0], target[1],
-                                              target[2], n);
+                return internal::kernels::qubit::apply_rho_3q(
+                    state, A, target[0], target[1], target[2], n);
             }
-            return internal::apply_rho_kq(state, A, target, n);
+            return internal::kernels::qubit::apply_rho_kq(state, A, target, n);
         }
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
@@ -1203,7 +1211,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  * @param A Eigen expression
  * @param target Subsystem indexes
  * @param dims Dimensions of the multi-partite system
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
  * \a A
  */
@@ -1410,7 +1418,7 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * @param A Eigen expression
  * @param target Subsystem indexes
  * @param dims Dimensions of the multi-partite system
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
  * \a A
  */
@@ -1864,7 +1872,7 @@ ptrace_new3(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * @param A Eigen expression
  * @param target Subsystem indexes
  * @param d Subsystem dimensions
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
  * \a A
  */
@@ -1901,7 +1909,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
  * @param A Eigen expression
  * @param target Subsystem indexes
  * @param dims Dimensions of the multi-partite system
- * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
+ * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsystems
  * \a target in a multi-partite system, as a dynamic matrix over the same scalar
  * field as \a A
  */
@@ -2069,7 +2077,7 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
  * @param A Eigen expression
  * @param target Subsystem indexes
  * @param d Subsystem dimensions
- * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
+ * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsystems
  * \a target in a multi-partite system, as a dynamic matrix over the same scalar
  * field as \a A
  */
@@ -2521,11 +2529,11 @@ syspermute_new(const Eigen::MatrixBase<Derived>& A,
     if (internal::all_qubits(dims)) {
         // ket
         if (is_cvector) {
-            return internal::syspermute_psi_kq(A, perm, n);
+            return internal::kernels::qubit::syspermute_psi_kq(A, perm, n);
         }
         // density matrix
         else {
-            return internal::syspermute_rho_kq(A, perm, n);
+            return internal::kernels::qubit::syspermute_rho_kq(A, perm, n);
         }
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
@@ -2749,29 +2757,29 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
         // ket
         if (internal::check_cvector(rstate)) {
             if (nq_target == 1) {
-                return internal::apply_ctrl_psi_1q(state, A, ctrl, target[0],
-                                                   shift.value(), n);
+                return internal::kernels::qubit::apply_ctrl_psi_1q(
+                    state, A, ctrl, target[0], shift.value(), n);
             }
             if (nq_target == 2) {
-                return internal::apply_ctrl_psi_2q(state, A, ctrl, target[0],
-                                                   target[1], shift.value(), n);
+                return internal::kernels::qubit::apply_ctrl_psi_2q(
+                    state, A, ctrl, target[0], target[1], shift.value(), n);
             }
-            return internal::apply_ctrl_psi_kq(state, A, ctrl, target,
-                                               shift.value(), n);
+            return internal::kernels::qubit::apply_ctrl_psi_kq(
+                state, A, ctrl, target, shift.value(), n);
 
         }
         // density matrix
         else {
             if (nq_target == 1) {
-                return internal::apply_ctrl_rho_1q(state, A, ctrl, target[0],
-                                                   shift.value(), n);
+                return internal::kernels::qubit::apply_ctrl_rho_1q(
+                    state, A, ctrl, target[0], shift.value(), n);
             }
             if (nq_target == 2) {
-                return internal::apply_ctrl_rho_2q(state, A, ctrl, target[0],
-                                                   target[1], shift.value(), n);
+                return internal::kernels::qubit::apply_ctrl_rho_2q(
+                    state, A, ctrl, target[0], target[1], shift.value(), n);
             }
-            return internal::apply_ctrl_rho_kq(state, A, ctrl, target,
-                                               shift.value(), n);
+            return internal::kernels::qubit::apply_ctrl_rho_kq(
+                state, A, ctrl, target, shift.value(), n);
         }
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS

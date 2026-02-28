@@ -39,7 +39,7 @@
 
 namespace qpp {
 /**
- * \namespace qpp::exception
+ * @namespace qpp::exception
  * @brief Quantum++ exception hierarchy namespace
  */
 namespace exception {

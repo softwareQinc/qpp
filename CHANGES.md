@@ -4,6 +4,8 @@
   manipulation and qubit circuit execution through extensive optimizations of
   `qpp::apply()`, `qpp::applyCTRL()`, and `qpp::measure_seq()`.
 - **pyqpp** is now feature complete, providing Python users with
+- Added `pyqpp.QEngine.get_stats_to_JSON()` to display the measurement
+  statistics in JSON format from **pyqpp**
   complete access to the full **Quantum++** API
 - Switched to MAJOR.MINOR.PATCH release versioning system:
   - MAJOR -- introduces significant changes that break backward compatibility
@@ -40,11 +42,8 @@
   `${CMAKE_BUILD_DIR}`
 - Added benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
   in ["benchmarks"](https://github.com/softwareQinc/qpp/blob/main/benchmarks)
+- Removed the `stress_tests` suite, as the new benchmarking suite supersedes it
 - Bugfixes for `qpp::QFT()` and `qpp::TFQ()`
-- Added `pyqpp.QEngine.get_stats_to_JSON()` to display the measurement
-  statistics in JSON format from **pyqpp**
-- **pyqpp** is feature-complete, now all Quantum++ functions have corresponding
-  bindings in Python
 
 # Version 6.0 - 14 April 2025
 

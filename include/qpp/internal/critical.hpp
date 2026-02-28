@@ -32,7 +32,7 @@
 #ifndef QPP_INTERNAL_CRITICAL_HPP_
 #define QPP_INTERNAL_CRITICAL_HPP_
 
-#define QPP_QUBIT_OPTIMIZATIONS
+// #define QPP_QUBIT_OPTIMIZATIONS
 
 #include <algorithm>
 #include <cassert>
@@ -2387,7 +2387,7 @@ syspermute_rho_kq(const Eigen::MatrixBase<Derived>& A,
  * @param A Eigen expression
  * @param target Subsystem indexes
  * @param n Number of qubits
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
  * \a A
  */
@@ -2491,7 +2491,7 @@ ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
  * @param A Eigen expression
  * @param target Subsystem indexes
  * @param n Number of qubits
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsytems \a target
+ * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a target
  * in a multi-partite system, as a dynamic matrix over the same scalar field as
  * \a A
  */

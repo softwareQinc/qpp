@@ -46,7 +46,6 @@
 #include "qpp/internal/util.hpp"
 
 namespace qpp::internal {
-
 // std::ostream manipulator for formatting scalars, default implementation
 template <typename Scalar>
 class IOManipScalar : public IDisplay {
@@ -338,7 +337,6 @@ class IOManipDirac : public IDisplay {
         return os;
     }
 }; /* class IOManipDirac */
-
 } /* namespace qpp::internal */
 
 #endif /* QPP_INTERNAL_CLASSES_IOMANIP_HPP_ */

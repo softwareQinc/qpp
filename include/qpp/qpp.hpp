@@ -109,8 +109,10 @@
 
 #include "qpp/qasm/qasm.hpp"
 
+#define QPP_QUBIT_OPTIMIZATIONS
+
 /**
- * \namespace qpp
+ * @namespace qpp
  * @brief Quantum++ main namespace
  */
 namespace qpp {
@@ -161,7 +163,7 @@ thread_local
         RandomDevices::get_instance();
 
 /**
- * \namespace qpp::obsolete
+ * @namespace qpp::obsolete
  * @brief Obsolete/deprecated code, may be removed without notice in future
  * releases
  */

@@ -7,6 +7,8 @@
 
 #include "openmp_utils.hpp"
 
+#include "qpp/internal/kernels/qubit/ptrace.hpp"
+
 namespace {
 qpp::idx nq = 10; // default number of qubits if none provided at runtime
 } // namespace
@@ -14,10 +16,10 @@ qpp::idx nq = 10; // default number of qubits if none provided at runtime
 int main(int argc, char* argv[]) {
     Catch::Session session;
 
-    auto cli =
-        session.cli() | Catch::Clara::Opt(nq, "nq")["--nq"]("Number of qubits");
+    auto cli = session.cli() |
+               Catch::Clara::Opt(nq, "qubits")["--nq"]("Number of qubits");
 #ifdef QPP_OPENMP
-    cli |= Catch::Clara::Opt(cli_core_count, "core_count")["--core_count"](
+    cli |= Catch::Clara::Opt(cli_threads, "threads")["--threads"](
         "Number of OpenMP threads/cores (ignored if the environment variable "
         "OMP_NUM_THREADS is set)");
 #endif // QPP_OPENMP
@@ -63,11 +65,23 @@ TEST_CASE("qpp::ptrace() state vector benchmark",
         // calculation away.
         return qpp::ptrace_new1(psi, subsys, dims);
     };
+    // Benchmarked portion (executed repeatedly)
+    BENCHMARK("Partial trace new2 (psi) nq=" + std::to_string(nq)) {
+        // CRITICAL: Return the result so the compiler doesn't optimize the
+        // calculation away.
+        return qpp::ptrace_new2(psi, subsys, dims);
+    };
+    // Benchmarked portion (executed repeatedly)
+    BENCHMARK("Partial trace new3 (psi) nq=" + std::to_string(nq)) {
+        // CRITICAL: Return the result so the compiler doesn't optimize the
+        // calculation away.
+        return qpp::ptrace_new3(psi, subsys, dims);
+    };
 
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("Partial trace qubits (psi) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
-        return qpp::internal::ptrace_psi_kq(psi, subsys, nq);
+        return qpp::internal::kernels::qubit::ptrace_psi_kq(psi, subsys, nq);
     };
 }
