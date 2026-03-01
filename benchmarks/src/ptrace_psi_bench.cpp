@@ -60,25 +60,6 @@ TEST_CASE("qpp::ptrace() state vector benchmark",
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace new1 (psi) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::ptrace_new1(psi, subsys, dims);
-    };
-    // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace new2 (psi) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::ptrace_new2(psi, subsys, dims);
-    };
-    // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace new3 (psi) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::ptrace_new3(psi, subsys, dims);
-    };
-
-    // Benchmarked portion (executed repeatedly)
     BENCHMARK("Partial trace qubits (psi) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.

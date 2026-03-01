@@ -61,13 +61,6 @@ TEST_CASE("qpp::ptranspose() state vector benchmark",
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial transpose new (psi) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::ptranspose_new(psi, subsys, dims);
-    };
-
-    // Benchmarked portion (executed repeatedly)
     BENCHMARK("Partial transpose qubits (psi) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.

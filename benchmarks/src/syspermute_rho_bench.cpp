@@ -57,13 +57,7 @@ TEST_CASE("qpp::syspermute() density matrix benchmark",
         // calculation away.
         return qpp::syspermute(rho, subsys);
     };
-    std::vector<qpp::idx> dims(nq, 2);
-    // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Subsystem permutation new (rho) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::syspermute_new(rho, subsys, dims);
-    };
+
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("Subsystem permutation qubits (rho) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the

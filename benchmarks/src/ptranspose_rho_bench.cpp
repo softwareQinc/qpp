@@ -58,13 +58,6 @@ TEST_CASE("qpp::ptranspose() density matrix benchmark",
         // calculation away.
         return qpp::ptranspose(rho, subsys);
     };
-    std::vector<qpp::idx> dims(nq, 2);
-    // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial transpose new (rho) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::ptranspose_new(rho, subsys, dims);
-    };
 
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("Partial transpose qubits (rho) nq=" + std::to_string(nq)) {

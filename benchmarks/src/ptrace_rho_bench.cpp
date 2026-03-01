@@ -60,25 +60,6 @@ TEST_CASE("qpp::ptrace() density matrix benchmark",
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace new1 (rho) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::ptrace_new1(rho, subsys, dims);
-    };
-    // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace new2 (rho) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::ptrace_new2(rho, subsys, dims);
-    };
-    // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace new3 (rho) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::ptrace_new3(rho, subsys, dims);
-    };
-
-    // Benchmarked portion (executed repeatedly)
     BENCHMARK("Partial trace qubits (rho) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.

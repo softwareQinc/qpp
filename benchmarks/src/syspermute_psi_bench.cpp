@@ -57,13 +57,7 @@ TEST_CASE("qpp::syspermute() state vector benchmark",
         // calculation away.
         return qpp::syspermute(psi, subsys);
     };
-    std::vector<qpp::idx> dims(nq, 2);
-    // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Subsystem permutation new (psi) nq=" + std::to_string(nq)) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::syspermute_new(psi, subsys, dims);
-    };
+
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("Subsystem permutation qubits (psi) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
