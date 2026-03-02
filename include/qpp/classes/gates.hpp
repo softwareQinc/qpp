@@ -664,7 +664,8 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                 if (elem >= d) {
                     throw exception::OutOfRange("qpp::Gates::CTRL()", "shift");
                 }
-                elem = d - elem;
+                // invert shift mod D
+                elem = (d - elem) % d;
             }
         }
         // END EXCEPTION CHECKS

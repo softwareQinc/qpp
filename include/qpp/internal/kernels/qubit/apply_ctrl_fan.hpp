@@ -62,8 +62,7 @@ template <typename Derived1, typename Derived2>
 apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
                    const Eigen::MatrixBase<Derived2>& A,
                    const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                   idx n,
-                   std::optional<std::vector<idx>> shift = std::nullopt) {
+                   const std::vector<idx>& shift, idx n) {
 
     const expr_t<Derived1>& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
@@ -80,14 +79,12 @@ apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
     assert(rA.rows() == 2 && "Aggressively optimized for qubits (d=2) only");
 
     idx D = 1ULL << n; // Total dimension 2^n
-    assert(rstate.rows() == D && "State vector dimension mismatch with 2^n");
+    assert(static_cast<idx>(rstate.rows()) == D &&
+           "State vector dimension mismatch with 2^n");
 
-    if (shift.has_value()) {
-        assert(shift.value().size() == ctrl.size() &&
-               "Shift size must match ctrl size");
-        for (idx s : shift.value()) {
-            assert(s < 2 && "Shift values must be < 2 for qubits");
-        }
+    assert(shift.size() == ctrl.size() && "Shift size must match ctrl size");
+    for (idx s : shift) {
+        assert(s < 2 && "Shift values must be < 2 for qubits");
     }
 
     if (D == 1) {
@@ -102,9 +99,7 @@ apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
     for (size_t i = 0; i < ctrl.size(); ++i) {
         idx bit = 1ULL << (n - 1 - ctrl[i]); // MSB convention index
         ctrl_mask |= bit;
-
-        idx s = shift.has_value() ? shift.value()[i] : 0;
-        if (s == 0) {
+        if (shift[i] == 0) {
             ctrl_val |= bit; // Default to triggering on |1>
         }
     }
@@ -169,8 +164,7 @@ template <typename Derived1, typename Derived2>
 apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
                    const Eigen::MatrixBase<Derived2>& A,
                    const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                   idx n,
-                   std::optional<std::vector<idx>> shift = std::nullopt) {
+                   const std::vector<idx>& shift, idx n) {
 
     const expr_t<Derived1>& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
@@ -187,15 +181,13 @@ apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
     assert(rA.rows() == 2 && "Aggressively optimized for qubits (d=2) only");
 
     idx D = 1ULL << n; // Total dimension 2^n
-    assert(rstate.rows() == D && rstate.cols() == D &&
+    assert(static_cast<idx>(rstate.rows()) == D &&
+           static_cast<idx>(rstate.cols()) == D &&
            "Density matrix dimension mismatch with 2^n");
 
-    if (shift.has_value()) {
-        assert(shift.value().size() == ctrl.size() &&
-               "Shift size must match ctrl size");
-        for (idx s : shift.value()) {
-            assert(s < 2 && "Shift values must be < 2 for qubits");
-        }
+    assert(shift.size() == ctrl.size() && "Shift size must match ctrl size");
+    for (idx s : shift) {
+        assert(s < 2 && "Shift values must be < 2 for qubits");
     }
 
     if (D == 1) {
@@ -210,9 +202,7 @@ apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
     for (size_t i = 0; i < ctrl.size(); ++i) {
         idx bit = 1ULL << (n - 1 - ctrl[i]); // MSB convention index
         ctrl_mask |= bit;
-
-        idx s = shift.has_value() ? shift.value()[i] : 0;
-        if (s == 0) {
+        if (shift[i] == 0) {
             ctrl_val |= bit; // Default to triggering on |1>
         }
     }

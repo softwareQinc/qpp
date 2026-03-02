@@ -2,7 +2,9 @@
 
 - Significant performance improvements (10x to 1000x) for qubit state
   manipulation and qubit circuit execution through extensive optimizations of
-  `qpp::apply()`, `qpp::applyCTRL()`, and `qpp::measure_seq()`.
+  `qpp::apply()`, `qpp::applyCTRL()`, `qpp::applyCTRL_fan()`,
+  `qpp::measure_seq()`, `qpp::ptrace()`, `qpp::ptranspose()`, and
+  `qpp::syspermute()`.
 - **pyqpp** is now feature complete, providing Python users with
 - Added `pyqpp.QEngine.get_stats_to_JSON()` to display the measurement
   statistics in JSON format from **pyqpp**

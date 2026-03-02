@@ -52,6 +52,7 @@
 #include "qpp/classes/gates.hpp"
 #include "qpp/internal/kernels/qubit/apply.hpp"
 #include "qpp/internal/kernels/qubit/apply_ctrl.hpp"
+#include "qpp/internal/kernels/qubit/apply_ctrl_fan.hpp"
 #include "qpp/internal/kernels/qubit/ptrace.hpp"
 #include "qpp/internal/kernels/qubit/ptranspose.hpp"
 #include "qpp/internal/kernels/qubit/syspermute.hpp"
@@ -730,7 +731,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
             if (elem >= d) {
                 throw exception::OutOfRange("qpp::applyCTRL()", "shift");
             }
-            elem = d - elem;
+            // invert shift mod D
+            elem = (d - elem) % d;
         }
     }
     // END EXCEPTION CHECKS
@@ -806,7 +808,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
                                                   D);
                 // project on complement
                 dyn_col_vect<typename Derived1::Scalar> chopped_psi_bar =
-                    state / d - chopped_psi;
+                    (state / d) - chopped_psi;
                 // apply gates on target if non-zero
                 if (chopped_psi !=
                     dyn_col_vect<typename Derived1::Scalar>::Zero(D)) {
@@ -1084,7 +1086,8 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
             if (elem >= d) {
                 throw exception::OutOfRange("qpp::applyCTRL_fan()", "shift");
             }
-            elem = d - elem;
+            // invert shift mod D
+            elem = (d - elem) % d;
         }
     }
     // END EXCEPTION CHECKS
@@ -1092,6 +1095,33 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
         shift = std::vector<idx>(ctrl.size(), 0);
     }
 
+    // qubit optimizations
+#ifdef QPP_QUBIT_OPTIMIZATIONS
+    if (internal::all_qubits(dims)) {
+        idx n = dims.size();
+        // ket
+        if (internal::check_cvector(rstate)) {
+            // check that dims match state vector
+            if (!internal::check_dims_match_cvect(dims, rstate)) {
+                throw exception::DimsMismatchCvector("qpp::applyCTRL_fan()",
+                                                     "dims/state");
+            }
+            return internal::kernels::qubit::apply_ctrl_fan_psi(
+                state, A, ctrl, target, shift.value(), n);
+
+        }
+        // density matrix
+        else {
+            // check that dims match density matrix
+            if (!internal::check_dims_match_mat(dims, rstate)) {
+                throw exception::DimsMismatchCvector("qpp::applyCTRL_fan()",
+                                                     "dims/state");
+            }
+            return internal::kernels::qubit::apply_ctrl_fan_rho(
+                state, A, ctrl, target, shift.value(), n);
+        }
+    }
+#endif // QPP_QUBIT_OPTIMIZATIONS
     // construct the table of A^k
     std::vector<dyn_mat<typename Derived1::Scalar>> Ak;
     for (idx k = 0; k < d; ++k) {
@@ -1124,7 +1154,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
                                                   D);
                 // project on complement
                 dyn_col_vect<typename Derived1::Scalar> chopped_psi_bar =
-                    state / d - chopped_psi;
+                    (state / d) - chopped_psi;
                 // apply gates on target if non-zero
                 if (chopped_psi !=
                     dyn_col_vect<typename Derived1::Scalar>::Zero(D)) {
@@ -1198,7 +1228,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 #pragma omp critical
 #endif // QPP_OPENMP
             {
-                result += kron(psi_i, phi_i_bra);
+                result += psi_i * phi_i_bra;
             }
         } // end for(i)
 
@@ -1300,7 +1330,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx a = 0; a < Din; ++a) {
-        MES(a * Din + a, 0) = 1;
+        MES((a * Din) + a, 0) = 1;
     }
 
     cmat Omega = MES * adjoint(MES);
@@ -1436,8 +1466,8 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
         for (idx b = 0; b < Dout; ++b) {
             for (idx m = 0; m < Din; ++m) {
                 for (idx n = 0; n < Din; ++n) {
-                    result(a * Dout + b, m * Din + n) =
-                        A(m * Dout + a, n * Dout + b);
+                    result((a * Dout) + b, (m * Din) + n) =
+                        A((m * Dout) + a, (n * Dout) + b);
                 }
             }
         }
@@ -1510,8 +1540,8 @@ inline cmat choi2super(const cmat& A) {
         for (idx b = 0; b < Dout; ++b) {
             for (idx m = 0; m < Din; ++m) {
                 for (idx n = 0; n < Din; ++n) {
-                    result(m * Dout + a, n * Dout + b) =
-                        A(a * Dout + b, m * Din + n);
+                    result((m * Dout) + a, (n * Dout) + b) =
+                        A((a * Dout) + b, (m * Din) + n);
                 }
             }
         }
@@ -1581,7 +1611,7 @@ inline cmat choi2super(const cmat& A) {
                     for (idx b = 0; b < Dout; ++b) {
                         // compute result(ab,mn)=<a|E(|m><n)|b>
                         B(b) = 1;
-                        result(a * Dout + b, m * Din + n) =
+                        result((a * Dout) + b, (m * Din) + n) =
                             static_cast<cmat>(A * EMN * B).value();
                         B(b) = 0;
                     }
