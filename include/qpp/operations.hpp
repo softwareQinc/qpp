@@ -29,8 +29,6 @@
  * @brief Quantum operation functions
  */
 
-#define QPP_QUBIT_OPTIMIZATIONS
-
 #ifndef QPP_OPERATIONS_HPP_
 #define QPP_OPERATIONS_HPP_
 

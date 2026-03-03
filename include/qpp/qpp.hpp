@@ -109,8 +109,6 @@
 
 #include "qpp/qasm/qasm.hpp"
 
-#define QPP_QUBIT_OPTIMIZATIONS
-
 /**
  * @namespace qpp
  * @brief Quantum++ main namespace

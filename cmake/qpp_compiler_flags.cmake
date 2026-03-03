@@ -4,6 +4,8 @@
 include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
 qpp_select_target(QPP_TARGET "qpp_compiler_flags")
 
+option(QPP_QUBIT_OPTIMIZATIONS "Enable qubit-specific optimizations" ON)
+
 target_compile_options(
   ${QPP_TARGET}
   INTERFACE
@@ -56,6 +58,12 @@ target_compile_definitions(
             # Set the EIGEN_NO_DEBUG macro for all non-Debug configurations
             # (MinSizeRel, Release, RelWithDebInfo).
             $<$<NOT:$<CONFIG:Debug>>:EIGEN_NO_DEBUG>)
+
+# Qubit optimization macros
+target_compile_definitions(
+  ${QPP_TARGET}
+  INTERFACE # Enable qubit optimizations if requested
+            $<$<BOOL:${QPP_QUBIT_OPTIMIZATIONS}>:QPP_QUBIT_OPTIMIZATIONS>)
 
 # Default build type
 if(NOT CMAKE_BUILD_TYPE)

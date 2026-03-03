@@ -60,7 +60,8 @@ TEST_CASE("qpp::ptrace() density matrix benchmark",
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace qubits (rho) nq=" + std::to_string(nq)) {
+    BENCHMARK("Partial trace qubit optimizations (rho) nq=" +
+              std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::ptrace_rho_kq(rho, subsys, nq);

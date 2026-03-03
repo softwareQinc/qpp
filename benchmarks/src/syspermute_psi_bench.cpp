@@ -59,7 +59,8 @@ TEST_CASE("qpp::syspermute() state vector benchmark",
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Subsystem permutation qubits (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("Subsystem permutation qubit optimizations (psi) nq=" +
+              std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::syspermute_psi_kq(psi, subsys,

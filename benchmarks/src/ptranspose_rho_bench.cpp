@@ -60,7 +60,8 @@ TEST_CASE("qpp::ptranspose() density matrix benchmark",
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial transpose qubits (rho) nq=" + std::to_string(nq)) {
+    BENCHMARK("Partial transpose qubit optimizations (rho) nq=" +
+              std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::ptranspose_rho_kq(rho, subsys,

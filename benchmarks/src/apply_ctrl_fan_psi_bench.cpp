@@ -65,7 +65,7 @@ TEST_CASE("qpp::applyCTRL_fan() state vector benchmark",
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("CTRL-fan qubit (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("CTRL-fan qubit optimizations (psi) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
