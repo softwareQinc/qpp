@@ -44,7 +44,7 @@ TEST_CASE("qpp::measure_seq() state vector benchmark",
     // Setup (NOT measured)
     REQUIRE(nq > 0);
     qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
-    qpp::ket psi = qpp::randket(D); // D x 1 random state vector
+    qpp::ket psi = qpp::randket(D); // random D x 1 state vector
     // Test worst-case scenario
     std::vector<qpp::idx> subsys(nq);
     std::iota(subsys.begin(), subsys.end(), 0);

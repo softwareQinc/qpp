@@ -46,7 +46,8 @@ TEST_CASE("qpp::applyCTRL_fan() density matrix benchmark",
     // Setup (NOT measured)
     REQUIRE(nq > 1);
     qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
-    qpp::cmat rho = qpp::randrho(D); // D x D random density matrix
+    qpp::cmat rho = qpp::randrho(D); // random D x D density matrix
+    qpp::cmat U = qpp::randU(2);     // random 1 qubit gate
     // Test worst-case scenario
     qpp::idx mid = nq / 2;
     std::vector<qpp::idx> ctrl(mid);
@@ -58,17 +59,20 @@ TEST_CASE("qpp::applyCTRL_fan() density matrix benchmark",
     }
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("CTRL-fan (rho) nq=" + std::to_string(nq)) {
+    BENCHMARK("Apply CTRL-fan gate to subsystems (rho) nq=" +
+              std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
-        return qpp::applyCTRL_fan(rho, qpp::gt.H, ctrl, target);
+        return qpp::applyCTRL_fan(rho, U, ctrl, target);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("CTRL-fan qubit optimizations (rho) nq=" + std::to_string(nq)) {
+    BENCHMARK(
+        "Apply CTRL-fan gate to subsystems qubit optimizations (rho) nq=" +
+        std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::apply_ctrl_fan_rho(
-            rho, qpp::gt.H, ctrl, target, shift, nq);
+            rho, U, ctrl, target, shift, nq);
     };
 }

@@ -46,29 +46,31 @@ TEST_CASE("qpp::applyCTRL_fan() state vector benchmark",
     // Setup (NOT measured)
     REQUIRE(nq > 1);
     qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
-    qpp::ket psi = qpp::randket(D); // D x 1 random state vector
+    qpp::ket psi = qpp::randket(D); // random D x 1 state vector
+    qpp::cmat U = qpp::randU(2);    // random 1 qubit gate
     // Test worst-case scenario
-    qpp::idx m = nq / 2;
-    std::vector<qpp::idx> ctrl(m);
-    std::vector<qpp::idx> target(m);
+    qpp::idx mid = nq / 2;
+    std::vector<qpp::idx> ctrl(mid);
+    std::vector<qpp::idx> target(mid);
     std::vector<qpp::idx> shift(nq, 0);
-    for (qpp::idx i = 0; i < nq / 2; ++i) {
+    for (qpp::idx i = 0; i < mid; ++i) {
         ctrl[i] = i;
-        target[i] = m + i;
+        target[i] = mid + i;
     }
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("CTRL-fan (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("Apply CTRL-fan to subsystems (psi) nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
-        return qpp::applyCTRL_fan(psi, qpp::gt.H, ctrl, target);
+        return qpp::applyCTRL_fan(psi, U, ctrl, target);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("CTRL-fan qubit optimizations (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("Apply CTRL-fan to subsystems qubit optimizations (psi) nq=" +
+              std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
-            psi, qpp::gt.H, ctrl, target, shift, nq);
+            psi, U, ctrl, target, shift, nq);
     };
 }
