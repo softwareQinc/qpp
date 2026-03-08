@@ -63,22 +63,20 @@ ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
     const auto& rA = A.derived();
 
     // Input Validation
-#ifndef NDEBUG
     assert(internal::check_nonzero_size(rA) && "A"); // Zero-size
     assert(internal::check_cvector(rA) && "A must be a column vector (ket)");
     assert(n > 0 && "n must be > 0");
 
     // target must be valid w.r.t. n and contain unique indices
+#ifndef NDEBUG
     for (idx k : target) {
         assert(k < n && "target must be valid w.r.t. n");
     }
-    {
-        auto tmp = target;
-        std::sort(tmp.begin(), tmp.end());
-        auto it = std::adjacent_find(tmp.begin(), tmp.end());
-        assert(it == tmp.end() &&
-               "target contains duplicate subsystem indices");
-    }
+
+    auto tmp = target;
+    std::sort(tmp.begin(), tmp.end());
+    auto it = std::adjacent_find(tmp.begin(), tmp.end());
+    assert(it == tmp.end() && "target contains duplicate subsystem indices");
 
     // D must equal 2^n for qubits
     idx D_expected = (1ULL << n);
@@ -150,7 +148,6 @@ ptranspose_rho_kq(const Eigen::MatrixBase<Derived>& A,
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // Input Validation
-#ifndef NDEBUG
     assert(internal::check_nonzero_size(rA) &&
            "A"); // Corresponds to exception::ZeroSize
     // check_dims(dims) removed, replaced by n > 0 check if necessary, but D
@@ -164,6 +161,7 @@ ptranspose_rho_kq(const Eigen::MatrixBase<Derived>& A,
            "matrix)"); // Corresponds to
                        // check_square_mat/MatrixNotSquareNorCvector
     // check_dims_match_mat replaced by check that D = 2^n
+#ifndef NDEBUG
     idx D_expected = (1ULL << n);
     assert(static_cast<idx>(rA.rows()) == D_expected && "A/n size mismatch");
 #endif

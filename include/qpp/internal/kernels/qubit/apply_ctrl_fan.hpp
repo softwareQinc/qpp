@@ -83,9 +83,11 @@ apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
            "State vector dimension mismatch with 2^n");
 
     assert(shift.size() == ctrl.size() && "Shift size must match ctrl size");
+#ifndef NDEBUG
     for (idx s : shift) {
         assert(s < 2 && "Shift values must be < 2 for qubits");
     }
+#endif
 
     if (D == 1) {
         return rstate; // Trivial 1D state
@@ -168,6 +170,7 @@ apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
 
     const expr_t<Derived1>& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
+    idx D = 1ULL << n; // Total dimension 2^n
 
     // ==========================================
     // ASSERTIONS (Zero runtime overhead in Release)
@@ -179,16 +182,17 @@ apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
            target.size() > 0 && "Zero size inputs not allowed");
     assert(rA.rows() == rA.cols() && "Gate A must be a square matrix");
     assert(rA.rows() == 2 && "Aggressively optimized for qubits (d=2) only");
+    assert(shift.size() == ctrl.size() && "Shift size must match ctrl size");
 
-    idx D = 1ULL << n; // Total dimension 2^n
+#ifndef NDEBUG
     assert(static_cast<idx>(rstate.rows()) == D &&
            static_cast<idx>(rstate.cols()) == D &&
            "Density matrix dimension mismatch with 2^n");
 
-    assert(shift.size() == ctrl.size() && "Shift size must match ctrl size");
     for (idx s : shift) {
         assert(s < 2 && "Shift values must be < 2 for qubits");
     }
+#endif
 
     if (D == 1) {
         return rstate; // Trivial 1D state

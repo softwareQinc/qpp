@@ -71,14 +71,13 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     const idx D = 1ULL << n; // Total size of the state vector (2^n)
 
     // Input Validation
-#ifndef NDEBUG
     assert(i < n && "Target qubit index i must be less than n");
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
     assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
-
+#ifndef NDEBUG
     // Validate control qubits and shift values
     for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
         const idx c = ctrl[c_idx];
@@ -199,7 +198,6 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     const idx D = 1ULL << n;
 
     // Input Validation
-#ifndef NDEBUG
     assert(i < n && j < n && i != j &&
            "Target qubit indices i and j must be distinct and less than n");
     assert(static_cast<idx>(state.size()) == D &&
@@ -207,6 +205,7 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
+#ifndef NDEBUG
     for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
         const idx c = ctrl[c_idx];
         assert(c < n && "Control qubit index c must be less than n");
@@ -328,6 +327,14 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     const idx outer_dim = 1ULL << (n - k); // Number of spectator blocks
 
     // Input Validation
+    // Check Gate Dimension: A must be a 2^k x 2^k matrix
+    assert(static_cast<idx>(A.rows()) == dim &&
+           static_cast<idx>(A.cols()) == dim &&
+           "Gate A must be a 2^k x 2^k matrix, where k is the number of target "
+           "qubits");
+    // Check Control Qubit Indices and overlap
+    assert(ctrl.size() == shift.size() &&
+           "ctrl and shift vectors must have the same size");
 #ifndef NDEBUG
     // D is the dimension of the state (2^n)
     const idx D = 1ULL << n;
@@ -336,12 +343,6 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     for (idx t : target) {
         assert(t < n && "Target qubit index must be less than n");
     }
-
-    // Check Gate Dimension: A must be a 2^k x 2^k matrix
-    assert(static_cast<idx>(A.rows()) == dim &&
-           static_cast<idx>(A.cols()) == dim &&
-           "Gate A must be a 2^k x 2^k matrix, where k is the number of target "
-           "qubits");
 
     // Check State Dimension: state must be 2^n x 1 vector
     assert(static_cast<idx>(state.size()) == D && state.cols() == 1 &&
@@ -355,10 +356,6 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
                    sorted_target.end() &&
                "Target qubit indices must be distinct");
     }
-
-    // Check Control Qubit Indices and overlap
-    assert(ctrl.size() == shift.size() &&
-           "ctrl and shift vectors must have the same size");
 
     // Create a set of target indices for quick lookup
     std::set<idx> target_set(target.begin(), target.end());
@@ -516,7 +513,6 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
     const idx D = 1ULL << n; // total Hilbert space dimension
 
     // Input Validation
-#ifndef NDEBUG
     assert(i < n && "Target qubit index i must be less than n");
     assert(static_cast<idx>(state.rows()) == D &&
            static_cast<idx>(state.cols()) == D &&
@@ -525,6 +521,7 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
 
+#ifndef NDEBUG
     // Validate control qubits and overlap
     std::set<idx> target_set = {i};
     for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
@@ -663,16 +660,16 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
                   const std::vector<idx>& ctrl, idx i, idx j,
                   const std::vector<idx>& shift, idx n) {
     // Input Validation
-#ifndef NDEBUG
-    const idx D = static_cast<idx>(state.rows());
-    const idx D_expected = (1ULL << n);
     assert(i < n && j < n && i != j &&
            "Target qubit indices i and j must be distinct and less than n");
-    assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
-           "State must be a square matrix sized 2^n x 2^n");
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
+#ifndef NDEBUG
+    const idx D = static_cast<idx>(state.rows());
+    const idx D_expected = (1ULL << n);
+    assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
+           "State must be a square matrix sized 2^n x 2^n");
 
     // Validate control qubits and overlap
     std::set<idx> target_set = {i, j};
@@ -868,17 +865,20 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     const idx D_k = (k == 0) ? 1 : (1ULL << k);
 
     // Input Validation
-#ifndef NDEBUG
-    const idx D = static_cast<idx>(state.rows());
     // Standard dimension checks
     assert(static_cast<idx>(A.rows()) == D_k &&
            static_cast<idx>(A.cols()) == D_k &&
            "Gate A must be a 2^k x 2^k matrix");
+    assert(static_cast<idx>(A.rows()) == D_k &&
+           static_cast<idx>(A.cols()) == D_k &&
+           "Gate A must be a 2^k x 2^k matrix");
+    assert(ctrl.size() == shift.size() &&
+           "ctrl and shift vectors must have the same size");
+#ifndef NDEBUG
+    const idx D = static_cast<idx>(state.rows());
     assert(static_cast<idx>(state.rows()) == D &&
            static_cast<idx>(state.cols()) == D &&
            "State must be a 2^n x 2^n matrix");
-    assert(ctrl.size() == shift.size() &&
-           "ctrl and shift vectors must have the same size");
 
     // Validate target and control qubit indices and check for overlap
     // Use a temporary vector to check distinctness and overlap efficiently
