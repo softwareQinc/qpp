@@ -13,6 +13,9 @@ int main() {
     std::cout << disp(0_ket) << '\n';
 
     std::cout << "This is some random ket in Dirac notation\n";
-    std::cout << disp(dirac(randket(2)), IOManipDiracOpts{}.set_plus_op(" + "));
-    std::cout << std::endl;
+    auto dirac_disp_opt = IOManipDiracOpts{}
+                              .set_amplitudes_after(false)
+                              .set_mul_op("")
+                              .set_plus_op(" + ");
+    std::cout << disp(dirac(randket(2)), dirac_disp_opt) << '\n';
 }

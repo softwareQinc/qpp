@@ -421,7 +421,7 @@ cmat evects(const Eigen::MatrixBase<Derived>& A) {
  * @see qpp::eig()
  *
  * @param A Eigen expression, assumed to be Hermitian
- * @return Pair of:  1. Eigenvalues of \a A, as a real dynamic column vector,
+ * @return Pair of: 1. Eigenvalues of \a A, as a real dynamic column vector,
  * and 2. Eigenvectors of \a A, as columns of a complex dynamic matrix
  */
 template <typename Derived>
