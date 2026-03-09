@@ -5,6 +5,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
 qpp_select_target(QPP_TARGET "qpp_compiler_flags")
 
 option(QPP_QUBIT_OPTIMIZATIONS "Enable qubit-specific optimizations" ON)
+message(STATUS "Qubit optimizations - ${QPP_QUBIT_OPTIMIZATIONS}")
 
 target_compile_options(
   ${QPP_TARGET}
@@ -74,4 +75,4 @@ if(NOT CMAKE_BUILD_TYPE)
         "Choose the type of build: None Debug Release MinSizeRel RelWithDebInfo."
         FORCE)
 endif()
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}${CMAKE_CONFIGURATION_TYPES}")
