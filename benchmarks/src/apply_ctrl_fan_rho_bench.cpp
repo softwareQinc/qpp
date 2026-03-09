@@ -59,17 +59,14 @@ TEST_CASE("qpp::applyCTRL_fan() density matrix benchmark",
     }
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Apply CTRL-fan gate to subsystems (rho) nq=" +
-              std::to_string(nq)) {
+    BENCHMARK("applyCTRL_fan/baseline/rho/nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::applyCTRL_fan(rho, U, ctrl, target);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK(
-        "Apply CTRL-fan gate to subsystems qubit optimizations (rho) nq=" +
-        std::to_string(nq)) {
+    BENCHMARK("applyCTRL_fan/qubit-kernel/rho/nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::apply_ctrl_fan_rho(

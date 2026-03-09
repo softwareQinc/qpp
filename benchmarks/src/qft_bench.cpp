@@ -47,7 +47,7 @@ TEST_CASE("qpp::QCircuit::QFT() benchmark", "[benchmark][qft]") {
     qpp::QEngine qe{qc};
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("QFT nq=" + std::to_string(nq)) {
+    BENCHMARK("QCircuit::QFT/baseline/psi/nq=" + std::to_string(nq)) {
         // IMPORTANT: engine must be reset after each iteration
         qe.reset();
         // CRITICAL: Return the result so the compiler doesn't optimize the

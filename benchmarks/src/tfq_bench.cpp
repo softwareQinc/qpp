@@ -47,7 +47,7 @@ TEST_CASE("qpp::QCircuit::TFQ() benchmark", "[benchmark][tfq]") {
     qpp::QEngine qe{qc};
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("TFQ nq=" + std::to_string(nq)) {
+    BENCHMARK("QCircuit::TFQ/baseline/psi/nq=" + std::to_string(nq)) {
         // IMPORTANT: engine must be reset after each iteration
         qe.reset();
         // CRITICAL: Return the result so the compiler doesn't optimize the

@@ -50,7 +50,7 @@ TEST_CASE("qpp::measure_seq() state vector benchmark",
     std::iota(subsys.begin(), subsys.end(), 0);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Sequential measurements (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("measure_seq/baseline/psi/nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::measure_seq(psi, subsys);

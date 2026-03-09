@@ -52,15 +52,14 @@ TEST_CASE("qpp::syspermute() density matrix benchmark",
     std::iota(subsys.rbegin(), subsys.rend(), 0);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Subsystem permutation (rho) nq=" + std::to_string(nq)) {
+    BENCHMARK("syspermute/baseline/rho/nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::syspermute(rho, subsys);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Subsystem permutation qubit optimizations (rho) nq=" +
-              std::to_string(nq)) {
+    BENCHMARK("syspermute/qubit-kernel/rho/nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::syspermute_rho_kq(rho, subsys,

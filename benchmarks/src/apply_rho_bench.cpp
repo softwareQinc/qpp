@@ -53,56 +53,56 @@ TEST_CASE("qpp::apply() density matrix benchmark",
     qpp::cmat U4 = qpp::randU(16);   // random 4 qubit gate
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Apply gate to 1 subsystem (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("apply/baseline/rho/nq=" + std::to_string(nq) + "/targets=1") {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::apply(rho, U1, {nq - 1});
     };
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Apply gate to 2 subsystems (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("apply/baseline/rho/nq=" + std::to_string(nq) + "/targets=2") {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::apply(rho, U2, {nq - 2, nq - 1});
     };
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Apply gate to 3 subsystems (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("apply/baseline/rho/nq=" + std::to_string(nq) + "/targets=3") {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::apply(rho, U3, {nq - 3, nq - 2, nq - 1});
     };
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Apply gate to 4 subsystems (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("apply/baseline/rho/nq=" + std::to_string(nq) + "/targets=4") {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::apply(rho, U4, {nq - 4, nq - 3, nq - 2, nq - 1});
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Apply gate to 1 subsystem qubit optimizations (psi) nq=" +
-              std::to_string(nq)) {
+    BENCHMARK("apply/qubit-kernel/rho/nq=" + std::to_string(nq) +
+              "/targets=1") {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::apply_rho_1q(rho, U1, nq - 1, nq);
     };
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Apply gate to 2 subsystems qubit optimizations (psi) nq=" +
-              std::to_string(nq)) {
+    BENCHMARK("apply/qubit-kernel/rho/nq=" + std::to_string(nq) +
+              "/targets=2") {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::apply_rho_2q(rho, U2, nq - 2,
                                                            nq - 1, nq);
     };
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Apply gate to 3 subsystems qubit optimizations (psi) nq=" +
-              std::to_string(nq)) {
+    BENCHMARK("apply/qubit-kernel/rho/nq=" + std::to_string(nq) +
+              "/targets=3") {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::apply_rho_3q(rho, U3, nq - 3,
                                                            nq - 2, nq - 1, nq);
     };
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Apply gate to 4 subsystems qubit optimizations (psi) nq=" +
-              std::to_string(nq)) {
+    BENCHMARK("apply/qubit-kernel/rho/nq=" + std::to_string(nq) +
+              "/targets=4") {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::apply_rho_kq(

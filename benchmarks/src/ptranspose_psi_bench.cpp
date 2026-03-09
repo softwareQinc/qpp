@@ -54,15 +54,14 @@ TEST_CASE("qpp::ptranspose() state vector benchmark",
     std::vector<qpp::idx> dims(nq, 2);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial transpose (psi) nq=" + std::to_string(nq)) {
+    BENCHMARK("ptranspose/baseline/psi/nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::ptranspose(psi, subsys);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial transpose qubit optimizations (psi) nq=" +
-              std::to_string(nq)) {
+    BENCHMARK("ptranspose/qubit-kernel/psi/nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::ptranspose_psi_kq(psi, subsys,

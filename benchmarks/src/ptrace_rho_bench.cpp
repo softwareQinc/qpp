@@ -53,15 +53,14 @@ TEST_CASE("qpp::ptrace() density matrix benchmark",
     std::vector<qpp::idx> dims(nq, 2);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace (rho) nq=" + std::to_string(nq)) {
+    BENCHMARK("ptrace/baseline/rho/nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::ptrace(rho, subsys);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("Partial trace qubit optimizations (rho) nq=" +
-              std::to_string(nq)) {
+    BENCHMARK("ptrace/qubit-kernel/rho/nq=" + std::to_string(nq)) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::ptrace_rho_kq(rho, subsys, nq);
