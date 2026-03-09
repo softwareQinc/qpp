@@ -3,48 +3,56 @@
 - Significant performance improvements (10x to 1000x) for qubit state
   manipulation and qubit circuit execution through extensive optimizations of
   `qpp::apply()`, `qpp::applyCTRL()`, `qpp::applyCTRL_fan()`, `qpp::ptrace()`,
-  `qpp::ptranspose()`, and `qpp::syspermute()`.
-- **pyqpp** is now feature complete, providing Python users with
-- Added `pyqpp.QEngine.get_stats_to_JSON()` to display the measurement
-  statistics in JSON format from **pyqpp**
-  complete access to the full **Quantum++** API
-- Switched to MAJOR.MINOR.PATCH release versioning system:
-  - MAJOR -- introduces significant changes that break backward compatibility
-  - MINOR -- may include limited or minor compatibility breaks
-  - PATCH -- fully backward compatible fixes and improvements
+  `qpp::ptranspose()`, and `qpp::syspermute()`
+- **pyqpp** is now feature complete, providing Python users with full access to
+  the **Quantum++** API
+- Switched to the **MAJOR.MINOR.PATCH** release versioning scheme:
+  - **MAJOR** — introduces significant changes that break backward compatibility
+  - **MINOR** — may include limited or minor compatibility breaks
+  - **PATCH** — fully backward-compatible fixes and improvements
 - Renamed the class `qpp::Bit_circuit` to `qpp::BitCircuit` and the class
-  `qpp::Dynamic_bitset` to `qpp::DynamicBitset` in ["qpp/classes/reversible.hpp"]
+  `qpp::Dynamic_bitset` to `qpp::DynamicBitset` in
+  [`qpp/classes/reversible.hpp`](qpp/classes/reversible.hpp)
 - Renamed the class `internal::QCircuitConditionalStep` to
-  `internal::QCircuitRuntimeStep`, and the corresponding
-  ["qpp/internal/classes/qcircuit_conditional_step.hpp"] to
-  ["qpp/internal/classes/qcircuit_runtime_step.hpp"]
+  `internal::QCircuitRuntimeStep`, and the corresponding file
+  [`qpp/internal/classes/qcircuit_conditional_step.hpp`](qpp/internal/classes/qcircuit_conditional_step.hpp)
+  to
+  [`qpp/internal/classes/qcircuit_runtime_step.hpp`](qpp/internal/classes/qcircuit_runtime_step.hpp)
 - Renamed `qpp::QCircuit::has_conditionals()` to
   `qpp::QCircuit::has_runtime_steps()`
-- New feature: support for setting dits at runtime in
-  ["qpp/classes/qcircuit.hpp"], implemented
+- Added support for setting dits at runtime in
+  [`qpp/classes/qcircuit.hpp`](qpp/classes/qcircuit.hpp), implemented via
   `qpp::QCircuit::set_dits_runtime(mutable_dits_functor_t dits)`. Here
   `mutable_dits_functor_t` is an alias to an internal mutable functor defined
-  in ["qpp/internal/classes/qcircuit_runtime_step.hpp"]
-- Changed `cond_func_t` type alias to `cond_pred_t` for Boolean predicates in
-  conditional statements and moved the type alias from
-  ["qpp/types.hpp"] to
-  ["qpp/internal/classes/qcircuit_runtime_step.hpp"]; alias to an internal type.
+  in
+  [`qpp/internal/classes/qcircuit_runtime_step.hpp`](qpp/internal/classes/qcircuit_runtime_step.hpp)
+- Renamed the type alias `cond_func_t` to `cond_pred_t` for Boolean predicates
+  used in conditional statements and moved the alias from
+  [`qpp/types.hpp`](qpp/types.hpp) to
+  [`qpp/internal/classes/qcircuit_runtime_step.hpp`](qpp/internal/classes/qcircuit_runtime_step.hpp)
+- Added `pyqpp.QEngine.get_stats_to_JSON()` to display measurement statistics
+  in JSON format from **pyqpp**
 - Added
-  ["examples/circuits/runtime_set_dits.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)
+  [`examples/circuits/runtime_set_dits.cpp`](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/runtime_set_dits.cpp)
 - Conditional statements are now indented with tabs when displaying
   `qpp::QCircuit` instances
-- API change in `qpp::sample(A, target, dims)` overload, added the overall
-  outcome probability to its return type `std::tuple<std::vector<idx>, realT>`
-- Bumped Eigen3 minimum required version to 5.0.0
-- Bumped CMake minimum required version to 3.20
-- Modernized CMake configuration files
-- Removed `EIGEN3_INSTALL_DIR` CMake flag
+- API change in the `qpp::sample(A, target, dims)` overload: added the overall
+  outcome probability to the return type
+  `std::tuple<std::vector<idx>, realT>`
+- Added HHL examples:
+  - [`examples/hhl.cpp`](https://github.com/softwareqinc/qpp/blob/main/examples/hhl.cpp) — raw API
+  - [`examples/circuits/hhl_circuit.cpp`](https://github.com/softwareqinc/qpp/blob/main/examples/hhl.cpp) — `qpp::QCircuit` API
+- Added a benchmarking suite using
+  [Catch2](https://github.com/catchorg/Catch2) in
+  [`benchmarks`](https://github.com/softwareQinc/qpp/blob/main/benchmarks)
+- Removed the `stress_tests` suite, as the new benchmarking suite supersedes it
+- Modernized the CMake configuration files
+- Bumped the minimum required Eigen3 version to **5.0.0**
+- Bumped the minimum required CMake version to **3.20**
+- Removed the `EIGEN3_INSTALL_DIR` CMake flag
 - Examples are now built in `${CMAKE_BUILD_DIR}/examples` instead of
   `${CMAKE_BUILD_DIR}`
-- Added benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
-  in ["benchmarks"](https://github.com/softwareQinc/qpp/blob/main/benchmarks)
-- Removed the `stress_tests` suite, as the new benchmarking suite supersedes it
-- Bugfixes for `qpp::QFT()` and `qpp::TFQ()`
+- Bug fixes for `qpp::QFT()` and `qpp::TFQ()`
 
 # Version 6.0 - 14 April 2025
 
