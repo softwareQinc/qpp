@@ -1,6 +1,6 @@
 // Source: ./examples/hhl.cpp
 //
-// HHL algorithm: solving a 2×2 linear system A x = b
+// HHL algorithm: solving a 2x2 linear system A x = b
 //
 // Matrix:
 // A =  |1  0|
@@ -38,7 +38,7 @@
 #include <iostream>
 #include <vector>
 
-#include "qpp/qpp.hpp"
+#include <qpp/qpp.hpp>
 
 int main() {
     using namespace qpp;
