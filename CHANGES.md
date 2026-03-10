@@ -40,8 +40,8 @@
   outcome probability to the return type
   `std::tuple<std::vector<idx>, realT>`
 - Added HHL examples:
-  - [`examples/hhl.cpp`](https://github.com/softwareqinc/qpp/blob/main/examples/hhl.cpp) — raw API
-  - [`examples/circuits/hhl_circuit.cpp`](https://github.com/softwareqinc/qpp/blob/main/examples/hhl.cpp) — `qpp::QCircuit` API
+  - [`examples/hhl.cpp`](https://github.com/softwareqinc/qpp/blob/main/examples/hhl.cpp) - raw API
+  - [`examples/circuits/hhl_circuit.cpp`](https://github.com/softwareqinc/qpp/blob/main/examples/circuits/hhl_circuit.cpp) - `qpp::QCircuit` API
 - Added a benchmarking suite using
   [Catch2](https://github.com/catchorg/Catch2) in
   [`benchmarks`](https://github.com/softwareQinc/qpp/blob/main/benchmarks)
