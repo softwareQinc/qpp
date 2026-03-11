@@ -27,7 +27,7 @@ RUN git clone --depth 1 --branch main https://github.com/softwareqinc/qpp && \
     cmake --build qpp/build --target qpp_qasm && \
     sudo cmake --build qpp/build --target install && \
     sudo cp qpp/build/qpp_qasm /usr/local/bin && \
-    rm -rf qpp/build  # Clean up build artifacts
+    rm -rf qpp/build
 
 # Create a notebook directory for Jupyter
 RUN mkdir notebooks
