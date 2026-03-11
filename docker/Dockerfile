@@ -31,5 +31,8 @@ RUN git clone --depth 1 --branch main https://github.com/softwareqinc/qpp && \
 
 # Create a notebook directory for Jupyter
 RUN mkdir notebooks
-ENV PATH="/home/sq/venv/bin:$PATH"
+COPY notebooks/* notebooks
+
+# Start Jupyter server
+# ENV PATH="/home/sq/venv/bin:$PATH"
 # CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--notebook-dir=./notebooks"]
