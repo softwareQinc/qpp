@@ -53,14 +53,16 @@ TEST_CASE("qpp::ptrace() state vector benchmark",
     std::vector<qpp::idx> dims(nq, 2);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("ptrace/baseline/psi/nq=" + std::to_string(nq)) {
+    BENCHMARK("ptrace/baseline/psi/nq=" + std::to_string(nq) +
+              "/targets=" + std::to_string(subsys.size())) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::ptrace(psi, subsys);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("ptrace/qubit-kernel/psi/nq=" + std::to_string(nq)) {
+    BENCHMARK("ptrace/qubit-kernel/psi/nq=" + std::to_string(nq) +
+              "/targets=" + std::to_string(subsys.size())) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::ptrace_psi_kq(psi, subsys, nq);

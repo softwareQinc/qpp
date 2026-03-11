@@ -52,14 +52,16 @@ TEST_CASE("qpp::syspermute() state vector benchmark",
     std::iota(subsys.rbegin(), subsys.rend(), 0);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("syspermute/baseline/psi/nq=" + std::to_string(nq)) {
+    BENCHMARK("syspermute/baseline/psi/nq=" + std::to_string(nq) +
+              "/targets=" + std::to_string(subsys.size())) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::syspermute(psi, subsys);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("syspermute/qubit-kernel/psi/nq=" + std::to_string(nq)) {
+    BENCHMARK("syspermute/qubit-kernel/psi/nq=" + std::to_string(nq) +
+              "/targets=" + std::to_string(subsys.size())) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::syspermute_psi_kq(psi, subsys,

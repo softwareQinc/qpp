@@ -50,7 +50,8 @@ TEST_CASE("qpp::measure_seq() density matrix benchmark",
     std::iota(subsys.begin(), subsys.end(), 0);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("measure_seq/baseline/rho/nq=" + std::to_string(nq)) {
+    BENCHMARK("measure_seq/baseline/rho/nq=" + std::to_string(nq) +
+              "/targets=" + std::to_string(subsys.size())) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::measure_seq(rho, subsys);

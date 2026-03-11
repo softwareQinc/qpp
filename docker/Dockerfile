@@ -19,7 +19,7 @@ COPY --chown=sq:sq requirements.txt ./
 RUN python3 -m venv venv && \
     ./venv/bin/pip install --no-cache-dir --upgrade pip && \
     ./venv/bin/pip install --no-cache-dir -r requirements.txt && \
-    ./venv/bin/pip install --no-cache-dir git+https://github.com/softwareqinc/qpp@v7.0.0
+    ./venv/bin/pip install --no-cache-dir git+https://github.com/softwareqinc/qpp
 
 # Clone Quantum++ and build qpp_qasm
 RUN git clone --depth 1 --branch main https://github.com/softwareqinc/qpp && \

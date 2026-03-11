@@ -53,15 +53,17 @@ TEST_CASE("qpp::ptranspose() density matrix benchmark",
     std::iota(subsys.begin(), subsys.end(), mid);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("ptranspose/baseline/rho/nq=" + std::to_string(nq)) {
+    BENCHMARK("ptranspose/baseline/rho/nq=" + std::to_string(nq) +
+              "/targets=" + std::to_string(subsys.size())) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::ptranspose(rho, subsys);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("ptranspose/qubit-kernel/density matrix/nq=" +
-              std::to_string(nq)) {
+    BENCHMARK(
+        "ptranspose/qubit-kernel/density matrix/nq=" + std::to_string(nq) +
+        "/targets=" + std::to_string(subsys.size())) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::ptranspose_rho_kq(rho, subsys,

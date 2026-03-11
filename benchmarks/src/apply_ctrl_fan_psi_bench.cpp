@@ -52,21 +52,25 @@ TEST_CASE("qpp::applyCTRL_fan() state vector benchmark",
     qpp::idx mid = nq / 2;
     std::vector<qpp::idx> ctrl(mid);
     std::vector<qpp::idx> target(mid);
-    std::vector<qpp::idx> shift(nq, 0);
     for (qpp::idx i = 0; i < mid; ++i) {
         ctrl[i] = i;
         target[i] = mid + i;
     }
+    std::vector<qpp::idx> shift(ctrl.size(), 0);
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("applyCTRL_fan/baseline/psi/nq=" + std::to_string(nq)) {
+    BENCHMARK("applyCTRL_fan/baseline/psi/nq=" + std::to_string(nq) +
+              "/ctrls=" + std::to_string(ctrl.size()) +
+              "/targets=" + std::to_string(target.size())) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::applyCTRL_fan(psi, U, ctrl, target);
     };
 
     // Benchmarked portion (executed repeatedly)
-    BENCHMARK("applyCTRL_fan/qubit-kernel/psi/nq=" + std::to_string(nq)) {
+    BENCHMARK("applyCTRL_fan/qubit-kernel/psi/nq=" + std::to_string(nq) +
+              "/ctrls=" + std::to_string(ctrl.size()) +
+              "/targets=" + std::to_string(target.size())) {
         // CRITICAL: Return the result so the compiler doesn't optimize the
         // calculation away.
         return qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
