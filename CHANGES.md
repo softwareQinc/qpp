@@ -1,4 +1,4 @@
-# Version 7.0.0 - 10 March 2026
+# Version 7.0.0 - 14 March 2026
 
 - Significant performance improvements (10x to 1000x) for qubit state
   manipulation and qubit circuit execution through extensive optimizations of

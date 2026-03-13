@@ -1519,8 +1519,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 /**
  * @class qpp::QEngine
  * @brief Pure state quantum engine
- * @note Kept for backwards compatibility, use qpp::QKetEngine
  * @see qpp::QEngineT
+ *
+ * @note Kept for backwards compatibility, use qpp::QKetEngine
  */
 struct QEngine : public QEngineT<ket> {
     using QEngineT<ket>::QEngineT;
