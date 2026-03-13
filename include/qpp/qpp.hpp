@@ -111,59 +111,62 @@
 
 /**
  * @namespace qpp
- * @brief Quantum++ main namespace
+ * @brief Main Quantum++ namespace
  */
 namespace qpp {
 /**
  * @brief qpp::Init const Singleton
+ * @see qpp::Init
  *
- * Additional initializations/cleanups, see the class qpp::Init
+ * Additional initialization/cleanup
  */
-static const Init& init [[maybe_unused]] = Init::get_no_thread_local_instance();
+inline const Init& init [[maybe_unused]] = Init::get_no_thread_local_instance();
 
 /**
  * @brief qpp::Codes const Singleton
+ * @see qpp::Codes
  *
- * Initializes the codes, see the class qpp::Codes
+ * Initializes quantum error correcting codes
  */
-static const Codes& codes [[maybe_unused]] =
+inline const Codes& codes [[maybe_unused]] =
     Codes::get_no_thread_local_instance();
 
 /**
  * @brief qpp::Gates const Singleton
+ * @see qpp::Gates
  *
- * Initializes the gates, see the class qpp::Gates
+ * Initializes quantum gates
  */
-static const Gates& gt [[maybe_unused]] = Gates::get_no_thread_local_instance();
+inline const Gates& gt [[maybe_unused]] = Gates::get_no_thread_local_instance();
 
 /**
  * @brief qpp::States const Singleton
+ * @see qpp::States
  *
- * Initializes the states, see the class qpp::States
+ * Initializes quantum states
  */
-static const States& st [[maybe_unused]] =
+inline const States& st [[maybe_unused]] =
     States::get_no_thread_local_instance();
 
 /**
  * @brief qpp::RandomDevices Singleton
+ * @see qpp::RandomDevices
  *
- * Initializes the random devices, see the class qpp::RandomDevices
+ * Initializes random devices
  *
- * @note If the compiler supports thread_local, has thread_local storage
- * duration, due to mutability of its public member std::mt19937 and
+ * @note If the compiler supports thread_local, the instance has thread_local
+ * storage duration, due to mutability of its public member std::mt19937 and
  * possible data races
  */
-
 #ifndef NO_THREAD_LOCAL_
 thread_local
 #endif
-    static RandomDevices& rdevs [[maybe_unused]] =
+    inline RandomDevices& rdevs [[maybe_unused]] =
         RandomDevices::get_instance();
 
 /**
  * @namespace qpp::obsolete
- * @brief Obsolete/deprecated code, may be removed without notice in future
- * releases
+ * @brief Obsolete/deprecated code, may be removed without notice at any time
  */
 namespace obsolete {} /* namespace obsolete */
 
