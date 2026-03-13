@@ -77,9 +77,10 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
+    const idx ctrl_size = static_cast<idx>(ctrl.size());
 #ifndef NDEBUG
     // Validate control qubits and shift values
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         assert(c < n && "Control qubit index c must be less than n");
         assert(c != i && "Target qubit i cannot also be a control qubit");
@@ -111,7 +112,7 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     idx expected_zero_mask = 0;
 
     // We iterate over the list of control qubits (ctrl)
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         const idx j_c =
             n - 1 - c; // Big-endian bit position for control qubit c
@@ -205,8 +206,9 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
+    const idx ctrl_size = static_cast<idx>(ctrl.size());
 #ifndef NDEBUG
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         assert(c < n && "Control qubit index c must be less than n");
         assert(c != i && c != j &&
@@ -229,7 +231,7 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     // build control mask/value using big-endian positions
     idx control_mask = 0;
     idx control_value = 0;
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         const idx p_c = n - 1 - c; // big-endian position
         const idx bit = (1ULL << p_c);
@@ -335,6 +337,7 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     // Check Control Qubit Indices and overlap
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
+    const idx ctrl_size = static_cast<idx>(ctrl.size());
 #ifndef NDEBUG
     // D is the dimension of the state (2^n)
     const idx D = 1ULL << n;
@@ -361,7 +364,7 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     std::set<idx> target_set(target.begin(), target.end());
 
     // Validate control qubits and shift values
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         assert(c < n && "Control qubit index c must be less than n");
         assert(target_set.find(c) == target_set.end() &&
@@ -385,7 +388,7 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     idx expected_zero_mask = 0;
 
     // We iterate over the list of control qubits (ctrl)
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         const idx j_c =
             n - 1 - c; // Big-endian bit position for control qubit c
@@ -520,11 +523,11 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
     assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
-
+    const idx ctrl_size = static_cast<idx>(ctrl.size());
 #ifndef NDEBUG
     // Validate control qubits and overlap
     std::set<idx> target_set = {i};
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         assert(c < n && "Control qubit index c must be less than n");
         assert(target_set.find(c) == target_set.end() &&
@@ -545,7 +548,7 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
     idx expected_pattern_for_ones = 0; // Requires |1>
     idx expected_zero_mask = 0;        // Requires |0>
 
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         const idx j_c =
             n - 1 - c; // Big-endian bit position for control qubit c
@@ -665,6 +668,7 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
+    const idx ctrl_size = static_cast<idx>(ctrl.size());
 #ifndef NDEBUG
     const idx D = static_cast<idx>(state.rows());
     const idx D_expected = (1ULL << n);
@@ -673,7 +677,7 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
 
     // Validate control qubits and overlap
     std::set<idx> target_set = {i, j};
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         assert(c < n && "Control qubit index c must be less than n");
         assert(target_set.find(c) == target_set.end() &&
@@ -714,7 +718,7 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
     idx expected_pattern_for_ones = 0; // Requires |1>
     idx expected_zero_mask = 0;        // Requires |0>
 
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         const idx j_c =
             n - 1 - c; // Big-endian bit position for control qubit c
@@ -874,6 +878,7 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
            "Gate A must be a 2^k x 2^k matrix");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
+    const idx ctrl_size = static_cast<idx>(ctrl.size());
 #ifndef NDEBUG
     const idx D = static_cast<idx>(state.rows());
     assert(static_cast<idx>(state.rows()) == D &&
@@ -938,7 +943,7 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
         0;                      // Bits that must be 1 for control to meet
     idx expected_zero_mask = 0; // Bits that must be 0 for control to meet
 
-    for (idx c_idx = 0; c_idx < ctrl.size(); ++c_idx) {
+    for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         const idx bit = (1ULL << (n - 1 - c)); // Global index position marker
 

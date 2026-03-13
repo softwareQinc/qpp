@@ -98,7 +98,8 @@ apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
     // ==========================================
     idx ctrl_mask = 0;
     idx ctrl_val = 0;
-    for (size_t i = 0; i < ctrl.size(); ++i) {
+    const idx ctrl_size = static_cast<idx>(ctrl.size());
+    for (idx i = 0; i < ctrl_size; ++i) {
         idx bit = 1ULL << (n - 1 - ctrl[i]); // MSB convention index
         ctrl_mask |= bit;
         if (shift[i] == 0) {
@@ -120,7 +121,7 @@ apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
         idx fixed_mask = ctrl_mask | target_bit;
 
         idx free_mask = ((1ULL << n) - 1) & ~fixed_mask;
-        idx num_t_active = 1ULL << (n - ctrl.size() - 1);
+        idx num_t_active = 1ULL << (n - ctrl_size - 1);
 
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
@@ -203,7 +204,8 @@ apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
     // ==========================================
     idx ctrl_mask = 0;
     idx ctrl_val = 0;
-    for (size_t i = 0; i < ctrl.size(); ++i) {
+    const idx ctrl_size = static_cast<idx>(ctrl.size());
+    for (idx i = 0; i < ctrl_size; ++i) {
         idx bit = 1ULL << (n - 1 - ctrl[i]); // MSB convention index
         ctrl_mask |= bit;
         if (shift[i] == 0) {
@@ -228,7 +230,7 @@ apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
         idx fixed_mask = ctrl_mask | target_bit;
 
         idx free_mask = ((1ULL << n) - 1) & ~fixed_mask;
-        idx num_t_active = 1ULL << (n - ctrl.size() - 1);
+        idx num_t_active = 1ULL << (n - ctrl_size - 1);
 
         // Precalculate address pairs to share between Row/Col operations
         std::vector<std::pair<idx, idx>> active_pairs(num_t_active);

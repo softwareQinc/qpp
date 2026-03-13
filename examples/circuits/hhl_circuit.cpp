@@ -59,8 +59,8 @@ int main() {
 
     // base U = exp(i A t) for A = diag(1,2) => diag(e^{it}, e^{i2t})
     cmat Ubase = cmat::Zero(2, 2);
-    Ubase(0, 0) = std::exp(cplx(0, 1) * (1.0 * t));
-    Ubase(1, 1) = std::exp(cplx(0, 1) * (2.0 * t));
+    Ubase(0, 0) = std::exp(1.0_i * (static_cast<realT>(1.0) * t));
+    Ubase(1, 1) = std::exp(1.0_i * (static_cast<realT>(2.0) * t));
 
     // QCircuit construction
     QCircuit qc{n_total};
