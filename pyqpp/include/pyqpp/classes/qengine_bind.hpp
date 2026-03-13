@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -22,6 +22,11 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ */
+
+/**
+ * @file <pyqpp/classes/qengine_bind.hpp>
+ * @brief Bindings for <qpp/classes/qengine.hpp>
  */
 
 #ifndef PYQPP_CLASSES_QENGINE_BIND_HPP_
@@ -72,8 +77,10 @@ void declare_QEngineT(py::module& m) {
         "Vector of qudit indexes that were not measured destructively");
     pyQEngineT.def("get_probs", &QEngineT<T>::get_probs,
                    "Underlying measurement outcome probabilities");
-    pyQEngineT.def("get_state", &QEngineT<T>::get_state,
-                   "Underlying quantum state");
+    pyQEngineT.def(
+        "get_state",
+        [](const QEngineT<T>& self) -> qpp::cmat { return self.get_state(); },
+        "Underlying quantum state");
     pyQEngineT.def(
         "get_stats",
         [](const QEngineT<T>& qe) {
@@ -90,6 +97,10 @@ void declare_QEngineT(py::module& m) {
             return result;
         },
         "Measurement statistics for multiple runs");
+    pyQEngineT.def(
+        "get_stats_to_JSON",
+        [](const QEngineT<T>& qe) { return qe.get_stats().to_JSON(); },
+        "Measurement statistics for multiple runs, JSON format");
     pyQEngineT.def("post_select_ok", &QEngineT<T>::post_select_ok,
                    "True if post-selection was successful (or absent), false "
                    "otherwise");

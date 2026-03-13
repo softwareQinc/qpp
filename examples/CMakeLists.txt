@@ -1,4 +1,4 @@
-# Examples source file(s) to be compiled, modify as needed
+# Example source file(s) to build and compile; modify as needed
 
 set(EXAMPLE_DIRS
     ${CMAKE_SOURCE_DIR}/examples ${CMAKE_SOURCE_DIR}/examples/circuits
@@ -10,9 +10,6 @@ foreach(dir ${EXAMPLE_DIRS})
   list(APPEND EXAMPLE_FILES ${CURRENT_FILES})
 endforeach()
 
-# Custom target for grouping examples
-add_custom_target(examples COMMENT "Builds and groups all Quantum++ examples.")
-
 # Build all examples in ${EXAMPLE_FILES}
 foreach(file ${EXAMPLE_FILES})
   get_filename_component(TARGET_NAME ${file} NAME_WE)
@@ -22,6 +19,11 @@ foreach(file ${EXAMPLE_FILES})
     continue()
   endif()
   add_executable(${TARGET_NAME} EXCLUDE_FROM_ALL ${file})
+  set_target_properties(
+    ${TARGET_NAME}
+    PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/examples"
+               RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/examples"
+               RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/examples")
   add_dependencies(examples ${TARGET_NAME})
   target_link_libraries(${TARGET_NAME} PRIVATE libqpp_internal)
 endforeach()

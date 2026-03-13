@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Configure Quantum++
-        run: cmake -B build
+        run: cmake -B build -DQPP_ENABLE_TESTING=ON
 
       - name: Install Quantum++
         shell: bash
@@ -49,6 +49,11 @@ jobs:
       - name: Build examples
         run: cmake --build build --target examples
 
+      - name: Build benchmarks
+        run: |
+          cmake -S benchmarks -B benchmarks/build
+          cmake --build benchmarks/build
+
       - name: Build unit tests
         run: cmake --build build/unit_tests --target unit_tests
 
@@ -73,6 +78,6 @@ jobs:
           else
             source venv/bin/activate
           fi
-          pip3 install .
+          pip install -e .
 
           python -c "import pyqpp; print(pyqpp.dirac(pyqpp.states.zero()))"

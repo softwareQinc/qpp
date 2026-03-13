@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/internal/classes/iomanip.hpp
- * \brief Input/output manipulators
+ * @file qpp/internal/classes/iomanip.hpp
+ * @brief Input/output manipulators
  */
 
 #ifndef QPP_INTERNAL_CLASSES_IOMANIP_HPP_
@@ -46,7 +46,6 @@
 #include "qpp/internal/util.hpp"
 
 namespace qpp::internal {
-
 // std::ostream manipulator for formatting scalars, default implementation
 template <typename Scalar>
 class IOManipScalar : public IDisplay {
@@ -338,7 +337,6 @@ class IOManipDirac : public IDisplay {
         return os;
     }
 }; /* class IOManipDirac */
-
 } /* namespace qpp::internal */
 
 #endif /* QPP_INTERNAL_CLASSES_IOMANIP_HPP_ */

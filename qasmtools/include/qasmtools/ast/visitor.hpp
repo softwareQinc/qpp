@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qasmtools/ast/visitor.hpp
- * \brief Visitor interface for syntax trees
+ * @file qasmtools/ast/visitor.hpp
+ * @brief Visitor interface for syntax trees
  */
 
 #ifndef QASMTOOLS_AST_VISITOR_HPP_
@@ -57,8 +57,8 @@ class AncillaDecl;
 class Program;
 
 /**
- * \class qasmtools::ast::Visitor
- * \brief Base visitor interface
+ * @class qasmtools::ast::Visitor
+ * @brief Base visitor interface
  *
  * Classic visitor via (virtual) double dispatch. Standard usage is to
  * derive from this class and provide implementations of visit for **every**

@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -27,6 +27,7 @@
 #ifndef PYQPP_COMMON_H_
 #define PYQPP_COMMON_H_
 
+#include <pybind11/complex.h>
 #include <pybind11/eigen.h>
 #include <pybind11/operators.h>
 #include <pybind11/pybind11.h>

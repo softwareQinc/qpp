@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/classes/reversible.hpp
- * \brief Support for classical reversible circuits
+ * @file qpp/classes/reversible.hpp
+ * @brief Support for classical reversible circuits
  */
 
 #ifndef QPP_CLASSES_REVERSIBLE_HPP_
@@ -45,19 +45,19 @@
 
 namespace qpp {
 /**
- * \class qpp::Dynamic_bitset
- * \brief Dynamic bitset class, allows the specification of the number of bits
+ * @class qpp::DynamicBitset
+ * @brief Dynamic bitset class, allows the specification of the number of bits
  * at runtime
  *
- * \note qpp::Dynamic_bitset assumes that the first bit (location 0 in the
+ * @note qpp::DynamicBitset assumes that the first bit (location 0 in the
  * bitset) is on the right (least significant bit), and the last bit (location
  * n-1 in the bitset) is on the left (most significant bit); that is, assumes
  * little-endian order.
- * \note qpp::Dynamic_bitset does not perform any exception checking (only
+ * @note qpp::DynamicBitset does not perform any exception checking (only
  * asserts in Debug mode). This is due to performance considerations.
- * \note The interface mimics std::bitset<>.
+ * @note The interface mimics std::bitset<>.
  */
-class Dynamic_bitset : public IDisplay {
+class DynamicBitset : public IDisplay {
   public:
     using value_type = unsigned int; ///< type of the storage elements
     using storage_type = std::vector<value_type>; ///< type of the storage
@@ -67,21 +67,21 @@ class Dynamic_bitset : public IDisplay {
     std::vector<value_type> v_; ///< storage space
 
     /**
-     * \brief Index of the \a pos bit in the storage space
+     * @brief Index of the \a pos bit in the storage space
      *
-     * \param pos Bit location
-     * \return Index of the \a pos bit in the storage space
+     * @param pos Bit location
+     * @return Index of the \a pos bit in the storage space
      */
     inline static idx index_(idx pos) {
         return pos / (sizeof(value_type) * CHAR_BIT);
     }
 
     /**
-     * \brief Offset of the \a pos bit in the storage space relative to its
+     * @brief Offset of the \a pos bit in the storage space relative to its
      * index
      *
-     * \param pos Bit location
-     * \return Offset of the \a pos bit in the storage space relative to its
+     * @param pos Bit location
+     * @return Offset of the \a pos bit in the storage space relative to its
      * index
      */
     inline static idx offset_(idx pos) {
@@ -90,26 +90,26 @@ class Dynamic_bitset : public IDisplay {
 
   public:
     /**
-     * \brief Constructor, initializes all bits to false (zero)
+     * @brief Constructor, initializes all bits to false (zero)
      *
-     * \param n Number of bits in the bitset
+     * @param n Number of bits in the bitset
      */
-    explicit Dynamic_bitset(idx n)
+    explicit DynamicBitset(idx n)
         : storage_size_{static_cast<idx>(n / (sizeof(value_type) * CHAR_BIT) +
                                          1)},
           n_{n}, v_(storage_size_) {}
 
     /**
-     * \brief Constructs a dynamic bitset instance out of a string
+     * @brief Constructs a dynamic bitset instance out of a string
      *
-     * \param str String, \a str[0] corresponds to the left bit (most
+     * @param str String, \a str[0] corresponds to the left bit (most
      * significant) in the bitset, i.e., corresponds to the bit at position n-1
-     * \param zero Character representing false (zero)
-     * \param one Character representing true (one)
+     * @param zero Character representing false (zero)
+     * @param one Character representing true (one)
      */
-    explicit Dynamic_bitset(std::string str, char zero = '0',
+    explicit DynamicBitset(std::string str, char zero = '0',
                             [[maybe_unused]] char one = '1')
-        : Dynamic_bitset{static_cast<idx>(str.size())} {
+        : DynamicBitset{static_cast<idx>(str.size())} {
         idx n = str.size();
         for (idx i = 0; i < n; ++i) {
             assert(str[i] == zero || str[i] == one);
@@ -118,38 +118,38 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Default virtual destructor
+     * @brief Default virtual destructor
      */
-    ~Dynamic_bitset() override = default;
+    ~DynamicBitset() override = default;
 
     /* getters */
 
     /**
-     * \brief Raw storage space of the bitset
+     * @brief Raw storage space of the bitset
      *
-     * \return Const reference to the underlying storage space
+     * @return Const reference to the underlying storage space
      */
     const storage_type& data() const { return v_; }
 
     /**
-     * \brief Number of bits stored in the bitset
+     * @brief Number of bits stored in the bitset
      *
-     * \return Number of bits stored in the bitset
+     * @return Number of bits stored in the bitset
      */
     idx size() const noexcept { return n_; }
 
     /**
-     * \brief Size of the underlying storage space (in units of value_type,
+     * @brief Size of the underlying storage space (in units of value_type,
      * unsigned int by default)
      *
-     * \return Size of the underlying storage space
+     * @return Size of the underlying storage space
      */
     idx storage_size() const noexcept { return storage_size_; }
 
     /**
-     * \brief Number of bits set to one in the bitset (Hamming weight)
+     * @brief Number of bits set to one in the bitset (Hamming weight)
      *
-     * \return Hamming weight
+     * @return Hamming weight
      */
     idx count() const noexcept {
         idx result = 0;
@@ -164,10 +164,10 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief The value of the bit at position \a pos
+     * @brief The value of the bit at position \a pos
      *
-     * \param pos Position in the bitset
-     * \return Value of the bit at position \a pos
+     * @param pos Position in the bitset
+     * @return Value of the bit at position \a pos
      */
     bool get(idx pos) const noexcept {
         assert(pos < size());
@@ -176,9 +176,9 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Checks whether none of the bits are set
+     * @brief Checks whether none of the bits are set
      *
-     * \return True if none of the bits are set
+     * @return True if none of the bits are set
      */
     bool none() const noexcept {
         bool result = true;
@@ -193,9 +193,9 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Checks whether all bits are set
+     * @brief Checks whether all bits are set
      *
-     * \return True if all of the bits are set
+     * @return True if all of the bits are set
      */
     bool all() const noexcept {
         bool result = true;
@@ -210,21 +210,21 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Checks whether any bit is set
+     * @brief Checks whether any bit is set
      *
-     * \return True if any of the bits is set
+     * @return True if any of the bits is set
      */
     bool any() const noexcept { return !(none()); }
 
     /* setters */
     /**
-     * \brief Sets the bit at position \a pos
+     * @brief Sets the bit at position \a pos
      *
-     * \param pos Position in the bitset
-     * \param value Bit value
-     * \return Reference to the current instance
+     * @param pos Position in the bitset
+     * @param value Bit value
+     * @return Reference to the current instance
      */
-    Dynamic_bitset& set(idx pos, bool value = true) {
+    DynamicBitset& set(idx pos, bool value = true) {
         assert(pos < size());
 
         if (value) {
@@ -239,11 +239,11 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Set all bits to true
+     * @brief Set all bits to true
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
      */
-    Dynamic_bitset& set() noexcept {
+    DynamicBitset& set() noexcept {
         idx bitset_storage_size = storage_size();
         for (idx i = 0; i < bitset_storage_size; ++i) {
             v_[i] = ~static_cast<value_type>(0);
@@ -253,14 +253,14 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Sets the bit at position \a pos according to a Bernoulli(p)
+     * @brief Sets the bit at position \a pos according to a Bernoulli(p)
      * distribution
      *
-     * \param pos Position in the bitset
-     * \param p Probability
-     * \return Reference to the current instance
+     * @param pos Position in the bitset
+     * @param p Probability
+     * @return Reference to the current instance
      */
-    Dynamic_bitset& rand(idx pos, realT p = 0.5) {
+    DynamicBitset& rand(idx pos, realT p = 0.5) {
         assert(pos < size());
 
         std::random_device rd;
@@ -273,12 +273,12 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Sets all bits according to a Bernoulli(p) distribution
+     * @brief Sets all bits according to a Bernoulli(p) distribution
      *
-     * \param p Probability
-     * \return Reference to the current instance
+     * @param p Probability
+     * @return Reference to the current instance
      */
-    Dynamic_bitset& rand(realT p = 0.5) {
+    DynamicBitset& rand(realT p = 0.5) {
         idx bitset_size = size();
         for (idx i = 0; i < bitset_size; ++i) {
             this->rand(i, p);
@@ -288,12 +288,12 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Sets the bit at position \a pos to false
+     * @brief Sets the bit at position \a pos to false
      *
-     * \param pos Position in the bitset
-     * \return Reference to the current instance
+     * @param pos Position in the bitset
+     * @return Reference to the current instance
      */
-    Dynamic_bitset& reset(idx pos) {
+    DynamicBitset& reset(idx pos) {
         assert(pos < size());
 
         v_[index_(pos)] &= ~(static_cast<value_type>(1) << offset_(pos));
@@ -302,11 +302,11 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Set all bits to false
+     * @brief Set all bits to false
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
      */
-    virtual Dynamic_bitset& reset() noexcept {
+    virtual DynamicBitset& reset() noexcept {
         idx bitset_storage_size = storage_size();
         for (idx i = 0; i < bitset_storage_size; ++i) {
             v_[i] = 0;
@@ -316,12 +316,12 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Flips the bit at position \a pos
+     * @brief Flips the bit at position \a pos
      *
-     * \param pos Position in the bitset
-     * \return Reference to the current instance
+     * @param pos Position in the bitset
+     * @return Reference to the current instance
      */
-    Dynamic_bitset& flip(idx pos) {
+    DynamicBitset& flip(idx pos) {
         assert(pos < size());
 
         v_[index_(pos)] ^= static_cast<value_type>(1) << (offset_(pos));
@@ -330,11 +330,11 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Flips all bits
+     * @brief Flips all bits
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
      */
-    Dynamic_bitset& flip() noexcept {
+    DynamicBitset& flip() noexcept {
         idx bitset_storage_size = storage_size();
         for (idx i = 0; i < bitset_storage_size; ++i) {
             v_[i] = ~v_[i];
@@ -345,12 +345,12 @@ class Dynamic_bitset : public IDisplay {
 
     /* operators */
     /**
-     * \brief Equality operator
+     * @brief Equality operator
      *
-     * \param rhs Dynamic_bitset against which the equality is being tested
-     * \return True if the bitsets are equal (bit by bit), false otherwise
+     * @param rhs DynamicBitset against which the equality is being tested
+     * @return True if the bitsets are equal (bit by bit), false otherwise
      */
-    bool operator==(const Dynamic_bitset& rhs) const noexcept {
+    bool operator==(const DynamicBitset& rhs) const noexcept {
         assert(size() == rhs.size());
 
         bool result = true;
@@ -365,23 +365,23 @@ class Dynamic_bitset : public IDisplay {
     }
 
     /**
-     * \brief Inequality operator
+     * @brief Inequality operator
      *
-     * \param rhs Dynamic_bitset against which the inequality is being tested
-     * \return True if the bitsets are not equal (bit by bit), false otherwise
+     * @param rhs DynamicBitset against which the inequality is being tested
+     * @return True if the bitsets are not equal (bit by bit), false otherwise
      */
-    bool operator!=(const Dynamic_bitset& rhs) const noexcept {
+    bool operator!=(const DynamicBitset& rhs) const noexcept {
         return !(*this == rhs);
     }
 
     /**
-     * \brief Number of places the two bitsets differ (Hamming distance)
+     * @brief Number of places the two bitsets differ (Hamming distance)
      *
-     * \param rhs Dynamic_bitset against which the the Hamming distance is
+     * @param rhs DynamicBitset against which the the Hamming distance is
      * computed
-     * \return Hamming distance
+     * @return Hamming distance
      */
-    idx operator-(const Dynamic_bitset& rhs) const noexcept {
+    idx operator-(const DynamicBitset& rhs) const noexcept {
         idx result = 0;
         idx bitset_size = size();
         assert(bitset_size == rhs.size());
@@ -397,11 +397,11 @@ class Dynamic_bitset : public IDisplay {
 
     /* input/output */
     /**
-     * \brief String representation
+     * @brief String representation
      *
-     * \param zero Character representing false (zero)
-     * \param one Character representing true (one)
-     * \return Bitset as a string
+     * @param zero Character representing false (zero)
+     * @param one Character representing true (one)
+     * @return Bitset as a string
      */
     virtual std::string to_string(char zero = '0', char one = '1') const {
         std::string result;
@@ -417,7 +417,7 @@ class Dynamic_bitset : public IDisplay {
 
   protected:
     /**
-     * \brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the bitset
      * (displays the bitset bit by bit), with the first bit (location 0 in the
@@ -425,55 +425,55 @@ class Dynamic_bitset : public IDisplay {
      * n-1 in the bitset) on the left (most significant bit); that is,
      * little-endian order.
      *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
+     * @param os Output stream passed by reference
+     * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         return os << this->to_string();
     }
-}; /* class Dynamic_bitset */
+}; /* class DynamicBitset */
 
 /**
- * \class qpp::Bit_circuit
- * \brief Classical reversible circuit simulator
+ * @class qpp::BitCircuit
+ * @brief Classical reversible circuit simulator
  *
- * \note Computations are done on-the-fly, that is, gates are not stored, but
+ * @note Computations are done on-the-fly, that is, gates are not stored, but
  * applied at once on the internal bit state of the circuit. This allows
  * simulation of very large circuits (with billions of bits and gates).
  *
- * \note qpp::Bit_circuit assumes that the first bit (bit at position 0) is on
+ * @note qpp::BitCircuit assumes that the first bit (bit at position 0) is on
  * the left (most significant bit), and the last bit (bit at position n-1) is on
  * the right (least significant bit); that is, assumes big-endian order.
- * \note qpp::Bit_circuit does not perform any exception checking (only asserts
+ * @note qpp::BitCircuit does not perform any exception checking (only asserts
  * in Debug mode). This is due to performance considerations.
  */
-class Bit_circuit : public Dynamic_bitset, public IJSON {
+class BitCircuit : public DynamicBitset, public IJSON {
     std::unordered_map<std::string, idx> count_{}; ///< gate counts
     std::unordered_map<std::string, idx> depth_{}; ///< gate depths
-    Dynamic_bitset bNOT_, bCNOT_, bSWAP_, bTOF_, bFRED_,
+    DynamicBitset bNOT_, bCNOT_, bSWAP_, bTOF_, bFRED_,
         btotal_; ///< used for depth calculations
 
   public:
     /**
-     * \brief Constructs a bit circuit instance
+     * @brief Constructs a bit circuit instance
      *
-     * \param n Number of classical bits
+     * @param n Number of classical bits
      */
-    explicit Bit_circuit(idx n)
-        : Dynamic_bitset{n}, bNOT_{n}, bCNOT_{n}, bSWAP_{n}, bTOF_{n},
+    explicit BitCircuit(idx n)
+        : DynamicBitset{n}, bNOT_{n}, bCNOT_{n}, bSWAP_{n}, bTOF_{n},
           bFRED_{n}, btotal_{n} {}
 
     /**
-     * \brief Constructs a bit circuit instance out of a string
+     * @brief Constructs a bit circuit instance out of a string
      *
-     * \param str String, with \a str[0] corresponding to the top bit 0 (most
+     * @param str String, with \a str[0] corresponding to the top bit 0 (most
      * significant) in the circuit, i.e., the bit at position 0
-     * \param zero Character representing false (zero)
-     * \param one Character representing true (one)
+     * @param zero Character representing false (zero)
+     * @param one Character representing true (one)
      */
-    explicit Bit_circuit(std::string str, char zero = '0',
+    explicit BitCircuit(std::string str, char zero = '0',
                          [[maybe_unused]] char one = '1')
-        : Dynamic_bitset{static_cast<idx>(str.size())}, bNOT_{size()},
+        : DynamicBitset{static_cast<idx>(str.size())}, bNOT_{size()},
           bCNOT_{size()}, bSWAP_{size()}, bTOF_{size()}, bFRED_{size()},
           btotal_{size()} {
         idx n = str.size();
@@ -484,23 +484,23 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Explicit conversion constructor, used to initialize a
-     * qpp::Bit_circuit with a qpp::Dynamic_bitset
+     * @brief Explicit conversion constructor, used to initialize a
+     * qpp::BitCircuit with a qpp::DynamicBitset
      *
-     * \param dynamic_bitset Dynamic bitset
+     * @param dynamic_bitset Dynamic bitset
      */
-    explicit Bit_circuit(const Dynamic_bitset& dynamic_bitset)
-        : Dynamic_bitset{dynamic_bitset}, bNOT_{size()}, bCNOT_{size()},
+    explicit BitCircuit(const DynamicBitset& dynamic_bitset)
+        : DynamicBitset{dynamic_bitset}, bNOT_{size()}, bCNOT_{size()},
           bSWAP_{size()}, bTOF_{size()}, bFRED_{size()}, btotal_{size()} {}
 
     /**
-     * \brief Not gate (bit flip)
-     * \see qpp::Bit_circuit::NOT()
+     * @brief Not gate (bit flip)
+     * @see qpp::BitCircuit::NOT()
      *
-     * \param i Bit position in the circuit
-     * \return Reference to the current instance
+     * @param i Bit position in the circuit
+     * @return Reference to the current instance
      */
-    Bit_circuit& X(idx i) {
+    BitCircuit& X(idx i) {
         assert(i < size());
 
         NOT(i);
@@ -509,18 +509,18 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Default virtual destructor
+     * @brief Default virtual destructor
      */
-    ~Bit_circuit() override = default;
+    ~BitCircuit() override = default;
 
     /**
-     * \brief NOT gate (bit flip)
-     * \see qpp::Bit_circuit::X()
+     * @brief NOT gate (bit flip)
+     * @see qpp::BitCircuit::X()
      *
-     * \param i Bit position in the circuit
-     * \return Reference to the current instance
+     * @param i Bit position in the circuit
+     * @return Reference to the current instance
      */
-    Bit_circuit& NOT(idx i) {
+    BitCircuit& NOT(idx i) {
         assert(i < size());
 
         flip(i);
@@ -536,7 +536,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         // check whether gates overlap
         if (!bNOT_.get(i)) {
             // reset the b bitset
-            bNOT_ = Dynamic_bitset{n_};
+            bNOT_ = DynamicBitset{n_};
             // set to true the locations of the last gate
             bNOT_.set(i);
             ++depth_["NOT"];
@@ -551,7 +551,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         // check whether gates overlap
         if (!btotal_.get(i)) {
             // reset the b bitset
-            btotal_ = Dynamic_bitset{n_};
+            btotal_ = DynamicBitset{n_};
             // set to true the locations of the last gate
             btotal_.set(i);
             ++depth_[__FILE__ "__total__"];
@@ -561,13 +561,13 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Controlled-NOT gate
+     * @brief Controlled-NOT gate
      *
-     * \param ctrl Control bit index
-     * \param target Target bit index
-     * \return Reference to the current instance
+     * @param ctrl Control bit index
+     * @param target Target bit index
+     * @return Reference to the current instance
      */
-    Bit_circuit& CNOT(idx ctrl, idx target) {
+    BitCircuit& CNOT(idx ctrl, idx target) {
         [[maybe_unused]] auto n = size();
         assert(ctrl < n && target < n);
         assert(ctrl != target);
@@ -587,7 +587,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         // check whether gates overlap
         if (!bCNOT_.get(ctrl) || !bCNOT_.get(target)) {
             // reset the b bitset
-            bCNOT_ = Dynamic_bitset{n_};
+            bCNOT_ = DynamicBitset{n_};
             // set to true the locations of the last gate
             bCNOT_.set(ctrl).set(target);
             ++depth_["CNOT"];
@@ -602,7 +602,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         // check whether gates overlap
         if (!btotal_.get(ctrl) || !btotal_.get(target)) {
             // reset the b bitset
-            btotal_ = Dynamic_bitset{n_};
+            btotal_ = DynamicBitset{n_};
             // set to true the locations of the last gate
             btotal_.set(ctrl).set(target);
             ++depth_[__FILE__ "__total__"];
@@ -612,14 +612,14 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Toffoli gate
+     * @brief Toffoli gate
      *
-     * \param i Control first bit index
-     * \param j Control second bit index
-     * \param k Target bit index
-     * \return Reference to the current instance
+     * @param i Control first bit index
+     * @param j Control second bit index
+     * @param k Target bit index
+     * @return Reference to the current instance
      */
-    Bit_circuit& TOF(idx i, idx j, idx k) {
+    BitCircuit& TOF(idx i, idx j, idx k) {
         [[maybe_unused]] auto n = size();
         assert(i < n && j < n && k < n);
         assert(i != j && i != k && j != k);
@@ -640,7 +640,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         // check whether gates overlap
         if (!bTOF_.get(i) || !bTOF_.get(j) || !bTOF_.get(k)) {
             // reset the b bitset
-            bTOF_ = Dynamic_bitset{n_};
+            bTOF_ = DynamicBitset{n_};
             // set to true the locations of the last gate
             bTOF_.set(i).set(j).set(k);
             ++depth_["TOF"];
@@ -655,7 +655,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         // check whether gates overlap
         if (!btotal_.get(i) || !btotal_.get(j) || !btotal_.get(k)) {
             // reset the b bitset
-            btotal_ = Dynamic_bitset{n_};
+            btotal_ = DynamicBitset{n_};
             // set to true the locations of the last gate
             btotal_.set(i).set(j).set(k);
             ++depth_[__FILE__ "__total__"];
@@ -665,13 +665,13 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Swap gate
+     * @brief Swap gate
      *
-     * \param i Bit index
-     * \param j Bit index
-     * \return Reference to the current instance
+     * @param i Bit index
+     * @param j Bit index
+     * @return Reference to the current instance
      */
-    Bit_circuit& SWAP(idx i, idx j) {
+    BitCircuit& SWAP(idx i, idx j) {
         [[maybe_unused]] auto n = size();
         assert(i < n && j < n);
         assert(i != j);
@@ -692,7 +692,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         // check whether gates overlap
         if (!bSWAP_.get(i) || !bSWAP_.get(j)) {
             // reset the b bitset
-            bSWAP_ = Dynamic_bitset{n_};
+            bSWAP_ = DynamicBitset{n_};
             // set to true the locations of the last gate
             bSWAP_.set(i).set(j);
             ++depth_["SWAP"];
@@ -707,7 +707,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         // check whether gates overlap
         if (!btotal_.get(i) || !btotal_.get(j)) {
             // reset the b bitset
-            btotal_ = Dynamic_bitset{n_};
+            btotal_ = DynamicBitset{n_};
             // set to true the locations of the last gate
             btotal_.set(i).set(j);
             ++depth_[__FILE__ "__total__"];
@@ -717,14 +717,14 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Fredkin gate (Controlled-SWAP)
+     * @brief Fredkin gate (Controlled-SWAP)
      *
-     * \param i Control bit index
-     * \param j Target first bit index
-     * \param k Target second bit index
-     * \return Reference to the current instance
+     * @param i Control bit index
+     * @param j Target first bit index
+     * @param k Target second bit index
+     * @return Reference to the current instance
      */
-    Bit_circuit& FRED(idx i, idx j, idx k) {
+    BitCircuit& FRED(idx i, idx j, idx k) {
         [[maybe_unused]] auto n = size();
         assert(i < n && j < n && k < n);
         assert(i != j && i != k && j != k);
@@ -744,7 +744,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         // check whether gates overlap
         if (!bFRED_.get(i) || !bFRED_.get(j) || !bFRED_.get(k)) {
             // reset the b bitset
-            bFRED_ = Dynamic_bitset{n_};
+            bFRED_ = DynamicBitset{n_};
             // set to true the locations of the last gate
             bFRED_.set(i).set(j).set(k);
             ++depth_["FRED"];
@@ -759,7 +759,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         // check whether gates overlap
         if (!btotal_.get(i) || !btotal_.get(j) || !btotal_.get(k)) {
             // reset the b bitset
-            btotal_ = Dynamic_bitset{n_};
+            btotal_ = DynamicBitset{n_};
             // set to true the locations of the last gate
             btotal_.set(i).set(j).set(k);
             ++depth_[__FILE__ "__total__"];
@@ -769,24 +769,24 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Resets the circuit to all-zero, clears all gates
+     * @brief Resets the circuit to all-zero, clears all gates
      *
-     * \return Reference to the current instance
+     * @return Reference to the current instance
      */
-    Bit_circuit& reset() noexcept override {
-        *this = Bit_circuit{n_};
+    BitCircuit& reset() noexcept override {
+        *this = BitCircuit{n_};
 
         return *this;
     }
 
     // getters
     /**
-     * \brief Bit circuit gate count
+     * @brief Bit circuit gate count
      *
-     * \param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
+     * @param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
      * TOF, FRED. If absent (default), this function computes the total circuit
      * gate count
-     * \return Gate count
+     * @return Gate count
      */
     idx get_gate_count(std::optional<std::string> name = std::nullopt) const {
         idx result;
@@ -810,12 +810,12 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     }
 
     /**
-     * \brief Bit circuit gate depth
+     * @brief Bit circuit gate depth
      *
-     * \param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
+     * @param name Optional, gate name. Possible names are NOT (X), CNOT, SWAP,
      * TOF, FRED. If absent (default), this function computes the total circuit
      * gate depth
-     * \return Gate depth
+     * @return Gate depth
      */
     idx get_gate_depth(std::optional<std::string> name = std::nullopt) const {
         idx result;
@@ -840,13 +840,13 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
     // end getters
 
     /**
-     * \brief qpp::IJSON::to_JSON() override
+     * @brief qpp::IJSON::to_JSON() override
      *
      * Displays the bit circuit in JSON format
      *
-     * \param enclosed_in_curly_brackets If true, encloses the result in curly
+     * @param enclosed_in_curly_brackets If true, encloses the result in curly
      * brackets
-     * \return String containing the JSON representation of the state of the
+     * @return String containing the JSON representation of the state of the
      * engine
      */
     std::string to_JSON(bool enclosed_in_curly_brackets = true) const override {
@@ -873,11 +873,11 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
 
     /* input/output */
     /**
-     * \brief String representation
+     * @brief String representation
      *
-     * \param zero Character representing false (zero)
-     * \param one Character representing true (one)
-     * \return Bits in the bit circuit as a string
+     * @param zero Character representing false (zero)
+     * @param one Character representing true (one)
+     * @return Bits in the bit circuit as a string
      */
     std::string to_string(char zero = '0', char one = '1') const override {
         std::string result;
@@ -893,7 +893,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
 
   private:
     /**
-     * \brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the bit circuit,
      * with the first bit (at position 0, or top of the circuit) on the left
@@ -901,8 +901,8 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
      * the circuit) on the right (least significant bit); that is, big-endian
      * order.
      *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
+     * @param os Output stream passed by reference
+     * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         os << "n = " << n_ << '\n';
@@ -914,7 +914,7 @@ class Bit_circuit : public Dynamic_bitset, public IJSON {
         return os;
     }
 
-}; /* class Bit_circuit */
+}; /* class BitCircuit */
 
 } /* namespace qpp */
 

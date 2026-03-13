@@ -171,12 +171,12 @@ TEST(qpp_reset, Qudits) {}
 ///       idx d = 2)
 TEST(qpp_reset, Qubits) {}
 
-/// BEGIN template <typename Derived> std::vector<idx>
+/// BEGIN template <typename Derived> std::tuple<std::vector<idx>, realT>
 ///       sample(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& target, const std::vector<idx>& dims)
 TEST(qpp_sample, Qudits) {}
 
-/// BEGIN template <typename Derived> std::vector<idx>
+/// BEGIN template <typename Derived> std::tuple<std::vector<idx>, realT>
 ///       sample(const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& target, idx d = 2)
 TEST(qpp_sample, Qubits) {}
@@ -184,9 +184,9 @@ TEST(qpp_sample, Qubits) {}
 /// BEGIN template <typename Derived> std::map<std::vector<idx>, idx>
 ///       sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& target, const std::vector<idx>& dims)
-TEST(qpp_sample, MultipleQudits) {}
+TEST(qpp_sample, MultipleRunsQudits) {}
 
 /// BEGIN template <typename Derived> std::map<std::vector<idx>, idx>
 ///       sample(idx num_samples,const Eigen::MatrixBase<Derived>& A,
 ///       const std::vector<idx>& target, idx d = 2)
-TEST(qpp_sample, MultipleQubits) {}
+TEST(qpp_sample, MultipleRunsQubits) {}

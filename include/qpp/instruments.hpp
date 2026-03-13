@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/instruments.hpp
- * \brief Measurement functions
+ * @file qpp/instruments.hpp
+ * @brief Measurement functions
  */
 
 #include <algorithm>
@@ -49,13 +49,13 @@
 
 namespace qpp {
 /**
- * \brief Generalized inner product
+ * @brief Generalized inner product
  *
- * \param phi Column vector Eigen expression
- * \param psi Column vector Eigen expression
- * \param subsys Subsystem indexes over which \a phi is defined
- * \param dims Dimensions of the multi-partite system
- * \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar or
+ * @param phi Column vector Eigen expression
+ * @param psi Column vector Eigen expression
+ * @param subsys Subsystem indexes over which \a phi is defined
+ * @param dims Dimensions of the multi-partite system
+ * @return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar or
  * column vector over the remaining Hilbert space
  */
 template <typename Derived>
@@ -183,13 +183,13 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
 }
 
 /**
- * \brief Generalized inner product
+ * @brief Generalized inner product
  *
- * \param phi Column vector Eigen expression
- * \param psi Column vector Eigen expression
- * \param subsys Subsystem indexes over which \a phi is defined
- * \param d Subsystem dimensions
- * \return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar or
+ * @param phi Column vector Eigen expression
+ * @param psi Column vector Eigen expression
+ * @param subsys Subsystem indexes over which \a phi is defined
+ * @param d Subsystem dimensions
+ * @return Inner product \f$\langle \phi_{subsys}|\psi\rangle\f$, as a scalar or
  * column vector over the remaining Hilbert space
  */
 template <typename Derived>
@@ -218,15 +218,15 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
 
 // full measurements
 /**
- * \brief Measures the state vector or density operator \a A using the set of
+ * @brief Measures the state vector or density operator \a A using the set of
  * Kraus operators \a Ks
  *
- * \note The Kraus operators can have their range different from their domain
+ * @note The Kraus operators can have their range different from their domain
  * (i.e., they can be rectangular matrices).
  *
- * \param A Eigen expression
- * \param Ks Set of Kraus operators
- * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * @param A Eigen expression
+ * @param Ks Set of Kraus operators
+ * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
@@ -301,12 +301,12 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
 // https://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
- * \brief Measures the state vector or density matrix \a A using the set of
+ * @brief Measures the state vector or density matrix \a A using the set of
  * Kraus operators \a Ks
  *
- * \param A Eigen expression
- * \param Ks Set of Kraus operators
- * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * @param A Eigen expression
+ * @param Ks Set of Kraus operators
+ * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
@@ -317,16 +317,16 @@ measure(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Measures the state vector or density matrix \a A in the orthonormal
+ * @brief Measures the state vector or density matrix \a A in the orthonormal
  * basis specified by the unitary matrix \a U
- * \see qpp::sample()
+ * @see qpp::sample()
  *
- * \note This measurement is equivalent to measuring \a A in the
+ * @note This measurement is equivalent to measuring \a A in the
  * \f$U^\dagger\f$ basis
  *
- * \param A Eigen expression
- * \param U Unitary matrix whose columns represent the measurement basis vectors
- * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * @param A Eigen expression
+ * @param U Unitary matrix whose columns represent the measurement basis vectors
+ * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
@@ -360,21 +360,19 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
     return measure(rA, Ks);
 }
 
-// partial measurements
+// subsystem measurements
 /**
- * \brief  Measures the part \a subsys of the multi-partite state vector or
+ * @brief  Measures the part \a subsys of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
  *
- * \note The dimension of all \a Ks must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of all \a Ks must match the dimension of \a target
  *
- * \param A Eigen expression
- * \param Ks Set of Kraus operators (must be square)
- * \param target Subsystem indexes that are measured
- * \param dims Dimensions of the multi-partite system
- * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * @param A Eigen expression
+ * @param Ks Set of Kraus operators (must be square)
+ * @param target Subsystem indexes that are measured
+ * @param dims Dimensions of the multi-partite system
+ * @param destructive If true, measured subsystems are traced away
+ * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
@@ -450,8 +448,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
             expr_t<Derived> tmp = apply(rA, Ks[i], target, dims);
             probs[i] = std::pow(norm(tmp), 2);
             if (probs[i] > 0) {
-                // normalized output state
-                // corresponding to measurement result i
+                // normalized output state corresponding to
+                // the measurement result i
                 tmp /= std::sqrt(probs[i]);
                 if (destructive) {
                     outstates[i] = ptrace(tmp, target, dims);
@@ -471,8 +469,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
             }
             probs[i] = std::abs(trace(tmp)); // probability
             if (probs[i] > 0) {
-                // normalized output state
-                // corresponding to measurement result i
+                // normalized output state corresponding to
+                // the measurement result i
                 outstates[i] = tmp / probs[i];
             }
         }
@@ -489,19 +487,17 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
 // https://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
- * \brief  Measures the part \a target of the multi-partite state vector or
+ * @brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
  *
- * \note The dimension of all \a Ks must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of all \a Ks must match the dimension of \a target
  *
- * \param A Eigen expression
- * \param Ks Set of Kraus operators
- * \param target Subsystem indexes that are measured
- * \param dims Dimensions of the multi-partite system
- * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * @param A Eigen expression
+ * @param Ks Set of Kraus operators
+ * @param target Subsystem indexes that are measured
+ * @param dims Dimensions of the multi-partite system
+ * @param destructive If true, measured subsystems are traced away
+ * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
@@ -513,19 +509,17 @@ measure(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief  Measures the part \a target of the multi-partite state vector or
+ * @brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
  *
- * \note The dimension of all \a Ks must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of all \a Ks must match the dimension of \a target
  *
- * \param A Eigen expression
- * \param Ks Set of Kraus operators (must be square)
- * \param target Subsystem indexes that are measured
- * \param d Subsystem dimensions
- * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * @param A Eigen expression
+ * @param Ks Set of Kraus operators (must be square)
+ * @param target Subsystem indexes that are measured
+ * @param d Subsystem dimensions
+ * @param destructive If true, measured subsystems are traced away
+ * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
@@ -555,19 +549,17 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 // std::initializer_list overload, avoids ambiguity for 2-element lists, see
 // https://stackoverflow.com/questions/26750039/ambiguity-when-using-initializer-list-as-parameter
 /**
- * \brief  Measures the part \a target of the multi-partite state vector or
+ * @brief  Measures the part \a target of the multi-partite state vector or
  * density matrix \a A using the set of Kraus operators \a Ks
  *
- * \note The dimension of all \a Ks must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of all \a Ks must match the dimension of \a target
  *
- * \param A Eigen expression
- * \param Ks Set of Kraus operators
- * \param target Subsystem indexes that are measured
- * \param d Subsystem dimensions
- * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * @param A Eigen expression
+ * @param Ks Set of Kraus operators
+ * @param target Subsystem indexes that are measured
+ * @param d Subsystem dimensions
+ * @param destructive If true, measured subsystems are traced away
+ * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
@@ -579,26 +571,24 @@ measure(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Measures the part \a target of the multi-partite state vector or
+ * @brief Measures the part \a target of the multi-partite state vector or
  * density matrix \a A in the orthonormal basis or rank-1 projectors specified
  * by the columns of the matrix \a V
- * \see qpp::measure_seq(), qpp::sample()
+ * @see qpp::measure_seq(), qpp::sample()
  *
- * \note The dimension of \a V must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of \a V must match the dimension of \a target
  *
- * \note The number of column vectors of \a V can be smaller than the dimension
+ * @note The number of column vectors of \a V can be smaller than the dimension
  * of \a target. If that is the case, then the measurement probabilities sum up
  * to a number smaller than 1 (i.e., having, in effect, a filtering operation).
  *
- * \param A Eigen expression
- * \param V Matrix whose columns represent the measurement basis vectors or the
+ * @param A Eigen expression
+ * @param V Matrix whose columns represent the measurement basis vectors or the
  * ket parts of the rank-1 projectors
- * \param target Subsystem indexes that are measured
- * \param dims Dimensions of the multi-partite system
- * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * @param target Subsystem indexes that are measured
+ * @param dims Dimensions of the multi-partite system
+ * @param destructive If true, measured subsystems are traced away
+ * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
@@ -680,8 +670,8 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
             realT tmp = norm(outstates[i]);
             probs[i] = tmp * tmp;
             if (probs[i] > 0) {
-                // normalized output state
-                // corresponding to measurement result m
+                // normalized output state corresponding to
+                // the measurement result m
                 outstates[i] /= tmp;
             }
         }
@@ -706,26 +696,24 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 }
 
 /**
- * \brief Measures the part \a target of the multi-partite state vector or
+ * @brief Measures the part \a target of the multi-partite state vector or
  * density matrix \a A in the orthonormal basis or rank-1 projectors specified
  * by the columns of the matrix \a V
- * \see qpp::measure_seq(), qpp::sample()
+ * @see qpp::measure_seq(), qpp::sample()
  *
- * \note The dimension of \a V must match the dimension of \a target. If
- * \a destructive is set to true (by default), the measurement is destructive,
- * i.e., the measured subsystems are traced away.
+ * @note The dimension of \a V must match the dimension of \a target
  *
- * \note The number of column vectors of \a V can be smaller than the dimension
+ * @note The number of column vectors of \a V can be smaller than the dimension
  * of \a target. If that is the case, then the measurement probabilities sum up
  * to a number smaller than 1 (i.e., having, in effect, a filtering operation).
  *
- * \param A Eigen expression
- * \param V Matrix whose columns represent the measurement basis vectors or the
+ * @param A Eigen expression
+ * @param V Matrix whose columns represent the measurement basis vectors or the
  * ket parts of the rank-1 projectors
- * \param target Subsystem indexes that are measured
- * \param d Subsystem dimensions
- * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Result of the measurement, 2. Vector of outcome
+ * @param target Subsystem indexes that are measured
+ * @param d Subsystem dimensions
+ * @param destructive If true, measured subsystems are traced away
+ * @return Tuple of: 1. Result of the measurement, 2. Vector of outcome
  * probabilities, and 3. Vector of post-measurement normalized states
  */
 template <typename Derived>
@@ -753,151 +741,19 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
 }
 
 /**
- * \brief Sequentially measures the part \a target of the multi-partite state
- * vector or density matrix \a A in the computational basis
- * \see qpp::measure(), qpp::sample()
+ * @brief Samples from a quantum state in the computational basis (Z-basis)
+ * @see qpp::measure()
  *
- * \note If \a destructive is set to true (by default), the measurement is
- * destructive, i.e., the measured subsystems are traced away.
- *
- * \param A Eigen expression
- * \param target Subsystem indexes that are measured
- * \param dims Dimensions of the multi-partite system
- * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Vector of measurement result outcomes, 2. Outcome
- * probabilities, and 3. Post-measurement normalized state
+ * @param A Eigen expression
+ * @param target Subsystem indexes that are sampled from
+ * @param dims Subsystem dimensions
+ * @return Tuple of vector of outcome results and its overall associated
+ * probability
  */
 template <typename Derived>
-[[qpp::critical]] std::tuple<std::vector<idx>, std::vector<realT>,
-                             expr_t<Derived>>
-measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
-            std::vector<idx> dims, bool destructive = true) {
-    expr_t<Derived> rA = A.derived();
-
-    // EXCEPTION CHECKS
-    // check zero-size
-    if (!internal::check_nonzero_size(rA)) {
-        throw exception::ZeroSize("qpp::measure_seq()", "A");
-    }
-
-    // check that dimension is valid
-    if (!internal::check_dims(dims)) {
-        throw exception::DimsInvalid("qpp::measure_seq()", "dims");
-    }
-
-    // check valid state and matching dimensions
-    if (internal::check_cvector(rA)) {
-        if (!internal::check_dims_match_cvect(dims, rA)) {
-            throw exception::DimsMismatchCvector("qpp::measure_seq()",
-                                                 "A/dims");
-        }
-    } else if (internal::check_square_mat(rA)) {
-        if (!internal::check_dims_match_mat(dims, rA)) {
-            throw exception::DimsMismatchMatrix("qpp::measure_seq()", "A/dims");
-        }
-    } else {
-        throw exception::MatrixNotSquareNorCvector("qpp::measure_seq()", "A");
-    }
-
-    // check that target is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(target, dims)) {
-        throw exception::SubsysMismatchDims("qpp::measure_seq()",
-                                            "dims/target");
-    }
-    // END EXCEPTION CHECKS
-
-    idx target_size = target.size();
-    std::vector<idx> ms(target_size);
-    std::vector<realT> ps(target_size);
-
-    std::vector<idx> idxs(target_size);
-    std::iota(idxs.begin(), idxs.end(), 0);
-
-    // tag-sort target in increasing order
-    std::sort(idxs.begin(), idxs.end(),
-              [&target](const auto& lhs, const auto& rhs) {
-                  return target[lhs] < target[rhs];
-              });
-
-    //************ ket or density matrix ************//
-    for (idx i = 0; i < target_size; ++i) {
-        idx idx_i = idxs[i];
-
-        if (destructive) {
-            // i subsystems were previously removed, relabel current subsystem
-            target[idx_i] -= i;
-        }
-
-        idx curr_subsys_idx = target[idx_i];
-
-        auto [m, probs, states] = measure(
-            rA, Gates::get_no_thread_local_instance().Id(dims[curr_subsys_idx]),
-            {curr_subsys_idx}, dims, destructive);
-        ms[idx_i] = m;
-        ps[idx_i] = probs[m];
-        rA = states[m];
-
-        if (destructive) {
-            // remove the lowest indexed subsystem from dims
-            dims.erase(std::next(dims.begin(), curr_subsys_idx));
-        }
-    }
-
-    return std::make_tuple(ms, ps, rA);
-}
-
-/**
- * \brief Sequentially measures the part \a target of the multi-partite
- * state vector or density matrix \a A in the computational basis
- * \see qpp::measure(), qpp::sample()
- *
- * \note If \a destructive is set to true (by default), the measurement is
- * destructive, i.e., the measured subsystems are traced away.
- *
- * \param A Eigen expression
- * \param target Subsystem indexes that are measured
- * \param d Subsystem dimensions
- * \param destructive Destructive measurement, true by default
- * \return Tuple of: 1. Vector of measurement result outcomes, 2. Outcome
- * probabilities, and 3. Post-measurement normalized state
- */
-template <typename Derived>
-std::tuple<std::vector<idx>, std::vector<realT>, expr_t<Derived>>
-measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
-            idx d = 2, bool destructive = true) {
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
-
-    // EXCEPTION CHECKS
-    // check zero size
-    if (!internal::check_nonzero_size(rA)) {
-        throw exception::ZeroSize("qpp::measure_seq()", "A");
-    }
-
-    // check valid dims
-    if (d < 2) {
-        throw exception::DimsInvalid("qpp::measure_seq()", "d");
-    }
-    // END EXCEPTION CHECKS
-
-    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
-    std::vector<idx> dims(n, d); // local dimensions vector
-
-    return measure_seq(rA, target, dims, destructive);
-}
-
-/**
- * \brief Samples from a quantum state in the computational basis (Z-basis)
- * \see qpp::measure()
- *
- * \param A Eigen expression
- * \param target Subsystem indexes that are sampled from
- * \param dims Subsystem dimensions
- * \return Vector of outcome results
- */
-template <typename Derived>
-[[qpp::critical]] std::vector<idx> sample(const Eigen::MatrixBase<Derived>& A,
-                                          const std::vector<idx>& target,
-                                          const std::vector<idx>& dims) {
+[[qpp::critical]] std::tuple<std::vector<idx>, realT>
+sample(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+       const std::vector<idx>& dims) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -932,7 +788,7 @@ template <typename Derived>
 
     idx D = prod(dims); // total dimension
 
-    bool is_ket = internal::check_cvector(rA);
+    const bool is_ket = internal::check_cvector(rA);
     std::vector<realT> pbs;
     if (is_ket) {
         pbs = qpp::abssq(rA);
@@ -956,21 +812,22 @@ template <typename Derived>
                        return sample_midx[pos];
                    });
 
-    return measurement_midx;
+    return {measurement_midx, pbs[sample_dec]};
 }
 
 /**
- * \brief Samples from a quantum state in the computational basis (Z-basis)
- * \see qpp::measure()
+ * @brief Samples from a quantum state in the computational basis (Z-basis)
+ * @see qpp::measure()
  *
- * \param A Eigen expression
- * \param target Subsystem indexes that are sampled from
- * \param d Subsystem dimensions
- * \return Vector of outcome results
+ * @param A Eigen expression
+ * @param target Subsystem indexes that are sampled from
+ * @param d Subsystem dimensions
+ * @return Tuple of vector of outcome results and its associated probability
  */
 template <typename Derived>
-std::vector<idx> sample(const Eigen::MatrixBase<Derived>& A,
-                        const std::vector<idx>& target, idx d = 2) {
+std::tuple<std::vector<idx>, realT> sample(const Eigen::MatrixBase<Derived>& A,
+                                           const std::vector<idx>& target,
+                                           idx d = 2) {
     const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -992,15 +849,15 @@ std::vector<idx> sample(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Samples repeatedly from a quantum state in the computational basis
+ * @brief Samples repeatedly from a quantum state in the computational basis
  * (Z-basis)
- * \see qpp::measure()
+ * @see qpp::measure()
  *
- * \param num_samples Number of samples
- * \param A Eigen expression
- * \param target Subsystem indexes that are can_sample
- * \param dims Subsystem dimensions
- * \return Map with vector of outcome results and their corresponding number
+ * @param num_samples Number of samples
+ * @param A Eigen expression
+ * @param target Subsystem indexes that are can_sample
+ * @param dims Subsystem dimensions
+ * @return Map with vector of outcome results and their corresponding number
  * of appearances
  */
 template <typename Derived>
@@ -1079,15 +936,15 @@ sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Samples repeatedly from a quantum state (in the computational
+ * @brief Samples repeatedly from a quantum state (in the computational
  * basis)
- * \see qpp::measure()
+ * @see qpp::measure()
  *
- * \param num_samples Number of samples
- * \param A Eigen expression
- * \param target Subsystem indexes that are can_sample
- * \param d Subsystem dimensions
- * \return Map with vector of outcome results and their corresponding number
+ * @param num_samples Number of samples
+ * @param A Eigen expression
+ * @param target Subsystem indexes that are can_sample
+ * @param d Subsystem dimensions
+ * @return Map with vector of outcome results and their corresponding number
  * of appearances
  */
 template <typename Derived>
@@ -1115,16 +972,185 @@ sample(idx num_samples, const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Resets qudits from the multi-partite state vector or density
- * matrix \a A by performing a non-destructive measurement in the
- * computational basis on the \a target qudits and discarding the
- * measurement results, followed by shifting them back to the \f$|0\cdots
- * 0\rangle\f$ state
+ * @brief Sequentially measures the part \a target of the multi-partite state
+ * vector or density matrix \a A in the computational basis
+ * @see qpp::measure(), qpp::sample()
  *
- * \param A Eigen expression
- * \param target Target qudit indexes that are reset
- * \param dims Dimensions of the multi-partite system
- * \return Reset quantum state
+ * * Optimized with a hybrid strategy:
+ * 1. For small density matrices (<= 10 qubits), it uses bulk operations to
+ * maximize L3 cache hits and minimize memory allocations.
+ * 2. For kets and large density matrices, it shrinks the state at each step
+ * to avoid exponential complexity.
+ *
+ * @param A Eigen expression
+ * @param target Subsystem indexes to be measured
+ * @param dims Dimensions of the multi-partite system
+ * @param destructive If true, measured subsystems are traced away
+ * @return Tuple of: 1. Vector of measurement result outcomes, 2. Outcome
+ * probabilities, and 3. Post-measurement normalized state
+ */
+template <typename Derived>
+[[qpp::critical]] std::tuple<std::vector<idx>, std::vector<realT>,
+                             expr_t<Derived>>
+measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
+            std::vector<idx> dims, bool destructive = true) {
+    constexpr char func_name[] = "qpp::measure_seq()";
+    expr_t<Derived> rA = A.derived();
+
+    // --- EXCEPTION CHECKS ---
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize(func_name, "A");
+    }
+    if (!internal::check_dims(dims)) {
+        throw exception::DimsInvalid(func_name, "dims");
+    }
+
+    bool is_ket = internal::check_cvector(rA);
+    if (is_ket) {
+        if (!internal::check_dims_match_cvect(dims, rA)) {
+            throw exception::DimsMismatchCvector(func_name, "A/dims");
+        }
+    } else if (internal::check_square_mat(rA)) {
+        if (!internal::check_dims_match_mat(dims, rA)) {
+            throw exception::DimsMismatchMatrix(func_name, "A/dims");
+        }
+    } else {
+        throw exception::MatrixNotSquareNorCvector(func_name, "A");
+    }
+
+    if (!internal::check_subsys_match_dims(target, dims)) {
+        throw exception::SubsysMismatchDims(func_name, "dims/target");
+    }
+    // --- END EXCEPTION CHECKS ---
+
+    // Sample the outcomes once to determine the collapse path
+    auto [res_midx, prob] = sample(rA, target, dims);
+    const idx target_size = target.size();
+    std::vector<realT> ps(target_size);
+
+    // If destructive, sort targets in DESCENDING order.
+    // We must keep track of original positions to map back the
+    // probabilities/results correctly.
+    std::vector<idx> indices(target_size);
+    std::iota(indices.begin(), indices.end(), 0);
+
+    if (destructive) {
+        std::sort(indices.begin(), indices.end(),
+                  [&](idx a, idx b) { return target[a] > target[b]; });
+    }
+
+    // CASE 1: Small Density Matrices (The "Cache-Friendly" Path)
+    // At n <= 10, the matrix (16MB) fits in L3 cache. It is faster to do math
+    // on the full matrix than to pay the overhead of repeated memory
+    // re-allocations and strided pointer math from ptrace().
+    if (!is_ket && dims.size() <= 10) {
+        for (idx cnt = 0; cnt < target_size; ++cnt) {
+            const idx i = target[cnt];
+            const cmat prj_i = mprj({res_midx[cnt]}, {dims[i]});
+            rA = apply(rA, prj_i, {i}, dims);
+
+            const realT p = trace(rA).real();
+            ps[cnt] = p;
+            rA /= p; // Normalize
+        }
+
+        if (destructive) {
+            rA = ptrace(rA, target, dims);
+        }
+        return std::make_tuple(res_midx, ps, rA);
+    }
+
+    // CASE 2: Kets and Large Density Matrices (The "Shrink" Path)
+    // For kets or large matrices (> 10 qubits), we must shrink the state
+    // immediately to prevent exponential blowup in subsequent iterations.
+    for (idx cnt = 0; cnt < target_size; ++cnt) {
+        // Use the sorted index if destructive to avoid shifting dims manually
+        const idx idx_ptr = destructive ? indices[cnt] : cnt;
+        const idx i = target[idx_ptr];
+        const idx dim_i = dims[i];
+        const idx res_i = res_midx[idx_ptr];
+
+        if (is_ket && destructive) {
+            // PURE STATE OPTIMIZATION:
+            // Contract with the basis bra <m| directly. This projects and
+            // reduces the system in one step, avoiding apply() entirely.
+            const ket basis_i = mket({res_i}, dim_i);
+            rA = ip(basis_i, static_cast<ket>(rA), {i}, dims);
+
+            const realT p = rA.squaredNorm();
+            ps[idx_ptr] = p;
+            rA /= std::sqrt(p);
+        } else {
+            // Mixed state or non-destructive path
+            const cmat prj_i = mprj({res_i}, dim_i);
+            rA = apply(rA, prj_i, {i}, dims);
+
+            const realT p = is_ket ? rA.squaredNorm() : trace(rA).real();
+            ps[idx_ptr] = p;
+            rA /= (is_ket ? std::sqrt(p) : p);
+
+            if (destructive) {
+                rA = ptrace(rA, {i}, dims);
+            }
+        }
+
+        // Update local dimensions and targets if system shrank
+        if (destructive) {
+            // OPTIMIZATION: By sorting target descending, dims.erase(i)
+            // does not invalidate the indices of the remaining targets.
+            dims.erase(dims.begin() + static_cast<std::ptrdiff_t>(i));
+        }
+    }
+
+    return std::make_tuple(res_midx, ps, rA);
+}
+
+/**
+ * @brief Sequentially measures the part \a target of the multi-partite
+ * state vector or density matrix \a A in the computational basis
+ * @see qpp::measure(), qpp::sample()
+ *
+ * @param A Eigen expression
+ * @param target Subsystem indexes that are measured
+ * @param d Subsystem dimensions
+ * @param destructive If true, measured subsystems are traced away
+ * @return Tuple of: 1. Vector of measurement result outcomes, 2. Outcome
+ * probabilities, and 3. Post-measurement normalized state
+ */
+template <typename Derived>
+std::tuple<std::vector<idx>, std::vector<realT>, expr_t<Derived>>
+measure_seq(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
+            idx d = 2, bool destructive = true) {
+    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+
+    // EXCEPTION CHECKS
+    // check zero size
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize("qpp::measure_seq()", "A");
+    }
+
+    // check valid dims
+    if (d < 2) {
+        throw exception::DimsInvalid("qpp::measure_seq()", "d");
+    }
+    // END EXCEPTION CHECKS
+
+    idx n = internal::get_num_subsys(static_cast<idx>(rA.rows()), d);
+    std::vector<idx> dims(n, d); // local dimensions vector
+
+    return measure_seq(rA, target, dims, destructive);
+}
+
+/**
+ * @brief Resets qudits from the multi-partite state vector or density matrix
+ * \a A by performing a non-destructive measurement in the computational basis
+ * on the \a target qudits and discarding the measurement results, followed by
+ * shifting them back to the \f$|0\cdots 0\rangle\f$ state
+ *
+ * @param A Eigen expression
+ * @param target Target qudit indexes that are reset
+ * @param dims Dimensions of the multi-partite system
+ * @return Reset quantum state
  */
 template <typename Derived>
 [[qpp::critical]] dyn_mat<typename Derived::Scalar>
@@ -1177,16 +1203,15 @@ reset(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 }
 
 /**
- * \brief Resets qudits from the multi-partite state vector or density
- * matrix \a A by performing a non-destructive measurement in the
- * computational basis on the \a target qudits and discarding the
- * measurement results, followed by shifting them back to the \f$|0\cdots
- * 0\rangle\f$ state
+ * @brief Resets qudits from the multi-partite state vector or density matrix
+ * \a A by performing a non-destructive measurement in the computational basis
+ * on the \a target qudits and discarding the measurement results, followed by
+ * shifting them back to the \f$|0\cdots 0\rangle\f$ state
  *
- * \param A Eigen expression
- * \param target Target qudit indexes that are reset
- * \param d Subsystem dimensions
- * \return Reset quantum state
+ * @param A Eigen expression
+ * @param target Target qudit indexes that are reset
+ * @param d Subsystem dimensions
+ * @return Reset quantum state
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
@@ -1213,14 +1238,14 @@ dyn_mat<typename Derived::Scalar> reset(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Discards qudits from the multi-partite state vector or density
+ * @brief Discards qudits from the multi-partite state vector or density
  * matrix \a A by performing a destructive measurement in the computational
  * basis on the \a target qudits and discarding the measurement results
  *
- * \param A Eigen expression
- * \param target Target qudit indexes that are discarded
- * \param dims Dimensions of the multi-partite system
- * \return Resulting quantum state
+ * @param A Eigen expression
+ * @param target Target qudit indexes that are discarded
+ * @param dims Dimensions of the multi-partite system
+ * @return Resulting quantum state
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
@@ -1265,14 +1290,14 @@ dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * \brief Discards qudits from the multi-partite state vector or density
+ * @brief Discards qudits from the multi-partite state vector or density
  * matrix \a A by performing a destructive measurement in the computational
  * basis on the \a target qudits and discarding the measurement results
  *
- * \param A Eigen expression
- * \param target Target qudit indexes that are discarded
- * \param d Subsystem dimensions
- * \return Resulting quantum state
+ * @param A Eigen expression
+ * @param target Target qudit indexes that are discarded
+ * @param d Subsystem dimensions
+ * @return Resulting quantum state
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> discard(const Eigen::MatrixBase<Derived>& A,

@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/classes/qcircuit_traits.hpp
- * \brief Quantum circuit traits (compile-time)
+ * @file qpp/classes/qcircuit_traits.hpp
+ * @brief Quantum circuit traits (compile-time)
  */
 
 #ifndef QPP_CLASSES_QCIRCUIT_TRAITS_HPP_
@@ -34,9 +34,9 @@
 
 namespace qpp {
 /**
- * \class qpp::QCircuitTraits
- * \brief Generic type traits for quantum circuits, resolved at compile-time
- * \note All quantum circuit description classes should specialize this trait
+ * @class qpp::QCircuitTraits
+ * @brief Generic type traits for quantum circuits, resolved at compile-time
+ * @note All quantum circuit description classes should specialize this trait
  */
 template <typename T>
 struct QCircuitTraits;

@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/MATLAB/matlab.hpp
- * \brief Input/output interfacing with MATLAB
+ * @file qpp/MATLAB/matlab.hpp
+ * @brief Input/output interfacing with MATLAB
  */
 
 #ifndef QPP_MATLAB_MATLAB_HPP_
@@ -46,24 +46,24 @@
 
 namespace qpp {
 /**
- * \brief Loads a complex Eigen dynamic matrix from a MATLAB .mat file
- * \see qpp::save_MATLAB()
+ * @brief Loads a complex Eigen dynamic matrix from a MATLAB .mat file
+ * @see qpp::save_MATLAB()
  *
  * The template parameter cannot be automatically deduced and must be explicitly
  * provided
  *
  * Example:
- * \code
+ * @code
  * // loads a previously saved Eigen ket
  * // from the MATLAB file "input.mat"
  * ket psi = load_MATLAB<ket>("input.mat");
- * \endcode
+ * @endcode
  *
- * \tparam Derived Complex Eigen type
- * \param mat_file MATLAB .mat file
- * \param var_name Variable name in the .mat file representing the matrix to be
+ * @tparam Derived Complex Eigen type
+ * @param mat_file MATLAB .mat file
+ * @param var_name Variable name in the .mat file representing the matrix to be
  * loaded
- * \return Eigen dynamic matrix
+ * @return Eigen dynamic matrix
  */
 template <typename Derived> // complex
 typename std::enable_if_t<std::is_same_v<typename Derived::Scalar, cplx>,
@@ -128,25 +128,25 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
 }
 
 /**
- * \brief Loads a non-complex (real, integer etc.) Eigen dynamic matrix from a
+ * @brief Loads a non-complex (real, integer etc.) Eigen dynamic matrix from a
  * MATLAB .mat file
- * \see qpp::save_MATLAB()
+ * @see qpp::save_MATLAB()
  *
  * The template parameter cannot be automatically deduced and must be explicitly
  * provided
  *
  * Example:
- * \code
+ * @code
  * // loads a previously saved Eigen dynamic double matrix
  * // from the MATLAB file "input.mat"
  * rmat mat = load_MATLAB<rmat>("input.mat");
- * \endcode
+ * @endcode
  *
- * \tparam Derived Non-complex Eigen type
- * \param mat_file MATLAB .mat file
- * \param var_name Variable name in the .mat file representing the matrix to be
+ * @tparam Derived Non-complex Eigen type
+ * @param mat_file MATLAB .mat file
+ * @param var_name Variable name in the .mat file representing the matrix to be
  * loaded
- * \return Eigen dynamic matrix
+ * @return Eigen dynamic matrix
  */
 template <typename Derived> // real
 typename std::enable_if_t<!std::is_same_v<typename Derived::Scalar, cplx>,
@@ -198,15 +198,15 @@ load_MATLAB(const std::string& mat_file, const std::string& var_name) {
 }
 
 /**
- * \brief Saves a complex Eigen dynamic matrix to a MATLAB .mat file
- * \see qpp::load_MATLAB()
+ * @brief Saves a complex Eigen dynamic matrix to a MATLAB .mat file
+ * @see qpp::load_MATLAB()
  *
- * \tparam Complex Eigen type
- * \param A Eigen expression over the complex field
- * \param mat_file MATLAB .mat file
- * \param var_name Variable name in the .mat file representing the matrix to be
+ * @tparam Complex Eigen type
+ * @param A Eigen expression over the complex field
+ * @param mat_file MATLAB .mat file
+ * @param var_name Variable name in the .mat file representing the matrix to be
  * saved
- * \param mode Saving mode (append, overwrite etc.), see MATLAB \a matOpen()
+ * @param mode Saving mode (append, overwrite etc.), see MATLAB \a matOpen()
  * documentation for details
  */
 template <typename Derived> // complex
@@ -264,16 +264,16 @@ save_MATLAB(const Eigen::MatrixBase<Derived>& A, const std::string& mat_file,
 }
 
 /**
- * \brief Saves a non-complex (real, integer etc.) Eigen dynamic matrix to a
+ * @brief Saves a non-complex (real, integer etc.) Eigen dynamic matrix to a
  * MATLAB .mat file
- * \see qpp::load_MATLAB()
+ * @see qpp::load_MATLAB()
  *
- * \tparam Non-complex Eigen type
- * \param A Non-complex Eigen expression
- * \param mat_file MATLAB .mat file
- * \param var_name Variable name in the .mat file representing the matrix to be
+ * @tparam Non-complex Eigen type
+ * @param A Non-complex Eigen expression
+ * @param mat_file MATLAB .mat file
+ * @param var_name Variable name in the .mat file representing the matrix to be
  * saved
- * \param mode Saving mode (append, overwrite etc.), see MATLAB \a matOpen()
+ * @param mode Saving mode (append, overwrite etc.), see MATLAB \a matOpen()
  * documentation for details
  */
 template <typename Derived> // real

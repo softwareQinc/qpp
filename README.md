@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 7.0.0 - xx March 2026
+## Version 7.0.0 - 14 March 2026
 
 [![GitHub actions](https://github.com/softwareqinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
 
@@ -24,7 +24,7 @@ are only restricted by the amount of available physical memory.
 The [examples](https://github.com/softwareQinc/qpp/tree/main/examples)
 directory provides a comprehensive collection of **Quantum++** usage examples.
 For more, check out
-[\@antoine-bussy's GitHub repository](https://github.com/antoine-bussy/qpp-examples).
+[antoine-bussy's GitHub repository](https://github.com/antoine-bussy/qpp-examples).
 
 To report any bugs or ask for additional features/enhancements, please
 [submit an issue](https://github.com/softwareQinc/qpp/issues) with an
@@ -46,7 +46,7 @@ concise
 [ASCII quick reference with MATLAB comparisons](https://libeigen.gitlab.io/eigen/docs-nightly/AsciiQuickReference.txt)
 is also available.
 
-Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
 
 ---
 

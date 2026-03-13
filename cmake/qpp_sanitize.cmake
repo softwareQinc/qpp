@@ -6,9 +6,9 @@ option(QPP_SANITIZE "Enable code sanitizing" OFF)
 if(QPP_SANITIZE)
   message(STATUS "Code sanitizing - ON")
 
-  # Determine which target exists
-  include(${CMAKE_CURRENT_LIST_DIR}/qpp_detect_target.cmake)
-  qpp_detect_target(QPP_TARGET "QPP_SANITIZE")
+  # Select the target
+  include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
+  qpp_select_target(QPP_TARGET "QPP_SANITIZE")
 
   set(QPP_SANITIZE_FLAGS)
   list(

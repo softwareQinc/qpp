@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -24,18 +24,24 @@
  * SOFTWARE.
  */
 
+/**
+ * @file <pyqpp/constants_bind.hpp>
+ * @brief Bindings for <qpp/constants.hpp>
+ */
+
 #ifndef PYQPP_CONSTANTS_BIND_HPP_
 #define PYQPP_CONSTANTS_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Constants from constants.hpp */
 inline void init_constants(py::module_& m) {
     using namespace qpp;
 
     m.attr("ee") = qpp::ee;
-    m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
+    m.attr("infty") = qpp::infty;
     m.attr("pi") = qpp::pi;
+
+    m.def("omega", &qpp::omega, "D-th root of unity", py::arg("D"));
 }
 
 #endif /* PYQPP_CONSTANTS_BIND_HPP_ */

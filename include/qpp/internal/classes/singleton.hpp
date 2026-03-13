@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/internal/classes/singleton.hpp
- * \brief Singleton pattern via CRTP
+ * @file qpp/internal/classes/singleton.hpp
+ * @brief Singleton pattern via CRTP
  */
 
 #ifndef QPP_INTERNAL_CLASSES_SINGLETON_HPP_
@@ -37,8 +37,8 @@
 namespace qpp::internal // internal class, do not modify
 {
 /**
- * \class qpp::internal::Singleton
- * \brief Singleton policy class, used internally to implement the singleton
+ * @class qpp::internal::Singleton
+ * @brief Singleton policy class, used internally to implement the singleton
  * pattern via CRTP (Curiously Recurring Template Pattern), thread safe in
  * C++11 and later.
  *
@@ -53,7 +53,7 @@ namespace qpp::internal // internal class, do not modify
  * qpp::internal::Singleton::get_no_thread_local_instance().
  *
  * Example:
- * \code
+ * @code
  * class MySingleton: public qpp::internal::Singleton<MySingleton>
  * {
  * 	   friend class qpp::internal::Singleton<MySingleton>;
@@ -74,9 +74,9 @@ namespace qpp::internal // internal class, do not modify
  * thread_local MySingleton& tls = MySingleton::get_thread_local_instance();
  * // Get a thread_local instance
  *
- * \endcode
+ * @endcode
  *
- * \see Code of qpp::Codes, qpp::Gates, qpp::Init, qpp::RandomDevices,
+ * @see Code of qpp::Codes, qpp::Gates, qpp::Init, qpp::RandomDevices,
  * qpp::States or qpp.h for real world examples of usage.
  */
 template <typename T>

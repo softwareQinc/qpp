@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/internal/util.hpp
- * \brief Internal utility functions
+ * @file qpp/internal/util.hpp
+ * @brief Internal utility functions
  */
 
 #ifndef QPP_INTERNAL_UTIL_HPP_
@@ -49,8 +49,8 @@
 
 namespace qpp {
 /**
- * \namespace qpp::internal
- * \brief Internal functions, do not use them directly or modify them
+ * @namespace qpp::internal
+ * @brief Internal functions, do not use them directly or modify them
  */
 namespace internal {
 // integer index to multi-index, use C-style array for speed
@@ -503,6 +503,49 @@ bool all_qubits(const Container& c) {
         }
     }
     return true;
+}
+
+/**
+ * @brief Computes the complement of a subset of indices relative to the full
+ * set [0, 1, ..., n-1].
+ * This is an O(n) time complexity approach using a boolean marker array.
+ * \tparam T Underlying vector type
+ * @param target The subset of indices to exclude (subsystems to trace out)
+ * @param n The total number of subsystems (size of the full set)
+ * @return The complement of \a target
+ */
+template <typename T>
+inline std::vector<T> fast_complement(const std::vector<T>& target, idx n) {
+    idx target_size = target.size();
+    assert(target_size <= n);
+
+    // 1. Initialize a marker array (equivalent to a bitset) for fast
+    // lookup. std::vector<bool> is highly optimized and space-efficient.
+    std::vector<bool> is_target(n, false);
+
+    // 2. Mark the indices that are present in the target set. O(M) time, where
+    // M is target.size(). This loop is parallelized as there are no write
+    // conflicts.
+#ifdef QPP_OPENMP
+// NOLINTNEXTLINE
+#pragma omp parallel for
+#endif // QPP_OPENMP
+    for (idx i = 0; i < target_size; ++i) {
+        idx t = target[i];
+        // Assuming 't' is validated to be between 0 and n-1
+        is_target[t] = true;
+    }
+
+    std::vector<T> target_bar;
+    target_bar.reserve(n - target_size);
+
+    for (idx i = 0; i < n; ++i) {
+        if (!is_target[i]) {
+            target_bar.push_back(i);
+        }
+    }
+
+    return target_bar;
 }
 
 } /* namespace internal */
