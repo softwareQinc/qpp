@@ -134,7 +134,7 @@ class QNoisyEngineT : public QEngineT<T> {
         }
         // END EXCEPTION CHECKS
         auto steps = internal::circuit_as_iterators(*this->qc_ptr_);
-        this->execute_prj_steps_no_sample_(steps, 0, reps);
+        this->execute_steps_with_postselection_retries_(steps, 0, reps);
 
         return *this;
     }

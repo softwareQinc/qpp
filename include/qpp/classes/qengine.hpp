@@ -1,4 +1,4 @@
-/*/
+/*
  * This file is part of Quantum++.
  *
  * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
@@ -211,34 +211,34 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         stats_{}; ///< measurement statistics for multiple runs
 
     /**
-     * @brief Executes a contiguous sequence of circuit steps, including
-     * possible measurement operations
+     * @brief Executes once a contiguous sequence of circuit steps
      *
-     * This function iterates over a sequence of steps in a quantum circuit
-     * (typically a block of consecutive measurement-related operations)
-     * starting at the specified position, and executes them on the engine. The
-     * sequence may include projective measurements, controlled jumps, or other
-     * runtime steps.
+     * Executes the steps in \a steps starting at index \a pos until the end of
+     * the sequence. The executed block may include quantum operations,
+     * projective measurements, and runtime-dependent steps such as conditional
+     * jumps.
      *
-     * If \a ensure_post_selection is true, each measurement step that involves
-     * post-selection is re-executed until the post-selection condition
-     * succeeds, or until the maximum number of attempts is reached (see
-     * qpp::QEngineT::set_max_post_selection_reps()). If post-selection fails at
-     * any step, execution stops immediately. Note that post-selection success
-     * is **not guaranteed**; you should check qpp::QEngineT::post_select_ok().
+     * If \a ensure_post_selection is true, the engine temporarily enables
+     * post-selection enforcement during execution. In that case, measurements
+     * with post-selection are internally retried according to the engine's
+     * configured retry policy (see
+     * qpp::QEngineT::set_max_post_selection_reps()). If a post-selection
+     * condition ultimately fails, execution stops immediately. Post-selection
+     * success is therefore not guaranteed; use qpp::QEngineT::post_select_ok()
+     * to check the outcome.
      *
-     * The function also tracks whether any measurement was encountered during
-     * execution and updates measurement statistics accordingly.
+     * If at least one measurement step is executed and no early termination
+     * occurs, the measurement statistics are updated with the resulting
+     * classical outcomes.
      *
      * @param steps Vector of qpp::QCircuit::iterator representing the circuit
      * steps to execute
      * @param pos Starting index in \a steps from which execution begins
-     * @param ensure_post_selection When true, enforces post-selection for each
-     * measurement step by retrying execution until success (or exhaustion of
-     * the configured limit)
+     * @param ensure_post_selection If true, temporarily enables post-selection
+     * retries during execution
      */
-    void execute_circuit_steps_once_(std::vector<QCircuit::iterator>& steps,
-                                     idx pos, bool ensure_post_selection) {
+    void execute_steps_once_(std::vector<QCircuit::iterator>& steps, idx pos,
+                             bool ensure_post_selection) {
         // save the engine state
         auto engine_state_copy = qeng_st_;
 
@@ -296,14 +296,25 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     }
 
     /**
-     * @brief Executes a contiguous sequence of projective measurement steps
+     * @brief Executes a contiguous sequence of circuit steps with possible
+     * post-selection, repeating the execution up to \a reps times
+     *
+     * Each repetition performs a full state-vector update starting from the
+     * same initial engine state. If a repetition yields a successful
+     * post-selection, the corresponding engine state is saved. After all
+     * repetitions, the engine state is set to the first successful
+     * post-selection trajectory, if one was found.
+     *
+     * @note Post-selection success is not guaranteed. If all repetitions fail,
+     * the engine state corresponds to the final attempt and
+     * qpp::QEngineT::post_select_ok() will return false.
      *
      * @param steps Vector of qpp::QCircuit::iterator
      * @param pos Index from where the execution starts
      * @param reps Number of repetitions
      */
-    void execute_prj_steps_no_sample_(std::vector<QCircuit::iterator>& steps,
-                                      idx pos, idx reps) {
+    void execute_steps_with_postselection_retries_(
+        std::vector<QCircuit::iterator>& steps, idx pos, idx reps) {
         // save the engine state
         internal::QEngineState<T> engine_state_copy = qeng_st_;
 
@@ -313,8 +324,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         bool found_successful_rep = false;
         for (idx rep = 0; rep < reps; ++rep) {
-            execute_circuit_steps_once_(steps, pos,
-                                        qeng_st_.ensure_post_selection_);
+            execute_steps_once_(steps, pos, qeng_st_.ensure_post_selection_);
             bool post_select_ok = this->post_select_ok();
             // save the first successful post-selection engine state
             if (post_select_ok && !found_successful_rep) {
@@ -335,17 +345,34 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     }
 
     /**
-     * @brief Executes a contiguous sequence of projective measurement steps via
-     * sampling
+     * @brief Samples a contiguous sequence of projective measurement steps
+     * while enforcing post-selection constraints
+     *
+     * From \a pos onward, all circuit steps are assumed to be projective
+     * measurements, including post-selection steps. Measurement outcomes are
+     * sampled from the current quantum state up to \a reps times to gather
+     * statistics. Samples that violate post-selection constraints are
+     * discarded and, if post-selection enforcement is enabled, may be retried
+     * according to the engine's configured retry limit.
+     *
+     * Upon the first successful sample, the measurement steps are executed
+     * once using full state-vector evolution to synchronize the engine state
+     * with a successful post-selection trajectory. Subsequent successful
+     * samples update only the measurement statistics. If at least one
+     * successful sample is found, the engine state is set to that first
+     * successful trajectory.
+     *
+     * @note Post-selection success is not guaranteed. If no successful sample
+     * is found, qpp::QEngineT::post_select_ok() will return false.
      *
      * @param steps Vector of qpp::QCircuit::iterator
-     * @param pos Index from where the execution starts; from this index
-     * further, all steps are assumed to be projective measurements (including
+     * @param pos Index from which execution starts; from this index onward all
+     * steps are assumed to be projective measurements (including
      * post-selection)
-     * @param reps Number of repetitions
+     * @param reps Number of sampling repetitions
      */
-    void execute_prj_steps_sample_(std::vector<QCircuit::iterator>& steps,
-                                   idx pos, idx reps) {
+    void execute_measurement_steps_with_sampling_and_postselection_retries_(
+        std::vector<QCircuit::iterator>& steps, idx pos, idx reps) {
         std::map<idx, std::pair<idx, std::optional<idx>>>
             c_q; // records the c <- (q, [OPTIONAL ps_val]) map
         std::map<idx, idx> q_ps_val; // records the q <- ps_val map
@@ -431,7 +458,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 found_successful_rep = true;
                 qeng_st_.max_post_selection_reps_ =
                     std::numeric_limits<idx>::max();
-                execute_circuit_steps_once_(steps, pos, true);
+                execute_steps_once_(steps, pos, true);
                 qeng_st_.max_post_selection_reps_ =
                     engine_state_copy.max_post_selection_reps_;
                 engine_state_ps_ok = qeng_st_;
@@ -1366,13 +1393,13 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         // execute repeatedly everything in the remaining interval
         // can sample: every step from now on is a projective measurement
         if (qeng_st_.can_sample_) {
-            execute_prj_steps_sample_(steps_as_iterators, optimize_up_to_pos,
-                                      reps);
+            execute_measurement_steps_with_sampling_and_postselection_retries_(
+                steps_as_iterators, optimize_up_to_pos, reps);
         }
         // cannot sample
         else {
-            execute_prj_steps_no_sample_(steps_as_iterators, optimize_up_to_pos,
-                                         reps);
+            execute_steps_with_postselection_retries_(steps_as_iterators,
+                                                      optimize_up_to_pos, reps);
         }
 
         return *this;
