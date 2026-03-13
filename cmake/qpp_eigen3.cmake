@@ -1,5 +1,9 @@
 # Eigen3
 
+# Select the target
+include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
+qpp_select_target(QPP_TARGET "qpp_eigen3")
+
 message(STATUS "Detecting Eigen3 (>= 5.0.0)...")
 
 find_package(Eigen3 5.0 QUIET NO_MODULE)
@@ -37,4 +41,4 @@ else() # if(NOT TARGET Eigen3::Eigen)
     STATUS "Installed Eigen3 version ${Eigen3_VERSION}: ${EIGEN3_INCLUDE_DIR}")
 endif()
 
-target_link_libraries(libqpp INTERFACE Eigen3::Eigen)
+target_link_libraries(${QPP_TARGET} INTERFACE Eigen3::Eigen)

@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -24,12 +24,16 @@
  * SOFTWARE.
  */
 
+/**
+ * @file <pyqpp/types_bind.hpp>
+ * @brief Bindings for <qpp/types.hpp>
+ */
+
 #ifndef PYQPP_TYPES_BIND_HPP_
 #define PYQPP_TYPES_BIND_HPP_
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/* Types from types.hpp */
 inline void init_types(py::module_& m) {
     using namespace qpp;
 

@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/statistics.hpp
- * \brief Statistics functions
+ * @file qpp/statistics.hpp
+ * @brief Statistics functions
  */
 
 #ifndef QPP_STATISTICS_HPP_
@@ -42,10 +42,10 @@
 
 namespace qpp {
 /**
- * \brief Uniform probability distribution vector
+ * @brief Uniform probability distribution vector
  *
- * \param N Size of the alphabet
- * \return Real vector consisting of a uniform distribution of size \a N
+ * @param N Size of the alphabet
+ * @return Real vector consisting of a uniform distribution of size \a N
  */
 inline std::vector<realT> uniform(idx N) {
     // EXCEPTION CHECKS
@@ -59,12 +59,12 @@ inline std::vector<realT> uniform(idx N) {
 }
 
 /**
- * \brief Marginal distribution
+ * @brief Marginal distribution
  *
- * \param probXY Real matrix representing the joint probability distribution of
+ * @param probXY Real matrix representing the joint probability distribution of
  * \a X and \a Y in lexicographical order (\a X labels the rows, \a Y labels the
  * columns)
- * \return Real vector consisting of the marginal distribution of \a X
+ * @return Real vector consisting of the marginal distribution of \a X
  */
 inline std::vector<realT> marginalX(const rmat& probXY) {
     // EXCEPTION CHECKS
@@ -84,12 +84,12 @@ inline std::vector<realT> marginalX(const rmat& probXY) {
 }
 
 /**
- * \brief Marginal distribution
+ * @brief Marginal distribution
  *
- * \param probXY Real matrix representing the joint probability distribution of
+ * @param probXY Real matrix representing the joint probability distribution of
  * \a X and \a Y in lexicographical order (\a X labels the rows, \a Y labels the
  * columns)
- * \return Real vector consisting of the marginal distribution of \a Y
+ * @return Real vector consisting of the marginal distribution of \a Y
  */
 inline std::vector<realT> marginalY(const rmat& probXY) {
     // EXCEPTION CHECKS
@@ -102,13 +102,13 @@ inline std::vector<realT> marginalY(const rmat& probXY) {
 }
 
 /**
- * \brief Average
+ * @brief Average
  *
- * \param prob Real probability vector representing the probability distribution
+ * @param prob Real probability vector representing the probability distribution
  * of \a X
  *
- * \param X Real random variable values represented by an STL-like container
- * \return Average of \a X
+ * @param X Real random variable values represented by an STL-like container
+ * @return Average of \a X
  */
 template <typename Container>
 realT avg(const std::vector<realT>& prob, const Container& X,
@@ -131,14 +131,14 @@ realT avg(const std::vector<realT>& prob, const Container& X,
 }
 
 /**
- * \brief Covariance
+ * @brief Covariance
  *
- * \param probXY Real matrix representing the joint probability distribution of
+ * @param probXY Real matrix representing the joint probability distribution of
  * \a X and \a Y in lexicographical order (\a X labels the rows, \a Y labels the
  * columns)
- * \param X Real random variable values represented by an STL-like container
- * \param Y Real random variable values represented by an STL-like container
- * \return Covariance of \a X and \a Y
+ * @param X Real random variable values represented by an STL-like container
+ * @param Y Real random variable values represented by an STL-like container
+ * @return Covariance of \a X and \a Y
  */
 template <typename Container>
 realT cov(const rmat& probXY, const Container& X, const Container& Y,
@@ -172,12 +172,12 @@ realT cov(const rmat& probXY, const Container& X, const Container& Y,
 }
 
 /**
- * \brief Variance
+ * @brief Variance
  *
- * \param prob Real probability vector representing the probability distribution
+ * @param prob Real probability vector representing the probability distribution
  * of \a X
- * \param X Real random variable values represented by an STL-like container
- * \return Variance of \a X
+ * @param X Real random variable values represented by an STL-like container
+ * @return Variance of \a X
  */
 template <typename Container>
 realT var(const std::vector<realT>& prob, const Container& X,
@@ -201,12 +201,12 @@ realT var(const std::vector<realT>& prob, const Container& X,
 }
 
 /**
- * \brief Standard deviation
+ * @brief Standard deviation
  *
- * \param prob Real probability vector representing the probability distribution
+ * @param prob Real probability vector representing the probability distribution
  * of \a X
- * \param X Real random variable values represented by an STL-like container
- * \return Standard deviation of \a X
+ * @param X Real random variable values represented by an STL-like container
+ * @return Standard deviation of \a X
  */
 template <typename Container>
 realT sigma(const std::vector<realT>& prob, const Container& X,
@@ -224,14 +224,14 @@ realT sigma(const std::vector<realT>& prob, const Container& X,
 }
 
 /**
- * \brief Correlation
+ * @brief Correlation
  *
- * \param probXY Real matrix representing the joint probability distribution of
+ * @param probXY Real matrix representing the joint probability distribution of
  * \a X and \a Y in lexicographical order (\a X labels the rows, \a Y labels the
  * columns)
- * \param X Real random variable values represented by an STL-like container
- * \param Y Real random variable values represented by an STL-like container
- * \return Correlation of \a X and \a Y
+ * @param X Real random variable values represented by an STL-like container
+ * @param Y Real random variable values represented by an STL-like container
+ * @return Correlation of \a X and \a Y
  */
 template <typename Container>
 realT cor(const rmat& probXY, const Container& X, const Container& Y,

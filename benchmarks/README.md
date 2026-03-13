@@ -1,18 +1,49 @@
 # Benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
 
-## Pre-requisites
+**Quantum++** includes a benchmarking suite built using
+[Catch2](https://github.com/catchorg/Catch2).
 
-- [Quantum++](https://github.com/softwareQinc/qpp), follow the [installation
-  instructions](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md)
-- [CMake](https://cmake.org/)
-- C++17 compliant compiler
+---
 
-## Set up and running
+## Configuring the system
 
-Execute from the root of this directory
+**Quantum++ is required** to build and run the benchmarks. If it is not
+installed, the benchmarks can be built by first configuring the main project
+from this directory using
 
-```bash
-cmake -B build
-cmake --build build --parallel 4
-./build/bench
+```shell
+cmake -S .. -B build/qpp
+cmake -B build -DCMAKE_PREFIX_PATH=build/qpp
 ```
+
+If **Quantum++** is installed on your system, replace the commands above with
+
+```shell
+cmake -B build
+```
+
+---
+
+## Building and running the benchmarks
+
+Once the system is configured, build all benchmarks by executing from this
+directory
+
+```shell
+cmake --build build --parallel 8
+```
+
+This will compile all benchmark executables into `./build/benchmarks`. To run
+a specific benchmark, e.g., `qft_bench`, execute
+
+```shell
+./build/benchmarks/qft_bench
+```
+
+For help and additional options, run any benchmark with the `--help` flag.
+
+> **Note:**
+> **Quantum++**
+> [CMake flags and arguments](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md#cmake-flags-and-optional-arguments)
+> **do not propagate** to the benchmarks. They must be defined independently if
+> they are needed.

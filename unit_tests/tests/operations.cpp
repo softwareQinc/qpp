@@ -234,7 +234,167 @@ TEST(qpp_applyCTRL_fan, Qudits) {
 ///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
 ///       const std::vector<idx>& target, idx d = 2,
 ///       std::optional<std::vector<idx>> shift = std::nullopt)
-TEST(qpp_applyCTRL_fan, Qubits) {}
+TEST(qpp_applyCTRL_fan, Qubits) {
+    const idx n = 6; // total qubits
+    const idx D = internal::safe_pow<idx>(2, n);
+
+    // worst-ish case: half controls, half targets (disjoint)
+    const idx m = n / 2;
+    std::vector<idx> ctrl(m);
+    std::vector<idx> target(m);
+    for (idx i = 0; i < m; ++i) {
+        ctrl[i] = i;       // 0..m-1
+        target[i] = m + i; // m..2m-1
+    }
+
+    // -------------------------------------------------------------------------
+    // A) ket: deterministic, no shift
+    // -------------------------------------------------------------------------
+    {
+        // controls all |1>, targets all |0> -> X flips all targets -> targets
+        // |1>
+        std::vector<idx> midx(n, 0);
+        for (idx i = 0; i < m; ++i) {
+            midx[ctrl[i]] = 1;
+        }
+        ket psi = mket(midx, 2);
+
+        // signature expects shift, so pass the "no shift" vector
+        const std::vector<idx> shift(m, 0);
+        ket out = qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
+            psi, gt.X, ctrl, target, shift, n);
+
+        std::vector<idx> exp_midx = midx;
+        for (idx i = 0; i < m; ++i) {
+            exp_midx[target[i]] = 1;
+        }
+        ket expected = mket(exp_midx, 2);
+
+        EXPECT_NEAR(0.0, norm(out - expected), 1e-12);
+    }
+
+    // -------------------------------------------------------------------------
+    // B) ket: deterministic, with shift
+    // -------------------------------------------------------------------------
+    {
+        // negate first and last control
+        std::vector<idx> shift(m, 0);
+        shift[0] = 1;
+        shift[m - 1] = 1;
+
+        // ctrl pattern required: (0,1,0) on ctrl[0..2]
+        std::vector<idx> midx(n, 0);
+        midx[ctrl[0]] = 0;
+        midx[ctrl[1]] = 1;
+        midx[ctrl[2]] = 0;
+        ket psi = mket(midx, 2);
+
+        ket out = qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
+            psi, gt.X, ctrl, target, shift, n);
+
+        std::vector<idx> exp_midx = midx;
+        for (idx i = 0; i < m; ++i) {
+            exp_midx[target[i]] = 1;
+        }
+        ket expected = mket(exp_midx, 2);
+
+        EXPECT_NEAR(0.0, norm(out - expected), 1e-12);
+    }
+
+    // -------------------------------------------------------------------------
+    // C) ket: control pattern doesn't match -> unchanged
+    // -------------------------------------------------------------------------
+    {
+        std::vector<idx> shift(m, 0);
+        shift[0] = 1;
+        shift[m - 1] = 1;
+
+        // start from the matching pattern, then break ctrl[1]
+        std::vector<idx> midx(n, 0);
+        midx[ctrl[0]] = 0;
+        midx[ctrl[1]] = 1;
+        midx[ctrl[2]] = 0;
+        midx[ctrl[1]] = 0; // break (non-negated) control condition
+
+        ket psi = mket(midx, 2);
+        ket out = qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
+            psi, gt.X, ctrl, target, shift, n);
+
+        EXPECT_NEAR(0.0, norm(out - psi), 1e-12);
+    }
+
+    // -------------------------------------------------------------------------
+    // D) density matrix: deterministic, no shift
+    // -------------------------------------------------------------------------
+    {
+        std::vector<idx> midx(n, 0);
+        for (idx i = 0; i < m; ++i) {
+            midx[ctrl[i]] = 1;
+        }
+        ket psi = mket(midx, 2);
+
+        const std::vector<idx> shift(m, 0);
+        cmat rho = qpp::internal::kernels::qubit::apply_ctrl_fan_rho(
+            prj(psi), gt.X, ctrl, target, shift, n);
+
+        std::vector<idx> exp_midx = midx;
+        for (idx i = 0; i < m; ++i) {
+            exp_midx[target[i]] = 1;
+        }
+        cmat expected_rho = prj(mket(exp_midx, 2));
+
+        EXPECT_NEAR(0.0, norm(rho - expected_rho), 1e-12);
+    }
+
+    // -------------------------------------------------------------------------
+    // E) density matrix: deterministic, with shift
+    // -------------------------------------------------------------------------
+    {
+        std::vector<idx> shift(m, 0);
+        shift[0] = 1;
+        shift[m - 1] = 1;
+
+        std::vector<idx> midx(n, 0);
+        midx[ctrl[0]] = 0;
+        midx[ctrl[1]] = 1;
+        midx[ctrl[2]] = 0;
+        ket psi = mket(midx, 2);
+
+        cmat rho = qpp::internal::kernels::qubit::apply_ctrl_fan_rho(
+            prj(psi), gt.X, ctrl, target, shift, n);
+
+        std::vector<idx> exp_midx = midx;
+        for (idx i = 0; i < m; ++i) {
+            exp_midx[target[i]] = 1;
+        }
+        cmat expected_rho = prj(mket(exp_midx, 2));
+
+        EXPECT_NEAR(0.0, norm(rho - expected_rho), 1e-12);
+    }
+
+    // -------------------------------------------------------------------------
+    // F) random consistency: ket vs density (same operation)
+    // -------------------------------------------------------------------------
+    {
+        ket psi = randket(D);
+        cmat rho = psi * adjoint(psi);
+
+        const std::vector<idx> shift(m, 0);
+        const cmat U = randU(2);
+
+        ket A = qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
+            psi, U, ctrl, target, shift, n);
+        cmat B = qpp::internal::kernels::qubit::apply_ctrl_fan_rho(
+            rho, U, ctrl, target, shift, n);
+
+        const cmat result_psi = A * adjoint(A);
+        const realT res = norm(result_psi - B);
+
+        EXPECT_NEAR(0.0, norm(result_psi - adjoint(result_psi)), 1e-10);
+        EXPECT_NEAR(0.0, norm(B - adjoint(B)), 1e-10);
+        EXPECT_NEAR(0.0, res, 1e-10);
+    }
+}
 
 /// BEGIN template <typename Derived> expr_t<Derived>
 ///       applyQFT(const Eigen::MatrixBase<Derived>& A,

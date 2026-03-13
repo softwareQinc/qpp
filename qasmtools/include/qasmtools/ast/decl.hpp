@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qasmtools/ast/decl.hpp
- * \brief OpenQASM declarations
+ * @file qasmtools/ast/decl.hpp
+ * @brief OpenQASM declarations
  */
 
 #ifndef QASMTOOLS_AST_DECL_HPP_
@@ -46,7 +46,7 @@ static const std::set<std::string_view> qelib_defs{
     "cy", "swap", "ch",  "ccx", "crz", "cu1", "cu3"};
 #else
 /**
- * \brief Qiskit definitions include r and cswap gates, see
+ * @brief Qiskit definitions include r and cswap gates, see
  * qasmtools/parser/preprocessor.hpp
  */
 static const std::set<std::string_view> qelib_defs{
@@ -56,18 +56,18 @@ static const std::set<std::string_view> qelib_defs{
 #endif
 
 /**
- * \brief Tests whether identifier is part of the standard OpenQASM qelib or not
+ * @brief Tests whether identifier is part of the standard OpenQASM qelib or not
  *
- * \param id Identifier
- * \return True if \a id is part of the standard OpenQASM qelib, false otherwise
+ * @param id Identifier
+ * @return True if \a id is part of the standard OpenQASM qelib, false otherwise
  */
 inline bool is_std_qelib(const std::string& id) {
     return qelib_defs.find(id) != qelib_defs.end();
 }
 
 /**
- * \class qasmtools::ast::Decl
- * \brief Base class for OpenQASM declarations
+ * @class qasmtools::ast::Decl
+ * @brief Base class for OpenQASM declarations
  *
  * Declarations are attribute classes as they can occur in different
  * statement contexts. To avoid diamond inheritance, any derived declaration
@@ -82,18 +82,18 @@ class Decl {
     virtual ~Decl() = default;
 
     /**
-     * \brief Return the name being declared
+     * @brief Return the name being declared
      *
-     * \return Constant reference to the identifier
+     * @return Constant reference to the identifier
      */
     const symbol& id() { return id_; }
 };
 
 /**
- * \class qasmtools::ast::GateDecl
- * \brief Class for gate declarations
- * \see qasmtools::ast::Stmt
- * \see qasmtools::ast::Decl
+ * @class qasmtools::ast::GateDecl
+ * @brief Class for gate declarations
+ * @see qasmtools::ast::Stmt
+ * @see qasmtools::ast::Decl
  */
 class GateDecl final : public Stmt, public Decl {
     bool opaque_;                  ///< whether the declaration is opaque
@@ -103,13 +103,13 @@ class GateDecl final : public Stmt, public Decl {
 
   public:
     /**
-     * \brief Constructs a gate declaration
+     * @brief Constructs a gate declaration
      *
-     * \param pos The source position
-     * \param id The gate identifier
-     * \param c_params List of classical parameters
-     * \param q_params List of quantum parameters
-     * \param body List of gate statements
+     * @param pos The source position
+     * @param id The gate identifier
+     * @param c_params List of classical parameters
+     * @param q_params List of quantum parameters
+     * @param body List of gate statements
      */
     GateDecl(parser::Position pos, symbol id, bool opaque,
              std::vector<symbol> c_params, std::vector<symbol> q_params,
@@ -118,7 +118,7 @@ class GateDecl final : public Stmt, public Decl {
           q_params_(q_params), body_(std::move(body)) {}
 
     /**
-     * \brief Protected heap-allocated construction
+     * @brief Protected heap-allocated construction
      */
     static ptr<GateDecl> create(parser::Position pos, symbol id, bool opaque,
                                 std::vector<symbol> c_params,
@@ -129,37 +129,37 @@ class GateDecl final : public Stmt, public Decl {
     }
 
     /**
-     * \brief Whether the declaration is opaque
+     * @brief Whether the declaration is opaque
      *
-     * \return true is the declaration is opaque
+     * @return true is the declaration is opaque
      */
     bool is_opaque() { return opaque_; }
 
     /**
-     * \brief Get the classical parameter list
+     * @brief Get the classical parameter list
      *
-     * \return Reference to the list of classical parameter names
+     * @return Reference to the list of classical parameter names
      */
     std::vector<symbol>& c_params() { return c_params_; }
 
     /**
-     * \brief Get the quantum parameter list
+     * @brief Get the quantum parameter list
      *
-     * \return Reference to the list of quantum parameter names
+     * @return Reference to the list of quantum parameter names
      */
     std::vector<symbol>& q_params() { return q_params_; }
 
     /**
-     * \brief Get the gate body
+     * @brief Get the gate body
      *
-     * \return Reference to the body of the gate as a list of gate statements
+     * @return Reference to the body of the gate as a list of gate statements
      */
     std::list<ptr<Gate>>& body() { return body_; }
 
     /**
-     * \brief Apply a function to each statement of the gate
+     * @brief Apply a function to each statement of the gate
      *
-     * \param f A void function taking a reference to a Gate
+     * @param f A void function taking a reference to a Gate
      */
     void foreach_stmt(std::function<void(Gate&)> f) {
         for (auto it = body_.begin(); it != body_.end(); it++) {
@@ -168,16 +168,16 @@ class GateDecl final : public Stmt, public Decl {
     }
 
     /**
-     * \brief Get an iterator to the beginning of the body
+     * @brief Get an iterator to the beginning of the body
      *
-     * \return std::list iterator
+     * @return std::list iterator
      */
     std::list<ptr<Gate>>::iterator begin() { return body_.begin(); }
 
     /**
-     * \brief Get an iterator to the end of the body
+     * @brief Get an iterator to the end of the body
      *
-     * \return std::list iterator
+     * @return std::list iterator
      */
     std::list<ptr<Gate>>::iterator end() { return body_.end(); }
 
@@ -224,9 +224,9 @@ class GateDecl final : public Stmt, public Decl {
 };
 
 /**
- * \class qasmtools::ast::OracleDecl
- * \brief Class for oracle declarations
- * \see qasmtools::ast::Decl
+ * @class qasmtools::ast::OracleDecl
+ * @brief Class for oracle declarations
+ * @see qasmtools::ast::Decl
  */
 class OracleDecl final : public Stmt, public Decl {
     std::vector<symbol> params_; ///< quantum parameters
@@ -234,19 +234,19 @@ class OracleDecl final : public Stmt, public Decl {
 
   public:
     /**
-     * \brief Constructs an oracle declaration
+     * @brief Constructs an oracle declaration
      *
-     * \param pos The source position
-     * \param id The gate identifier
-     * \param params List of quantum parameters
-     * \param fname Filename defining the classical logic
+     * @param pos The source position
+     * @param id The gate identifier
+     * @param params List of quantum parameters
+     * @param fname Filename defining the classical logic
      */
     OracleDecl(parser::Position pos, symbol id, std::vector<symbol> params,
                symbol fname)
         : Stmt(pos), Decl(id), params_(params), fname_(fname) {}
 
     /**
-     * \brief Protected heap-allocated construction
+     * @brief Protected heap-allocated construction
      */
     static ptr<OracleDecl> create(parser::Position pos, symbol id,
                                   std::vector<symbol> params, symbol fname) {
@@ -254,16 +254,16 @@ class OracleDecl final : public Stmt, public Decl {
     }
 
     /**
-     * \brief Get the parameter list
+     * @brief Get the parameter list
      *
-     * \return Reference to the list of quantum parameter names
+     * @return Reference to the list of quantum parameter names
      */
     std::vector<symbol>& params() { return params_; }
 
     /**
-     * \brief Get the filename
+     * @brief Get the filename
      *
-     * \return Constant reference to the filename
+     * @return Constant reference to the filename
      */
     const symbol& fname() { return fname_; }
 
@@ -284,9 +284,9 @@ class OracleDecl final : public Stmt, public Decl {
 };
 
 /**
- * \class qasmtools::ast::RegisterDecl
- * \brief Class for register declarations
- * \see qasmtools::ast::Decl
+ * @class qasmtools::ast::RegisterDecl
+ * @brief Class for register declarations
+ * @see qasmtools::ast::Decl
  */
 class RegisterDecl final : public Stmt, public Decl {
     bool quantum_; ///< whether the register is quantum
@@ -294,18 +294,18 @@ class RegisterDecl final : public Stmt, public Decl {
 
   public:
     /**
-     * \brief Constructs a register declaration
+     * @brief Constructs a register declaration
      *
-     * \param pos The source position
-     * \param id The register identifier
-     * \param quantum whether the register is a quantum register
-     * \param size the size of the register
+     * @param pos The source position
+     * @param id The register identifier
+     * @param quantum whether the register is a quantum register
+     * @param size the size of the register
      */
     RegisterDecl(parser::Position pos, symbol id, bool quantum, int size)
         : Stmt(pos), Decl(id), quantum_(quantum), size_(size) {}
 
     /**
-     * \brief Protected heap-allocated construction
+     * @brief Protected heap-allocated construction
      */
     static ptr<RegisterDecl> create(parser::Position pos, symbol id,
                                     bool quantum, int size) {
@@ -313,16 +313,16 @@ class RegisterDecl final : public Stmt, public Decl {
     }
 
     /**
-     * \brief Whether the register is quantum or classical
+     * @brief Whether the register is quantum or classical
      *
-     * \return true if the register is quantum
+     * @return true if the register is quantum
      */
     bool is_quantum() { return quantum_; }
 
     /**
-     * \brief Get the size of the register
+     * @brief Get the size of the register
      *
-     * \return The size of the register
+     * @return The size of the register
      */
     int size() { return size_; }
 
@@ -339,9 +339,9 @@ class RegisterDecl final : public Stmt, public Decl {
 };
 
 /**
- * \class qasmtools::ast::AncillaDecl
- * \brief Class for local register declarations
- * \see qasmtools::ast::Decl
+ * @class qasmtools::ast::AncillaDecl
+ * @brief Class for local register declarations
+ * @see qasmtools::ast::Decl
  */
 class AncillaDecl final : public Gate, public Decl {
     bool dirty_; ///< whether the register can be dirty
@@ -349,18 +349,18 @@ class AncillaDecl final : public Gate, public Decl {
 
   public:
     /**
-     * \brief Constructs a register declaration
+     * @brief Constructs a register declaration
      *
-     * \param pos The source position
-     * \param id The register identifier
-     * \param dirty Whether the register is dirty
-     * \param size The size of the register
+     * @param pos The source position
+     * @param id The register identifier
+     * @param dirty Whether the register is dirty
+     * @param size The size of the register
      */
     AncillaDecl(parser::Position pos, symbol id, bool dirty, int size)
         : Gate(pos), Decl(id), dirty_(dirty), size_(size) {}
 
     /**
-     * \brief Protected heap-allocated construction
+     * @brief Protected heap-allocated construction
      */
     static ptr<AncillaDecl> create(parser::Position pos, symbol id, bool dirty,
                                    int size) {
@@ -368,16 +368,16 @@ class AncillaDecl final : public Gate, public Decl {
     }
 
     /**
-     * \brief Whether the register is dirty
+     * @brief Whether the register is dirty
      *
-     * \return true if the register is dirty
+     * @return true if the register is dirty
      */
     bool is_dirty() { return dirty_; }
 
     /**
-     * \brief Get the size of the register
+     * @brief Get the size of the register
      *
-     * \return The size of the register
+     * @return The size of the register
      */
     int size() { return size_; }
 

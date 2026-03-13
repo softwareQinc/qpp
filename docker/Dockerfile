@@ -1,36 +1,38 @@
-FROM ubuntu:latest
-ENV TZ="America/Toronto"
-RUN apt-get update && \
-    apt-get -y update && \
-    apt-get install -yq tzdata && \
-    ln -fs /usr/share/zoneinfo/America/Toronto /etc/localtime && \
-    dpkg-reconfigure -f noninteractive tzdata
+FROM python:3.11-slim-bookworm
 
-RUN apt-get install -y build-essential python3 python3-pip python3-dev \
-    python3-venv libeigen3-dev cmake sudo git vim
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    libeigen3-dev \
+    git \
+    vim \
+    sudo
 
-# Enable a normal user with sudo access
-RUN useradd -m -c "softwareQ" sq
-RUN echo '%sq ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+# Create user with sudo access in one go
+RUN useradd -m -c "softwareQ" sq && \
+    echo 'sq ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# Create a Python 3 virtual environment
 USER sq
 WORKDIR /home/sq
-RUN python3 -m venv venv
 
-# Install Jupyter and other dependencies, followed by pyqpp
-COPY requirements.txt ./
-RUN . venv/bin/activate && pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir git+https://github.com/softwareqinc/qpp
+COPY --chown=sq:sq requirements.txt ./
+RUN python3 -m venv venv && \
+    ./venv/bin/pip install --no-cache-dir --upgrade pip && \
+    ./venv/bin/pip install --no-cache-dir -r requirements.txt && \
+    ./venv/bin/pip install --no-cache-dir git+https://github.com/softwareqinc/qpp
 
-# Clone and install Quantum++ and qpp_qasm
-RUN git clone --depth 1 --branch main https://github.com/softwareqinc/qpp
-WORKDIR /home/sq/qpp
-RUN cmake -B build && \
-    cmake --build build --target qpp_qasm && \
-    sudo cmake --build build --target install && \
-    sudo cp build/qpp_qasm /usr/local/bin
+# Clone Quantum++ and build qpp_qasm
+RUN git clone --depth 1 --branch main https://github.com/softwareqinc/qpp && \
+    cmake -S qpp -B qpp/build && \
+    cmake --build qpp/build --target qpp_qasm && \
+    sudo cmake --build qpp/build --target install && \
+    sudo cp qpp/build/qpp_qasm /usr/local/bin && \
+    rm -rf qpp/build
 
 # Create a notebook directory for Jupyter
 RUN mkdir notebooks
+COPY notebooks/* notebooks
+
+# Start Jupyter server
+# ENV PATH="/home/sq/venv/bin:$PATH"
+# CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--notebook-dir=./notebooks"]

@@ -1,7 +1,7 @@
 /*
  * This file is part of Quantum++.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -25,8 +25,8 @@
  */
 
 /**
- * \file qpp/internal/classes/qcircuit_gate_step.hpp
- * \brief qpp::internal::QCircuitGateStep
+ * @file qpp/internal/classes/qcircuit_gate_step.hpp
+ * @brief qpp::internal::QCircuitGateStep
  */
 
 #ifndef QPP_INTERNAL_CLASSES_QCIRCUIT_GATE_STEP_HPP_
@@ -39,11 +39,11 @@
 namespace qpp {
 namespace internal {
 /**
- * \brief One step consisting only of gates/operators in the circuit
+ * @brief One step consisting only of gates/operators in the circuit
  */
 struct QCircuitGateStep : IDisplay {
     /**
-     * \brief Type of gate being executed in a gate step
+     * @brief Type of gate being executed in a gate step
      */
     enum class Type {
         NONE, ///< represents no gate
@@ -68,12 +68,12 @@ struct QCircuitGateStep : IDisplay {
                    ///< targets
     };
     /**
-     * \brief Extraction operator overload for
+     * @brief Extraction operator overload for
      * qpp::internal::QCircuitGateStep::Type enum class
      *
-     * \param os Output stream passed by reference
-     * \param gate_type qpp::internal::QCircuitGateStep::Type enum class
-     * \return Reference to the output stream
+     * @param os Output stream passed by reference
+     * @param gate_type qpp::internal::QCircuitGateStep::Type enum class
+     * @return Reference to the output stream
      */
     friend std::ostream& operator<<(std::ostream& os, const Type& gate_type) {
         switch (gate_type) {
@@ -120,19 +120,19 @@ struct QCircuitGateStep : IDisplay {
     std::optional<std::string> name_{};       ///< custom name of the gate(s)
 
     /**
-     * \brief Default constructor
+     * @brief Default constructor
      */
     QCircuitGateStep() = default;
 
     /**
-     * \brief Constructs a gate step instance
+     * @brief Constructs a gate step instance
      *
-     * \param gate_type Gate type
-     * \param gate_hash Hash of the quantum gate
-     * \param ctrl Optional control qudit indexes
-     * \param target Target qudit indexes
-     * \param shift Optional gate shifts (for CTRL gates)
-     * \param name Optional gate name
+     * @param gate_type Gate type
+     * @param gate_hash Hash of the quantum gate
+     * @param ctrl Optional control qudit indexes
+     * @param target Target qudit indexes
+     * @param shift Optional gate shifts (for CTRL gates)
+     * @param name Optional gate name
      */
     explicit QCircuitGateStep(
         Type gate_type, std::size_t gate_hash,
@@ -144,12 +144,12 @@ struct QCircuitGateStep : IDisplay {
           name_{std::move(name)} {}
 
     /**
-     * \brief Equality operator
-     * \note Ignores gate names
+     * @brief Equality operator
+     * @note Ignores gate names
      *
-     * \param rhs qpp::internal::QCircuitGateStep against which the equality is
+     * @param rhs qpp::internal::QCircuitGateStep against which the equality is
      * being tested
-     * \return True if the qpp::internal::QCircuitGateStep(s) are equal, false
+     * @return True if the qpp::internal::QCircuitGateStep(s) are equal, false
      * otherwise
      */
     bool operator==(const QCircuitGateStep& rhs) const noexcept {
@@ -159,12 +159,12 @@ struct QCircuitGateStep : IDisplay {
     }
 
     /**
-     * \brief Inequality operator
-     * \note Ignores gate names
+     * @brief Inequality operator
+     * @note Ignores gate names
      *
-     * \param rhs qpp::internal::QCircuitGateStep against which the inequality
+     * @param rhs qpp::internal::QCircuitGateStep against which the inequality
      * is being tested
-     * \return True if the qpp::internal::QCircuitGateStep(s) are not equal,
+     * @return True if the qpp::internal::QCircuitGateStep(s) are not equal,
      * false otherwise
      */
     bool operator!=(const QCircuitGateStep& rhs) const noexcept {
@@ -173,13 +173,13 @@ struct QCircuitGateStep : IDisplay {
 
   private:
     /**
-     * \brief qpp::IDisplay::display() override
+     * @brief qpp::IDisplay::display() override
      *
      * Writes to the output stream a textual representation of the
      * \a qpp::internal::QCircuitGateStep instance
      *
-     * \param os Output stream passed by reference
-     * \return Reference to the output stream
+     * @param os Output stream passed by reference
+     * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
         os << gate_type_ << ", ";

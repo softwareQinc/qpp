@@ -1,7 +1,7 @@
 /*
  * This file is part of pyqpp.
  *
- * Copyright (c) 2017 - 2025 softwareQ Inc. All rights reserved.
+ * Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
  *
  * MIT License
  *
@@ -27,9 +27,15 @@
 #include "pyqpp/pyqpp_common.hpp"
 
 #include "pyqpp/constants_bind.hpp"
+#include "pyqpp/entanglement_bind.hpp"
+#include "pyqpp/entropies_bind.hpp"
 #include "pyqpp/functions_bind.hpp"
+#include "pyqpp/input_output_bind.hpp"
 #include "pyqpp/instruments_bind.hpp"
+#include "pyqpp/number_theory_bind.hpp"
+#include "pyqpp/operations_bind.hpp"
 #include "pyqpp/random_bind.hpp"
+#include "pyqpp/statistics_bind.hpp"
 #include "pyqpp/types_bind.hpp"
 
 #include "pyqpp/classes/gates_bind.hpp"
@@ -49,9 +55,15 @@ PYBIND11_MODULE(pyqpp, m) {
         "Python 3 wrapper for Quantum++ (https://github.com/softwareQinc/qpp)";
 
     init_constants(m);
+    init_entanglement(m);
+    init_entropies(m);
     init_functions(m);
+    init_input_output(m);
     init_instruments(m);
+    init_number_theory(m);
+    init_operations(m);
     init_random(m);
+    init_statistics(m);
     init_types(m);
 
     init_classes_gates(m);
