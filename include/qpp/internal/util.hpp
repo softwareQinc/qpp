@@ -62,6 +62,7 @@ template <typename T, typename U = T, typename V = T>
     static_assert(std::is_integral_v<U>, "U must be an integral value");
     static_assert(std::is_integral_v<V>, "V must be an integral value");
 
+    // error checks only in DEBUG version
 #ifndef NDEBUG
     if (numdims != 0) {
         std::size_t D = 1;
