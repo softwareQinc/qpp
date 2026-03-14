@@ -53,8 +53,8 @@
 - Examples are now built in `${CMAKE_BUILD_DIR}/examples` instead of
   `${CMAKE_BUILD_DIR}`
 - Bug fixes for `qpp::QFT()` and `qpp::TFQ()`
-- Internal compiler flags are not propagating to downstream projects, see
-  [#187](https://github.com/softwareQinc/qpp/issues/187)
+- Internal compiler flags are not propagating to downstream projects anymore,
+  see [#187](https://github.com/softwareQinc/qpp/issues/187)
 
 # Version 6.0 - 14 April 2025
 
