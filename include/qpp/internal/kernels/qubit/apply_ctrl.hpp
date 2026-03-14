@@ -906,7 +906,7 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
                sorted_check_set.end() &&
            "Target and control qubit indices must not overlap");
 
-    for (idx i = 0; i < check_set.size(); ++i) {
+    for (idx i = 0; i < static_cast<idx>(check_set.size()); ++i) {
         assert(check_set[i] < n && "Qubit index must be less than n");
     }
 

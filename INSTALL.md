@@ -61,7 +61,7 @@ cmake --build build --target bb84
 ```
 
 The command above builds only the example
-[examples/bb84.cpp](https://github.com/softwareQinc/qpp/tree/main/examples/bb84.cpp)
+[`examples/bb84.cpp`](https://github.com/softwareQinc/qpp/tree/main/examples/bb84.cpp)
 and outputs the executable `./build/examples/bb84[.exe]`.
 
 ## Unit tests
@@ -220,7 +220,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(qpp REQUIRED)
 
 add_executable(standalone src/main.cpp)
-target_link_libraries(standalone PRIVATE qpp)
+target_link_libraries(standalone PRIVATE qpp::qpp)
 ```
 
 Configure the application in an out-of-source directory by executing

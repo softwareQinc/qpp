@@ -74,7 +74,6 @@ target_include_directories(
 # ----------------------------------------------------------------------------
 # Dependencies
 # ----------------------------------------------------------------------------
-include(cmake/qpp_compiler_flags.cmake)
 include(cmake/qpp_eigen3.cmake)
 
 # Internal interface only, do not link against it, use qpp::qpp instead for
@@ -87,6 +86,7 @@ target_link_libraries(libqpp_internal INTERFACE qpp)
 # targets are used only when building within the source tree and avoids
 # propagating them globally. See cmake/qpp_select_target.cmake for
 # implementation details.
+include(cmake/qpp_compiler_flags.cmake)
 include(cmake/qpp_openmp.cmake)
 include(cmake/qpp_openqasm.cmake)
 include(cmake/qpp_sanitize.cmake)

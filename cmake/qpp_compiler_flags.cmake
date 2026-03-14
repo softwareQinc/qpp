@@ -20,29 +20,7 @@ target_compile_options(
     $<$<AND:$<CXX_COMPILER_ID:GNU>,$<PLATFORM_ID:CYGWIN>>:-std=gnu++17>
     #
     # Clang: Force the use of libc++
-    $<$<CXX_COMPILER_ID:Clang>:-stdlib=libc++>
-    #
-    # GCC: Additional debug settings (-Og and _GLIBCXX_DEBUG)
-    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:-Og;-D_GLIBCXX_DEBUG>
-    #
-    # GCC or Clang warnings
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:
-    -pedantic
-    -Wall
-    -Wextra
-    -Weffc++
-    >
-    #
-    # MSVC warnings
-    $<$<CXX_COMPILER_ID:MSVC>:
-    /W3
-    >
-    #
-    # Use the "no-weak" debugging flag only when debugging under OS X, as gdb
-    # cannot step in template functions when debugging code produced by g++, see
-    # https://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
-    # $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>,$<PLATFORM_ID:Darwin>>:-fno-weak>
-)
+    $<$<CXX_COMPILER_ID:Clang>:-stdlib=libc++>)
 
 # Linker options
 target_link_libraries(
@@ -76,3 +54,47 @@ if(NOT CMAKE_BUILD_TYPE)
         FORCE)
 endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}${CMAKE_CONFIGURATION_TYPES}")
+
+# Internal compiler flags/options
+#
+# These settings are for in-tree Quantum++ development targets only (examples,
+# unit tests, optional components, pyqpp development, etc.)
+
+if(NOT TARGET libqpp_internal)
+  return()
+endif()
+
+target_compile_definitions(
+  libqpp_internal
+  INTERFACE # Debug configuration
+            $<$<CONFIG:Debug>:DEBUG>
+            $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_DEBUG>
+            # Non-Debug configurations
+            $<$<NOT:$<CONFIG:Debug>>:EIGEN_NO_DEBUG>
+            # Enable qubit-specific optimizations if requested
+            $<$<BOOL:${QPP_QUBIT_OPTIMIZATIONS}>:QPP_QUBIT_OPTIMIZATIONS>)
+
+target_compile_options(
+  libqpp_internal
+  INTERFACE
+    # GCC: use -O0 in Debug builds
+    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:-O0>
+    #
+    # GCC or Clang warnings
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:
+    -pedantic
+    -Wall
+    -Wextra
+    -Weffc++
+    >
+    #
+    # MSVC warnings
+    $<$<CXX_COMPILER_ID:MSVC>:
+    /W3
+    >
+    #
+    # Use the "no-weak" debugging flag only when debugging under OS X, as gdb
+    # cannot step in template functions when debugging code produced by g++, see
+    # https://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
+    # $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>,$<PLATFORM_ID:Darwin>>:-fno-weak>
+)
