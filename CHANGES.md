@@ -56,9 +56,9 @@
 
 # Version 6.0 - 14 April 2025
 
-- Breaking change: renamed ["qpp/qpp.h"] to ["qpp/qpp.hpp"]
+- Breaking change: renamed `qpp/qpp.h` to `qpp/qpp.hpp`
 - New feature: support for post-selection in
-  ["qpp/classes/qengine.hpp"] and ["qpp/classes/qcircuit.hpp"]
+  `qpp/classes/qengine.hpp` and `qpp/classes/qcircuit.hpp`
 - Implemented `qpp::QCircuit::`
   - `QCircuit& post_select()` - destructive/non-destructive post-selection of
     single/multiple qudits in the Z basis
@@ -76,10 +76,10 @@
   - `bool post_select_ok() const` - True if post-selection was successful (or
     absent), false otherwise
 - Added
-  [["examples/circuits/post_selection.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/post_selection.cpp)]
+  [`examples/circuits/post_selection.cpp`(https://github.com/softwareQinc/qpp/blob/main/examples/circuits/post_selection.cpp)]
   example
 - New feature: implemented support for conditional statements in
-  ["qpp/classes/qcircuit.hpp"]
+  `qpp/classes/qcircuit.hpp`
 - Implemented `qpp::QCircuit::`
   - `QCircuit& cond_if()` - conditional IF statement
   - `QCircuit& cond_else()` - conditional ELSE statement
@@ -90,27 +90,27 @@
   - `bool validate_conditionals() const` - true if an only if the conditional
     statements are valid (e.g., matching `cond_end()` to `cond_if()` etc.
 - Added
-  [["examples/circuits/conditional_if.cpp"](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_if.cpp)]
+  [`examples/circuits/conditional_if.cpp`](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_if.cpp)]
   and
-  [["examples/circuits/conditional_while.cpp"](htps://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_while.cpp)]
+  [`examples/circuits/conditional_while.cpp`](htps://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_while.cpp)]
   examples
 - Refactored `qpp::QCircuit::GateStep/MeasurementStep/NOPStep` into separate
-  files ["qpp/internal/classes/qcircuit_gate_step.hpp"],
-  ["qpp/internal/classes/qcircuit_measurement_step.hpp"], and
-  ["qpp/internal/classes/qcircuit_nop_step.hpp"], respectively
+  files `qpp/internal/classes/qcircuit_gate_step.hpp`,
+  `qpp/internal/classes/qcircuit_measurement_step.hpp`, and
+  `qpp/internal/classes/qcircuit_nop_step.hpp`, respectively
 - Refactored `qpp::QCircuit::Resources` into an independent class in a separate
-  file ["qpp/internal/classes/qcircuit_resources.hpp"]
+  file `qpp/internal/classes/qcircuit_resources.hpp`
 - Refactored qpp::QCircuit::iterator class into an independent class, defined
-  outside qpp::QCircuit in ["qpp/classes/qcircuit.hpp"]
+  outside qpp::QCircuit in `qpp/classes/qcircuit.hpp`
 - Refactored `qpp::internal::QEngineState` and
   `qpp::internal::QEngineStatistics`
-  in separate files, ["qpp/internal/classes/qengine_state.hpp"] and
-  ["qpp/internal/classes/qengine_statistics.hpp"], respectively
-- API changes in ["qpp/classes/qcircuit.hpp"]
+  in separate files, `qpp/internal/classes/qengine_state.hpp` and
+  `qpp/internal/classes/qengine_statistics.hpp`, respectively
+- API changes in `qpp/classes/qcircuit.hpp`
   - `qpp::QCircuit::get_measured()` -> `qpp::QCircuit::get_measured_d()`
   - `qpp::QCircuit::get_non_measured()` -> `qpp::QCircuit::get_non_measured_d()`
   - `qpp::QCircuit::was_measured()` -> `qpp::QCircuit::was_measured_d()`
-- API changes in ["qpp/classes/qengine.hpp"]
+- API changes in `qpp/classes/qengine.hpp`
   - `qpp::QEngineT<>::get_measured()` -> `qpp::QEngineT<>::get_measured_d()`
   - `qpp::QEngineT<>::get_non_measured()` ->
     `qpp::QEngineT<>::get_non_measured_d()`
@@ -122,37 +122,37 @@
   only use `-DQPP_MATLAB=ON` when building with MATLAB support, all other
   MATLAB-related CMake flags have been removed.
 - Bugfix in `qpp::adjoint(QCircuit)`
-- Added `cond_func_t` type alias in ["qpp/types.hpp"] for Boolean predicates of
+- Added `cond_func_t` type alias in `qpp/types.hpp` for Boolean predicates of
   the form `std::vector<idx> -> bool`
-- Added `qpp::read_from_string()` to ["qpp/qasm/qasm.hpp"] and an associated
+- Added `qpp::read_from_string()` to `qpp/qasm/qasm.hpp` and an associated
   pyqpp wrapper function
 
 # Version 5.1 - 1 March 2024
 
-- Replaced ["CHANGES"] by ["CHANGES.md"],
+- Replaced `CHANGES` by `CHANGES.md`,
   as we now use Markdown format to keep track of changes in new releases
 - Removed Eigen3, pybind11, and GoogleTest dependencies; if not detected,
   they are installed automatically as build dependencies by CMake
 - Updated GoogleTest to the latest HEAD, as recommended by Google
 - Removed `-DWITH_EXAMPLES` and `-DWITH_UNIT_TESTS` CMake flags. Now both
   `examples` and `unit_tests` CMake targets are enabled.
-- Renamed ["qpp/classes/circuits/circuits.hpp"] to
-  ["qpp/classes/qcircuit.hpp"]
-- Introduced ["qpp/classes/qcircuit_traits.hpp"] that implement
+- Renamed `qpp/classes/circuits/circuits.hpp` to
+  `qpp/classes/qcircuit.hpp`
+- Introduced `qpp/classes/qcircuit_traits.hpp` that implement
   circuit traits at compile-time
-- Renamed ["qpp/classes/circuits/engines.hpp"] to
-  ["qpp/classes/qengine.hpp"], and refactored the latter into
-  - ["qpp/classes/qbase_engine.hpp"] - base class for all engines
-  - ["qpp/classes/qengine.hpp"] - ideal quantum engines
-  - ["qpp/classes/qnoisy_engine.hpp"] - noisy quantum engines
-- Introduced ["qpp/classes/qengine_traits.hpp"] that implement
+- Renamed `qpp/classes/circuits/engines.hpp` to
+  `qpp/classes/qengine.hpp`, and refactored the latter into
+  - `qpp/classes/qbase_engine.hpp` - base class for all engines
+  - `qpp/classes/qengine.hpp` - ideal quantum engines
+  - `qpp/classes/qnoisy_engine.hpp` - noisy quantum engines
+- Introduced `qpp/classes/qengine_traits.hpp` that implement
   engine traits at run-time. All engines are now deriving from it.
   The traits implements `qpp::IQEngineTraits::`
   - `std::string traits_get_name() const` - Engine's name
   - `bool traits_is_noisy() const` - Simulates noisy execution
   - `bool traits_is_pure() const` - Operates on pure states
-- API changes in ["qpp/classes/qengine.hpp"] and
-  ["qpp/classes/qnoisy_engine.hpp"]
+- API changes in `qpp/classes/qengine.hpp` and
+  `qpp/classes/qnoisy_engine.hpp`
   - Enabled mixed-state engines by refactoring
     - `qpp::QEngine` -> `template<typename T> qpp::QEngineT<T>`
     - `qpp::QNoisyEngine` -> `template<typename T> qpp::QNoisyEngineT<T>`
@@ -184,7 +184,7 @@
     `qpp::QEngineT<>::execute(idx reps = 1)`
     so now `qpp::QEngineT<>` will always try to sample from the output when
     the circuit is executed multiple times (i.e., when `reps > 1`)
-- Introduced no-op (dummy) quantum engines in ["qpp/classes/qdummy_engine.hpp"]
+- Introduced no-op (dummy) quantum engines in `qpp/classes/qdummy_engine.hpp`
   that provides
   - `template<typename T, typename QCT> qpp::QDummyEngine<T, QCT>`
   - `qpp::QKetDummyEngine` - specialization of `qpp::QDummyEngine<>` with
@@ -196,31 +196,31 @@
 
 # Version 5.0 - 10 January 2024
 
-- All header files are moved into ["include/qpp"], so to include the header
+- All header files are moved into `include/qpp`, so to include the header
   one now must `#include "qpp/qpp.h"` (and similarly for other header files
   in the internal implementation). This change was made for the sake of
   making the include statements look uniform in both non-installed
   (compiling without having **Quantum++** installed) and installed (compiling
   with **Quantum++** installed headers) modes.
-- Refactored option-related types into a new header file ["qpp/options.hpp"]
+- Refactored option-related types into a new header file `qpp/options.hpp`
 - `qpp::disp()` refactoring, formatting options are now passed via
   formatting option manipulator structures, all defined in
-  ["qpp/options.hpp"]. See the ["examples"] directory for usage examples.
-- Implemented `qpp::dirac()` ["qpp/functions.hpp"] for converting states and
+  `qpp/options.hpp`. See the `examples` directory for usage examples.
+- Implemented `qpp::dirac()` `qpp/functions.hpp` for converting states and
   matrices to Dirac notation, and the corresponding `std::ostream` manipulator
-  `qpp::disp()` ["qpp/input_output.hpp"]. The type returned by `qpp::dirac()`
-  is type-defed as `qpp::dirac_t` in ["qpp/types.hpp"]. Options are passed
+  `qpp::disp()` `qpp/input_output.hpp`. The type returned by `qpp::dirac()`
+  is type-defed as `qpp::dirac_t` in `qpp/types.hpp`. Options are passed
   via the formatting option manipulator structure `qpp::IOManipDiracOpts`.
 - Implemented `pyqpp.dirac()` in **pyqpp**, see above.
 - Significant speedup in **pyqpp**'s compilation time
 - Added support for two qubit rotations by pi/2 (Molmer-Sorensen two qubit
   gates).
-- API changes in ["qpp/classes/circuits/circuits.hpp"]
+- API changes in `qpp/classes/circuits/circuits.hpp`
   - [qpp::QCircuit::]
     - `add_circuit()` -> `compose_circuit()`
     - `match_circuit_left()` -> `couple_circuit_left()`
     - `match_circuit_right()` -> `couple_circuit_right()`
-- Implemented ["qpp/classes/circuits/circuits.hpp"] control on another
+- Implemented `qpp/classes/circuits/circuits.hpp` control on another
   quantum circuit,
   - `qpp::QCircuit::compose_CTRL_circuit()`
     see [GitHub Issue \#165](https://github.com/softwareQinc/qpp/issues/165),
@@ -228,18 +228,18 @@
   - `qpp::compose_CTRL_circuit()`
 - `qpp::measure_seq()` now returns results in the same order as the order in
   which the qubits are being measured
-- API changes in ["qpp/functions.hpp"], `qpp::zket2dits()` now returns
+- API changes in `qpp/functions.hpp`, `qpp::zket2dits()` now returns
   `std::optional<std::vector<idx>>`
 - Bugfix in `qpp::QCircuit::compose_circuit()`
 
 # Version 4.3.4 - 14 August 2023
 
-- Docker update, see the ["docker"] directory
-- Fix in ["types.hpp"] for defaulting types when not using CMake
+- Docker update, see the `docker` directory
+- Fix in `types.hpp` for defaulting types when not using CMake
 
 # Version 4.3.3 - 8 August 2023
 
-- Minor bugfix in **pyqpp** ["setup.py"] that prevented pip install from remote
+- Minor bugfix in **pyqpp** `setup.py` that prevented pip install from remote
 - Bugfix in `qpp::QEngine::execute()` that prevented setting the initial
   state of the engine to a custom state
 
@@ -272,37 +272,37 @@
 
 - **Quantum++** is now available on Homebrew (macOS/Linux), and can be
   installed with `brew install quantum++`
-- New types in ["types.hpp"]
+- New types in `types.hpp`
   - `realT` - floating point type, replaces `double` in the source code
   - `ubigint` - unsigned big integer, defined in terms of bigint as
     `using ubigint = std::make_unsigned<bigint>::type;`
-- The fundamental types in ["types.hpp"] are now `qpp::idx`, `qpp::bigint`,
+- The fundamental types in `types.hpp` are now `qpp::idx`, `qpp::bigint`,
   and `qpp::realT`. They can be changed at compile time (see below). All
   other types are dependent on those, please do not change.
 - Added support for changing the underlying index type via the CMake
   property `TYPE_IDX`. Choices are `default`, `short`, `int`, `long`,
   `long long`, `unsigned short`, `unsigned int`, `unsigned long`, and
-  `unsigned long long`. The `default` type is set in ["types.hpp"]. To
+  `unsigned long long`. The `default` type is set in `types.hpp`. To
   change the underlying type with CMake, pass the variable `-DTYPE_IDX` to
   CMake, e.g., `cmake -B build -DTYPE_IDX="unsigned long long"`.
 - Added support for changing the underlying big integer type via the CMake
   property `TYPE_IDX`. Choices are `default`, `short`, `int`, `long`,
-  `long long`. The `default` type is set in ["types.hpp"]. To change the
+  `long long`. The `default` type is set in `types.hpp`. To change the
   underlying type with CMake, pass the variable `-DTYPE_BIGINT` to CMake,
   e.g., `cmake -B build -DTYPE_BIGINT="long long"`.
 - Added support for changing the underlying floating point type via the
   CMake property `TYPE_FP`. Choices are `default`, `float`, `double`, and
-  `long double`. The `default` type is set in ["types.hpp"]. To change the
+  `long double`. The `default` type is set in `types.hpp`. To change the
   underlying type with CMake, pass the variable `-DTYPE_FP` to CMake, e.g.,
   `cmake -B build -DTYPE_FP="long double"`.
-- Refactored the two instances of `qpp::rand(a, b)` ["random.hpp"] to a single
+- Refactored the two instances of `qpp::rand(a, b)` `random.hpp` to a single
   template function
   ```cpp
   template<typename T, std::enable_if...> qpp::rand(T a, T b)
   ```
   enabled only on arithmetic types by
   `typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr`
-- Refactored qpp::randn(mean, sigma) ["random.hpp"] to a template function
+- Refactored qpp::randn(mean, sigma) `random.hpp` to a template function
   ```cpp
    template<typename T, std::enable_if...> qpp::random(T a, T b)
   ```
@@ -312,22 +312,22 @@
 
 # Version 4.1 - 2 May 2023
 
-- Implemented ["classes/circuits/circuits.hpp"]
+- Implemented `classes/circuits/circuits.hpp`
   - `qpp::qpe_circuit()` - Quantum phase estimation circuit
   - `qpp::QCircuit::has_measurements()` - True if the quantum circuit
     description contains measurement steps, false otherwise
   - `qpp::QCircuit::removes_qudits()` - True if the quantum circuit
     description contains any operations/measurements that remove qudits,
     false otherwise
-- Added new exception class ["classes/exception.hpp"]:
+- Added new exception class `classes/exception.hpp`:
   - `qpp::exception::NotFound` - Element not found
-- Implemented ["pyqpp/qpp_wrapper.cpp"] (**pyqpp** Python wrapper)
+- Implemented `pyqpp/qpp_wrapper.cpp` (**pyqpp** Python wrapper)
   - `set_prng_seed()` - sets the seed of the PRNG to a specific value, or,
     if invoked with no argument, to a random value
-- Migrated **pyqpp** installation method to ["pyproject.toml"]
+- Migrated **pyqpp** installation method to `pyproject.toml`
 - Extensive code refactoring, transitioned `qpp::QCircuit` logic to
   `std::visit()` over `std::variant`
-- API changes in ["classes/circuits/circuits.hpp"], all functions with
+- API changes in `classes/circuits/circuits.hpp`, all functions with
   `name` and `shift` defaulted empty/zeroed arguments are now wrapped in
   `std::optional<>`, as well as some `qpp::QCircuit` getters, i.e., have the
   signature `qpp::QCircuit::`:
@@ -339,7 +339,7 @@
     functions:
   - `qpp::random_circuit_count()`
   - `qpp::random_circuit_depth()`
-- API changes in ["classes/circuits/circuits.hpp"], more `std::optional<>`,
+- API changes in `classes/circuits/circuits.hpp`, more `std::optional<>`,
   updated the following `qpp::QCircuit` member functions signatures to
   `qpp::QCircuit::`:
   - `add_circuit(QCircuit other, bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt)`
@@ -348,23 +348,23 @@
   - `add_circuit(QCircuit qc1, const QCircuit& qc2, bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt)`
   - `match_circuit_left(QCircuit qc1, const QCircuit& qc2, const std::vector<idx>& target, std::optional<idx> pos_dit = std::nullopt)`
   - `match_circuit_right(QCircuit qc1, const QCircuit& qc2, const std::vector<idx>& target, std::optional<idx> pos_dit = std::nullopt)`
-- API changes in ["classes/circuits/circuits.hpp"], renamed `qpp::QCircuit::`:
+- API changes in `classes/circuits/circuits.hpp`, renamed `qpp::QCircuit::`:
   - `was_measured(idx i) -> was_measured(idx i)`
   - `get_measured_nd(idx i) -> was_measured_nd(idx i)`
-- API changes in ["classes/circuits/engines.hpp"], renamed `qpp::QEngine::`:
+- API changes in `classes/circuits/engines.hpp`, renamed `qpp::QEngine::`:
   - `was_measured(idx i) -> was_measured(idx i)`
   - `get_measured_nd(idx i) -> was_measured_nd(idx i)`
-- API changes in ["classes/reversible.hpp"], `qpp::BitCircuit::count/depth`
+- API changes in `classes/reversible.hpp`, `qpp::BitCircuit::count/depth`
   getters now wrap their gate name argument in `std::optional<>`, i.e.,
   have the signature `qpp::BitCircuit::`:
   - `get_gate_count(std::optional<std::string> name = std::nullopt)`
   - `get_gate_depth(std::optional<std::string> name = std::nullopt)`
-- API changes in ["functions.hpp"], `qpp::n2multiidx()` and `qpp::multiidx2n()`
+- API changes in `functions.hpp`, `qpp::n2multiidx()` and `qpp::multiidx2n()`
   now take their argument underlying type (number, array) as template
   (must be an integral type)
 - Removed `qpp::QCircuit::is_non_CTRL()`
 - Refactored **pyqpp**, organized the source code in separate
-  ["src"]/["include"] directory structure that mirrors the qpp source code
+  `src`/`include` directory structure that mirrors the qpp source code
   structure
 
 # Version 4.0.1 - 2 April 2023
@@ -379,7 +379,7 @@
   a second default argument `bool try_sampling = true`; if possible, the
   engine will sample from the output of the circuit instead of executing
   the measurement steps.
-- API changes in ["classes/circuits/circuits.hpp"], renamed:
+- API changes in `classes/circuits/circuits.hpp`, renamed:
   - `qpp::QCircuit::gate_joint()` -> `qpp::QCircuit::gate()`
   - `qpp::QCircuit::CTRL_joint()` -> `qpp::QCircuit::CTRL()`
   - `qpp::QCircuit::cCTRL_joint()` -> `qpp::QCircuit::cCTRL()`
@@ -406,18 +406,18 @@
     above
 - Noise is now added before measurements as well when running with a
   `qpp::QNoisyEngine<>`
-- Implemented ["classes/circuits/circuits.hpp"]:
+- Implemented `classes/circuits/circuits.hpp`:
   - `qpp::QCircuit::measure_all()` - measures all remaining available qudits
 - Implemented the random `qpp::QCircuit` free function generators in
-  ["classes/circuits/circuits.hpp"]:
+  `classes/circuits/circuits.hpp`:
   - `qpp::random_circuit_count()` - random `QCircuit` w.r.t. gate count
   - `qpp::random_circuit_depth()` - random `QCircuit` w.r.t. gate depth
-- Implemented ["classes/gates.hpp"]:
+- Implemented `classes/gates.hpp`:
   - `qpp::Gates::GATE()` - constructs the matrix representation of a
     multi-partite gate that acts on a subsystem
-- Implemented ["operations.hpp"]:
+- Implemented `operations.hpp`:
   - `qpp::applyCTRL_fan()` - applies CTRL-CTRL-...-CTRL-U-U-...-U
-- Implemented ["instruments.hpp"]:
+- Implemented `instruments.hpp`:
   - `qpp::sample()` - samples from a quantum state. Use this function
     whenever you are not interested in the output quantum
     state, but interested only in statistics; it is
@@ -437,14 +437,14 @@
   to be ignored by the compiler (and one can use this technique to define
   custom attributes). Warnings are explicitly disabled for
   Clang/GCC/MSVC/Intel. If your compiler emits a warning, please disable it
-  with the corresponding `#pragma` directive at the beginning of ["qpp.h"]
+  with the corresponding `#pragma` directive at the beginning of `qpp.h`
 - Added from-string constructor for `qpp::BitCircuit` and
   `qpp::DynamicBitset`
 - When building with CMake, the new `QPP_VERSION_NUM` (numeric) and
   `QPP_VERSION_STR` (string) preprocessor definitions are automatically
   injected in the code
 - Added initializer lists overloads for `qpp::prod()` and `qpp::sum()`
-  in ["functions.h"]:
+  in `functions.h`:
   - `qpp::prod(const std::initializer_list<T>&)`
   - `qpp::sum(const std::initializer_list<T>&)`
 - Enhanced `qpp::prod()` and `qpp::sum()` to allow list of matrices
@@ -458,8 +458,8 @@
 - Added **pyqpp**, a Python wrapper around **Quantum++**. See
   [**pyqpp** documentation](https://github.com/softwareQinc/qpp/wiki/8.-pyqpp)
   for more details.
-- Minor update of Shor's algorithm example ["examples/shor.cpp"]
-- Renamed ["examples/qasm/qasm.cpp"] to ["examples/qasm/qpp_qasm.cpp"]
+- Minor update of Shor's algorithm example `examples/shor.cpp`
+- Renamed `examples/qasm/qasm.cpp` to `examples/qasm/qpp_qasm.cpp`
 - Due to phase discrepancies, by default the parser now uses Qiskit
   definitions (which are also the usual ones used in QC textbooks). To
   switch to standard OpenQASM 2.0 gate definitions, configure the project
@@ -490,13 +490,13 @@
   (which are also the usual ones used in QC textbooks), configure the project
   with
   `cmake -DUSE_QISKIT_SPECS=ON`.
-- Refactored `qpp::internal::Singleton` ["internal/classes/singleton.hpp"]
+- Refactored `qpp::internal::Singleton` `internal/classes/singleton.hpp`
   so that `qpp::internal::Singleton::get_instance()` returns a thread local
   instance whenever the compiler supports thread_local. For more
   fine-grained control, one can use
   - `qpp::internal::Singleton::get_no_thread_local_instance()`
   - `qpp::internal::Singleton::get_thread_local_instance()`
-- Added `qpp::schmidt()` ["entanglement.hpp"] and improved the performance
+- Added `qpp::schmidt()` `entanglement.hpp` and improved the performance
   of singular value decomposition, thanks @antoine-bussy
   ([https://github.com/antoine-bussy](https://github.com/antoine-bussy))
 
@@ -504,8 +504,8 @@
 
 - Added installation support and auto package detection via CMake
   `find_package(qpp REQUIRED)`
-- Simplified installation instructions ["INSTALL.md"]
-- Added an almost complete BB84 example ["examples/bb84.cpp"], does not
+- Simplified installation instructions `INSTALL.md`
+- Added an almost complete BB84 example `examples/bb84.cpp`, does not
   include error correction and privacy amplification
 - Added CircleCI continuous integration
 - CMake minimum required version bumped to 3.12 for automatic unit tests
@@ -519,30 +519,30 @@
   coloured verbose testing output.
 - Fixed minor inadvertence in OpenQASM `crz` implementation, see
   [GitHub Issue \#99](https://github.com/softwareQinc/qpp/issues/99)
-- Changed the signature of `qpp::cwise()` ["functions.hpp"] so it takes the
+- Changed the signature of `qpp::cwise()` `functions.hpp` so it takes the
   scalar argument by value (and not constant reference as before). This
   avoids an internal compiler error (ICE) triggered when compiling
-  ["examples/functor.cpp"] in MinGW.
-- Removed `<iostream>` implicit dependencies ["qpp.h"]
-- Added optional context to `qpp::Exception` ["classes/exception.hpp"]
-- Made `qpp::QCircuit` default-constructible ["classes/circuits/circuits.hpp"]
+  `examples/functor.cpp` in MinGW.
+- Removed `<iostream>` implicit dependencies `qpp.h`
+- Added optional context to `qpp::Exception` `classes/exception.hpp`
+- Made `qpp::QCircuit` default-constructible `classes/circuits/circuits.hpp`
   so it constructs by default a 1-qubit circuit with no classical bits
 - `qpp::QEngine::reset()` now accepts a default argument
   `bool reset_stats = true` and cleans the engine's statistics by default
-  ["classes/circuits/engines.hpp"]
-- Renamed ["examples/qasm/qasm1.cpp"] and ["examples/qasm/qasm2.cpp"]
-  to ["examples/qasm/qasm_teleport_minimal.cpp"] and
-  ["examples/qasm/qasm.cpp"]; the latter executes an arbitrary OpenQASM
+  `classes/circuits/engines.hpp`
+- Renamed `examples/qasm/qasm1.cpp` and `examples/qasm/qasm2.cpp`
+  to `examples/qasm/qasm_teleport_minimal.cpp` and
+  `examples/qasm/qasm.cpp`; the latter executes an arbitrary OpenQASM
   program read from the standard input or from a file (if specified)
 - Added the aggregate `qpp::QCircuit::Resources`
-  ["classes/circuits/circuits.hpp"] class for quantum circuit resource
+  `classes/circuits/circuits.hpp` class for quantum circuit resource
   estimations. It derives from `qpp::IDisplay` and `qpp::IJSON`, so one can
   display instances of it as text or in JSON format.
 - Implemented `qpp::QCircuit::get_resources()` which returns an
   instance of `qpp::QCircuit::Resources`
-- Renamed ["examples/circuits/quantum_phase_estimation.cpp"] to
-  ["examples/circuits/qpe_circuit.cpp"]
-- Added ["examples/qasm/coin_flip.qasm"] coin flipping OpenQASM example
+- Renamed `examples/circuits/quantum_phase_estimation.cpp` to
+  `examples/circuits/qpe_circuit.cpp`
+- Added `examples/qasm/coin_flip.qasm` coin flipping OpenQASM example
   that can be run, e.g., with `qasm < coin_flip.qasm [number of reps]`
 - `qpp::measure()` deducts the input state type (`qpp::ket` or `qpp::cmat`)
   and returns accordingly a set of kets or density matrices in its return
@@ -550,7 +550,7 @@
 - Implemented `qpp::QCircuit::match_circuit_left()` and
   `qpp::QCircuit::match_circuit_right()`, that match circuit qudits in
   arbitrary order
-- Implemented `qpp::zket2dits` ["functions.h"] which extracts the dits from a
+- Implemented `qpp::zket2dits` `functions.h` which extracts the dits from a
   normalized multi-partite pure state in the computational basis.
   Behaves like the inverse of `qpp::mket()`.
 - Removed `cmath_cygwin.patch` as the problem was fixed since 2016.
@@ -560,27 +560,27 @@
 # Version 2.6 - 9 January 2021
 
 - Added Quantum Phase Estimation low-level API example in
-  ["examples/qpe.cpp"], courtesy of [@ryanhill1](https://github.com/ryanhill1),
+  `examples/qpe.cpp`, courtesy of [@ryanhill1](https://github.com/ryanhill1),
   see
   [GitHub Pull Request \#91](https://github.com/softwareQinc/qpp/pull/91)
 - Added Quantum Phase Estimation high-level API example in
-  ["examples/circuits/quantum_phase_estimation.cpp"], thanks @DevelopDaily for
+  `examples/circuits/quantum_phase_estimation.cpp`, thanks @DevelopDaily for
   the suggestion,
   [GitHub Issue \#96](https://github.com/softwareQinc/qpp/issues/96)
-- `qpp::load()` and `qpp::save()` ["input_output.hpp"] now use C++ I/O streams
+- `qpp::load()` and `qpp::save()` `input_output.hpp` now use C++ I/O streams
   instead of file names, and load/save in text format (instead of
   binary format), while preserving the required precision. The old load/save
   functions that use binary files for I/O are now moved to the `qpp::obsolete`
   namespace and are deprecated.
 - Minor API changes:
-  ["MATLAB/matlab.hpp"]
+  `MATLAB/matlab.hpp`
   `qpp::saveMATLAB()` -> `qpp::save_MATLAB()`
   `qpp::loadMATLAB()` -> `qpp::load_MATLAB()`
-  ["classes/circuits/circuits.hpp"]
+  `classes/circuits/circuits.hpp`
   `qpp::cCTRL_custom()` -> `qpp::cCTRL_joint()`
   `qpp::CTRL_custom()` -> `qpp::CTRL_joint()`
   `qpp::gate_custom()` -> `qpp::gate_joint()`
-- Documentation improvements in ["classes/circuits/circuits.hpp"]
+- Documentation improvements in `classes/circuits/circuits.hpp`
 - Updated Travis CI configuration
 
 # Version 2.5 - 28 November 2020
@@ -629,7 +629,7 @@
 
 # Version 2.3 - 2 May 2020
 
-- Added the following examples in the ["examples"] directory
+- Added the following examples in the `examples` directory
   - `qram.cpp` - quantumly-accessible Random Access Memory over
     classical data
   - `layouts.cpp` - various physical qubit layouts
@@ -640,9 +640,9 @@
 - Implemented
   - `qpp::super2kraus()` - extracts a set of orthogonal (in the
     Hilbert-Schmidt norm) Kraus operators from a
-    superoperator matrix ["operations.h"]
+    superoperator matrix `operations.h`
   - `qpp::bernoulli()` - generates Bernoulli-p random Booleans
-    ["random.h"]
+    `random.h`
 - Kraus-related functions on full systems (not subsystems) now support
   input and output spaces of different dimensions, i.e., can now use
   non-square Kraus operators. All other Kraus-related functions for which
@@ -659,8 +659,8 @@
   platforms
 - Implemented
   - `qpp::qRAM()` - quantumly-accessible Random Access Memory over
-    classical data (qRAM) ["operations.h"]
-- Added the new type `qpp::qram` for representing qRAM data ["types.h"]
+    classical data (qRAM) `operations.h`
+- Added the new type `qpp::qram` for representing qRAM data `types.h`
 - Thanks to @DevelopDaily (https://github.com/softwareQinc/qpp/issues/72),
   implemented `qpp::QCircuit`::
   - `is_clean()` - true if the qudit is clean (not used), false
@@ -686,7 +686,7 @@
 
 - Migrated the repository to
   [https://github.com/softwareQinc/qpp](https://github.com/softwareQinc/qpp)
-- Changed gate definitions in ["qasm/preprocessor.h"] so they agree with
+- Changed gate definitions in `qasm/preprocessor.h` so they agree with
   Qiskit, see
   [https://github.com/softwareQinc/qpp/issues/65](https://github.com/softwareQinc/qpp/issues/65)
   and
@@ -694,7 +694,7 @@
 - Minor API change in the `QEngine::execute()`, `reset()`, `reset_stats()`, now
   they all return a reference to `*this`
 - Added `BitCircuit::display()` and `BitCircuit::to_JSON()` in
-  ["reversible.h"]
+  `reversible.h`
 - Added the option for shifted control gates in:
   - `qpp::applyCTRL()`
   - `qpp::Gates::CTRL()`
@@ -705,13 +705,13 @@
 
 # Version 2.0 - 24 August 2019
 
-- Added support for OpenQASM via the interface ["qasm/qasm.h"] containing:
+- Added support for OpenQASM via the interface `qasm/qasm.h` containing:
   - `qpp::QCircuit qpp::qasm::read_from_file(const std::string& fname)` - reads
     an OpenQASM file and returns the qpp::QCircuit representation
   - `qpp::QCircuit qpp::qasm::read(std::ifstream& stream)` - reads an input
     stream and returns the qpp::QCircuit representation
 - Added corresponding OpenQASM examples in the directory
-  ["examples/circuits/qasm"]
+  `examples/circuits/qasm`
 - Implemented qpp::QCircuit::
   - `kron()` - Kronecker product with another quantum circuit description
   - `measureZ()` - new overload that allows multiple targets at once
@@ -729,7 +729,7 @@
     back to the |0> state
   - `discard()` - discards qudits in a quantum circuit description by measuring
     them destructively and ignoring the result of the measurement
-- Implemented the corresponding free functions in ["instruments.h"]:
+- Implemented the corresponding free functions in `instruments.h`:
   - `qpp::reset()` - resets qudits in a multipartite state by measuring them
     non-destructively in the computational basis followed by shifting them back
     to the |0> state
@@ -742,16 +742,16 @@
 - Split `qpp::QCircuit::get_depth()` into `qpp::QCircuit::get_gate_depth()` -
   gate depth and `qpp::QCircuit::get_measurement_depth()` - measurement depth
   for finer control over depth computations
-- Added support for non-destructive measurements in ["instruments.h"] by
+- Added support for non-destructive measurements in `instruments.h` by
   modifying the API for:
   - `qpp::measure()`
   - `qpp::measure_seq()`
-- Added ["classes/layouts.h"] header file for representing different physical
+- Added `classes/layouts.h` header file for representing different physical
   qudit layouts. Implemented the class(es):
   - `qpp::Lattice` - qudits on a multi-dimensional orthogonal grid
   - `qpp::PeriodicBoundaryLattice` - qudits on a multi-dimensional orthogonal
     grid with periodic boundary conditions
-- Removed the documentation directory (["doc"]). To generate the documentation
+- Removed the documentation directory (`doc`). To generate the documentation
   in HTML/LaTeX formats, run `doxygen` from the root of the project.
 
 # Version 1.3 - 25 July 2019
@@ -759,13 +759,13 @@
 - Minimum required CMake version is now 3.2
 - Added MSVC support for CMake
 - Updated Google Test to version 1.8.1
-- Added `enum {RES, PROB, ST}` in ["constants.h"] for using with `std::get<>`
+- Added `enum {RES, PROB, ST}` in `constants.h` for using with `std::get<>`
   on the result of `qpp::measure()` etc.
-- Split the ["classes/circuits.h"] into ["classes/circuits/circuits.h"] and
-  ["classes/circuits/engines.h"]
+- Split the `classes/circuits.h` into `classes/circuits/circuits.h` and
+  `classes/circuits/engines.h`
 - Added noisy quantum engine for non-correlated noise
 - Added noisy teleportation example (that uses a noisy quantum engine) in
-  ["examples/circuits/noisy_teleport_qubit_circuit.cpp"]
+  `examples/circuits/noisy_teleport_qubit_circuit.cpp`
 - Implemented `qpp::QCircuit::`:
   - `QFT()` - Quantum Fourier Transform
   - `TFQ()` - inverse Quantum Fourier Transform
@@ -781,14 +781,14 @@
 
 # Version 1.2 - 10 February 2019
 
-- Added new function in ["functions.h"]:
+- Added new function in `functions.h`:
   - `qpp::normalize()` - normalizes a state vector (ket or bra) or density
     matrix
-- Added new functions in ["number_theory.h"]:
+- Added new functions in `number_theory.h`:
   - `qpp::convergents()` - overloads that compute the convergents from a
     continued fraction or a real number, see
     https://mathworld.wolfram.com/Convergent.html
-- Added new functions in ["operations.h"]:
+- Added new functions in `operations.h`:
   - `qpp::TFQ()` - inverse qudit quantum Fourier transform (includes qubit QFT
     as a special case) on an entire quantum state (state vector or density
     matrix)
@@ -796,9 +796,9 @@
     subset of qudits of a state vector or density matrix
 - Added new member functions for `qpp::Gates`:
   - `qpp::Gates::MODMUL()` - quantum modular multiplication
-- Added Shor's algorithm example in ["examples/shor.cpp"]
-- Introduced the largest unsigned index `qpp::idx_inf` in ["constants.h"]
-- Added new exception classes in ["classes/exception.h"]:
+- Added Shor's algorithm example in `examples/shor.cpp`
+- Introduced the largest unsigned index `qpp::idx_inf` in `constants.h`
+- Added new exception classes in `classes/exception.h`:
   - `qpp::exception::QuditAlreadyMeasured` - self-explanatory
   - `qpp::exception::Duplicates` - thrown when a system such as a std::vector
     contains duplicates
@@ -807,50 +807,50 @@
     past end, etc.)
 - Added `std::string qpp::Gates::get_name(const cmat&)` function which returns
   the names of the most common (one, two and three) qubit gates
-- Added new header file ["classes/noise.h"] and corresponding classes for
+- Added new header file `classes/noise.h` and corresponding classes for
   simulating quantum noise (e.g. depolarizing, dephasing etc.) and a
-  corresponding simple example in ["examples/noise.cpp"]
-- Added new abstract class `qpp::IJSON` in ["classes/idisplay.h"] for very
+  corresponding simple example in `examples/noise.cpp`
+- Added new abstract class `qpp::IJSON` in `classes/idisplay.h` for very
   basic JSON serialization support, and corresponding
   `qpp::QCircuit::to_JSON()` and `qpp::QEngine::to_JSON()`
-- Added new classes in the new header file ["classes/circuits.h"] for
+- Added new classes in the new header file `classes/circuits.h` for
   simulating qudit quantum circuits:
   - `qpp::QCircuit` - Quantum circuit description, does not effectively
     perform any operations
   - `qpp::QEngine` - Quantum engine for simulation of quantum circuits
-- Added new circuit simulator examples in ["examples/circuits"]:
+- Added new circuit simulator examples in `examples/circuits`:
   - `teleport_qubit_circuit.cpp` - qubit teleportation circuit example
   - `teleport_qudit_circuit.cpp` - qudit teleportation circuit example
-- Removed `qpp::eps` constant from ["constants.h"], as one should simply use
+- Removed `qpp::eps` constant from `constants.h`, as one should simply use
   direct comparison with 0 when dealing with small doubles
 - Added support for hashing Eigen matrices/vectors/expressions via
-  `qpp::hash_eigen()` in ["functions.h"]; code based on
+  `qpp::hash_eigen()` in `functions.h`; code based on
   `boost::hash_combine()`, see
   https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
 
 # Version 1.1 - 26 November 2018
 
-- Added new functions in ["operations.h"]:
+- Added new functions in `operations.h`:
   - `qpp::QFT()` - qudit quantum Fourier transform (includes qubit QFT as a
     special case) on an entire quantum state (state vector or density matrix)
   - `qpp::applyQFT()` - apply the qudit quantum Fourier transform on a subset
     of qudits of a state vector or density matrix
-- Added Quantum Fourier transform example in ["examples/qft.cpp"]
+- Added Quantum Fourier transform example in `examples/qft.cpp`
 - Added new member functions for `qpp::Gates`:
   - `qpp::Gates::RX()` - rotation around X
   - `qpp::Gates::RY()` - rotation around Y
   - `qpp::Gates::RZ()` - rotation around Z
   - `qpp::Gates.SWAPd()` - qudit SWAP gate
-- Added a suite of stress tests in ["stress_tests"] (only for POSIX systems)
-- Added Qiskit and QuTiP stress tests in ["stress_tests/python"]
+- Added a suite of stress tests in `stress_tests` (only for POSIX systems)
+- Added Qiskit and QuTiP stress tests in `stress_tests/python`
 
 # Version 1.0 - 3 July 2018
 
 - Added full support for reversible classical circuits, added
-  ["classes/reversible.h"] header file that contains the following classes:
+  `classes/reversible.h` header file that contains the following classes:
   - `qpp::DynamicBitset` - bitsets of variable length
   - `qpp::BitCircuit` - classical reversible circuits
-- Added ["examples/reversible.cpp"] example
+- Added `examples/reversible.cpp` example
 - The path to MATLAB can now be specified in the CMake command line (not hard
   coded anymore), such as
   `cmake .. -DWITH_MATLAB="/Applications/MATLAB_R2017b.app"`
@@ -872,17 +872,17 @@
 - Added Visual Studio 2017 solution
 - Added support for AppVeyor continuous integration
 - Added support for reversible classical circuits, via the following classes in
-  ["experimental.h"]:
+  `experimental.h`:
   - `qpp::experimental::DynamicBitset` - bitsets of variable length
   - `qpp::experimental::BitCircuit` - classical reversible circuits
-- Added `qpp::ket operator "" \_q()` helper in ["functions.h"] for constructing
+- Added `qpp::ket operator "" \_q()` helper in `functions.h` for constructing
   multi-partite qubit kets
 - Added comprehensive Wiki instead of the quick starting guide
 
 # Version 1.0-rc2 - Release Candidate 2, 6 September 2017
 
 - Added serialization capabilities for the PRNG in `qpp::RandomDevices` from
-  ["classes/random_devices.h"]:
+  `classes/random_devices.h`:
   - `qpp::RandomDevices::load()` - loads the state of PRNG from a stream
   - `qpp::RandomDevices::save()` - saves the state of PRNG to a stream
 - Added a getter for `qpp::RandomDevices::prng_` (now with private access):
@@ -895,14 +895,14 @@
 
 - Slight performance improvements (lambda workers do not capture by value
   anymore)
-- API change in ["classes/exception.h"]: now all **Quantum++** exceptions have
+- API change in `classes/exception.h`: now all **Quantum++** exceptions have
   their own type, being derived from the base exception class
   `qpp::exception::Exception`. All exception classes are now in their separate
   namespace `qpp::exception`.
 
 # Version 1.0.0-beta4 - 2 November 2016
 
-- Added new functions in ["classes/states.h"]:
+- Added new functions in `classes/states.h`:
   - `qpp::States::zero()` - zero state of n qudits
   - `qpp::States::one()` - one state of n qudits
   - `qpp::States::jn()` - |jj...j> state of n qudits
@@ -920,9 +920,9 @@
 # Version 1.0.0-beta3 - 22 October 2016
 
 - Added support for Travis CI continuous integration
-- Added new functions in ["classes/states.h"]:
+- Added new functions in `classes/states.h`:
   - `qpp::States::mes()` - maximally entangled state of 2 qudits
-- Added new functions in ["random.h"]:
+- Added new functions in `random.h`:
   - `qpp::randprob()` - random probability vector uniformly distributed
     over the probability simplex
 
@@ -943,7 +943,7 @@
 - `qpp::isprime()` is now based on the Miller-Rabin primality test
 - `qpp::rand(Type a, Type b)` family of functions now throw if b > a for
   integer types or when a == b for floating-point types
-- Added new functions in ["number_theory.h"]:
+- Added new functions in `number_theory.h`:
   - `qpp::randprime()` - random prime number generator
   - `qpp::modmul()` - modular multiplication that avoids overflows
 - Additional unit testing, added unit testing skeleton for all codebase
@@ -958,7 +958,7 @@
 
 - Added OpenMP support for clang >= 3.7 in `CmakeLists.txt`
 - Required minimum CMake version is now 3.0
-- Added more unit testing, ["number_theory.h"] is now fully tested
+- Added more unit testing, `number_theory.h` is now fully tested
 - Split unit testing into separate files according to the tested header file
 - Fixed typo in `CMakeLists.txt` which in effect disabled OpenMP
   for version 0.8.6. PLEASE use the `CMakeLists.txt` from the current version!
@@ -969,7 +969,7 @@
   @titaschanda
 - Critical bugfix in `qpp::lcm(const std::vector<bigint>&)`
 - Critical bugfix in `qpp::x2contfrac()`
-- Added new functions in ["number_theory.h"]:
+- Added new functions in `number_theory.h`:
   - `qpp::egcd()` - extended greatest common divisor algorithm
   - `qpp::modinv()` - modular inverse of a mod p
 
@@ -977,17 +977,17 @@
 
 - Critical bugfix in `qpp::applyCTRL()`, which was failing before for
   control gates with 2 or more controls. Added unit test in
-  ["unit_tests/testing.cpp"].
-- Removed ["macros.h"] preprocessor debug macros header added in v0.8.4
+  `unit_tests/testing.cpp`.
+- Removed `macros.h` preprocessor debug macros header added in v0.8.4
 
 # Version 0.8.4 - 14 October 2015
 
-- Added ["macros.h"] preprocessor debug macros header, containing:
+- Added `macros.h` preprocessor debug macros header, containing:
   - `PRINT(x)` - `std::cout << (x)`
   - `PRINTLN(x)` - `std::cout << (x) << std::endl`
   - `ERROR(x)` - `std::cerr << (x)`
   - `ERRORLN(x)` - `std::cerr << (x) << std::endl`
-- Added new functions in ["operations.h"]:
+- Added new functions in `operations.h`:
   - `qpp::ip()` - Generalized inner product
 - Modified `qpp::measure()` so that the output consists of pure states
   whenever the input is a pure state and the measurement operators are
@@ -999,12 +999,12 @@
 
 # Version 0.8.2 - 20 May 2015
 
-- Added ["traits.h"] type traits header file with the following type traits:
+- Added `traits.h` type traits header file with the following type traits:
   - `qpp::is_iterable<>` - checks for iterable STL-like containers
   - `qpp::is_matrix_expression<>` - checks for `Eigen::MatrixBase<>`
     expressions
   - `qpp::is_complex<>` - checks whether the type is `std::complex<>`
-- Added ["statistics.h"] header file containing the following new functions:
+- Added `statistics.h` header file containing the following new functions:
   - `qpp::uniform()` - uniform probability distribution vector
   - `qpp::marginalX()` - marginal distribution
   - `qpp::marginalY()` - marginal distribution
@@ -1013,16 +1013,16 @@
   - `qpp::cov()` - covariance
   - `qpp::cor()` - correlation
   - `qpp::var()` - variance
-- Added new examples in the directory ["examples"]
+- Added new examples in the directory `examples`
 
 # Version 0.8 - 8 May 2015
 
-- Added new data type aliases in ["types.h"]:
+- Added new data type aliases in `types.h`:
   - `bigint` - Big integer, alias for `long long int`
   - `ubigint` - Non-negative big integer, alias for `unsigned long long int`
-- Added new overloads in ["random.h"]:
+- Added new overloads in `random.h`:
   - `qpp::rand()` - overloads for `bigint` and `ubigint`
-- Added new functions in ["number_theory.h"]:
+- Added new functions in `number_theory.h`:
   - `qpp::modpow()` - computes a^n mod p for non-negative integers
 - Added `IDisplay` as an abstract base class for enforcing the override of
   its member function:
@@ -1050,7 +1050,7 @@
 # Version 0.7 - 22 April 2015
 
 - Marked all non-template functions defined in headers as `inline` and all
-  singletons as `static` since otherwise including ["qpp.h"] in separate
+  singletons as `static` since otherwise including `qpp.h` in separate
   compilation units led to linker errors due to duplicated symbols.
 
 # Version 0.6 - 16 April 2015
@@ -1076,17 +1076,17 @@
   `qpp::ptranspose()` that allow a pure state input, as it was the case
   before with `qpp::syspermute()`
 - Added overloads of `qpp::prod()` and `qpp::sum()` for STL-like containers
-- Added new functions in ["functions.h"]:
+- Added new functions in `functions.h`:
   - `qpp::complement()` - computes the complement of a subsystem vector
   - `qpp::rho2bloch()` - qubit density matrix to Bloch vector
   - `qpp::bloch2rho()` - Bloch vector to qubit density matrix
-- Added new functions in ["instruments.h"]:
+- Added new functions in `instruments.h`:
 - `qpp::measure_seq()` - measures subsystems sequentially
 - Removed support for the C-style random number engine, as it is not thread
   safe. Hence, `Eigen::Matrix::Random()` should not be used, use instead
   `qpp::rand()` functions.
 - Added support for unit testing via Google Mock/Google Test, see
-  ["unit_tests/testing.cpp"]
+  `unit_tests/testing.cpp`
 
 # Version 0.3 - 15 February 2015
 
@@ -1095,7 +1095,7 @@
 # Version 0.2 - 26 January 2015
 
 - Minor fixes
-- Added prime-number related functions in ["number_theory.h"]:
+- Added prime-number related functions in `number_theory.h`:
   - `qpp::factors()` - prime factors of positive integer
   - `qpp::isprime()` - primality test
 
