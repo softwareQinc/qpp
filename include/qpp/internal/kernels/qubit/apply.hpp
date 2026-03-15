@@ -702,9 +702,9 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
  * @return Gate \a A applied to the qubits \a i and \a j of \a state
  */
 template <typename Derived1, typename Derived2>
-expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
-                              const Eigen::MatrixBase<Derived2>& A, idx i,
-                              idx j, idx n) {
+[[qpp::critical, qpp::parallel]] expr_t<Derived1>
+apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
+             const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx n) {
 
     const idx D = static_cast<idx>(state.rows());
 
