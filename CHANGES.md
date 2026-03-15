@@ -1,3 +1,7 @@
+# Pre-release
+
+-
+
 # Version 7.0.0 - 15 March 2026
 
 - Significant performance improvements (10x to 1000x) for qubit state
