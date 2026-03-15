@@ -95,8 +95,8 @@ class DynamicBitset : public IDisplay {
      * @param n Number of bits in the bitset
      */
     explicit DynamicBitset(idx n)
-        : storage_size_{static_cast<idx>(n / (sizeof(value_type) * CHAR_BIT) +
-                                         1)},
+        : storage_size_{
+              static_cast<idx>(n / (sizeof(value_type) * CHAR_BIT) + 1)},
           n_{n}, v_(storage_size_) {}
 
     /**
@@ -108,7 +108,7 @@ class DynamicBitset : public IDisplay {
      * @param one Character representing true (one)
      */
     explicit DynamicBitset(std::string str, char zero = '0',
-                            [[maybe_unused]] char one = '1')
+                           [[maybe_unused]] char one = '1')
         : DynamicBitset{static_cast<idx>(str.size())} {
         idx n = str.size();
         for (idx i = 0; i < n; ++i) {
@@ -460,8 +460,8 @@ class BitCircuit : public DynamicBitset, public IJSON {
      * @param n Number of classical bits
      */
     explicit BitCircuit(idx n)
-        : DynamicBitset{n}, bNOT_{n}, bCNOT_{n}, bSWAP_{n}, bTOF_{n},
-          bFRED_{n}, btotal_{n} {}
+        : DynamicBitset{n}, bNOT_{n}, bCNOT_{n}, bSWAP_{n}, bTOF_{n}, bFRED_{n},
+          btotal_{n} {}
 
     /**
      * @brief Constructs a bit circuit instance out of a string
@@ -472,7 +472,7 @@ class BitCircuit : public DynamicBitset, public IJSON {
      * @param one Character representing true (one)
      */
     explicit BitCircuit(std::string str, char zero = '0',
-                         [[maybe_unused]] char one = '1')
+                        [[maybe_unused]] char one = '1')
         : DynamicBitset{static_cast<idx>(str.size())}, bNOT_{size()},
           bCNOT_{size()}, bSWAP_{size()}, bTOF_{size()}, bFRED_{size()},
           btotal_{size()} {

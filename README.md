@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 7.0.0 - 14 March 2026
+## Version 7.0.0 - 15 March 2026
 
 [![GitHub actions](https://github.com/softwareqinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
 
