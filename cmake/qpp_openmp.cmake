@@ -13,7 +13,6 @@ if(QPP_OPENMP)
   if(OpenMP_CXX_FOUND)
     target_compile_definitions(${QPP_TARGET} INTERFACE QPP_OPENMP)
     target_link_libraries(${QPP_TARGET} INTERFACE OpenMP::OpenMP_CXX)
-
     if(APPLE AND EXISTS "/opt/homebrew/opt/libomp/include")
       target_include_directories(${QPP_TARGET}
                                  INTERFACE "/opt/homebrew/opt/libomp/include")
