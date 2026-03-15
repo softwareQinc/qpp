@@ -92,7 +92,7 @@ ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
     // Precompute global strides: 2^(n - 1 - k)
     std::vector<idx> global_strides(n);
     for (idx k = 0; k < n; ++k) {
-        global_strides[k] = static_cast<idx>(1) << (n - 1 - k);
+        global_strides[k] = static_cast<idx>(std::size_t{1} << (n - 1 - k));
     }
 
     // Extract strides for Bar (kept) subsystems
@@ -106,7 +106,8 @@ ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
     for (idx a = 0; a < Dsubsys; ++a) {
         idx offset = 0;
         for (idx k = 0; k < n_subsys; ++k) {
-            if ((a >> (n_subsys - 1 - k)) & 1) {
+            if ((static_cast<std::size_t>(a) >> (n_subsys - 1 - k)) &
+                std::size_t{1}) {
                 offset += global_strides[target[k]];
             }
         }
@@ -119,7 +120,9 @@ ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
     auto expand_bits = [&](idx idx_compressed) -> idx {
         idx expanded = 0;
         for (idx k = 0; k < n_subsys_bar; ++k) {
-            if ((idx_compressed >> (n_subsys_bar - 1 - k)) & 1) {
+            if ((static_cast<std::size_t>(idx_compressed) >>
+                 (n_subsys_bar - 1 - k)) &
+                std::size_t{1}) {
                 expanded += bar_strides[k];
             }
         }
@@ -196,7 +199,7 @@ ptrace_rho_kq(const Eigen::MatrixBase<Derived>& A,
     // Precompute global strides: 2^(n - 1 - k)
     std::vector<idx> global_strides(n);
     for (idx k = 0; k < n; ++k) {
-        global_strides[k] = static_cast<idx>(1) << (n - 1 - k);
+        global_strides[k] = static_cast<idx>(std::size_t{1} << (n - 1 - k));
     }
 
     // Extract strides for Bar (kept) subsystems
@@ -210,7 +213,8 @@ ptrace_rho_kq(const Eigen::MatrixBase<Derived>& A,
     for (idx a = 0; a < Dsubsys; ++a) {
         idx offset = 0;
         for (idx k = 0; k < n_subsys; ++k) {
-            if ((a >> (n_subsys - 1 - k)) & 1) {
+            if ((static_cast<std::size_t>(a) >> (n_subsys - 1 - k)) &
+                std::size_t{1}) {
                 offset += global_strides[target[k]];
             }
         }
@@ -221,7 +225,9 @@ ptrace_rho_kq(const Eigen::MatrixBase<Derived>& A,
     auto expand_bits = [&](idx idx_compressed) -> idx {
         idx expanded = 0;
         for (idx k = 0; k < n_subsys_bar; ++k) {
-            if ((idx_compressed >> (n_subsys_bar - 1 - k)) & 1) {
+            if ((static_cast<std::size_t>(idx_compressed) >>
+                 (n_subsys_bar - 1 - k)) &
+                std::size_t{1}) {
                 expanded += bar_strides[k];
             }
         }

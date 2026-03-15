@@ -60,7 +60,8 @@ apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A, idx i, idx n) {
     // Type and Dimension Setup
     using Scalar = typename Derived1::Scalar;
-    const idx D = 1ULL << n; // Total size of the state vector (2^n)
+    const idx D = static_cast<idx>(
+        std::size_t{1} << n); // Total size of the state vector (2^n)
 
     // Input Validation
     assert(i < n && "Target qubit index i must be less than n");
@@ -79,10 +80,10 @@ apply_psi_1q(const Eigen::MatrixBase<Derived1>& state,
 
     // 'step' is 2^j. This is the difference in index between |...0...> and
     // |...1...> at bit j.
-    const idx step = 1ULL << j;
+    const idx step = static_cast<idx>(std::size_t{1} << j);
 
     // 'jump' is 2^(j+1). This is the size of the block that repeats.
-    const idx jump = 1ULL << (j + 1);
+    const idx jump = static_cast<idx>(std::size_t{1} << (j + 1));
 
     // Extract the 2x2 gate elements
     const Scalar a00 = A.coeff(0, 0);
@@ -147,7 +148,8 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
            "Target qubit indices i and j must be distinct and less than n");
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
 #ifndef NDEBUG
-    const idx D = 1ULL << n; // Total size of the state vector (2^n)
+    const idx D = static_cast<idx>(
+        std::size_t{1} << n); // Total size of the state vector (2^n)
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
 #endif
@@ -163,12 +165,12 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
 
     // 's_i' and 's_j' are the power-of-2 values that flip the bit at p_i and
     // p_j.
-    const idx s_i = 1ULL << p_i;
-    const idx s_j = 1ULL << p_j;
+    const idx s_i = static_cast<idx>(std::size_t{1} << p_i);
+    const idx s_j = static_cast<idx>(std::size_t{1} << p_j);
 
     // The number of remaining bits that define the independent blocks (2^(n-2)
     // total blocks)
-    const idx D_rem = 1ULL << (n - 2);
+    const idx D_rem = static_cast<idx>(std::size_t{1} << (n - 2));
 
     // Extract the 4x4 gate elements
     // Using .coeff() for fast, direct access. A is assumed to be 4x4.
@@ -217,8 +219,9 @@ apply_psi_2q(const Eigen::MatrixBase<Derived1>& state,
 
             // If the 'current_block_bit' of 'block_idx' is 1, set the p-th bit
             // in k00
-            if ((block_idx >> current_block_bit) & 1) {
-                k00 |= (1ULL << p);
+            if ((static_cast<std::size_t>(block_idx) >> current_block_bit) &
+                std::size_t{1}) {
+                k00 |= static_cast<idx>(std::size_t{1} << p);
             }
             current_block_bit++;
         }
@@ -285,7 +288,8 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
            "Target qubit indices i, j, k must be distinct and less than n");
     assert(A.rows() == 8 && A.cols() == 8 && "Gate A must be an 8x8 matrix");
 #ifndef NDEBUG
-    const idx D = 1ULL << n; // Total size of the state vector (2^n)
+    const idx D = static_cast<idx>(
+        std::size_t{1} << n); // Total size of the state vector (2^n)
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
 #endif
@@ -302,13 +306,13 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
 
     // 's_i', 's_j', 's_k' are the power-of-2 values that flip the bit at p_i,
     // p_j, p_k.
-    const idx s_i = 1ULL << p_i;
-    const idx s_j = 1ULL << p_j;
-    const idx s_k = 1ULL << p_k;
+    const idx s_i = static_cast<idx>(std::size_t{1} << p_i);
+    const idx s_j = static_cast<idx>(std::size_t{1} << p_j);
+    const idx s_k = static_cast<idx>(std::size_t{1} << p_k);
 
     // The number of remaining bits that define the independent blocks (2^(n-3)
     // total blocks)
-    const idx D_rem = 1ULL << (n - 3);
+    const idx D_rem = static_cast<idx>(std::size_t{1} << (n - 3));
 
     // Extract the 8x8 gate elements (A is assumed to be 8x8)
     // A[r, c] maps to basis states |c_i c_j c_k> -> |r_i r_j r_k>
@@ -377,8 +381,9 @@ apply_psi_3q(const Eigen::MatrixBase<Derived1>& state,
 
             // If the 'current_block_bit' of 'block_idx' is 1, set the p-th bit
             // in k000
-            if ((block_idx >> current_block_bit) & 1) {
-                k000 |= (1ULL << p);
+            if ((static_cast<std::size_t>(block_idx) >> current_block_bit) &
+                std::size_t{1}) {
+                k000 |= static_cast<idx>(std::size_t{1} << p);
             }
             current_block_bit++;
         }
@@ -477,8 +482,8 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
 
     // Setup
     const idx k = static_cast<idx>(target.size());
-    const idx dim = 1ULL << k;
-    const idx outer_dim = 1ULL << (n - k);
+    const idx dim = static_cast<idx>(std::size_t{1} << k);
+    const idx outer_dim = static_cast<idx>(std::size_t{1} << (n - k));
 
     // Input Validation
     // Check Gate Dimension: A must be a 2^k x 2^k matrix
@@ -488,7 +493,7 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
            "qubits");
 #ifndef NDEBUG
     // D is the dimension of the state (2^n)
-    const idx D = 1ULL << n;
+    const idx D = static_cast<idx>(std::size_t{1} << n);
 
     // Check Target Qubit Indices are valid
     for (idx t : target) {
@@ -521,9 +526,10 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
         idx index_r = 0;
         for (idx j = 0; j < k; ++j) {
             const idx target_qubit_pos = target[k - 1 - j]; // Permutation fix
-            if ((r >> j) & 1) {
+            if ((static_cast<std::size_t>(r) >> j) & std::size_t{1}) {
                 // BIG-ENDIAN contribution
-                index_r += (1ULL << (n - 1 - target_qubit_pos));
+                index_r += static_cast<idx>(std::size_t{1}
+                                            << (n - 1 - target_qubit_pos));
             }
         }
         inner_idx[r] = index_r;
@@ -546,8 +552,9 @@ apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     for (idx m = 0; m < outer_dim; ++m) {
         idx i_base = 0;
         for (idx j = 0; j < static_cast<idx>(spectator_qubits.size()); ++j) {
-            if ((m >> j) & 1) {
-                i_base += (1ULL << (n - 1 - spectator_qubits[j]));
+            if ((static_cast<std::size_t>(m) >> j) & std::size_t{1}) {
+                i_base += static_cast<idx>(std::size_t{1}
+                                           << (n - 1 - spectator_qubits[j]));
             }
         }
         outer_idx[m] = i_base;
@@ -602,7 +609,8 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A, idx i, idx n) {
     using Scalar = typename Derived1::Scalar;
     using Matrix2 = Eigen::Matrix2<Scalar>;
-    const idx D = 1ULL << n; // total Hilbert space dimension
+    const idx D =
+        static_cast<idx>(std::size_t{1} << n); // total Hilbert space dimension
 
     // Input Validation
     assert(static_cast<idx>(state.rows()) == D &&
@@ -615,7 +623,7 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
 
     // Bit position for qubit i (p_i) and the stride (s_i = 2^p_i)
     const idx p_i = n - 1 - i;
-    const idx s_i = 1ULL << p_i;
+    const idx s_i = static_cast<idx>(std::size_t{1} << p_i);
 
     // Constants for index reconstruction
     const idx D_spec = D / 2; // Total number of spectator states (2^(n-1))
@@ -638,16 +646,25 @@ apply_rho_1q(const Eigen::MatrixBase<Derived1>& state,
         const idx s_prime = i % D_spec;
         // Calculate Row Indices (r0, r1) from spectator state 's'
         // r0 = index for |s, 0> (inserting '0' at bit p_i)
-        const idx s_high_r = s >> p_i;
-        const idx s_low_r = s & low_mask;
-        const idx r0 = (s_high_r << p_i_plus_1) | s_low_r;
+        const idx s_high_r =
+            static_cast<idx>(static_cast<std::size_t>(s) >> p_i);
+        const idx s_low_r = static_cast<idx>(
+            static_cast<std::size_t>(s) & static_cast<std::size_t>(low_mask));
+        const idx r0 = static_cast<idx>(
+            (static_cast<std::size_t>(s_high_r) << p_i_plus_1) |
+            static_cast<std::size_t>(s_low_r));
         const idx r1 = r0 + s_i; // r1 = index for |s, 1>
 
         // Calculate Column Indices (c0, c1) from spectator state
         // 's_prime' c0 = index for |s', 0> (inserting '0' at bit p_i)
-        const idx s_prime_high_c = s_prime >> p_i;
-        const idx s_prime_low_c = s_prime & low_mask;
-        const idx c0 = (s_prime_high_c << p_i_plus_1) | s_prime_low_c;
+        const idx s_prime_high_c =
+            static_cast<idx>(static_cast<std::size_t>(s_prime) >> p_i);
+        const idx s_prime_low_c =
+            static_cast<idx>(static_cast<std::size_t>(s_prime) &
+                             static_cast<std::size_t>(low_mask));
+        const idx c0 = static_cast<idx>(
+            (static_cast<std::size_t>(s_prime_high_c) << p_i_plus_1) |
+            static_cast<std::size_t>(s_prime_low_c));
         const idx c1 = c0 + s_i; // c1 = index for |s', 1>
 
         // Extract the current 2x2 block rho[r0:r1, c0:c1]
@@ -696,7 +713,7 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
            "Target qubit indices i and j must be distinct and less than n");
     assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
 #ifndef NDEBUG
-    const idx D_expected = (1ULL << n);
+    const idx D_expected = static_cast<idx>(std::size_t{1} << n);
     assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
            "State must be a square matrix sized 2^n x 2^n");
 #endif
@@ -717,11 +734,12 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
     const ComputeBlockType U_adj = U.adjoint();
 
     // Size of the N-2 qubit subsystem
-    const idx D_rest = (n >= 2) ? (1ULL << (n - 2)) : 1;
+    const idx D_rest =
+        (n >= 2) ? static_cast<idx>(std::size_t{1} << (n - 2)) : 1;
 
     // Powers of 2 are calculated using the physical (LSB-first) indices.
-    const idx P_i = 1ULL << i_phys;
-    const idx P_j = 1ULL << j_phys;
+    const idx P_i = static_cast<idx>(std::size_t{1} << i_phys);
+    const idx P_j = static_cast<idx>(std::size_t{1} << j_phys);
 
     ComputeMatrixType rho_prime_cd = ComputeMatrixType::Zero(D, D);
 
@@ -745,10 +763,11 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
              ++q) { // q is the physical index (0=LSB, n-1=MSB)
             // Skip the physical qubits we are acting on (i_phys and j_phys).
             if (q != i_phys && q != j_phys) {
-                if (current_r & 1) {
-                    r_base_row |= (1ULL << q);
+                if (static_cast<std::size_t>(current_r) & std::size_t{1}) {
+                    r_base_row |= static_cast<idx>(std::size_t{1} << q);
                 }
-                current_r >>= 1;
+                current_r =
+                    static_cast<idx>(static_cast<std::size_t>(current_r) >> 1);
             }
         }
 
@@ -773,10 +792,11 @@ expr_t<Derived1> apply_rho_2q(const Eigen::MatrixBase<Derived1>& state,
             // 1b. Calculate the 'base' index for the column block (rest qubits)
             for (idx q = 0; q < n; ++q) {
                 if (q != i_phys && q != j_phys) {
-                    if (current_c & 1) {
-                        r_base_col |= (1ULL << q);
+                    if (static_cast<std::size_t>(current_c) & std::size_t{1}) {
+                        r_base_col |= static_cast<idx>(std::size_t{1} << q);
                     }
-                    current_c >>= 1;
+                    current_c = static_cast<idx>(
+                        static_cast<std::size_t>(current_c) >> 1);
                 }
             }
 
@@ -836,7 +856,7 @@ apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
     assert(A.rows() == 8 && A.cols() == 8 && "Gate A must be an 8x8 matrix");
     assert(n >= 3 && "Need at least 3 qubits for a 3-qubit gate");
 #ifndef NDEBUG
-    const idx D_expected = (1ULL << n);
+    const idx D_expected = static_cast<idx>(std::size_t{1} << n);
     assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
            "State must be a square matrix of size 2^n x 2^n");
 #endif
@@ -859,12 +879,13 @@ apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
     const ComputeBlockType U_adj = U.adjoint();
 
     // Size of the N-3 qubit subsystem (the "rest" of the system)
-    const idx D_rest = (n >= 3) ? (1ULL << (n - 3)) : 1;
+    const idx D_rest =
+        (n >= 3) ? static_cast<idx>(std::size_t{1} << (n - 3)) : 1;
 
     // Powers of 2 corresponding to the physical qubit indices
-    const idx P_i = 1ULL << i_phys;
-    const idx P_j = 1ULL << j_phys;
-    const idx P_k = 1ULL << k_phys;
+    const idx P_i = static_cast<idx>(std::size_t{1} << i_phys);
+    const idx P_j = static_cast<idx>(std::size_t{1} << j_phys);
+    const idx P_k = static_cast<idx>(std::size_t{1} << k_phys);
 
     ComputeMatrixType rho_prime_cd = ComputeMatrixType::Zero(D, D);
 
@@ -891,10 +912,11 @@ apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
             // Skip the physical qubits we are acting on (i_phys, j_phys,
             // k_phys)
             if (q != i_phys && q != j_phys && q != k_phys) {
-                if (current_r & 1) {
-                    r_base_row |= (1ULL << q);
+                if (static_cast<std::size_t>(current_r) & std::size_t{1}) {
+                    r_base_row |= static_cast<idx>(std::size_t{1} << q);
                 }
-                current_r >>= 1;
+                current_r =
+                    static_cast<idx>(static_cast<std::size_t>(current_r) >> 1);
             }
         }
 
@@ -924,10 +946,11 @@ apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
             // Calculate the 'base' index for the column block (rest qubits)
             for (idx q = 0; q < n; ++q) {
                 if (q != i_phys && q != j_phys && q != k_phys) {
-                    if (current_c & 1) {
-                        r_base_col |= (1ULL << q);
+                    if (static_cast<std::size_t>(current_c) & std::size_t{1}) {
+                        r_base_col |= static_cast<idx>(std::size_t{1} << q);
                     }
-                    current_c >>= 1;
+                    current_c = static_cast<idx>(
+                        static_cast<std::size_t>(current_c) >> 1);
                 }
             }
 
@@ -987,7 +1010,7 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     const idx k = target.size(); // Gate qubits
 
     // Calculate block dimension D_k = 2^k
-    const idx D_k = (k == 0) ? 1 : (1ULL << k);
+    const idx D_k = (k == 0) ? 1 : static_cast<idx>(std::size_t{1} << k);
 
     // Input Validation
     // Check Gate Dimension: A must be a 2^k x 2^k matrix
@@ -1025,7 +1048,7 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     for (idx l = 0; l < k; ++l) {
         // Physical index: 0 is LSB, n-1 is MSB
         target_phys[l] = n - target[l] - 1;
-        P_gate_basis[l] = 1ULL << target_phys[l];
+        P_gate_basis[l] = static_cast<idx>(std::size_t{1} << target_phys[l]);
     }
 
     // Determine the physical indices that are *not* in the target set (the
@@ -1033,7 +1056,8 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     std::vector<idx> rest_phys = fast_complement(target_phys, n);
 
     // Size of the N-k qubit subsystem
-    const idx D_rest = (n >= k) ? (1ULL << (n - k)) : 1;
+    const idx D_rest =
+        (n >= k) ? static_cast<idx>(std::size_t{1} << (n - k)) : 1;
 
     // Matrix Setup
     const ComputeMatrixType rho_cd = state.template cast<Scalar>().eval();
@@ -1061,10 +1085,11 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
         // Calculate the 'base' index for the row block (rest qubits)
         // This index represents the |rest> part of the basis state
         for (const auto& q_phys : rest_phys) {
-            if (current_r & 1) {
-                r_base_row |= (1ULL << q_phys);
+            if (static_cast<std::size_t>(current_r) & std::size_t{1}) {
+                r_base_row |= static_cast<idx>(std::size_t{1} << q_phys);
             }
-            current_r >>= 1;
+            current_r =
+                static_cast<idx>(static_cast<std::size_t>(current_r) >> 1);
         }
 
         // Pre-calculate the D_k *row* indices for the block.
@@ -1079,7 +1104,7 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
                 // (target[k-1]) The bit corresponding to target[l] is bit
                 // (k-1-l) of m.
                 idx bit_pos = k - 1 - l;
-                if ((m >> bit_pos) & 1) {
+                if ((static_cast<std::size_t>(m) >> bit_pos) & std::size_t{1}) {
                     target_component += P_gate_basis[l];
                 }
             }
@@ -1097,10 +1122,11 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
 
             // Calculate the 'base' index for the column block (rest qubits)
             for (const auto& q_phys : rest_phys) {
-                if (current_c & 1) {
-                    r_base_col |= (1ULL << q_phys);
+                if (static_cast<std::size_t>(current_c) & std::size_t{1}) {
+                    r_base_col |= static_cast<idx>(std::size_t{1} << q_phys);
                 }
-                current_c >>= 1;
+                current_c =
+                    static_cast<idx>(static_cast<std::size_t>(current_c) >> 1);
             }
 
             // Pre-calculate the D_k *column* indices (using the same order)
@@ -1108,7 +1134,8 @@ apply_rho_kq(const Eigen::MatrixBase<Derived1>& state,
                 idx target_component = 0;
                 for (idx l = 0; l < k; ++l) {
                     idx bit_pos = k - 1 - l;
-                    if ((m >> bit_pos) & 1) {
+                    if ((static_cast<std::size_t>(m) >> bit_pos) &
+                        std::size_t{1}) {
                         target_component += P_gate_basis[l];
                     }
                 }

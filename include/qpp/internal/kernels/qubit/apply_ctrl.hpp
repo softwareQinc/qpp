@@ -68,7 +68,8 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
                   const std::vector<idx>& shift, idx n) {
     // Type and Dimension Setup
     using Scalar = typename Derived1::Scalar;
-    const idx D = 1ULL << n; // Total size of the state vector (2^n)
+    const idx D = static_cast<idx>(
+        std::size_t{1} << n); // Total size of the state vector (2^n)
 
     // Input Validation
     assert(i < n && "Target qubit index i must be less than n");
@@ -100,10 +101,10 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
     const idx j = n - 1 - i;
 
     // 'step' is 2^j. Index difference between |...0...> and |...1...> at bit j.
-    const idx step = 1ULL << j;
+    const idx step = static_cast<idx>(std::size_t{1} << j);
 
     // 'jump' is 2^(j+1). Size of the block that repeats.
-    const idx jump = 1ULL << (j + 1);
+    const idx jump = static_cast<idx>(std::size_t{1} << (j + 1));
 
     // --- Control Mask and Expected Pattern Calculation ---
     // Mask for controls that MUST be |1> (shift == 0, Positive Control)
@@ -116,7 +117,8 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
         const idx c = ctrl[c_idx];
         const idx j_c =
             n - 1 - c; // Big-endian bit position for control qubit c
-        const idx bit = (1ULL << j_c); // Pre-calculate the bit to be set
+        const idx bit = static_cast<idx>(
+            std::size_t{1} << j_c); // Pre-calculate the bit to be set
 
         // If shift[c_idx] == 0: Positive Control (requires |1>)
         if (shift[c_idx] == 0) {
@@ -153,9 +155,11 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
             // expected_pattern_for_ones) == expected_pattern_for_ones
             // 2. All negative control bits are 0: (k0 & expected_zero_mask) ==
             // 0
-            if (((k0 & expected_pattern_for_ones) ==
-                 expected_pattern_for_ones) &&
-                ((k0 & expected_zero_mask) == 0)) {
+            if (((static_cast<std::size_t>(k0) &
+                  static_cast<std::size_t>(expected_pattern_for_ones)) ==
+                 static_cast<std::size_t>(expected_pattern_for_ones)) &&
+                ((static_cast<std::size_t>(k0) &
+                  static_cast<std::size_t>(expected_zero_mask)) == 0)) {
 
                 // Fetch the ORIGINAL amplitudes from the INPUT 'state'
                 const Scalar& psi_k0 = state.coeff(k0);
@@ -196,7 +200,7 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
                   const std::vector<idx>& ctrl, idx i, idx j,
                   const std::vector<idx>& shift, idx n) {
     using Scalar = typename Derived1::Scalar;
-    const idx D = 1ULL << n;
+    const idx D = static_cast<idx>(std::size_t{1} << n);
 
     // Input Validation
     assert(i < n && j < n && i != j &&
@@ -225,8 +229,8 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     // Big-endian bit positions
     const idx p_i = n - 1 - i;
     const idx p_j = n - 1 - j;
-    const idx s_i = (1ULL << p_i);
-    const idx s_j = (1ULL << p_j);
+    const idx s_i = static_cast<idx>(std::size_t{1} << p_i);
+    const idx s_j = static_cast<idx>(std::size_t{1} << p_j);
 
     // build control mask/value using big-endian positions
     idx control_mask = 0;
@@ -234,7 +238,7 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         const idx p_c = n - 1 - c; // big-endian position
-        const idx bit = (1ULL << p_c);
+        const idx bit = static_cast<idx>(std::size_t{1} << p_c);
         control_mask |= bit;
         if (shift[c_idx] == 0) { // require |1>
             control_value |= bit;
@@ -260,21 +264,30 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
 #endif // QPP_OPENMP
     for (idx k00 = 0; k00 < D; ++k00) {
         // skip indices that do not have both target bits == 0
-        if ((k00 & s_i) || (k00 & s_j)) {
+        if ((static_cast<std::size_t>(k00) & static_cast<std::size_t>(s_i)) ||
+            (static_cast<std::size_t>(k00) & static_cast<std::size_t>(s_j))) {
             continue;
         }
 
         // control check (control bits of k00 must match control_value under
         // control_mask)
-        if ((k00 & control_mask) != control_value) {
+        if ((static_cast<std::size_t>(k00) &
+             static_cast<std::size_t>(control_mask)) !=
+            static_cast<std::size_t>(control_value)) {
             continue;
         }
 
         // indices for the 2-qubit subspace: |0_i 0_j>, |0_i 1_j>, |1_i 0_j>,
         // |1_i 1_j>
-        const idx k01 = k00 | s_j;       // flip j
-        const idx k10 = k00 | s_i;       // flip i
-        const idx k11 = k00 | s_i | s_j; // flip both
+        const idx k01 =
+            static_cast<idx>(static_cast<std::size_t>(k00) |
+                             static_cast<std::size_t>(s_j)); // flip j
+        const idx k10 =
+            static_cast<idx>(static_cast<std::size_t>(k00) |
+                             static_cast<std::size_t>(s_i)); // flip i
+        const idx k11 = static_cast<idx>(
+            static_cast<std::size_t>(k00) | static_cast<std::size_t>(s_i) |
+            static_cast<std::size_t>(s_j)); // flip both
 
         // read original amplitudes from 'state'
         const Scalar psi00 = state.coeff(k00);
@@ -325,8 +338,10 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
 
     // Setup
     const idx k = static_cast<idx>(target.size()); // Number of target qubits
-    const idx dim = 1ULL << k;             // Target subspace dimension (2^k)
-    const idx outer_dim = 1ULL << (n - k); // Number of spectator blocks
+    const idx dim = static_cast<idx>(std::size_t{1}
+                                     << k); // Target subspace dimension (2^k)
+    const idx outer_dim = static_cast<idx>(
+        std::size_t{1} << (n - k)); // Number of spectator blocks
 
     // Input Validation
     // Check Gate Dimension: A must be a 2^k x 2^k matrix
@@ -340,7 +355,7 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     const idx ctrl_size = static_cast<idx>(ctrl.size());
 #ifndef NDEBUG
     // D is the dimension of the state (2^n)
-    const idx D = 1ULL << n;
+    const idx D = static_cast<idx>(std::size_t{1} << n);
 
     // Check Target Qubit Indices are valid
     for (idx t : target) {
@@ -392,7 +407,8 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
         const idx c = ctrl[c_idx];
         const idx j_c =
             n - 1 - c; // Big-endian bit position for control qubit c
-        const idx bit = (1ULL << j_c); // Pre-calculate the bit to be set
+        const idx bit = static_cast<idx>(
+            std::size_t{1} << j_c); // Pre-calculate the bit to be set
 
         // If shift[c_idx] == 0: Positive Control (requires |1>)
         if (shift[c_idx] == 0) {
@@ -411,9 +427,10 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
         idx index_r = 0;
         for (idx j = 0; j < k; ++j) {
             const idx target_qubit_pos = target[k - 1 - j]; // Permutation fix
-            if ((r >> j) & 1) {
+            if ((static_cast<std::size_t>(r) >> j) & std::size_t{1}) {
                 // BIG-ENDIAN contribution
-                index_r += (1ULL << (n - 1 - target_qubit_pos));
+                index_r += static_cast<idx>(std::size_t{1}
+                                            << (n - 1 - target_qubit_pos));
             }
         }
         inner_idx[r] = index_r;
@@ -436,8 +453,9 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
     for (idx m = 0; m < outer_dim; ++m) {
         idx i_base = 0;
         for (idx j = 0; j < static_cast<idx>(spectator_qubits.size()); ++j) {
-            if ((m >> j) & 1) {
-                i_base += (1ULL << (n - 1 - spectator_qubits[j]));
+            if ((static_cast<std::size_t>(m) >> j) & std::size_t{1}) {
+                i_base += static_cast<idx>(std::size_t{1}
+                                           << (n - 1 - spectator_qubits[j]));
             }
         }
         outer_idx[m] = i_base;
@@ -457,9 +475,11 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
         // expected_pattern_for_ones) == expected_pattern_for_ones
         // 2. All negative control bits are 0: (i_base & expected_zero_mask) ==
         // 0
-        if (((i_base & expected_pattern_for_ones) ==
-             expected_pattern_for_ones) &&
-            ((i_base & expected_zero_mask) == 0)) {
+        if (((static_cast<std::size_t>(i_base) &
+              static_cast<std::size_t>(expected_pattern_for_ones)) ==
+             static_cast<std::size_t>(expected_pattern_for_ones)) &&
+            ((static_cast<std::size_t>(i_base) &
+              static_cast<std::size_t>(expected_zero_mask)) == 0)) {
 
             // Input Block Caching (The Optimization)
             // Read the scattered input block (dim elements) into a contiguous
@@ -513,7 +533,8 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
     // Type and Dimension Setup
     using Scalar = typename Derived1::Scalar;
     using Matrix2 = Eigen::Matrix2<Scalar>;
-    const idx D = 1ULL << n; // total Hilbert space dimension
+    const idx D =
+        static_cast<idx>(std::size_t{1} << n); // total Hilbert space dimension
 
     // Input Validation
     assert(i < n && "Target qubit index i must be less than n");
@@ -552,7 +573,7 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
         const idx c = ctrl[c_idx];
         const idx j_c =
             n - 1 - c; // Big-endian bit position for control qubit c
-        const idx bit = (1ULL << j_c);
+        const idx bit = static_cast<idx>(std::size_t{1} << j_c);
 
         if (shift[c_idx] == 0) {
             expected_pattern_for_ones |= bit;
@@ -563,14 +584,16 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
 
     // Helper to check if a base index satisfies the control conditions
     auto control_is_met = [&](idx k_base) {
-        return ((k_base & expected_pattern_for_ones) ==
-                expected_pattern_for_ones) &&
-               ((k_base & expected_zero_mask) == 0);
+        return ((static_cast<std::size_t>(k_base) &
+                 static_cast<std::size_t>(expected_pattern_for_ones)) ==
+                static_cast<std::size_t>(expected_pattern_for_ones)) &&
+               ((static_cast<std::size_t>(k_base) &
+                 static_cast<std::size_t>(expected_zero_mask)) == 0);
     };
 
     // --- Indexing Constants (same as apply_rho_1q) ---
     const idx p_i = n - 1 - i;
-    const idx s_i = 1ULL << p_i;
+    const idx s_i = static_cast<idx>(std::size_t{1} << p_i);
     const idx D_spec = D / 2;
     const idx p_i_plus_1 = p_i + 1;
     const idx low_mask = s_i - 1;
@@ -590,17 +613,26 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
         const idx s_prime = i % D_spec;
 
         // Calculate Row Indices (r0, r1) from spectator state 's'
-        const idx s_high_r = s >> p_i;
-        const idx s_low_r = s & low_mask;
-        const idx r0 = (s_high_r << p_i_plus_1) | s_low_r;
+        const idx s_high_r =
+            static_cast<idx>(static_cast<std::size_t>(s) >> p_i);
+        const idx s_low_r = static_cast<idx>(
+            static_cast<std::size_t>(s) & static_cast<std::size_t>(low_mask));
+        const idx r0 = static_cast<idx>(
+            (static_cast<std::size_t>(s_high_r) << p_i_plus_1) |
+            static_cast<std::size_t>(s_low_r));
         const idx r1 = r0 + s_i;
 
         const bool row_ctrl = control_is_met(r0);
 
         // Calculate Column Indices (c0, c1) from spectator state 's_prime'
-        const idx s_prime_high_c = s_prime >> p_i;
-        const idx s_prime_low_c = s_prime & low_mask;
-        const idx c0 = (s_prime_high_c << p_i_plus_1) | s_prime_low_c;
+        const idx s_prime_high_c =
+            static_cast<idx>(static_cast<std::size_t>(s_prime) >> p_i);
+        const idx s_prime_low_c =
+            static_cast<idx>(static_cast<std::size_t>(s_prime) &
+                             static_cast<std::size_t>(low_mask));
+        const idx c0 = static_cast<idx>(
+            (static_cast<std::size_t>(s_prime_high_c) << p_i_plus_1) |
+            static_cast<std::size_t>(s_prime_low_c));
         const idx c1 = c0 + s_i;
 
         const bool col_ctrl = control_is_met(c0);
@@ -671,7 +703,7 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
     const idx ctrl_size = static_cast<idx>(ctrl.size());
 #ifndef NDEBUG
     const idx D = static_cast<idx>(state.rows());
-    const idx D_expected = (1ULL << n);
+    const idx D_expected = static_cast<idx>(std::size_t{1} << n);
     assert(D == D_expected && D == static_cast<idx>(state.cols()) &&
            "State must be a square matrix sized 2^n x 2^n");
 
@@ -707,11 +739,12 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
     const ComputeBlockType U = A.template cast<Scalar>().eval();
     const ComputeBlockType U_adj = U.adjoint();
 
-    const idx D_rest = (n >= 2) ? (1ULL << (n - 2)) : 1;
+    const idx D_rest =
+        (n >= 2) ? static_cast<idx>(std::size_t{1} << (n - 2)) : 1;
 
     // Powers of 2 are calculated using the physical (LSB-first) indices.
-    const idx P_i = 1ULL << i_phys;
-    const idx P_j = 1ULL << j_phys;
+    const idx P_i = static_cast<idx>(std::size_t{1} << i_phys);
+    const idx P_j = static_cast<idx>(std::size_t{1} << j_phys);
 
     // --- Control Mask and Expected Pattern Calculation ---
     // The mask check must be done against the global index (Big Endian).
@@ -722,7 +755,7 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
         const idx c = ctrl[c_idx];
         const idx j_c =
             n - 1 - c; // Big-endian bit position for control qubit c
-        const idx bit = (1ULL << j_c);
+        const idx bit = static_cast<idx>(std::size_t{1} << j_c);
 
         if (shift[c_idx] == 0) {
             expected_pattern_for_ones |= bit;
@@ -733,9 +766,11 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
 
     // Helper to check if a base index satisfies the control conditions
     auto control_is_met = [&](idx k_base) {
-        return ((k_base & expected_pattern_for_ones) ==
-                expected_pattern_for_ones) &&
-               ((k_base & expected_zero_mask) == 0);
+        return ((static_cast<std::size_t>(k_base) &
+                 static_cast<std::size_t>(expected_pattern_for_ones)) ==
+                static_cast<std::size_t>(expected_pattern_for_ones)) &&
+               ((static_cast<std::size_t>(k_base) &
+                 static_cast<std::size_t>(expected_zero_mask)) == 0);
     };
 
     // Block Iteration (Parallelized)
@@ -756,10 +791,11 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
         for (idx q = 0; q < n;
              ++q) { // q is the physical index (0=LSB, n-1=MSB)
             if (q != i_phys && q != j_phys) {
-                if (current_r & 1) {
-                    r_base_row |= (1ULL << q);
+                if (static_cast<std::size_t>(current_r) & std::size_t{1}) {
+                    r_base_row |= static_cast<idx>(std::size_t{1} << q);
                 }
-                current_r >>= 1;
+                current_r =
+                    static_cast<idx>(static_cast<std::size_t>(current_r) >> 1);
             }
         }
 
@@ -785,10 +821,11 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
             // Calculate the 'base' index for the column block (rest qubits)
             for (idx q = 0; q < n; ++q) {
                 if (q != i_phys && q != j_phys) {
-                    if (current_c & 1) {
-                        r_base_col |= (1ULL << q);
+                    if (static_cast<std::size_t>(current_c) & std::size_t{1}) {
+                        r_base_col |= static_cast<idx>(std::size_t{1} << q);
                     }
-                    current_c >>= 1;
+                    current_c = static_cast<idx>(
+                        static_cast<std::size_t>(current_c) >> 1);
                 }
             }
 
@@ -866,7 +903,7 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     const idx k = target.size(); // Gate qubits
 
     // Calculate block dimension D_k = 2^k
-    const idx D_k = (k == 0) ? 1 : (1ULL << k);
+    const idx D_k = (k == 0) ? 1 : static_cast<idx>(std::size_t{1} << k);
 
     // Input Validation
     // Standard dimension checks
@@ -927,7 +964,7 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     for (idx l = 0; l < k; ++l) {
         const idx phys_idx = n - target[l] - 1; // Physical index (0=LSB)
         target_phys[l] = phys_idx;
-        P_gate_basis[l] = 1ULL << phys_idx;
+        P_gate_basis[l] = static_cast<idx>(std::size_t{1} << phys_idx);
     }
 
     // 2. Determine the physical indices that are *not* in the target set (the
@@ -935,7 +972,8 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     std::vector<idx> rest_phys = fast_complement(target_phys, n);
 
     // Size of the N-k qubit subsystem
-    const idx D_rest = (n >= k) ? (1ULL << (n - k)) : 1;
+    const idx D_rest =
+        (n >= k) ? static_cast<idx>(std::size_t{1} << (n - k)) : 1;
 
     // --- Control Mask and Expected Pattern Calculation ---
     // Masks are based on global index positions (MSB-first logic).
@@ -945,7 +983,8 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
 
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
-        const idx bit = (1ULL << (n - 1 - c)); // Global index position marker
+        const idx bit = static_cast<idx>(
+            std::size_t{1} << (n - 1 - c)); // Global index position marker
 
         if (shift[c_idx] == 0) { // Positive control (|1>)
             expected_pattern_for_ones |= bit;
@@ -957,9 +996,11 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
     // Helper to check if a global base index satisfies the control conditions
     auto control_is_met = [&](idx k_base) {
         // All required '1' bits are set AND all required '0' bits are unset
-        return ((k_base & expected_pattern_for_ones) ==
-                expected_pattern_for_ones) &&
-               ((k_base & expected_zero_mask) == 0);
+        return ((static_cast<std::size_t>(k_base) &
+                 static_cast<std::size_t>(expected_pattern_for_ones)) ==
+                static_cast<std::size_t>(expected_pattern_for_ones)) &&
+               ((static_cast<std::size_t>(k_base) &
+                 static_cast<std::size_t>(expected_zero_mask)) == 0);
     };
 
     // --- Matrix Setup ---
@@ -986,10 +1027,11 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
         idx r_base_row = 0;
         idx current_r = r;
         for (const auto& q_phys : rest_phys) {
-            if (current_r & 1) {
-                r_base_row |= (1ULL << q_phys);
+            if (static_cast<std::size_t>(current_r) & std::size_t{1}) {
+                r_base_row |= static_cast<idx>(std::size_t{1} << q_phys);
             }
-            current_r >>= 1;
+            current_r =
+                static_cast<idx>(static_cast<std::size_t>(current_r) >> 1);
         }
 
         const bool row_ctrl = control_is_met(r_base_row);
@@ -1001,7 +1043,7 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
             for (idx l = 0; l < k; ++l) {
                 // l=0 is target[0], which corresponds to MSB in the gate
                 idx bit_pos = k - 1 - l;
-                if ((m >> bit_pos) & 1) {
+                if ((static_cast<std::size_t>(m) >> bit_pos) & std::size_t{1}) {
                     target_component += P_gate_basis[l];
                 }
             }
@@ -1015,10 +1057,11 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
             idx r_base_col = 0;
             idx current_c = c;
             for (const auto& q_phys : rest_phys) {
-                if (current_c & 1) {
-                    r_base_col |= (1ULL << q_phys);
+                if (static_cast<std::size_t>(current_c) & std::size_t{1}) {
+                    r_base_col |= static_cast<idx>(std::size_t{1} << q_phys);
                 }
-                current_c >>= 1;
+                current_c =
+                    static_cast<idx>(static_cast<std::size_t>(current_c) >> 1);
             }
 
             const bool col_ctrl = control_is_met(r_base_col);
@@ -1038,7 +1081,8 @@ apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
                 idx target_component = 0;
                 for (idx l = 0; l < k; ++l) {
                     idx bit_pos = k - 1 - l;
-                    if ((m >> bit_pos) & 1) {
+                    if ((static_cast<std::size_t>(m) >> bit_pos) &
+                        std::size_t{1}) {
                         target_component += P_gate_basis[l];
                     }
                 }

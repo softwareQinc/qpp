@@ -78,7 +78,7 @@ apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
     assert(rA.rows() == rA.cols() && "Gate A must be a square matrix");
     assert(rA.rows() == 2 && "Aggressively optimized for qubits (d=2) only");
 
-    idx D = 1ULL << n; // Total dimension 2^n
+    idx D = static_cast<idx>(std::size_t{1} << n); // Total dimension 2^n
     assert(static_cast<idx>(rstate.rows()) == D &&
            "State vector dimension mismatch with 2^n");
 
@@ -100,7 +100,8 @@ apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
     idx ctrl_val = 0;
     const idx ctrl_size = static_cast<idx>(ctrl.size());
     for (idx i = 0; i < ctrl_size; ++i) {
-        idx bit = 1ULL << (n - 1 - ctrl[i]); // MSB convention index
+        idx bit = static_cast<idx>(
+            std::size_t{1} << (n - 1 - ctrl[i])); // MSB convention index
         ctrl_mask |= bit;
         if (shift[i] == 0) {
             ctrl_val |= bit; // Default to triggering on |1>
@@ -117,11 +118,13 @@ apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
     dyn_col_vect<typename Derived1::Scalar> result = rstate;
 
     for (idx t : target) {
-        idx target_bit = 1ULL << (n - 1 - t);
+        idx target_bit = static_cast<idx>(std::size_t{1} << (n - 1 - t));
         idx fixed_mask = ctrl_mask | target_bit;
 
-        idx free_mask = ((1ULL << n) - 1) & ~fixed_mask;
-        idx num_t_active = 1ULL << (n - ctrl_size - 1);
+        idx free_mask = static_cast<idx>(((std::size_t{1} << n) - 1) &
+                                         ~static_cast<std::size_t>(fixed_mask));
+        idx num_t_active =
+            static_cast<idx>(std::size_t{1} << (n - ctrl_size - 1));
 
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
@@ -129,15 +132,18 @@ apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
 #endif // QPP_OPENMP
         for (idx i = 0; i < num_t_active; ++i) {
             // Software PDEP bit-scattering
-            idx res = 0, val = i, m = free_mask, pos = 0;
+            std::size_t res = 0;
+            std::size_t val = static_cast<std::size_t>(i);
+            std::size_t m = static_cast<std::size_t>(free_mask);
+            std::size_t pos = 0;
             while (m) {
-                if (val & (1ULL << pos)) {
-                    res |= (m & -m);
+                if (val & (std::size_t{1} << pos)) {
+                    res |= (m & (~m + 1));
                 }
                 m &= m - 1;
                 pos++;
             }
-            idx i0 = res | ctrl_val;
+            idx i0 = static_cast<idx>(res) | ctrl_val;
             idx i1 = i0 | target_bit;
 
             auto v0 = result(i0);
@@ -171,7 +177,7 @@ apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
 
     const expr_t<Derived1>& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
-    idx D = 1ULL << n; // Total dimension 2^n
+    idx D = static_cast<idx>(std::size_t{1} << n); // Total dimension 2^n
 
     // ==========================================
     // ASSERTIONS (Zero runtime overhead in Release)
@@ -206,7 +212,8 @@ apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
     idx ctrl_val = 0;
     const idx ctrl_size = static_cast<idx>(ctrl.size());
     for (idx i = 0; i < ctrl_size; ++i) {
-        idx bit = 1ULL << (n - 1 - ctrl[i]); // MSB convention index
+        idx bit = static_cast<idx>(
+            std::size_t{1} << (n - 1 - ctrl[i])); // MSB convention index
         ctrl_mask |= bit;
         if (shift[i] == 0) {
             ctrl_val |= bit; // Default to triggering on |1>
@@ -226,11 +233,13 @@ apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
     auto b10 = std::conj(a10), b11 = std::conj(a11);
 
     for (idx t : target) {
-        idx target_bit = 1ULL << (n - 1 - t);
+        idx target_bit = static_cast<idx>(std::size_t{1} << (n - 1 - t));
         idx fixed_mask = ctrl_mask | target_bit;
 
-        idx free_mask = ((1ULL << n) - 1) & ~fixed_mask;
-        idx num_t_active = 1ULL << (n - ctrl_size - 1);
+        idx free_mask = static_cast<idx>(((std::size_t{1} << n) - 1) &
+                                         ~static_cast<std::size_t>(fixed_mask));
+        idx num_t_active =
+            static_cast<idx>(std::size_t{1} << (n - ctrl_size - 1));
 
         // Precalculate address pairs to share between Row/Col operations
         std::vector<std::pair<idx, idx>> active_pairs(num_t_active);
@@ -240,15 +249,18 @@ apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
 #pragma omp parallel for
 #endif // QPP_OPENMP
         for (idx i = 0; i < num_t_active; ++i) {
-            idx res = 0, val = i, m = free_mask, pos = 0;
+            std::size_t res = 0;
+            std::size_t val = static_cast<std::size_t>(i);
+            std::size_t m = static_cast<std::size_t>(free_mask);
+            std::size_t pos = 0;
             while (m) {
-                if (val & (1ULL << pos)) {
-                    res |= (m & -m);
+                if (val & (std::size_t{1} << pos)) {
+                    res |= (m & (~m + 1));
                 }
                 m &= m - 1;
                 pos++;
             }
-            idx i0 = res | ctrl_val;
+            idx i0 = static_cast<idx>(res) | ctrl_val;
             active_pairs[i] = {i0, i0 | target_bit};
         }
 

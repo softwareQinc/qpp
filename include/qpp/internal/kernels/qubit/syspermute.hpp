@@ -75,7 +75,8 @@ syspermute_psi_kq(const Eigen::MatrixBase<Derived>& A,
     // Define the bit-permutation logic directly in a block to be used inside
     // the loop to avoid lambda overhead.
     auto permute_bits = [&inv_perm, n](idx old_index) noexcept -> idx {
-        idx new_index = 0;
+        std::size_t new_index = 0;
+        const std::size_t old_index_sz = static_cast<std::size_t>(old_index);
         for (idx k = 0; k < n; ++k) {
             // k is the new qubit position (new bit position, 0 to n-1)
             // inv_perm[k] is the old qubit position (old bit position, 0 to
@@ -83,12 +84,12 @@ syspermute_psi_kq(const Eigen::MatrixBase<Derived>& A,
             idx old_pos = inv_perm[k];
 
             // 1. Extract the bit at old_pos in the old_index
-            idx bit = (old_index >> old_pos) & 1;
+            std::size_t bit = (old_index_sz >> old_pos) & std::size_t{1};
 
             // 2. Set this bit at the new_pos (k) in the new_index
             new_index |= (bit << k);
         }
-        return new_index;
+        return static_cast<idx>(new_index);
     };
 
 #ifdef QPP_OPENMP
@@ -135,7 +136,8 @@ syspermute_rho_kq(const Eigen::MatrixBase<Derived>& A,
     // Define the bit-permutation logic directly in a block to be used inside
     // the loop to avoid lambda overhead.
     auto permute_bits = [&inv_perm, n](idx old_index) noexcept -> idx {
-        idx new_index = 0;
+        std::size_t new_index = 0;
+        const std::size_t old_index_sz = static_cast<std::size_t>(old_index);
         for (idx k = 0; k < n; ++k) {
             // k is the new qubit position (new bit position, 0 to n-1)
             // inv_perm[k] is the old qubit position (old bit position, 0 to
@@ -143,12 +145,12 @@ syspermute_rho_kq(const Eigen::MatrixBase<Derived>& A,
             idx old_pos = inv_perm[k];
 
             // 1. Extract the bit at old_pos in the old_index
-            idx bit = (old_index >> old_pos) & 1;
+            std::size_t bit = (old_index_sz >> old_pos) & std::size_t{1};
 
             // 2. Set this bit at the new_pos (k) in the new_index
             new_index |= (bit << k);
         }
-        return new_index;
+        return static_cast<idx>(new_index);
     };
 
 #ifdef QPP_OPENMP

@@ -79,7 +79,7 @@ ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
     assert(it == tmp.end() && "target contains duplicate subsystem indices");
 
     // D must equal 2^n for qubits
-    idx D_expected = (1ULL << n);
+    idx D_expected = static_cast<idx>(std::size_t{1} << n);
     assert(static_cast<idx>(rA.rows()) == D_expected && "A/n size mismatch");
 #endif
 
@@ -98,9 +98,9 @@ ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
     }
 
     // build mask M: bit k set means subsystem k is transposed
-    idx M = 0;
+    std::size_t M = 0;
     for (idx k : target) {
-        M |= (1ULL << k);
+        M |= (std::size_t{1} << k);
     }
 
     dyn_mat<scalar_t> result(D, D);
@@ -111,8 +111,10 @@ ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
 
     // worker lambda computes rho_PT(i,j) = psi[i_T] * conj(psi[j_T])
     auto worker = [&](idx i, idx j) noexcept -> scalar_t {
-        idx i_T = (i & (~M)) | (j & M);
-        idx j_T = (j & (~M)) | (i & M);
+        std::size_t i_sz = static_cast<std::size_t>(i);
+        std::size_t j_sz = static_cast<std::size_t>(j);
+        idx i_T = static_cast<idx>((i_sz & (~M)) | (j_sz & M));
+        idx j_T = static_cast<idx>((j_sz & (~M)) | (i_sz & M));
         return conj(psi(i_T)) * psi(j_T);
     };
 
@@ -162,7 +164,7 @@ ptranspose_rho_kq(const Eigen::MatrixBase<Derived>& A,
                        // check_square_mat/MatrixNotSquareNorCvector
     // check_dims_match_mat replaced by check that D = 2^n
 #ifndef NDEBUG
-    idx D_expected = (1ULL << n);
+    idx D_expected = static_cast<idx>(std::size_t{1} << n);
     assert(static_cast<idx>(rA.rows()) == D_expected && "A/n size mismatch");
 #endif
 
@@ -182,17 +184,19 @@ ptranspose_rho_kq(const Eigen::MatrixBase<Derived>& A,
     // OPTIMIZATION: Precompute the partial transpose mask (M)
     // The mask M has a '1' at the bit positions (subsystem indices) specified
     // in target. For qubits, the subsystem index is directly the bit position.
-    idx M = 0;
+    std::size_t M = 0;
     for (idx k : target) {
-        M |= (1ULL << k);
+        M |= (std::size_t{1} << k);
     }
 
     auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
         // i' = (i & ~M) | (j & M)
-        idx i_T = (i & (~M)) | (j & M);
+        std::size_t i_sz = static_cast<std::size_t>(i);
+        std::size_t j_sz = static_cast<std::size_t>(j);
+        idx i_T = static_cast<idx>((i_sz & (~M)) | (j_sz & M));
 
         // j' = (j & ~M) | (i & M)
-        idx j_T = (j & (~M)) | (i & M);
+        idx j_T = static_cast<idx>((j_sz & (~M)) | (i_sz & M));
 
         // result(i, j) = A_j'i' (Partial transpose swaps row and column indices
         // of non-target blocks)
