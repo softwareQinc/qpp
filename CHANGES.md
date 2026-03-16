@@ -6,7 +6,7 @@
   `qpp::ptranspose()`, and `qpp::syspermute()`
 - **pyqpp** is now feature complete, providing Python users with full access to
   the **Quantum++** API
-- Switched to the **MAJOR.MINOR.PATCH** release versioning scheme:
+- Switched to semantic versioning **MAJOR.MINOR.PATCH** :
   - **MAJOR** — introduces significant changes that break backward compatibility
   - **MINOR** — may include limited or minor compatibility breaks
   - **PATCH** — fully backward-compatible fixes and improvements
