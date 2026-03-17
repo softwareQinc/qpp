@@ -36,7 +36,7 @@ math(EXPR QPP_VERSION_NUM
   ${PROJECT_VERSION_PATCH}")
 
 # Define QPP_VERSION_STR as the unquoted string representation of
-# ${PROJECT_VERSION}, e.g. 7.0.0
+# ${PROJECT_VERSION}, e.g., 7.0.0
 set(QPP_VERSION_STR ${PROJECT_VERSION})
 
 # ----------------------------------------------------------------------------
@@ -134,7 +134,7 @@ endif()
 # them via relative paths - consumers can use the build directory without
 # installing first
 #
-# Note: Exported target files (e.g. qpp_targets.cmake) are intentionally
+# Note: Exported target files (e.g., qpp_targets.cmake) are intentionally
 # generated separately via `export(EXPORT ...)` and must not be copied
 # ----------------------------------------------------------------------------
 message(STATUS "Staging auxiliary CMake files for development prefix...")

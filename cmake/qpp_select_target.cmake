@@ -17,7 +17,7 @@
 # target
 #
 # [feature_name] Optional human-readable feature name used only for status
-# messages (e.g. "OpenMP", "MATLAB", "OpenQASM")
+# messages (e.g., "OpenMP", "MATLAB", "OpenQASM")
 #
 # Example: qpp_select_target(QPP_TARGET "OpenMP")
 # target_link_libraries(my_target PRIVATE ${QPP_TARGET})

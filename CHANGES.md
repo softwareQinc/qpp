@@ -1,4 +1,10 @@
-# Version 7.0.0 - 15 March 2026
+# Changelog
+
+## Upcoming release
+
+- ...
+
+## Version 7.0.0 - 15 March 2026
 
 - Significant performance improvements (10x to 1000x) for qubit state
   manipulation and qubit circuit execution through extensive optimizations of
@@ -56,7 +62,7 @@
 - Internal compiler flags are not propagating to downstream projects anymore,
   see [#187](https://github.com/softwareQinc/qpp/issues/187)
 
-# Version 6.0 - 14 April 2025
+## Version 6.0 - 14 April 2025
 
 - Breaking change: renamed `qpp/qpp.h` to `qpp/qpp.hpp`
 - New feature: support for post-selection in
@@ -129,7 +135,7 @@
 - Added `qpp::read_from_string()` to `qpp/qasm/qasm.hpp` and an associated
   pyqpp wrapper function
 
-# Version 5.1 - 1 March 2024
+## Version 5.1 - 1 March 2024
 
 - Replaced `CHANGES` by `CHANGES.md`,
   as we now use Markdown format to keep track of changes in new releases
@@ -196,7 +202,7 @@
 - Introduced corresponding `pyqpp.QKetDummyEngine` and
   `pyqpp.QDensityDummyEngine` in **pyqpp**
 
-# Version 5.0 - 10 January 2024
+## Version 5.0 - 10 January 2024
 
 - All header files are moved into `include/qpp`, so to include the header
   one now must `#include "qpp/qpp.h"` (and similarly for other header files
@@ -234,23 +240,23 @@
   `std::optional<std::vector<idx>>`
 - Bugfix in `qpp::QCircuit::compose_circuit()`
 
-# Version 4.3.4 - 14 August 2023
+## Version 4.3.4 - 14 August 2023
 
 - Docker update, see the `docker` directory
 - Fix in `types.hpp` for defaulting types when not using CMake
 
-# Version 4.3.3 - 8 August 2023
+## Version 4.3.3 - 8 August 2023
 
 - Minor bugfix in **pyqpp** `setup.py` that prevented pip install from remote
 - Bugfix in `qpp::QEngine::execute()` that prevented setting the initial
   state of the engine to a custom state
 
-# Version 4.3.2 - 12 June 2023
+## Version 4.3.2 - 12 June 2023
 
 - This is a maintenance release
 - Compiling errors fixed on SunOS/OpenIndiana
 
-# Version 4.3.1 - 5 June 2023
+## Version 4.3.1 - 5 June 2023
 
 - CMake dependent flag name changes. These flags can be used in standalone
   projects when configuring with CMake.
@@ -263,14 +269,14 @@
 - Compile-time error fix when using `FP_TYPE="long double"` with
   `QASMTOOLS_QASM2_SPECS=ON`
 
-# Version 4.3 - 26 May 2023
+## Version 4.3 - 26 May 2023
 
 - This is a maintenance release
 - Fixed **pyqpp** installation on Windows under MSVC
 - Migrated all continuous integration to GitHub actions
 - Minor updates in qasmtools
 
-# Version 4.2 - 13 May 2023
+## Version 4.2 - 13 May 2023
 
 - **Quantum++** is now available on Homebrew (macOS/Linux), and can be
   installed with `brew install quantum++`
@@ -312,7 +318,7 @@
   `typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr`
 - CMake minimum required version bumped to 3.15
 
-# Version 4.1 - 2 May 2023
+## Version 4.1 - 2 May 2023
 
 - Implemented `classes/circuits/circuits.hpp`
   - `qpp::qpe_circuit()` - Quantum phase estimation circuit
@@ -369,13 +375,13 @@
   `src`/`include` directory structure that mirrors the qpp source code
   structure
 
-# Version 4.0.1 - 2 April 2023
+## Version 4.0.1 - 2 April 2023
 
 - This is a maintenance release with minor changes
 - Updated pybind11 to version 2.10.4
 - Bugfix in `qpp::QFT()`/`TFQ()` when applied to density matrices
 
-# Version 4.0 - 20 March 2023
+## Version 4.0 - 20 March 2023
 
 - Major performance improvement in `qpp::QEngine::execute()`, which now takes
   a second default argument `bool try_sampling = true`; if possible, the
@@ -455,7 +461,7 @@
 - Bumped
   [GoogleTest version to 1.12.1](https://github.com/google/googletest/commit/58d77fa8070e8cec2dc1ed015d66b454c8d78850)
 
-# Version 3.1 - 11 January 2022
+## Version 3.1 - 11 January 2022
 
 - Added **pyqpp**, a Python wrapper around **Quantum++**. See
   [**pyqpp** documentation](https://github.com/softwareQinc/qpp/wiki/8.-pyqpp)
@@ -481,7 +487,7 @@
   representation. That is, `qpp::BitCircuit` assumes big-endian order.
 - Bugfixes
 
-# Version 3.0 - 5 October 2021
+## Version 3.0 - 5 October 2021
 
 - Major release, bumped up C++ standard to C++17
 - Decoupled the OpenQASM parser from the main codebase. A hard copy of
@@ -502,7 +508,7 @@
   of singular value decomposition, thanks @antoine-bussy
   ([https://github.com/antoine-bussy](https://github.com/antoine-bussy))
 
-# Version 2.7 - 1 August 2021
+## Version 2.7 - 1 August 2021
 
 - Added installation support and auto package detection via CMake
   `find_package(qpp REQUIRED)`
@@ -559,7 +565,7 @@
 - Minor refactorings, code simplifications and bugfixes
 - Removed Travis CI
 
-# Version 2.6 - 9 January 2021
+## Version 2.6 - 9 January 2021
 
 - Added Quantum Phase Estimation low-level API example in
   `examples/qpe.cpp`, courtesy of [@ryanhill1](https://github.com/ryanhill1),
@@ -585,7 +591,7 @@
 - Documentation improvements in `classes/circuits/circuits.hpp`
 - Updated Travis CI configuration
 
-# Version 2.5 - 28 November 2020
+## Version 2.5 - 28 November 2020
 
 - Significant improvements in `qpp::QEngine::execute()` for multiple runs
 - Changed all header extensions from `.h` to `.hpp` (except for `qpp.h`)
@@ -595,7 +601,7 @@
   - OpenQASM bugfixes
   - Renamed `master` branch to `main`
 
-# Version 2.4 - 13 May 2020
+## Version 2.4 - 13 May 2020
 
 - Enabled documentation searching by setting `SEARCHENGINE = ON` in
   `Doxyfile`
@@ -629,7 +635,7 @@
 - Implemented `qpp::QEngine::set_dits()` which sets all engine's classical
   dits at once
 
-# Version 2.3 - 2 May 2020
+## Version 2.3 - 2 May 2020
 
 - Added the following examples in the `examples` directory
   - `qram.cpp` - quantumly-accessible Random Access Memory over
@@ -653,7 +659,7 @@
 - Bugfix in `qpp::QCircuit::add_circuit()`
 - Fixed all Doxygen warnings (except spurious ones)
 
-# Version 2.2 - 14 April 2020
+## Version 2.2 - 14 April 2020
 
 - Updated Google Test to version 1.10.0
 - Removed the Visual Studio solution (since it can be automatically
@@ -684,7 +690,7 @@
 - Changed the CMake flag `EIGEN3_INCLUDE_DIR` to `EIGEN3_INSTALL_DIR` so it is
   consistent with the `MATLAB_INSTALL_DIR` CMake flag
 
-# Version 2.1 - 14 March 2020 (3.14.2020 Pi day release)
+## Version 2.1 - 14 March 2020 (3.14.2020 Pi day release)
 
 - Migrated the repository to
   [https://github.com/softwareQinc/qpp](https://github.com/softwareQinc/qpp)
@@ -705,7 +711,7 @@
   - `qpp::States::j() const` - |j⟩ computational basis state of a single
     qudit
 
-# Version 2.0 - 24 August 2019
+## Version 2.0 - 24 August 2019
 
 - Added support for OpenQASM via the interface `qasm/qasm.h` containing:
   - `qpp::QCircuit qpp::qasm::read_from_file(const std::string& fname)` - reads
@@ -756,7 +762,7 @@
 - Removed the documentation directory (`doc`). To generate the documentation
   in HTML/LaTeX formats, run `doxygen` from the root of the project.
 
-# Version 1.3 - 25 July 2019
+## Version 1.3 - 25 July 2019
 
 - Minimum required CMake version is now 3.2
 - Added MSVC support for CMake
@@ -781,7 +787,7 @@
   - `get_gate_count()` - classical reversible circuit gate count
   - `get_depth()` - classical reversible circuit gate depth
 
-# Version 1.2 - 10 February 2019
+## Version 1.2 - 10 February 2019
 
 - Added new function in `functions.h`:
   - `qpp::normalize()` - normalizes a state vector (ket or bra) or density
@@ -810,7 +816,7 @@
 - Added `std::string qpp::Gates::get_name(const cmat&)` function which returns
   the names of the most common (one, two and three) qubit gates
 - Added new header file `classes/noise.h` and corresponding classes for
-  simulating quantum noise (e.g. depolarizing, dephasing etc.) and a
+  simulating quantum noise (e.g., depolarizing, dephasing etc.) and a
   corresponding simple example in `examples/noise.cpp`
 - Added new abstract class `qpp::IJSON` in `classes/idisplay.h` for very
   basic JSON serialization support, and corresponding
@@ -830,7 +836,7 @@
   `boost::hash_combine()`, see
   https://www.boost.org/doc/libs/1_69_0/doc/html/hash/reference.html#boost.hash_combine
 
-# Version 1.1 - 26 November 2018
+## Version 1.1 - 26 November 2018
 
 - Added new functions in `operations.h`:
   - `qpp::QFT()` - qudit quantum Fourier transform (includes qubit QFT as a
@@ -846,7 +852,7 @@
 - Added a suite of stress tests in `stress_tests` (only for POSIX systems)
 - Added Qiskit and QuTiP stress tests in `stress_tests/python`
 
-# Version 1.0 - 3 July 2018
+## Version 1.0 - 3 July 2018
 
 - Added full support for reversible classical circuits, added
   `classes/reversible.h` header file that contains the following classes:
@@ -862,13 +868,13 @@
 - Minor bugfix in `qpp::Exception::what()`, thanks Nick Lewycky for spotting it
 - Updated the Wiki
 
-# Version 1.0-rc4 - Release Candidate 4, 24 January 2018
+## Version 1.0-rc4 - Release Candidate 4, 24 January 2018
 
 - Changed `qpp::ket operator "" \_q()` to `qpp::ket operator "" \_ket()`
 - Added `qpp::bra operator "" \_bra()` and `qpp::cmat operator "" \_prj()`
 - Updated documentation
 
-# Version 1.0-rc3 - Release Candidate 3, 21 January 2018
+## Version 1.0-rc3 - Release Candidate 3, 21 January 2018
 
 - License change from GPL to MIT
 - Added Visual Studio 2017 solution
@@ -881,7 +887,7 @@
   multi-partite qubit kets
 - Added comprehensive Wiki instead of the quick starting guide
 
-# Version 1.0-rc2 - Release Candidate 2, 6 September 2017
+## Version 1.0-rc2 - Release Candidate 2, 6 September 2017
 
 - Added serialization capabilities for the PRNG in `qpp::RandomDevices` from
   `classes/random_devices.h`:
@@ -893,7 +899,7 @@
   package manager). If not, it can be specified manually by passing the
   `-DEIGEN3_INCLUDE_DIR=/path/to/eigen3` flag to the CMake command line.
 
-# Version 1.0-rc1 - Release Candidate 1, 11 November 2016
+## Version 1.0-rc1 - Release Candidate 1, 11 November 2016
 
 - Slight performance improvements (lambda workers do not capture by value
   anymore)
@@ -902,7 +908,7 @@
   `qpp::exception::Exception`. All exception classes are now in their separate
   namespace `qpp::exception`.
 
-# Version 1.0.0-beta4 - 2 November 2016
+## Version 1.0.0-beta4 - 2 November 2016
 
 - Added new functions in `classes/states.h`:
   - `qpp::States::zero()` - zero state of n qudits
@@ -919,7 +925,7 @@
   to `qpp::load()` and `qpp::save()`.
 - Almost full code coverage via unit testing
 
-# Version 1.0.0-beta3 - 22 October 2016
+## Version 1.0.0-beta3 - 22 October 2016
 
 - Added support for Travis CI continuous integration
 - Added new functions in `classes/states.h`:
@@ -928,14 +934,14 @@
   - `qpp::randprob()` - random probability vector uniformly distributed
     over the probability simplex
 
-# Version 1.0.0-beta2 - 13 October 2016
+## Version 1.0.0-beta2 - 13 October 2016
 
 - Updated to GoogleTest 1.8.0 for unit testing
 - Added d = 2 overloads for all functions that take a list of dimensions
   as one of their arguments
 - Additional code sanitizing and unit testing
 
-# Version 1.0.0-beta1 - 10 October 2016
+## Version 1.0.0-beta1 - 10 October 2016
 
 - GoogleMock 1.7.0 is now included in the project for portable unit testing
   (see the README.md file for more details)
@@ -950,13 +956,13 @@
   - `qpp::modmul()` - modular multiplication that avoids overflows
 - Additional unit testing, added unit testing skeleton for all codebase
 
-# Version 0.8.8.2 - 3 October 2016
+## Version 0.8.8.2 - 3 October 2016
 
 - This is a bugfix release
 - Compile-time bugfix in `qpp::measure_seq()` due to trying to modify a const
   copy, which should have been non-const
 
-# Version 0.8.8 - 30 September 2016
+## Version 0.8.8 - 30 September 2016
 
 - Added OpenMP support for clang >= 3.7 in `CmakeLists.txt`
 - Required minimum CMake version is now 3.0
@@ -975,14 +981,14 @@
   - `qpp::egcd()` - extended greatest common divisor algorithm
   - `qpp::modinv()` - modular inverse of a mod p
 
-# Version 0.8.6 - 1 November 2015
+## Version 0.8.6 - 1 November 2015
 
 - Critical bugfix in `qpp::applyCTRL()`, which was failing before for
   control gates with 2 or more controls. Added unit test in
   `unit_tests/testing.cpp`.
 - Removed `macros.h` preprocessor debug macros header added in v0.8.4
 
-# Version 0.8.4 - 14 October 2015
+## Version 0.8.4 - 14 October 2015
 
 - Added `macros.h` preprocessor debug macros header, containing:
   - `PRINT(x)` - `std::cout << (x)`
@@ -999,7 +1005,7 @@
   specified as template parameters, defaulted to
   `std::chrono::duration<double>` and `std::chrono::steady_clock`, respectively
 
-# Version 0.8.2 - 20 May 2015
+## Version 0.8.2 - 20 May 2015
 
 - Added `traits.h` type traits header file with the following type traits:
   - `qpp::is_iterable<>` - checks for iterable STL-like containers
@@ -1017,7 +1023,7 @@
   - `qpp::var()` - variance
 - Added new examples in the directory `examples`
 
-# Version 0.8 - 8 May 2015
+## Version 0.8 - 8 May 2015
 
 - Added new data type aliases in `types.h`:
   - `bigint` - Big integer, alias for `long long int`
@@ -1049,26 +1055,26 @@
     `std::thread_local`)
   - uses OpenMP only if the compiler is detected as GCC
 
-# Version 0.7 - 22 April 2015
+## Version 0.7 - 22 April 2015
 
 - Marked all non-template functions defined in headers as `inline` and all
   singletons as `static` since otherwise including `qpp.h` in separate
   compilation units led to linker errors due to duplicated symbols.
 
-# Version 0.6 - 16 April 2015
+## Version 0.6 - 16 April 2015
 
 - Reverted changes to `qpp::internal::Singleton<T>` (no need anymore for
   `static void operator delete(void*)`), but clients have to explicitly mark
   both constructor and destructor private.
 - Minor cosmetic changes.
 
-# Version 0.5 - 19 March 2015
+## Version 0.5 - 19 March 2015
 
 - Bugfix in class `qpp::internal::Singleton<T>` which allowed deleting the
   instance via a pointer. Now `static void operator delete(void*)` is marked
   private.
 
-# Version 0.4 - 8 March 2015
+## Version 0.4 - 8 March 2015
 
 - Added `noexcept` specification where suitable
 - Added the following exception types to the `qpp::Exception::Type` strong
@@ -1090,17 +1096,17 @@
 - Added support for unit testing via Google Mock/Google Test, see
   `unit_tests/testing.cpp`
 
-# Version 0.3 - 15 February 2015
+## Version 0.3 - 15 February 2015
 
 - Added `qpp::internal::Singleton<T>::get_thread_local_instance()`
 
-# Version 0.2 - 26 January 2015
+## Version 0.2 - 26 January 2015
 
 - Minor fixes
 - Added prime-number related functions in `number_theory.h`:
   - `qpp::factors()` - prime factors of positive integer
   - `qpp::isprime()` - primality test
 
-# Version 0.1 - 21 December 2014
+## Version 0.1 - 21 December 2014
 
 - First stable version, initial public release

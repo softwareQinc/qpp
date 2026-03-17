@@ -64,6 +64,8 @@ The command above builds only the example
 [`examples/bb84.cpp`](https://github.com/softwareQinc/qpp/tree/main/examples/bb84.cpp)
 and outputs the executable `./build/examples/bb84[.exe]`.
 
+---
+
 ## Unit tests
 
 **Quantum++** provides a set of
@@ -90,6 +92,8 @@ Tu run the unit tests, execute
 ```shell
 ctest --test-dir build
 ```
+
+---
 
 ## Benchmarks
 
@@ -204,9 +208,10 @@ project's root directory.
 
 ```cmake
 cmake_minimum_required(VERSION 3.20)
-project(standalone)
+project(standalone LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # If Quantum++'s installation path was non-standard, i.e., specified by
