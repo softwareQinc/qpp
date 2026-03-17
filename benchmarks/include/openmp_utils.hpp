@@ -12,7 +12,7 @@
 inline int cli_threads = -1;
 
 /**
- * @brief Detects/sets the number of OpenMP threads.
+ * @brief Detects/sets the number of OpenMP threads
  * Priority: 1. CLI (--nq) -> 2. OMP_NUM_THREADS -> 3. System Default
  *
  * @param requested Optional requested thread count; uses cli_threads by
