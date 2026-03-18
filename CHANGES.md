@@ -1,8 +1,8 @@
 # Changelog
 
-## Upcoming release
+## Version 7.0.1 - 18 March 2026
 
-- ...
+- This is a maintenance release, minor bugfixes
 
 ## Version 7.0.0 - 15 March 2026
 
@@ -562,7 +562,7 @@
   normalized multi-partite pure state in the computational basis.
   Behaves like the inverse of `qpp::mket()`.
 - Removed `cmath_cygwin.patch` as the problem was fixed since 2016.
-- Minor refactorings, code simplifications and bugfixes
+- Minor refactoring, code simplification and bugfixes
 - Removed Travis CI
 
 ## Version 2.6 - 9 January 2021
