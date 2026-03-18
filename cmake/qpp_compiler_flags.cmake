@@ -4,6 +4,8 @@
 include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
 qpp_select_target(QPP_TARGET "qpp_compiler_flags")
 
+# message(STATUS "[qpp_compiler_flags] QPP_TARGET = [${QPP_TARGET}]")
+
 option(QPP_QUBIT_OPTIMIZATIONS "Enable qubit-specific optimizations" ON)
 message(STATUS "Qubit optimizations - ${QPP_QUBIT_OPTIMIZATIONS}")
 
@@ -55,46 +57,50 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}${CMAKE_CONFIGURATION_TYPES}")
 
-# Internal compiler flags/options
+# Internal compiler flags/options.
+# This block should remain the final section of the file.
 #
 # These settings are for in-tree Quantum++ development targets only (examples,
 # unit tests, optional components, pyqpp development, etc.)
+if(TARGET libqpp_internal)
+  target_compile_definitions(
+    libqpp_internal
+    INTERFACE # Debug configuration
+              $<$<CONFIG:Debug>:DEBUG>
+              $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_DEBUG>
+              # Non-Debug configurations
+              $<$<NOT:$<CONFIG:Debug>>:EIGEN_NO_DEBUG>
+              # Enable qubit-specific optimizations if requested
+              $<$<BOOL:${QPP_QUBIT_OPTIMIZATIONS}>:QPP_QUBIT_OPTIMIZATIONS>)
 
-if(NOT TARGET libqpp_internal)
-  return()
+  target_compile_options(
+    libqpp_internal
+    INTERFACE
+      # GCC: use -O0 in Debug builds
+      $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:-O0>
+      #
+      # GCC or Clang warnings
+      $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:
+      -pedantic
+      -Wall
+      -Wextra
+      -Weffc++
+      >
+      #
+      # MSVC warnings
+      $<$<CXX_COMPILER_ID:MSVC>:
+      /W3
+      >
+      #
+      # Use the "no-weak" debugging flag only when debugging under OS X, as gdb
+      # cannot step in template functions when debugging code produced by g++,
+      # see
+      # https://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
+      # $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>,$<PLATFORM_ID:Darwin>>:-fno-weak>
+  )
 endif()
 
-target_compile_definitions(
-  libqpp_internal
-  INTERFACE # Debug configuration
-            $<$<CONFIG:Debug>:DEBUG>
-            $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:_GLIBCXX_DEBUG>
-            # Non-Debug configurations
-            $<$<NOT:$<CONFIG:Debug>>:EIGEN_NO_DEBUG>
-            # Enable qubit-specific optimizations if requested
-            $<$<BOOL:${QPP_QUBIT_OPTIMIZATIONS}>:QPP_QUBIT_OPTIMIZATIONS>)
-
-target_compile_options(
-  libqpp_internal
-  INTERFACE
-    # GCC: use -O0 in Debug builds
-    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>>:-O0>
-    #
-    # GCC or Clang warnings
-    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:
-    -pedantic
-    -Wall
-    -Wextra
-    -Weffc++
-    >
-    #
-    # MSVC warnings
-    $<$<CXX_COMPILER_ID:MSVC>:
-    /W3
-    >
-    #
-    # Use the "no-weak" debugging flag only when debugging under OS X, as gdb
-    # cannot step in template functions when debugging code produced by g++, see
-    # https://stackoverflow.com/questions/23330641/gnu-gdb-can-not-step-into-template-functions-os-x-mavericks
-    # $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Debug>,$<PLATFORM_ID:Darwin>>:-fno-weak>
-)
+# get_target_property(_defs_after ${QPP_TARGET} INTERFACE_COMPILE_DEFINITIONS)
+# message(
+#   STATUS "[qpp_compiler_flags] INTERFACE_COMPILE_DEFINITIONS = [${_defs_after}]"
+# )

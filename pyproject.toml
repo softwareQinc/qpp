@@ -25,7 +25,7 @@ requires = [
 build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
-cmake.define = { __INTERNAL_PYQPP_SCIKIT_BUILD__ = "ON" }
+cmake.define = { __INTERNAL_PYQPP_SCIKIT_BUILD__ = true }
 build.targets = ["pyqpp"]
 install.components = ["python"]
 wheel.packages = ["pyqpp"]

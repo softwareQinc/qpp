@@ -196,21 +196,14 @@ template <typename Derived>
 dyn_col_vect<typename Derived::Scalar>
 ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
    const std::vector<idx>& subsys, idx d = 2) {
-    const dyn_col_vect<typename Derived::Scalar>& rphi = phi.derived();
-    const dyn_col_vect<typename Derived::Scalar>& rpsi = psi.derived();
-
     // EXCEPTION CHECKS
-    if (!internal::check_nonzero_size(rpsi)) {
-        throw exception::ZeroSize("qpp::ip()", "psi");
-    }
-
     // check valid dims
     if (d < 2) {
         throw exception::DimsInvalid("qpp::ip()", "d");
     }
     // END EXCEPTION CHECKS
 
-    idx n = internal::get_num_subsys(static_cast<idx>(rpsi.rows()), d);
+    idx n = internal::get_num_subsys(static_cast<idx>(psi.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
     return ip(phi, psi, subsys, dims);

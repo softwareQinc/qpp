@@ -5,10 +5,10 @@
 #
 # If the internal development target `libqpp_internal` exists (i.e., when
 # building inside the Quantum++ source tree), it is selected. Otherwise, the
-# public installed target `qpp` is used.
+# public installed target `qpp::qpp` is used.
 #
-# This allows the same configuration logic to work correctly in both 
-#   - build-tree usage (examples, tests, optional components) 
+# This allows the same configuration logic to work correctly in both
+#   - build-tree usage (examples, tests, optional components)
 #   - install-tree usage (find_package(qpp))
 #
 # Usage: qpp_select_target(<output_var> [feature_name])
@@ -34,10 +34,10 @@ function(qpp_select_target result_var)
   # Determine which target to use
   if(TARGET libqpp_internal)
     set(target_name libqpp_internal)
-  elseif(TARGET qpp::qpp)
-    set(target_name qpp::qpp)
   elseif(TARGET qpp)
     set(target_name qpp)
+  elseif(TARGET qpp::qpp)
+    set(target_name qpp::qpp)
   else()
     message(
       FATAL_ERROR "Quantum++: No target found for ${feature_name} configuration"

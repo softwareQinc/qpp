@@ -7,9 +7,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Detect Quantum++. Prefer in-tree building from the Quantum++ source tree.
-if(TARGET qpp)
-  set(QPP_TARGET qpp)
+# Detect Quantum++. In-tree building from the Quantum++ source tree has the
+# highest priority.
+if(TARGET libqpp_internal)
+  set(QPP_TARGET libqpp_internal)
   message(STATUS "pyqpp: using in-tree Quantum++ target")
 else()
   find_package(qpp CONFIG REQUIRED)
