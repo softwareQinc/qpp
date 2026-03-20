@@ -10,8 +10,8 @@ from pyqpp._pyqpp import QFT
 from pyqpp._pyqpp import QKetDummyEngine
 from pyqpp._pyqpp import QKetEngine
 from pyqpp._pyqpp import QKetEngine as QEngine
-from pyqpp._pyqpp import QKetNoisyEngine
 from pyqpp._pyqpp import QKetNoisyEngine as QNoisyEngine
+from pyqpp._pyqpp import QKetNoisyEngine
 from pyqpp._pyqpp import QubitAmplitudeDampingNoise
 from pyqpp._pyqpp import QubitBitFlipNoise
 from pyqpp._pyqpp import QubitBitPhaseFlipNoise

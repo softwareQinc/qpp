@@ -18,7 +18,6 @@ repository = "https://github.com/softwareqinc/qpp.git"
 requires = [
   "numpy",
   "pybind11",
-  "pybind11-stubgen",
   "scikit-build-core",
   "wheel",
 ]

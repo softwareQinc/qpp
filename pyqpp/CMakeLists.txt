@@ -36,7 +36,6 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 # -----------------------------------------------------------------------------
 message(STATUS "Detecting pybind11...")
 find_package(pybind11 CONFIG)
-
 if(NOT pybind11_FOUND)
   include(FetchContent)
   message(STATUS "pybind11 not detected, fetching it...")
@@ -47,8 +46,10 @@ if(NOT pybind11_FOUND)
     GIT_TAG master
     GIT_PROGRESS TRUE
     GIT_SHALLOW TRUE)
-
   FetchContent_MakeAvailable(pybind11)
+
+  set(PYBIND11_INCLUDE_DIRS ${pybind11_SOURCE_DIR})
+  message(STATUS "Installed pybind11: ${PYBIND11_INCLUDE_DIRS}")
 endif()
 
 # -----------------------------------------------------------------------------
@@ -95,44 +96,49 @@ endif()
 # -----------------------------------------------------------------------------
 # Stub generation
 # -----------------------------------------------------------------------------
-set(STUBGEN_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/stubs")
-file(MAKE_DIRECTORY "${STUBGEN_OUTPUT_PATH}")
+option(PYQPP_ENABLE_STUBGEN "Enable stub generation for pyqpp" OFF)
 
-if(WIN32)
-  set(PYTHONPATH_SEP ";")
-else()
-  set(PYTHONPATH_SEP ":")
+if(PYQPP_ENABLE_STUBGEN)
+  set(STUBGEN_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/stubs")
+  file(MAKE_DIRECTORY "${STUBGEN_OUTPUT_PATH}")
+
+  if(WIN32)
+    set(PYTHONPATH_SEP ";")
+  else()
+    set(PYTHONPATH_SEP ":")
+  endif()
+
+  add_custom_command(
+    OUTPUT "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi"
+           "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi"
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${PYQPP_PACKAGE_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${STUBGEN_OUTPUT_PATH}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:_pyqpp>
+            "${PYQPP_PACKAGE_DIR}/$<TARGET_FILE_NAME:_pyqpp>"
+    COMMAND
+      ${CMAKE_COMMAND} -E env
+      "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}${PYTHONPATH_SEP}$ENV{PYTHONPATH}"
+      ${Python3_EXECUTABLE} -m pybind11_stubgen pyqpp --output-dir
+      "${STUBGEN_OUTPUT_PATH}" --ignore-all-errors
+      --print-invalid-expressions-as-is
+    COMMAND
+      ${CMAKE_COMMAND} -E copy_if_different
+      "${STUBGEN_OUTPUT_PATH}/pyqpp/_pyqpp/__init__.pyi"
+      "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi"
+    COMMAND
+      ${CMAKE_COMMAND} -E copy_if_different
+      "${STUBGEN_OUTPUT_PATH}/pyqpp/__init__.pyi"
+      "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi"
+    DEPENDS _pyqpp
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Generating Python stubs for pyqpp..."
+    VERBATIM)
+
+  # cmake-lint: disable=C0113
+  add_custom_target(
+    pqpp_stubgen ALL DEPENDS "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi"
+                             "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi")
 endif()
-
-add_custom_command(
-  OUTPUT "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi"
-         "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi"
-  COMMAND ${CMAKE_COMMAND} -E make_directory "${PYQPP_PACKAGE_DIR}"
-  COMMAND ${CMAKE_COMMAND} -E make_directory "${STUBGEN_OUTPUT_PATH}"
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:_pyqpp>
-          "${PYQPP_PACKAGE_DIR}/$<TARGET_FILE_NAME:_pyqpp>"
-  COMMAND
-    ${CMAKE_COMMAND} -E env
-    "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}${PYTHONPATH_SEP}$ENV{PYTHONPATH}"
-    ${Python3_EXECUTABLE} -m pybind11_stubgen pyqpp --output-dir
-    "${STUBGEN_OUTPUT_PATH}" --ignore-all-errors
-    --print-invalid-expressions-as-is
-  COMMAND
-    ${CMAKE_COMMAND} -E copy_if_different
-    "${STUBGEN_OUTPUT_PATH}/pyqpp/_pyqpp/__init__.pyi"
-    "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi"
-  COMMAND
-    ${CMAKE_COMMAND} -E copy_if_different
-    "${STUBGEN_OUTPUT_PATH}/pyqpp/__init__.pyi"
-    "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi"
-  DEPENDS _pyqpp
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Generating Python stubs for pyqpp..."
-  VERBATIM)
-
-add_custom_target(
-  pyqpp_stubgen DEPENDS "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi"
-                        "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi")
 
 # -----------------------------------------------------------------------------
 # Install
