@@ -4,8 +4,8 @@
 
 ## Installation instructions
 
-[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) shares the
-same dependencies as **Quantum++** and can be installed via `pip`
+**pyqpp** shares the same dependencies as **Quantum++** and can be installed
+via `pip`
 
 ```shell
 pip install git+https://github.com/softwareQinc/qpp
@@ -25,10 +25,9 @@ and high-performance Pythonic experience while preserving the power and
 efficiency of the underlying C++ implementation.
 
 The bindings are easy to extend; see the
-[Custom Bindings](https://github.com/softwareQinc/qpp/blob/main/pyqpp#custom-bindings)
-section for guidance.
+[Custom Bindings](#custom-bindings) section for guidance.
 
-Illustrative examples are provided in [`pyqpp/examples`](pyqpp/examples).
+Illustrative examples are provided in [`examples`](examples).
 
 ---
 

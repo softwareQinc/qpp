@@ -53,24 +53,19 @@ Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
 ## License
 
 [Quantum++](https://github.com/softwareQinc/qpp) is distributed under the MIT
-license. Please see the
-[`LICENSE.txt`](https://github.com/softwareQinc/qpp/blob/main/LICENSE.txt)
-file for more details.
+license. Please see the [`LICENSE.txt`](LICENSE.txt) file for more details.
 
 ---
 
 ## Installation instructions and further documentation
 
-Please see the installation guide
-[`INSTALL.md`](https://github.com/softwareQinc/qpp/blob/main/INSTALL.md) and
-the comprehensive [Wiki](https://github.com/softwareQinc/qpp/wiki) for further
+Please see the installation guide [`INSTALL.md`](INSTALL.md) and the
+comprehensive [Wiki](https://github.com/softwareQinc/qpp/wiki) for further
 documentation and detailed examples.
 
 To generate the full official API documentation in both LaTeX and HTML formats
-run
-[`doxygen`](https://www.doxygen.nl) on
-the [`Doxyfile`](https://github.com/softwareQinc/qpp/blob/main/Doxyfile) file.
-The tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be
+run [`doxygen`](https://www.doxygen.nl) on the [`Doxyfile`](Doxyfile) file. The
+tool `dot` from the [`Graphviz`](https://www.graphviz.org) package must be
 installed (`sudo apt-get install graphviz` on Ubuntu/Debian Linux,
 or `brew install graphviz` on macOS). Running `doxygen` will generate the
 documentation directory `doc` containing both the HTML and LaTeX documentation.
@@ -92,13 +87,11 @@ under your specific operating system.
 
 ## Python 3 wrapper
 
-[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
-wrapper for **Quantum++**. **pyqpp** requires the same dependencies as
-**Quantum++**, and can be installed using `pip`
+[**pyqpp**](pyqpp) is a Python 3 wrapper for **Quantum++**. **pyqpp** requires
+the same dependencies as **Quantum++**, and can be installed using `pip`
 
 ```shell
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-For more details, please see
-[pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md).
+For more details, please see [pyqpp/README.md](pyqpp/README.md).

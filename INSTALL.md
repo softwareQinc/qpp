@@ -97,9 +97,8 @@ ctest --test-dir build
 
 ## Benchmarks
 
-See
-[benchmarks/README.md](https://github.com/softwareQinc/qpp/blob/main/benchmarks/README.md)
-for details on how to compile and run the benchmarks.
+See [benchmarks/README.md](benchmarks/README.md) for details on how to compile
+and run the benchmarks.
 
 ---
 
@@ -116,7 +115,7 @@ for details on how to compile and run the benchmarks.
 | ------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `CMAKE_INSTALL_PREFIX`    | `/path/to/install`                     | Specifies a custom installation directory for **Quantum++** header files -- useful when you lack administrative privileges or want a non-default install location                                                   |
 |                           |                                        |                                                                                                                                                                                                                     |
-| `QASMTOOLS_QASM2_SPECS`   | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications -- see [`DISCREPANCIES.md`](https://github.com/softwareQinc/qpp/blob/main/DISCREPANCIES.md)                                       |
+| `QASMTOOLS_QASM2_SPECS`   | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications -- see [`DISCREPANCIES.md`](DISCREPANCIES.md)                                                                                     |
 |                           |                                        |                                                                                                                                                                                                                     |
 | `QPP_ENABLE_PYQPP`        | `ON/OFF` [`OFF` by default]            | Enables pyqpp C++ development, disabled by default                                                                                                                                                                  |
 | `QPP_ENABLE_TESTING`      | `ON/OFF` [`OFF` by default]            | Enables unit testing with GoogleTest, disabled by default                                                                                                                                                           |
@@ -293,16 +292,14 @@ under `C:\Program Files\MATLAB\R2021a\bin\win64`.
 
 ## Python 3 wrapper
 
-[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) is a Python 3
-wrapper for **Quantum++**. **pyqpp** requires the same dependencies as
-**Quantum++**, and can be installed using `pip`
+[**pyqpp**](pyqpp) is a Python 3 wrapper for **Quantum++**. **pyqpp** requires
+the same dependencies as **Quantum++**, and can be installed using `pip`
 
 ```shell
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-For more details, please see
-[pyqpp/README.md](https://github.com/softwareQinc/qpp/blob/main/pyqpp/README.md).
+For more details, please see [pyqpp/README.md](pyqpp/README.md).
 
 ---
 
@@ -310,9 +307,8 @@ For more details, please see
 
 ### SunOS/OpenIndiana
 
-The Python 3 wrapper
-[**pyqpp**](https://github.com/softwareQinc/qpp/blob/main/pyqpp) doesn't
-compile under SunOS/OpenIndiana due to errors in `<cmath>` such as
+The Python 3 wrapper [**pyqpp**](pyqpp) doesn't compile under SunOS/OpenIndiana
+due to errors in `<cmath>` such as
 
 ```
 no member named 'llround' in the global namespace; did you mean 'lround'?

@@ -85,7 +85,7 @@
   - `bool post_select_ok() const` - True if post-selection was successful (or
     absent), false otherwise
 - Added
-  [`examples/circuits/post_selection.cpp`(https://github.com/softwareQinc/qpp/blob/main/examples/circuits/post_selection.cpp)]
+  [`examples/circuits/post_selection.cpp`](examples/circuits/post_selection.cpp)
   example
 - New feature: implemented support for conditional statements in
   `qpp/classes/qcircuit.hpp`
@@ -99,9 +99,9 @@
   - `bool validate_conditionals() const` - true if an only if the conditional
     statements are valid (e.g., matching `cond_end()` to `cond_if()` etc.
 - Added
-  [`examples/circuits/conditional_if.cpp`](https://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_if.cpp)]
+  [`examples/circuits/conditional_if.cpp`](examples/circuits/conditional_if.cpp)
   and
-  [`examples/circuits/conditional_while.cpp`](htps://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_while.cpp)]
+  [`examples/circuits/conditional_while.cpp`](htps://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_while.cpp)
   examples
 - Refactored `qpp::QCircuit::GateStep/MeasurementStep/NOPStep` into separate
   files `qpp/internal/classes/qcircuit_gate_step.hpp`,
