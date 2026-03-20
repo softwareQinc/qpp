@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 7.0.1 - 18 March 2026
+## Version 7.0.1 - 20 March 2026
 
 - Refactored the **pyqpp** directory structure
 - Added **pyqpp** examples in [`pyqpp/examples`](pyqpp/examples)
