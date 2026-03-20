@@ -7,8 +7,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Detect Quantum++. In-tree building from the Quantum++ source tree has the
-# highest priority.
+# -----------------------------------------------------------------------------
+# Detect Quantum++
+# -----------------------------------------------------------------------------
+# In-tree building from the Quantum++ source tree has the highest priority.
 if(TARGET libqpp_internal)
   set(QPP_TARGET libqpp_internal)
   message(STATUS "pyqpp: using in-tree Quantum++ target")
@@ -18,48 +20,81 @@ else()
   message(STATUS "pyqpp: using installed Quantum++ package")
 endif()
 
-# Check if a virtual env is active and hint that path to CMake
+# -----------------------------------------------------------------------------
+# Detect Python
+# -----------------------------------------------------------------------------
+# If a virtual environment is active, prefer its interpreter.
 if(DEFINED ENV{VIRTUAL_ENV})
   set(Python3_EXECUTABLE "$ENV{VIRTUAL_ENV}/bin/python")
 endif()
 
-# Detect Python
 message(STATUS "Detecting Python 3...")
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
+# -----------------------------------------------------------------------------
 # Detect pybind11
+# -----------------------------------------------------------------------------
 message(STATUS "Detecting pybind11...")
 find_package(pybind11 CONFIG)
+
 if(NOT pybind11_FOUND)
   include(FetchContent)
   message(STATUS "pybind11 not detected, fetching it...")
+
   FetchContent_Declare(
     pybind11
     GIT_REPOSITORY https://github.com/pybind/pybind11
     GIT_TAG master
     GIT_PROGRESS TRUE
     GIT_SHALLOW TRUE)
+
   FetchContent_MakeAvailable(pybind11)
-  set(PYBIND11_INCLUDE_DIRS ${pybind11_SOURCE_DIR})
-  message(STATUS "Installed pybind11: ${PYBIND11_INCLUDE_DIRS}")
 endif()
 
-# Add Python extension
-pybind11_add_module(pyqpp src/pyqpp.cpp)
+# -----------------------------------------------------------------------------
+# Build the extension module
+# -----------------------------------------------------------------------------
+pybind11_add_module(_pyqpp src/pyqpp.cpp)
+target_include_directories(_pyqpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(_pyqpp PRIVATE pybind11::module ${QPP_TARGET})
 
-# Include directories
-target_include_directories(pyqpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+# -----------------------------------------------------------------------------
+# Build-tree package staging
+# -----------------------------------------------------------------------------
+set(PYQPP_PYTHON_PACKAGE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/python/pyqpp")
+set(PYQPP_PACKAGE_DIR "${CMAKE_CURRENT_BINARY_DIR}/pyqpp")
+file(MAKE_DIRECTORY "${PYQPP_PACKAGE_DIR}")
+file(MAKE_DIRECTORY "${PYQPP_PYTHON_PACKAGE_DIR}")
 
-# Link libraries
-target_link_libraries(pyqpp PRIVATE pybind11::module ${QPP_TARGET})
+if(NOT EXISTS "${PYQPP_PYTHON_PACKAGE_DIR}/py.typed")
+  file(WRITE "${PYQPP_PYTHON_PACKAGE_DIR}/py.typed" "")
+endif()
 
-# Install the module
-install(
-  TARGETS pyqpp
-  COMPONENT python
-  LIBRARY DESTINATION pyqpp)
+configure_file(${PYQPP_PYTHON_PACKAGE_DIR}/__init__.py
+               ${PYQPP_PACKAGE_DIR}/__init__.py COPYONLY)
 
-# Generate stubs by running pybind11-stubgen after the module is compiled
+configure_file(${PYQPP_PYTHON_PACKAGE_DIR}/gates.py
+               ${PYQPP_PACKAGE_DIR}/gates.py COPYONLY)
+
+configure_file(${PYQPP_PYTHON_PACKAGE_DIR}/states.py
+               ${PYQPP_PACKAGE_DIR}/states.py COPYONLY)
+
+configure_file(${PYQPP_PYTHON_PACKAGE_DIR}/qasm.py ${PYQPP_PACKAGE_DIR}/qasm.py
+               COPYONLY)
+
+if(EXISTS "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi")
+  configure_file(${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi
+                 ${PYQPP_PACKAGE_DIR}/__init__.pyi COPYONLY)
+endif()
+
+if(EXISTS "${PYQPP_PYTHON_PACKAGE_DIR}/py.typed")
+  configure_file(${PYQPP_PYTHON_PACKAGE_DIR}/py.typed
+                 ${PYQPP_PACKAGE_DIR}/py.typed COPYONLY)
+endif()
+
+# -----------------------------------------------------------------------------
+# Stub generation
+# -----------------------------------------------------------------------------
 set(STUBGEN_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/stubs")
 file(MAKE_DIRECTORY "${STUBGEN_OUTPUT_PATH}")
 
@@ -70,29 +105,70 @@ else()
 endif()
 
 add_custom_command(
-  TARGET pyqpp
-  POST_BUILD
+  OUTPUT "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi"
+         "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi"
+  COMMAND ${CMAKE_COMMAND} -E make_directory "${PYQPP_PACKAGE_DIR}"
+  COMMAND ${CMAKE_COMMAND} -E make_directory "${STUBGEN_OUTPUT_PATH}"
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:_pyqpp>
+          "${PYQPP_PACKAGE_DIR}/$<TARGET_FILE_NAME:_pyqpp>"
   COMMAND
     ${CMAKE_COMMAND} -E env
-    "PYTHONPATH=$<TARGET_FILE_DIR:pyqpp>${PYTHONPATH_SEP}$ENV{PYTHONPATH}"
+    "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}${PYTHONPATH_SEP}$ENV{PYTHONPATH}"
     ${Python3_EXECUTABLE} -m pybind11_stubgen pyqpp --output-dir
     "${STUBGEN_OUTPUT_PATH}" --ignore-all-errors
+    --print-invalid-expressions-as-is
+  COMMAND
+    ${CMAKE_COMMAND} -E copy_if_different
+    "${STUBGEN_OUTPUT_PATH}/pyqpp/_pyqpp/__init__.pyi"
+    "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi"
+  COMMAND
+    ${CMAKE_COMMAND} -E copy_if_different
+    "${STUBGEN_OUTPUT_PATH}/pyqpp/__init__.pyi"
+    "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi"
+  DEPENDS _pyqpp
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Generating Python stubs for pyqpp..."
   VERBATIM)
 
-# Install the generated stub directory alongside the module
+add_custom_target(
+  pyqpp_stubgen DEPENDS "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi"
+                        "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi")
+
+# -----------------------------------------------------------------------------
+# Install
+# -----------------------------------------------------------------------------
+# Install the compiled extension.
 install(
-  DIRECTORY "${STUBGEN_OUTPUT_PATH}/pyqpp/"
+  TARGETS _pyqpp
   COMPONENT python
-  DESTINATION pyqpp)
+  LIBRARY DESTINATION pyqpp)
 
-# Create py.typed in the build tree
-set(PY_TYPED_FILE "${CMAKE_CURRENT_BINARY_DIR}/py.typed")
-file(WRITE "${PY_TYPED_FILE}" "")
-
-# Install py.typed
+# Install the pure-Python package files.
 install(
-  FILES "${PY_TYPED_FILE}"
+  FILES ${PYQPP_PYTHON_PACKAGE_DIR}/__init__.py
+        ${PYQPP_PYTHON_PACKAGE_DIR}/gates.py
+        ${PYQPP_PYTHON_PACKAGE_DIR}/states.py
+        ${PYQPP_PYTHON_PACKAGE_DIR}/qasm.py
   DESTINATION pyqpp
   COMPONENT python)
+
+if(EXISTS "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi")
+  install(
+    FILES "${PYQPP_PYTHON_PACKAGE_DIR}/__init__.pyi"
+    DESTINATION pyqpp
+    COMPONENT python)
+endif()
+
+if(EXISTS "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi")
+  install(
+    FILES "${PYQPP_PYTHON_PACKAGE_DIR}/_pyqpp.pyi"
+    DESTINATION pyqpp
+    COMPONENT python)
+endif()
+
+if(EXISTS "${PYQPP_PYTHON_PACKAGE_DIR}/py.typed")
+  install(
+    FILES "${PYQPP_PYTHON_PACKAGE_DIR}/py.typed"
+    DESTINATION pyqpp
+    COMPONENT python)
+endif()

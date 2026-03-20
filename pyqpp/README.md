@@ -28,57 +28,7 @@ The bindings are easy to extend; see the
 [Custom Bindings](https://github.com/softwareQinc/qpp/blob/main/pyqpp#custom-bindings)
 section for guidance.
 
-A simple illustrative example is provided below.
-
-```python3
-import numpy as np
-from pyqpp import *
-
-print("Qubit teleportation quantum circuit simulation\n")
-
-# Quantum circuit with 3 qubits and 2 classical bits
-qc = QCircuit(3, 2)
-# Set the qubit 0 to a random state
-U = randU(2)
-# Apply the gate U named randU to qubit 0
-qc.gate(U, 0, "randU")
-
-# Establish a maximally entangled state between qubits 1 and 2
-qc.gate(gates.H, 1)
-qc.CTRL(gates.X, 1, 2)
-
-# Perform a Bell measurement between qubits 0 and 1
-qc.CTRL(gates.X, 0, 1)
-qc.gate(gates.H, 0)
-qc.measure([0, 1])
-
-# Apply the classical controls
-qc.cCTRL(gates.X, 1, 2)
-qc.cCTRL(gates.Z, 0, 2)
-
-# Initialize the quantum engine with a circuit
-engine = QEngine(qc)
-
-# Display the quantum circuit and its corresponding resources
-print(qc)
-print()
-print(qc.get_resources())
-print()
-
-# Execute the entire circuit
-engine.execute()
-
-# Display the measurement statistics
-print(engine)
-print()
-
-# Verify that the teleportation was successful
-psi_in = np.matmul(U, states.z0)
-psi_out = engine.get_state()
-print("Teleported state:")
-print(dirac(psi_out))
-print("Norm difference:\n", norm(psi_out - psi_in))
-```
+Illustrative examples are provided in [`pyqpp/examples`](pyqpp/examples).
 
 ---
 

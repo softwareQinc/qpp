@@ -50,9 +50,12 @@
 
 #include "pyqpp/pyqpp_specific_bind.hpp"
 
-PYBIND11_MODULE(pyqpp, m) {
+// The extension module is named `_pyqpp` instead of `pyqpp` to avoid a name
+// collision with the Python package `pyqpp`. The package's `__init__.py`
+// imports and re-exports symbols from this private extension module.
+PYBIND11_MODULE(_pyqpp, m) {
     m.doc() =
-        "Python 3 wrapper for Quantum++ (https://github.com/softwareQinc/qpp)";
+        "Python 3 bindings for Quantum++ (https://github.com/softwareQinc/qpp)";
 
     init_constants(m);
     init_entanglement(m);
