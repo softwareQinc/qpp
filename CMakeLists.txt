@@ -30,7 +30,8 @@ if("${PROJECT_VERSION_PATCH}" STREQUAL "")
 endif()
 
 # The project() command automatically creates PROJECT_VERSION_MAJOR, _MINOR, and
-# _PATCH. Define QPP_VERSION_NUM as an integer (e.g., 70000 for 7.0.0)
+# _PATCH. Define QPP_VERSION_NUM as an integer (e.g., 70000 for 7.0.0, 7.1.3 for
+# 70103.)
 math(EXPR QPP_VERSION_NUM
      "${PROJECT_VERSION_MAJOR}*10000 + ${PROJECT_VERSION_MINOR}*100 +
   ${PROJECT_VERSION_PATCH}")
