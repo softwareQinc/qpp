@@ -101,7 +101,7 @@
 - Added
   [`examples/circuits/conditional_if.cpp`](examples/circuits/conditional_if.cpp)
   and
-  [`examples/circuits/conditional_while.cpp`](htps://github.com/softwareQinc/qpp/blob/main/examples/circuits/conditional_while.cpp)
+  [`examples/circuits/conditional_while.cpp`](examples/circuits/conditional_while.cpp)
   examples
 - Refactored `qpp::QCircuit::GateStep/MeasurementStep/NOPStep` into separate
   files `qpp/internal/classes/qcircuit_gate_step.hpp`,
