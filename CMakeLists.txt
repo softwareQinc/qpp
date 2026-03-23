@@ -75,7 +75,7 @@ target_include_directories(
 # ----------------------------------------------------------------------------
 # Dependencies
 # ----------------------------------------------------------------------------
-include(cmake/qpp_eigen3.cmake)
+include(cmake/qpp_eigen.cmake)
 
 # Internal interface only, do not link against it, use qpp::qpp instead for
 # downstream projects. Used to build examples and unit tests.
@@ -143,7 +143,7 @@ set(QPP_AUX_CMAKE_FILES
     "qpp_select_target.cmake"
     "qpp_types.cmake"
     "qpp_compiler_flags.cmake"
-    "qpp_eigen3.cmake"
+    "qpp_eigen.cmake"
     "qpp_openmp.cmake"
     "qpp_openqasm.cmake"
     "qpp_sanitize.cmake"
@@ -198,7 +198,7 @@ install(
   FILES "cmake/qpp_select_target.cmake"
         "cmake/qpp_types.cmake"
         "cmake/qpp_compiler_flags.cmake"
-        "cmake/qpp_eigen3.cmake"
+        "cmake/qpp_eigen.cmake"
         "cmake/qpp_openmp.cmake"
         "cmake/qpp_openqasm.cmake"
         "cmake/qpp_sanitize.cmake"

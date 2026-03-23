@@ -54,7 +54,7 @@
   [`benchmarks`](benchmarks)
 - Removed the `stress_tests` suite, as the new benchmarking suite supersedes it
 - Modernized the CMake configuration files
-- Bumped the minimum required Eigen3 version to **5.0.0**
+- Bumped the minimum required Eigen version to **5.0.0**
 - Bumped the minimum required CMake version to **3.20**
 - Removed the `EIGEN3_INSTALL_DIR` CMake flag
 - Examples are now built in `${CMAKE_BUILD_DIR}/examples` instead of

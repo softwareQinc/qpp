@@ -11,11 +11,12 @@ its build/install system. **Quantum++** is platform-independent, supporting
 
 ## Pre-requisites
 
-- C++17 compliant compiler, e.g., [GCC](https://gcc.gnu.org/)
-  , [Clang](https://clang.llvm.org)
-  , [MSVC](https://visualstudio.microsoft.com/vs/) etc.
+- C++17 compliant compiler, e.g.,
+  [GCC](https://gcc.gnu.org/),
+  [Clang](https://clang.llvm.org),
+  [MSVC](https://visualstudio.microsoft.com/vs/) etc.
 - [CMake](https://cmake.org/)
-- [Eigen 3](https://libeigen.gitlab.io) linear algebra library. If missing, it
+- [Eigen](https://libeigen.gitlab.io) linear algebra library. If missing, it
   will be installed automatically by CMake as a build dependency.
 
 ### Optional
@@ -254,7 +255,7 @@ like below (assumes UNIX/UNIX-like, adapt accordingly for Windows)
 ```shell
 g++ -pedantic -std=c++17 -Wall -Wextra -Weffc++ -fopenmp \
     -O3 -DNDEBUG -DEIGEN_NO_DEBUG
-    -isystem $HOME/eigen3 -I $HOME/qpp/include -I $HOME/qpp/qasmtools/include \
+    -isystem $HOME/eigen -I $HOME/qpp/include -I $HOME/qpp/qasmtools/include \
      src/main.cpp -o executable_name
 ```
 

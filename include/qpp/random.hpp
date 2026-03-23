@@ -256,7 +256,7 @@ inline idx randidx(idx a = std::numeric_limits<idx>::min(),
  */
 inline cmat randU(idx D = 2)
 // ~3 times slower than Toby Cubitt's MATLAB corresponding routine,
-// because Eigen 3 QR algorithm is not parallelized
+// because Eigen's QR algorithm is not parallelized
 {
     // EXCEPTION CHECKS
     if (D == 0) {
