@@ -1,8 +1,10 @@
 from ._pyqpp import *
 
+from . import codes as codes
 from . import gates as gates
-from . import states as states
 from . import qasm as qasm
+from . import random_devices as random_devices
+from . import states as states
 
 __version__ = "7.0.1"
 
@@ -30,16 +32,16 @@ QPP_VERSION_NUM = _version_to_number(__version__)
 # Public API
 # -----------------------------------------------------------------------------
 try:
-    # Prefer explicit export list from the extension if available
-    from ._pyqpp import __all__ as _core_all
+    from ._pyqpp import __all__ as _extension_exports
 except ImportError:
-    # Fallback: export everything that does not start with "_"
-    _core_all = [name for name in dir() if not name.startswith("_")]
+    _extension_exports = []
 
-__all__ = list(_core_all) + [
+__all__ = list(_extension_exports) + [
+    "codes",
     "gates",
-    "states",
     "qasm",
+    "random_devices",
+    "states",
     "__version__",
     "QPP_VERSION_STR",
     "QPP_VERSION_NUM",

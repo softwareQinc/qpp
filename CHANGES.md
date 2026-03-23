@@ -1,5 +1,10 @@
 # Changelog
 
+## Upcoming release
+
+- Added bindings for `qpp::Codes` and `qpp::RandomDevices` to **pyqpp**
+- Improved stub generation for **pyqpp**
+
 ## Version 7.0.1 - 20 March 2026
 
 - Refactored the **pyqpp** directory structure

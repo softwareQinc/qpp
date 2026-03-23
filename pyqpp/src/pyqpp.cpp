@@ -38,11 +38,13 @@
 #include "pyqpp/statistics_bind.hpp"
 #include "pyqpp/types_bind.hpp"
 
+#include "pyqpp/classes/codes_bind.hpp"
 #include "pyqpp/classes/gates_bind.hpp"
 #include "pyqpp/classes/qcircuit_bind.hpp"
 #include "pyqpp/classes/qdummy_engine_bind.hpp"
 #include "pyqpp/classes/qengine_bind.hpp"
 #include "pyqpp/classes/qnoisy_engine_bind.hpp"
+#include "pyqpp/classes/random_devices_bind.hpp"
 #include "pyqpp/classes/reversible_bind.hpp"
 #include "pyqpp/classes/states_bind.hpp"
 
@@ -69,7 +71,9 @@ PYBIND11_MODULE(_pyqpp, m) {
     init_statistics(m);
     init_types(m);
 
+    init_classes_codes(m);
     init_classes_gates(m);
+    init_classes_random_devices(m);
     init_classes_reversible(m);
     init_classes_states(m);
 

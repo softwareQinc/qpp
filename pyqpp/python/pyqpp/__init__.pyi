@@ -10,8 +10,8 @@ from pyqpp._pyqpp import QFT
 from pyqpp._pyqpp import QKetDummyEngine
 from pyqpp._pyqpp import QKetEngine
 from pyqpp._pyqpp import QKetEngine as QEngine
-from pyqpp._pyqpp import QKetNoisyEngine as QNoisyEngine
 from pyqpp._pyqpp import QKetNoisyEngine
+from pyqpp._pyqpp import QKetNoisyEngine as QNoisyEngine
 from pyqpp._pyqpp import QubitAmplitudeDampingNoise
 from pyqpp._pyqpp import QubitBitFlipNoise
 from pyqpp._pyqpp import QubitBitPhaseFlipNoise
@@ -34,6 +34,7 @@ from pyqpp._pyqpp import bernoulli
 from pyqpp._pyqpp import bloch2rho
 from pyqpp._pyqpp import choi2kraus
 from pyqpp._pyqpp import choi2super
+from pyqpp._pyqpp import codes
 from pyqpp._pyqpp import comm
 from pyqpp._pyqpp import complement
 from pyqpp._pyqpp import compose_CTRL_circuit
@@ -123,6 +124,7 @@ from pyqpp._pyqpp import randkraus
 from pyqpp._pyqpp import randn
 from pyqpp._pyqpp import random_circuit_count
 from pyqpp._pyqpp import random_circuit_depth
+from pyqpp._pyqpp import random_devices
 from pyqpp._pyqpp import randperm
 from pyqpp._pyqpp import randprime
 from pyqpp._pyqpp import randprob
@@ -163,7 +165,7 @@ from pyqpp._pyqpp import var
 from pyqpp._pyqpp import x2contfrac
 from pyqpp._pyqpp import zket2dits
 from . import _pyqpp
-__all__: list = ['BitCircuit', 'CondWhile', 'DynamicBitset', 'QCircuit', 'QDensityDummyEngine', 'QDensityEngine', 'QDensityNoisyEngine', 'QEngine', 'QFT', 'QKetDummyEngine', 'QKetEngine', 'QKetNoisyEngine', 'QNoisyEngine', 'QPP_VERSION_NUM', 'QPP_VERSION_STR', 'QubitAmplitudeDampingNoise', 'QubitBitFlipNoise', 'QubitBitPhaseFlipNoise', 'QubitDepolarizingNoise', 'QubitPhaseDampingNoise', 'QubitPhaseFlipNoise', 'QuditDepolarizingNoise', 'TFQ', 'absm', 'abssq', 'adjoint', 'anticomm', 'apply', 'applyCTRL', 'applyCTRL_fan', 'applyQFT', 'applyTFQ', 'avg', 'bernoulli', 'bloch2rho', 'choi2kraus', 'choi2super', 'comm', 'complement', 'compose_CTRL_circuit', 'compose_circuit', 'compperm', 'concurrence', 'conjugate', 'const_proxy_to_engine_dits', 'contfrac2x', 'convergents', 'cor', 'cosm', 'couple_circuit_left', 'couple_circuit_right', 'cov', 'det', 'dirac', 'dirac_t', 'dirsum', 'dirsumpow', 'discard', 'ee', 'egcd', 'eig', 'entanglement', 'entropy', 'evals', 'evects', 'expm', 'factors', 'funm', 'gates', 'gcd', 'gconcurrence', 'grams', 'hash_eigen', 'heig', 'hevals', 'hevects', 'infty', 'inverse', 'invperm', 'ip', 'isprime', 'kraus2choi', 'kraus2super', 'kron', 'kronpow', 'lcm', 'load_cmat', 'load_rmat', 'logdet', 'logm', 'lognegativity', 'marginalX', 'marginalY', 'measure', 'measure_seq', 'mket', 'modinv', 'modmul', 'modpow', 'mprj', 'multiidx2n', 'n2multiidx', 'negativity', 'norm', 'normalize', 'omega', 'pi', 'powm', 'prj', 'prod', 'proxy_to_engine_dits', 'ptrace', 'ptrace1', 'ptrace2', 'ptranspose', 'qRAM', 'qasm', 'qmutualinfo', 'qpe_circuit', 'rand', 'randH', 'randU', 'randV', 'randidx', 'randket', 'randkraus', 'randn', 'random_circuit_count', 'random_circuit_depth', 'randperm', 'randprime', 'randprob', 'randrho', 'renyi', 'replicate', 'reset', 'reshape', 'rho2bloch', 'rho2pure', 'sample', 'save', 'schatten', 'schmidt', 'schmidtA', 'schmidtB', 'schmidtcoeffs', 'schmidtprobs', 'set_prng_seed', 'sigma', 'sinm', 'spectralpowm', 'sqrtm', 'states', 'sum', 'super2choi', 'super2kraus', 'svals', 'svd', 'svdU', 'svdV', 'syspermute', 'trace', 'transpose', 'tsallis', 'uniform', 'var', 'x2contfrac', 'zket2dits', 'gates', 'states', 'qasm', '__version__', 'QPP_VERSION_STR', 'QPP_VERSION_NUM']
+__all__: list = ['codes', 'gates', 'qasm', 'random_devices', 'states', '__version__', 'QPP_VERSION_STR', 'QPP_VERSION_NUM']
 def _version_to_number(version: str) -> int:
     """
     
@@ -176,7 +178,7 @@ def _version_to_number(version: str) -> int:
 QPP_VERSION_NUM: int = 70001
 QPP_VERSION_STR: str = '7.0.1'
 __version__: str = '7.0.1'
-_core_all: list = ['BitCircuit', 'CondWhile', 'DynamicBitset', 'QCircuit', 'QDensityDummyEngine', 'QDensityEngine', 'QDensityNoisyEngine', 'QEngine', 'QFT', 'QKetDummyEngine', 'QKetEngine', 'QKetNoisyEngine', 'QNoisyEngine', 'QPP_VERSION_NUM', 'QPP_VERSION_STR', 'QubitAmplitudeDampingNoise', 'QubitBitFlipNoise', 'QubitBitPhaseFlipNoise', 'QubitDepolarizingNoise', 'QubitPhaseDampingNoise', 'QubitPhaseFlipNoise', 'QuditDepolarizingNoise', 'TFQ', 'absm', 'abssq', 'adjoint', 'anticomm', 'apply', 'applyCTRL', 'applyCTRL_fan', 'applyQFT', 'applyTFQ', 'avg', 'bernoulli', 'bloch2rho', 'choi2kraus', 'choi2super', 'comm', 'complement', 'compose_CTRL_circuit', 'compose_circuit', 'compperm', 'concurrence', 'conjugate', 'const_proxy_to_engine_dits', 'contfrac2x', 'convergents', 'cor', 'cosm', 'couple_circuit_left', 'couple_circuit_right', 'cov', 'det', 'dirac', 'dirac_t', 'dirsum', 'dirsumpow', 'discard', 'ee', 'egcd', 'eig', 'entanglement', 'entropy', 'evals', 'evects', 'expm', 'factors', 'funm', 'gates', 'gcd', 'gconcurrence', 'grams', 'hash_eigen', 'heig', 'hevals', 'hevects', 'infty', 'inverse', 'invperm', 'ip', 'isprime', 'kraus2choi', 'kraus2super', 'kron', 'kronpow', 'lcm', 'load_cmat', 'load_rmat', 'logdet', 'logm', 'lognegativity', 'marginalX', 'marginalY', 'measure', 'measure_seq', 'mket', 'modinv', 'modmul', 'modpow', 'mprj', 'multiidx2n', 'n2multiidx', 'negativity', 'norm', 'normalize', 'omega', 'pi', 'powm', 'prj', 'prod', 'proxy_to_engine_dits', 'ptrace', 'ptrace1', 'ptrace2', 'ptranspose', 'qRAM', 'qasm', 'qmutualinfo', 'qpe_circuit', 'rand', 'randH', 'randU', 'randV', 'randidx', 'randket', 'randkraus', 'randn', 'random_circuit_count', 'random_circuit_depth', 'randperm', 'randprime', 'randprob', 'randrho', 'renyi', 'replicate', 'reset', 'reshape', 'rho2bloch', 'rho2pure', 'sample', 'save', 'schatten', 'schmidt', 'schmidtA', 'schmidtB', 'schmidtcoeffs', 'schmidtprobs', 'set_prng_seed', 'sigma', 'sinm', 'spectralpowm', 'sqrtm', 'states', 'sum', 'super2choi', 'super2kraus', 'svals', 'svd', 'svdU', 'svdV', 'syspermute', 'trace', 'transpose', 'tsallis', 'uniform', 'var', 'x2contfrac', 'zket2dits']
+_extension_exports: list = list()
 ee: float = 2.718281828459045
 infty: float  # value = inf
 pi: float = 3.141592653589793
