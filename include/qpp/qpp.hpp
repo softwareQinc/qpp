@@ -158,11 +158,7 @@ inline const States& st [[maybe_unused]] =
  * storage duration, due to mutability of its public member std::mt19937 and
  * possible data races
  */
-#ifndef NO_THREAD_LOCAL_
-thread_local
-#endif
-    inline RandomDevices& rdevs [[maybe_unused]] =
-        RandomDevices::get_instance();
+inline RandomDevices& rdevs [[maybe_unused]] = RandomDevices::get_instance();
 
 /**
  * @namespace qpp::obsolete

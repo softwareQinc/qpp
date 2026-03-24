@@ -1,48 +1,40 @@
-from ._pyqpp import *
+"""
+pyqpp: A Python wrapper for the Quantum++ library.
+"""
 
-from . import codes as codes
-from . import gates as gates
-from . import qasm as qasm
-from . import random_devices as random_devices
-from . import states as states
-
-__version__ = "7.0.2"
+# Metadata and versioning logic
+__version__ = "7.0.3"
 
 
 def _version_to_number(version: str) -> int:
-    """
-    Convert a semantic version string to a numeric value.
-
-    Example:
-        "7.0.0" -> 70000
-        "7.1.3" -> 70103
-    """
-    parts = version.split(".")
-    if len(parts) != 3:
-        raise ValueError(f"Expected version 'MAJOR.MINOR.PATCH', got: {version}")
-
-    major, minor, patch = map(int, parts)
-    return major * 10000 + minor * 100 + patch
+    try:
+        # Split by '-' to handle pre-releases like '7.0.2-beta'
+        parts = version.split("-")[0].split(".")
+        major, minor, patch = map(int, parts)
+        return major * 10000 + minor * 100 + patch
+    except (ValueError, IndexError):
+        return 0
 
 
 QPP_VERSION_STR = __version__
 QPP_VERSION_NUM = _version_to_number(__version__)
 
-# -----------------------------------------------------------------------------
-# Public API
-# -----------------------------------------------------------------------------
+# Binary extension loading
 try:
-    from ._pyqpp import __all__ as _extension_exports
-except ImportError:
-    _extension_exports = []
+    from . import _pyqpp
+except ImportError as e:
+    raise ImportError(f"Failed to load pyqpp binary: {e}") from e
 
-__all__ = list(_extension_exports) + [
-    "codes",
-    "gates",
-    "qasm",
-    "random_devices",
-    "states",
-    "__version__",
-    "QPP_VERSION_STR",
-    "QPP_VERSION_NUM",
-]
+# Handle exports from the binary
+_ext_exports = getattr(
+    _pyqpp, "__all__", [k for k in dir(_pyqpp) if not k.startswith("_")]
+)
+globals().update({k: getattr(_pyqpp, k) for k in _ext_exports})
+
+# Submodule imports
+from . import codes, gates, qasm, random_devices, states
+
+# Define __all__
+_submodules = ["codes", "gates", "qasm", "random_devices", "states"]
+_metadata = ["__version__", "QPP_VERSION_STR", "QPP_VERSION_NUM"]
+__all__ = list(dict.fromkeys([*_submodules, *_ext_exports, *_metadata]))

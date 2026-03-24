@@ -1,10 +1,9 @@
 # OpenMP support
 
 option(QPP_OPENMP "Enable OpenMP support" ON)
+message(STATUS "OpenMP support - ${QPP_OPENMP}")
 
 if(QPP_OPENMP)
-  message(STATUS "OpenMP support - ON")
-
   # Select the target
   include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
   qpp_select_target(QPP_TARGET "OpenMP")
@@ -27,9 +26,7 @@ if(QPP_OPENMP)
   else()
     message(
       WARNING
-        "OpenMP support requested, but OpenMP (>=3.0) not found — building without parallel support."
+        "OpenMP support requested, but OpenMP (>=3.0) not found - building without parallel support"
     )
   endif()
-else()
-  message(STATUS "OpenMP support - OFF")
 endif()

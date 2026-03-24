@@ -70,10 +70,11 @@ namespace qpp::internal // internal class, do not modify
  *     }
  * };
  *
- * MySingleton& mySingleton = MySingleton::get_instance(); // Get an instance
- * thread_local MySingleton& tls = MySingleton::get_thread_local_instance();
- * // Get a thread_local instance
+ * // Get an instance
+ * MySingleton& mySingleton = MySingleton::get_instance();
  *
+ * // Get a thread_local instance
+ * thread_local MySingleton& tls = MySingleton::get_thread_local_instance();
  * @endcode
  *
  * @see Code of qpp::Codes, qpp::Gates, qpp::Init, qpp::RandomDevices,
@@ -90,34 +91,29 @@ class Singleton {
   public:
     Singleton(const Singleton&) = delete;
     Singleton& operator=(const Singleton&) = delete;
+
     static T& get_no_thread_local_instance() noexcept(
         std::is_nothrow_constructible_v<T>) {
-        // Guaranteed to be destroyed.
-        // Instantiated on first use.
-        // Thread safe in C++11.
+        // Shared instance, initialized on first use
         static T instance{};
-
         return instance;
     }
 
-#ifndef NO_THREAD_LOCAL_
+#ifndef QPP_NO_THREAD_LOCAL
     static T&
     get_thread_local_instance() noexcept(std::is_nothrow_constructible_v<T>) {
-        // Guaranteed to be destroyed.
-        // Instantiated on first use.
-        // Thread safe in C++11.
-        thread_local static T instance{};
-
+        // Per-thread instance, initialized on first use
+        thread_local T instance{};
         return instance;
     }
-#endif // NO_THREAD_LOCAL_
+#endif // QPP_NO_THREAD_LOCAL
 
     static T& get_instance() noexcept(std::is_nothrow_constructible_v<T>) {
-#ifdef NO_THREAD_LOCAL_
+#ifdef QPP_NO_THREAD_LOCAL
         return get_no_thread_local_instance();
 #else
         return get_thread_local_instance();
-#endif // NO_THREAD_LOCAL_
+#endif // QPP_NO_THREAD_LOCAL
     }
 }; /* class Singleton */
 

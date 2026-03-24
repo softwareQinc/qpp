@@ -3007,7 +3007,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
+        std::size_t m_hash =
+            hash_eigen(Gates::get_no_thread_local_instance().Zd(d_));
 
         if (destructive) {
             measured_d_.back()[target] = true;
@@ -3089,7 +3090,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
+        std::size_t m_hash =
+            hash_eigen(Gates::get_no_thread_local_instance().Zd(d_));
 
         if (destructive) {
             for (idx elem : target) {
@@ -3394,7 +3396,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
+        std::size_t m_hash =
+            hash_eigen(Gates::get_no_thread_local_instance().Zd(d_));
 
         if (destructive) {
             measured_d_.back()[target] = true;
@@ -3484,7 +3487,8 @@ class QCircuit : public IDisplay, public IJSON {
         }
         // END EXCEPTION CHECKS
 
-        std::size_t m_hash = hash_eigen(Gates::get_instance().Zd(d_));
+        std::size_t m_hash =
+            hash_eigen(Gates::get_no_thread_local_instance().Zd(d_));
 
         if (destructive) {
             for (idx elem : target) {
@@ -6510,14 +6514,19 @@ inline QCircuit random_circuit_count(
     }
     // pre-fill gate sets for qubits (in case they're empty)
     if (d == 2 && !one_qudit_gate_set.has_value()) {
-        one_qudit_gate_set = std::vector{
-            Gates::get_instance().X, Gates::get_instance().Y,
-            Gates::get_instance().Z, Gates::get_instance().H,
-            Gates::get_instance().S, adjoint(Gates::get_instance().S),
-            Gates::get_instance().T, adjoint(Gates::get_instance().T)};
+        one_qudit_gate_set =
+            std::vector{Gates::get_no_thread_local_instance().X,
+                        Gates::get_no_thread_local_instance().Y,
+                        Gates::get_no_thread_local_instance().Z,
+                        Gates::get_no_thread_local_instance().H,
+                        Gates::get_no_thread_local_instance().S,
+                        adjoint(Gates::get_no_thread_local_instance().S),
+                        Gates::get_no_thread_local_instance().T,
+                        adjoint(Gates::get_no_thread_local_instance().T)};
     }
     if (d == 2 && !two_qudit_gate_set.has_value()) {
-        two_qudit_gate_set = std::vector{Gates::get_instance().CNOT};
+        two_qudit_gate_set =
+            std::vector{Gates::get_no_thread_local_instance().CNOT};
     }
     // check gate sets are not empty for d > 2
     if (d > 2) {
@@ -6697,14 +6706,19 @@ inline QCircuit random_circuit_depth(
     }
     // pre-fill gate sets for qubits (in case they're empty)
     if (d == 2 && !one_qudit_gate_set.has_value()) {
-        one_qudit_gate_set = std::vector{
-            Gates::get_instance().X, Gates::get_instance().Y,
-            Gates::get_instance().Z, Gates::get_instance().H,
-            Gates::get_instance().S, adjoint(Gates::get_instance().S),
-            Gates::get_instance().T, adjoint(Gates::get_instance().T)};
+        one_qudit_gate_set =
+            std::vector{Gates::get_no_thread_local_instance().X,
+                        Gates::get_no_thread_local_instance().Y,
+                        Gates::get_no_thread_local_instance().Z,
+                        Gates::get_no_thread_local_instance().H,
+                        Gates::get_no_thread_local_instance().S,
+                        adjoint(Gates::get_no_thread_local_instance().S),
+                        Gates::get_no_thread_local_instance().T,
+                        adjoint(Gates::get_no_thread_local_instance().T)};
     }
     if (d == 2 && !two_qudit_gate_set.has_value()) {
-        two_qudit_gate_set = std::vector{Gates::get_instance().CNOT};
+        two_qudit_gate_set =
+            std::vector{Gates::get_no_thread_local_instance().CNOT};
     }
     // check gate sets are not empty for d > 2
     if (d > 2) {
@@ -6877,9 +6891,10 @@ inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
     std::iota(ancilla.begin(), ancilla.end(), n);
 
     if (d == 2) {
-        qc.gate_fan(Gates::get_instance().H, counting_qubits);
+        qc.gate_fan(Gates::get_no_thread_local_instance().H, counting_qubits);
     } else {
-        qc.gate_fan(Gates::get_instance().Fd(d), counting_qubits, "Fd");
+        qc.gate_fan(Gates::get_no_thread_local_instance().Fd(d),
+                    counting_qubits, "Fd");
     }
     for (idx i = n; i-- > 0;) {
         qc.CTRL(U, i, ancilla);

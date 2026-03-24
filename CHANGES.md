@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 7.0.3 - 25 March 2026
+
+- Improved [`Dockerfile`](docker/Dockerfile)
+- Fixed `from pyqpp import *` issue in **pyqpp**
+- Fixed Doxygen typos that were preventing LaTeX documentation generation
+- Added `QPP_NO_THREAD_LOCAL` CMake configuration option to disable
+  `thread_local` storage duration for improved portability across platforms
+  without `thread_local` support; `OFF` by default
+
 ## Version 7.0.2 - 24 March 2026
 
 - Added bindings for `qpp::Codes` and `qpp::RandomDevices` to **pyqpp**
@@ -135,7 +144,7 @@
   order w.r.t. target
 - Simplified MATLAB detection via CMake `find_package()` function. Users should
   only use `-DQPP_MATLAB=ON` when building with MATLAB support, all other
-  MATLAB-related CMake flags have been removed.
+  MATLAB-related CMake configuration options have been removed.
 - Bugfix in `qpp::adjoint(QCircuit)`
 - Added `cond_func_t` type alias in `qpp/types.hpp` for Boolean predicates of
   the form `std::vector<idx> -> bool`
@@ -149,8 +158,8 @@
 - Removed Eigen3, pybind11, and GoogleTest dependencies; if not detected,
   they are installed automatically as build dependencies by CMake
 - Updated GoogleTest to the latest HEAD, as recommended by Google
-- Removed `-DWITH_EXAMPLES` and `-DWITH_UNIT_TESTS` CMake flags. Now both
-  `examples` and `unit_tests` CMake targets are enabled.
+- Removed `-DWITH_EXAMPLES` and `-DWITH_UNIT_TESTS` CMake configuration options.
+  Now both `examples` and `unit_tests` CMake targets are enabled.
 - Renamed `qpp/classes/circuits/circuits.hpp` to
   `qpp/classes/qcircuit.hpp`
 - Introduced `qpp/classes/qcircuit_traits.hpp` that implement
@@ -265,7 +274,8 @@
 
 ## Version 4.3.1 - 5 June 2023
 
-- CMake dependent flag name changes. These flags can be used in standalone
+- CMake dependent configuration options name changes. These configuration
+  options can be used in standalone
   projects when configuring with CMake.
   - `USE_OPENQASM2_SPECS` -> `QASMTOOLS_QASM2_SPECS`
   - `WITH_MATLAB` -> `QPP_MATLAB`
@@ -1056,7 +1066,7 @@
 - Modified the `CMakeLists.txt`, which now:
   - supports only GCC and LLVM/Apple clang; otherwise, emits an error during
     the CMake running phase
-  - adds `-D_NO_THREAD_LOCAL` definition for conditional compiling the
+  - adds `-DNO_THREAD_LOCAL` definition for conditional compiling the
     source code without support for `std::thread_local` (if using e.g.,
     LLVM/Apple clang with libc++, as libc++ does not yet support
     `std::thread_local`)

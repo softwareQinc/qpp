@@ -103,32 +103,34 @@ and run the benchmarks.
 
 ---
 
-## CMake flags and (optional) arguments
+## CMake configuration options
 
 > **Note:**
-> All CMake flags below **do not propagate** to downstream projects that use
-> **Quantum++** via `find_package(qpp ...)`.
+> All CMake configuration options below **do not propagate** to downstream
+> projects that use > **Quantum++** via `find_package(qpp ...)`.
 >
-> Projects linking via `find_package(qpp)` must define these flags
-> independently if they are needed.
+> Projects linking against **Quantum++** must explicitly define these options
+> themselves if required.
 
-| Optional argument         | Value                                  | Description                                                                                                                                                                                                         |
-| ------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `CMAKE_INSTALL_PREFIX`    | `/path/to/install`                     | Specifies a custom installation directory for **Quantum++** header files -- useful when you lack administrative privileges or want a non-default install location                                                   |
-|                           |                                        |                                                                                                                                                                                                                     |
-| `QASMTOOLS_QASM2_SPECS`   | `ON/OFF` [`OFF` by default]            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications -- see [`DISCREPANCIES.md`](DISCREPANCIES.md)                                                                                     |
-|                           |                                        |                                                                                                                                                                                                                     |
-| `QPP_ENABLE_PYQPP`        | `ON/OFF` [`OFF` by default]            | Enables pyqpp C++ development, disabled by default                                                                                                                                                                  |
-| `QPP_ENABLE_TESTING`      | `ON/OFF` [`OFF` by default]            | Enables unit testing with GoogleTest, disabled by default                                                                                                                                                           |
-| `QPP_MATLAB`              | `ON/OFF` [`OFF` by default]            | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load **Quantum++** matrices and vectors to/from MATLAB. |
-| `QPP_OPENMP`              | `ON/OFF` [`ON` by default]             | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                     |
-| `QPP_QUBIT_OPTIMIZATIONS` | `ON/OFF` [`ON` by default]             | Enables optimized code paths for qubit-only systems (d = 2)                                                                                                                                                         |
-|                           |                                        |                                                                                                                                                                                                                     |
-| `QPP_BIGINT`              | `default`, etc. [`default` by default] | Signed big integer type (`qpp::bigint`)                                                                                                                                                                             |
-| `QPP_FP`                  | `default`, etc. [`default` by default] | Floating-point type (`qpp::realT`)                                                                                                                                                                                  |
-| `QPP_IDX`                 | `default`, etc. [`default` by default] | Integer index type (`qpp::idx`)                                                                                                                                                                                     |
-|                           |                                        |                                                                                                                                                                                                                     |
-| `QPP_SANITIZE`            | `ON/OFF` [`OFF` by default]            | Enables code sanitizing                                                                                                                                                                                             |
+| Configuration Option      | Values (default)            | Description                                                                                                                                                                                                         |
+| ------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CMAKE_INSTALL_PREFIX`    | `/path/to/install`          | Specifies a custom installation directory for **Quantum++** header files -- useful when you lack administrative privileges or want a non-default install location                                                   |
+|                           |                             |                                                                                                                                                                                                                     |
+| `QASMTOOLS_QASM2_SPECS`   | `ON/OFF` (`OFF`)            | Enables/disables using the OpenQASM 2.0 standard instead of Qiskit specifications -- see [`DISCREPANCIES.md`](DISCREPANCIES.md)                                                                                     |
+|                           |                             |                                                                                                                                                                                                                     |
+| `QPP_BIGINT`              | `default`, etc. (`default`) | Signed big integer type (`qpp::bigint`)                                                                                                                                                                             |
+| `QPP_FP`                  | `default`, etc. (`default`) | Floating-point type (`qpp::realT`)                                                                                                                                                                                  |
+| `QPP_IDX`                 | `default`, etc. (`default`) | Integer index type (`qpp::idx`)                                                                                                                                                                                     |
+|                           |                             |                                                                                                                                                                                                                     |
+| `QPP_ENABLE_PYQPP`        | `ON/OFF` (`OFF`)            | Enables pyqpp C++ development, disabled by default                                                                                                                                                                  |
+| `QPP_ENABLE_TESTING`      | `ON/OFF` (`OFF`)            | Enables unit testing with GoogleTest, disabled by default                                                                                                                                                           |
+| `QPP_MATLAB`              | `ON/OFF` (`OFF`)            | Enables (if available)/disables interoperability with MATLAB, allowing to detect MATLAB installation automatically. If enabled, allows applications to save/load **Quantum++** matrices and vectors to/from MATLAB. |
+|                           |                             |                                                                                                                                                                                                                     |
+| `QPP_OPENMP`              | `ON/OFF` (`ON`)             | Enables (if available)/disables OpenMP multi-processing library                                                                                                                                                     |
+| `QPP_QUBIT_OPTIMIZATIONS` | `ON/OFF` (`ON`)             | Enables optimized code paths for qubit-only systems (d = 2)                                                                                                                                                         |
+| `QPP_NO_THREAD_LOCAL`     | `ON/OFF` (`OFF`)            | Disables `thread_local` storage duration                                                                                                                                                                            |
+|                           |                             |                                                                                                                                                                                                                     |
+| `QPP_SANITIZE`            | `ON/OFF` (`OFF`)            | Enables code sanitizing                                                                                                                                                                                             |
 
 ---
 

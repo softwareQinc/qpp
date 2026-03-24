@@ -44,7 +44,7 @@ namespace qpp {
  * @brief Singleton class that manages the source of randomness in the library
  *
  * Consists of a wrapper around an std::mt19937 Mersenne twister random number
- * generator engine and an std::random_device engine. The latter is used to seed
+ * generator engine and an std::mt19937 engine. The latter is used to seed
  * the Mersenne twister.
  *
  * \warning This class DOES NOT seed the standard C number generator used by

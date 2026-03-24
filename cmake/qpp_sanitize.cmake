@@ -1,11 +1,10 @@
 # Code sanitizing support
 
 option(QPP_SANITIZE "Enable code sanitizing" OFF)
+message(STATUS "Code sanitizing - ${QPP_SANITIZE}")
 
 # Sanitizing (only AddressSanitizer is available on MSVC)
 if(QPP_SANITIZE)
-  message(STATUS "Code sanitizing - ON")
-
   # Select the target
   include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
   qpp_select_target(QPP_TARGET "QPP_SANITIZE")
@@ -23,6 +22,4 @@ if(QPP_SANITIZE)
     INTERFACE
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:-fsanitize=undefined>
   )
-else()
-  message(STATUS "Code sanitizing - OFF")
 endif()

@@ -61,13 +61,15 @@ doc/
 # Misc
 .DS_Store
 .cmake/
-Testing/
-mat.txt
-examples/_*.cpp
-out.tmp
-test
-TODO.txt
 NOTES.txt
+TODO.txt
+Testing/
+examples/_*.cpp
+mat.txt
+out.tmp
+rho.mat
+rho.txt
+test
 
 # pyqpp
 Makefile

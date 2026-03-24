@@ -1,3 +1,7 @@
+"""
+
+pyqpp: A Python wrapper for the Quantum++ library.
+"""
 from __future__ import annotations
 from pyqpp._pyqpp import BitCircuit
 from pyqpp._pyqpp import CondWhile
@@ -165,20 +169,15 @@ from pyqpp._pyqpp import var
 from pyqpp._pyqpp import x2contfrac
 from pyqpp._pyqpp import zket2dits
 from . import _pyqpp
-__all__: list = ['codes', 'gates', 'qasm', 'random_devices', 'states', '__version__', 'QPP_VERSION_STR', 'QPP_VERSION_NUM']
+__all__: list = ['codes', 'gates', 'qasm', 'random_devices', 'states', 'BitCircuit', 'CondWhile', 'DynamicBitset', 'QCircuit', 'QDensityDummyEngine', 'QDensityEngine', 'QDensityNoisyEngine', 'QEngine', 'QFT', 'QKetDummyEngine', 'QKetEngine', 'QKetNoisyEngine', 'QNoisyEngine', 'QubitAmplitudeDampingNoise', 'QubitBitFlipNoise', 'QubitBitPhaseFlipNoise', 'QubitDepolarizingNoise', 'QubitPhaseDampingNoise', 'QubitPhaseFlipNoise', 'QuditDepolarizingNoise', 'TFQ', 'absm', 'abssq', 'adjoint', 'anticomm', 'apply', 'applyCTRL', 'applyCTRL_fan', 'applyQFT', 'applyTFQ', 'avg', 'bernoulli', 'bloch2rho', 'choi2kraus', 'choi2super', 'comm', 'complement', 'compose_CTRL_circuit', 'compose_circuit', 'compperm', 'concurrence', 'conjugate', 'const_proxy_to_engine_dits', 'contfrac2x', 'convergents', 'cor', 'cosm', 'couple_circuit_left', 'couple_circuit_right', 'cov', 'det', 'dirac', 'dirac_t', 'dirsum', 'dirsumpow', 'discard', 'ee', 'egcd', 'eig', 'entanglement', 'entropy', 'evals', 'evects', 'expm', 'factors', 'funm', 'gcd', 'gconcurrence', 'grams', 'hash_eigen', 'heig', 'hevals', 'hevects', 'infty', 'inverse', 'invperm', 'ip', 'isprime', 'kraus2choi', 'kraus2super', 'kron', 'kronpow', 'lcm', 'load_cmat', 'load_rmat', 'logdet', 'logm', 'lognegativity', 'marginalX', 'marginalY', 'measure', 'measure_seq', 'mket', 'modinv', 'modmul', 'modpow', 'mprj', 'multiidx2n', 'n2multiidx', 'negativity', 'norm', 'normalize', 'omega', 'pi', 'powm', 'prj', 'prod', 'proxy_to_engine_dits', 'ptrace', 'ptrace1', 'ptrace2', 'ptranspose', 'qRAM', 'qmutualinfo', 'qpe_circuit', 'rand', 'randH', 'randU', 'randV', 'randidx', 'randket', 'randkraus', 'randn', 'random_circuit_count', 'random_circuit_depth', 'randperm', 'randprime', 'randprob', 'randrho', 'renyi', 'replicate', 'reset', 'reshape', 'rho2bloch', 'rho2pure', 'sample', 'save', 'schatten', 'schmidt', 'schmidtA', 'schmidtB', 'schmidtcoeffs', 'schmidtprobs', 'set_prng_seed', 'sigma', 'sinm', 'spectralpowm', 'sqrtm', 'sum', 'super2choi', 'super2kraus', 'svals', 'svd', 'svdU', 'svdV', 'syspermute', 'trace', 'transpose', 'tsallis', 'uniform', 'var', 'x2contfrac', 'zket2dits', '__version__', 'QPP_VERSION_STR', 'QPP_VERSION_NUM']
 def _version_to_number(version: str) -> int:
-    """
-    
-    Convert a semantic version string to a numeric value.
-    
-    Example:
-        "7.0.0" -> 70000
-        "7.1.3" -> 70103
-    """
-QPP_VERSION_NUM: int = 70001
-QPP_VERSION_STR: str = '7.0.1'
-__version__: str = '7.0.1'
-_extension_exports: list = list()
+    ...
+QPP_VERSION_NUM: int = 70003
+QPP_VERSION_STR: str = '7.0.3'
+__version__: str = '7.0.3'
+_ext_exports: list = ['BitCircuit', 'CondWhile', 'DynamicBitset', 'QCircuit', 'QDensityDummyEngine', 'QDensityEngine', 'QDensityNoisyEngine', 'QEngine', 'QFT', 'QKetDummyEngine', 'QKetEngine', 'QKetNoisyEngine', 'QNoisyEngine', 'QubitAmplitudeDampingNoise', 'QubitBitFlipNoise', 'QubitBitPhaseFlipNoise', 'QubitDepolarizingNoise', 'QubitPhaseDampingNoise', 'QubitPhaseFlipNoise', 'QuditDepolarizingNoise', 'TFQ', 'absm', 'abssq', 'adjoint', 'anticomm', 'apply', 'applyCTRL', 'applyCTRL_fan', 'applyQFT', 'applyTFQ', 'avg', 'bernoulli', 'bloch2rho', 'choi2kraus', 'choi2super', 'codes', 'comm', 'complement', 'compose_CTRL_circuit', 'compose_circuit', 'compperm', 'concurrence', 'conjugate', 'const_proxy_to_engine_dits', 'contfrac2x', 'convergents', 'cor', 'cosm', 'couple_circuit_left', 'couple_circuit_right', 'cov', 'det', 'dirac', 'dirac_t', 'dirsum', 'dirsumpow', 'discard', 'ee', 'egcd', 'eig', 'entanglement', 'entropy', 'evals', 'evects', 'expm', 'factors', 'funm', 'gates', 'gcd', 'gconcurrence', 'grams', 'hash_eigen', 'heig', 'hevals', 'hevects', 'infty', 'inverse', 'invperm', 'ip', 'isprime', 'kraus2choi', 'kraus2super', 'kron', 'kronpow', 'lcm', 'load_cmat', 'load_rmat', 'logdet', 'logm', 'lognegativity', 'marginalX', 'marginalY', 'measure', 'measure_seq', 'mket', 'modinv', 'modmul', 'modpow', 'mprj', 'multiidx2n', 'n2multiidx', 'negativity', 'norm', 'normalize', 'omega', 'pi', 'powm', 'prj', 'prod', 'proxy_to_engine_dits', 'ptrace', 'ptrace1', 'ptrace2', 'ptranspose', 'qRAM', 'qasm', 'qmutualinfo', 'qpe_circuit', 'rand', 'randH', 'randU', 'randV', 'randidx', 'randket', 'randkraus', 'randn', 'random_circuit_count', 'random_circuit_depth', 'random_devices', 'randperm', 'randprime', 'randprob', 'randrho', 'renyi', 'replicate', 'reset', 'reshape', 'rho2bloch', 'rho2pure', 'sample', 'save', 'schatten', 'schmidt', 'schmidtA', 'schmidtB', 'schmidtcoeffs', 'schmidtprobs', 'set_prng_seed', 'sigma', 'sinm', 'spectralpowm', 'sqrtm', 'states', 'sum', 'super2choi', 'super2kraus', 'svals', 'svd', 'svdU', 'svdV', 'syspermute', 'trace', 'transpose', 'tsallis', 'uniform', 'var', 'x2contfrac', 'zket2dits']
+_metadata: list = ['__version__', 'QPP_VERSION_STR', 'QPP_VERSION_NUM']
+_submodules: list = ['codes', 'gates', 'qasm', 'random_devices', 'states']
 ee: float = 2.718281828459045
 infty: float  # value = inf
 pi: float = 3.141592653589793

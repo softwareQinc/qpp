@@ -235,12 +235,7 @@ qpp::realT sample(bases_states_T& Alice_bases_states,
 
     std::vector<idx> pos(n);
     std::iota(pos.begin(), pos.end(), 0);
-    auto& gen =
-#ifdef NO_THREAD_LOCAL_
-        RandomDevices::get_instance().get_prng();
-#else
-        RandomDevices::get_thread_local_instance().get_prng();
-#endif
+    auto& gen = RandomDevices::get_instance().get_prng();
     // first k elements label the qubits we want to check
     std::shuffle(pos.begin(), pos.end(), gen);
     // sort (first k of them) for std::binary_search() later

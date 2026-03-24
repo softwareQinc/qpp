@@ -44,6 +44,6 @@ For help and additional options, run any benchmark with the `--help` flag.
 
 > **Note:**
 > **Quantum++**
-> [CMake flags and arguments](../INSTALL.md#cmake-flags-and-optional-arguments)
+> [CMake configuration options](../INSTALL.md#cmake-configuration-options)
 > **do not propagate** to the benchmarks. They must be defined independently if
 > they are needed.
