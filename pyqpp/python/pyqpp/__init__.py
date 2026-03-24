@@ -6,7 +6,7 @@ from . import qasm as qasm
 from . import random_devices as random_devices
 from . import states as states
 
-__version__ = "7.0.1"
+__version__ = "7.0.2"
 
 
 def _version_to_number(version: str) -> int:

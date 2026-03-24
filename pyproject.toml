@@ -1,6 +1,6 @@
 [project]
 name = "pyqpp"
-version = "7.0.1"
+version = "7.0.2"
 description = "Python 3 bindings for Quantum++"
 readme = "pyqpp/README.md"
 requires-python = ">=3.9"

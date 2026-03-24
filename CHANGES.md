@@ -1,9 +1,10 @@
 # Changelog
 
-## Upcoming release
+## Version 7.0.2 - 24 March 2026
 
 - Added bindings for `qpp::Codes` and `qpp::RandomDevices` to **pyqpp**
 - Improved stub generation for **pyqpp**
+- Fixed issues in the Doxygen documentation
 
 ## Version 7.0.1 - 20 March 2026
 
