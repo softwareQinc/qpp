@@ -53,15 +53,15 @@ Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
 ## License
 
 [Quantum++](https://github.com/softwareQinc/qpp) is distributed under the
-[MIT license](LICENSE.txt).
+[MIT License](LICENSE.txt).
 
 ---
 
 ## Installation instructions and further documentation
 
-Please see the [installation guide](INSTALL.md) and the comprehensive
-[Wiki](https://github.com/softwareQinc/qpp/wiki) for further documentation and
-detailed examples.
+Please see the <a href="INSTALL.md">installation guide</a> and the
+comprehensive [Wiki](https://github.com/softwareQinc/qpp/wiki) for further
+documentation and detailed examples.
 
 To generate the full official API documentation in both LaTeX and HTML formats
 run [`doxygen`](https://www.doxygen.nl) on the [`Doxyfile`](Doxyfile) file. The
@@ -94,4 +94,5 @@ the same dependencies as **Quantum++**, and can be installed using `pip`
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-For more details, please see the [**pyqpp** documentation](pyqpp/README.md).
+For more details, please see the <a href="pyqpp/README.md"><b>pyqpp</b>
+documentation</a>.
