@@ -44,13 +44,15 @@
 #include "qpp/types.hpp"
 
 namespace qpp::internal::kernels::qubit {
+
 /**
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
- * multi-partite state vector \a state
+ * @brief Applies the single qubit controlled-gate \a A with multiple
+ * control qubits listed in \a ctrl to the part \a target of the multi-partite
+ * state vector \a state, i.e., CTRL-\a A-\a A-...-\a A
  *
  * @param state Eigen expression
  * @param A Eigen expression (2x2 matrix)
- * @param i Target subsystem index
+ * @param target Target subsystem index
  * @param ctrl Vector of control qubit indexes
  * @param shift Binary vector (0/1) where a value of 1 indicates a negated
  * control qubit
@@ -156,12 +158,13 @@ apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
- * multi-partite density matrix \a state
+ * @brief Applies the single qubit controlled-gate \a A with multiple
+ * control qubits listed in \a ctrl to the part \a target of the multi-partite
+ * density matrix \a state, i.e., CTRL-\a A-\a A-...-\a A
  *
  * @param state Eigen expression
  * @param A Eigen expression (2x2 matrix)
- * @param i Target subsystem index
+ * @param target Target subsystem index
  * @param ctrl Vector of control qubit indexes
  * @param shift Binary vector (0/1) where a value of 1 indicates a negated
  * control qubit

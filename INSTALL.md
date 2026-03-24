@@ -98,7 +98,7 @@ ctest --test-dir build
 
 ## Benchmarks
 
-See [benchmarks/README.md](benchmarks/README.md) for details on how to compile
+See [`benchmarks/README.md`](benchmarks/README.md) for details on how to compile
 and run the benchmarks.
 
 ---
@@ -300,7 +300,7 @@ the same dependencies as **Quantum++**, and can be installed using `pip`
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-For more details, please see [pyqpp/README.md](pyqpp/README.md).
+For more details, please see [`pyqpp/README.md`](pyqpp/README.md).
 
 ---
 

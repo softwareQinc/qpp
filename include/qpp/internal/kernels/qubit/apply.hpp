@@ -996,6 +996,7 @@ apply_rho_3q(const Eigen::MatrixBase<Derived1>& state,
  * @param state Eigen expression
  * @param A Eigen expression
  * @param target Subsystem indexes where the gate \a A is applied
+ * @param n Number of qubits
  * @return Gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>

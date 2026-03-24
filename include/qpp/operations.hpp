@@ -937,9 +937,8 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 
 /**
  * @brief Applies the single qudit controlled-gate \a A with multiple
- * control qudits listed in \a ctrl on every qudit listed in \a target,
- * i.e., CTRL-\a A-\a A-...-\a A.
- * @see qpp::Gates::CTRL()
+ * control qudits listed in \a ctrl to the part \a target of the multi-partite
+ * state vector or density matrix \a state, i.e., CTRL-\a A-\a A-...-\a A
  *
  * @note The dimension of the gate \a A must match the dimension of every qudit
  * in \a target. All control subsystems in \a ctrl must have the same dimension.
@@ -1236,9 +1235,8 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
 
 /**
  * @brief Applies the single qudit controlled-gate \a A with multiple
- * control qudits listed in \a ctrl on every qudit listed in \a target,
- * i.e., CTRL-\a A-\a A-...-\a A.
- * @see qpp::Gates::CTRL()
+ * control qudits listed in \a ctrl to the part \a target of the multi-partite
+ * state vector or density matrix \a state, i.e., CTRL-\a A-\a A-...-\a A
  *
  * @note The dimension of the gate \a A must match the dimension of every qudit
  * in \a target. All control subsystems in \a ctrl must have the same dimension.

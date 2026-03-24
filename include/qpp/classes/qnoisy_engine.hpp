@@ -142,12 +142,12 @@ class QNoisyEngineT : public QEngineT<T> {
     /**
      * @brief Resets the engine
      *
-     * Re-initializes everything to zero and sets the initial state to
-     * \f$|0\rangle^{\otimes n}\f$
+     * Resets the engine's internal state. If \a qstate is provided, it becomes
+     * the new initial quantum state; otherwise the engine is initialized to
+     * \f$|0\rangle^{\otimes n}\f$.
      *
-     * @param reset_stats Optional (true by default), resets the collected
-     * measurement statistics hash table
-     * @return Reference to the current instance
+     * @param qstate Optional initial quantum state for the engine
+     * @param reset_stats If true, clears the collected measurement statistics
      */
     QNoisyEngineT& reset(std::optional<T> qstate = std::nullopt,
                          bool reset_stats = true) override {

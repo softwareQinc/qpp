@@ -1246,8 +1246,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
      * \f$|0\rangle^{\otimes n}\f$.
      *
      * @param qstate Optional initial quantum state for the engine
-     * @param reset_stats Optional (true by default). When true, clears the
-     * collected measurement statistics.
+     * @param reset_stats If true, clears the collected measurement statistics
      */
     virtual QEngineT& reset(std::optional<T> qstate = std::nullopt,
                             bool reset_stats = true) {

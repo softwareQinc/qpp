@@ -21,10 +21,10 @@ processes. The main design factors taken in consideration were the ease of use,
 high portability, and high performance. The library's simulation capabilities
 are only restricted by the amount of available physical memory.
 
-Explore the [`examples`](https://github.com/softwareQinc/qpp/tree/main/examples)
-directory for a comprehensive look at **Quantum++** in action. You can also
+Explore the [examples](https://github.com/softwareQinc/qpp/tree/main/examples)
+for a comprehensive look at **Quantum++** in action. You can also
 find community-contributed examples in
-[@antoine-bussy's GitHub repository](https://github.com/antoine-bussy/qpp-examples).
+[antoine-bussy's GitHub repository](https://github.com/antoine-bussy/qpp-examples).
 
 To report any bugs or ask for additional features/enhancements, please
 [submit an issue](https://github.com/softwareQinc/qpp/issues) with an
@@ -52,16 +52,16 @@ Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
 
 ## License
 
-[Quantum++](https://github.com/softwareQinc/qpp) is distributed under the MIT
-license. Please see the [`LICENSE.txt`](LICENSE.txt) file for more details.
+[Quantum++](https://github.com/softwareQinc/qpp) is distributed under the
+[MIT license](LICENSE.txt).
 
 ---
 
 ## Installation instructions and further documentation
 
-Please see the installation guide [`INSTALL.md`](INSTALL.md) and the
-comprehensive [Wiki](https://github.com/softwareQinc/qpp/wiki) for further
-documentation and detailed examples.
+Please see the [installation guide](INSTALL.md) and the comprehensive
+[Wiki](https://github.com/softwareQinc/qpp/wiki) for further documentation and
+detailed examples.
 
 To generate the full official API documentation in both LaTeX and HTML formats
 run [`doxygen`](https://www.doxygen.nl) on the [`Doxyfile`](Doxyfile) file. The
@@ -94,4 +94,4 @@ the same dependencies as **Quantum++**, and can be installed using `pip`
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-For more details, please see [pyqpp/README.md](pyqpp/README.md).
+For more details, please see the [**pyqpp** documentation](pyqpp/README.md).

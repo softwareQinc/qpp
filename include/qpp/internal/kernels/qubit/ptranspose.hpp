@@ -51,6 +51,7 @@ namespace qpp::internal::kernels::qubit {
  *
  * @param A Eigen expression
  * @param target Subsystem indexes
+ * @param n Number of qubits
  * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
  * \a target in a qubit multi-partite system, as a dynamic matrix over the same
  * scalar field as \a A
@@ -139,6 +140,7 @@ ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
  *
  * @param A Eigen expression
  * @param target Subsystem indexes
+ * @param n Number of qubits
  * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
  * \a target in a qubit multi-partite system, as a dynamic matrix over the same
  * scalar field as \a A
