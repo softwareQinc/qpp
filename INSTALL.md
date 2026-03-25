@@ -112,7 +112,7 @@ and run the benchmarks.
 > Projects linking against **Quantum++** must explicitly define these options
 > themselves if required.
 
-| Configuration Option      | Values (default)            | Description                                                                                                                                                                                                         |
+| Option                    | Values (default)            | Description                                                                                                                                                                                                         |
 | ------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `CMAKE_INSTALL_PREFIX`    | `/path/to/install`          | Specifies a custom installation directory for **Quantum++** header files -- useful when you lack administrative privileges or want a non-default install location                                                   |
 |                           |                             |                                                                                                                                                                                                                     |
@@ -170,9 +170,9 @@ cmake --build build --target uninstall
 
 ### FreeBSD
 
-We are proud to be part of the [FreeBSD](https://www.freebsd.org/) operating
-system as an official package. If you are running FreeBSD, you can install
-**Quantum++** with
+We are proud to be part of the [FreeBSD](https://www.freebsd.org) operating
+system as an official ports package. If you are using FreeBSD, you can install
+**Quantum++** by running
 
 ```shell
 sudo pkg install quantum++
