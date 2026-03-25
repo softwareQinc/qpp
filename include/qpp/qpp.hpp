@@ -156,7 +156,7 @@ inline const States& st [[maybe_unused]] =
  *
  * @note If the compiler supports thread_local, the instance has thread_local
  * storage duration, due to mutability of its public member std::mt19937 and
- * possible data races
+ * potential data races
  */
 inline RandomDevices& rdevs [[maybe_unused]] = RandomDevices::get_instance();
 
