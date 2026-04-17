@@ -49,7 +49,7 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
       "In-source builds not allowed. Please instruct CMake to use an\
       out-of-source build, e.g.,\n\
       cmake -B build && cmake --build build\n\
-      You may need to remove CMakeCache.txt.")
+You may need to remove CMakeCache.txt.")
 endif()
 
 # ----------------------------------------------------------------------------
