@@ -46,11 +46,11 @@ TEST_CASE("Bricks circuit benchmark", "[benchmark][bricks]") {
     REQUIRE(nq > 1);
     qpp::QCircuit qc{nq};
     for (qpp::idx i = 0; i < nl; ++i) {
-        // layer of 1-qubit random unitaries
+        // Layer of 1-qubit random unitaries
         for (qpp::idx q = 0; q < nq; ++q) {
             qc.gate(qpp::randU(), q);
         }
-        // followed by a layer of 2-qubit random unitaries
+        // Followed by a layer of 2-qubit random unitaries
         for (qpp::idx q = 0; q < nq - 1; q += 2) {
             qc.gate(qpp::randU(4), q, q + 1);
         }
