@@ -9,7 +9,7 @@
 
 namespace {
 qpp::idx nq = 10; // default number of qubits if none provided at runtime
-qpp::idx nl = 10; // default number of layers if none provided at runtime
+qpp::idx nl = 20; // default number of layers if none provided at runtime
 } // namespace
 
 int main(int argc, char* argv[]) {
