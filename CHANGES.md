@@ -1,5 +1,12 @@
 # Changelog
 
+## Upcoming release
+
+- Implemented a brickwork random circuit benchmark consisting of alternating
+  layers of single-qubit Haar-random unitaries and adjacent two-qubit random
+  unitaries,
+  [`benchmarks/src/bricks_bench.cpp`](benchmarks/src/bricks_bench.cpp)
+
 ## Version 7.0.3 - 25 March 2026
 
 - Improved [`Dockerfile`](docker/Dockerfile)
