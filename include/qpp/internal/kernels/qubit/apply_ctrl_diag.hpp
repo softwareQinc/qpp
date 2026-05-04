@@ -25,8 +25,8 @@
  */
 
 /**
- * @file qpp/internal/kernels/qubit/apply_ctrl.hpp
- * @brief Internal highly optimized critical functions for qpp::applyCTRL()
+ * @file qpp/internal/kernels/qubit/apply_ctrl_diag.hpp
+ * @brief Internal highly optimized critical functions for qpp::applyCTRL_diag()
  */
 
 #ifndef QPP_INTERNAL_KERNELS_QUBIT_APPLY_CTRL_HPP_
@@ -45,8 +45,8 @@
 
 namespace qpp::internal::kernels::qubit {
 /**
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
- * multi-partite state vector \a state in-place
+ * @brief Applies the controlled 1-qubit diagonal gate \a A to the qubit \a i of
+ * the multi-partite state vector \a state in-place
  *
  * @param state Eigen expression (modified in-place)
  * @param A Eigen expression (2 x 1 vector of diagonal elements)
@@ -57,7 +57,7 @@ namespace qpp::internal::kernels::qubit {
  * @param n Number of qubits
  */
 template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] void apply_ctrl_psi_1q_inplace(
+[[qpp::critical, qpp::parallel]] void apply_ctrl_psi_1q_diag_inplace(
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
     const std::vector<idx>& ctrl, idx i, const std::vector<idx>& shift, idx n) {
     using Scalar = typename Derived1::Scalar;
@@ -67,7 +67,7 @@ template <typename Derived1, typename Derived2>
     assert(i < n && "Target qubit index i must be less than n");
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
-    assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
+    assert(A.size() == 2 && "Diagonal gate A must have 2 elements");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
     const idx ctrl_size = static_cast<idx>(ctrl.size());
@@ -99,10 +99,9 @@ template <typename Derived1, typename Derived2>
         }
     }
 
-    const Scalar a00 = A.coeff(0, 0);
-    const Scalar a01 = A.coeff(0, 1);
-    const Scalar a10 = A.coeff(1, 0);
-    const Scalar a11 = A.coeff(1, 1);
+    // Extract diagonal elements
+    const Scalar a0 = A.coeff(0);
+    const Scalar a1 = A.coeff(1);
 
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
@@ -113,25 +112,24 @@ template <typename Derived1, typename Derived2>
             const idx k0 = L + R;
             const idx k1 = k0 + step;
 
+            // Check if control conditions are met
             if (((static_cast<std::size_t>(k0) &
                   static_cast<std::size_t>(expected_pattern_for_ones)) ==
                  static_cast<std::size_t>(expected_pattern_for_ones)) &&
                 ((static_cast<std::size_t>(k0) &
                   static_cast<std::size_t>(expected_zero_mask)) == 0)) {
 
-                const Scalar psi_k0 = state.coeff(k0);
-                const Scalar psi_k1 = state.coeff(k1);
-
-                state.coeffRef(k0) = (a00 * psi_k0) + (a01 * psi_k1);
-                state.coeffRef(k1) = (a10 * psi_k0) + (a11 * psi_k1);
+                // Apply diagonal elements directly
+                state.coeffRef(k0) *= a0;
+                state.coeffRef(k1) *= a1;
             }
         }
     }
 }
 
 /**
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
- * multi-partite state vector \a state
+ * @brief Applies the controlled 1-qubit diagonal gate \a A to the qubit \a i of
+ * the multi-partite state vector \a state
  *
  * @param state Eigen expression
  * @param A Eigen expression (2 x 1 vector of diagonal elements)
@@ -143,22 +141,22 @@ template <typename Derived1, typename Derived2>
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, idx i,
-                  const std::vector<idx>& shift, idx n) {
+apply_ctrl_psi_1q_diag(const Eigen::MatrixBase<Derived1>& state,
+                       const Eigen::MatrixBase<Derived2>& A,
+                       const std::vector<idx>& ctrl, idx i,
+                       const std::vector<idx>& shift, idx n) {
     // Deep copy for functional return
     expr_t<Derived1> result = state;
 
     // Apply transformation in-place
-    apply_ctrl_psi_1q_inplace(result, A, ctrl, i, shift, n);
+    apply_ctrl_psi_1q_diag_inplace(result, A, ctrl, i, shift, n);
 
     return result;
 }
 
 /**
- * @brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
- * of the multi-partite state vector \a state in-place
+ * @brief Applies the controlled 2-qubit diagonal gate \a A to the qubits \a i
+ * and \a j of the multi-partite state vector \a state in-place
  *
  * @param state Eigen expression (modified in-place)
  * @param A Eigen expression (4 x 1 vector of diagonal elements)
@@ -171,10 +169,10 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] void
-apply_ctrl_psi_2q_inplace(Eigen::MatrixBase<Derived1>& state,
-                          const Eigen::MatrixBase<Derived2>& A,
-                          const std::vector<idx>& ctrl, idx i, idx j,
-                          const std::vector<idx>& shift, idx n) {
+apply_ctrl_psi_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
+                               const Eigen::MatrixBase<Derived2>& A,
+                               const std::vector<idx>& ctrl, idx i, idx j,
+                               const std::vector<idx>& shift, idx n) {
     using Scalar = typename Derived1::Scalar;
     const idx D = static_cast<idx>(std::size_t{1} << n);
 
@@ -183,7 +181,7 @@ apply_ctrl_psi_2q_inplace(Eigen::MatrixBase<Derived1>& state,
            "Target qubit indices i and j must be distinct and less than n");
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
-    assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
+    assert(A.size() == 4 && "Diagonal gate A must have 4 elements");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
     const idx ctrl_size = static_cast<idx>(ctrl.size());
@@ -216,15 +214,11 @@ apply_ctrl_psi_2q_inplace(Eigen::MatrixBase<Derived1>& state,
         }
     }
 
-    // Extract A entries
-    const Scalar a00 = A.coeff(0, 0), a01 = A.coeff(0, 1), a02 = A.coeff(0, 2),
-                 a03 = A.coeff(0, 3);
-    const Scalar a10 = A.coeff(1, 0), a11 = A.coeff(1, 1), a12 = A.coeff(1, 2),
-                 a13 = A.coeff(1, 3);
-    const Scalar a20 = A.coeff(2, 0), a21 = A.coeff(2, 1), a22 = A.coeff(2, 2),
-                 a23 = A.coeff(2, 3);
-    const Scalar a30 = A.coeff(3, 0), a31 = A.coeff(3, 1), a32 = A.coeff(3, 2),
-                 a33 = A.coeff(3, 3);
+    // Extract diagonal elements
+    const Scalar a0 = A.coeff(0);
+    const Scalar a1 = A.coeff(1);
+    const Scalar a2 = A.coeff(2);
+    const Scalar a3 = A.coeff(3);
 
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
@@ -244,33 +238,21 @@ apply_ctrl_psi_2q_inplace(Eigen::MatrixBase<Derived1>& state,
             continue;
         }
 
-        const idx k01 = static_cast<idx>(static_cast<std::size_t>(k00) |
-                                         static_cast<std::size_t>(s_j));
-        const idx k10 = static_cast<idx>(static_cast<std::size_t>(k00) |
-                                         static_cast<std::size_t>(s_i));
-        const idx k11 = static_cast<idx>(static_cast<std::size_t>(k00) |
-                                         static_cast<std::size_t>(s_i) |
-                                         static_cast<std::size_t>(s_j));
+        const idx k01 = k00 | s_j;
+        const idx k10 = k00 | s_i;
+        const idx k11 = k00 | s_i | s_j;
 
-        const Scalar psi00 = state.coeff(k00);
-        const Scalar psi01 = state.coeff(k01);
-        const Scalar psi10 = state.coeff(k10);
-        const Scalar psi11 = state.coeff(k11);
-
-        state.coeffRef(k00) =
-            (a00 * psi00) + (a01 * psi01) + (a02 * psi10) + (a03 * psi11);
-        state.coeffRef(k01) =
-            (a10 * psi00) + (a11 * psi01) + (a12 * psi10) + (a13 * psi11);
-        state.coeffRef(k10) =
-            (a20 * psi00) + (a21 * psi01) + (a22 * psi10) + (a23 * psi11);
-        state.coeffRef(k11) =
-            (a30 * psi00) + (a31 * psi01) + (a32 * psi10) + (a33 * psi11);
+        // Apply diagonal scaling directly
+        state.coeffRef(k00) *= a0;
+        state.coeffRef(k01) *= a1;
+        state.coeffRef(k10) *= a2;
+        state.coeffRef(k11) *= a3;
     }
 }
 
 /**
- * @brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
- * of the multi-partite state vector \a state
+ * @brief Applies the controlled 2-qubit diagonal gate \a A to the qubits \a i
+ * and \a j of the multi-partite state vector \a state
  *
  * @param state Eigen expression
  * @param A Eigen expression (4 x 1 vector of diagonal elements)
@@ -283,22 +265,22 @@ apply_ctrl_psi_2q_inplace(Eigen::MatrixBase<Derived1>& state,
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, idx i, idx j,
-                  const std::vector<idx>& shift, idx n) {
+apply_ctrl_psi_2q_diag(const Eigen::MatrixBase<Derived1>& state,
+                       const Eigen::MatrixBase<Derived2>& A,
+                       const std::vector<idx>& ctrl, idx i, idx j,
+                       const std::vector<idx>& shift, idx n) {
     // Functional deep copy
     expr_t<Derived1> result = state;
 
     // Apply transformation in-place on the copy
-    apply_ctrl_psi_2q_inplace(result, A, ctrl, i, j, shift, n);
+    apply_ctrl_psi_2q_diag_inplace(result, A, ctrl, i, j, shift, n);
 
     return result;
 }
 
 /**
- * @brief Applies the multi-qubit controlled gate \a A to the part \a target of
- * the multi-partite state vector \a state in-place
+ * @brief Applies the multi-qubit controlled diagonal gate \a A to the part
+ * \a target of the multi-partite state vector \a state in-place
  *
  * @param state Eigen expression (modified in-place)
  * @param A Eigen expression (2^k x 1 vector of diagonal elements)
@@ -309,21 +291,18 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
  * @param n Number of qubits
  */
 template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] void apply_ctrl_psi_kq_inplace(
+[[qpp::critical, qpp::parallel]] void apply_ctrl_psi_kq_diag_inplace(
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
     const std::vector<idx>& ctrl, const std::vector<idx>& target,
     const std::vector<idx>& shift, idx n) {
-    using Scalar = typename Derived1::Scalar;
-    using EigenVector = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
 
     const idx k = static_cast<idx>(target.size());
     const idx dim = static_cast<idx>(std::size_t{1} << k);
     const idx outer_dim = static_cast<idx>(std::size_t{1} << (n - k));
 
     // Input Validation
-    assert(static_cast<idx>(A.rows()) == dim &&
-           static_cast<idx>(A.cols()) == dim &&
-           "Gate A must be a 2^k x 2^k matrix");
+    assert(static_cast<idx>(A.size()) == dim &&
+           "Gate A must have 2^k elements");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
     const idx ctrl_size = static_cast<idx>(ctrl.size());
@@ -339,7 +318,7 @@ template <typename Derived1, typename Derived2>
     if (k > 1) {
         std::vector<idx> sorted_target = target;
         std::sort(sorted_target.begin(), sorted_target.end());
-        assert(std::adjacent_find(sorted_target.begin(), sorted_target.end()) ==
+        assert(std::unique(sorted_target.begin(), sorted_target.end()) ==
                    sorted_target.end() &&
                "Target qubit indices must be distinct");
     }
@@ -367,43 +346,46 @@ template <typename Derived1, typename Derived2>
         }
     }
 
-    // Index Mappings
+    // Index Mappings (Pre-compute the bitmasks for target configurations)
     std::vector<idx> inner_idx(dim);
     for (idx r = 0; r < dim; ++r) {
         idx index_r = 0;
         for (idx j = 0; j < k; ++j) {
-            if ((static_cast<std::size_t>(r) >> j) & std::size_t{1}) {
-                index_r += static_cast<idx>(std::size_t{1}
-                                            << (n - 1 - target[k - 1 - j]));
+            if ((static_cast<std::size_t>(r) >> (k - 1 - j)) & 1) {
+                index_r |= (idx{1} << (n - 1 - target[j]));
             }
         }
         inner_idx[r] = index_r;
     }
 
-    std::vector<bool> is_target(n, false);
+    // Identify spectator qubits (qubits neither target nor control)
+    std::vector<bool> is_target_or_ctrl(n, false);
     for (idx q : target) {
-        is_target[q] = true;
+        is_target_or_ctrl[q] = true;
     }
+    for (idx q : ctrl) {
+        is_target_or_ctrl[q] = true;
+    }
+
     std::vector<idx> spectator_qubits;
     for (idx i = 0; i < n; ++i) {
-        if (!is_target[i]) {
+        if (!is_target_or_ctrl[i]) {
             spectator_qubits.push_back(i);
         }
     }
 
+    // Pre-calculate outer indices for efficiency
     std::vector<idx> outer_idx(outer_dim);
     for (idx m = 0; m < outer_dim; ++m) {
         idx i_base = 0;
         for (idx j = 0; j < static_cast<idx>(spectator_qubits.size()); ++j) {
-            if ((static_cast<std::size_t>(m) >> j) & std::size_t{1}) {
-                i_base += static_cast<idx>(std::size_t{1}
-                                           << (n - 1 - spectator_qubits[j]));
+            if ((static_cast<std::size_t>(m) >> j) & 1) {
+                i_base |= (idx{1} << (n - 1 - spectator_qubits[j]));
             }
         }
-        outer_idx[m] = i_base;
+        outer_idx[m] = i_base | expected_pattern_for_ones;
     }
 
-    // Parallel Execution
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
 #pragma omp parallel for
@@ -411,27 +393,16 @@ template <typename Derived1, typename Derived2>
     for (idx m = 0; m < outer_dim; ++m) {
         const idx i_base = outer_idx[m];
 
-        if (((static_cast<std::size_t>(i_base) & expected_pattern_for_ones) ==
-             expected_pattern_for_ones) &&
-            ((static_cast<std::size_t>(i_base) & expected_zero_mask) == 0)) {
-
-            EigenVector input_block(dim);
-            for (idx c = 0; c < dim; ++c) {
-                input_block(c) = state(i_base + inner_idx[c]);
-            }
-
-            EigenVector new_block = A * input_block;
-
-            for (idx r = 0; r < dim; ++r) {
-                state(i_base + inner_idx[r]) = new_block(r);
-            }
+        // Apply diagonal scaling directly across the target dimension
+        for (idx r = 0; r < dim; ++r) {
+            state(i_base | inner_idx[r]) *= A.coeff(r);
         }
     }
 }
 
 /**
- * @brief Applies the multi-qubit controlled gate \a A to the part \a target of
- * the multi-partite state vector \a state
+ * @brief Applies the multi-qubit controlled diagonal gate \a A to the part \a
+ * target of the multi-partite state vector \a state
  *
  * @param state Eigen expression
  * @param A Eigen expression (2^k x 1 vector of diagonal elements)
@@ -442,26 +413,25 @@ template <typename Derived1, typename Derived2>
  * @return Controlled gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] qpp::expr_t<Derived1>
-apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                  const std::vector<idx>& shift, idx n) {
+[[qpp::critical, qpp::parallel]] qpp::expr_t<Derived1> apply_ctrl_psi_kq_diag(
+    const Eigen::MatrixBase<Derived1>& state,
+    const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
+    const std::vector<idx>& target, const std::vector<idx>& shift, idx n) {
     // Functional deep copy
     qpp::expr_t<Derived1> result = state;
 
     // Delegate to in-place implementation
-    apply_ctrl_psi_kq_inplace(result, A, ctrl, target, shift, n);
+    apply_ctrl_psi_kq_diag_inplace(result, A, ctrl, target, shift, n);
 
     return result;
 }
 
 /**
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
- * multi-partite density matrix \a state in-place
+ * @brief Applies the controlled 1-qubit diagonal gate \a A to the qubit \a i of
+ * the multi-partite density matrix \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (2x2 matrix)
+ * @param A Eigen expression (2 x 1 vector of diagonal elements)
  * @param i Target subsystem index
  * @param ctrl Vector of control qubit indices
  * @param shift Vector of control values (0: positive/|1> control, 1:
@@ -469,11 +439,10 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
  * @param n Number of qubits
  */
 template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] void apply_ctrl_rho_1q_inplace(
+[[qpp::critical, qpp::parallel]] void apply_ctrl_rho_1q_diag_inplace(
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
     const std::vector<idx>& ctrl, idx i, const std::vector<idx>& shift, idx n) {
     using Scalar = typename Derived1::Scalar;
-    using Matrix2 = Eigen::Matrix2<Scalar>;
     const idx D = static_cast<idx>(std::size_t{1} << n);
 
     // Input Validation
@@ -481,7 +450,7 @@ template <typename Derived1, typename Derived2>
     assert(static_cast<idx>(state.rows()) == D &&
            static_cast<idx>(state.cols()) == D &&
            "State must be a square matrix sized 2^n x 2^n");
-    assert(A.rows() == 2 && A.cols() == 2 && "Gate A must be a 2x2 matrix");
+    assert(A.size() == 2 && "Diagonal gate A must have 2 elements");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
     const idx ctrl_size = static_cast<idx>(ctrl.size());
@@ -518,73 +487,60 @@ template <typename Derived1, typename Derived2>
     };
 
     // Indexing Constants
-    const idx p_i = n - 1 - i;
-    const idx s_i = static_cast<idx>(std::size_t{1} << p_i);
-    const idx D_spec = D / 2;
-    const idx p_i_plus_1 = p_i + 1;
-    const idx low_mask = s_i - 1;
-
-    const Matrix2 A_block = A;
-    const Matrix2 A_dagger = A_block.adjoint();
-    const idx total_iterations = D_spec * D_spec;
+    const idx s_i = static_cast<idx>(std::size_t{1} << (n - 1 - i));
+    const Scalar a0 = A.coeff(0);
+    const Scalar a1 = A.coeff(1);
+    const Scalar a0_conj = std::conj(a0);
+    const Scalar a1_conj = std::conj(a1);
 
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
-#pragma omp parallel for
+#pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
-    for (idx it = 0; it < total_iterations; ++it) {
-        const idx s = it / D_spec;
-        const idx s_prime = it % D_spec;
+    for (idx r0 = 0; r0 < D; r0 += 2 * s_i) {
+        for (idx c0 = 0; c0 < D; c0 += 2 * s_i) {
+            for (idx r_rest = 0; r_rest < s_i; ++r_rest) {
+                for (idx c_rest = 0; c_rest < s_i; ++c_rest) {
+                    const idx r = r0 + r_rest;
+                    const idx c = c0 + c_rest;
 
-        // Row indices
-        const idx s_high_r =
-            static_cast<idx>(static_cast<std::size_t>(s) >> p_i);
-        const idx s_low_r = static_cast<idx>(
-            static_cast<std::size_t>(s) & static_cast<std::size_t>(low_mask));
-        const idx r0 = (s_high_r << p_i_plus_1) | s_low_r;
-        const idx r1 = r0 + s_i;
-        const bool row_ctrl = control_is_met(r0);
+                    const idx r1 = r + s_i;
+                    const idx c1 = c + s_i;
 
-        // Column indices
-        const idx s_prime_high_c =
-            static_cast<idx>(static_cast<std::size_t>(s_prime) >> p_i);
-        const idx s_prime_low_c =
-            static_cast<idx>(static_cast<std::size_t>(s_prime) &
-                             static_cast<std::size_t>(low_mask));
-        const idx c0 = (s_prime_high_c << p_i_plus_1) | s_prime_low_c;
-        const idx c1 = c0 + s_i;
-        const bool col_ctrl = control_is_met(c0);
+                    const bool row_ctrl = control_is_met(r);
+                    const bool col_ctrl = control_is_met(c);
 
-        if (!row_ctrl && !col_ctrl) {
-            continue;
+                    if (row_ctrl && col_ctrl) {
+                        // Both row and column controlled: g_r * conj(g_c)
+                        state.coeffRef(r, c) *= a0 * a0_conj;
+                        state.coeffRef(r, c1) *= a0 * a1_conj;
+                        state.coeffRef(r1, c) *= a1 * a0_conj;
+                        state.coeffRef(r1, c1) *= a1 * a1_conj;
+                    } else if (row_ctrl) {
+                        // Only row controlled: g_r * 1
+                        state.coeffRef(r, c) *= a0;
+                        state.coeffRef(r, c1) *= a0;
+                        state.coeffRef(r1, c) *= a1;
+                        state.coeffRef(r1, c1) *= a1;
+                    } else if (col_ctrl) {
+                        // Only column controlled: 1 * conj(g_c)
+                        state.coeffRef(r, c) *= a0_conj;
+                        state.coeffRef(r, c1) *= a1_conj;
+                        state.coeffRef(r1, c) *= a0_conj;
+                        state.coeffRef(r1, c1) *= a1_conj;
+                    }
+                }
+            }
         }
-
-        Matrix2 rho_block;
-        rho_block << state.coeff(r0, c0), state.coeff(r0, c1),
-            state.coeff(r1, c0), state.coeff(r1, c1);
-
-        Matrix2 result_block;
-        if (row_ctrl && col_ctrl) {
-            result_block.noalias() = A_block * rho_block * A_dagger;
-        } else if (row_ctrl) {
-            result_block.noalias() = A_block * rho_block;
-        } else {
-            result_block.noalias() = rho_block * A_dagger;
-        }
-
-        state.coeffRef(r0, c0) = result_block(0, 0);
-        state.coeffRef(r0, c1) = result_block(0, 1);
-        state.coeffRef(r1, c0) = result_block(1, 0);
-        state.coeffRef(r1, c1) = result_block(1, 1);
     }
 }
 
 /**
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
- * multi-partite density matrix \a state
+ * @brief Applies the controlled 1-qubit diagonal gate \a A to the qubit \a i of
+ * the multi-partite density matrix \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (2x2 matrix)
+ * @param A Eigen expression (2 x 1 vector of diagonal elements)
  * @param i Target subsystem index
  * @param ctrl Vector of control qubit indices
  * @param shift Vector of control values
@@ -593,42 +549,39 @@ template <typename Derived1, typename Derived2>
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, idx i,
-                  const std::vector<idx>& shift, idx n) {
+apply_ctrl_rho_1q_diag(const Eigen::MatrixBase<Derived1>& state,
+                       const Eigen::MatrixBase<Derived2>& A,
+                       const std::vector<idx>& ctrl, idx i,
+                       const std::vector<idx>& shift, idx n) {
     // Deep copy for functional interface
     expr_t<Derived1> result = state;
 
     // Apply transformation in-place
-    apply_ctrl_rho_1q_inplace(result, A, ctrl, i, shift, n);
+    apply_ctrl_rho_1q_diag_inplace(result, A, ctrl, i, shift, n);
 
     return result;
 }
 
 /**
- * @brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
- * of the multi-partite density matrix \a state in-place
+ * @brief Applies the controlled 2-qubit diagonal gate \a A to the qubits \a i
+ * and \a j of the multi-partite density matrix \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (4x4 matrix)
+ * @param A Eigen expression (4 x 1 vector of diagonal elements)
+ * @param ctrl Vector of control qubit indices
  * @param i Target subsystem index
  * @param j Target subsystem index
- * @param ctrl Vector of control qubit indices
  * @param shift Vector of control values (0: positive/|1> control, 1:
  * negative/|0> control)
  * @param n Number of qubits
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] void
-apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
-                          const Eigen::MatrixBase<Derived2>& A,
-                          const std::vector<idx>& ctrl, idx i, idx j,
-                          const std::vector<idx>& shift, idx n) {
-    // Type and Dimension Setup
+apply_ctrl_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
+                               const Eigen::MatrixBase<Derived2>& A,
+                               const std::vector<idx>& ctrl, idx i, idx j,
+                               const std::vector<idx>& shift, idx n) {
     using Scalar = typename Derived1::Scalar;
-    using ComputeBlockType = Eigen::Matrix<Scalar, 4, 4>;
-
     const idx D [[maybe_unused]] = static_cast<idx>(std::size_t{1} << n);
     const idx ctrl_size = static_cast<idx>(ctrl.size());
 
@@ -637,7 +590,7 @@ apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
            "Target qubits must be distinct and < n");
     assert(static_cast<idx>(state.rows()) == D &&
            static_cast<idx>(state.cols()) == D && "State must be 2^n x 2^n");
-    assert(A.rows() == 4 && A.cols() == 4 && "Gate A must be a 4x4 matrix");
+    assert(A.size() == 4 && "Diagonal gate A must have 4 elements");
     assert(ctrl.size() == shift.size() && "ctrl/shift size mismatch");
 
 #ifndef NDEBUG
@@ -646,8 +599,6 @@ apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
         const idx c = ctrl[c_idx];
         assert(c < n && target_set.find(c) == target_set.end() &&
                "Control/Target overlap");
-        assert((shift[c_idx] == 0 || shift[c_idx] == 1) &&
-               "Shift must be 0 or 1");
     }
 #endif
 
@@ -655,11 +606,20 @@ apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
     const idx j_phys = n - j - 1;
     const idx P_i = static_cast<idx>(std::size_t{1} << i_phys);
     const idx P_j = static_cast<idx>(std::size_t{1} << j_phys);
-    const idx D_rest =
-        (n >= 2) ? static_cast<idx>(std::size_t{1} << (n - 2)) : 1;
+    const idx D_rest = static_cast<idx>(std::size_t{1} << (n - 2));
 
-    const ComputeBlockType U = A.template cast<Scalar>();
-    const ComputeBlockType U_adj = U.adjoint();
+    // Pre-calculate diagonal elements and their conjugates
+    const Scalar a[4] = {A.coeff(0), A.coeff(1), A.coeff(2), A.coeff(3)};
+    const Scalar a_conj[4] = {std::conj(a[0]), std::conj(a[1]), std::conj(a[2]),
+                              std::conj(a[3])};
+
+    // Pre-calculate scaling matrix G(r, c) = a[r] * conj(a[c])
+    Eigen::Matrix<Scalar, 4, 4> G;
+    for (int r = 0; r < 4; ++r) {
+        for (int col = 0; col < 4; ++col) {
+            G(r, col) = a[r] * a_conj[col];
+        }
+    }
 
     // Control Mask Calculation
     idx expected_pattern_for_ones = 0;
@@ -674,77 +634,64 @@ apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
         }
     }
 
+    auto control_is_met = [&](idx k_base) {
+        return ((static_cast<std::size_t>(k_base) &
+                 expected_pattern_for_ones) == expected_pattern_for_ones) &&
+               ((static_cast<std::size_t>(k_base) & expected_zero_mask) == 0);
+    };
+
 #ifdef QPP_OPENMP
 // NOLINTNEXTLINE
-#pragma omp parallel for default(none)                                         \
-    shared(D_rest, n, P_i, P_j, U, U_adj, state, i_phys, j_phys,               \
-               expected_pattern_for_ones, expected_zero_mask)
+#pragma omp parallel for collapse(2)
 #endif
     for (idx r = 0; r < D_rest; ++r) {
-        idx r_base_row = 0;
-        idx current_r = r;
-        for (idx q = 0; q < n; ++q) {
-            if (q != i_phys && q != j_phys) {
-                if (current_r & 1) {
-                    r_base_row |= (static_cast<idx>(1) << q);
-                }
-                current_r >>= 1;
-            }
-        }
-
-        const bool row_ctrl =
-            ((static_cast<std::size_t>(r_base_row) &
-              expected_pattern_for_ones) == expected_pattern_for_ones) &&
-            ((static_cast<std::size_t>(r_base_row) & expected_zero_mask) == 0);
-
-        const idx vec_k_row[4] = {r_base_row, r_base_row + P_j,
-                                  r_base_row + P_i, r_base_row + P_i + P_j};
-
         for (idx c = 0; c < D_rest; ++c) {
-            idx r_base_col = 0;
-            idx current_c = c;
+            idx r_base = 0;
+            idx c_base = 0;
+            idx curr_r = r;
+            idx curr_c = c;
             for (idx q = 0; q < n; ++q) {
                 if (q != i_phys && q != j_phys) {
-                    if (current_c & 1) {
-                        r_base_col |= (static_cast<idx>(1) << q);
+                    if (curr_r & 1) {
+                        r_base |= (idx{1} << q);
                     }
-                    current_c >>= 1;
+                    if (curr_c & 1) {
+                        c_base |= (idx{1} << q);
+                    }
+                    curr_r >>= 1;
+                    curr_c >>= 1;
                 }
             }
 
-            const bool col_ctrl =
-                ((static_cast<std::size_t>(r_base_col) &
-                  expected_pattern_for_ones) == expected_pattern_for_ones) &&
-                ((static_cast<std::size_t>(r_base_col) & expected_zero_mask) ==
-                 0);
+            const bool row_ctrl = control_is_met(r_base);
+            const bool col_ctrl = control_is_met(c_base);
 
             if (!row_ctrl && !col_ctrl) {
                 continue;
             }
 
-            const idx vec_k_col[4] = {r_base_col, r_base_col + P_j,
-                                      r_base_col + P_i, r_base_col + P_i + P_j};
+            const idx rs[4] = {r_base, r_base + P_j, r_base + P_i,
+                               r_base + P_i + P_j};
+            const idx cs[4] = {c_base, c_base + P_j, c_base + P_i,
+                               c_base + P_i + P_j};
 
-            ComputeBlockType M;
-            for (int row = 0; row < 4; ++row) {
-                for (int col = 0; col < 4; ++col) {
-                    M(row, col) = state.coeff(vec_k_row[row], vec_k_col[col]);
-                }
-            }
-
-            ComputeBlockType M_prime;
             if (row_ctrl && col_ctrl) {
-                M_prime.noalias() = U * M * U_adj;
+                for (int m = 0; m < 4; ++m) {
+                    for (int n_idx = 0; n_idx < 4; ++n_idx) {
+                        state.coeffRef(rs[m], cs[n_idx]) *= G(m, n_idx);
+                    }
+                }
             } else if (row_ctrl) {
-                M_prime.noalias() = U * M;
-            } else {
-                M_prime.noalias() = M * U_adj;
-            }
-
-            for (int row = 0; row < 4; ++row) {
-                for (int col = 0; col < 4; ++col) {
-                    state.coeffRef(vec_k_row[row], vec_k_col[col]) =
-                        M_prime(row, col);
+                for (int m = 0; m < 4; ++m) {
+                    for (int n_idx = 0; n_idx < 4; ++n_idx) {
+                        state.coeffRef(rs[m], cs[n_idx]) *= a[m];
+                    }
+                }
+            } else { // col_ctrl
+                for (int m = 0; m < 4; ++m) {
+                    for (int n_idx = 0; n_idx < 4; ++n_idx) {
+                        state.coeffRef(rs[m], cs[n_idx]) *= a_conj[n_idx];
+                    }
                 }
             }
         }
@@ -752,11 +699,11 @@ apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
- * of the multi-partite density matrix \a state
+ * @brief Applies the controlled 2-qubit diagonal gate \a A to the qubits \a i
+ * and \a j of the multi-partite density matrix \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (4x4 matrix)
+ * @param A Eigen expression (4 x 1 vector of diagonal elements)
  * @param i Target subsystem index
  * @param j Target subsystem index
  * @param ctrl Vector of control qubit indices
@@ -766,22 +713,22 @@ apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
  */
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, idx i, idx j,
-                  const std::vector<idx>& shift, idx n) {
+apply_ctrl_rho_2q_diag(const Eigen::MatrixBase<Derived1>& state,
+                       const Eigen::MatrixBase<Derived2>& A,
+                       const std::vector<idx>& ctrl, idx i, idx j,
+                       const std::vector<idx>& shift, idx n) {
     // Deep copy for the functional return
     expr_t<Derived1> result = state.derived();
 
     // Delegate to the in-place version
-    apply_ctrl_rho_2q_inplace(result, A, ctrl, i, j, shift, n);
+    apply_ctrl_rho_2q_diag_inplace(result, A, ctrl, i, j, shift, n);
 
     return result;
 }
 
 /**
- * @brief Applies the controlled multi-qubit gate \a A to the part \a target of
- * the multi-partite density matrix \a state in-place
+ * @brief Applies the controlled multi-qubit diagonal gate \a A to the part \a
+ * target of the multi-partite density matrix \a state in-place
  *
  * @param state Eigen expression (modified in-place)
  * @param A Eigen expression (2^k x 1 vector of diagonal elements)
@@ -792,55 +739,66 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
  * @param n Number of qubits
  */
 template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] void apply_ctrl_rho_kq_inplace(
+[[qpp::critical, qpp::parallel]] void apply_ctrl_rho_kq_diag_inplace(
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
     const std::vector<idx>& ctrl, const std::vector<idx>& target,
     const std::vector<idx>& shift, idx n) {
     using Scalar = typename Derived1::Scalar;
-    using ComputeMatrixType = Eigen::Matrix<Scalar, -1, -1>;
 
     const idx k = static_cast<idx>(target.size());
-    const idx D_k = (k == 0) ? 1 : static_cast<idx>(std::size_t{1} << k);
+    const idx D_k = static_cast<idx>(std::size_t{1} << k);
     const idx D [[maybe_unused]] = static_cast<idx>(std::size_t{1} << n);
 
-    // Input Validation
-    assert(static_cast<idx>(A.rows()) == D_k &&
-           static_cast<idx>(A.cols()) == D_k &&
-           "Gate A must be a 2^k x 2^k matrix");
-    assert(static_cast<idx>(state.rows()) == D &&
-           static_cast<idx>(state.cols()) == D && "State must be 2^n x 2^n");
-    assert(static_cast<idx>(ctrl.size()) == static_cast<idx>(shift.size()) &&
-           "ctrl/shift size mismatch");
+    // 1. Validation
+    assert(static_cast<idx>(A.size()) == D_k &&
+           "Gate A must have 2^k elements");
 
-#ifndef NDEBUG
-    std::vector<idx> check_set = target;
-    check_set.insert(check_set.end(), ctrl.begin(), ctrl.end());
-    std::sort(check_set.begin(), check_set.end());
-    assert(std::unique(check_set.begin(), check_set.end()) == check_set.end() &&
-           "Overlap or duplicate indices detected");
-#endif
-
-    // Pre-calculations
-    std::vector<idx> P_gate_basis(k);
+    // 2. Pre-calculate Target relative offsets
     std::vector<idx> target_phys(k);
     for (idx l = 0; l < k; ++l) {
         target_phys[l] = n - target[l] - 1;
-        P_gate_basis[l] = static_cast<idx>(std::size_t{1} << target_phys[l]);
     }
 
+    std::vector<idx> target_rel_idx(D_k, 0);
+    for (idx m = 0; m < D_k; ++m) {
+        for (idx l = 0; l < k; ++l) {
+            if ((m >> (k - 1 - l)) & 1) {
+                target_rel_idx[m] |= (idx{1} << target_phys[l]);
+            }
+        }
+    }
+
+    // 3. Pre-calculate Diagonal Scaling Matrix G(m, n) = A[m] * conj(A[n])
+    std::vector<Scalar> a_conj(D_k);
+    for (idx m = 0; m < D_k; ++m) {
+        a_conj[m] = std::conj(A.coeff(m));
+    }
+
+    Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> G(D_k, D_k);
+    for (idx m = 0; m < D_k; ++m) {
+        for (idx n_idx = 0; n_idx < D_k; ++n_idx) {
+            G(m, n_idx) = A.coeff(m) * a_conj[n_idx];
+        }
+    }
+
+    // 4. Pre-calculate Spectator (rest) bit patterns to avoid bit-twiddling in
+    // loops
     std::vector<idx> rest_phys = fast_complement(target_phys, n);
-    const idx D_rest =
-        (n >= k) ? static_cast<idx>(std::size_t{1} << (n - k)) : 1;
+    const idx D_rest = static_cast<idx>(std::size_t{1} << (n - k));
+    std::vector<idx> rest_patterns(D_rest, 0);
+    for (idx i = 0; i < D_rest; ++i) {
+        for (idx q = 0; q < rest_phys.size(); ++q) {
+            if ((i >> q) & 1) {
+                rest_patterns[i] |= (idx{1} << rest_phys[q]);
+            }
+        }
+    }
 
-    const ComputeMatrixType U = A.template cast<Scalar>();
-    const ComputeMatrixType U_adj = U.adjoint();
-
-    // Control Masks
+    // 5. Control Masking
     idx expected_pattern_for_ones = 0;
     idx expected_zero_mask = 0;
     for (idx c_idx = 0; c_idx < static_cast<idx>(ctrl.size()); ++c_idx) {
-        const idx bit =
-            static_cast<idx>(std::size_t{1} << (n - 1 - ctrl[c_idx]));
+        const idx bit = static_cast<idx>(idx{1} << (n - 1 - ctrl[c_idx]));
         if (shift[c_idx] == 0) {
             expected_pattern_for_ones |= bit;
         } else {
@@ -848,89 +806,54 @@ template <typename Derived1, typename Derived2>
         }
     }
 
+    auto control_is_met = [&](idx k_base) {
+        return ((k_base & expected_pattern_for_ones) ==
+                expected_pattern_for_ones) &&
+               ((k_base & expected_zero_mask) == 0);
+    };
+
+    // 6. Execution Loop
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for default(none)                                         \
-    shared(D_rest, n, k, rest_phys, P_gate_basis, state, U, U_adj, D_k,        \
-               expected_pattern_for_ones, expected_zero_mask)
+#pragma omp parallel for collapse(2)
 #endif
     for (idx r = 0; r < D_rest; ++r) {
-        idx r_base_row = 0;
-        idx current_r = r;
-        for (const auto& q_phys : rest_phys) {
-            if (current_r & 1) {
-                r_base_row |= (static_cast<idx>(1) << q_phys);
-            }
-            current_r >>= 1;
-        }
-
-        const bool row_ctrl =
-            ((static_cast<std::size_t>(r_base_row) &
-              expected_pattern_for_ones) == expected_pattern_for_ones) &&
-            ((static_cast<std::size_t>(r_base_row) & expected_zero_mask) == 0);
-
-        std::vector<idx> vec_k_row(D_k);
-        for (idx m = 0; m < D_k; ++m) {
-            idx target_component = 0;
-            for (idx l = 0; l < k; ++l) {
-                if ((m >> (k - 1 - l)) & 1) {
-                    target_component += P_gate_basis[l];
-                }
-            }
-            vec_k_row[m] = r_base_row + target_component;
-        }
-
         for (idx c = 0; c < D_rest; ++c) {
-            idx r_base_col = 0;
-            idx current_c = c;
-            for (const auto& q_phys : rest_phys) {
-                if (current_c & 1) {
-                    r_base_col |= (static_cast<idx>(1) << q_phys);
-                }
-                current_c >>= 1;
-            }
+            const idx r_base = rest_patterns[r];
+            const idx c_base = rest_patterns[c];
 
-            const bool col_ctrl =
-                ((static_cast<std::size_t>(r_base_col) &
-                  expected_pattern_for_ones) == expected_pattern_for_ones) &&
-                ((static_cast<std::size_t>(r_base_col) & expected_zero_mask) ==
-                 0);
+            const bool row_ctrl = control_is_met(r_base);
+            const bool col_ctrl = control_is_met(c_base);
 
             if (!row_ctrl && !col_ctrl) {
                 continue;
             }
 
-            ComputeMatrixType M(D_k, D_k);
-            std::vector<idx> vec_k_col(D_k);
-            for (idx m = 0; m < D_k; ++m) {
-                idx target_component = 0;
-                for (idx l = 0; l < k; ++l) {
-                    if ((m >> (k - 1 - l)) & 1) {
-                        target_component += P_gate_basis[l];
+            if (row_ctrl && col_ctrl) {
+                for (idx m = 0; m < D_k; ++m) {
+                    const idx row_idx = r_base + target_rel_idx[m];
+                    for (idx n_idx = 0; n_idx < D_k; ++n_idx) {
+                        state.coeffRef(row_idx,
+                                       c_base + target_rel_idx[n_idx]) *=
+                            G(m, n_idx);
                     }
                 }
-                vec_k_col[m] = r_base_col + target_component;
-            }
-
-            for (idx row = 0; row < D_k; ++row) {
-                for (idx col = 0; col < D_k; ++col) {
-                    M(row, col) = state.coeff(vec_k_row[row], vec_k_col[col]);
-                }
-            }
-
-            ComputeMatrixType M_prime;
-            if (row_ctrl && col_ctrl) {
-                M_prime.noalias() = U * M * U_adj;
             } else if (row_ctrl) {
-                M_prime.noalias() = U * M;
-            } else {
-                M_prime.noalias() = M * U_adj;
-            }
-
-            for (idx row = 0; row < D_k; ++row) {
-                for (idx col = 0; col < D_k; ++col) {
-                    state.coeffRef(vec_k_row[row], vec_k_col[col]) =
-                        M_prime(row, col);
+                for (idx m = 0; m < D_k; ++m) {
+                    const Scalar val_m = A.coeff(m);
+                    const idx row_idx = r_base + target_rel_idx[m];
+                    for (idx n_idx = 0; n_idx < D_k; ++n_idx) {
+                        state.coeffRef(row_idx,
+                                       c_base + target_rel_idx[n_idx]) *= val_m;
+                    }
+                }
+            } else { // col_ctrl
+                for (idx n_idx = 0; n_idx < D_k; ++n_idx) {
+                    const Scalar val_n_conj = a_conj[n_idx];
+                    const idx col_idx = c_base + target_rel_idx[n_idx];
+                    for (idx m = 0; m < D_k; ++m) {
+                        state.coeffRef(r_base + target_rel_idx[m], col_idx) *=
+                            val_n_conj;
+                    }
                 }
             }
         }
@@ -938,11 +861,11 @@ template <typename Derived1, typename Derived2>
 }
 
 /**
- * @brief Applies the controlled multi-qubit gate \a A to the part \a target of
- * the multi-partite density matrix \a state
+ * @brief Applies the controlled multi-qubit diagonal gate \a A to the part \a
+ * target of the multi-partite density matrix \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression
+ * @param A Eigen expression (2^k x 1 vector of diagonal elements)
  * @param target Subsystem indexes where the gate \a A is applied
  * @param ctrl Vector of control qubit indices
  * @param shift Vector of control values
@@ -950,16 +873,15 @@ template <typename Derived1, typename Derived2>
  * @return Controlled gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                  const std::vector<idx>& shift, idx n) {
+[[qpp::critical, qpp::parallel]] expr_t<Derived1> apply_ctrl_rho_kq_diag(
+    const Eigen::MatrixBase<Derived1>& state,
+    const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
+    const std::vector<idx>& target, const std::vector<idx>& shift, idx n) {
     // Functional deep copy
     expr_t<Derived1> result = state.derived();
 
     // Delegate to in-place implementation
-    apply_ctrl_rho_kq_inplace(result, A, ctrl, target, shift, n);
+    apply_ctrl_rho_kq_diag_inplace(result, A, ctrl, target, shift, n);
 
     return result;
 }

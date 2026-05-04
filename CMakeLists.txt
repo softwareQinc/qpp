@@ -43,7 +43,7 @@ set(QPP_VERSION_STR ${PROJECT_VERSION})
 # ----------------------------------------------------------------------------
 # Guard against in-source builds
 # ----------------------------------------------------------------------------
-if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   message(
     FATAL_ERROR
       "In-source builds not allowed. Please instruct CMake to use an\
