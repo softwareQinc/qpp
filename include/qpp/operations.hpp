@@ -59,71 +59,76 @@
 namespace qpp {
 /**
  * @brief Applies the gate \a A to the part \a target of the multi-partite state
- * vector or density matrix \a state
+ * vector or density matrix \a state in-place
  *
  * @note The dimension of the gate \a A must match the dimension of \a target
  *
- * @param state Eigen expression
+ * @param state Eigen expression (modified in-place)
  * @param A Eigen expression
  * @param target Subsystem indexes where the gate \a A is applied
  * @param dims Dimensions of the multi-partite system
- * @return Gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply(const Eigen::MatrixBase<Derived1>& state,
-      const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& target,
-      const std::vector<idx>& dims) {
-    const expr_t<Derived1>& rstate = state.derived();
+[[qpp::critical, qpp::parallel]] void
+apply_inplace(Eigen::MatrixBase<Derived1>& state,
+              const Eigen::MatrixBase<Derived2>& A,
+              const std::vector<idx>& target, const std::vector<idx>& dims) {
+
+    // Obtain non-const reference to the underlying matrix data
+    Derived1& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check types
     if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
-        throw exception::TypeMismatch("qpp::apply()", "A/state");
+        throw exception::TypeMismatch("qpp::apply_inplace()", "A/state");
     }
 
     // check zero sizes
     if (!internal::check_nonzero_size(rA)) {
-        throw exception::ZeroSize("qpp::apply()", "A");
+        throw exception::ZeroSize("qpp::apply_inplace()", "A");
     }
 
     // check zero sizes
     if (!internal::check_nonzero_size(rstate)) {
-        throw exception::ZeroSize("qpp::apply()", "state");
+        throw exception::ZeroSize("qpp::apply_inplace()", "state");
     }
 
     // check zero sizes
     if (!internal::check_nonzero_size(target)) {
-        throw exception::ZeroSize("qpp::apply()", "target");
+        throw exception::ZeroSize("qpp::apply_inplace()", "target");
     }
 
     // check square matrix for the gate
     if (!internal::check_square_mat(rA)) {
-        throw exception::MatrixNotSquare("qpp::apply()", "A");
+        throw exception::MatrixNotSquare("qpp::apply_inplace()", "A");
     }
 
     // check that dimension is valid
     if (!internal::check_dims(dims)) {
-        throw exception::DimsInvalid("qpp::apply()", "dims");
+        throw exception::DimsInvalid("qpp::apply_inplace()", "dims");
     }
 
     // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims)) {
-        throw exception::SubsysMismatchDims("qpp::apply()", "dims/target");
+        throw exception::SubsysMismatchDims("qpp::apply_inplace()",
+                                            "dims/target");
     }
 
     // check valid state and matching dimensions
     if (internal::check_cvector(rstate)) {
         if (!internal::check_dims_match_cvect(dims, rstate)) {
-            throw exception::DimsMismatchCvector("qpp::apply()", "dims/state");
+            throw exception::DimsMismatchCvector("qpp::apply_inplace()",
+                                                 "dims/state");
         }
     } else if (internal::check_square_mat(rstate)) {
         if (!internal::check_dims_match_mat(dims, rstate)) {
-            throw exception::DimsMismatchMatrix("qpp::apply()", "dims/state");
+            throw exception::DimsMismatchMatrix("qpp::apply_inplace()",
+                                                "dims/state");
         }
     } else {
-        throw exception::MatrixNotSquareNorCvector("qpp::apply()", "state");
+        throw exception::MatrixNotSquareNorCvector("qpp::apply_inplace()",
+                                                   "state");
     }
 
     // check that gate matches the dimensions of the target
@@ -133,48 +138,57 @@ apply(const Eigen::MatrixBase<Derived1>& state,
         subsys_dims[i] = dims[target[i]];
     }
     if (!internal::check_dims_match_mat(subsys_dims, rA)) {
-        throw exception::MatrixMismatchSubsys("qpp::apply()", "A/dims/target");
+        throw exception::MatrixMismatchSubsys("qpp::apply_inplace()",
+                                              "A/dims/target");
     }
     // END EXCEPTION CHECKS
 
     idx n = dims.size(); // total number of subsystems
 
-    // qubit optimizations
+    // qubit optimizations (updated to use _inplace kernels)
 #ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_qubits(dims)) {
         auto nq_target = target.size();
         // ket
         if (internal::check_cvector(rstate)) {
             if (nq_target == 1) {
-                return internal::kernels::qubit::apply_psi_1q(state, A,
-                                                              target[0], n);
+                internal::kernels::qubit::apply_psi_1q_inplace(state, A,
+                                                               target[0], n);
+                return;
             }
             if (nq_target == 2) {
-                return internal::kernels::qubit::apply_psi_2q(
+                internal::kernels::qubit::apply_psi_2q_inplace(
                     state, A, target[0], target[1], n);
+                return;
             }
             if (nq_target == 3) {
-                return internal::kernels::qubit::apply_psi_3q(
+                internal::kernels::qubit::apply_psi_3q_inplace(
                     state, A, target[0], target[1], target[2], n);
+                return;
             }
-            return internal::kernels::qubit::apply_psi_kq(state, A, target, n);
+            internal::kernels::qubit::apply_psi_kq_inplace(state, A, target, n);
+            return;
 
         }
         // density matrix
         else {
             if (nq_target == 1) {
-                return internal::kernels::qubit::apply_rho_1q(state, A,
-                                                              target[0], n);
+                internal::kernels::qubit::apply_rho_1q_inplace(state, A,
+                                                               target[0], n);
+                return;
             }
             if (nq_target == 2) {
-                return internal::kernels::qubit::apply_rho_2q(
+                internal::kernels::qubit::apply_rho_2q_inplace(
                     state, A, target[0], target[1], n);
+                return;
             }
             if (nq_target == 3) {
-                return internal::kernels::qubit::apply_rho_3q(
+                internal::kernels::qubit::apply_rho_3q_inplace(
                     state, A, target[0], target[1], target[2], n);
+                return;
             }
-            return internal::kernels::qubit::apply_rho_kq(state, A, target, n);
+            internal::kernels::qubit::apply_rho_kq_inplace(state, A, target, n);
+            return;
         }
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
@@ -236,6 +250,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
         indx = internal::multiidx2n(Cmidx, n, Cdims);
 
         // compute the coefficient
+        // reads from the original unmodified rstate
         for (idx n_ = 0; n_ < DA; ++n_) {
             internal::n2multiidx(n_, gate_size, CdimsA, CmidxA);
             for (idx k = 0; k < gate_size; ++k) {
@@ -285,6 +300,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
         idxcol = internal::multiidx2n(Cmidxcol, n, Cdims);
 
         // compute the coefficient
+        // reads from the original unmodified rstate
         for (idx n1_ = 0; n1_ < DA; ++n1_) {
             internal::n2multiidx(n1_, gate_size, CdimsA, CmidxArow);
             for (idx k = 0; k < gate_size; ++k) {
@@ -314,14 +330,12 @@ apply(const Eigen::MatrixBase<Derived1>& state,
     //************ ket ************//
     if (internal::check_cvector(rstate)) // we have a ket
     {
-        // check that dims match state vector
-        if (!internal::check_dims_match_cvect(dims, rstate)) {
-            throw exception::DimsMismatchCvector("qpp::apply()", "dims/state");
-        }
         if (D == 1) {
-            return rstate;
+            return;
         }
 
+        // Must write to a separate result matrix first to avoid aliasing
+        // corruption
         expr_t<Derived1> result = rstate;
 
 #ifdef QPP_OPENMP
@@ -334,20 +348,19 @@ apply(const Eigen::MatrixBase<Derived1>& state,
             }
         }
 
-        return result;
+        // Apply back to the referenced state matrix
+        rstate = std::move(result);
+        return;
     }
     //************ density matrix ************//
     else // we have a density operator
     {
-        // check that dims match state matrix
-        if (!internal::check_dims_match_mat(dims, rstate)) {
-            throw exception::DimsMismatchMatrix("qpp::apply()", "dims/state");
-        }
-
         if (D == 1) {
-            return rstate;
+            return;
         }
 
+        // Must write to a separate result matrix first to avoid aliasing
+        // corruption
         expr_t<Derived1> result = rstate;
 
 #ifdef QPP_OPENMP
@@ -367,8 +380,135 @@ apply(const Eigen::MatrixBase<Derived1>& state,
             }
         }
 
-        return result;
+        // Apply back to the referenced state matrix
+        rstate = std::move(result);
+        return;
     }
+}
+
+/**
+ * @brief Applies the gate \a A to the part \a target of the multi-partite state
+ * vector or density matrix \a state in-place
+ *
+ * @note The dimension of the gate \a A must match the dimension of \a target
+ *
+ * @param state Eigen expression (modified in-place)
+ * @param A Eigen expression
+ * @param target Subsystem indexes where the gate \a A is applied
+ * @param d Subsystem dimensions
+ */
+template <typename Derived1, typename Derived2>
+void apply_inplace(Eigen::MatrixBase<Derived1>& state,
+                   const Eigen::MatrixBase<Derived2>& A,
+                   const std::vector<idx>& target, idx d = 2) {
+
+    auto& rstate = state.derived();
+
+    // EXCEPTION CHECKS
+    // check zero size
+    if (!internal::check_nonzero_size(rstate)) {
+        throw exception::ZeroSize("qpp::apply_inplace()", "state");
+    }
+
+    // check valid dims
+    if (d < 2) {
+        throw exception::DimsInvalid("qpp::apply_inplace()", "d");
+    }
+    // END EXCEPTION CHECKS
+
+    // total number of subsystems
+    idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
+
+    // local dimensions vector of size n with all elements set to d
+    std::vector<idx> dims(n, d);
+
+    // Delegate to the vector-dims in-place version
+    apply_inplace(rstate, A, target, dims);
+}
+
+/**
+ * @brief Applies the gate \a A to the part \a target of the multi-partite state
+ * vector or density matrix \a state
+ *
+ * @note The dimension of the gate \a A must match the dimension of \a target
+ *
+ * @param state Eigen expression
+ * @param A Eigen expression
+ * @param target Subsystem indexes where the gate \a A is applied
+ * @param dims Dimensions of the multi-partite system
+ * @return Gate \a A applied to the part \a target of \a state
+ */
+template <typename Derived1, typename Derived2>
+[[qpp::critical, qpp::parallel]] expr_t<Derived1>
+apply(const Eigen::MatrixBase<Derived1>& state,
+      const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& target,
+      const std::vector<idx>& dims) {
+    expr_t<Derived1> cstate = state.derived();
+    const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+    // check types
+    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
+        throw exception::TypeMismatch("qpp::apply()", "A/state");
+    }
+
+    // check zero sizes
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize("qpp::apply()", "A");
+    }
+
+    // check zero sizes
+    if (!internal::check_nonzero_size(cstate)) {
+        throw exception::ZeroSize("qpp::apply()", "state");
+    }
+
+    // check zero sizes
+    if (!internal::check_nonzero_size(target)) {
+        throw exception::ZeroSize("qpp::apply()", "target");
+    }
+
+    // check square matrix for the gate
+    if (!internal::check_square_mat(rA)) {
+        throw exception::MatrixNotSquare("qpp::apply()", "A");
+    }
+
+    // check that dimension is valid
+    if (!internal::check_dims(dims)) {
+        throw exception::DimsInvalid("qpp::apply()", "dims");
+    }
+
+    // check that target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims)) {
+        throw exception::SubsysMismatchDims("qpp::apply()", "dims/target");
+    }
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(cstate)) {
+        if (!internal::check_dims_match_cvect(dims, cstate)) {
+            throw exception::DimsMismatchCvector("qpp::apply()", "dims/state");
+        }
+    } else if (internal::check_square_mat(cstate)) {
+        if (!internal::check_dims_match_mat(dims, cstate)) {
+            throw exception::DimsMismatchMatrix("qpp::apply()", "dims/state");
+        }
+    } else {
+        throw exception::MatrixNotSquareNorCvector("qpp::apply()", "state");
+    }
+
+    // check that gate matches the dimensions of the target
+    idx gate_size = target.size(); // number of subsystems of the target
+    std::vector<idx> subsys_dims(gate_size);
+    for (idx i = 0; i < gate_size; ++i) {
+        subsys_dims[i] = dims[target[i]];
+    }
+    if (!internal::check_dims_match_mat(subsys_dims, rA)) {
+        throw exception::MatrixMismatchSubsys("qpp::apply()", "A/dims/target");
+    }
+    // END EXCEPTION CHECKS
+
+    apply_inplace(cstate, A, target, dims);
+
+    return cstate;
 }
 
 /**
@@ -387,12 +527,11 @@ template <typename Derived1, typename Derived2>
 expr_t<Derived1> apply(const Eigen::MatrixBase<Derived1>& state,
                        const Eigen::MatrixBase<Derived2>& A,
                        const std::vector<idx>& target, idx d = 2) {
-    const expr_t<Derived1>& rstate = state.derived();
-    const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
+    expr_t<Derived1> cstate = state.derived();
 
     // EXCEPTION CHECKS
     // check zero size
-    if (!internal::check_nonzero_size(rstate)) {
+    if (!internal::check_nonzero_size(cstate)) {
         throw exception::ZeroSize("qpp::apply()", "state");
     }
 
@@ -402,10 +541,11 @@ expr_t<Derived1> apply(const Eigen::MatrixBase<Derived1>& state,
     }
     // END EXCEPTION CHECKS
 
-    idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
-    std::vector<idx> dims(n, d); // local dimensions vector
+    idx n = internal::get_num_subsys(static_cast<idx>(cstate.rows()), d);
+    std::vector<idx> dims(n, d);
+    apply_inplace(cstate, A, target, dims);
 
-    return apply(rstate, rA, target, dims);
+    return cstate;
 }
 
 /**
@@ -594,6 +734,287 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 
 /**
  * @brief Applies the controlled-gate \a A to the part \a target of the
+ * multi-partite state vector or density matrix \a state in-place
+ * @see qpp::Gates::CTRL()
+ *
+ * @note The dimension of the gate \a A must match the dimension of \a target.
+ * Also, all control subsystems in \a ctrl must have the same dimension.
+ *
+ * @param state Eigen expression (modified in-place)
+ * @param A Eigen expression
+ * @param ctrl Control subsystem indexes
+ * @param target Subsystem indexes where the gate \a A is applied
+ * @param dims Dimensions of the multi-partite system
+ * @param shift Optional, performs the control as if the \a ctrl qudits were
+ * \f$X\f$-incremented component-wise by \a shift
+ */
+template <typename Derived1, typename Derived2>
+[[qpp::critical, qpp::parallel]] void
+applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
+                  const Eigen::MatrixBase<Derived2>& A,
+                  const std::vector<idx>& ctrl, const std::vector<idx>& target,
+                  const std::vector<idx>& dims,
+                  std::optional<std::vector<idx>> shift = std::nullopt) {
+    Derived1& rstate = state.derived();
+    const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+    // check types
+    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
+        throw exception::TypeMismatch("qpp::applyCTRL_inplace()", "A/state");
+    }
+
+    // check zero sizes
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize("qpp::applyCTRL_inplace()", "A");
+    }
+
+    if (!internal::check_nonzero_size(rstate)) {
+        throw exception::ZeroSize("qpp::applyCTRL_inplace()", "state");
+    }
+
+    if (!internal::check_nonzero_size(ctrl)) {
+        throw exception::ZeroSize("qpp::applyCTRL_inplace()", "ctrl");
+    }
+
+    if (!internal::check_nonzero_size(target)) {
+        throw exception::ZeroSize("qpp::applyCTRL_inplace()", "target");
+    }
+
+    // check square matrix for the gate
+    if (!internal::check_square_mat(rA)) {
+        throw exception::MatrixNotSquare("qpp::applyCTRL_inplace()", "A");
+    }
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rstate)) {
+        if (!internal::check_dims_match_cvect(dims, rstate)) {
+            throw exception::DimsMismatchCvector("qpp::applyCTRL_inplace()",
+                                                 "dims/state");
+        }
+    } else if (internal::check_square_mat(rstate)) {
+        if (!internal::check_dims_match_mat(dims, rstate)) {
+            throw exception::DimsMismatchMatrix("qpp::applyCTRL_inplace()",
+                                                "dims/state");
+        }
+    } else {
+        throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL_inplace()",
+                                                   "state");
+    }
+
+    // check that ctrl subsystem is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(ctrl, dims)) {
+        throw exception::SubsysMismatchDims("qpp::applyCTRL_inplace()",
+                                            "ctrl/dims");
+    }
+
+    // check that all control subsystems have the same dimension
+    idx d = dims[ctrl[0]];
+    for (idx i = 1; i < static_cast<idx>(ctrl.size()); ++i) {
+        if (dims[ctrl[i]] != d) {
+            throw exception::DimsNotEqual("qpp::applyCTRL_inplace()", "ctrl");
+        }
+    }
+
+    // check that dimension is valid
+    if (!internal::check_dims(dims)) {
+        throw exception::DimsInvalid("qpp::applyCTRL_inplace()", "dims");
+    }
+
+    // check that target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims)) {
+        throw exception::SubsysMismatchDims("qpp::applyCTRL_inplace()",
+                                            "dims/target");
+    }
+
+    // check that ctrl and target don't share common elements
+    for (idx elem_ctrl : ctrl) {
+        for (idx elem_target : target) {
+            if (elem_ctrl == elem_target) {
+                throw exception::OutOfRange("qpp::applyCTRL_inplace()",
+                                            "ctrl/target");
+            }
+        }
+    }
+
+    // check that gate matches the dimensions of the target
+    std::vector<idx> target_dims(target.size());
+    for (idx i = 0; i < static_cast<idx>(target.size()); ++i) {
+        target_dims[i] = dims[target[i]];
+    }
+    if (!internal::check_dims_match_mat(target_dims, rA)) {
+        throw exception::MatrixMismatchSubsys("qpp::applyCTRL_inplace()",
+                                              "A/target");
+    }
+
+    // check shift
+    if (shift.has_value() && (shift.value().size() != ctrl.size())) {
+        throw exception::SizeMismatch("qpp::applyCTRL_inplace()", "ctrl/shift");
+    }
+
+    std::vector<idx> internal_shift =
+        shift.has_value() ? shift.value() : std::vector<idx>(ctrl.size(), 0);
+
+    if (shift.has_value()) {
+        for (idx& elem : internal_shift) {
+            if (elem >= d) {
+                throw exception::OutOfRange("qpp::applyCTRL_inplace()",
+                                            "shift");
+            }
+            elem = (d - elem) % d; // invert shift mod D
+        }
+    }
+    // END EXCEPTION CHECKS
+
+    // qubit optimizations
+#ifdef QPP_QUBIT_OPTIMIZATIONS
+    if (internal::all_qubits(dims)) {
+        idx n = dims.size();
+        auto nq_target = target.size();
+        // ket
+        if (internal::check_cvector(rstate)) {
+            if (nq_target == 1) {
+                internal::kernels::qubit::apply_ctrl_psi_1q_inplace(
+                    rstate, A, ctrl, target[0], internal_shift, n);
+                return;
+            }
+            if (nq_target == 2) {
+                internal::kernels::qubit::apply_ctrl_psi_2q_inplace(
+                    rstate, A, ctrl, target[0], target[1], internal_shift, n);
+                return;
+            }
+            internal::kernels::qubit::apply_ctrl_psi_kq_inplace(
+                rstate, A, ctrl, target, internal_shift, n);
+            return;
+        }
+        // density matrix
+        else {
+            if (nq_target == 1) {
+                internal::kernels::qubit::apply_ctrl_rho_1q_inplace(
+                    rstate, A, ctrl, target[0], internal_shift, n);
+                return;
+            }
+            if (nq_target == 2) {
+                internal::kernels::qubit::apply_ctrl_rho_2q_inplace(
+                    rstate, A, ctrl, target[0], target[1], internal_shift, n);
+                return;
+            }
+            internal::kernels::qubit::apply_ctrl_rho_kq_inplace(
+                rstate, A, ctrl, target, internal_shift, n);
+            return;
+        }
+    }
+#endif // QPP_QUBIT_OPTIMIZATIONS
+
+    // Generic fallback
+    idx D = static_cast<idx>(rstate.rows());
+    std::vector<dyn_mat<typename Derived1::Scalar>> Ak;
+    for (idx k = 0; k < d; ++k) {
+        Ak.emplace_back(powm(rA, k));
+    }
+
+    auto applyCTRL_ket_worker =
+        [&](const dyn_col_vect<typename Derived1::Scalar>& v) {
+            dyn_col_vect<typename Derived1::Scalar> res =
+                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
+            for (idx r = 0; r < d; ++r) {
+                std::vector<idx> ctrl_shift = internal_shift;
+                std::transform(ctrl_shift.begin(), ctrl_shift.end(),
+                               ctrl_shift.begin(),
+                               [r, d](idx e) { return (e + r) % d; });
+
+                dyn_col_vect<typename Derived1::Scalar> chopped =
+                    internal::project_ket_on_dits(v, ctrl_shift, ctrl, dims, D);
+
+                if (!chopped.isZero()) {
+                    apply_inplace(chopped, Ak[r], target, dims);
+                }
+                res +=
+                    (chopped + ((v / d) - internal::project_ket_on_dits(
+                                              v, ctrl_shift, ctrl, dims, D)));
+            }
+            return res;
+        };
+
+    if (internal::check_cvector(rstate)) {
+        rstate = applyCTRL_ket_worker(rstate);
+    } else {
+        dyn_mat<typename Derived1::Scalar> result =
+            dyn_mat<typename Derived1::Scalar>::Zero(D, D);
+#ifdef QPP_OPENMP
+#pragma omp parallel for
+#endif
+        for (idx i = 0; i < D; ++i) {
+            dyn_col_vect<typename Derived1::Scalar> psi_i =
+                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
+            psi_i(i) = 1;
+            dyn_col_vect<typename Derived1::Scalar> phi_i_ket =
+                rstate.row(i).adjoint();
+
+            psi_i = applyCTRL_ket_worker(psi_i);
+            dyn_row_vect<typename Derived1::Scalar> phi_i_bra =
+                applyCTRL_ket_worker(phi_i_ket).adjoint();
+
+#ifdef QPP_OPENMP
+#pragma omp critical
+#endif
+            {
+                result += psi_i * phi_i_bra;
+            }
+        }
+        rstate = std::move(result);
+    }
+}
+
+/**
+ * @brief Applies the controlled-gate \a A to the part \a target of the
+ * multi-partite state vector or density matrix \a state in-place
+ * @see qpp::Gates::CTRL()
+ *
+ * @note The dimension of the gate \a A must match the dimension of \a
+ * target. Also, all control subsystems in \a ctrl must have the same
+ * dimension.
+ *
+ * @param state Eigen expression (modified in-place)
+ * @param A Eigen expression
+ * @param ctrl Control subsystem indexes
+ * @param target Subsystem indexes where the gate \a A is applied
+ * @param d Subsystem dimensions
+ * @param shift Optional, performs the control as if the \a ctrl qudits were
+ * \f$X\f$-incremented component-wise by \a shift
+ */
+template <typename Derived1, typename Derived2>
+void applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
+                       const Eigen::MatrixBase<Derived2>& A,
+                       const std::vector<idx>& ctrl,
+                       const std::vector<idx>& target, idx d = 2,
+                       std::optional<std::vector<idx>> shift = std::nullopt) {
+    auto& rstate = state.derived();
+
+    // EXCEPTION CHECKS
+    // check zero size
+    if (!internal::check_nonzero_size(rstate)) {
+        throw exception::ZeroSize("qpp::applyCTRL_inplace()", "state");
+    }
+
+    // check valid dims
+    if (d < 2) {
+        throw exception::DimsInvalid("qpp::applyCTRL_inplace()", "d");
+    }
+    // END EXCEPTION CHECKS
+
+    // total number of subsystems
+    idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
+
+    // local dimensions vector (all subsystems have dimension d)
+    std::vector<idx> dims(n, d);
+
+    // Delegate to the vector-dims in-place version
+    applyCTRL_inplace(rstate, A, ctrl, target, dims, shift);
+}
+
+/**
+ * @brief Applies the controlled-gate \a A to the part \a target of the
  * multi-partite state vector or density matrix \a state
  * @see qpp::Gates::CTRL()
  *
@@ -606,11 +1027,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
  * @param target Subsystem indexes where the gate \a A is applied
  * @param dims Dimensions of the multi-partite system
  * @param shift Optional, performs the control as if the \a ctrl qudits were
- * \f$X\f$-incremented component-wise by \a shift (in the order given by
- * \a ctrl). For example, for two qutrits (D=3), applying a control gate on the
- * initial state \f$|00\rangle\f$ with first qutrit as control, second qutrit as
- * target, and \a shift = {1}, yields the state \f$|01\rangle\f$. If present,
- * the size of \a shift must be the same as the size of \a ctrl.
+ * \f$X\f$-incremented component-wise by \a shift
  * @return CTRL-\a A gate applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
@@ -619,271 +1036,22 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
           const std::vector<idx>& target, const std::vector<idx>& dims,
           std::optional<std::vector<idx>> shift = std::nullopt) {
-    const expr_t<Derived1>& rstate = state.derived();
-    const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
+    expr_t<Derived1> cstate = state.derived();
 
     // EXCEPTION CHECKS
-    // check types
-    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
-        throw exception::TypeMismatch("qpp::applyCTRL()", "A/state");
-    }
-
-    // check zero sizes
-    if (!internal::check_nonzero_size(rA)) {
-        throw exception::ZeroSize("qpp::applyCTRL()", "A");
-    }
-
-    // check zero sizes
-    if (!internal::check_nonzero_size(rstate)) {
+    // Note: We perform checks here to throw before making a potentially large
+    // copy
+    if (!internal::check_nonzero_size(cstate)) {
         throw exception::ZeroSize("qpp::applyCTRL()", "state");
     }
 
-    // check zero sizes
-    if (!internal::check_nonzero_size(ctrl)) {
-        throw exception::ZeroSize("qpp::applyCTRL()", "ctrl");
-    }
-
-    // check zero sizes
-    if (!internal::check_nonzero_size(target)) {
-        throw exception::ZeroSize("qpp::applyCTRL()", "target");
-    }
-
-    // check square matrix for the gate
-    if (!internal::check_square_mat(rA)) {
-        throw exception::MatrixNotSquare("qpp::applyCTRL()", "A");
-    }
-
-    // check valid state and matching dimensions
-    if (internal::check_cvector(rstate)) {
-        if (!internal::check_dims_match_cvect(dims, rstate)) {
-            throw exception::DimsMismatchCvector("qpp::applyCTRL()",
-                                                 "dims/state");
-        }
-    } else if (internal::check_square_mat(rstate)) {
-        if (!internal::check_dims_match_mat(dims, rstate)) {
-            throw exception::DimsMismatchMatrix("qpp::applyCTRL()",
-                                                "dims/state");
-        }
-    } else {
-        throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL()", "state");
-    }
-
-    // check that ctrl subsystem is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(ctrl, dims)) {
-        throw exception::SubsysMismatchDims("qpp::applyCTRL()", "ctrl/dims");
-    }
-
-    // check that all control subsystems have the same dimension
-    idx d = dims[ctrl[0]];
-    for (idx i = 1; i < static_cast<idx>(ctrl.size()); ++i) {
-        if (dims[ctrl[i]] != d) {
-            throw exception::DimsNotEqual("qpp::applyCTRL()", "ctrl");
-        }
-    }
-
-    // check that dimension is valid
     if (!internal::check_dims(dims)) {
         throw exception::DimsInvalid("qpp::applyCTRL()", "dims");
     }
 
-    // check that target is valid w.r.t. dims
-    if (!internal::check_subsys_match_dims(target, dims)) {
-        throw exception::SubsysMismatchDims("qpp::applyCTRL()", "dims/target");
-    }
+    applyCTRL_inplace(cstate, A, ctrl, target, dims, shift);
 
-    // check that ctrl and target don't share common elements
-    for (idx elem_ctrl : ctrl) {
-        for (idx elem_target : target) {
-            if (elem_ctrl == elem_target) {
-                throw exception::OutOfRange("qpp::applyCTRL()", "ctrl/target");
-            }
-        }
-    }
-
-    // check that gate matches the dimensions of the target
-    std::vector<idx> target_dims(target.size());
-    for (idx i = 0; i < static_cast<idx>(target.size()); ++i) {
-        target_dims[i] = dims[target[i]];
-    }
-    if (!internal::check_dims_match_mat(target_dims, rA)) {
-        throw exception::MatrixMismatchSubsys("qpp::applyCTRL()", "A/target");
-    }
-
-    std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
-    ctrlgate.insert(ctrlgate.end(), target.begin(), target.end());
-    std::sort(ctrlgate.begin(), ctrlgate.end());
-
-    // check that ctrl + gate subsystem is valid
-    // with respect to local dimensions
-    if (!internal::check_subsys_match_dims(ctrlgate, dims)) {
-        throw exception::SubsysMismatchDims("qpp::applyCTRL()",
-                                            "dims/ctrl/target");
-    }
-
-    // check shift
-    if (shift.has_value() && (shift.value().size() != ctrl.size())) {
-        throw exception::SizeMismatch("qpp::applyCTRL()", "ctrl/shift");
-    }
-    if (shift.has_value()) {
-        for (idx& elem : shift.value()) {
-            if (elem >= d) {
-                throw exception::OutOfRange("qpp::applyCTRL()", "shift");
-            }
-            // invert shift mod D
-            elem = (d - elem) % d;
-        }
-    }
-    // END EXCEPTION CHECKS
-
-    if (!shift.has_value()) {
-        shift = std::vector<idx>(ctrl.size(), 0);
-    }
-
-    // qubit optimizations
-#ifdef QPP_QUBIT_OPTIMIZATIONS
-    if (internal::all_qubits(dims)) {
-        idx n = dims.size();
-        auto nq_target = target.size();
-        // ket
-        if (internal::check_cvector(rstate)) {
-            if (nq_target == 1) {
-                return internal::kernels::qubit::apply_ctrl_psi_1q(
-                    state, A, ctrl, target[0], shift.value(), n);
-            }
-            if (nq_target == 2) {
-                return internal::kernels::qubit::apply_ctrl_psi_2q(
-                    state, A, ctrl, target[0], target[1], shift.value(), n);
-            }
-            return internal::kernels::qubit::apply_ctrl_psi_kq(
-                state, A, ctrl, target, shift.value(), n);
-
-        }
-        // density matrix
-        else {
-            if (nq_target == 1) {
-                return internal::kernels::qubit::apply_ctrl_rho_1q(
-                    state, A, ctrl, target[0], shift.value(), n);
-            }
-            if (nq_target == 2) {
-                return internal::kernels::qubit::apply_ctrl_rho_2q(
-                    state, A, ctrl, target[0], target[1], shift.value(), n);
-            }
-            return internal::kernels::qubit::apply_ctrl_rho_kq(
-                state, A, ctrl, target, shift.value(), n);
-        }
-    }
-#endif // QPP_QUBIT_OPTIMIZATIONS
-
-    // construct the table of A^k
-    std::vector<dyn_mat<typename Derived1::Scalar>> Ak;
-    for (idx k = 0; k < d; ++k) {
-        Ak.emplace_back(powm(rA, k));
-    }
-
-    idx D = static_cast<idx>(rstate.rows()); // total dimension
-
-    auto applyCTRL_ket =
-        [d, D, &Ak = std::as_const(Ak), &ctrl = std::as_const(ctrl),
-         &target = std::as_const(target), &dims = std::as_const(dims),
-         &shift = std::as_const(shift)](
-            const dyn_col_vect<typename Derived1::Scalar>& state) {
-            dyn_col_vect<typename Derived1::Scalar> result =
-                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-#ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for
-#endif // QPP_OPENMP
-            for (idx r = 0; r < d; ++r) {
-                // copy shift
-                std::vector<idx> ctrl_shift = shift.value();
-                // increment ctrl_shift by r (mod d)
-                std::transform(ctrl_shift.begin(), ctrl_shift.end(),
-                               ctrl_shift.begin(),
-                               [r, d](idx elem) { return (elem + r) % d; });
-                // project on ctrl_shift
-                dyn_col_vect<typename Derived1::Scalar> chopped_psi =
-                    internal::project_ket_on_dits(state, ctrl_shift, ctrl, dims,
-                                                  D);
-                // project on complement
-                dyn_col_vect<typename Derived1::Scalar> chopped_psi_bar =
-                    (state / d) - chopped_psi;
-                // apply gates on target if non-zero
-                if (chopped_psi !=
-                    dyn_col_vect<typename Derived1::Scalar>::Zero(D)) {
-                    chopped_psi = apply(chopped_psi, Ak[r], target, dims);
-                }
-#ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp critical
-#endif // QPP_OPENMP
-                {
-                    result += (chopped_psi + chopped_psi_bar);
-                }
-            }
-
-            return result;
-        }; // end applyCTRL_ket
-
-    //************ ket ************//
-    if (internal::check_cvector(rstate)) // we have a ket
-    {
-        // check that dims match state vector
-        if (!internal::check_dims_match_cvect(dims, rstate)) {
-            throw exception::DimsMismatchCvector("qpp::applyCTRL()",
-                                                 "dims/state");
-        }
-        if (D == 1) {
-            return rstate;
-        }
-
-        return applyCTRL_ket(rstate);
-    } // end ket
-
-    //************ density matrix ************//
-    else // we have a density operator
-    {
-        // check that dims match state matrix
-        if (!internal::check_dims_match_mat(dims, rstate)) {
-            throw exception::DimsMismatchMatrix("qpp::applyCTRL()",
-                                                "dims/state");
-        }
-
-        if (D == 1) {
-            return rstate;
-        }
-
-        dyn_mat<typename Derived1::Scalar> result =
-            dyn_mat<typename Derived1::Scalar>::Zero(D, D);
-
-#ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for
-#endif // QPP_OPENMP
-       // decompose rho as \sum |psi_i><phi_i|
-        for (idx i = 0; i < D; ++i) {
-            std::vector<idx> midx_i = n2multiidx(i, dims);
-            dyn_col_vect<typename Derived1::Scalar> psi_i =
-                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-            psi_i(i) = 1;
-            dyn_row_vect<typename Derived1::Scalar> phi_i_bra = rstate.row(i);
-            dyn_col_vect<typename Derived1::Scalar> phi_i_ket =
-                adjoint(phi_i_bra);
-
-            // compute CTRL(|psi_i><phi_i|)CTRL^\dagger
-            psi_i = applyCTRL_ket(psi_i);
-            phi_i_bra = adjoint(applyCTRL_ket(phi_i_ket));
-// add to result
-#ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp critical
-#endif // QPP_OPENMP
-            {
-                result += kron(psi_i, phi_i_bra);
-            }
-        } // end for(i)
-
-        return result;
-    } // end density operator
+    return cstate;
 }
 
 /**
@@ -914,12 +1082,12 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
           const std::vector<idx>& target, idx d = 2,
           std::optional<std::vector<idx>> shift = std::nullopt) {
-    const expr_t<Derived1>& rstate = state.derived();
+    expr_t<Derived1> cstate = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero size
-    if (!internal::check_nonzero_size(rstate)) {
+    if (!internal::check_nonzero_size(cstate)) {
         throw exception::ZeroSize("qpp::applyCTRL()", "state");
     }
 
@@ -929,10 +1097,319 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
     }
     // END EXCEPTION CHECKS
 
-    idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
+    idx n = internal::get_num_subsys(static_cast<idx>(cstate.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return applyCTRL(rstate, rA, ctrl, target, dims, shift);
+    applyCTRL_inplace(cstate, rA, ctrl, target, dims, shift);
+
+    return cstate;
+}
+
+/**
+ * @brief Applies the single qudit controlled-gate \a A with multiple
+ * control qudits listed in \a ctrl to the part \a target of the multi-partite
+ * state vector or density matrix \a state in-place, i.e., CTRL-\a A-\a A-...-\a
+ * A
+ *
+ * @note The dimension of the gate \a A must match the dimension of every qudit
+ * in \a target. All control subsystems in \a ctrl must have the same dimension.
+ *
+ * @param state Eigen expression (modified in-place)
+ * @param A Eigen expression, single qudit quantum gate
+ * @param ctrl Control subsystem indexes
+ * @param target Target qudit indexes; the gate \a A is applied on every
+ * one of them depending on the values of the control qudits
+ * @param dims Dimensions of the multi-partite system
+ * @param shift Optional, performs the control as if the \a ctrl qudits were
+ * \f$X\f$-incremented component-wise by \a shift
+ */
+/**
+ * @brief In-place version of qpp::applyCTRL_fan()
+ *
+ * Modifies the input \a state directly.
+ */
+template <typename Derived1, typename Derived2>
+[[qpp::critical, qpp::parallel]] void applyCTRL_fan_inplace(
+    Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
+    const std::vector<idx>& ctrl, const std::vector<idx>& target,
+    const std::vector<idx>& dims,
+    std::optional<std::vector<idx>> shift = std::nullopt) {
+    auto& rstate = state.derived();
+    const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+    // check types
+    if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
+        throw exception::TypeMismatch("qpp::applyCTRL_fan_inplace()",
+                                      "A/state");
+    }
+
+    // check zero sizes
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize("qpp::applyCTRL_fan_inplace()", "A");
+    }
+
+    // check zero sizes
+    if (!internal::check_nonzero_size(rstate)) {
+        throw exception::ZeroSize("qpp::applyCTRL_fan_inplace()", "state");
+    }
+
+    // check zero sizes
+    if (!internal::check_nonzero_size(ctrl)) {
+        throw exception::ZeroSize("qpp::applyCTRL_fan_inplace()", "ctrl");
+    }
+
+    // check zero sizes
+    if (!internal::check_nonzero_size(target)) {
+        throw exception::ZeroSize("qpp::applyCTRL_fan_inplace()", "target");
+    }
+
+    // check square matrix for the gate
+    if (!internal::check_square_mat(rA)) {
+        throw exception::MatrixNotSquare("qpp::applyCTRL_fan_inplace()", "A");
+    }
+
+    // check valid state and matching dimensions
+    if (internal::check_cvector(rstate)) {
+        if (!internal::check_dims_match_cvect(dims, rstate)) {
+            throw exception::DimsMismatchCvector("qpp::applyCTRL_fan_inplace()",
+                                                 "dims/state");
+        }
+    } else if (internal::check_square_mat(rstate)) {
+        if (!internal::check_dims_match_mat(dims, rstate)) {
+            throw exception::DimsMismatchMatrix("qpp::applyCTRL_fan_inplace()",
+                                                "dims/state");
+        }
+    } else {
+        throw exception::MatrixNotSquareNorCvector(
+            "qpp::applyCTRL_fan_inplace()", "state");
+    }
+
+    // check that ctrl subsystem is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(ctrl, dims)) {
+        throw exception::SubsysMismatchDims("qpp::applyCTRL_fan_inplace()",
+                                            "ctrl/dims");
+    }
+
+    // check that all control subsystems have the same dimension
+    idx d = dims[ctrl[0]];
+    for (idx i = 1; i < static_cast<idx>(ctrl.size()); ++i) {
+        if (dims[ctrl[i]] != d) {
+            throw exception::DimsNotEqual("qpp::applyCTRL_fan_inplace()",
+                                          "ctrl");
+        }
+    }
+
+    // check that dimension is valid
+    if (!internal::check_dims(dims)) {
+        throw exception::DimsInvalid("qpp::applyCTRL_fan_inplace()", "dims");
+    }
+
+    // check that target is valid w.r.t. dims
+    if (!internal::check_subsys_match_dims(target, dims)) {
+        throw exception::SubsysMismatchDims("qpp::applyCTRL_fan_inplace()",
+                                            "dims/target");
+    }
+
+    // check that all target subsystems have the same dimension
+    for (idx i = 1; i < static_cast<idx>(target.size()); ++i) {
+        if (dims[target[i]] != d) {
+            throw exception::DimsNotEqual("qpp::applyCTRL_fan_inplace()",
+                                          "target");
+        }
+    }
+
+    // check that ctrl and target don't share common elements
+    for (idx elem_ctrl : ctrl) {
+        for (idx elem_target : target) {
+            if (elem_ctrl == elem_target) {
+                throw exception::OutOfRange("qpp::applyCTRL_fan_inplace()",
+                                            "ctrl/target");
+            }
+        }
+    }
+
+    // check that gate matches the dimensions of the target's qudits
+    if (rA.rows() != static_cast<Eigen::Index>(d)) {
+        throw exception::MatrixMismatchSubsys("qpp::applyCTRL_fan_inplace()",
+                                              "A/target");
+    }
+
+    std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
+    ctrlgate.insert(ctrlgate.end(), target.cbegin(), target.cend());
+    std::sort(ctrlgate.begin(), ctrlgate.end());
+
+    // check that ctrl + gate subsystem is valid
+    // with respect to local dimensions
+    if (!internal::check_subsys_match_dims(ctrlgate, dims)) {
+        throw exception::SubsysMismatchDims("qpp::applyCTRL_fan_inplace()",
+                                            "dims/ctrl/target");
+    }
+
+    // check shift
+    if (shift.has_value() && (shift.value().size() != ctrl.size())) {
+        throw exception::SizeMismatch("qpp::applyCTRL_fan_inplace()",
+                                      "ctrl/shift");
+    }
+    if (shift.has_value()) {
+        for (idx& elem : shift.value()) {
+            if (elem >= d) {
+                throw exception::OutOfRange("qpp::applyCTRL_fan_inplace()",
+                                            "shift");
+            }
+            // invert shift mod D
+            elem = (d - elem) % d;
+        }
+    }
+    // END EXCEPTION CHECKS
+
+    if (!shift.has_value()) {
+        shift = std::vector<idx>(ctrl.size(), 0);
+    }
+
+    // qubit optimizations
+#ifdef QPP_QUBIT_OPTIMIZATIONS
+    if (internal::all_qubits(dims)) {
+        idx n = dims.size();
+        // ket
+        if (internal::check_cvector(rstate)) {
+            // check that dims match state vector
+            if (!internal::check_dims_match_cvect(dims, rstate)) {
+                throw exception::DimsMismatchCvector(
+                    "qpp::applyCTRL_fan_inplace()", "dims/state");
+            }
+            internal::kernels::qubit::apply_ctrl_fan_psi_inplace(
+                state, A, ctrl, target, shift.value(), n);
+
+        }
+        // density matrix
+        else {
+            // check that dims match density matrix
+            if (!internal::check_dims_match_mat(dims, rstate)) {
+                throw exception::DimsMismatchCvector(
+                    "qpp::applyCTRL_fan_inplace()", "dims/state");
+            }
+            internal::kernels::qubit::apply_ctrl_fan_rho_inplace(
+                state, A, ctrl, target, shift.value(), n);
+        }
+    }
+#endif // QPP_QUBIT_OPTIMIZATIONS
+
+    // construct the table of A^k
+    std::vector<dyn_mat<typename Derived1::Scalar>> Ak;
+    for (idx k = 0; k < d; ++k) {
+        Ak.emplace_back(powm(rA, k));
+    }
+
+    idx D = static_cast<idx>(rstate.rows());
+    if (D == 1) {
+        return;
+    }
+
+    // Helper lambda for ket-state logic
+    auto applyCTRL_fan_ket =
+        [d, D, &Ak, &ctrl, &target, &dims,
+         &shift](const dyn_col_vect<typename Derived1::Scalar>& psi) {
+            dyn_col_vect<typename Derived1::Scalar> result =
+                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
+
+#ifdef QPP_OPENMP
+#pragma omp parallel for
+#endif
+            for (idx r = 0; r < d; ++r) {
+                std::vector<idx> ctrl_shift = shift.value();
+                std::transform(ctrl_shift.begin(), ctrl_shift.end(),
+                               ctrl_shift.begin(),
+                               [r, d](idx elem) { return (elem + r) % d; });
+
+                dyn_col_vect<typename Derived1::Scalar> chopped_psi =
+                    internal::project_ket_on_dits(psi, ctrl_shift, ctrl, dims,
+                                                  D);
+
+                dyn_col_vect<typename Derived1::Scalar> chopped_psi_bar =
+                    (psi / static_cast<typename Derived1::Scalar>(d)) -
+                    chopped_psi;
+
+                if (chopped_psi.norm() > 0) { // Small optimization check
+                    for (idx elem : target) {
+                        chopped_psi = apply(chopped_psi, Ak[r], {elem}, dims);
+                    }
+                }
+
+#ifdef QPP_OPENMP
+#pragma omp critical
+#endif
+                {
+                    result += (chopped_psi + chopped_psi_bar);
+                }
+            }
+            return result;
+        };
+
+    //************ Logic Execution ************//
+
+    if (internal::check_cvector(rstate)) {
+        // Ket state: replace original data with computed ket
+        rstate = applyCTRL_fan_ket(rstate);
+    } else {
+        // Density matrix: compute into temporary then move
+        dyn_mat<typename Derived1::Scalar> result =
+            dyn_mat<typename Derived1::Scalar>::Zero(D, D);
+
+#ifdef QPP_OPENMP
+#pragma omp parallel for
+#endif
+        for (idx i = 0; i < D; ++i) {
+            dyn_col_vect<typename Derived1::Scalar> psi_i =
+                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
+            psi_i(i) = 1;
+
+            dyn_col_vect<typename Derived1::Scalar> phi_i_ket =
+                rstate.row(i).adjoint();
+
+            psi_i = applyCTRL_fan_ket(psi_i);
+            dyn_row_vect<typename Derived1::Scalar> phi_i_bra =
+                applyCTRL_fan_ket(phi_i_ket).adjoint();
+
+#ifdef QPP_OPENMP
+#pragma omp critical
+#endif
+            {
+                result += psi_i * phi_i_bra;
+            }
+        }
+        rstate = std::move(result);
+    }
+}
+
+/**
+ * @brief Applies the single qudit controlled-gate \a A with multiple
+ * control qudits listed in \a ctrl to the part \a target of the multi-partite
+ * state vector or density matrix \a state in-place, i.e., CTRL-\a A-\a A-...-\a
+ * A
+ *
+ * @param state Eigen expression (modified in-place)
+ * @param A Eigen expression, single qudit quantum gate
+ * @param ctrl Control subsystem indexes
+ * @param target Target qudit indexes
+ * @param d Subsystem dimensions
+ * @param shift Optional control qudit shift
+ */
+template <typename Derived1, typename Derived2>
+void applyCTRL_fan_inplace(
+    Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
+    const std::vector<idx>& ctrl, const std::vector<idx>& target, idx d = 2,
+    std::optional<std::vector<idx>> shift = std::nullopt) {
+    if (!internal::check_nonzero_size(state)) {
+        throw exception::ZeroSize("qpp::applyCTRL_fan_inplace()", "state");
+    }
+    if (d < 2) {
+        throw exception::DimsInvalid("qpp::applyCTRL_fan_inplace()", "d");
+    }
+
+    idx n = internal::get_num_subsys(static_cast<idx>(state.rows()), d);
+    std::vector<idx> dims(n, d);
+    applyCTRL_fan_inplace(state, A, ctrl, target, dims, shift);
 }
 
 /**
@@ -969,37 +1446,25 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
-    // check types
     if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
         throw exception::TypeMismatch("qpp::applyCTRL_fan()", "A/state");
     }
-
-    // check zero sizes
-    if (!internal::check_nonzero_size(rA)) {
-        throw exception::ZeroSize("qpp::applyCTRL_fan()", "A");
-    }
-
-    // check zero sizes
     if (!internal::check_nonzero_size(rstate)) {
         throw exception::ZeroSize("qpp::applyCTRL_fan()", "state");
     }
-
-    // check zero sizes
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize("qpp::applyCTRL_fan()", "A");
+    }
     if (!internal::check_nonzero_size(ctrl)) {
         throw exception::ZeroSize("qpp::applyCTRL_fan()", "ctrl");
     }
-
-    // check zero sizes
     if (!internal::check_nonzero_size(target)) {
         throw exception::ZeroSize("qpp::applyCTRL_fan()", "target");
     }
-
-    // check square matrix for the gate
     if (!internal::check_square_mat(rA)) {
         throw exception::MatrixNotSquare("qpp::applyCTRL_fan()", "A");
     }
 
-    // check valid state and matching dimensions
     if (internal::check_cvector(rstate)) {
         if (!internal::check_dims_match_cvect(dims, rstate)) {
             throw exception::DimsMismatchCvector("qpp::applyCTRL_fan()",
@@ -1010,18 +1475,13 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
             throw exception::DimsMismatchMatrix("qpp::applyCTRL_fan()",
                                                 "dims/state");
         }
-    } else {
-        throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL_fan()",
-                                                   "state");
     }
 
-    // check that ctrl subsystem is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(ctrl, dims)) {
         throw exception::SubsysMismatchDims("qpp::applyCTRL_fan()",
                                             "ctrl/dims");
     }
 
-    // check that all control subsystems have the same dimension
     idx d = dims[ctrl[0]];
     for (idx i = 1; i < static_cast<idx>(ctrl.size()); ++i) {
         if (dims[ctrl[i]] != d) {
@@ -1029,217 +1489,37 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
         }
     }
 
-    // check that dimension is valid
-    if (!internal::check_dims(dims)) {
-        throw exception::DimsInvalid("qpp::applyCTRL_fan()", "dims");
-    }
-
-    // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims)) {
         throw exception::SubsysMismatchDims("qpp::applyCTRL_fan()",
                                             "dims/target");
     }
 
-    // check that all target subsystems have the same dimension
-    for (idx i = 1; i < static_cast<idx>(target.size()); ++i) {
-        if (dims[target[i]] != d) {
+    for (idx t_idx : target) {
+        if (dims[t_idx] != d) {
             throw exception::DimsNotEqual("qpp::applyCTRL_fan()", "target");
         }
     }
 
-    // check that ctrl and target don't share common elements
-    for (idx elem_ctrl : ctrl) {
-        for (idx elem_target : target) {
-            if (elem_ctrl == elem_target) {
-                throw exception::OutOfRange("qpp::applyCTRL_fan()",
-                                            "ctrl/target");
-            }
-        }
-    }
-
-    // check that gate matches the dimensions of the target's qudits
     if (rA.rows() != static_cast<Eigen::Index>(d)) {
         throw exception::MatrixMismatchSubsys("qpp::applyCTRL_fan()",
                                               "A/target");
     }
 
-    std::vector<idx> ctrlgate = ctrl; // ctrl + gate subsystem vector
-    ctrlgate.insert(ctrlgate.end(), target.cbegin(), target.cend());
-    std::sort(ctrlgate.begin(), ctrlgate.end());
-
-    // check that ctrl + gate subsystem is valid
-    // with respect to local dimensions
-    if (!internal::check_subsys_match_dims(ctrlgate, dims)) {
-        throw exception::SubsysMismatchDims("qpp::applyCTRL_fan()",
-                                            "dims/ctrl/target");
-    }
-
-    // check shift
     if (shift.has_value() && (shift.value().size() != ctrl.size())) {
         throw exception::SizeMismatch("qpp::applyCTRL_fan()", "ctrl/shift");
     }
-    if (shift.has_value()) {
-        for (idx& elem : shift.value()) {
-            if (elem >= d) {
-                throw exception::OutOfRange("qpp::applyCTRL_fan()", "shift");
-            }
-            // invert shift mod D
-            elem = (d - elem) % d;
-        }
-    }
     // END EXCEPTION CHECKS
-    if (!shift.has_value()) {
-        shift = std::vector<idx>(ctrl.size(), 0);
-    }
 
-    // qubit optimizations
-#ifdef QPP_QUBIT_OPTIMIZATIONS
-    if (internal::all_qubits(dims)) {
-        idx n = dims.size();
-        // ket
-        if (internal::check_cvector(rstate)) {
-            // check that dims match state vector
-            if (!internal::check_dims_match_cvect(dims, rstate)) {
-                throw exception::DimsMismatchCvector("qpp::applyCTRL_fan()",
-                                                     "dims/state");
-            }
-            return internal::kernels::qubit::apply_ctrl_fan_psi(
-                state, A, ctrl, target, shift.value(), n);
+    expr_t<Derived1> result = rstate;
+    applyCTRL_fan_inplace(result, rA, ctrl, target, dims, shift);
 
-        }
-        // density matrix
-        else {
-            // check that dims match density matrix
-            if (!internal::check_dims_match_mat(dims, rstate)) {
-                throw exception::DimsMismatchCvector("qpp::applyCTRL_fan()",
-                                                     "dims/state");
-            }
-            return internal::kernels::qubit::apply_ctrl_fan_rho(
-                state, A, ctrl, target, shift.value(), n);
-        }
-    }
-#endif // QPP_QUBIT_OPTIMIZATIONS
-    // construct the table of A^k
-    std::vector<dyn_mat<typename Derived1::Scalar>> Ak;
-    for (idx k = 0; k < d; ++k) {
-        Ak.emplace_back(powm(rA, k));
-    }
-
-    idx D = static_cast<idx>(rstate.rows()); // total dimension
-
-    auto applyCTRL_fan_ket =
-        [d, D, &Ak = std::as_const(Ak), &ctrl = std::as_const(ctrl),
-         &target = std::as_const(target), &dims = std::as_const(dims),
-         &shift = std::as_const(shift)](
-            const dyn_col_vect<typename Derived1::Scalar>& state) {
-            dyn_col_vect<typename Derived1::Scalar> result =
-                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-#ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for
-#endif // QPP_OPENMP
-            for (idx r = 0; r < d; ++r) {
-                // copy shift
-                std::vector<idx> ctrl_shift = shift.value();
-                // increment ctrl_shift by r (mod d)
-                std::transform(ctrl_shift.begin(), ctrl_shift.end(),
-                               ctrl_shift.begin(),
-                               [r, d](idx elem) { return (elem + r) % d; });
-                // project on ctrl_shift
-                dyn_col_vect<typename Derived1::Scalar> chopped_psi =
-                    internal::project_ket_on_dits(state, ctrl_shift, ctrl, dims,
-                                                  D);
-                // project on complement
-                dyn_col_vect<typename Derived1::Scalar> chopped_psi_bar =
-                    (state / d) - chopped_psi;
-                // apply gates on target if non-zero
-                if (chopped_psi !=
-                    dyn_col_vect<typename Derived1::Scalar>::Zero(D)) {
-                    for (idx elem : target) {
-                        chopped_psi = apply(chopped_psi, Ak[r], {elem}, dims);
-                    }
-                }
-#ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp critical
-#endif // QPP_OPENMP
-                {
-                    result += (chopped_psi + chopped_psi_bar);
-                }
-            }
-            return result;
-        }; // end applyCTRL_fan_ket
-
-    //************ ket ************//
-    if (internal::check_cvector(rstate)) // we have a ket
-    {
-        // check that dims match state vector
-        if (!internal::check_dims_match_cvect(dims, rstate)) {
-            throw exception::DimsMismatchCvector("qpp::applyCTRL()",
-                                                 "dims/state");
-        }
-        if (D == 1) {
-            return rstate;
-        }
-
-        return applyCTRL_fan_ket(rstate);
-    } // end ket
-
-    //************ density matrix ************//
-    else // we have a density operator
-    {
-        // check that dims match state matrix
-        if (!internal::check_dims_match_mat(dims, rstate)) {
-            throw exception::DimsMismatchMatrix("qpp::applyCTRL()",
-                                                "dims/state");
-        }
-
-        if (D == 1) {
-            return rstate;
-        }
-
-        dyn_mat<typename Derived1::Scalar> result =
-            dyn_mat<typename Derived1::Scalar>::Zero(D, D);
-
-#ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for
-#endif // QPP_OPENMP
-       // decompose rho as \sum |psi_i><phi_i| and applyCTRL_fan_ket()
-       // individually
-        for (idx i = 0; i < D; ++i) {
-            std::vector<idx> midx_i = n2multiidx(i, dims);
-            dyn_col_vect<typename Derived1::Scalar> psi_i =
-                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-            psi_i(i) = 1;
-            dyn_row_vect<typename Derived1::Scalar> phi_i_bra = rstate.row(i);
-            dyn_col_vect<typename Derived1::Scalar> phi_i_ket =
-                adjoint(phi_i_bra);
-
-            // compute CTRL_fan(|psi_i><phi_i|)CTRL_fan^\dagger
-            psi_i = applyCTRL_fan_ket(psi_i);
-            phi_i_bra = adjoint(applyCTRL_fan_ket(phi_i_ket));
-// add to result
-#ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp critical
-#endif // QPP_OPENMP
-            {
-                result += psi_i * phi_i_bra;
-            }
-        } // end for(i)
-
-        return result;
-    } // end density operator
+    return result;
 }
 
 /**
  * @brief Applies the single qudit controlled-gate \a A with multiple
  * control qudits listed in \a ctrl to the part \a target of the multi-partite
  * state vector or density matrix \a state, i.e., CTRL-\a A-\a A-...-\a A
- *
- * @note The dimension of the gate \a A must match the dimension of every qudit
- * in \a target. All control subsystems in \a ctrl must have the same dimension.
  *
  * @param state Eigen expression
  * @param A Eigen expression, single qudit quantum gate
@@ -1262,12 +1542,12 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
               const Eigen::MatrixBase<Derived2>& A,
               const std::vector<idx>& ctrl, const std::vector<idx>& target,
               idx d = 2, std::optional<std::vector<idx>> shift = std::nullopt) {
-    const expr_t<Derived1>& rstate = state.derived();
+    expr_t<Derived1> cstate = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero size
-    if (!internal::check_nonzero_size(rstate)) {
+    if (!internal::check_nonzero_size(cstate)) {
         throw exception::ZeroSize("qpp::applyCTRL_fan()", "state");
     }
 
@@ -1277,10 +1557,12 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
     }
     // END EXCEPTION CHECKS
 
-    idx n = internal::get_num_subsys(static_cast<idx>(rstate.rows()), d);
+    idx n = internal::get_num_subsys(static_cast<idx>(cstate.rows()), d);
     std::vector<idx> dims(n, d); // local dimensions vector
 
-    return applyCTRL_fan(rstate, rA, ctrl, target, dims, shift);
+    applyCTRL_fan_inplace(cstate, rA, ctrl, target, dims, shift);
+
+    return cstate;
 }
 
 /**
