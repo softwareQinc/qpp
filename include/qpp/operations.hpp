@@ -60,6 +60,7 @@ namespace qpp {
 /**
  * @brief Applies the gate \a A to the part \a target of the multi-partite state
  * vector or density matrix \a state in-place
+ * @see qpp::apply()
  *
  * @note The dimension of the gate \a A must match the dimension of \a target
  *
@@ -389,6 +390,7 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
 /**
  * @brief Applies the gate \a A to the part \a target of the multi-partite state
  * vector or density matrix \a state in-place
+ * @see qpp::apply()
  *
  * @note The dimension of the gate \a A must match the dimension of \a target
  *
@@ -429,6 +431,7 @@ void apply_inplace(Eigen::MatrixBase<Derived1>& state,
 /**
  * @brief Applies the gate \a A to the part \a target of the multi-partite state
  * vector or density matrix \a state
+ * @see qpp::apply_inplace()
  *
  * @note The dimension of the gate \a A must match the dimension of \a target
  *
@@ -514,6 +517,7 @@ apply(const Eigen::MatrixBase<Derived1>& state,
 /**
  * @brief Applies the gate \a A to the part \a target of the multi-partite state
  * vector or density matrix \a state
+ * @see qpp::apply_inplace()
  *
  * @note The dimension of the gate \a A must match the dimension of \a target
  *
@@ -735,7 +739,7 @@ cmat apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
 /**
  * @brief Applies the controlled-gate \a A to the part \a target of the
  * multi-partite state vector or density matrix \a state in-place
- * @see qpp::Gates::CTRL()
+ * @see qpp::applyCTRL()
  *
  * @note The dimension of the gate \a A must match the dimension of \a target.
  * Also, all control subsystems in \a ctrl must have the same dimension.
@@ -969,7 +973,7 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
 /**
  * @brief Applies the controlled-gate \a A to the part \a target of the
  * multi-partite state vector or density matrix \a state in-place
- * @see qpp::Gates::CTRL()
+ * @see qpp::applyCTRL()
  *
  * @note The dimension of the gate \a A must match the dimension of \a
  * target. Also, all control subsystems in \a ctrl must have the same
@@ -1016,7 +1020,7 @@ void applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
 /**
  * @brief Applies the controlled-gate \a A to the part \a target of the
  * multi-partite state vector or density matrix \a state
- * @see qpp::Gates::CTRL()
+ * @see qpp::applyCTRL_inplace(), qpp::Gates::CTRL()
  *
  * @note The dimension of the gate \a A must match the dimension of \a target.
  * Also, all control subsystems in \a ctrl must have the same dimension.
@@ -1057,7 +1061,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
 /**
  * @brief Applies the controlled-gate \a A to the part \a target of the
  * multi-partite state vector or density matrix \a state
- * @see qpp::Gates::CTRL()
+ * @see qpp::applyCTRL_inplace(), qpp::Gates::CTRL()
  *
  * @note The dimension of the gate \a A must match the dimension of \a
  * target. Also, all control subsystems in \a ctrl must have the same
@@ -1110,6 +1114,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
  * control qudits listed in \a ctrl to the part \a target of the multi-partite
  * state vector or density matrix \a state in-place, i.e., CTRL-\a A-\a A-...-\a
  * A
+ * @see qpp::applyCTRL_fan()
  *
  * @note The dimension of the gate \a A must match the dimension of every qudit
  * in \a target. All control subsystems in \a ctrl must have the same dimension.
@@ -1387,6 +1392,7 @@ template <typename Derived1, typename Derived2>
  * control qudits listed in \a ctrl to the part \a target of the multi-partite
  * state vector or density matrix \a state in-place, i.e., CTRL-\a A-\a A-...-\a
  * A
+ * @see qpp::applyCTRL_fan()
  *
  * @param state Eigen expression (modified in-place)
  * @param A Eigen expression, single qudit quantum gate
@@ -1416,6 +1422,7 @@ void applyCTRL_fan_inplace(
  * @brief Applies the single qudit controlled-gate \a A with multiple
  * control qudits listed in \a ctrl to the part \a target of the multi-partite
  * state vector or density matrix \a state, i.e., CTRL-\a A-\a A-...-\a A
+ * @see qpp::applyCTRL_fan_inplace()
  *
  * @note The dimension of the gate \a A must match the dimension of every qudit
  * in \a target. All control subsystems in \a ctrl must have the same dimension.
@@ -1520,6 +1527,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
  * @brief Applies the single qudit controlled-gate \a A with multiple
  * control qudits listed in \a ctrl to the part \a target of the multi-partite
  * state vector or density matrix \a state, i.e., CTRL-\a A-\a A-...-\a A
+ * @see qpp::applyCTRL_fan_inplace()
  *
  * @param state Eigen expression
  * @param A Eigen expression, single qudit quantum gate
