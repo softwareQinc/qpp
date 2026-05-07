@@ -46,7 +46,7 @@ struct QCircuitGateStep : IDisplay {
      * @brief Type of gate being executed in a gate step
      */
     enum class Type {
-        NONE, ///< represents no gate
+        NONE, ///< default, non classified gate
 
         SINGLE, ///< unitary gate on a single qudit
 
@@ -67,6 +67,105 @@ struct QCircuitGateStep : IDisplay {
         cCTRL_FAN, ///< classically controlled unitary gate with multiple
                    ///< targets
     };
+
+    /**
+     * @brief Structure of gate being executed in a gate step
+     */
+    enum class Kind {
+        GENERIC,     ///< arbitrary dense gate
+        DIAGONAL,    ///< diagonal gate
+        PERMUTATION, ///< permutation/basis-state relabelling gate
+        MONOMIAL, ///< permutation with phases, i.e., permutation times diagonal
+    };
+
+    /**
+     * @brief Determines the optimized structural kind of a square matrix.
+     *
+     * Classifies the input matrix as diagonal, permutation, monomial, or
+     * generic, using the supplied numerical precision to decide whether entries
+     * are zero and whether magnitudes are equal to one.
+     *
+     * A diagonal matrix has all off-diagonal entries zero. A permutation matrix
+     * has exactly one nonzero entry of magnitude one in each row and each
+     * column. A monomial matrix has exactly one nonzero entry in each row and
+     * each column, with arbitrary nonzero values.
+     *
+     * @param A Matrix or matrix expression to classify.
+     * @param precision Numerical tolerance used for zero and unit-magnitude
+     * tests.
+     * @return The structural kind of the matrix.
+     */
+    template <typename Derived>
+    static Kind classify(const Eigen::MatrixBase<Derived>& A,
+                         double precision = 1e-12) {
+        using Scalar = typename Derived::Scalar;
+        using RealScalar = typename Eigen::NumTraits<Scalar>::Real;
+
+        const auto rows = A.rows();
+        const auto cols = A.cols();
+
+        if (rows != cols) {
+            return Kind::GENERIC;
+        }
+
+        const RealScalar eps = static_cast<RealScalar>(precision);
+
+        auto is_zero = [eps](const Scalar& z) { return std::abs(z) <= eps; };
+
+        auto is_one_abs = [eps](const Scalar& z) {
+            return std::abs(std::abs(z) - RealScalar{1}) <= eps;
+        };
+
+        bool diagonal = true;
+        bool permutation = true;
+        bool monomial = true;
+
+        for (Eigen::Index i = 0; i < rows; ++i) {
+            Eigen::Index row_nnz = 0;
+            Eigen::Index col_nnz = 0;
+
+            for (Eigen::Index j = 0; j < cols; ++j) {
+                const auto& aij = A(i, j);
+                const auto& aji = A(j, i);
+
+                if (i != j && !is_zero(aij)) {
+                    diagonal = false;
+                }
+
+                if (!is_zero(aij)) {
+                    ++row_nnz;
+
+                    if (!is_one_abs(aij)) {
+                        permutation = false;
+                    }
+                }
+
+                if (!is_zero(aji)) {
+                    ++col_nnz;
+                }
+            }
+
+            if (row_nnz != 1 || col_nnz != 1) {
+                permutation = false;
+                monomial = false;
+            }
+        }
+
+        if (diagonal) {
+            return Kind::DIAGONAL;
+        }
+
+        if (permutation) {
+            return Kind::PERMUTATION;
+        }
+
+        if (monomial) {
+            return Kind::MONOMIAL;
+        }
+
+        return Kind::GENERIC;
+    }
+
     /**
      * @brief Extraction operator overload for
      * qpp::internal::QCircuitGateStep::Type enum class
@@ -112,7 +211,35 @@ struct QCircuitGateStep : IDisplay {
         return os;
     }
 
-    Type gate_type_ = Type::NONE;            ///< gate type
+    /**
+     * @brief Extraction operator overload for
+     * qpp::internal::QCircuitGateStep::Kind enum class
+     *
+     * @param os Output stream passed by reference
+     * @param gate_kind qpp::internal::QCircuitGateStep::Kind enum class
+     * @return Reference to the output stream
+     */
+    friend std::ostream& operator<<(std::ostream& os, const Kind& gate_kind) {
+        switch (gate_kind) {
+            case Kind::GENERIC:
+                os << "GENERIC";
+                break;
+            case Kind::DIAGONAL:
+                os << "DIAGONAL";
+                break;
+            case Kind::MONOMIAL:
+                os << "MONOMIAL";
+                break;
+            case Kind::PERMUTATION:
+                os << "PERMUTATION";
+                break;
+        }
+
+        return os;
+    }
+
+    Type gate_type_ = Type::NONE;            ///< default gate type
+    Kind gate_kind_ = Kind::GENERIC;         ///< default gate kind
     std::size_t gate_hash_{};                ///< gate hash
     std::optional<std::vector<idx>> ctrl_{}; ///< control
     std::vector<idx> target_{}; ///< target where the gate is applied
@@ -135,13 +262,13 @@ struct QCircuitGateStep : IDisplay {
      * @param name Optional gate name
      */
     explicit QCircuitGateStep(
-        Type gate_type, std::size_t gate_hash,
+        Type gate_type, Kind gate_kind, std::size_t gate_hash,
         std::optional<std::vector<idx>> ctrl, std::vector<idx> target,
         std::optional<std::vector<idx>> shift = std::nullopt,
         std::optional<std::string> name = std::nullopt)
-        : gate_type_{gate_type}, gate_hash_{gate_hash}, ctrl_{std::move(ctrl)},
-          target_{std::move(target)}, shift_{std::move(shift)},
-          name_{std::move(name)} {}
+        : gate_type_{gate_type}, gate_kind_{gate_kind}, gate_hash_{gate_hash},
+          ctrl_{std::move(ctrl)}, target_{std::move(target)},
+          shift_{std::move(shift)}, name_{std::move(name)} {}
 
     /**
      * @brief Equality operator
@@ -182,7 +309,7 @@ struct QCircuitGateStep : IDisplay {
      * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        os << gate_type_ << ", ";
+        os << gate_type_ << " (" << gate_kind_ << "), ";
         if (ctrl_.has_value()) {
             if (gate_type_ == Type::CTRL || gate_type_ == Type::CTRL_FAN) {
                 os << "ctrl = ";

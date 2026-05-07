@@ -1196,10 +1196,11 @@ class QCircuit : public IDisplay, public IJSON {
         };
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::SINGLE, hashU, std::nullopt,
-            std::vector<idx>{i}, std::nullopt, name});
+            internal::QCircuitGateStep::Type::SINGLE, gate_kind, hashU,
+            std::nullopt, std::vector<idx>{i}, std::nullopt, name});
 
         ++gate_count_[hashU];
 
@@ -1249,10 +1250,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::TWO, hashU, std::nullopt,
-            std::vector<idx>{i, j}, std::nullopt, name});
+            internal::QCircuitGateStep::Type::TWO, gate_kind, hashU,
+            std::nullopt, std::vector<idx>{i, j}, std::nullopt, name});
 
         ++gate_count_[hashU];
 
@@ -1305,10 +1307,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::THREE, hashU, std::nullopt,
-            std::vector<idx>{i, j, k}, std::nullopt, name});
+            internal::QCircuitGateStep::Type::THREE, gate_kind, hashU,
+            std::nullopt, std::vector<idx>{i, j, k}, std::nullopt, name});
 
         ++gate_count_[hashU];
 
@@ -1371,10 +1374,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::FAN, hashU, std::nullopt, target,
-            std::nullopt, name});
+            internal::QCircuitGateStep::Type::FAN, gate_kind, hashU,
+            std::nullopt, target, std::nullopt, name});
 
         gate_count_[hashU] += static_cast<idx>(target.size());
 
@@ -1488,10 +1492,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::JOINT, hashU, std::nullopt,
-            target, std::nullopt, name});
+            internal::QCircuitGateStep::Type::JOINT, gate_kind, hashU,
+            std::nullopt, target, std::nullopt, name});
 
         ++gate_count_[hashU];
 
@@ -1818,13 +1823,14 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         std::optional<std::vector<idx>> shift_vec;
         if (shift.has_value()) {
             shift_vec = std::vector<idx>{shift.value()};
         }
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::CTRL_FAN, hashU,
+            internal::QCircuitGateStep::Type::CTRL_FAN, gate_kind, hashU,
             std::vector<idx>{ctrl}, target, shift_vec, name});
 
         gate_count_[hashU] += static_cast<idx>(target.size());
@@ -1949,10 +1955,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::CTRL_FAN, hashU, ctrl, target,
-            shift, name});
+            internal::QCircuitGateStep::Type::CTRL_FAN, gate_kind, hashU, ctrl,
+            target, shift, name});
 
         gate_count_[hashU] += static_cast<idx>(target.size());
 
@@ -2073,10 +2080,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
-        circuit_.emplace_back(
-            internal::QCircuitGateStep{internal::QCircuitGateStep::Type::CTRL,
-                                       hashU, ctrl, target, shift, name});
+        circuit_.emplace_back(internal::QCircuitGateStep{
+            internal::QCircuitGateStep::Type::CTRL, gate_kind, hashU, ctrl,
+            target, shift, name});
 
         ++gate_count_[hashU];
 
@@ -2184,9 +2192,10 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::CTRL, hashU, ctrl,
+            internal::QCircuitGateStep::Type::CTRL, gate_kind, hashU, ctrl,
             std::vector<idx>{target}, shift, name});
 
         ++gate_count_[hashU];
@@ -2287,13 +2296,14 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         std::optional<std::vector<idx>> shift_vec;
         if (shift.has_value()) {
             shift_vec = std::vector<idx>{shift.value()};
         }
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::CTRL, hashU,
+            internal::QCircuitGateStep::Type::CTRL, gate_kind, hashU,
             std::vector<idx>{ctrl}, target, shift_vec, name});
 
         ++gate_count_[hashU];
@@ -2360,13 +2370,14 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         std::optional<std::vector<idx>> shift_vec;
         if (shift.has_value()) {
             shift_vec = std::vector<idx>{shift.value()};
         }
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::CTRL, hashU,
+            internal::QCircuitGateStep::Type::CTRL, gate_kind, hashU,
             std::vector<idx>{ctrl}, std::vector<idx>{target}, shift_vec, name});
 
         ++gate_count_[hashU];
@@ -2453,13 +2464,14 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         std::optional<std::vector<idx>> shift_vec;
         if (shift.has_value()) {
             shift_vec = std::vector<idx>{shift.value()};
         }
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::cCTRL_FAN, hashU,
+            internal::QCircuitGateStep::Type::cCTRL_FAN, gate_kind, hashU,
             std::vector<idx>{ctrl_dit}, target, shift_vec, name});
 
         gate_count_[hashU] += static_cast<idx>(target.size());
@@ -2568,10 +2580,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::cCTRL_FAN, hashU, ctrl_dits,
-            std::vector<idx>{target}, shift, name});
+            internal::QCircuitGateStep::Type::cCTRL_FAN, gate_kind, hashU,
+            ctrl_dits, std::vector<idx>{target}, shift, name});
 
         gate_count_[hashU] += static_cast<idx>(target.size());
 
@@ -2683,10 +2696,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
-        circuit_.emplace_back(
-            internal::QCircuitGateStep{internal::QCircuitGateStep::Type::cCTRL,
-                                       hashU, ctrl_dits, target, shift, name});
+        circuit_.emplace_back(internal::QCircuitGateStep{
+            internal::QCircuitGateStep::Type::cCTRL, gate_kind, hashU,
+            ctrl_dits, target, shift, name});
 
         ++gate_count_[hashU];
 
@@ -2784,10 +2798,11 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::cCTRL, hashU, ctrl_dits,
-            std::vector<idx>{target}, shift, name});
+            internal::QCircuitGateStep::Type::cCTRL, gate_kind, hashU,
+            ctrl_dits, std::vector<idx>{target}, shift, name});
 
         ++gate_count_[hashU];
 
@@ -2876,13 +2891,14 @@ class QCircuit : public IDisplay, public IJSON {
         }
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         std::optional<std::vector<idx>> shift_vec;
         if (shift.has_value()) {
             shift_vec = std::vector<idx>{shift.value()};
         }
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::cCTRL, hashU,
+            internal::QCircuitGateStep::Type::cCTRL, gate_kind, hashU,
             std::vector<idx>{ctrl_dit}, target, shift_vec, name});
 
         ++gate_count_[hashU];
@@ -2951,13 +2967,14 @@ class QCircuit : public IDisplay, public IJSON {
 
         std::size_t hashU = hash_eigen(U);
         add_hash_(hashU, U);
+        auto gate_kind = internal::QCircuitGateStep::classify(U);
 
         std::optional<std::vector<idx>> shift_vec;
         if (shift.has_value()) {
             shift_vec = std::vector<idx>{shift.value()};
         }
         circuit_.emplace_back(internal::QCircuitGateStep{
-            internal::QCircuitGateStep::Type::cCTRL, hashU,
+            internal::QCircuitGateStep::Type::cCTRL, gate_kind, hashU,
             std::vector<idx>{ctrl_dit}, std::vector<idx>{target}, shift_vec,
             name});
 
