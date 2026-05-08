@@ -210,6 +210,22 @@ bool check_dims_match_rvect(const std::vector<idx>& dims,
     return proddim == static_cast<idx>(A.cols());
 }
 
+// check that valid dims match the dimensions of valid row or column vector
+template <typename Derived>
+bool check_dims_match_vect(const std::vector<idx>& dims,
+                           const Eigen::MatrixBase<Derived>& A) {
+    // error checks only in DEBUG version
+    assert(!dims.empty());
+    assert(A.rows() > 0);
+    assert(A.cols() > 0);
+    assert(A.rows() == 1 || A.cols() == 1);
+
+    const idx proddim = std::accumulate(
+        dims.begin(), dims.end(), static_cast<idx>(1), std::multiplies<>());
+
+    return proddim == static_cast<idx>(A.size());
+}
+
 // check that all elements in valid dims equal to dim
 inline bool check_eq_dims(const std::vector<idx>& dims, idx dim) noexcept {
     // error checks only in DEBUG version

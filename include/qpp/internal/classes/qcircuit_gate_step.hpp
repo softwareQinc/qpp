@@ -309,7 +309,9 @@ struct QCircuitGateStep : IDisplay {
      * @return Reference to the output stream
      */
     std::ostream& display(std::ostream& os) const override {
-        os << gate_type_ << " (" << gate_kind_ << "), ";
+        os << gate_type_;
+        // os << " (" << gate_kind_ << ")";
+        os << ", ";
         if (ctrl_.has_value()) {
             if (gate_type_ == Type::CTRL || gate_type_ == Type::CTRL_FAN) {
                 os << "ctrl = ";
