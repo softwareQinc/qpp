@@ -29,8 +29,8 @@
  * @brief Internal highly optimized critical functions for qpp::applyCTRL_diag()
  */
 
-#ifndef QPP_INTERNAL_KERNELS_QUBIT_APPLY_CTRL_HPP_
-#define QPP_INTERNAL_KERNELS_QUBIT_APPLY_CTRL_HPP_
+#ifndef QPP_INTERNAL_KERNELS_QUBIT_APPLY_CTRL_DIAG_HPP_
+#define QPP_INTERNAL_KERNELS_QUBIT_APPLY_CTRL_DIAG_HPP_
 
 #include <cassert>
 #include <vector>
@@ -61,15 +61,16 @@ template <typename Derived1, typename Derived2>
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
     const std::vector<idx>& ctrl, idx i, const std::vector<idx>& shift, idx n) {
     using Scalar = typename Derived1::Scalar;
+
     const idx D = static_cast<idx>(std::size_t{1} << n);
 
-    // Input Validation
     assert(i < n && "Target qubit index i must be less than n");
     assert(static_cast<idx>(state.size()) == D &&
            "State vector size must be 2^n");
     assert(A.size() == 2 && "Diagonal gate A must have 2 elements");
     assert(ctrl.size() == shift.size() &&
            "ctrl and shift vectors must have the same size");
+
     const idx ctrl_size = static_cast<idx>(ctrl.size());
 
 #ifndef NDEBUG
@@ -82,46 +83,51 @@ template <typename Derived1, typename Derived2>
     }
 #endif
 
+    const Scalar a0 = A.coeff(0);
+    const Scalar a1 = A.coeff(1);
+
+    const bool apply_a0 = a0 != Scalar{1};
+    const bool apply_a1 = a1 != Scalar{1};
+
+    if (!apply_a0 && !apply_a1) {
+        return;
+    }
+
     const idx j = n - 1 - i;
     const idx step = static_cast<idx>(std::size_t{1} << j);
     const idx jump = static_cast<idx>(std::size_t{1} << (j + 1));
 
-    idx expected_pattern_for_ones = 0;
-    idx expected_zero_mask = 0;
+    idx ctrl_mask = 0;
+    idx expected_pattern = 0;
 
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
-        const idx c = ctrl[c_idx];
-        const idx bit = static_cast<idx>(std::size_t{1} << (n - 1 - c));
+        const idx bit =
+            static_cast<idx>(std::size_t{1} << (n - 1 - ctrl[c_idx]));
+
+        ctrl_mask |= bit;
+
+        // shift == 0 means positive control on |1>
+        // shift == 1 means negative control on |0>
         if (shift[c_idx] == 0) {
-            expected_pattern_for_ones |= bit;
-        } else {
-            expected_zero_mask |= bit;
+            expected_pattern |= bit;
         }
     }
 
-    // Extract diagonal elements
-    const Scalar a0 = A.coeff(0);
-    const Scalar a1 = A.coeff(1);
-
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for
+#pragma omp parallel for collapse(2) if (D >= 4096)
 #endif // QPP_OPENMP
     for (idx L = 0; L < D; L += jump) {
         for (idx R = 0; R < step; ++R) {
             const idx k0 = L + R;
-            const idx k1 = k0 + step;
 
-            // Check if control conditions are met
-            if (((static_cast<std::size_t>(k0) &
-                  static_cast<std::size_t>(expected_pattern_for_ones)) ==
-                 static_cast<std::size_t>(expected_pattern_for_ones)) &&
-                ((static_cast<std::size_t>(k0) &
-                  static_cast<std::size_t>(expected_zero_mask)) == 0)) {
+            if ((k0 & ctrl_mask) == expected_pattern) {
+                if (apply_a0) {
+                    state.coeffRef(k0) *= a0;
+                }
 
-                // Apply diagonal elements directly
-                state.coeffRef(k0) *= a0;
-                state.coeffRef(k1) *= a1;
+                if (apply_a1) {
+                    state.coeffRef(k0 + step) *= a1;
+                }
             }
         }
     }
@@ -221,7 +227,6 @@ apply_ctrl_psi_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     const Scalar a3 = A.coeff(3);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx k00 = 0; k00 < D; ++k00) {
@@ -335,7 +340,7 @@ template <typename Derived1, typename Derived2>
 
     // Control Mask Logic
     idx expected_pattern_for_ones = 0;
-    idx expected_zero_mask = 0;
+    idx expected_zero_mask [[maybe_unused]] = 0;
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx bit =
             static_cast<idx>(std::size_t{1} << (n - 1 - ctrl[c_idx]));
@@ -387,7 +392,6 @@ template <typename Derived1, typename Derived2>
     }
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx m = 0; m < outer_dim; ++m) {
@@ -478,13 +482,17 @@ template <typename Derived1, typename Derived2>
         }
     }
 
-    auto control_is_met = [&](idx k_base) {
-        return ((static_cast<std::size_t>(k_base) &
-                 static_cast<std::size_t>(expected_pattern_for_ones)) ==
-                static_cast<std::size_t>(expected_pattern_for_ones)) &&
-               ((static_cast<std::size_t>(k_base) &
-                 static_cast<std::size_t>(expected_zero_mask)) == 0);
-    };
+    // Optimization: Pre-compute control flags for all indices to avoid
+    // re-evaluating the mask logic D^2 times.
+    std::vector<bool> ctrl_flags(D);
+    for (idx k = 0; k < D; ++k) {
+        ctrl_flags[k] =
+            ((static_cast<std::size_t>(k) &
+              static_cast<std::size_t>(expected_pattern_for_ones)) ==
+             static_cast<std::size_t>(expected_pattern_for_ones)) &&
+            ((static_cast<std::size_t>(k) &
+              static_cast<std::size_t>(expected_zero_mask)) == 0);
+    }
 
     // Indexing Constants
     const idx s_i = static_cast<idx>(std::size_t{1} << (n - 1 - i));
@@ -493,43 +501,51 @@ template <typename Derived1, typename Derived2>
     const Scalar a0_conj = std::conj(a0);
     const Scalar a1_conj = std::conj(a1);
 
+    // Pre-calculate products to save multiplications in the inner loop
+    const Scalar a0a0c = a0 * a0_conj;
+    const Scalar a0a1c = a0 * a1_conj;
+    const Scalar a1a0c = a1 * a0_conj;
+    const Scalar a1a1c = a1 * a1_conj;
+
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
-#pragma omp parallel for collapse(2)
+// Optimization: Simplified loop structure to improve cache locality
+// and reduce index arithmetic overhead.
+#pragma omp parallel for schedule(static)
 #endif // QPP_OPENMP
-    for (idx r0 = 0; r0 < D; r0 += 2 * s_i) {
-        for (idx c0 = 0; c0 < D; c0 += 2 * s_i) {
-            for (idx r_rest = 0; r_rest < s_i; ++r_rest) {
-                for (idx c_rest = 0; c_rest < s_i; ++c_rest) {
-                    const idx r = r0 + r_rest;
-                    const idx c = c0 + c_rest;
+    for (idx r = 0; r < D; ++r) {
+        if (r & s_i) {
+            continue; // Only process the '0' subspace for the target qubit
+        }
 
-                    const idx r1 = r + s_i;
-                    const idx c1 = c + s_i;
+        const bool row_ctrl = ctrl_flags[r];
+        const idx r1 = r | s_i;
 
-                    const bool row_ctrl = control_is_met(r);
-                    const bool col_ctrl = control_is_met(c);
+        for (idx c = 0; c < D; ++c) {
+            if (c & s_i) {
+                continue; // Only process the '0' subspace for the target qubit
+            }
 
-                    if (row_ctrl && col_ctrl) {
-                        // Both row and column controlled: g_r * conj(g_c)
-                        state.coeffRef(r, c) *= a0 * a0_conj;
-                        state.coeffRef(r, c1) *= a0 * a1_conj;
-                        state.coeffRef(r1, c) *= a1 * a0_conj;
-                        state.coeffRef(r1, c1) *= a1 * a1_conj;
-                    } else if (row_ctrl) {
-                        // Only row controlled: g_r * 1
-                        state.coeffRef(r, c) *= a0;
-                        state.coeffRef(r, c1) *= a0;
-                        state.coeffRef(r1, c) *= a1;
-                        state.coeffRef(r1, c1) *= a1;
-                    } else if (col_ctrl) {
-                        // Only column controlled: 1 * conj(g_c)
-                        state.coeffRef(r, c) *= a0_conj;
-                        state.coeffRef(r, c1) *= a1_conj;
-                        state.coeffRef(r1, c) *= a0_conj;
-                        state.coeffRef(r1, c1) *= a1_conj;
-                    }
-                }
+            const bool col_ctrl = ctrl_flags[c];
+            const idx c1 = c | s_i;
+
+            if (row_ctrl && col_ctrl) {
+                // Both row and column controlled: g_r * conj(g_c)
+                state.coeffRef(r, c) *= a0a0c;
+                state.coeffRef(r, c1) *= a0a1c;
+                state.coeffRef(r1, c) *= a1a0c;
+                state.coeffRef(r1, c1) *= a1a1c;
+            } else if (row_ctrl) {
+                // Only row controlled: g_r * 1
+                state.coeffRef(r, c) *= a0;
+                state.coeffRef(r, c1) *= a0;
+                state.coeffRef(r1, c) *= a1;
+                state.coeffRef(r1, c1) *= a1;
+            } else if (col_ctrl) {
+                // Only column controlled: 1 * conj(g_c)
+                state.coeffRef(r, c) *= a0_conj;
+                state.coeffRef(r, c1) *= a1_conj;
+                state.coeffRef(r1, c) *= a0_conj;
+                state.coeffRef(r1, c1) *= a1_conj;
             }
         }
     }
@@ -641,9 +657,8 @@ apply_ctrl_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     };
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
-#endif
+#endif // QPP_OPENMP
     for (idx r = 0; r < D_rest; ++r) {
         for (idx c = 0; c < D_rest; ++c) {
             idx r_base = 0;
@@ -815,7 +830,7 @@ template <typename Derived1, typename Derived2>
     // 6. Execution Loop
 #ifdef QPP_OPENMP
 #pragma omp parallel for collapse(2)
-#endif
+#endif // QPP_OPENMP
     for (idx r = 0; r < D_rest; ++r) {
         for (idx c = 0; c < D_rest; ++c) {
             const idx r_base = rest_patterns[r];
@@ -887,4 +902,4 @@ template <typename Derived1, typename Derived2>
 }
 } // namespace qpp::internal::kernels::qubit
 
-#endif /* QPP_INTERNAL_KERNELS_QUBIT_APPLY_CTRL_HPP_ */
+#endif /* QPP_INTERNAL_KERNELS_QUBIT_APPLY_CTRL_DIAG_HPP_ */

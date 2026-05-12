@@ -105,7 +105,6 @@ template <typename Derived1, typename Derived2>
     const Scalar a11 = A.coeff(1, 1);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx L = 0; L < D; L += jump) {
@@ -227,7 +226,6 @@ apply_ctrl_psi_2q_inplace(Eigen::MatrixBase<Derived1>& state,
                  a33 = A.coeff(3, 3);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx k00 = 0; k00 < D; ++k00) {
@@ -405,7 +403,6 @@ template <typename Derived1, typename Derived2>
 
     // Parallel Execution
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx m = 0; m < outer_dim; ++m) {
@@ -529,7 +526,6 @@ template <typename Derived1, typename Derived2>
     const idx total_iterations = D_spec * D_spec;
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx it = 0; it < total_iterations; ++it) {
@@ -675,7 +671,6 @@ apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
     }
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, P_i, P_j, U, U_adj, state, i_phys, j_phys,               \
                expected_pattern_for_ones, expected_zero_mask)
@@ -849,7 +844,6 @@ template <typename Derived1, typename Derived2>
     }
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, k, rest_phys, P_gate_basis, state, U, U_adj, D_k,        \
                expected_pattern_for_ones, expected_zero_mask)

@@ -236,7 +236,7 @@ TEST(qpp_applyCTRL_fan, Qudits) {
 ///       std::optional<std::vector<idx>> shift = std::nullopt)
 TEST(qpp_applyCTRL_fan, Qubits) {
     const idx n = 6; // total qubits
-    const idx D = internal::safe_pow<idx>(2, n);
+    const idx D = internal::ipow_rounded<idx>(2, n);
 
     // worst-ish case: half controls, half targets (disjoint)
     const idx m = n / 2;

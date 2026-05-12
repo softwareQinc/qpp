@@ -114,7 +114,7 @@ struct QEngineState {
      */
     void reset(std::optional<T> qstate) {
         if (qstate.has_value()) {
-            idx D = internal::safe_pow(qc_ptr_->get_d(), qc_ptr_->get_nq());
+            idx D = internal::ipow_rounded(qc_ptr_->get_d(), qc_ptr_->get_nq());
             // EXCEPTION CHECKS
             if constexpr (std::is_same_v<T, ket>) {
                 if (static_cast<idx>(qstate.value().rows()) != D) {

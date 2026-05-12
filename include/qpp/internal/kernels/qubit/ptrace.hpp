@@ -84,7 +84,7 @@ ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
     std::vector<idx> subsys_bar = fast_complement(target, n);
     idx n_subsys_bar = subsys_bar.size();
 
-    idx Dsubsys = internal::safe_pow<idx>(2, target.size());
+    idx Dsubsys = internal::ipow_rounded<idx>(2, target.size());
     idx Dsubsys_bar = D / Dsubsys;
 
     dyn_mat<Scalar> result(Dsubsys_bar, Dsubsys_bar);
@@ -133,7 +133,6 @@ ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
     for (idx j = 0; j < Dsubsys_bar; ++j) {
         idx col_base = expand_bits(j);
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
         for (idx i = 0; i < Dsubsys_bar; ++i) {
@@ -191,7 +190,7 @@ ptrace_rho_kq(const Eigen::MatrixBase<Derived>& A,
     std::vector<idx> subsys_bar = fast_complement(target, n);
     idx n_subsys_bar = subsys_bar.size();
 
-    idx Dsubsys = internal::safe_pow<idx>(2, target.size());
+    idx Dsubsys = internal::ipow_rounded<idx>(2, target.size());
     idx Dsubsys_bar = D / Dsubsys;
 
     dyn_mat<Scalar> result(Dsubsys_bar, Dsubsys_bar);
@@ -238,7 +237,6 @@ ptrace_rho_kq(const Eigen::MatrixBase<Derived>& A,
     for (idx j = 0; j < Dsubsys_bar; ++j) {
         idx col_base = expand_bits(j);
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
         for (idx i = 0; i < Dsubsys_bar; ++i) {

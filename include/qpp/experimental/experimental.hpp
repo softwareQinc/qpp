@@ -167,7 +167,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
         // compute the probability of the outcome and the output state
         out_state = destructive ? ket::Zero(Dsubsys) : ket::Zero(D);
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
         for (idx i = 0; i < D; ++i) {
@@ -204,7 +203,6 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
         out_state =
             destructive ? cmat::Zero(Dsubsys, Dsubsys) : cmat::Zero(D, D);
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
         for (idx i = 0; i < D; ++i) {

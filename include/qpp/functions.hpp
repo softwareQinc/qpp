@@ -936,7 +936,6 @@ cwise(const Eigen::MatrixBase<Derived>& A,
     dyn_mat<OutputScalar> result(rA.rows(), rA.cols());
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
     // column major order for speed
@@ -1622,7 +1621,7 @@ inline ket mket(const std::vector<idx>& mask, const std::vector<idx>& dims) {
  */
 inline ket mket(const std::vector<idx>& mask, idx d = 2) {
     idx n = mask.size();
-    idx D = internal::safe_pow(d, n);
+    idx D = internal::ipow_rounded(d, n);
 
     // EXCEPTION CHECKS
     // check zero size
@@ -1715,7 +1714,7 @@ inline cmat mprj(const std::vector<idx>& mask, const std::vector<idx>& dims) {
  */
 inline cmat mprj(const std::vector<idx>& mask, idx d = 2) {
     idx n = mask.size();
-    idx D = internal::safe_pow(d, n);
+    idx D = internal::ipow_rounded(d, n);
 
     // EXCEPTION CHECKS
     // check zero size
@@ -2292,7 +2291,7 @@ template <char... Bits>
 ket operator""_ket() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
-    qpp::ket q = qpp::ket::Zero(internal::safe_pow<idx>(2, n));
+    qpp::ket q = qpp::ket::Zero(internal::ipow_rounded<idx>(2, n));
 
     // EXCEPTION CHECKS
     // check valid multi-partite qubit state
@@ -2323,7 +2322,7 @@ template <char... Bits>
 bra operator""_bra() {
     constexpr idx n = sizeof...(Bits);
     constexpr char bits[n + 1] = {Bits..., '\0'};
-    qpp::bra q = qpp::ket::Zero(internal::safe_pow<idx>(2, n));
+    qpp::bra q = qpp::ket::Zero(internal::ipow_rounded<idx>(2, n));
 
     // EXCEPTION CHECKS
     // check valid multi-partite qubit state

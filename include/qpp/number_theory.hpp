@@ -544,7 +544,7 @@ inline bool isprime(bigint p, idx k = 80) {
     for (bigint i = p - 1; i % 2 == 0; ++u, i /= 2) {
         ;
     }
-    r = (p - 1) / internal::safe_pow<bigint>(2, u);
+    r = (p - 1) / internal::ipow_rounded<bigint>(2, u);
 
     // repeat k times
     for (idx i = 0; i < k; ++i) {

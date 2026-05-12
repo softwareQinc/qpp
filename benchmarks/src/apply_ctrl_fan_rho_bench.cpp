@@ -45,7 +45,7 @@ TEST_CASE("qpp::applyCTRL_fan() density matrix benchmark",
           "[benchmark][applyCTRL_fan-density-matrix]") {
     // Setup (NOT measured)
     REQUIRE(nq > 1);
-    qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
+    qpp::idx D = qpp::internal::ipow_rounded<qpp::idx>(2, nq);
     qpp::cmat rho = qpp::randrho(D); // random D x D density matrix
     qpp::cmat U = qpp::randU(2);     // random 1 qubit gate
     // Test worst-case scenario

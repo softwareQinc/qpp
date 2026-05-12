@@ -120,7 +120,6 @@ ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
     };
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
     for (idx i = 0; i < D; ++i) {
@@ -206,7 +205,6 @@ ptranspose_rho_kq(const Eigen::MatrixBase<Derived>& A,
     }; /* end worker */
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
     for (idx i = 0; i < D; ++i) {

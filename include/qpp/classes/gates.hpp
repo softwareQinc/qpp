@@ -234,7 +234,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         cmat result = cmat::Zero(D * D, D * D);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
        // column major order for speed
@@ -272,7 +271,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         cmat result(D, D);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
        // column major order for speed
@@ -317,12 +315,11 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // END EXCEPTION CHECKS
 
         // minimum number of qubits required to implement the gate
-        idx D = internal::safe_pow<idx>(2, n);
+        idx D = internal::ipow_rounded<idx>(2, n);
 
         cmat result = cmat::Zero(D, D);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
        // column major order for speed
@@ -337,7 +334,6 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         }
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
        // complete the matrix
@@ -650,7 +646,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         // check that target list match the dimension of the matrix
         idx DA = rA.rows();
-        if (DA != internal::safe_pow<idx>(d, target.size())) {
+        if (DA != internal::ipow_rounded<idx>(d, target.size())) {
             throw exception::MatrixMismatchSubsys("qpp::Gates::CTRL()",
                                                   "A/d/target");
         }
@@ -675,7 +671,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         }
 
         idx D = prod(dims);
-        idx Dctrl = internal::safe_pow<idx>(d, ctrl.size());
+        idx Dctrl = internal::ipow_rounded<idx>(d, ctrl.size());
         idx ctrl_size = ctrl.size();
 
         dyn_mat<typename Derived::Scalar> result =

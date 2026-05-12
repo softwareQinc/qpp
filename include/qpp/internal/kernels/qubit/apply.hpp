@@ -91,7 +91,6 @@ apply_psi_1q_inplace(Eigen::MatrixBase<Derived1>& state,
     // This loop is perfectly independent and is the primary target for
     // parallelization.
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx L = 0; L < D; L += jump) {
@@ -209,7 +208,6 @@ apply_psi_2q_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // Pair-wise Amplitude Transformation (Robust Loop for all i, j)
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     // block_idx iterates over all 2^(n-2) base indices where bits p_i and p_j
@@ -391,7 +389,6 @@ apply_psi_3q_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // Robust Amplitude Transformation
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     // block_idx iterates over all 2^(n-3) base indices where bits p_i, p_j, p_k
@@ -613,7 +610,6 @@ apply_psi_kq_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // Main Parallel Loop (Iterate over spectator blocks m)
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx m = 0; m < outer_dim; ++m) {
@@ -704,7 +700,6 @@ apply_rho_1q_inplace(Eigen::MatrixBase<Derived1>& state,
 
     const idx total_iterations = D_spec * D_spec;
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx iter = 0; iter < total_iterations; ++iter) {
@@ -820,7 +815,6 @@ apply_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // Block Iteration (Parallelized)
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, P_i, P_j, state, U, U_adj, i_phys, j_phys)
 #endif // QPP_OPENMP
@@ -957,7 +951,6 @@ apply_rho_3q_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // Block Iteration (Parallelized)
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, P_i, P_j, P_k, state, U, U_adj, i_phys, j_phys, k_phys)
 #endif // QPP_OPENMP
@@ -1113,7 +1106,6 @@ apply_rho_kq_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // Block Iteration (Parallelized)
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, k, rest_phys, target, target_phys, P_gate_basis, state,  \
                U, U_adj, D_k)

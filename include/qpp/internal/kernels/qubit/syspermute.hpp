@@ -93,7 +93,6 @@ syspermute_psi_kq(const Eigen::MatrixBase<Derived>& A,
     };
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx i = 0; i < D; ++i) {
@@ -154,7 +153,6 @@ syspermute_rho_kq(const Eigen::MatrixBase<Derived>& A,
     };
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx i = 0; i < D * D; ++i) {

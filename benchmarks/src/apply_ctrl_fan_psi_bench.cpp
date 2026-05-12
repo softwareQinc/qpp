@@ -45,7 +45,7 @@ TEST_CASE("qpp::applyCTRL_fan() state vector benchmark",
           "[benchmark][applyCTRL_fan-state-vector]") {
     // Setup (NOT measured)
     REQUIRE(nq > 1);
-    qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
+    qpp::idx D = qpp::internal::ipow_rounded<qpp::idx>(2, nq);
     qpp::ket psi = qpp::randket(D); // random D x 1 state vector
     qpp::cmat U = qpp::randU(2);    // random 1 qubit gate
     // Test worst-case scenario

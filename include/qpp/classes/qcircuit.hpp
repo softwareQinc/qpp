@@ -1449,7 +1449,7 @@ class QCircuit : public IDisplay, public IJSON {
                    std::optional<std::string> name = std::nullopt) {
         // EXCEPTION CHECKS
         idx n = static_cast<idx>(target.size());
-        idx D = internal::safe_pow<idx>(d_, n);
+        idx D = internal::ipow_rounded<idx>(d_, n);
 
         std::string context{"Step " + std::to_string(get_step_count())};
 
@@ -1996,7 +1996,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        idx D_target = internal::safe_pow<idx>(d_, target.size());
+        idx D_target = internal::ipow_rounded<idx>(d_, target.size());
 
         // check valid ctrl
         if (ctrl.empty()) {
@@ -2229,7 +2229,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        idx D_target = internal::safe_pow<idx>(d_, target.size());
+        idx D_target = internal::ipow_rounded<idx>(d_, target.size());
 
         // check valid ctrl
         if (ctrl >= nq_) {
@@ -2621,7 +2621,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        idx D_target = internal::safe_pow<idx>(d_, target.size());
+        idx D_target = internal::ipow_rounded<idx>(d_, target.size());
 
         // check valid ctrl_dits
         if (ctrl_dits.empty()) {
@@ -2835,7 +2835,7 @@ class QCircuit : public IDisplay, public IJSON {
         // EXCEPTION CHECKS
         std::string context{"Step " + std::to_string(get_step_count())};
 
-        idx D_target = internal::safe_pow<idx>(d_, target.size());
+        idx D_target = internal::ipow_rounded<idx>(d_, target.size());
 
         // check valid ctrl_dit
         if (ctrl_dit >= nc_) {

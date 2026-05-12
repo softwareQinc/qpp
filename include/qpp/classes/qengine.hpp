@@ -1191,7 +1191,7 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
     QEngineT& set_state(const T& state) override {
         // EXCEPTION CHECKS
         idx n = get_non_measured_d().size();
-        idx D = internal::safe_pow(this->qc_ptr_->get_d(), n);
+        idx D = internal::ipow_rounded(this->qc_ptr_->get_d(), n);
         if constexpr (std::is_same_v<T, ket>) {
             if (static_cast<idx>(state.rows()) != D) {
                 throw exception::DimsNotEqual("qpp::QEngineT::set_state()",

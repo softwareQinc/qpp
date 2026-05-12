@@ -45,7 +45,7 @@ TEST_CASE("qpp::applyCTRL() state vector benchmark",
           "[benchmark][applyCTRL-state-vector]") {
     // Setup (NOT measured)
     REQUIRE(nq > 4);
-    qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
+    qpp::idx D = qpp::internal::ipow_rounded<qpp::idx>(2, nq);
     qpp::ket psi = qpp::randket(D); // random D x 1 state vector
     qpp::cmat U1 = qpp::randU(2);   // random 1 qubit gate
     qpp::cmat U2 = qpp::randU(4);   // random 2 qubit gate

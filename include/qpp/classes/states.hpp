@@ -140,7 +140,7 @@ class States final : public internal::Singleton<const States> // const Singleton
         }
         // END EXCEPTION CHECKS
 
-        idx D = internal::safe_pow(d, n);
+        idx D = internal::ipow_rounded(d, n);
         ket result = ket::Zero(D);
         result(0) = 1;
 
@@ -245,7 +245,7 @@ class States final : public internal::Singleton<const States> // const Singleton
         }
         // END EXCEPTION CHECKS
 
-        idx D = internal::safe_pow<idx>(2, n);
+        idx D = internal::ipow_rounded<idx>(2, n);
         ket result = ket::Ones(D);
 
         return result / std::sqrt(D);

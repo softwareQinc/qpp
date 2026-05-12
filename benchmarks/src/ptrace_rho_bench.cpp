@@ -45,7 +45,7 @@ TEST_CASE("qpp::ptrace() density matrix benchmark",
           "[benchmark][ptrace-density-matrix]") {
     // Setup (NOT measured)
     REQUIRE(nq > 0);
-    qpp::idx D = qpp::internal::safe_pow<qpp::idx>(2, nq);
+    qpp::idx D = qpp::internal::ipow_rounded<qpp::idx>(2, nq);
     qpp::cmat rho = qpp::randrho(D); // random D x D density matrix
     // Test worst-case scenario
     std::vector<qpp::idx> subsys = {nq - 1};
