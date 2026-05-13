@@ -50,7 +50,9 @@
 #include "qpp/classes/gates.hpp"
 #include "qpp/internal/kernels/qubit/apply.hpp"
 #include "qpp/internal/kernels/qubit/apply_ctrl.hpp"
+#include "qpp/internal/kernels/qubit/apply_ctrl_diag.hpp"
 #include "qpp/internal/kernels/qubit/apply_ctrl_fan.hpp"
+#include "qpp/internal/kernels/qubit/apply_diag.hpp"
 #include "qpp/internal/kernels/qubit/ptrace.hpp"
 #include "qpp/internal/kernels/qubit/ptranspose.hpp"
 #include "qpp/internal/kernels/qubit/syspermute.hpp"
@@ -146,7 +148,7 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // qubit optimizations (updated to use _inplace kernels)
 #ifdef QPP_QUBIT_OPTIMIZATIONS
-    if (internal::all_qubits(dims)) {
+    if (internal::all_dims_equal(dims, 2)) {
         auto nq_target = target.size();
         // ket
         if (internal::check_cvector(rstate)) {
@@ -338,7 +340,6 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
         expr_t<Derived1> result = rstate;
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
         for (idx m = 0; m < DA; ++m) {
@@ -363,7 +364,6 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
         expr_t<Derived1> result = rstate;
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(4)
 #endif // QPP_OPENMP
         for (idx m1 = 0; m1 < DA; ++m1) {
@@ -437,7 +437,6 @@ void apply_inplace(Eigen::MatrixBase<Derived1>& state,
  * @param target Subsystem indexes where the gate \a A is applied
  * @param dims Dimensions of the multi-partite system
  */
-// TODO: implement
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] void apply_diag_inplace(
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
@@ -509,6 +508,165 @@ template <typename Derived1, typename Derived2>
                                             "A/dims/target");
     }
     // END EXCEPTION CHECKS
+
+    idx n = dims.size();
+
+    // qubit optimizations (updated to use _inplace kernels)
+#ifdef QPP_QUBIT_OPTIMIZATIONS
+    if (internal::all_dims_equal(dims, 2)) {
+        // ket
+        if (internal::check_cvector(rstate)) {
+            if (gate_size == 1) {
+                internal::kernels::qubit::apply_psi_1q_diag_inplace(
+                    state, A, target[0], n);
+                return;
+            }
+            if (gate_size == 2) {
+                internal::kernels::qubit::apply_psi_2q_diag_inplace(
+                    state, A, target[0], target[1], n);
+                return;
+            }
+            if (gate_size == 3) {
+                internal::kernels::qubit::apply_psi_3q_diag_inplace(
+                    state, A, target[0], target[1], target[2], n);
+                return;
+            }
+            internal::kernels::qubit::apply_psi_kq_diag_inplace(state, A,
+                                                                target, n);
+            return;
+
+        }
+        // density matrix
+        else {
+            if (gate_size == 1) {
+                internal::kernels::qubit::apply_rho_1q_diag_inplace(
+                    state, A, target[0], n);
+                return;
+            }
+            if (gate_size == 2) {
+                internal::kernels::qubit::apply_rho_2q_diag_inplace(
+                    state, A, target[0], target[1], n);
+                return;
+            }
+            if (gate_size == 3) {
+                internal::kernels::qubit::apply_rho_3q_diag_inplace(
+                    state, A, target[0], target[1], target[2], n);
+                return;
+            }
+            internal::kernels::qubit::apply_rho_kq_diag_inplace(state, A,
+                                                                target, n);
+            return;
+        }
+    }
+#endif // QPP_QUBIT_OPTIMIZATIONS
+
+    idx D = static_cast<idx>(rstate.rows()); // total dimension
+    idx DA = static_cast<idx>(rA.rows());    // dimension of gate subsystem
+
+    idx Cdims[internal::maxn];      // local dimensions total
+    idx CdimsA[internal::maxn];     // local dimensions gate
+    idx CdimsA_bar[internal::maxn]; // local dimensions complement
+
+    // compute the complementary subsystem of gate w.r.t. dims
+    std::vector<idx> gate_bar = complement(target, n);
+    idx gate_bar_size = gate_bar.size();
+
+    idx DA_bar = D / DA; // dimension of the complement
+
+    for (idx k = 0; k < n; ++k) {
+        Cdims[k] = dims[k];
+    }
+    for (idx k = 0; k < gate_size; ++k) {
+        CdimsA[k] = dims[target[k]];
+    }
+    for (idx k = 0; k < gate_bar_size; ++k) {
+        CdimsA_bar[k] = dims[gate_bar[k]];
+    }
+
+    //************ ket ************//
+    if (internal::check_cvector(rstate)) // we have a ket
+    {
+        if (D == 1) {
+            rstate(0) *= rA(0);
+            return;
+        }
+
+#ifdef QPP_OPENMP
+#pragma omp parallel for collapse(2)
+#endif // QPP_OPENMP
+        for (idx m = 0; m < DA; ++m) {
+            for (idx r = 0; r < DA_bar; ++r) {
+                idx Cmidx[internal::maxn];
+                idx CmidxA[internal::maxn];
+                idx CmidxA_bar[internal::maxn];
+
+                // set the complement multi-index
+                internal::n2multiidx(r, gate_bar_size, CdimsA_bar, CmidxA_bar);
+                for (idx k = 0; k < gate_bar_size; ++k) {
+                    Cmidx[gate_bar[k]] = CmidxA_bar[k];
+                }
+
+                // set the gate multi-index
+                internal::n2multiidx(m, gate_size, CdimsA, CmidxA);
+                for (idx k = 0; k < gate_size; ++k) {
+                    Cmidx[target[k]] = CmidxA[k];
+                }
+
+                // apply the diagonal element
+                rstate(internal::multiidx2n(Cmidx, n, Cdims)) *= rA(m);
+            }
+        }
+    }
+    //************ density matrix ************//
+    else // we have a density operator
+    {
+        if (D == 1) {
+            rstate(0, 0) *= rA(0) * std::conj(rA(0));
+            return;
+        }
+
+#ifdef QPP_OPENMP
+#pragma omp parallel for collapse(4)
+#endif // QPP_OPENMP
+        for (idx m1 = 0; m1 < DA; ++m1) {
+            for (idx r1 = 0; r1 < DA_bar; ++r1) {
+                for (idx m2 = 0; m2 < DA; ++m2) {
+                    for (idx r2 = 0; r2 < DA_bar; ++r2) {
+                        idx Cmidxrow[internal::maxn];
+                        idx Cmidxcol[internal::maxn];
+                        idx CmidxArow[internal::maxn];
+                        idx CmidxAcol[internal::maxn];
+                        idx CmidxA_barrow[internal::maxn];
+                        idx CmidxA_barcol[internal::maxn];
+
+                        // complement indices
+                        internal::n2multiidx(r1, gate_bar_size, CdimsA_bar,
+                                             CmidxA_barrow);
+                        internal::n2multiidx(r2, gate_bar_size, CdimsA_bar,
+                                             CmidxA_barcol);
+                        for (idx k = 0; k < gate_bar_size; ++k) {
+                            Cmidxrow[gate_bar[k]] = CmidxA_barrow[k];
+                            Cmidxcol[gate_bar[k]] = CmidxA_barcol[k];
+                        }
+
+                        // gate indices
+                        internal::n2multiidx(m1, gate_size, CdimsA, CmidxArow);
+                        internal::n2multiidx(m2, gate_size, CdimsA, CmidxAcol);
+                        for (idx k = 0; k < gate_size; ++k) {
+                            Cmidxrow[target[k]] = CmidxArow[k];
+                            Cmidxcol[target[k]] = CmidxAcol[k];
+                        }
+
+                        idx row = internal::multiidx2n(Cmidxrow, n, Cdims);
+                        idx col = internal::multiidx2n(Cmidxcol, n, Cdims);
+
+                        // apply A on left and A^\dagger on right
+                        rstate(row, col) *= rA(m1) * std::conj(rA(m2));
+                    }
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -843,7 +1001,6 @@ template <typename Derived>
     cmat result = cmat::Zero(Dout, Dout);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (const auto& K : Ks) {
@@ -939,7 +1096,6 @@ apply(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     cmat result = cmat::Zero(rA.rows(), rA.cols());
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (const auto& K : Ks) {
@@ -1123,7 +1279,7 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // qubit optimizations
 #ifdef QPP_QUBIT_OPTIMIZATIONS
-    if (internal::all_qubits(dims)) {
+    if (internal::all_dims_equal(dims, 2)) {
         idx n = dims.size();
         auto nq_target = target.size();
         // ket
@@ -1284,7 +1440,6 @@ void applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
  * @param shift Optional, performs the control as if the \a ctrl qudits were
  * \f$X\f$-incremented component-wise by \a shift
  */
-// TODO: implement
 template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] void applyCTRL_diag_inplace(
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
@@ -1297,50 +1452,51 @@ template <typename Derived1, typename Derived2>
     // EXCEPTION CHECKS
     // check types
     if (!std::is_same_v<typename Derived1::Scalar, typename Derived2::Scalar>) {
-        throw exception::TypeMismatch("qpp::applyCTRL_inplace()", "A/state");
+        throw exception::TypeMismatch("qpp::applyCTRL_diag_inplace()",
+                                      "A/state");
     }
 
     // check zero sizes
     if (!internal::check_nonzero_size(rA)) {
-        throw exception::ZeroSize("qpp::applyCTRL_inplace()", "A");
+        throw exception::ZeroSize("qpp::applyCTRL_diag_inplace()", "A");
     }
 
     if (!internal::check_nonzero_size(rstate)) {
-        throw exception::ZeroSize("qpp::applyCTRL_inplace()", "state");
+        throw exception::ZeroSize("qpp::applyCTRL_diag_inplace()", "state");
     }
 
     if (!internal::check_nonzero_size(ctrl)) {
-        throw exception::ZeroSize("qpp::applyCTRL_inplace()", "ctrl");
+        throw exception::ZeroSize("qpp::applyCTRL_diag_inplace()", "ctrl");
     }
 
     if (!internal::check_nonzero_size(target)) {
-        throw exception::ZeroSize("qpp::applyCTRL_inplace()", "target");
+        throw exception::ZeroSize("qpp::applyCTRL_diag_inplace()", "target");
     }
 
     // check row or column vector for the gate
     if (!internal::check_vector(rA)) {
-        throw exception::MatrixNotSquare("qpp::applyCTRL_inplace()", "A");
+        throw exception::MatrixNotVector("qpp::applyCTRL_diag_inplace()", "A");
     }
 
     // check valid state and matching dimensions
     if (internal::check_cvector(rstate)) {
         if (!internal::check_dims_match_cvect(dims, rstate)) {
-            throw exception::DimsMismatchCvector("qpp::applyCTRL_inplace()",
-                                                 "dims/state");
+            throw exception::DimsMismatchCvector(
+                "qpp::applyCTRL_diag_inplace()", "dims/state");
         }
     } else if (internal::check_square_mat(rstate)) {
         if (!internal::check_dims_match_mat(dims, rstate)) {
-            throw exception::DimsMismatchMatrix("qpp::applyCTRL_inplace()",
+            throw exception::DimsMismatchMatrix("qpp::applyCTRL_diag_inplace()",
                                                 "dims/state");
         }
     } else {
-        throw exception::MatrixNotSquareNorCvector("qpp::applyCTRL_inplace()",
-                                                   "state");
+        throw exception::MatrixNotSquareNorCvector(
+            "qpp::applyCTRL_diag_inplace()", "state");
     }
 
     // check that ctrl subsystem is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(ctrl, dims)) {
-        throw exception::SubsysMismatchDims("qpp::applyCTRL_inplace()",
+        throw exception::SubsysMismatchDims("qpp::applyCTRL_diag_inplace()",
                                             "ctrl/dims");
     }
 
@@ -1348,18 +1504,19 @@ template <typename Derived1, typename Derived2>
     idx d = dims[ctrl[0]];
     for (idx i = 1; i < static_cast<idx>(ctrl.size()); ++i) {
         if (dims[ctrl[i]] != d) {
-            throw exception::DimsNotEqual("qpp::applyCTRL_inplace()", "ctrl");
+            throw exception::DimsNotEqual("qpp::applyCTRL_diag_inplace()",
+                                          "ctrl");
         }
     }
 
     // check that dimension is valid
     if (!internal::check_dims(dims)) {
-        throw exception::DimsInvalid("qpp::applyCTRL_inplace()", "dims");
+        throw exception::DimsInvalid("qpp::applyCTRL_diag_inplace()", "dims");
     }
 
     // check that target is valid w.r.t. dims
     if (!internal::check_subsys_match_dims(target, dims)) {
-        throw exception::SubsysMismatchDims("qpp::applyCTRL_inplace()",
+        throw exception::SubsysMismatchDims("qpp::applyCTRL_diag_inplace()",
                                             "dims/target");
     }
 
@@ -1367,7 +1524,7 @@ template <typename Derived1, typename Derived2>
     for (idx elem_ctrl : ctrl) {
         for (idx elem_target : target) {
             if (elem_ctrl == elem_target) {
-                throw exception::OutOfRange("qpp::applyCTRL_inplace()",
+                throw exception::OutOfRange("qpp::applyCTRL_diag_inplace()",
                                             "ctrl/target");
             }
         }
@@ -1379,13 +1536,14 @@ template <typename Derived1, typename Derived2>
         target_dims[i] = dims[target[i]];
     }
     if (!internal::check_dims_match_vect(target_dims, rA)) {
-        throw exception::MatrixMismatchSubsys("qpp::applyCTRL_inplace()",
+        throw exception::MatrixMismatchSubsys("qpp::applyCTRL_diag_inplace()",
                                               "A/target");
     }
 
     // check shift
     if (shift.has_value() && (shift.value().size() != ctrl.size())) {
-        throw exception::SizeMismatch("qpp::applyCTRL_inplace()", "ctrl/shift");
+        throw exception::SizeMismatch("qpp::applyCTRL_diag_inplace()",
+                                      "ctrl/shift");
     }
 
     std::vector<idx> internal_shift =
@@ -1394,13 +1552,43 @@ template <typename Derived1, typename Derived2>
     if (shift.has_value()) {
         for (idx& elem : internal_shift) {
             if (elem >= d) {
-                throw exception::OutOfRange("qpp::applyCTRL_inplace()",
+                throw exception::OutOfRange("qpp::applyCTRL_diag_inplace()",
                                             "shift");
             }
             elem = (d - elem) % d; // invert shift mod D
         }
     }
     // END EXCEPTION CHECKS
+
+    // qubit optimizations
+#ifndef QPP_QUBIT_OPTIMIZATIONS
+    if (internal::all_qubits(dims)) {
+        idx n = dims.size();
+        auto nq_target = target.size();
+        // ket
+        if (internal::check_cvector(rstate)) {
+            if (nq_target == 1) {
+                internal::kernels::qubit::apply_ctrl_psi_1q_diag_inplace(
+                    rstate, rA, ctrl, target[0], internal_shift, n);
+                return;
+            }
+            internal::kernels::qubit::apply_ctrl_psi_kq_diag_inplace(
+                rstate, rA, ctrl, target, internal_shift, n);
+            return;
+        }
+        // density matrix
+        else {
+            if (nq_target == 1) {
+                internal::kernels::qubit::apply_ctrl_rho_1q_diag_inplace(
+                    rstate, rA, ctrl, target[0], internal_shift, n);
+                return;
+            }
+            internal::kernels::qubit::apply_ctrl_rho_kq_diag_inplace(
+                rstate, rA, ctrl, target, internal_shift, n);
+            return;
+        }
+    }
+#endif // QPP_QUBIT_OPTIMIZATIONS
 }
 
 /**
@@ -1799,7 +1987,7 @@ template <typename Derived1, typename Derived2>
 
     // qubit optimizations
 #ifdef QPP_QUBIT_OPTIMIZATIONS
-    if (internal::all_qubits(dims)) {
+    if (internal::all_dims_equal(dims, 2)) {
         idx n = dims.size();
         // ket
         if (internal::check_cvector(rstate)) {
@@ -2130,7 +2318,6 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
     cmat MES = cmat::Zero(Din * Din, 1);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx a = 0; a < Din; ++a) {
@@ -2142,7 +2329,6 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
     cmat result = cmat::Zero(Din * Dout, Din * Dout);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (const auto& K : Ks) {
@@ -2264,7 +2450,6 @@ inline std::vector<cmat> choi2kraus(const cmat& A) {
     cmat result(Dout * Dout, Din * Din);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(4)
 #endif // QPP_OPENMP
     for (idx a = 0; a < Dout; ++a) {
@@ -2338,7 +2523,6 @@ inline cmat choi2super(const cmat& A) {
     cmat result(Din * Dout, Din * Dout);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(4)
 #endif // QPP_OPENMP
     for (idx a = 0; a < Dout; ++a) {
@@ -2395,7 +2579,6 @@ inline cmat choi2super(const cmat& A) {
     cmat result(Dout * Dout, Din * Din);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
     for (idx m = 0; m < Din; ++m) {
@@ -2533,7 +2716,6 @@ ptrace1(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
         }; /* end worker */
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
        // column major order for speed
@@ -2647,7 +2829,6 @@ ptrace2(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims) {
         }
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for collapse(2)
 #endif // QPP_OPENMP
        // column major order for speed
@@ -2755,7 +2936,7 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 
     // qubit optimizations
 #ifdef QPP_QUBIT_OPTIMIZATIONS
-    if (internal::all_qubits(dims)) {
+    if (internal::all_dims_equal(dims, 2)) {
         // ket
         if (internal::check_cvector(rA)) {
             return internal::kernels::qubit::ptrace_psi_kq(A, target, n);
@@ -2852,7 +3033,6 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
                                  Cmidxcolsubsys_bar);
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
             for (idx i = 0; i < Dsubsys_bar; ++i) {
@@ -2911,7 +3091,6 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
                                  Cmidxcolsubsys_bar);
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
             for (idx i = 0; i < Dsubsys_bar; ++i) {
@@ -3015,7 +3194,7 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
 
     // qubit optimizations
 #ifdef QPP_QUBIT_OPTIMIZATIONS
-    if (internal::all_qubits(dims)) {
+    if (internal::all_dims_equal(dims, 2)) {
         // ket
         if (internal::check_cvector(rA)) {
             return internal::kernels::qubit::ptranspose_psi_kq(A, target, n);
@@ -3080,7 +3259,6 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
             internal::n2multiidx(j, n, Cdims, Cmidxcol);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
             for (idx i = 0; i < D; ++i) {
@@ -3133,7 +3311,6 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
             internal::n2multiidx(j, n, Cdims, Cmidxcol);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
             for (idx i = 0; i < D; ++i) {
@@ -3246,7 +3423,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 
     // qubit optimizations
 #ifdef QPP_QUBIT_OPTIMIZATIONS
-    if (internal::all_qubits(dims)) {
+    if (internal::all_dims_equal(dims, 2)) {
         // ket
         if (is_cvector) {
             return internal::kernels::qubit::syspermute_psi_kq(A, perm, n);
@@ -3308,7 +3485,6 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
     }; /* end worker */
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx i = 0; i < total_elements; ++i) {
@@ -3969,7 +4145,6 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM) {
     ket result(Dout);
 
 #ifdef QPP_OPENMP
-// NOLINTNEXTLINE
 #pragma omp parallel for
 #endif // QPP_OPENMP
     for (idx i = 0; i < Din; ++i) {
