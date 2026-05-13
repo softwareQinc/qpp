@@ -152,44 +152,45 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
         auto nq_target = target.size();
         // ket
         if (internal::check_cvector(rstate)) {
-            if (nq_target == 1) {
-                internal::kernels::qubit::apply_psi_1q_inplace(state, A,
-                                                               target[0], n);
-                return;
+            switch (nq_target) {
+                case 1:
+                    internal::kernels::qubit::apply_psi_1q_inplace(
+                        state, A, target[0], n);
+                    break;
+                case 2:
+                    internal::kernels::qubit::apply_psi_2q_inplace(
+                        state, A, target[0], target[1], n);
+                    break;
+                case 3:
+                    internal::kernels::qubit::apply_psi_3q_inplace(
+                        state, A, target[0], target[1], target[2], n);
+                    break;
+                default:
+                    internal::kernels::qubit::apply_psi_kq_inplace(state, A,
+                                                                   target, n);
+                    break;
             }
-            if (nq_target == 2) {
-                internal::kernels::qubit::apply_psi_2q_inplace(
-                    state, A, target[0], target[1], n);
-                return;
-            }
-            if (nq_target == 3) {
-                internal::kernels::qubit::apply_psi_3q_inplace(
-                    state, A, target[0], target[1], target[2], n);
-                return;
-            }
-            internal::kernels::qubit::apply_psi_kq_inplace(state, A, target, n);
-            return;
-
         }
         // density matrix
         else {
-            if (nq_target == 1) {
-                internal::kernels::qubit::apply_rho_1q_inplace(state, A,
-                                                               target[0], n);
-                return;
+            switch (nq_target) {
+                case 1:
+                    internal::kernels::qubit::apply_rho_1q_inplace(
+                        state, A, target[0], n);
+                    break;
+                case 2:
+                    internal::kernels::qubit::apply_rho_2q_inplace(
+                        state, A, target[0], target[1], n);
+                    break;
+                case 3:
+                    internal::kernels::qubit::apply_rho_3q_inplace(
+                        state, A, target[0], target[1], target[2], n);
+                    break;
+                default:
+                    internal::kernels::qubit::apply_rho_kq_inplace(state, A,
+                                                                   target, n);
+                    break;
             }
-            if (nq_target == 2) {
-                internal::kernels::qubit::apply_rho_2q_inplace(
-                    state, A, target[0], target[1], n);
-                return;
-            }
-            if (nq_target == 3) {
-                internal::kernels::qubit::apply_rho_3q_inplace(
-                    state, A, target[0], target[1], target[2], n);
-                return;
-            }
-            internal::kernels::qubit::apply_rho_kq_inplace(state, A, target, n);
-            return;
         }
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
@@ -1284,35 +1285,39 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
         auto nq_target = target.size();
         // ket
         if (internal::check_cvector(rstate)) {
-            if (nq_target == 1) {
-                internal::kernels::qubit::apply_ctrl_psi_1q_inplace(
-                    rstate, A, ctrl, target[0], internal_shift, n);
-                return;
+            switch (nq_target) {
+                case 1:
+                    internal::kernels::qubit::apply_ctrl_psi_1q_inplace(
+                        rstate, A, ctrl, target[0], internal_shift, n);
+                    break;
+                case 2:
+                    internal::kernels::qubit::apply_ctrl_psi_2q_inplace(
+                        rstate, A, ctrl, target[0], target[1], internal_shift,
+                        n);
+                    break;
+                default:
+                    internal::kernels::qubit::apply_ctrl_psi_kq_inplace(
+                        rstate, A, ctrl, target, internal_shift, n);
+                    break;
             }
-            if (nq_target == 2) {
-                internal::kernels::qubit::apply_ctrl_psi_2q_inplace(
-                    rstate, A, ctrl, target[0], target[1], internal_shift, n);
-                return;
-            }
-            internal::kernels::qubit::apply_ctrl_psi_kq_inplace(
-                rstate, A, ctrl, target, internal_shift, n);
-            return;
         }
         // density matrix
         else {
-            if (nq_target == 1) {
-                internal::kernels::qubit::apply_ctrl_rho_1q_inplace(
-                    rstate, A, ctrl, target[0], internal_shift, n);
-                return;
+            switch (nq_target) {
+                case 1:
+                    internal::kernels::qubit::apply_ctrl_rho_1q_inplace(
+                        rstate, A, ctrl, target[0], internal_shift, n);
+                    break;
+                case 2:
+                    internal::kernels::qubit::apply_ctrl_rho_2q_inplace(
+                        rstate, A, ctrl, target[0], target[1], internal_shift,
+                        n);
+                    break;
+                default:
+                    internal::kernels::qubit::apply_ctrl_rho_kq_inplace(
+                        rstate, A, ctrl, target, internal_shift, n);
+                    break;
             }
-            if (nq_target == 2) {
-                internal::kernels::qubit::apply_ctrl_rho_2q_inplace(
-                    rstate, A, ctrl, target[0], target[1], internal_shift, n);
-                return;
-            }
-            internal::kernels::qubit::apply_ctrl_rho_kq_inplace(
-                rstate, A, ctrl, target, internal_shift, n);
-            return;
         }
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
@@ -1561,31 +1566,45 @@ template <typename Derived1, typename Derived2>
     // END EXCEPTION CHECKS
 
     // qubit optimizations
-#ifndef QPP_QUBIT_OPTIMIZATIONS
-    if (internal::all_qubits(dims)) {
+#ifdef QPP_QUBIT_OPTIMIZATIONS
+    if (internal::all_dims_equal(dims, 2)) {
         idx n = dims.size();
         auto nq_target = target.size();
         // ket
         if (internal::check_cvector(rstate)) {
-            if (nq_target == 1) {
-                internal::kernels::qubit::apply_ctrl_psi_1q_diag_inplace(
-                    rstate, rA, ctrl, target[0], internal_shift, n);
-                return;
+            switch (nq_target) {
+                case 1:
+                    internal::kernels::qubit::apply_ctrl_psi_1q_diag_inplace(
+                        rstate, rA, ctrl, target[0], internal_shift, n);
+                    break;
+                case 2:
+                    internal::kernels::qubit::apply_ctrl_psi_2q_diag_inplace(
+                        rstate, rA, ctrl, target[0], target[1], internal_shift,
+                        n);
+                    break;
+                default:
+                    internal::kernels::qubit::apply_ctrl_psi_kq_diag_inplace(
+                        rstate, rA, ctrl, target, internal_shift, n);
+                    break;
             }
-            internal::kernels::qubit::apply_ctrl_psi_kq_diag_inplace(
-                rstate, rA, ctrl, target, internal_shift, n);
-            return;
         }
         // density matrix
         else {
-            if (nq_target == 1) {
-                internal::kernels::qubit::apply_ctrl_rho_1q_diag_inplace(
-                    rstate, rA, ctrl, target[0], internal_shift, n);
-                return;
+            switch (nq_target) {
+                case 1:
+                    internal::kernels::qubit::apply_ctrl_rho_1q_diag_inplace(
+                        rstate, rA, ctrl, target[0], internal_shift, n);
+                    break;
+                case 2:
+                    internal::kernels::qubit::apply_ctrl_rho_2q_diag_inplace(
+                        rstate, rA, ctrl, target[0], target[1], internal_shift,
+                        n);
+                    break;
+                default:
+                    internal::kernels::qubit::apply_ctrl_rho_kq_diag_inplace(
+                        rstate, rA, ctrl, target, internal_shift, n);
+                    break;
             }
-            internal::kernels::qubit::apply_ctrl_rho_kq_diag_inplace(
-                rstate, rA, ctrl, target, internal_shift, n);
-            return;
         }
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
