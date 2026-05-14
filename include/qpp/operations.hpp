@@ -149,10 +149,9 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
     // qubit optimizations (updated to use _inplace kernels)
 #ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_dims_equal(dims, 2)) {
-        auto nq_target = target.size();
         // ket
         if (internal::check_cvector(rstate)) {
-            switch (nq_target) {
+            switch (gate_size) {
                 case 1:
                     internal::kernels::qubit::apply_psi_1q_inplace(
                         state, A, target[0], n);
@@ -173,7 +172,7 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
         }
         // density matrix
         else {
-            switch (nq_target) {
+            switch (gate_size) {
                 case 1:
                     internal::kernels::qubit::apply_rho_1q_inplace(
                         state, A, target[0], n);
@@ -192,6 +191,7 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
                     break;
             }
         }
+        return;
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
 
@@ -517,47 +517,53 @@ template <typename Derived1, typename Derived2>
     if (internal::all_dims_equal(dims, 2)) {
         // ket
         if (internal::check_cvector(rstate)) {
-            if (gate_size == 1) {
-                internal::kernels::qubit::apply_psi_1q_diag_inplace(
-                    state, A, target[0], n);
-                return;
-            }
-            if (gate_size == 2) {
-                internal::kernels::qubit::apply_psi_2q_diag_inplace(
-                    state, A, target[0], target[1], n);
-                return;
-            }
-            if (gate_size == 3) {
-                internal::kernels::qubit::apply_psi_3q_diag_inplace(
-                    state, A, target[0], target[1], target[2], n);
-                return;
-            }
-            internal::kernels::qubit::apply_psi_kq_diag_inplace(state, A,
-                                                                target, n);
-            return;
+            switch (gate_size) {
+                case 1:
+                    internal::kernels::qubit::apply_psi_1q_diag_inplace(
+                        state, A, target[0], n);
+                    break;
 
+                case 2:
+                    internal::kernels::qubit::apply_psi_2q_diag_inplace(
+                        state, A, target[0], target[1], n);
+                    break;
+
+                case 3:
+                    internal::kernels::qubit::apply_psi_3q_diag_inplace(
+                        state, A, target[0], target[1], target[2], n);
+                    break;
+
+                default:
+                    internal::kernels::qubit::apply_psi_kq_diag_inplace(
+                        state, A, target, n);
+                    break;
+            }
         }
         // density matrix
         else {
-            if (gate_size == 1) {
-                internal::kernels::qubit::apply_rho_1q_diag_inplace(
-                    state, A, target[0], n);
-                return;
+            switch (gate_size) {
+                case 1:
+                    internal::kernels::qubit::apply_rho_1q_diag_inplace(
+                        state, A, target[0], n);
+                    break;
+
+                case 2:
+                    internal::kernels::qubit::apply_rho_2q_diag_inplace(
+                        state, A, target[0], target[1], n);
+                    break;
+
+                case 3:
+                    internal::kernels::qubit::apply_rho_3q_diag_inplace(
+                        state, A, target[0], target[1], target[2], n);
+                    break;
+
+                default:
+                    internal::kernels::qubit::apply_rho_kq_diag_inplace(
+                        state, A, target, n);
+                    break;
             }
-            if (gate_size == 2) {
-                internal::kernels::qubit::apply_rho_2q_diag_inplace(
-                    state, A, target[0], target[1], n);
-                return;
-            }
-            if (gate_size == 3) {
-                internal::kernels::qubit::apply_rho_3q_diag_inplace(
-                    state, A, target[0], target[1], target[2], n);
-                return;
-            }
-            internal::kernels::qubit::apply_rho_kq_diag_inplace(state, A,
-                                                                target, n);
-            return;
         }
+        return;
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
 
@@ -1250,8 +1256,9 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
     }
 
     // check that gate matches the dimensions of the target
-    std::vector<idx> target_dims(target.size());
-    for (idx i = 0; i < static_cast<idx>(target.size()); ++i) {
+    idx gate_size = target.size(); // number of subsystems of the target
+    std::vector<idx> target_dims(gate_size);
+    for (idx i = 0; i < gate_size; ++i) {
         target_dims[i] = dims[target[i]];
     }
     if (!internal::check_dims_match_mat(target_dims, rA)) {
@@ -1282,10 +1289,9 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
 #ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_dims_equal(dims, 2)) {
         idx n = dims.size();
-        auto nq_target = target.size();
         // ket
         if (internal::check_cvector(rstate)) {
-            switch (nq_target) {
+            switch (gate_size) {
                 case 1:
                     internal::kernels::qubit::apply_ctrl_psi_1q_inplace(
                         rstate, A, ctrl, target[0], internal_shift, n);
@@ -1303,7 +1309,7 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
         }
         // density matrix
         else {
-            switch (nq_target) {
+            switch (gate_size) {
                 case 1:
                     internal::kernels::qubit::apply_ctrl_rho_1q_inplace(
                         rstate, A, ctrl, target[0], internal_shift, n);
@@ -1536,8 +1542,9 @@ template <typename Derived1, typename Derived2>
     }
 
     // check that gate matches the dimensions of the target
-    std::vector<idx> target_dims(target.size());
-    for (idx i = 0; i < static_cast<idx>(target.size()); ++i) {
+    idx gate_size = target.size(); // number of subsystems of the target
+    std::vector<idx> target_dims(gate_size);
+    for (idx i = 0; i < gate_size; ++i) {
         target_dims[i] = dims[target[i]];
     }
     if (!internal::check_dims_match_vect(target_dims, rA)) {
@@ -1569,10 +1576,9 @@ template <typename Derived1, typename Derived2>
 #ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_dims_equal(dims, 2)) {
         idx n = dims.size();
-        auto nq_target = target.size();
         // ket
         if (internal::check_cvector(rstate)) {
-            switch (nq_target) {
+            switch (gate_size) {
                 case 1:
                     internal::kernels::qubit::apply_ctrl_psi_1q_diag_inplace(
                         rstate, rA, ctrl, target[0], internal_shift, n);
@@ -1590,7 +1596,7 @@ template <typename Derived1, typename Derived2>
         }
         // density matrix
         else {
-            switch (nq_target) {
+            switch (gate_size) {
                 case 1:
                     internal::kernels::qubit::apply_ctrl_rho_1q_diag_inplace(
                         rstate, rA, ctrl, target[0], internal_shift, n);
