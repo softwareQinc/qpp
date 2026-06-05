@@ -6,6 +6,13 @@
   layers of single-qubit Haar-random unitaries and adjacent two-qubit random
   unitaries,
   [`benchmarks/src/bricks_bench.cpp`](benchmarks/src/bricks_bench.cpp)
+- Implemented the in-place functions `qpp::apply_inplace()`,
+  `qpp::applyCTRL_inplace()`, `qpp::applyCTRL_fan_inplace()` in
+  [`qpp/operations.hpp`](include/qpp/operations.hpp), and their corresponding
+  optimized qubit kernels
+- Implemented optimized qubit kernels for diagonal gates and controlled
+  diagonal gates: `apply_diag()` and `applyCTRL_diag()`, along with their
+  in-place counterparts, `apply_diag_inplace()` and `applyCTRL_diag_inplace()`
 
 ## Version 7.0.3 - 25 March 2026
 

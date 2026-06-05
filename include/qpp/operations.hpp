@@ -56,6 +56,7 @@
 #include "qpp/internal/kernels/qubit/ptrace.hpp"
 #include "qpp/internal/kernels/qubit/ptranspose.hpp"
 #include "qpp/internal/kernels/qubit/syspermute.hpp"
+#include "qpp/internal/kernels/qudit/apply_ctrl_diag.hpp"
 #include "qpp/internal/util.hpp"
 
 namespace qpp {
@@ -1572,10 +1573,11 @@ template <typename Derived1, typename Derived2>
     }
     // END EXCEPTION CHECKS
 
+    idx n = dims.size();
+
     // qubit optimizations
 #ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_dims_equal(dims, 2)) {
-        idx n = dims.size();
         // ket
         if (internal::check_cvector(rstate)) {
             switch (gate_size) {
@@ -1612,8 +1614,45 @@ template <typename Derived1, typename Derived2>
                     break;
             }
         }
+        return;
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
+
+    // qudits
+    const bool is_ket = internal::check_cvector(rstate);
+    if (is_ket) {
+        switch (gate_size) {
+            case 1:
+                internal::kernels::qudit::apply_ctrl_psi_1q_diag_inplace(
+                    rstate, rA, ctrl, target[0], internal_shift, d, n);
+                break;
+            case 2:
+                internal::kernels::qudit::apply_ctrl_psi_2q_diag_inplace(
+                    rstate, rA, ctrl, target[0], target[1], internal_shift, d,
+                    n);
+                break;
+            default:
+                internal::kernels::qudit::apply_ctrl_psi_kq_diag_inplace(
+                    rstate, rA, ctrl, target, internal_shift, d, n);
+                break;
+        }
+    } else {
+        switch (gate_size) {
+            case 1:
+                internal::kernels::qudit::apply_ctrl_rho_1q_diag_inplace(
+                    rstate, rA, ctrl, target[0], internal_shift, d, n);
+                break;
+            case 2:
+                internal::kernels::qudit::apply_ctrl_rho_2q_diag_inplace(
+                    rstate, rA, ctrl, target[0], target[1], internal_shift, d,
+                    n);
+                break;
+            default:
+                internal::kernels::qudit::apply_ctrl_rho_kq_diag_inplace(
+                    rstate, rA, ctrl, target, internal_shift, d, n);
+                break;
+        }
+    }
 }
 
 /**
@@ -3577,6 +3616,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * @return Qudit Quantum Fourier transform applied to the part \a target of
  * \a A
  */
+// TODO: use _diag
 template <typename Derived>
 [[qpp::critical]] void applyQFT_inplace(const Eigen::MatrixBase<Derived>& A,
                                         const std::vector<idx>& target,
@@ -3623,7 +3663,6 @@ template <typename Derived>
     // END EXCEPTION CHECKS
 
     expr_t<Derived> result = rA;
-
     idx n_subsys = target.size();
 
     if (d == 2) // qubits

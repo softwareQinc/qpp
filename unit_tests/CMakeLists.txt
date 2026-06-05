@@ -27,8 +27,9 @@ file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp" "tests/MATLAB/*.cpp"
 
 set(TEST_SOURCES_FILTERED "")
 foreach(file ${TEST_SOURCES})
-  # Filter: Do not build "tests/MATLAB/matlab.cpp" if there's no MATLAB support
-  if(NOT ("${file}" MATCHES "matlab\\.cpp" AND NOT MATLAB_FOUND))
+  # Filter: Do not build "tests/MATLAB/matlab_test.cpp" if there's no MATLAB
+  # support
+  if(NOT ("${file}" MATCHES "matlab_test\\.cpp" AND NOT MATLAB_FOUND))
     list(APPEND TEST_SOURCES_FILTERED "${file}")
   else()
     message(STATUS "Skipping test file: ${file} (MATLAB support not enabled)")
