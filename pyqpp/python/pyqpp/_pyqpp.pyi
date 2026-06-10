@@ -11,7 +11,7 @@ from . import gates
 from . import qasm
 from . import random_devices
 from . import states
-__all__: list[str] = ['BitCircuit', 'CondWhile', 'DynamicBitset', 'QCircuit', 'QDensityDummyEngine', 'QDensityEngine', 'QDensityNoisyEngine', 'QEngine', 'QFT', 'QKetDummyEngine', 'QKetEngine', 'QKetNoisyEngine', 'QNoisyEngine', 'QubitAmplitudeDampingNoise', 'QubitBitFlipNoise', 'QubitBitPhaseFlipNoise', 'QubitDepolarizingNoise', 'QubitPhaseDampingNoise', 'QubitPhaseFlipNoise', 'QuditDepolarizingNoise', 'TFQ', 'absm', 'abssq', 'adjoint', 'anticomm', 'apply', 'applyCTRL', 'applyCTRL_fan', 'applyQFT', 'applyTFQ', 'avg', 'bernoulli', 'bloch2rho', 'choi2kraus', 'choi2super', 'codes', 'comm', 'complement', 'compose_CTRL_circuit', 'compose_circuit', 'compperm', 'concurrence', 'conjugate', 'const_proxy_to_engine_dits', 'contfrac2x', 'convergents', 'cor', 'cosm', 'couple_circuit_left', 'couple_circuit_right', 'cov', 'det', 'dirac', 'dirac_t', 'dirsum', 'dirsumpow', 'discard', 'ee', 'egcd', 'eig', 'entanglement', 'entropy', 'evals', 'evects', 'expm', 'factors', 'funm', 'gates', 'gcd', 'gconcurrence', 'grams', 'hash_eigen', 'heig', 'hevals', 'hevects', 'infty', 'inverse', 'invperm', 'ip', 'isprime', 'kraus2choi', 'kraus2super', 'kron', 'kronpow', 'lcm', 'load_cmat', 'load_rmat', 'logdet', 'logm', 'lognegativity', 'marginalX', 'marginalY', 'measure', 'measure_seq', 'mket', 'modinv', 'modmul', 'modpow', 'mprj', 'multiidx2n', 'n2multiidx', 'negativity', 'norm', 'normalize', 'omega', 'pi', 'powm', 'prj', 'prod', 'proxy_to_engine_dits', 'ptrace', 'ptrace1', 'ptrace2', 'ptranspose', 'qRAM', 'qasm', 'qmutualinfo', 'qpe_circuit', 'rand', 'randH', 'randU', 'randV', 'randidx', 'randket', 'randkraus', 'randn', 'random_circuit_count', 'random_circuit_depth', 'random_devices', 'randperm', 'randprime', 'randprob', 'randrho', 'renyi', 'replicate', 'reset', 'reshape', 'rho2bloch', 'rho2pure', 'sample', 'save', 'schatten', 'schmidt', 'schmidtA', 'schmidtB', 'schmidtcoeffs', 'schmidtprobs', 'set_prng_seed', 'sigma', 'sinm', 'spectralpowm', 'sqrtm', 'states', 'sum', 'super2choi', 'super2kraus', 'svals', 'svd', 'svdU', 'svdV', 'syspermute', 'trace', 'transpose', 'tsallis', 'uniform', 'var', 'x2contfrac', 'zket2dits']
+__all__: list[str] = ['BitCircuit', 'CondWhile', 'DynamicBitset', 'QCircuit', 'QDensityDummyEngine', 'QDensityEngine', 'QDensityNoisyEngine', 'QEngine', 'QFT', 'QFT_inplace', 'QKetDummyEngine', 'QKetEngine', 'QKetNoisyEngine', 'QNoisyEngine', 'QubitAmplitudeDampingNoise', 'QubitBitFlipNoise', 'QubitBitPhaseFlipNoise', 'QubitDepolarizingNoise', 'QubitPhaseDampingNoise', 'QubitPhaseFlipNoise', 'QuditDepolarizingNoise', 'TFQ', 'TFQ_inplace', 'absm', 'abssq', 'adjoint', 'anticomm', 'apply', 'applyCTRL', 'applyCTRL_diag', 'applyCTRL_diag_inplace', 'applyCTRL_fan', 'applyCTRL_fan_inplace', 'applyCTRL_inplace', 'applyQFT', 'applyQFT_inplace', 'applyTFQ', 'applyTFQ_inplace', 'apply_diag', 'apply_diag_inplace', 'apply_inplace', 'as_mutable', 'avg', 'bernoulli', 'bloch2rho', 'choi2kraus', 'choi2super', 'codes', 'comm', 'complement', 'compose_CTRL_circuit', 'compose_circuit', 'compperm', 'concurrence', 'conjugate', 'const_proxy_to_engine_dits', 'contfrac2x', 'convergents', 'cor', 'cosm', 'couple_circuit_left', 'couple_circuit_right', 'cov', 'det', 'dirac', 'dirac_t', 'dirsum', 'dirsumpow', 'discard', 'ee', 'egcd', 'eig', 'entanglement', 'entropy', 'evals', 'evects', 'expm', 'factors', 'funm', 'gates', 'gcd', 'gconcurrence', 'grams', 'hash_eigen', 'heig', 'hevals', 'hevects', 'infty', 'inverse', 'invperm', 'ip', 'isprime', 'kraus2choi', 'kraus2super', 'kron', 'kronpow', 'lcm', 'load_cmat', 'load_rmat', 'logdet', 'logm', 'lognegativity', 'marginalX', 'marginalY', 'measure', 'measure_seq', 'mket', 'modinv', 'modmul', 'modpow', 'mprj', 'multiidx2n', 'n2multiidx', 'negativity', 'norm', 'normalize', 'omega', 'pi', 'powm', 'prj', 'prod', 'proxy_to_engine_dits', 'ptrace', 'ptrace1', 'ptrace2', 'ptranspose', 'qRAM', 'qasm', 'qmutualinfo', 'qpe_circuit', 'rand', 'randH', 'randU', 'randV', 'randidx', 'randket', 'randkraus', 'randn', 'random_circuit_count', 'random_circuit_depth', 'random_devices', 'randperm', 'randprime', 'randprob', 'randrho', 'renyi', 'replicate', 'reset', 'reshape', 'rho2bloch', 'rho2pure', 'sample', 'save', 'schatten', 'schmidt', 'schmidtA', 'schmidtB', 'schmidtcoeffs', 'schmidtprobs', 'set_prng_seed', 'sigma', 'sinm', 'spectralpowm', 'sqrtm', 'states', 'sum', 'super2choi', 'super2kraus', 'svals', 'svd', 'svdU', 'svdV', 'syspermute', 'trace', 'transpose', 'tsallis', 'uniform', 'var', 'x2contfrac', 'zket2dits']
 class BitCircuit(DynamicBitset):
     __hash__: typing.ClassVar[None] = None
     def CNOT(self, ctrl: typing.SupportsInt | typing.SupportsIndex, target: typing.SupportsInt | typing.SupportsIndex) -> BitCircuit:
@@ -638,7 +638,7 @@ class QubitAmplitudeDampingNoise:
         """
         Vector of noise operators
         """
-    def get_d(self: qpp::NoiseBase<qpp::NoiseType::StateDependent>) -> int:
+    def get_d(self) -> int:
         """
         Qudit dimension
         """
@@ -665,7 +665,7 @@ class QubitBitFlipNoise:
         """
         Vector of noise operators
         """
-    def get_d(self: qpp::NoiseBase<qpp::NoiseType::StateIndependent>) -> int:
+    def get_d(self) -> int:
         """
         Qudit dimension
         """
@@ -692,7 +692,7 @@ class QubitBitPhaseFlipNoise:
         """
         Vector of noise operators
         """
-    def get_d(self: qpp::NoiseBase<qpp::NoiseType::StateIndependent>) -> int:
+    def get_d(self) -> int:
         """
         Qudit dimension
         """
@@ -719,7 +719,7 @@ class QubitDepolarizingNoise:
         """
         Vector of noise operators
         """
-    def get_d(self: qpp::NoiseBase<qpp::NoiseType::StateIndependent>) -> int:
+    def get_d(self) -> int:
         """
         Qudit dimension
         """
@@ -746,7 +746,7 @@ class QubitPhaseDampingNoise:
         """
         Vector of noise operators
         """
-    def get_d(self: qpp::NoiseBase<qpp::NoiseType::StateDependent>) -> int:
+    def get_d(self) -> int:
         """
         Qudit dimension
         """
@@ -773,7 +773,7 @@ class QubitPhaseFlipNoise:
         """
         Vector of noise operators
         """
-    def get_d(self: qpp::NoiseBase<qpp::NoiseType::StateIndependent>) -> int:
+    def get_d(self) -> int:
         """
         Qudit dimension
         """
@@ -800,7 +800,7 @@ class QuditDepolarizingNoise:
         """
         Vector of noise operators
         """
-    def get_d(self: qpp::NoiseBase<qpp::NoiseType::StateIndependent>) -> int:
+    def get_d(self) -> int:
         """
         Qudit dimension
         """
@@ -1323,6 +1323,10 @@ def QFT(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"],
     """
     Qudit quantum Fourier transform
     """
+def QFT_inplace(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], d: typing.SupportsInt | typing.SupportsIndex = 2, swap: bool = True) -> None:
+    """
+    Qudit quantum Fourier transform in-place
+    """
 def QKetDummyEngine(arg0: QCircuit) -> _QKetDummyEngine:
     ...
 def QKetEngine(arg0: QCircuit) -> _QKetEngine:
@@ -1351,6 +1355,10 @@ def QKetNoisyEngine(arg0: QCircuit, arg1: QuditDepolarizingNoise) -> _QKetNoisyE
 def TFQ(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], d: typing.SupportsInt | typing.SupportsIndex = 2, swap: bool = True) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """
     Inverse (adjoint) qudit quantum Fourier transform
+    """
+def TFQ_inplace(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], d: typing.SupportsInt | typing.SupportsIndex = 2, swap: bool = True) -> None:
+    """
+    Inverse (adjoint) qudit quantum Fourier transform in-place
     """
 def absm(arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"]) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """
@@ -1416,6 +1424,26 @@ def applyCTRL(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, 
     Applies the controlled-gate A to the part target of the multi-partite state vector or density matrix state
     """
 @typing.overload
+def applyCTRL_diag(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"], ctrl: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], dims: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], shift: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex] | None = None) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
+    """
+    Applies the controlled-diagonal gate A to the part target of the multi-partite state vector or density matrix state
+    """
+@typing.overload
+def applyCTRL_diag(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"], ctrl: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2, shift: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex] | None = None) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
+    """
+    Applies the controlled-diagonal gate A to the part target of the multi-partite state vector or density matrix state
+    """
+@typing.overload
+def applyCTRL_diag_inplace(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"], ctrl: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], dims: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], shift: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex] | None = None) -> None:
+    """
+    Applies the controlled-diagonal gate A to the part target of the multi-partite state vector or density matrix state in-place
+    """
+@typing.overload
+def applyCTRL_diag_inplace(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"], ctrl: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2, shift: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex] | None = None) -> None:
+    """
+    Applies the controlled-diagonal gate A to the part target of the multi-partite state vector or density matrix state in-place
+    """
+@typing.overload
 def applyCTRL_fan(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], ctrl: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], dims: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], shift: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex] | None = None) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """
     Applies the single qudit controlled-gate A with multiple control qudits listed in ctrl on every qudit listed in target
@@ -1425,13 +1453,75 @@ def applyCTRL_fan(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex1
     """
     Applies the single qudit controlled-gate A with multiple control qudits listed in ctrl on every qudit listed in target
     """
+@typing.overload
+def applyCTRL_fan_inplace(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], ctrl: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], dims: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], shift: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex] | None = None) -> None:
+    """
+    Applies the single qudit controlled-gate A with multiple control qudits listed in ctrl to the part target of the multi-partite state vector or density matrix state in-place
+    """
+@typing.overload
+def applyCTRL_fan_inplace(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], ctrl: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2, shift: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex] | None = None) -> None:
+    """
+    Applies the single qudit controlled-gate A with multiple control qudits listed in ctrl to the part target of the multi-partite state vector or density matrix state in-place
+    """
+@typing.overload
+def applyCTRL_inplace(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], ctrl: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], dims: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], shift: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex] | None = None) -> None:
+    """
+    Applies the controlled-gate A to the part target of the multi-partite state vector or density matrix state in-place
+    """
+@typing.overload
+def applyCTRL_inplace(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], ctrl: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2, shift: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex] | None = None) -> None:
+    """
+    Applies the controlled-gate A to the part target of the multi-partite state vector or density matrix state in-place
+    """
 def applyQFT(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2, swap: bool = True) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """
     Applies the qudit quantum Fourier transform to the part target of the multi-partite state vector or density matrix A
     """
+def applyQFT_inplace(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2, swap: bool = True) -> None:
+    """
+    Applies the qudit quantum Fourier transform to the part target of the multi-partite state vector or density matrix A in-place
+    """
 def applyTFQ(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2, swap: bool = True) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """
     Applies the inverse (adjoint) qudit quantum Fourier transform to the part target of the multi-partite state vector or density matrix A
+    """
+def applyTFQ_inplace(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2, swap: bool = True) -> None:
+    """
+    Applies the inverse (adjoint) qudit quantum Fourier transform to the part target of the multi-partite state vector or density matrix A in-place
+    """
+@typing.overload
+def apply_diag(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], dims: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex]) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
+    """
+    Applies the diagonal gate A to the part target of the multi-partite state vector or density matrix state
+    """
+@typing.overload
+def apply_diag(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
+    """
+    Applies the diagonal gate A to the part target of the multi-partite state vector or density matrix state
+    """
+@typing.overload
+def apply_diag_inplace(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], dims: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex]) -> None:
+    """
+    Applies the diagonal gate A to the part target of the multi-partite state vector or density matrix state in-place
+    """
+@typing.overload
+def apply_diag_inplace(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2) -> None:
+    """
+    Applies the diagonal gate A to the part target of the multi-partite state vector or density matrix state in-place
+    """
+@typing.overload
+def apply_inplace(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], dims: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex]) -> None:
+    """
+    Applies the gate A to the part target of the multi-partite state vector or density matrix state in-place
+    """
+@typing.overload
+def apply_inplace(state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], target: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], d: typing.SupportsInt | typing.SupportsIndex = 2) -> None:
+    """
+    Applies the gate A to the part target of the multi-partite state vector or density matrix state in-place
+    """
+def as_mutable(arr: typing.Any) -> typing.Any:
+    """
+    Converts any array-like object into a Fortran-contiguous NumPy array for zero-copy in-place operations
     """
 def avg(prob: collections.abc.Sequence[typing.SupportsFloat | typing.SupportsIndex], X: collections.abc.Sequence[typing.SupportsFloat | typing.SupportsIndex]) -> float:
     """

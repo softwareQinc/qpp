@@ -47,6 +47,15 @@ inline void init_pyqpp_specific(py::module_& m) {
                 std::random_device{}());
         },
         "Sets the prng seed to a random value");
+    m.def(
+        "as_mutable",
+        [](const py::object& obj) {
+            // Dynamically imports numpy and calls numpy.asfortranarray(obj)
+            return py::module_::import("numpy").attr("asfortranarray")(obj);
+        },
+        "Converts any array-like object into a Fortran-contiguous NumPy array "
+        "for zero-copy in-place operations",
+        py::arg("arr"));
 }
 
 #endif /* PYQPP_PYQPP_SPECIFIC_BIND_HPP_ */

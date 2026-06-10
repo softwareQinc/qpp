@@ -54,6 +54,38 @@ inline void init_operations(py::module_& m) {
         "vector or density matrix state",
         py::arg("state"), py::arg("A"), py::arg("target"), py::arg("d") = 2);
     m.def(
+        "apply_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> state_array,
+           const cmat& A, const std::vector<idx>& target,
+           const std::vector<idx>& dims) {
+            auto buf = state_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> state(static_cast<std::complex<double>*>(buf.ptr),
+                                   rows, cols);
+
+            qpp::apply_inplace(state, A, target, dims);
+        },
+        "Applies the gate A to the part target of the multi-partite state "
+        "vector or density matrix state in-place",
+        py::arg("state"), py::arg("A"), py::arg("target"), py::arg("dims"));
+
+    m.def(
+        "apply_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> state_array,
+           const cmat& A, const std::vector<idx>& target, idx d) {
+            auto buf = state_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> state(static_cast<std::complex<double>*>(buf.ptr),
+                                   rows, cols);
+
+            qpp::apply_inplace(state, A, target, d);
+        },
+        "Applies the gate A to the part target of the multi-partite state "
+        "vector or density matrix state in-place",
+        py::arg("state"), py::arg("A"), py::arg("target"), py::arg("d") = 2);
+    m.def(
         "apply",
         [](const cmat& A, const std::vector<cmat>& Ks) {
             return qpp::apply(A, Ks);
@@ -79,6 +111,58 @@ inline void init_operations(py::module_& m) {
         "part target of the multi-partite density matrix A",
         py::arg("A"), py::arg("Ks"), py::arg("target"), py::arg("d") = 2);
     m.def(
+        "apply_diag",
+        [](const cmat& state, const dyn_col_vect<cplx>& A,
+           const std::vector<idx>& target, const std::vector<idx>& dims) {
+            return qpp::apply_diag(state, A, target, dims);
+        },
+        "Applies the diagonal gate A to the part target of the multi-partite "
+        "state "
+        "vector or density matrix state",
+        py::arg("state"), py::arg("A"), py::arg("target"), py::arg("dims"));
+    m.def(
+        "apply_diag",
+        [](const cmat& state, const dyn_col_vect<cplx>& A,
+           const std::vector<idx>& target,
+           idx d) { return qpp::apply_diag(state, A, target, d); },
+        "Applies the diagonal gate A to the part target of the multi-partite "
+        "state "
+        "vector or density matrix state",
+        py::arg("state"), py::arg("A"), py::arg("target"), py::arg("d") = 2);
+    m.def(
+        "apply_diag_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> state_array,
+           const dyn_col_vect<cplx>& A, const std::vector<idx>& target,
+           const std::vector<idx>& dims) {
+            auto buf = state_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> state(static_cast<std::complex<double>*>(buf.ptr),
+                                   rows, cols);
+
+            qpp::apply_diag_inplace(state, A, target, dims);
+        },
+        "Applies the diagonal gate A to the part target of the multi-partite "
+        "state "
+        "vector or density matrix state in-place",
+        py::arg("state"), py::arg("A"), py::arg("target"), py::arg("dims"));
+    m.def(
+        "apply_diag_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> state_array,
+           const dyn_col_vect<cplx>& A, const std::vector<idx>& target, idx d) {
+            auto buf = state_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> state(static_cast<std::complex<double>*>(buf.ptr),
+                                   rows, cols);
+
+            qpp::apply_diag_inplace(state, A, target, d);
+        },
+        "Applies the diagonal gate A to the part target of the multi-partite "
+        "state "
+        "vector or density matrix state in-place",
+        py::arg("state"), py::arg("A"), py::arg("target"), py::arg("d") = 2);
+    m.def(
         "applyCTRL",
         [](const cmat& state, const cmat& A, const std::vector<idx>& ctrl,
            const std::vector<idx>& target, const std::vector<idx>& dims,
@@ -98,6 +182,103 @@ inline void init_operations(py::module_& m) {
         },
         "Applies the controlled-gate A to the part target of the multi-partite "
         "state vector or density matrix state",
+        py::arg("state"), py::arg("A"), py::arg("ctrl"), py::arg("target"),
+        py::arg("d") = 2, py::arg("shift") = py::none());
+    m.def(
+        "applyCTRL_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> state_array,
+           const cmat& A, const std::vector<idx>& ctrl,
+           const std::vector<idx>& target, const std::vector<idx>& dims,
+           std::optional<std::vector<idx>> shift) {
+            auto buf = state_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> state(static_cast<std::complex<double>*>(buf.ptr),
+                                   rows, cols);
+
+            qpp::applyCTRL_inplace(state, A, ctrl, target, dims, shift);
+        },
+        "Applies the controlled-gate A to the part target of the multi-partite "
+        "state vector or density matrix state in-place",
+        py::arg("state"), py::arg("A"), py::arg("ctrl"), py::arg("target"),
+        py::arg("dims"), py::arg("shift") = py::none());
+    m.def(
+        "applyCTRL_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> state_array,
+           const cmat& A, const std::vector<idx>& ctrl,
+           const std::vector<idx>& target, idx d,
+           std::optional<std::vector<idx>> shift) {
+            auto buf = state_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> state(static_cast<std::complex<double>*>(buf.ptr),
+                                   rows, cols);
+
+            qpp::applyCTRL_inplace(state, A, ctrl, target, d, shift);
+        },
+        "Applies the controlled-gate A to the part target of the multi-partite "
+        "state vector or density matrix state in-place",
+        py::arg("state"), py::arg("A"), py::arg("ctrl"), py::arg("target"),
+        py::arg("d") = 2, py::arg("shift") = py::none());
+    m.def(
+        "applyCTRL_diag",
+        [](const cmat& state, const dyn_col_vect<cplx>& A,
+           const std::vector<idx>& ctrl, const std::vector<idx>& target,
+           const std::vector<idx>& dims,
+           std::optional<std::vector<idx>> shift) {
+            return qpp::applyCTRL_diag(state, A, ctrl, target, dims, shift);
+        },
+        "Applies the controlled-diagonal gate A to the part target of the "
+        "multi-partite "
+        "state vector or density matrix state",
+        py::arg("state"), py::arg("A"), py::arg("ctrl"), py::arg("target"),
+        py::arg("dims"), py::arg("shift") = py::none());
+    m.def(
+        "applyCTRL_diag",
+        [](const cmat& state, const dyn_col_vect<cplx>& A,
+           const std::vector<idx>& ctrl, const std::vector<idx>& target, idx d,
+           std::optional<std::vector<idx>> shift) {
+            return qpp::applyCTRL_diag(state, A, ctrl, target, d, shift);
+        },
+        "Applies the controlled-diagonal gate A to the part target of the "
+        "multi-partite "
+        "state vector or density matrix state",
+        py::arg("state"), py::arg("A"), py::arg("ctrl"), py::arg("target"),
+        py::arg("d") = 2, py::arg("shift") = py::none());
+    m.def(
+        "applyCTRL_diag_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> state_array,
+           const dyn_col_vect<cplx>& A, const std::vector<idx>& ctrl,
+           const std::vector<idx>& target, const std::vector<idx>& dims,
+           std::optional<std::vector<idx>> shift) {
+            auto buf = state_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> state(static_cast<std::complex<double>*>(buf.ptr),
+                                   rows, cols);
+
+            qpp::applyCTRL_diag_inplace(state, A, ctrl, target, dims, shift);
+        },
+        "Applies the controlled-diagonal gate A to the part target of the "
+        "multi-partite state vector or density matrix state in-place",
+        py::arg("state"), py::arg("A"), py::arg("ctrl"), py::arg("target"),
+        py::arg("dims"), py::arg("shift") = py::none());
+    m.def(
+        "applyCTRL_diag_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> state_array,
+           const dyn_col_vect<cplx>& A, const std::vector<idx>& ctrl,
+           const std::vector<idx>& target, idx d,
+           std::optional<std::vector<idx>> shift) {
+            auto buf = state_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> state(static_cast<std::complex<double>*>(buf.ptr),
+                                   rows, cols);
+
+            qpp::applyCTRL_diag_inplace(state, A, ctrl, target, d, shift);
+        },
+        "Applies the controlled-diagonal gate A to the part target of the "
+        "multi-partite state vector or density matrix state in-place",
         py::arg("state"), py::arg("A"), py::arg("ctrl"), py::arg("target"),
         py::arg("d") = 2, py::arg("shift") = py::none());
     m.def(
@@ -123,12 +304,68 @@ inline void init_operations(py::module_& m) {
         py::arg("state"), py::arg("A"), py::arg("ctrl"), py::arg("target"),
         py::arg("d") = 2, py::arg("shift") = py::none());
     m.def(
+        "applyCTRL_fan_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> state_array,
+           const cmat& A, const std::vector<idx>& ctrl,
+           const std::vector<idx>& target, const std::vector<idx>& dims,
+           std::optional<std::vector<idx>> shift) {
+            auto buf = state_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> state(static_cast<std::complex<double>*>(buf.ptr),
+                                   rows, cols);
+
+            qpp::applyCTRL_fan_inplace(state, A, ctrl, target, dims, shift);
+        },
+        "Applies the single qudit controlled-gate A with multiple control "
+        "qudits listed "
+        "in ctrl to the part target of the multi-partite state vector or "
+        "density matrix state in-place",
+        py::arg("state"), py::arg("A"), py::arg("ctrl"), py::arg("target"),
+        py::arg("dims"), py::arg("shift") = py::none());
+    m.def(
+        "applyCTRL_fan_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> state_array,
+           const cmat& A, const std::vector<idx>& ctrl,
+           const std::vector<idx>& target, idx d,
+           std::optional<std::vector<idx>> shift) {
+            auto buf = state_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> state(static_cast<std::complex<double>*>(buf.ptr),
+                                   rows, cols);
+
+            qpp::applyCTRL_fan_inplace(state, A, ctrl, target, d, shift);
+        },
+        "Applies the single qudit controlled-gate A with multiple control "
+        "qudits listed "
+        "in ctrl to the part target of the multi-partite state vector or "
+        "density matrix state in-place",
+        py::arg("state"), py::arg("A"), py::arg("ctrl"), py::arg("target"),
+        py::arg("d") = 2, py::arg("shift") = py::none());
+    m.def(
         "applyQFT",
         [](const cmat& A, const std::vector<idx>& target, idx d, bool swap) {
             return qpp::applyQFT(A, target, d, swap);
         },
         "Applies the qudit quantum Fourier transform to the part target of the "
         "multi-partite state vector or density matrix A",
+        py::arg("A"), py::arg("target"), py::arg("d") = 2,
+        py::arg("swap") = true);
+    m.def(
+        "applyQFT_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> A_array,
+           const std::vector<idx>& target, idx d, bool swap) {
+            auto buf = A_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> A(static_cast<std::complex<double>*>(buf.ptr),
+                               rows, cols);
+
+            qpp::applyQFT_inplace(A, target, d, swap);
+        },
+        "Applies the qudit quantum Fourier transform to the part target of the "
+        "multi-partite state vector or density matrix A in-place",
         py::arg("A"), py::arg("target"), py::arg("d") = 2,
         py::arg("swap") = true);
     m.def(
@@ -141,15 +378,60 @@ inline void init_operations(py::module_& m) {
         py::arg("A"), py::arg("target"), py::arg("d") = 2,
         py::arg("swap") = true);
     m.def(
+        "applyTFQ_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> A_array,
+           const std::vector<idx>& target, idx d, bool swap) {
+            auto buf = A_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> A(static_cast<std::complex<double>*>(buf.ptr),
+                               rows, cols);
+
+            qpp::applyTFQ_inplace(A, target, d, swap);
+        },
+        "Applies the inverse (adjoint) qudit quantum Fourier transform to the "
+        "part target of the multi-partite state vector or density matrix A "
+        "in-place",
+        py::arg("A"), py::arg("target"), py::arg("d") = 2,
+        py::arg("swap") = true);
+    m.def(
         "QFT",
         [](const cmat& A, idx d, bool swap) { return qpp::QFT(A, d, swap); },
         "Qudit quantum Fourier transform", py::arg("A"), py::arg("d") = 2,
         py::arg("swap") = true);
     m.def(
+        "QFT_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> A_array, idx d,
+           bool swap) {
+            auto buf = A_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> A(static_cast<std::complex<double>*>(buf.ptr),
+                               rows, cols);
+
+            qpp::QFT_inplace(A, d, swap);
+        },
+        "Qudit quantum Fourier transform in-place", py::arg("A"),
+        py::arg("d") = 2, py::arg("swap") = true);
+    m.def(
         "TFQ",
         [](const cmat& A, idx d, bool swap) { return qpp::TFQ(A, d, swap); },
         "Inverse (adjoint) qudit quantum Fourier transform", py::arg("A"),
         py::arg("d") = 2, py::arg("swap") = true);
+    m.def(
+        "TFQ_inplace",
+        [](py::array_t<std::complex<double>, py::array::f_style> A_array, idx d,
+           bool swap) {
+            auto buf = A_array.request();
+            idx rows = buf.shape[0];
+            idx cols = buf.shape.size() > 1 ? buf.shape[1] : 1;
+            Eigen::Map<cmat> A(static_cast<std::complex<double>*>(buf.ptr),
+                               rows, cols);
+
+            qpp::TFQ_inplace(A, d, swap);
+        },
+        "Inverse (adjoint) qudit quantum Fourier transform in-place",
+        py::arg("A"), py::arg("d") = 2, py::arg("swap") = true);
     m.def(
         "kraus2choi",
         [](const std::vector<cmat>& Ks) { return qpp::kraus2choi(Ks); },

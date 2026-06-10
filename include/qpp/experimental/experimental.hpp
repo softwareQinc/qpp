@@ -72,7 +72,7 @@ template <typename Derived>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             const std::vector<idx>& dims, bool destructive = true) {
     // typename Eigen::MatrixBase<Derived>::EvalReturnType cA = A.derived();
-    expr_t<Derived> cA = A.derived();
+    auto cA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -160,7 +160,7 @@ measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
         return true;
     };
 
-    expr_t<Derived> out_state{};
+    auto out_state{};
     realT prob = 0;
     //************ ket ************//
     if (is_ket) {

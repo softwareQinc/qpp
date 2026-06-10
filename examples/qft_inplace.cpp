@@ -1,6 +1,6 @@
-// Source: ./examples/qft.cpp
+// Source: ./examples/qft_inplace.cpp
 //
-// Quantum Fourier transform
+// Quantum Fourier transform, in place
 
 #include <cmath>
 #include <iostream>
@@ -22,22 +22,23 @@ int main() {
     std::cout << "The sequence of applied gates is:\n";
     for (idx i = 0; i < n; ++i) {
         std::cout << "H" << i << " ";
-        result = apply(result, gt.H, {i}); // apply Hadamard on qubit 'i'
-        // apply controlled rotations
+        // apply Hadamard on qubit 'i', in place
+        apply_inplace(result, gt.H, {i});
+        // apply controlled rotations, in place
         for (idx j = 2; j <= n - i; ++j) {
             cmat Rj(2, 1);
             auto pow_j = static_cast<idx>(std::llround(std::pow(2, j)));
             Rj << 1, omega(pow_j);
-            result = applyCTRL_diag(result, Rj, {i + j - 1}, {i});
+            applyCTRL_diag_inplace(result, Rj, {i + j - 1}, {i});
             std::cout << "R" << j << "(" << i + j - 1 << ", " << i << ") ";
         }
         std::cout << '\n';
     }
 
-    // we have the qubits in reversed order, we must swap them
+    // we have the qubits in reversed order, we must swap them, in place
     for (idx i = 0; i < n / 2; ++i) {
         std::cout << "SWAP(" << i << ", " << n - i - 1 << ")\n";
-        result = apply(result, gt.SWAP, {i, n - i - 1});
+        apply_inplace(result, gt.SWAP, {i, n - i - 1});
     }
 
     // check that we got the Fourier transform, compute the norm difference

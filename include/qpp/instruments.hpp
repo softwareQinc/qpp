@@ -225,7 +225,7 @@ template <typename Derived>
 [[qpp::critical]] std::tuple<idx, std::vector<realT>,
                              std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks) {
-    const expr_t<Derived>& rA = A.derived();
+    const auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -324,7 +324,7 @@ measure(const Eigen::MatrixBase<Derived>& A,
 template <typename Derived>
 std::tuple<idx, std::vector<realT>, std::vector<expr_t<Derived>>>
 measure(const Eigen::MatrixBase<Derived>& A, const cmat& U) {
-    const expr_t<Derived>& rA = A.derived();
+    const auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -437,7 +437,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     if (internal::check_cvector(rA)) // column vector
     {
         for (idx i = 0; i < static_cast<idx>(Ks.size()); ++i) {
-            expr_t<Derived> tmp = apply(rA, Ks[i], target, dims);
+            auto tmp = apply(rA, Ks[i], target, dims);
             probs[i] = std::pow(norm(tmp), 2);
             if (probs[i] > 0) {
                 // normalized output state corresponding to
@@ -455,7 +455,7 @@ measure(const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
     else // square matrix
     {
         for (idx i = 0; i < static_cast<idx>(Ks.size()); ++i) {
-            expr_t<Derived> tmp = apply(rA, Ks[i], target, dims);
+            auto tmp = apply(rA, Ks[i], target, dims);
             if (destructive) {
                 tmp = ptrace(tmp, target, dims);
             }
@@ -986,7 +986,7 @@ template <typename Derived>
 measure_seq(const Eigen::MatrixBase<Derived>& A, std::vector<idx> target,
             std::vector<idx> dims, bool destructive = true) {
     constexpr char func_name[] = "qpp::measure_seq()";
-    expr_t<Derived> rA = A.derived();
+    auto rA = A.derived();
 
     // --- EXCEPTION CHECKS ---
     if (!internal::check_nonzero_size(rA)) {

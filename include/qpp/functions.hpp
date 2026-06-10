@@ -302,7 +302,7 @@ realT norm(const Eigen::MatrixBase<Derived>& A) {
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
 normalize(const Eigen::MatrixBase<Derived>& A) {
-    const expr_t<Derived>& rA = A.derived();
+    const auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero size
@@ -2146,7 +2146,7 @@ template <typename Derived>
 dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
                                         std::vector<idx> dims_rows,
                                         std::vector<idx> dims_cols) {
-    const expr_t<Derived>& rA = A.derived();
+    const auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     if (dims_rows.empty()) {
@@ -2253,7 +2253,7 @@ dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
 template <typename Derived>
 dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
                                         idx d = 2) {
-    const expr_t<Derived>& rA = A.derived();
+    const auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero size

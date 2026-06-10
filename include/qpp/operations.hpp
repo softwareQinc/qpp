@@ -77,7 +77,7 @@ template <typename Derived1, typename Derived2>
 apply_inplace(Eigen::MatrixBase<Derived1>& state,
               const Eigen::MatrixBase<Derived2>& A,
               const std::vector<idx>& target, const std::vector<idx>& dims) {
-    expr_t<Derived1>& rstate = state.derived();
+    auto& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -339,7 +339,7 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
 
         // Must write to a separate result matrix first to avoid aliasing
         // corruption
-        expr_t<Derived1> result = rstate;
+        auto result = rstate;
 
 #ifdef QPP_OPENMP
 #pragma omp parallel for collapse(2)
@@ -363,7 +363,7 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
 
         // Must write to a separate result matrix first to avoid aliasing
         // corruption
-        expr_t<Derived1> result = rstate;
+        auto result = rstate;
 
 #ifdef QPP_OPENMP
 #pragma omp parallel for collapse(4)
@@ -403,7 +403,7 @@ template <typename Derived1, typename Derived2>
 void apply_inplace(Eigen::MatrixBase<Derived1>& state,
                    const Eigen::MatrixBase<Derived2>& A,
                    const std::vector<idx>& target, idx d = 2) {
-    expr_t<Derived1>& rstate = state.derived();
+    auto& rstate = state.derived();
 
     // EXCEPTION CHECKS
     // check zero size
@@ -443,7 +443,7 @@ template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] void apply_diag_inplace(
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
     const std::vector<idx>& target, const std::vector<idx>& dims) {
-    expr_t<Derived1>& rstate = state.derived();
+    auto& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -693,7 +693,7 @@ template <typename Derived1, typename Derived2>
 void apply_diag_inplace(Eigen::MatrixBase<Derived1>& state,
                         const Eigen::MatrixBase<Derived2>& A,
                         const std::vector<idx>& target, idx d = 2) {
-    expr_t<Derived1>& rstate = state.derived();
+    auto& rstate = state.derived();
 
     // EXCEPTION CHECKS
     // check zero size
@@ -735,7 +735,7 @@ template <typename Derived1, typename Derived2>
 apply(const Eigen::MatrixBase<Derived1>& state,
       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& target,
       const std::vector<idx>& dims) {
-    expr_t<Derived1> cstate = state.derived();
+    auto cstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -820,7 +820,7 @@ template <typename Derived1, typename Derived2>
 expr_t<Derived1> apply(const Eigen::MatrixBase<Derived1>& state,
                        const Eigen::MatrixBase<Derived2>& A,
                        const std::vector<idx>& target, idx d = 2) {
-    expr_t<Derived1> cstate = state.derived();
+    auto cstate = state.derived();
 
     // EXCEPTION CHECKS
     // check zero size
@@ -859,7 +859,7 @@ template <typename Derived1, typename Derived2>
 apply_diag(const Eigen::MatrixBase<Derived1>& state,
            const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& target,
            const std::vector<idx>& dims) {
-    expr_t<Derived1> cstate = state.derived();
+    auto cstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -948,7 +948,7 @@ template <typename Derived1, typename Derived2>
 expr_t<Derived1> apply_diag(const Eigen::MatrixBase<Derived1>& state,
                             const Eigen::MatrixBase<Derived2>& A,
                             const std::vector<idx>& target, idx d = 2) {
-    expr_t<Derived1> cstate = state.derived();
+    auto cstate = state.derived();
 
     // EXCEPTION CHECKS
     // check zero size
@@ -1174,7 +1174,7 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
                   const std::vector<idx>& ctrl, const std::vector<idx>& target,
                   const std::vector<idx>& dims,
                   std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1>& rstate = state.derived();
+    auto& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1412,7 +1412,7 @@ void applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
                        const std::vector<idx>& ctrl,
                        const std::vector<idx>& target, idx d = 2,
                        std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1>& rstate = state.derived();
+    auto& rstate = state.derived();
 
     // EXCEPTION CHECKS
     // check zero size
@@ -1458,7 +1458,7 @@ template <typename Derived1, typename Derived2>
     const std::vector<idx>& ctrl, const std::vector<idx>& target,
     const std::vector<idx>& dims,
     std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1>& rstate = state.derived();
+    auto& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1677,7 +1677,7 @@ void applyCTRL_diag_inplace(
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
     const std::vector<idx>& ctrl, const std::vector<idx>& target, idx d = 2,
     std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1>& rstate = state.derived();
+    auto& rstate = state.derived();
 
     // EXCEPTION CHECKS
     // check zero size
@@ -1725,7 +1725,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
           const std::vector<idx>& target, const std::vector<idx>& dims,
           std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1> cstate = state.derived();
+    auto cstate = state.derived();
 
     // EXCEPTION CHECKS
     // Note: We perform checks here to throw before making a potentially
@@ -1771,7 +1771,7 @@ applyCTRL(const Eigen::MatrixBase<Derived1>& state,
           const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
           const std::vector<idx>& target, idx d = 2,
           std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1> cstate = state.derived();
+    auto cstate = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1819,7 +1819,7 @@ applyCTRL_diag(const Eigen::MatrixBase<Derived1>& state,
                const std::vector<idx>& ctrl, const std::vector<idx>& target,
                const std::vector<idx>& dims,
                std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1> cstate = state.derived();
+    auto cstate = state.derived();
 
     // EXCEPTION CHECKS
     // Note: We perform checks here to throw before making a potentially
@@ -1866,7 +1866,7 @@ applyCTRL_diag(const Eigen::MatrixBase<Derived1>& state,
                const std::vector<idx>& ctrl, const std::vector<idx>& target,
                idx d = 2,
                std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1> cstate = state.derived();
+    auto cstate = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -1916,7 +1916,7 @@ template <typename Derived1, typename Derived2>
     const std::vector<idx>& ctrl, const std::vector<idx>& target,
     const std::vector<idx>& dims,
     std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1>& rstate = state.derived();
+    auto& rstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -2224,7 +2224,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
               const std::vector<idx>& ctrl, const std::vector<idx>& target,
               const std::vector<idx>& dims,
               std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1> cstate = state.derived();
+    auto cstate = state.derived();
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -2319,7 +2319,7 @@ applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
               const Eigen::MatrixBase<Derived2>& A,
               const std::vector<idx>& ctrl, const std::vector<idx>& target,
               idx d = 2, std::optional<std::vector<idx>> shift = std::nullopt) {
-    expr_t<Derived1> cstate = state.derived();
+    auto cstate = state.derived();
     const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -3621,7 +3621,7 @@ template <typename Derived>
 [[qpp::critical]] void applyQFT_inplace(const Eigen::MatrixBase<Derived>& A,
                                         const std::vector<idx>& target,
                                         idx d = 2, bool swap = true) {
-    const expr_t<Derived>& rA = A.derived();
+    const auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero sizes
@@ -3662,7 +3662,7 @@ template <typename Derived>
     }
     // END EXCEPTION CHECKS
 
-    expr_t<Derived> result = rA;
+    auto result = rA;
     idx n_subsys = target.size();
 
     if (d == 2) // qubits
@@ -3737,7 +3737,7 @@ template <typename Derived>
 [[qpp::critical]] void applyTFQ_inplace(const Eigen::MatrixBase<Derived>& A,
                                         const std::vector<idx>& target,
                                         idx d = 2, bool swap = true) {
-    const expr_t<Derived>& rA = A.derived();
+    const auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero sizes
@@ -3778,7 +3778,7 @@ template <typename Derived>
     }
     // END EXCEPTION CHECKS
 
-    expr_t<Derived> result = rA;
+    auto result = rA;
 
     idx n_subsys = target.size();
 
@@ -3849,7 +3849,7 @@ template <typename Derived>
 template <typename Derived>
 void QFT_inplace(const Eigen::MatrixBase<Derived>& A, idx d = 2,
                  bool swap = true) {
-    const expr_t<Derived>& rA = A.derived();
+    const auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -3900,7 +3900,7 @@ void QFT_inplace(const Eigen::MatrixBase<Derived>& A, idx d = 2,
 template <typename Derived>
 void TFQ_inplace(const Eigen::MatrixBase<Derived>& A, idx d = 2,
                  bool swap = true) {
-    const expr_t<Derived>& rA = A.derived();
+    const auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -3952,10 +3952,10 @@ void TFQ_inplace(const Eigen::MatrixBase<Derived>& A, idx d = 2,
  * \a A
  */
 template <typename Derived>
-[[qpp::critical]] expr_t<Derived> applyQFT(const Eigen::MatrixBase<Derived>& A,
-                                           const std::vector<idx>& target,
-                                           idx d = 2, bool swap = true) {
-    expr_t<Derived> cstate = A.derived();
+[[qpp::critical]] auto applyQFT(const Eigen::MatrixBase<Derived>& A,
+                                const std::vector<idx>& target, idx d = 2,
+                                bool swap = true) {
+    auto cstate = A.derived();
 
     // EXCEPTION CHECKS
     // check zero sizes
@@ -4012,10 +4012,10 @@ template <typename Derived>
  * part \a target of \a A
  */
 template <typename Derived>
-[[qpp::critical]] expr_t<Derived> applyTFQ(const Eigen::MatrixBase<Derived>& A,
-                                           const std::vector<idx>& target,
-                                           idx d = 2, bool swap = true) {
-    expr_t<Derived> cstate = A.derived();
+[[qpp::critical]] auto applyTFQ(const Eigen::MatrixBase<Derived>& A,
+                                const std::vector<idx>& target, idx d = 2,
+                                bool swap = true) {
+    auto cstate = A.derived();
 
     // EXCEPTION CHECKS
     // check zero sizes
@@ -4068,9 +4068,8 @@ template <typename Derived>
  * @return Qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
-expr_t<Derived> QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
-                    bool swap = true) {
-    expr_t<Derived> cstate = A.derived();
+auto QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true) {
+    auto cstate = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -4118,9 +4117,8 @@ expr_t<Derived> QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2,
  * @return Inverse (adjoint) qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
-expr_t<Derived> TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2,
-                    bool swap = true) {
-    expr_t<Derived> cstate = A.derived();
+auto TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true) {
+    auto cstate = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size
