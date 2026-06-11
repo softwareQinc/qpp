@@ -91,8 +91,8 @@ apply_psi_1q_inplace(Eigen::MatrixBase<Derived1>& state,
     // This loop is perfectly independent and is the primary target for
     // parallelization.
 #ifdef QPP_OPENMP
-#pragma omp parallel for
-#endif // QPP_OPENMP
+#pragma omp parallel for colapse(2) if (D >= 65536) // 16 qubits
+#endif                                              // QPP_OPENMP
     for (idx L = 0; L < D; L += jump) {
         // The inner loop (R) iterates over the lower part of the block, from 0
         // to (step - 1).

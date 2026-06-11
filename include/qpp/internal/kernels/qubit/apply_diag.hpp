@@ -80,8 +80,8 @@ apply_psi_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // Pair-wise Amplitude Transformation
 #ifdef QPP_OPENMP
-#pragma omp parallel for
-#endif // QPP_OPENMP
+#pragma omp parallel for collapse(2) if (D >= 65536) // 16 qubits
+#endif                                               // QPP_OPENMP
     for (idx L = 0; L < D; L += jump) {
         for (idx R = 0; R < step; ++R) {
             const idx k0 = L + R;

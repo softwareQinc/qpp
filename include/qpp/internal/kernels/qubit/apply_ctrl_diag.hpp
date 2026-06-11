@@ -114,8 +114,8 @@ template <typename Derived1, typename Derived2>
     }
 
 #ifdef QPP_OPENMP
-#pragma omp parallel for collapse(2) if (D >= 4096)
-#endif // QPP_OPENMP
+#pragma omp parallel for collapse(2) if (D >= 65536) // 16 qubits
+#endif                                               // QPP_OPENMP
     for (idx L = 0; L < D; L += jump) {
         for (idx R = 0; R < step; ++R) {
             const idx k0 = L + R;
