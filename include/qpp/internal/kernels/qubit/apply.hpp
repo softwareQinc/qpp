@@ -86,12 +86,40 @@ apply_psi_1q_inplace(Eigen::MatrixBase<Derived1>& state,
     const Scalar a10 = A.coeff(1, 0);
     const Scalar a11 = A.coeff(1, 1);
 
+    // Hadamard-like gates have the shape s * [[1, 1], [1, -1]].
+    // The QFT benchmark applies this gate once per qubit, so it is worth
+    // avoiding the generic 2x2 matrix-vector multiply in this exact case.
+    // Each amplitude pair only needs the scaled sum and difference of its two
+    // original values, cutting the hot-loop complex multiplications in half and
+    // exposing a simpler expression for the compiler to vectorize.
+    if (a00 == a01 && a00 == a10 && a11 == -a00) {
+#ifdef QPP_OPENMP
+#pragma omp parallel for collapse(2) if (D >= 65536) // 16 qubits
+#endif                                              // QPP_OPENMP
+        for (idx L = 0; L < D; L += jump) {
+            for (idx R = 0; R < step; ++R) {
+                const idx k0 = L + R;
+                const idx k1 = k0 + step;
+                const Scalar psi_k0 = state.coeff(k0);
+                const Scalar psi_k1 = state.coeff(k1);
+
+                state.coeffRef(k0) = a00 * (psi_k0 + psi_k1);
+                state.coeffRef(k1) = a00 * (psi_k0 - psi_k1);
+            }
+        }
+        return;
+    }
+
     // Pair-wise Amplitude Transformation
     // The outer loop (L) iterates over all blocks of size 'jump'.
     // This loop is perfectly independent and is the primary target for
     // parallelization.
 #ifdef QPP_OPENMP
-#pragma omp parallel for colapse(2) if (D >= 65536) // 16 qubits
+// Both the block loop and the in-block pair loop are independent. Collapsing
+// them gives OpenMP one flat iteration space instead of only parallelizing the
+// outer block loop, which matters when the target qubit is high-order and there
+// are only a few large blocks.
+#pragma omp parallel for collapse(2) if (D >= 65536) // 16 qubits
 #endif                                              // QPP_OPENMP
     for (idx L = 0; L < D; L += jump) {
         // The inner loop (R) iterates over the lower part of the block, from 0
