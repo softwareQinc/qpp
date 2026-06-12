@@ -113,6 +113,57 @@ template <typename Derived1, typename Derived2>
         }
     }
 
+    // Fast path for the controlled phase gates emitted by the QFT benchmark:
+    // one positive control, a diagonal [1, phase], and a single target qubit.
+    // The generic loop tests the control mask for every target-zero amplitude
+    // and then updates the paired target-one amplitude. Here the control
+    // condition is encoded directly into the generated indices, so the hot loop
+    // only visits amplitudes that actually receive the phase.
+    if (ctrl_size == 1 && shift[0] == 0 && !apply_a0 && apply_a1) {
+        const idx ctrl_bit = ctrl_mask;
+        if (ctrl_bit < step) {
+            // QFT calls this path when the control qubit is below the target in
+            // the state-vector bit layout. In each target-one half-block, the
+            // control-one amplitudes appear as contiguous runs of length
+            // ctrl_bit. Streaming over those runs avoids the bit-deposit index
+            // reconstruction used by the fallback below and gives the compiler
+            // a simple contiguous multiply loop.
+#ifdef QPP_OPENMP
+#pragma omp parallel for collapse(2) if (D >= 65536) // 16 qubits
+#endif                                               // QPP_OPENMP
+            for (idx L = 0; L < D; L += jump) {
+                for (idx C = 0; C < step; C += 2 * ctrl_bit) {
+                    const idx start = L + step + C + ctrl_bit;
+                    for (idx R = 0; R < ctrl_bit; ++R) {
+                        state.coeffRef(start + R) *= a1;
+                    }
+                }
+            }
+            return;
+        }
+
+        // General one-control diagonal fallback. The loop variable r ranges
+        // over the state-vector indices with the target and control bits
+        // removed. The masks below insert those two zero bits back into their
+        // sorted positions, after which OR-ing ctrl_bit and step selects the
+        // unique target-one/control-one amplitude that needs the phase.
+        const idx lo = step < ctrl_bit ? step : ctrl_bit;
+        const idx hi = step < ctrl_bit ? ctrl_bit : step;
+        const idx low_mask = lo - 1;
+        const idx mid_mask = (hi >> 1) - lo;
+        const idx keep_mask = low_mask | mid_mask;
+
+#ifdef QPP_OPENMP
+#pragma omp parallel for if (D >= 65536) // 16 qubits
+#endif                                  // QPP_OPENMP
+        for (idx r = 0; r < (D >> 2); ++r) {
+            const idx base = (r & low_mask) | ((r & mid_mask) << 1) |
+                             ((r & ~keep_mask) << 2);
+            state.coeffRef(base | ctrl_bit | step) *= a1;
+        }
+        return;
+    }
+
 #ifdef QPP_OPENMP
 #pragma omp parallel for collapse(2) if (D >= 65536) // 16 qubits
 #endif                                               // QPP_OPENMP
