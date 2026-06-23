@@ -93,8 +93,10 @@ int main() {
             basis_T basis_E = bernoulli();
             cmat U_E = (basis_E == 0) ? gt.Z : gt.H;
             auto measure_E = measure(psi, U_E);
-            auto m_E = std::get<RES>(measure_E); // measurement result
-            psi = std::get<ST>(measure_E)[m_E];  // update the state accordingly
+            auto m_E =
+                std::get<measure_idx::res>(measure_E); // measurement result
+            psi = std::get<measure_idx::st>(
+                measure_E)[m_E]; // update the state accordingly
         }
 
         // Bob measures the qubit Eve re-sent
@@ -102,7 +104,7 @@ int main() {
         // Bob's measurement eigenvectors
         cmat U_B = (basis_B == 0) ? gt.Z : gt.H;
         auto measure_B = measure(psi, U_B);
-        auto m_B = std::get<RES>(measure_B); // measurement result
+        auto m_B = std::get<measure_idx::res>(measure_B); // measurement result
         Bob_bases_states[i].second = static_cast<state_T>(m_B);
     }
 
@@ -261,10 +263,12 @@ qpp::realT sample(bases_states_T& Alice_bases_states,
             }
 
             auto measure_A = measure(psi_A, U);
-            auto m_A = std::get<RES>(measure_A); // Alice's measurement result
+            auto m_A = std::get<measure_idx::res>(
+                measure_A); // Alice's measurement result
 
             auto measure_B = measure(psi_B, U);
-            auto m_B = std::get<RES>(measure_B); // Bob's measurement result
+            auto m_B = std::get<measure_idx::res>(
+                measure_B); // Bob's measurement result
 
             if (m_A != m_B) {
                 ++cnt;

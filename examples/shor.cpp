@@ -51,7 +51,7 @@ int main() {
         // compute 2^(n-i-1) mod N
         bigint j = std::llround(std::pow(2, n - i - 1));
         // compute the a^(2^(n-i-1)) mod N
-        bigint aj = modpow(a, static_cast<bigint>(j), N);
+        bigint aj = modpow(a, j, N);
         // apply the controlled modular multiplication
         psi = applyCTRL(psi, gt.MODMUL(aj, N, n), {i}, second_subsys);
     }
@@ -62,8 +62,10 @@ int main() {
 
     // FIRST MEASUREMENT STAGE
     auto measured1 = measure_seq(psi, first_subsys); // measure first n qubits
-    std::vector<idx> vect_results1 = std::get<RES>(measured1); // results
-    realT prob1 = prod(std::get<PROB>(measured1)); // probability of the result
+    std::vector<idx> vect_results1 =
+        std::get<measure_idx::res>(measured1); // results
+    realT prob1 = prod(
+        std::get<measure_idx::prob>(measured1)); // probability of the result
     idx n1 = multiidx2n(vect_results1, std::vector<idx>(n, 2)); // binary to int
     auto x1 = static_cast<realT>(n1) / static_cast<realT>(D); // multiple of 1/r
 
@@ -92,8 +94,10 @@ int main() {
 
     // SECOND MEASUREMENT STAGE
     auto measured2 = measure_seq(psi, first_subsys); // measure first n qubits
-    std::vector<idx> vect_results2 = std::get<RES>(measured2); // results
-    realT prob2 = prod(std::get<PROB>(measured2)); // probability of the result
+    std::vector<idx> vect_results2 =
+        std::get<measure_idx::res>(measured2); // results
+    realT prob2 = prod(
+        std::get<measure_idx::prob>(measured2)); // probability of the result
     idx n2 = multiidx2n(vect_results2, std::vector<idx>(n, 2)); // binary to int
     auto x2 = static_cast<realT>(n2) / static_cast<realT>(D); // multiple of 1/r
 
@@ -121,10 +125,9 @@ int main() {
     // END SECOND MEASUREMENT STAGE
 
     // THIRD POST-PROCESSING STAGE
-    idx r = lcm(static_cast<bigint>(r1),
-                static_cast<bigint>(r2)); // candidate order of a mod N
-    std::cout << ">> r = " << r << ", a^r mod N = "
-              << modpow(a, static_cast<bigint>(r), static_cast<bigint>(N))
+    idx r = lcm(r1, static_cast<bigint>(r2)); // candidate order of a mod N
+    std::cout << ">> r = " << r
+              << ", a^r mod N = " << modpow(a, static_cast<bigint>(r), N)
               << '\n';
     if (r % 2 == 0 && modpow(a, static_cast<bigint>(r / 2), N) !=
                           static_cast<bigint>(N - 1)) {

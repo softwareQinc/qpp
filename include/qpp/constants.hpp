@@ -110,14 +110,14 @@ inline cplx omega(idx D) {
 }
 
 /**
- * @brief Constants to be used by std::get<> on the result of qpp::measure(),
- * qpp::measure_seq() etc.
+ * @brief Tuple indices for the return value of qpp::measure(),
+ * qpp::measure_seq(), etc.
  */
-enum {
-    RES = 0,  ///< Measurement result(s)
-    PROB = 1, ///< Probabilit(y)/(ies)
-    ST = 2,   ///< Output state(s)
-};
+namespace measure_idx {
+inline constexpr auto res = 0;
+inline constexpr auto prob = 1;
+inline constexpr auto st = 2;
+} /* namespace measure_idx */
 
 } /* namespace qpp */
 

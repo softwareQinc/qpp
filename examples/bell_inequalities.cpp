@@ -42,13 +42,14 @@ int main() {
             for (idx i = 0; i < N; ++i) // repeat the "experiment" N times
             {
                 auto measuredA = measure(psi, basisA, {0});
-                idx mA = std::get<RES>(measuredA); // result on A
+                idx mA = std::get<measure_idx::res>(measuredA); // result on A
                 // the eigenvalues corresponding to the measurement results
                 realT evalA = evalsA[mA];
                 // resulting state on B
-                ket psiB = std::get<ST>(measuredA)[mA];
+                ket psiB = std::get<measure_idx::st>(measuredA)[mA];
                 auto measuredB = measure(psiB, basisB);
-                idx mB = std::get<RES>(measuredB); // measurement result B
+                idx mB = std::get<measure_idx::res>(
+                    measuredB); // measurement result B
                 realT evalB = evalsB[mB];
                 // count the correlations
                 if (evalA > 0 && evalB > 0) // +1 +1 correlation

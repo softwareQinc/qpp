@@ -84,7 +84,7 @@ int main() {
 
     // measure the counting register and readout probabilities
     auto measured = measure_seq(result, {counting_qubits});
-    auto res = std::get<RES>(measured);
+    auto res = std::get<measure_idx::res>(measured);
     std::cout << ">> Measurement result [q0 q1 ... ]: "
               << disp(res, IOManipContainerOpts{}.set_sep(" "));
     std::cout << '\n';

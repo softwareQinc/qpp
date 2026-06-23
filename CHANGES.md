@@ -14,6 +14,9 @@
   diagonal gates: `apply_diag()` and `applyCTRL_diag()`, along with their
   in-place counterparts, `apply_diag_inplace()` and `applyCTRL_diag_inplace()`
 - Added [`examples/qft_inplace.cpp`](examples/qft_inplace.cpp) example
+- Replaced the unscoped measurement-result enum in
+  [`qpp/constants.hpp`](include/qpp/constants.hpp) with the `measure_idx`
+  namespace
 
 ## Version 7.0.3 - 25 March 2026
 

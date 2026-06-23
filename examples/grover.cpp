@@ -51,11 +51,11 @@ int main() {
     // we now measure the state in the computational basis, destructively
     auto measured = measure_seq(psi, subsys, dims);
     std::cout << ">> Probability of the marked state: "
-              << prod(std::get<PROB>(measured)) << '\n';
+              << prod(std::get<measure_idx::prob>(measured)) << '\n';
 
     // sample
     std::cout << ">> Let's sample...\n";
-    auto result = std::get<RES>(measured);
+    auto result = std::get<measure_idx::res>(measured);
     if (result == n2multiidx(marked, dims)) {
         std::cout << ">> Hooray, we obtained the correct result: ";
     } else {
