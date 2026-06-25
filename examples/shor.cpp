@@ -13,7 +13,7 @@
 int main() {
     using namespace qpp;
 
-    bigint N = 35;                   // number to factor
+    bigint N = 21;                   // number to factor
     auto a = rand<bigint>(3, N - 1); // random co-prime with N
     while (gcd(a, N) != 1) {
         a = rand<bigint>(3, N - 1);
@@ -53,6 +53,8 @@ int main() {
         // compute the a^(2^(n-i-1)) mod N
         bigint aj = modpow(a, j, N);
         // apply the controlled modular multiplication
+        // NOTE: this is not the most efficient implementation; a better
+        // approach is to decompose this gate into 1- and 2-qubit gates
         psi = applyCTRL(psi, gt.MODMUL(aj, N, n), {i}, second_subsys);
     }
 

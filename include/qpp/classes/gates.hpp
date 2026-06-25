@@ -315,28 +315,23 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
         // END EXCEPTION CHECKS
 
         // minimum number of qubits required to implement the gate
-        idx D = internal::ipow_rounded<idx>(2, n);
+        const idx D = idx{1} << n;
 
         cmat result = cmat::Zero(D, D);
 
 #ifdef QPP_OPENMP
-#pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
-       // column major order for speed
+#pragma omp parallel for
+#endif
         for (idx j = 0; j < N; ++j) {
-            for (idx i = 0; i < N; ++i) {
-                if (static_cast<idx>(modmul(static_cast<bigint>(j),
-                                            static_cast<bigint>(a),
-                                            static_cast<bigint>(N))) == i) {
-                    result(i, j) = 1;
-                }
-            }
+            result(static_cast<idx>(modmul(static_cast<bigint>(j),
+                                           static_cast<bigint>(a),
+                                           static_cast<bigint>(N))),
+                   j) = 1;
         }
 
 #ifdef QPP_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
-       // complete the matrix
+#endif
         for (idx i = N; i < D; ++i) {
             result(i, i) = 1;
         }
