@@ -548,16 +548,14 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             case GType::TWO:
             case GType::THREE:
             case GType::JOINT:
-                qeng_st_.qstate_ =
-                    apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
-                          target_rel_pos, d);
+                apply_inplace(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
+                              target_rel_pos, d);
                 break;
             case GType::FAN:
                 for (idx m = 0; m < static_cast<idx>(gate_step.target_.size());
                      ++m) {
-                    qeng_st_.qstate_ =
-                        apply(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
-                              {target_rel_pos[m]}, d);
+                    apply_inplace(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
+                                  {target_rel_pos[m]}, d);
                 }
                 break;
             default:
@@ -568,14 +566,13 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         if (QCircuit::is_CTRL(gate_step)) {
             ctrl_rel_pos = get_relative_pos_(gate_step.ctrl_.value());
             bool is_fan = (gate_step.gate_type_ == GType::CTRL_FAN);
-            qeng_st_.qstate_ =
-                is_fan
-                    ? applyCTRL_fan(qeng_st_.qstate_,
+            is_fan
+                ? applyCTRL_fan_inplace(
+                      qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
+                      ctrl_rel_pos, target_rel_pos, d, gate_step.shift_)
+                : applyCTRL_inplace(qeng_st_.qstate_,
                                     h_tbl[gate_step.gate_hash_], ctrl_rel_pos,
-                                    target_rel_pos, d, gate_step.shift_)
-                    : applyCTRL(qeng_st_.qstate_, h_tbl[gate_step.gate_hash_],
-                                ctrl_rel_pos, target_rel_pos, d,
-                                gate_step.shift_);
+                                    target_rel_pos, d, gate_step.shift_);
         }
 
         // classically-controlled gate
@@ -617,14 +614,12 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
                 cmat U = powm(h_tbl[gate_step.gate_hash_], first_dit);
                 if (is_fan) {
                     for (idx qudit : target_rel_pos) {
-                        qeng_st_.qstate_ =
-                            apply(qeng_st_.qstate_, U, {qudit}, d);
+                        apply_inplace(qeng_st_.qstate_, U, {qudit}, d);
                     }
                 } else {
-                    qeng_st_.qstate_ =
-                        apply(qeng_st_.qstate_,
-                              powm(h_tbl[gate_step.gate_hash_], first_dit),
-                              target_rel_pos, d);
+                    apply_inplace(qeng_st_.qstate_,
+                                  powm(h_tbl[gate_step.gate_hash_], first_dit),
+                                  target_rel_pos, d);
                 }
             }
         } // end if classically-controlled gate
