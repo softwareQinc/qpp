@@ -95,7 +95,7 @@ apply_psi_1q_inplace(Eigen::MatrixBase<Derived1>& state,
     if (a00 == a01 && a00 == a10 && a11 == -a00) {
 #ifdef QPP_OPENMP
 #pragma omp parallel for collapse(2) if (D >= 65536) // 16 qubits
-#endif                                              // QPP_OPENMP
+#endif                                               // QPP_OPENMP
         for (idx L = 0; L < D; L += jump) {
             for (idx R = 0; R < step; ++R) {
                 const idx k0 = L + R;
@@ -120,7 +120,7 @@ apply_psi_1q_inplace(Eigen::MatrixBase<Derived1>& state,
 // outer block loop, which matters when the target qubit is high-order and there
 // are only a few large blocks.
 #pragma omp parallel for collapse(2) if (D >= 65536) // 16 qubits
-#endif                                              // QPP_OPENMP
+#endif                                               // QPP_OPENMP
     for (idx L = 0; L < D; L += jump) {
         // The inner loop (R) iterates over the lower part of the block, from 0
         // to (step - 1).
