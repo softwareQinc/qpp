@@ -15,6 +15,34 @@ using namespace qpp;
 ///       const std::vector<idx>& dims)
 TEST(qpp_apply, Qudits) {
     // pure states
+    idx d = 3;
+    // 1 qudit
+
+    // 2 qudits
+    ket psi = mket({0, 0}, d) + mket({1, 0}, d) / std::sqrt(2);
+    ket result = apply(psi, gt.Xd(d), {0}, d);
+    ket expected = mket({1, 0}, d) + mket({2, 0}, d) / std::sqrt(2);
+    EXPECT_NEAR(0, norm(result - expected), 1e-5);
+
+    // 4 qudits
+
+    // mixed states
+    // 2 qudits
+    cmat rho = 0.6 * prj(mket({0, 0}, d) + mket({1, 0}, d) / std::sqrt(2)) +
+               0.4 * prj(mket({0, 1}, d) + mket({1, 1}, d) / std::sqrt(2));
+    cmat result_rho = apply(rho, gt.Xd(d), {0}, d);
+    cmat expected_rho =
+        0.6 * prj(mket({1, 0}, d) + mket({2, 0}, d) / std::sqrt(2)) +
+        0.4 * prj(mket({1, 1}, d) + mket({2, 1}, d) / std::sqrt(2));
+    EXPECT_NEAR(0, norm(result_rho - expected_rho), 1e-5);
+}
+
+/// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
+///       apply(const Eigen::MatrixBase<Derived1>& state,
+///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& target,
+///       idx d = 2)
+TEST(qpp_apply, Qubits) {
+    // pure states
     // 1 qubit
     ket psi = 1_ket;
     // X, Y, Z and H
@@ -50,34 +78,7 @@ TEST(qpp_apply, Qudits) {
     EXPECT_EQ(0.8 * 0010_ket - 0.6 * 1101_ket, resultXZ);
     ket resultTOF = apply(psi, gt.TOF, {1, 2, 0}, {2, 2, 2, 2});
     EXPECT_EQ(0.8 * 0000_ket + 0.6 * 0111_ket, resultTOF);
-
-    idx d = 3;
-    // 1 qudit
-
-    // 2 qudits
-    psi = mket({0, 0}, d) + mket({1, 0}, d) / std::sqrt(2);
-    ket result = apply(psi, gt.Xd(d), {0}, d);
-    ket expected = mket({1, 0}, d) + mket({2, 0}, d) / std::sqrt(2);
-    EXPECT_NEAR(0, norm(result - expected), 1e-5);
-
-    // 4 qudits
-
-    // mixed states
-    // 2 qudits
-    cmat rho = 0.6 * prj(mket({0, 0}, d) + mket({1, 0}, d) / std::sqrt(2)) +
-               0.4 * prj(mket({0, 1}, d) + mket({1, 1}, d) / std::sqrt(2));
-    cmat result_rho = apply(rho, gt.Xd(d), {0}, d);
-    cmat expected_rho =
-        0.6 * prj(mket({1, 0}, d) + mket({2, 0}, d) / std::sqrt(2)) +
-        0.4 * prj(mket({1, 1}, d) + mket({2, 1}, d) / std::sqrt(2));
-    EXPECT_NEAR(0, norm(result_rho - expected_rho), 1e-5);
 }
-
-/// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
-///       apply(const Eigen::MatrixBase<Derived1>& state,
-///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& target,
-///       idx d = 2)
-TEST(qpp_apply, Qubits) {}
 
 /// BEGIN template <typename Derived> cmat apply(
 ///       const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)

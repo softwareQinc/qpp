@@ -41,8 +41,8 @@ TEST(QuditCtrlDiagTest, InPlaceApplication) {
     using namespace std::complex_literals;
     Eigen::VectorXcd A(d);
     A(0) = 1.0;
-    A(1) = std::exp(1i * M_PI / 4.0);
-    A(2) = std::exp(1i * M_PI / 2.0);
+    A(1) = std::exp(1i * pi / 4.0);
+    A(2) = std::exp(1i * pi / 2.0);
 
     // 4. Call your function
     apply_ctrl_psi_kq_diag_inplace(state, A, ctrl, target, shift, d, n);
@@ -157,8 +157,8 @@ TEST(QuditCtrlDensityMatrixTest, SuperpositionDensityMatrix) {
     using namespace std::complex_literals;
     Eigen::VectorXcd A(d);
     A(0) = 1.0;
-    A(1) = std::exp(1i * M_PI / 4.0);
-    A(2) = std::exp(1i * M_PI / 2.0);
+    A(1) = std::exp(1i * pi / 4.0);
+    A(2) = std::exp(1i * pi / 2.0);
 
     // 4. Call your density matrix function
     apply_ctrl_rho_kq_diag_inplace(rho, A, ctrl, target, shift, d, n);
