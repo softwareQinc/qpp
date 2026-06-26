@@ -588,8 +588,6 @@ apply_ctrl_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     }
 
     // Input Validation
-    assert(target.size() == 1 &&
-           "This optimized function only supports 1 target qudit");
     assert(d >= 2 && "Qudit dimension must be at least 2");
     assert(static_cast<idx>(A.size()) == d &&
            "Gate A must have exactly d elements");
@@ -598,16 +596,12 @@ apply_ctrl_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 
 #ifndef NDEBUG
     const idx D = d_pow[n];
-    assert(target[0] < n && "Target qudit index must be less than n");
     assert(static_cast<idx>(state.rows()) == D &&
            static_cast<idx>(state.cols()) == D &&
            "State must be a d^n x d^n matrix");
 
-    std::set<idx> target_set(target.begin(), target.end());
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
-        assert(c < n && target_set.find(c) == target_set.end() &&
-               "Control/Target overlap");
         assert(shift[c_idx] < d && "Shift must be less than d");
     }
 #endif
