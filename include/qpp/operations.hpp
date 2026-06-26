@@ -523,17 +523,14 @@ template <typename Derived1, typename Derived2>
                     internal::kernels::qubit::apply_psi_1q_diag_inplace(
                         state, A, target[0], n);
                     break;
-
                 case 2:
                     internal::kernels::qubit::apply_psi_2q_diag_inplace(
                         state, A, target[0], target[1], n);
                     break;
-
                 case 3:
                     internal::kernels::qubit::apply_psi_3q_diag_inplace(
                         state, A, target[0], target[1], target[2], n);
                     break;
-
                 default:
                     internal::kernels::qubit::apply_psi_kq_diag_inplace(
                         state, A, target, n);
@@ -547,17 +544,14 @@ template <typename Derived1, typename Derived2>
                     internal::kernels::qubit::apply_rho_1q_diag_inplace(
                         state, A, target[0], n);
                     break;
-
                 case 2:
                     internal::kernels::qubit::apply_rho_2q_diag_inplace(
                         state, A, target[0], target[1], n);
                     break;
-
                 case 3:
                     internal::kernels::qubit::apply_rho_3q_diag_inplace(
                         state, A, target[0], target[1], target[2], n);
                     break;
-
                 default:
                     internal::kernels::qubit::apply_rho_kq_diag_inplace(
                         state, A, target, n);
@@ -1326,6 +1320,7 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
                     break;
             }
         }
+        return;
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
 
