@@ -23,6 +23,7 @@ int main() {
     // 2^n >= 2 * r^2, i.e., n = ceil(log2(2 * r^2))
     auto n = static_cast<idx>(std::ceil(2 * std::log2(N)));
     auto D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
+    auto threshold = 1. / std::pow(2, (static_cast<realT>(n) - 1.) / 2.);
 
     std::cout << ">> Factoring N = " << N << " with coprime a = " << a << '\n';
     std::cout << ">> Using 2*n = " << 2 * n << " qubits, 2^n = " << D
@@ -81,9 +82,12 @@ int main() {
     bigint r1 = 0, c1 = 0;
     for (auto&& elem : convergents(x1, 10)) {
         std::tie(c1, r1) = elem;
+        // skip trivial result (r=1) to ensure we find a valid period
+        if (r1 <= 1) {
+            continue;
+        }
         auto c1r1 = static_cast<realT>(c1) / static_cast<realT>(r1);
-        if (abs(x1 - c1r1) <
-            1. / std::pow(2, (static_cast<realT>(n) - 1.) / 2.)) {
+        if (abs(x1 - c1r1) < threshold) {
             failed = false;
             break;
         }
@@ -95,27 +99,26 @@ int main() {
     // END FIRST MEASUREMENT STAGE
 
     // SECOND MEASUREMENT STAGE
-    auto measured2 = measure_seq(psi, first_subsys); // measure first n qubits
-    std::vector<idx> vect_results2 =
-        std::get<measure_idx::res>(measured2); // results
-    realT prob2 = prod(
-        std::get<measure_idx::prob>(measured2)); // probability of the result
-    idx n2 = multiidx2n(vect_results2, std::vector<idx>(n, 2)); // binary to int
-    auto x2 = static_cast<realT>(n2) / static_cast<realT>(D); // multiple of 1/r
+    auto measured2 = measure_seq(psi, first_subsys);
+    std::vector<idx> vect_results2 = std::get<measure_idx::res>(measured2);
+    realT prob2 = prod(std::get<measure_idx::prob>(measured2));
+    idx n2 = multiidx2n(vect_results2, std::vector<idx>(n, 2));
+    auto x2 = static_cast<realT>(n2) / static_cast<realT>(D);
 
     std::cout << ">> Second measurement: "
               << disp(vect_results2, IOManipContainerOpts{}.set_sep(" "))
-              << ", ";
-    std::cout << "i.e., j = " << n2 << " with probability " << prob2;
-    std::cout << '\n';
+              << ", i.e., j = " << n2 << " with probability " << prob2 << '\n';
 
     failed = true;
     idx r2 = 0, c2 = 0;
     for (auto&& elem : convergents(x2, 10)) {
         std::tie(c2, r2) = elem;
+        // skip trivial result (r=1) to ensure we find a valid period
+        if (r2 <= 1) {
+            continue;
+        }
         auto c2r2 = static_cast<realT>(c2) / static_cast<realT>(r2);
-        if (abs(x2 - c2r2) <
-            1. / std::pow(2, (static_cast<realT>(n) - 1.) / 2.)) {
+        if (std::abs(static_cast<long double>(x2) - c2r2) < threshold) {
             failed = false;
             break;
         }
