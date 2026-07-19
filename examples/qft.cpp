@@ -15,8 +15,8 @@ int main() {
     ket psi = mket(qubits);
     ket result = psi;
 
-    idx n = qubits.size();                                   // number of qubits
-    auto D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
+    idx n = qubits.size(); // number of qubits
+    auto D = idx{1} << n;  // dimension 2^n
     std::cout << ">> QFT on n = " << n << " qubits. ";
 
     std::cout << "The sequence of applied gates is:\n";
@@ -26,7 +26,7 @@ int main() {
         // apply controlled rotations
         for (idx j = 2; j <= n - i; ++j) {
             cmat Rj(2, 1);
-            auto pow_j = static_cast<idx>(std::llround(std::pow(2, j)));
+            auto pow_j = idx{1} << j;
             Rj << 1, omega(pow_j);
             result = applyCTRL_diag(result, Rj, {i + j - 1}, {i});
             std::cout << "R" << j << "(" << i + j - 1 << ", " << i << ") ";

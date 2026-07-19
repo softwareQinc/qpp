@@ -1,154 +1,200 @@
 // Source: ./examples/shor.cpp
 //
-// Shor's algorithm
+// Implementation of Shor's quantum algorithm for integer factorization.
+// Shor's algorithm finds the prime factors of an integer N by reducing the
+// factorization problem to the problem of order-finding (finding the period
+// 'r' of a function f(x) = a^x mod N).
 
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
-#include <tuple>
+#include <optional>
 #include <vector>
 
 #include <qpp/qpp.hpp>
 
+// performs continued fraction expansion to recover a candidate period 'r' from
+// the measured phase value x = j/D
+std::optional<qpp::bigint> get_candidate_period(qpp::realT x,
+                                                qpp::realT threshold) {
+    using namespace qpp;
+    for (auto [numerator, denominator] : convergents(x, 10)) {
+        // skip trivial results where the denominator is 1 or less
+        if (denominator <= 1) {
+            continue;
+        }
+        realT approximation =
+            static_cast<realT>(numerator) / static_cast<realT>(denominator);
+
+        // check if the convergent is within the allowed heuristic threshold
+        if (std::abs(static_cast<long double>(x) - approximation) < threshold) {
+            return denominator;
+        }
+    }
+
+    return std::nullopt;
+}
+
+// structure to hold data returned from a quantum register measurement
+struct MeasurementResult {
+    std::vector<qpp::idx> bit_string; // raw measurement outcome (qubit states)
+    qpp::idx integer_value; // base-10 integer represented by the bit string
+    qpp::realT probability; // probability of observing this specific outcome
+    qpp::bigint period_candidate; // period 'r' derived from the measurement
+};
+
+// performs a quantum measurement on the first register and attempts to
+// extract a candidate period using continued fractions
+std::optional<MeasurementResult>
+perform_measurement(qpp::ket& psi, const std::vector<qpp::idx>& subsys,
+                    qpp::idx n, qpp::idx D, qpp::realT threshold) {
+    using namespace qpp;
+    // perform measurement on the specified qubits
+    auto measurement_data = measure_seq(psi, subsys);
+    std::vector<idx> bit_string = std::get<measure_idx::res>(measurement_data);
+    idx integer_value = multiidx2n(bit_string, std::vector<idx>(n, 2));
+    realT probability = prod(std::get<measure_idx::prob>(measurement_data));
+
+    // calculate the phase x = j / 2^n
+    realT x = static_cast<realT>(integer_value) / static_cast<realT>(D);
+
+    // attempt to recover the period 'r'
+    if (auto r = get_candidate_period(x, threshold)) {
+        return MeasurementResult{bit_string, integer_value, probability,
+                                 r.value()};
+    }
+
+    return std::nullopt;
+}
+
+// classical post-processing: attempts to extract non-trivial factors of N
+// using the candidate period 'r'
+std::optional<std::pair<qpp::bigint, qpp::bigint>>
+find_factors(qpp::bigint a, qpp::bigint N, qpp::idx r) {
+    using namespace qpp;
+    // if r is odd, the algorithm cannot proceed
+    if (r % 2 != 0) {
+        return std::nullopt;
+    }
+
+    // check if a^(r/2) + 1 is a multiple of N (which yields a trivial factor)
+    bigint val = modpow(a, static_cast<bigint>(r / 2), N);
+    if (val == static_cast<bigint>(N - 1)) {
+        return std::nullopt;
+    }
+
+    // use GCD to find candidate factors
+    bigint p = gcd(val - 1, N);
+    bigint q = gcd(val + 1, N);
+
+    // ensure p and q are properly resolved if one resulted in a trivial GCD
+    if (p == 1) {
+        p = N / q;
+    }
+    if (q == 1) {
+        q = N / p;
+    }
+
+    // verify the factors are non-trivial (1 < factor < N)
+    if (p > 1 && p < N && q > 1 && q < N) {
+        return std::make_pair(p, q);
+    }
+
+    return std::nullopt;
+}
+
 int main() {
     using namespace qpp;
-
-    bigint N = 21;                   // number to factor
-    auto a = rand<bigint>(3, N - 1); // random co-prime with N
+    bigint N = 21;                   // the number to factor
+    auto a = rand<bigint>(3, N - 1); // select a random 'a' co-prime with N
     while (gcd(a, N) != 1) {
         a = rand<bigint>(3, N - 1);
     }
-    // qubits required for half of the circuit, in total we need 2n qubits
-    // if you know the order 'r' of 'a', then you can take the smallest 'n' s.t.
-    // 2^n >= 2 * r^2, i.e., n = ceil(log2(2 * r^2))
+
+    // register size: n is number of qubits, total qubits used is 2n
+    // we need 2^n >= 2 * r^2 to guarantee precision for period finding
     auto n = static_cast<idx>(std::ceil(2 * std::log2(N)));
-    auto D = static_cast<idx>(std::llround(std::pow(2, n))); // dimension 2^n
+    auto D = idx{1} << n;
+
+    // heuristic threshold for continued fraction convergence
+    // std::pow is used instead of bit shifting to preserve fractional powers
+    // when the exponent calculation results in a non-integer value
     auto threshold = 1. / std::pow(2, (static_cast<realT>(n) - 1.) / 2.);
 
     std::cout << ">> Factoring N = " << N << " with coprime a = " << a << '\n';
     std::cout << ">> Using 2*n = " << 2 * n << " qubits, 2^n = " << D
               << " and 2^(2n) = " << D * D << '\n';
 
-    // vector with labels of the first half of the qubits
-    std::vector<idx> first_subsys(n);
-    std::iota(std::begin(first_subsys), std::end(first_subsys), 0);
-
-    // vector with labels of the second half of the qubits
-    std::vector<idx> second_subsys(n);
-    std::iota(std::begin(second_subsys), std::end(second_subsys), n);
+    // map qubits to the first and second registers
+    std::vector<idx> first_subsys(n), second_subsys(n);
+    std::iota(first_subsys.begin(), first_subsys.end(), 0);
+    std::iota(second_subsys.begin(), second_subsys.end(), n);
 
     // QUANTUM STAGE
-    // prepare the initial state |0>^\otimes n \otimes |0...01>
-    ket psi = kron(st.zero(2 * n - 1), 1_ket);
+    // initialize: First register |0...0> (size n), Second register |0...01>
+    // (size n)
+    ket psi = kron(st.zero((2 * n) - 1), 1_ket);
 
-    // apply Hadamards H^\otimes n on first half of the qubits
+    // apply Hadamards to the first register to create a uniform superposition
     for (idx i = 0; i < n; ++i) {
         psi = apply(psi, gt.H, {i});
     }
 
-    // perform the modular exponentiation as a sequence of
-    // modular multiplications
+    // modular exponentiation: perform controlled-U^j operations
     for (idx i = 0; i < n; ++i) {
-        // compute 2^(n-i-1) mod N
-        bigint j = std::llround(std::pow(2, n - i - 1));
-        // compute the a^(2^(n-i-1)) mod N
+        bigint j = idx{1} << (n - i - 1);
         bigint aj = modpow(a, j, N);
-        // apply the controlled modular multiplication
-        // NOTE: this is not the most efficient implementation; a better
-        // approach is to decompose this gate into 1- and 2-qubit gates
+
+        // apply controlled modular multiplication (U^j)
+        // NOTE: in a production circuit, this would be decomposed into base
+        // gates.
         psi = applyCTRL(psi, gt.MODMUL(aj, N, n), {i}, second_subsys);
     }
 
-    // apply inverse QFT on first half of the qubits
+    // apply Inverse Quantum Fourier Transform to the first register
     psi = applyTFQ(psi, first_subsys);
-    // END QUANTUM STAGE
 
-    // FIRST MEASUREMENT STAGE
-    auto measured1 = measure_seq(psi, first_subsys); // measure first n qubits
-    std::vector<idx> vect_results1 =
-        std::get<measure_idx::res>(measured1); // results
-    realT prob1 = prod(
-        std::get<measure_idx::prob>(measured1)); // probability of the result
-    idx n1 = multiidx2n(vect_results1, std::vector<idx>(n, 2)); // binary to int
-    auto x1 = static_cast<realT>(n1) / static_cast<realT>(D); // multiple of 1/r
-
-    std::cout << ">> First measurement:  "
-              << disp(vect_results1, IOManipContainerOpts{}.set_sep(" "))
-              << ", ";
-    std::cout << "i.e., j = " << n1 << " with probability " << prob1;
-    std::cout << '\n';
-
-    bool failed = true;
-    bigint r1 = 0, c1 = 0;
-    for (auto&& elem : convergents(x1, 10)) {
-        std::tie(c1, r1) = elem;
-        // skip trivial result (r=1) to ensure we find a valid period
-        if (r1 <= 1) {
-            continue;
-        }
-        auto c1r1 = static_cast<realT>(c1) / static_cast<realT>(r1);
-        if (abs(x1 - c1r1) < threshold) {
-            failed = false;
-            break;
-        }
-    }
-    if (failed) {
+    // MEASUREMENT STAGE 1
+    // measure the first register and attempt to derive the period 'r'
+    auto m1 = perform_measurement(psi, first_subsys, n, D, threshold);
+    if (!m1) {
         std::cout << ">> Factoring failed at stage 1, please try again!\n";
         std::exit(EXIT_FAILURE);
     }
-    // END FIRST MEASUREMENT STAGE
+    std::cout << ">> First measurement:  "
+              << disp(m1->bit_string, IOManipContainerOpts{}.set_sep(" "))
+              << " (j = " << m1->integer_value << ") with probability "
+              << m1->probability << '\n';
 
-    // SECOND MEASUREMENT STAGE
-    auto measured2 = measure_seq(psi, first_subsys);
-    std::vector<idx> vect_results2 = std::get<measure_idx::res>(measured2);
-    realT prob2 = prod(std::get<measure_idx::prob>(measured2));
-    idx n2 = multiidx2n(vect_results2, std::vector<idx>(n, 2));
-    auto x2 = static_cast<realT>(n2) / static_cast<realT>(D);
-
-    std::cout << ">> Second measurement: "
-              << disp(vect_results2, IOManipContainerOpts{}.set_sep(" "))
-              << ", i.e., j = " << n2 << " with probability " << prob2 << '\n';
-
-    failed = true;
-    idx r2 = 0, c2 = 0;
-    for (auto&& elem : convergents(x2, 10)) {
-        std::tie(c2, r2) = elem;
-        // skip trivial result (r=1) to ensure we find a valid period
-        if (r2 <= 1) {
-            continue;
-        }
-        auto c2r2 = static_cast<realT>(c2) / static_cast<realT>(r2);
-        if (std::abs(static_cast<long double>(x2) - c2r2) < threshold) {
-            failed = false;
-            break;
-        }
-    }
-    if (failed) {
+    // MEASUREMENT STAGE 2
+    // repeat measurement to acquire a second candidate period
+    auto m2 = perform_measurement(psi, first_subsys, n, D, threshold);
+    if (!m2) {
         std::cout << ">> Factoring failed at stage 2, please try again!\n";
         std::exit(EXIT_FAILURE);
     }
-    // END SECOND MEASUREMENT STAGE
+    std::cout << ">> Second measurement: "
+              << disp(m2->bit_string, IOManipContainerOpts{}.set_sep(" "))
+              << " (j = " << m2->integer_value << ") with probability "
+              << m2->probability << '\n';
 
-    // THIRD POST-PROCESSING STAGE
-    idx r = lcm(r1, static_cast<bigint>(r2)); // candidate order of a mod N
+    // POST-PROCESSING STAGE 3
+    // combine periods using Least Common Multiple (LCM) to improve success
+    // probability
+    bigint r1 = m1->period_candidate;
+    bigint r2 = m2->period_candidate;
+    idx r = lcm(r1, r2);
+
     std::cout << ">> r = " << r
               << ", a^r mod N = " << modpow(a, static_cast<bigint>(r), N)
               << '\n';
-    if (r % 2 == 0 && modpow(a, static_cast<bigint>(r / 2), N) !=
-                          static_cast<bigint>(N - 1)) {
-        // at least one of those is a non-trivial factor
-        bigint p = gcd(modpow(a, static_cast<bigint>(r / 2), N) - 1, N);
-        bigint q = gcd(modpow(a, static_cast<bigint>(r / 2), N) + 1, N);
-        if (p == 1) {
-            p = N / q;
-        }
-        if (q == 1) {
-            q = N / p;
-        }
+
+    // use the period to identify the factors
+    if (auto factors = find_factors(a, N, r)) {
+        auto [p, q] = factors.value();
         std::cout << ">> Factors: " << p << " " << q << '\n';
     } else {
         std::cout << ">> Factoring failed at stage 3, please try again!\n";
         std::exit(EXIT_FAILURE);
     }
-    // END THIRD POST-PROCESSING STAGE
 }

@@ -20,8 +20,7 @@ int main() {
     std::vector<idx> subsys(n);  // ordered subsystems
     std::iota(std::begin(subsys), std::end(subsys), 0);
 
-    // number of elements in the database
-    auto N = static_cast<idx>(std::llround(std::pow(2, n)));
+    auto N = idx{1} << n; // number of elements in the database
     std::cout << ">> Database size: " << N << '\n';
 
     // mark an element randomly
