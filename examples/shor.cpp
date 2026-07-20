@@ -46,7 +46,7 @@ struct MeasurementResult {
 // performs a quantum measurement on the first register and attempts to
 // extract a candidate period using continued fractions
 std::optional<MeasurementResult>
-perform_measurement(qpp::ket& psi, const std::vector<qpp::idx>& subsys,
+perform_measurement(const qpp::ket& psi, const std::vector<qpp::idx>& subsys,
                     qpp::idx n, qpp::idx D, qpp::realT threshold) {
     using namespace qpp;
     // perform measurement on the specified qubits
