@@ -2,6 +2,7 @@
 //
 // MATLAB input/output
 
+#include <filesystem>
 #include <iostream>
 
 #include <qpp/qpp.hpp>
