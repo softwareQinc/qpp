@@ -11,7 +11,7 @@ from . import gates
 from . import qasm
 from . import random_devices
 from . import states
-__all__: list[str] = ['BitCircuit', 'CondWhile', 'DynamicBitset', 'QCircuit', 'QDensityDummyEngine', 'QDensityEngine', 'QDensityNoisyEngine', 'QEngine', 'QFT', 'QFT_inplace', 'QKetDummyEngine', 'QKetEngine', 'QKetNoisyEngine', 'QNoisyEngine', 'QubitAmplitudeDampingNoise', 'QubitBitFlipNoise', 'QubitBitPhaseFlipNoise', 'QubitDepolarizingNoise', 'QubitPhaseDampingNoise', 'QubitPhaseFlipNoise', 'QuditDepolarizingNoise', 'TFQ', 'TFQ_inplace', 'absm', 'abssq', 'adjoint', 'anticomm', 'apply', 'applyCTRL', 'applyCTRL_diag', 'applyCTRL_diag_inplace', 'applyCTRL_fan', 'applyCTRL_fan_inplace', 'applyCTRL_inplace', 'applyQFT', 'applyQFT_inplace', 'applyTFQ', 'applyTFQ_inplace', 'apply_diag', 'apply_diag_inplace', 'apply_inplace', 'as_mutable', 'avg', 'bernoulli', 'bloch2rho', 'choi2kraus', 'choi2super', 'codes', 'comm', 'complement', 'compose_CTRL_circuit', 'compose_circuit', 'compperm', 'concurrence', 'conjugate', 'const_proxy_to_engine_dits', 'contfrac2x', 'convergents', 'cor', 'cosm', 'couple_circuit_left', 'couple_circuit_right', 'cov', 'det', 'dirac', 'dirac_t', 'dirsum', 'dirsumpow', 'discard', 'ee', 'egcd', 'eig', 'entanglement', 'entropy', 'evals', 'evects', 'expm', 'factors', 'funm', 'gates', 'gcd', 'gconcurrence', 'grams', 'hash_eigen', 'heig', 'hevals', 'hevects', 'infty', 'inverse', 'invperm', 'ip', 'isprime', 'kraus2choi', 'kraus2super', 'kron', 'kronpow', 'lcm', 'load_cmat', 'load_rmat', 'logdet', 'logm', 'lognegativity', 'marginalX', 'marginalY', 'measure', 'measure_seq', 'mket', 'modinv', 'modmul', 'modpow', 'mprj', 'multiidx2n', 'n2multiidx', 'negativity', 'norm', 'normalize', 'omega', 'pi', 'powm', 'prj', 'prod', 'proxy_to_engine_dits', 'ptrace', 'ptrace1', 'ptrace2', 'ptranspose', 'qRAM', 'qasm', 'qmutualinfo', 'qpe_circuit', 'rand', 'randH', 'randU', 'randV', 'randidx', 'randket', 'randkraus', 'randn', 'random_circuit_count', 'random_circuit_depth', 'random_devices', 'randperm', 'randprime', 'randprob', 'randrho', 'renyi', 'replicate', 'reset', 'reshape', 'rho2bloch', 'rho2pure', 'sample', 'save', 'schatten', 'schmidt', 'schmidtA', 'schmidtB', 'schmidtcoeffs', 'schmidtprobs', 'set_prng_seed', 'sigma', 'sinm', 'spectralpowm', 'sqrtm', 'states', 'sum', 'super2choi', 'super2kraus', 'svals', 'svd', 'svdU', 'svdV', 'syspermute', 'trace', 'transpose', 'tsallis', 'uniform', 'var', 'x2contfrac', 'zket2dits']
+__all__: list[str] = ['BitCircuit', 'CondWhile', 'DynamicBitset', 'QCircuit', 'QDensityDummyEngine', 'QDensityEngine', 'QDensityNoisyEngine', 'QEngine', 'QFT', 'QFT_inplace', 'QKetDummyEngine', 'QKetEngine', 'QKetNoisyEngine', 'QNoisyEngine', 'QubitAmplitudeDampingNoise', 'QubitBitFlipNoise', 'QubitBitPhaseFlipNoise', 'QubitDepolarizingNoise', 'QubitPhaseDampingNoise', 'QubitPhaseFlipNoise', 'QuditDepolarizingNoise', 'TFQ', 'TFQ_inplace', 'absm', 'abssq', 'adjoint', 'anticomm', 'apply', 'applyCTRL', 'applyCTRL_diag', 'applyCTRL_diag_inplace', 'applyCTRL_fan', 'applyCTRL_fan_inplace', 'applyCTRL_inplace', 'applyQFT', 'applyQFT_inplace', 'applyTFQ', 'applyTFQ_inplace', 'apply_diag', 'apply_diag_inplace', 'apply_inplace', 'as_mutable', 'avg', 'bernoulli', 'bloch2rho', 'choi2kraus', 'choi2super', 'codes', 'comm', 'complement', 'compose_CTRL_circuit', 'compose_circuit', 'compperm', 'concurrence', 'conjugate', 'const_proxy_to_engine_dits', 'contfrac2x', 'convergents', 'cor', 'cosm', 'couple_circuit_left', 'couple_circuit_right', 'cov', 'det', 'dirac', 'dirac_t', 'dirsum', 'dirsumpow', 'discard', 'ee', 'egcd', 'eig', 'entanglement', 'entropy', 'evals', 'evects', 'expm', 'factors', 'fidelity', 'funm', 'gates', 'gcd', 'gconcurrence', 'grams', 'hash_eigen', 'heig', 'hevals', 'hevects', 'infty', 'inverse', 'invperm', 'ip', 'isprime', 'kraus2choi', 'kraus2super', 'kron', 'kronpow', 'lcm', 'load_cmat', 'load_rmat', 'logdet', 'logm', 'lognegativity', 'marginalX', 'marginalY', 'measure', 'measure_seq', 'mket', 'modinv', 'modmul', 'modpow', 'mprj', 'multiidx2n', 'n2multiidx', 'negativity', 'norm', 'normalize', 'omega', 'pi', 'powm', 'prj', 'prod', 'proxy_to_engine_dits', 'ptrace', 'ptrace1', 'ptrace2', 'ptranspose', 'purity', 'qRAM', 'qasm', 'qmutualinfo', 'qpe_circuit', 'rand', 'randH', 'randU', 'randV', 'randidx', 'randket', 'randkraus', 'randn', 'random_circuit_count', 'random_circuit_depth', 'random_devices', 'randperm', 'randprime', 'randprob', 'randrho', 'renyi', 'replicate', 'reset', 'reshape', 'rho2bloch', 'rho2pure', 'sample', 'save', 'schatten', 'schmidt', 'schmidtA', 'schmidtB', 'schmidtcoeffs', 'schmidtprobs', 'set_prng_seed', 'sigma', 'sinm', 'spectralpowm', 'sqrtm', 'states', 'sum', 'super2choi', 'super2kraus', 'svals', 'svd', 'svdU', 'svdV', 'syspermute', 'trace', 'trace_distance', 'transpose', 'tsallis', 'uniform', 'var', 'x2contfrac', 'zket2dits']
 class BitCircuit(DynamicBitset):
     __hash__: typing.ClassVar[None] = None
     def CNOT(self, ctrl: typing.SupportsInt | typing.SupportsIndex, target: typing.SupportsInt | typing.SupportsIndex) -> BitCircuit:
@@ -1687,6 +1687,10 @@ def factors(arg0: typing.SupportsInt | typing.SupportsIndex) -> list[int]:
     """
     Prime factor decomposition of an integer
     """
+def fidelity(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], B: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"]) -> float:
+    """
+    Quantum fidelity (not squared) between kets or density matrices
+    """
 def funm(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], f: std::__1::complex<double> (std::__1::complex<double> const&)) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """
     Applies the scalar function f to the eigenvalues of matrix A
@@ -1967,6 +1971,10 @@ def ptranspose(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m
     """
     Partial transpose of the multi-partite state vector or density matrix over the list target of subsystems, assuming uniform subsystem dimensions
     """
+def purity(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"]) -> float:
+    """
+    Purity of a ket or density matrix
+    """
 @typing.overload
 def qRAM(psi: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"], data: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], DqRAM: typing.SupportsInt | typing.SupportsIndex) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, 1]"]:
     """
@@ -2234,6 +2242,10 @@ def syspermute(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m
 def trace(arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"]) -> complex:
     """
     Trace
+    """
+def trace_distance(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], B: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"]) -> float:
+    """
+    Trace distance between kets or density matrices
     """
 def transpose(arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"]) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """

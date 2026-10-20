@@ -17,6 +17,10 @@
 - Replaced the unscoped measurement-result enum in
   [`qpp/constants.hpp`](include/qpp/constants.hpp) with the `measure_idx`
   namespace
+- Implemented `qpp::fidelity()`, `qpp::trace_distance()`, and
+  `qpp::purity()` in [`qpp/functions.hpp`](include/qpp/functions.hpp), for
+  kets and density matrices; the fidelity follows the Nielsen and Chuang
+  convention, i.e., it is not squared
 
 ## Version 7.0.3 - 25 March 2026
 
