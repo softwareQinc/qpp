@@ -1,3 +1,4 @@
+#include <limits>
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -555,6 +556,179 @@ TEST(qpp_kron, QCircuitAllTests) {}
 ///       bool omit_measurements = true, idx d = 2,
 ///       std::optional<std::string> name = "qpe")
 TEST(qpp_qpe_circuit, AllTests) {}
+
+/// BEGIN inline QCircuit state_prep_circuit(const ket& psi, idx d = 2,
+///       bool decompose = true,
+///       std::optional<std::string> name = "state_prep")
+TEST(qpp_state_prep_circuit, Qubits) {
+    for (idx n = 1; n <= 8; ++n) {
+        idx D = idx{1} << n;
+        ket psi = randket(D);
+        QCircuit qc = state_prep_circuit(psi);
+        EXPECT_EQ(n, qc.get_nq());
+        EXPECT_EQ(0, qc.get_nc());
+        ket result = QEngine{qc}.execute().get_state();
+        EXPECT_NEAR(0, norm(result - psi), 1e-5);
+    }
+}
+
+TEST(qpp_state_prep_circuit, KnownStates) {
+    std::vector<ket> states{st.z0,      st.z1,      st.x0,           st.x1,
+                            st.y0,      st.y1,      st.b00,          st.b01,
+                            st.b10,     st.b11,     st.GHZ,          st.W,
+                            st.plus(4), st.zero(3), mket({1, 0, 1}), st.one(5)};
+    for (auto&& psi : states) {
+        QCircuit qc = state_prep_circuit(psi);
+        ket result = QEngine{qc}.execute().get_state();
+        EXPECT_NEAR(0, norm(result - psi), 1e-5);
+    }
+
+    // global phases are reproduced exactly
+    ket psi = std::exp(1_i * 0.7) * st.GHZ;
+    QCircuit qc = state_prep_circuit(psi);
+    ket result = QEngine{qc}.execute().get_state();
+    EXPECT_NEAR(0, norm(result - psi), 1e-5);
+}
+
+TEST(qpp_state_prep_circuit, RealAmplitudes) {
+    for (idx n = 1; n <= 7; ++n) {
+        idx D = idx{1} << n;
+        ket psi = rand<rmat>(D, 1, -1, 1).cast<cplx>();
+        psi.normalize();
+        QCircuit qc = state_prep_circuit(psi);
+        ket result = QEngine{qc}.execute().get_state();
+        EXPECT_NEAR(0, norm(result - psi), 1e-5);
+        EXPECT_LE(qc.get_gate_count(gt.CNOT), D - 2);
+        // only RY rotations and CNOTs
+        for (auto&& elem : qc) {
+            auto step = elem.get_step();
+            ASSERT_TRUE(
+                std::holds_alternative<internal::QCircuitGateStep>(step));
+            auto name =
+                std::get<internal::QCircuitGateStep>(step).name_.value();
+            EXPECT_TRUE(name == "RY" || name == "CNOT");
+        }
+    }
+}
+
+TEST(qpp_state_prep_circuit, GateCountBound) {
+    for (idx n = 1; n <= 7; ++n) {
+        idx D = idx{1} << n;
+        ket psi = randket(D);
+        QCircuit qc = state_prep_circuit(psi);
+        EXPECT_LE(qc.get_gate_count(gt.CNOT), 2 * D - 4);
+    }
+}
+
+TEST(qpp_state_prep_circuit, BasisStates) {
+    for (idx n = 1; n <= 5; ++n) {
+        idx D = idx{1} << n;
+        for (idx x = 0; x < D; ++x) {
+            ket psi = ket::Zero(D);
+            psi[x] = 1;
+            QCircuit qc = state_prep_circuit(psi);
+            EXPECT_EQ(0, qc.get_gate_count(gt.CNOT));
+            ket result = QEngine{qc}.execute().get_state();
+            EXPECT_NEAR(0, norm(result - psi), 1e-5);
+
+            // with a phase
+            psi[x] = 1_i;
+            qc = state_prep_circuit(psi);
+            EXPECT_EQ(0, qc.get_gate_count(gt.CNOT));
+            result = QEngine{qc}.execute().get_state();
+            EXPECT_NEAR(0, norm(result - psi), 1e-5);
+        }
+    }
+
+    // product states require no CNOTs
+    ket psi = kron(randket(), randket(), randket(), randket());
+    QCircuit qc = state_prep_circuit(psi);
+    EXPECT_EQ(0, qc.get_gate_count(gt.CNOT));
+    ket result = QEngine{qc}.execute().get_state();
+    EXPECT_NEAR(0, norm(result - psi), 1e-5);
+}
+
+TEST(qpp_state_prep_circuit, DecomposedMatchesJoint) {
+    for (idx n = 1; n <= 6; ++n) {
+        idx D = idx{1} << n;
+        ket psi = randket(D);
+        QCircuit qc_decomposed = state_prep_circuit(psi);
+        QCircuit qc_joint = state_prep_circuit(psi, 2, false);
+        ket result_decomposed = QEngine{qc_decomposed}.execute().get_state();
+        ket result_joint = QEngine{qc_joint}.execute().get_state();
+        EXPECT_NEAR(0, norm(result_decomposed - result_joint), 1e-5);
+        EXPECT_NEAR(0, norm(result_joint - psi), 1e-5);
+    }
+}
+
+TEST(qpp_state_prep_circuit, Adjoint) {
+    for (idx n = 1; n <= 6; ++n) {
+        idx D = idx{1} << n;
+        ket psi = randket(D);
+        QCircuit qc = adjoint(state_prep_circuit(psi));
+        ket result = QEngine{qc}.reset(psi).execute().get_state();
+        EXPECT_NEAR(0, norm(result - st.zero(n)), 1e-5);
+    }
+}
+
+TEST(qpp_state_prep_circuit, DensityEngine) {
+    for (idx n = 1; n <= 5; ++n) {
+        idx D = idx{1} << n;
+        ket psi = randket(D);
+        QCircuit qc = state_prep_circuit(psi);
+        cmat result = QDensityEngine{qc}.execute().get_state();
+        EXPECT_NEAR(0, norm(result - prj(psi)), 1e-5);
+    }
+}
+
+TEST(qpp_state_prep_circuit, Qudits) {
+    for (idx d : std::vector<idx>{3, 5}) {
+        for (idx n = 1; n <= 3; ++n) {
+            idx D = internal::ipow_rounded(d, n);
+            ket psi = randket(D);
+            QCircuit qc = state_prep_circuit(psi, d);
+            EXPECT_EQ(n, qc.get_nq());
+            EXPECT_EQ(d, qc.get_d());
+            ket result = QEngine{qc}.execute().get_state();
+            EXPECT_NEAR(0, norm(result - psi), 1e-5);
+
+            // computational basis state
+            ket basis = st.jn(d - 1, n, d);
+            qc = state_prep_circuit(basis, d);
+            result = QEngine{qc}.execute().get_state();
+            EXPECT_NEAR(0, norm(result - basis), 1e-5);
+        }
+    }
+}
+
+TEST(qpp_state_prep_circuit, NearBasisStates) {
+    // small perturbations of computational basis states are not lost
+    realT tol = 100 * std::numeric_limits<realT>::epsilon();
+    for (idx d : std::vector<idx>{2, 3}) {
+        idx D = internal::ipow_rounded(d, idx{3});
+        ket psi = st.zero(3, d) + 1e-9 * randket(D);
+        psi.normalize();
+        QCircuit qc_decomposed = state_prep_circuit(psi, d);
+        QCircuit qc_joint = state_prep_circuit(psi, d, false);
+        ket result_decomposed = QEngine{qc_decomposed}.execute().get_state();
+        ket result_joint = QEngine{qc_joint}.execute().get_state();
+        EXPECT_NEAR(0, norm(result_decomposed - psi), tol);
+        EXPECT_NEAR(0, norm(result_joint - psi), tol);
+    }
+}
+
+TEST(qpp_state_prep_circuit, Exceptions) {
+    EXPECT_THROW(state_prep_circuit(ket{}), exception::ZeroSize);
+    EXPECT_THROW(state_prep_circuit(st.z0, 1), exception::DimsInvalid);
+    EXPECT_THROW(state_prep_circuit(randket(6)),
+                 exception::DimsMismatchCvector);
+    EXPECT_THROW(state_prep_circuit(randket(1)),
+                 exception::DimsMismatchCvector);
+    EXPECT_THROW(state_prep_circuit(randket(4), 3),
+                 exception::DimsMismatchCvector);
+    ket psi = 2 * randket(4);
+    EXPECT_THROW(state_prep_circuit(psi), exception::CustomException);
+}
 
 /// BEGIN inline QCircuit replicate(QCircuit qc, idx n,
 ///       std::optional<std::string> name = std::nullopt)

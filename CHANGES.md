@@ -21,6 +21,14 @@
   `qpp::purity()` in [`qpp/functions.hpp`](include/qpp/functions.hpp), for
   kets and density matrices; the fidelity follows the Nielsen and Chuang
   convention, i.e., it is not squared
+- Implemented arbitrary state preparation, `qpp::state_prep_circuit()` in
+  [`qpp/classes/qcircuit.hpp`](include/qpp/classes/qcircuit.hpp), which
+  returns a quantum circuit that prepares a given pure state from the
+  all-zero state, using Mottonen et al. uniformly controlled rotations for
+  qubits and joint block-diagonal gates for qudits, see
+  [#76](https://github.com/softwareQinc/qpp/issues/76); added
+  [`examples/circuits/state_prep_circuit.cpp`](examples/circuits/state_prep_circuit.cpp)
+  example
 
 ## Version 7.0.3 - 25 March 2026
 
