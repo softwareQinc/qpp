@@ -1,3 +1,4 @@
+#include <cmath>
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -115,6 +116,82 @@ TEST(qpp_evects, AllTests) {}
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_expm, AllTests) {}
 
+/// BEGIN template <typename Derived1, typename Derived2> realT fidelity(
+///       const Eigen::MatrixBase<Derived1>& A,
+///       const Eigen::MatrixBase<Derived2>& B)
+TEST(qpp_fidelity, PureStates) {
+    EXPECT_NEAR(1 / std::sqrt(2.), fidelity(st.z0, st.x0), 1e-5);
+    EXPECT_NEAR(0, fidelity(st.z0, st.z1), 1e-5);
+    EXPECT_NEAR(0, fidelity(st.b00, st.b11), 1e-5);
+    // global phases do not matter
+    EXPECT_NEAR(1, fidelity(st.GHZ, std::exp(1_i * 0.3) * st.GHZ), 1e-5);
+
+    for (idx D : std::vector<idx>{2, 3, 8}) {
+        ket psi = randket(D);
+        ket phi = randket(D);
+        realT F = std::abs(psi.dot(phi));
+        EXPECT_NEAR(1, fidelity(psi, psi), 1e-5);
+        EXPECT_NEAR(F, fidelity(psi, phi), 1e-5);
+        EXPECT_NEAR(F, fidelity(phi, psi), 1e-5);
+        // kets and their projectors are interchangeable
+        EXPECT_NEAR(F, fidelity(psi, prj(phi)), 1e-5);
+        EXPECT_NEAR(F, fidelity(prj(psi), phi), 1e-5);
+        EXPECT_NEAR(F, fidelity(prj(psi), prj(phi)), 1e-5);
+    }
+}
+
+TEST(qpp_fidelity, MixedStates) {
+    for (idx D : std::vector<idx>{2, 3, 8}) {
+        cmat rho = randrho(D);
+        cmat sigma = randrho(D);
+        realT F = fidelity(rho, sigma);
+        EXPECT_NEAR(1, fidelity(rho, rho), 1e-5);
+        EXPECT_NEAR(F, fidelity(sigma, rho), 1e-5); // symmetric
+        EXPECT_GE(F, -1e-5);
+        EXPECT_LE(F, 1 + 1e-5);
+        // unitary invariance
+        cmat U = randU(D);
+        EXPECT_NEAR(F, fidelity(U * rho * adjoint(U), U * sigma * adjoint(U)),
+                    1e-5);
+        // definition, F = tr sqrt(sqrt(rho) sigma sqrt(rho))
+        cmat sqrt_rho = sqrtm(rho);
+        EXPECT_NEAR(F, std::real(trace(sqrtm(sqrt_rho * sigma * sqrt_rho))),
+                    1e-5);
+        // maximally mixed state vs. pure state, F = 1 / sqrt(D)
+        cmat mixed = cmat::Identity(D, D) / static_cast<realT>(D);
+        EXPECT_NEAR(1 / std::sqrt(static_cast<realT>(D)),
+                    fidelity(mixed, randket(D)), 1e-5);
+    }
+
+    // commuting (diagonal) states, F = sum_i sqrt(p_i q_i)
+    std::vector<realT> p = randprob(4);
+    std::vector<realT> q = randprob(4);
+    cmat rho = cmat::Zero(4, 4);
+    cmat sigma = cmat::Zero(4, 4);
+    realT F = 0;
+    for (idx i = 0; i < 4; ++i) {
+        rho(i, i) = p[i];
+        sigma(i, i) = q[i];
+        F += std::sqrt(p[i] * q[i]);
+    }
+    EXPECT_NEAR(F, fidelity(rho, sigma), 1e-5);
+
+    // rank-deficient states
+    EXPECT_NEAR(0, fidelity(prj(st.z0), prj(st.z1)), 1e-5);
+    EXPECT_NEAR(1 / std::sqrt(2.), fidelity(prj(st.z0), prj(st.x0)), 1e-5);
+}
+
+TEST(qpp_fidelity, Exceptions) {
+    EXPECT_THROW(fidelity(ket{}, st.z0), exception::ZeroSize);
+    EXPECT_THROW(fidelity(st.z0, cmat{}), exception::ZeroSize);
+    EXPECT_THROW(fidelity(cmat::Zero(2, 3), st.z0),
+                 exception::MatrixNotSquareNorCvector);
+    EXPECT_THROW(fidelity(st.z0, cmat::Zero(2, 3)),
+                 exception::MatrixNotSquareNorCvector);
+    EXPECT_THROW(fidelity(st.z0, st.b00), exception::DimsNotEqual);
+    EXPECT_THROW(fidelity(randrho(2), randrho(3)), exception::DimsNotEqual);
+}
+
 /// BEGIN template <typename Derived> cmat funm(
 ///       const Eigen::MatrixBase<Derived>& A, cplx (*f)(const cplx&))
 TEST(qpp_funm, AllTests) {}
@@ -212,6 +289,33 @@ TEST(qpp_powm, AllTests) {}
 ///       prj(const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_prj, AllTests) {}
 
+/// BEGIN template <typename Derived> realT purity(
+///       const Eigen::MatrixBase<Derived>& A)
+TEST(qpp_purity, AllTests) {
+    for (idx D : std::vector<idx>{2, 3, 8}) {
+        // pure states
+        ket psi = randket(D);
+        EXPECT_NEAR(1, purity(psi), 1e-5);
+        EXPECT_NEAR(1, purity(prj(psi)), 1e-5);
+        // maximally mixed state
+        cmat mixed = cmat::Identity(D, D) / static_cast<realT>(D);
+        EXPECT_NEAR(1 / static_cast<realT>(D), purity(mixed), 1e-5);
+        // random state, purity = tr(rho^2) in [1/D, 1]
+        cmat rho = randrho(D);
+        realT P = purity(rho);
+        EXPECT_NEAR(std::real(trace(rho * rho)), P, 1e-5);
+        EXPECT_GE(P, 1 / static_cast<realT>(D) - 1e-5);
+        EXPECT_LE(P, 1 + 1e-5);
+    }
+    // real matrices
+    rmat rho = rmat::Identity(2, 2) / 2;
+    EXPECT_NEAR(0.5, purity(rho), 1e-5);
+
+    EXPECT_THROW(purity(cmat{}), exception::ZeroSize);
+    EXPECT_THROW(purity(cmat::Zero(2, 3)),
+                 exception::MatrixNotSquareNorCvector);
+}
+
 /// BEGIN template <typename Container> typename Container::value_type
 ///       prod(const Container& c,
 ///       typename std::enable_if<is_iterable<Container>::value>::type*
@@ -301,6 +405,66 @@ TEST(qpp_svdV, AllTests) {}
 /// BEGIN template <typename Derived> typename Derived::Scalar trace(
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_trace, AllTests) {}
+
+/// BEGIN template <typename Derived1, typename Derived2> realT
+///       trace_distance(const Eigen::MatrixBase<Derived1>& A,
+///       const Eigen::MatrixBase<Derived2>& B)
+TEST(qpp_trace_distance, AllTests) {
+    // orthogonal and identical states
+    EXPECT_NEAR(1, trace_distance(st.z0, st.z1), 1e-5);
+    EXPECT_NEAR(1, trace_distance(prj(st.b00), prj(st.b01)), 1e-5);
+    EXPECT_NEAR(0, trace_distance(st.x0, st.x0), 1e-5);
+    EXPECT_NEAR(1 / std::sqrt(2.), trace_distance(st.z0, st.x0), 1e-5);
+
+    for (idx D : std::vector<idx>{2, 3, 8}) {
+        // pure states, T = sqrt(1 - F^2)
+        ket psi = randket(D);
+        ket phi = randket(D);
+        realT F = fidelity(psi, phi);
+        realT T = std::sqrt(1 - F * F);
+        EXPECT_NEAR(T, trace_distance(psi, phi), 1e-5);
+        EXPECT_NEAR(T, trace_distance(psi, prj(phi)), 1e-5);
+        EXPECT_NEAR(T, trace_distance(prj(psi), phi), 1e-5);
+        EXPECT_NEAR(T, trace_distance(prj(psi), prj(phi)), 1e-5);
+
+        // mixed states, T = ||rho - sigma||_1 / 2, symmetric, and the
+        // Fuchs-van de Graaf inequalities 1 - F <= T <= sqrt(1 - F^2)
+        cmat rho = randrho(D);
+        cmat sigma = randrho(D);
+        T = trace_distance(rho, sigma);
+        F = fidelity(rho, sigma);
+        EXPECT_NEAR(schatten(rho - sigma, 1) / 2, T, 1e-5);
+        EXPECT_NEAR(T, trace_distance(sigma, rho), 1e-5);
+        EXPECT_LE(1 - F, T + 1e-5);
+        EXPECT_LE(T, std::sqrt(1 - F * F) + 1e-5);
+    }
+
+    // unnormalized kets |a> are identified with |a><a| (not normalized)
+    ket a = 2 * randket(3);
+    ket b = randket(3);
+    cmat rho_a = a * adjoint(a);
+    cmat rho_b = b * adjoint(b);
+    EXPECT_NEAR(trace_distance(rho_a, rho_b), trace_distance(a, b), 1e-5);
+    EXPECT_NEAR(trace_distance(rho_a, rho_b), trace_distance(a, rho_b), 1e-5);
+
+    // commuting (diagonal) states, T = sum_i |p_i - q_i| / 2
+    std::vector<realT> p = randprob(4);
+    std::vector<realT> q = randprob(4);
+    cmat rho = cmat::Zero(4, 4);
+    cmat sigma = cmat::Zero(4, 4);
+    realT T = 0;
+    for (idx i = 0; i < 4; ++i) {
+        rho(i, i) = p[i];
+        sigma(i, i) = q[i];
+        T += std::abs(p[i] - q[i]) / 2;
+    }
+    EXPECT_NEAR(T, trace_distance(rho, sigma), 1e-5);
+
+    EXPECT_THROW(trace_distance(ket{}, st.z0), exception::ZeroSize);
+    EXPECT_THROW(trace_distance(cmat::Zero(2, 3), st.z0),
+                 exception::MatrixNotSquareNorCvector);
+    EXPECT_THROW(trace_distance(st.z0, st.GHZ), exception::DimsNotEqual);
+}
 
 /// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
 ///       transpose(const Eigen::MatrixBase<Derived>& A)

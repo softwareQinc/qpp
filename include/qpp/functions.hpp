@@ -32,6 +32,7 @@
 #ifndef QPP_FUNCTIONS_HPP_
 #define QPP_FUNCTIONS_HPP_
 
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <initializer_list>
@@ -908,6 +909,198 @@ realT schatten(const Eigen::MatrixBase<Derived>& A, realT p) {
     }
 
     return std::pow(result, 1. / p);
+}
+
+namespace internal {
+/**
+ * @brief Square root of a positive semidefinite matrix
+ *
+ * Uses the Hermitian eigendecomposition, with negative eigenvalues (due to
+ * rounding errors) set to zero
+ *
+ * @param A Eigen expression, assumed to be positive semidefinite
+ * @return Square root of \a A, as a complex dynamic matrix
+ */
+template <typename Derived>
+cmat sqrtm_psd(const Eigen::MatrixBase<Derived>& A) {
+    Eigen::SelfAdjointEigenSolver<cmat> es(A.derived().template cast<cplx>());
+    dyn_col_vect<realT> sqrt_evals =
+        es.eigenvalues().cwiseMax(static_cast<realT>(0)).cwiseSqrt();
+
+    return es.eigenvectors() * sqrt_evals.template cast<cplx>().asDiagonal() *
+           es.eigenvectors().adjoint();
+}
+} /* namespace internal */
+
+/**
+ * @brief Quantum fidelity
+ * @see qpp::trace_distance()
+ *
+ * Computes the fidelity
+ * \f$F(\rho,\sigma) = \mathrm{tr}\sqrt{\sqrt{\rho}\sigma\sqrt{\rho}} =
+ * \|\sqrt{\rho}\sqrt{\sigma}\|_1\f$, following the convention of Nielsen and
+ * Chuang (i.e., not squared). For pure states it reduces to
+ * \f$|\langle\psi|\phi\rangle|\f$, and to
+ * \f$\sqrt{\langle\psi|\sigma|\psi\rangle}\f$ if only one of the states is
+ * pure.
+ *
+ * @note Kets are assumed to be normalized, and density matrices to be
+ * Hermitian and positive semidefinite (with unit trace)
+ *
+ * @param A Eigen expression, ket or density matrix
+ * @param B Eigen expression, ket or density matrix
+ * @return Fidelity between \a A and \a B
+ */
+template <typename Derived1, typename Derived2>
+realT fidelity(const Eigen::MatrixBase<Derived1>& A,
+               const Eigen::MatrixBase<Derived2>& B) {
+    const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
+    const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
+
+    // EXCEPTION CHECKS
+    // check zero-size
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize("qpp::fidelity()", "A");
+    }
+    if (!internal::check_nonzero_size(rB)) {
+        throw exception::ZeroSize("qpp::fidelity()", "B");
+    }
+    // check kets or density matrices
+    if (!internal::check_cvector(rA) && !internal::check_square_mat(rA)) {
+        throw exception::MatrixNotSquareNorCvector("qpp::fidelity()", "A");
+    }
+    if (!internal::check_cvector(rB) && !internal::check_square_mat(rB)) {
+        throw exception::MatrixNotSquareNorCvector("qpp::fidelity()", "B");
+    }
+    // check equal dimensions
+    if (rA.rows() != rB.rows()) {
+        throw exception::DimsNotEqual("qpp::fidelity()", "A/B");
+    }
+    // END EXCEPTION CHECKS
+
+    cmat cA = rA.template cast<cplx>();
+    cmat cB = rB.template cast<cplx>();
+    bool is_ket_A = internal::check_cvector(rA);
+    bool is_ket_B = internal::check_cvector(rB);
+
+    if (is_ket_A && is_ket_B) {
+        return std::abs((cA.adjoint() * cB).value());
+    }
+    if (is_ket_A) {
+        return std::sqrt(std::max(static_cast<realT>(0),
+                                  std::real((cA.adjoint() * cB * cA).value())));
+    }
+    if (is_ket_B) {
+        return std::sqrt(std::max(static_cast<realT>(0),
+                                  std::real((cB.adjoint() * cA * cB).value())));
+    }
+
+    return svals(internal::sqrtm_psd(cA) * internal::sqrtm_psd(cB)).sum();
+}
+
+/**
+ * @brief Trace distance
+ * @see qpp::fidelity()
+ *
+ * Computes the trace distance
+ * \f$T(\rho,\sigma) = \frac{1}{2}\|\rho-\sigma\|_1\f$, where kets
+ * \f$|\psi\rangle\f$ are identified with \f$|\psi\rangle\langle\psi|\f$
+ * (without normalization, unlike qpp::prj()). For normalized pure states it
+ * reduces to \f$\sqrt{1-|\langle\psi|\phi\rangle|^2}\f$.
+ *
+ * @note Kets are assumed to be normalized, and density matrices to be
+ * Hermitian (with unit trace)
+ *
+ * @param A Eigen expression, ket or density matrix
+ * @param B Eigen expression, ket or density matrix
+ * @return Trace distance between \a A and \a B
+ */
+template <typename Derived1, typename Derived2>
+realT trace_distance(const Eigen::MatrixBase<Derived1>& A,
+                     const Eigen::MatrixBase<Derived2>& B) {
+    const dyn_mat<typename Derived1::Scalar>& rA = A.derived();
+    const dyn_mat<typename Derived2::Scalar>& rB = B.derived();
+
+    // EXCEPTION CHECKS
+    // check zero-size
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize("qpp::trace_distance()", "A");
+    }
+    if (!internal::check_nonzero_size(rB)) {
+        throw exception::ZeroSize("qpp::trace_distance()", "B");
+    }
+    // check kets or density matrices
+    if (!internal::check_cvector(rA) && !internal::check_square_mat(rA)) {
+        throw exception::MatrixNotSquareNorCvector("qpp::trace_distance()",
+                                                   "A");
+    }
+    if (!internal::check_cvector(rB) && !internal::check_square_mat(rB)) {
+        throw exception::MatrixNotSquareNorCvector("qpp::trace_distance()",
+                                                   "B");
+    }
+    // check equal dimensions
+    if (rA.rows() != rB.rows()) {
+        throw exception::DimsNotEqual("qpp::trace_distance()", "A/B");
+    }
+    // END EXCEPTION CHECKS
+
+    cmat cA = rA.template cast<cplx>();
+    cmat cB = rB.template cast<cplx>();
+    bool is_ket_A = internal::check_cvector(rA);
+    bool is_ket_B = internal::check_cvector(rB);
+
+    if (is_ket_A && is_ket_B) {
+        // |a><a| - |b><b| has (at most) two non-zero eigenvalues, (na - nb) /
+        // 2 +/- sqrt((na + nb)^2 / 4 - |<a|b>|^2), with na = <a|a>, nb = <b|b>
+        realT na = cA.squaredNorm();
+        realT nb = cB.squaredNorm();
+        realT ab2 = std::norm((cA.adjoint() * cB).value());
+        realT r = std::sqrt(
+            std::max(static_cast<realT>(0), (na + nb) * (na + nb) / 4 - ab2));
+
+        return (std::abs((na - nb) / 2 + r) + std::abs((na - nb) / 2 - r)) / 2;
+    }
+    if (is_ket_A) {
+        cA = (cA * cA.adjoint()).eval();
+    }
+    if (is_ket_B) {
+        cB = (cB * cB.adjoint()).eval();
+    }
+
+    return hevals(cA - cB).cwiseAbs().sum() / 2;
+}
+
+/**
+ * @brief Purity
+ *
+ * Computes the purity \f$\mathrm{tr}(\rho^2)\f$ of a density matrix, or
+ * \f$\langle\psi|\psi\rangle^2\f$ of a ket
+ *
+ * @param A Eigen expression, ket or density matrix
+ * @return Purity of \a A
+ */
+template <typename Derived>
+realT purity(const Eigen::MatrixBase<Derived>& A) {
+    const dyn_mat<typename Derived::Scalar>& rA = A.derived();
+
+    // EXCEPTION CHECKS
+    // check zero-size
+    if (!internal::check_nonzero_size(rA)) {
+        throw exception::ZeroSize("qpp::purity()", "A");
+    }
+    // check ket or density matrix
+    if (!internal::check_cvector(rA) && !internal::check_square_mat(rA)) {
+        throw exception::MatrixNotSquareNorCvector("qpp::purity()", "A");
+    }
+    // END EXCEPTION CHECKS
+
+    if (internal::check_cvector(rA)) {
+        realT norm2 = rA.squaredNorm();
+        return norm2 * norm2;
+    }
+
+    // tr(A^2) = sum_{ij} A_{ij} A_{ji}, in O(D^2) operations
+    return std::real(rA.transpose().cwiseProduct(rA).sum());
 }
 
 // other functions
@@ -2366,7 +2559,7 @@ cmat operator""_prj() {
     }
     // END EXCEPTION CHECKS
 
-    return kron(operator""_ket < Bits...>(), operator""_bra < Bits...>());
+    return kron(operator""_ket < Bits... > (), operator""_bra < Bits... > ());
 }
 } /* namespace literals */
 

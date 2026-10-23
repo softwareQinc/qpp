@@ -119,6 +119,19 @@ inline void init_functions(py::module_& m) {
         "schatten", [](const cmat& A, realT p) { return qpp::schatten(A, p); },
         "Schatten matrix norm");
     m.def(
+        "fidelity",
+        [](const cmat& A, const cmat& B) { return qpp::fidelity(A, B); },
+        "Quantum fidelity (not squared) between kets or density matrices",
+        py::arg("A"), py::arg("B"));
+    m.def(
+        "trace_distance",
+        [](const cmat& A, const cmat& B) { return qpp::trace_distance(A, B); },
+        "Trace distance between kets or density matrices", py::arg("A"),
+        py::arg("B"));
+    m.def(
+        "purity", [](const cmat& A) { return qpp::purity(A); },
+        "Purity of a ket or density matrix", py::arg("A"));
+    m.def(
         "funm",
         [](const cmat& A, cplx (*f)(const cplx&)) { return qpp::funm(A, f); },
         "Applies the scalar function f to the eigenvalues of matrix A",
