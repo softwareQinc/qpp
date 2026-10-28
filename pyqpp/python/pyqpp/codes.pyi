@@ -17,6 +17,10 @@ class Type:
     SHOR_NINE_QUBIT: typing.ClassVar[Type]  # value = <Type.SHOR_NINE_QUBIT: 2>
     STEANE_SEVEN_QUBIT: typing.ClassVar[Type]  # value = <Type.STEANE_SEVEN_QUBIT: 1>
     __members__: typing.ClassVar[dict[str, Type]]  # value = {'FIVE_QUBIT': <Type.FIVE_QUBIT: 0>, 'STEANE_SEVEN_QUBIT': <Type.STEANE_SEVEN_QUBIT: 1>, 'SHOR_NINE_QUBIT': <Type.SHOR_NINE_QUBIT: 2>}
+    @typing.overload
+    def __eq__(self, other: Type) -> bool:
+        ...
+    @typing.overload
     def __eq__(self, other: typing.Any) -> bool:
         ...
     def __getstate__(self) -> int:
@@ -29,6 +33,10 @@ class Type:
         ...
     def __int__(self) -> int:
         ...
+    @typing.overload
+    def __ne__(self, other: Type) -> bool:
+        ...
+    @typing.overload
     def __ne__(self, other: typing.Any) -> bool:
         ...
     def __repr__(self) -> str:

@@ -1365,7 +1365,7 @@ def absm(arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n
     Matrix absolute value
     """
 @typing.overload
-def abssq(arg0: collections.abc.Sequence[typing.SupportsComplex | typing.SupportsFloat | typing.SupportsIndex]) -> list[float]:
+def abssq(arg0: collections.abc.Sequence[complex | typing.SupportsComplex | typing.SupportsFloat | typing.SupportsIndex]) -> list[float]:
     """
     Absolute values squared of vector
     """
@@ -1927,7 +1927,7 @@ def prod(arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n
     Element-wise product of matrix
     """
 @typing.overload
-def prod(arg0: collections.abc.Sequence[typing.SupportsComplex | typing.SupportsFloat | typing.SupportsIndex]) -> complex:
+def prod(arg0: collections.abc.Sequence[complex | typing.SupportsComplex | typing.SupportsFloat | typing.SupportsIndex]) -> complex:
     """
     Product of vector elements
     """
@@ -2187,7 +2187,7 @@ def sinm(arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n
     """
     Matrix sine
     """
-def spectralpowm(arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], arg1: typing.SupportsComplex | typing.SupportsFloat | typing.SupportsIndex) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
+def spectralpowm(arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], arg1: complex | typing.SupportsComplex | typing.SupportsFloat | typing.SupportsIndex) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """
     Matrix power via spectral decomposition
     """
@@ -2205,7 +2205,7 @@ def sum(arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]
     Element-wise sum of matrix
     """
 @typing.overload
-def sum(arg0: collections.abc.Sequence[typing.SupportsComplex | typing.SupportsFloat | typing.SupportsIndex]) -> complex:
+def sum(arg0: collections.abc.Sequence[complex | typing.SupportsComplex | typing.SupportsFloat | typing.SupportsIndex]) -> complex:
     """
     Sum of vector elements
     """
