@@ -15,7 +15,7 @@
   in-place counterparts, `apply_diag_inplace()` and `applyCTRL_diag_inplace()`
 - Added [`examples/qft_inplace.cpp`](examples/qft_inplace.cpp) example
 - Replaced the unscoped measurement-result enum in
-  [`qpp/constants.hpp`](include/qpp/constants.hpp) with the `measure_idx`
+  [`qpp/constants.hpp`](include/qpp/constants.hpp) with the `qpp::measure_idx`
   namespace
 - Implemented `qpp::fidelity()`, `qpp::trace_distance()`, and
   `qpp::purity()` in [`qpp/functions.hpp`](include/qpp/functions.hpp), for

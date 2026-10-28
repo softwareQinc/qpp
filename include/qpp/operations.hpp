@@ -147,7 +147,7 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
 
     idx n = dims.size(); // total number of subsystems
 
-    // qubit optimizations (updated to use _inplace kernels)
+    // qubit optimizations
 #ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_dims_equal(dims, 2)) {
         // ket
@@ -513,7 +513,7 @@ template <typename Derived1, typename Derived2>
 
     idx n = dims.size();
 
-    // qubit optimizations (updated to use _inplace kernels)
+    // qubit optimizations
 #ifdef QPP_QUBIT_OPTIMIZATIONS
     if (internal::all_dims_equal(dims, 2)) {
         // ket
@@ -3672,7 +3672,7 @@ template <typename Derived>
                 cmat Rj(2, 2);
                 Rj << 1, 0, 0,
                     std::exp(static_cast<cplx::value_type>(2.0 * pi) * 1_i /
-                             static_cast<cplx::value_type>(std::pow(2, j)));
+                             static_cast<cplx::value_type>(idx{1} << j));
                 applyCTRL_inplace(result, Rj, {target[i + j - 1]}, {target[i]});
             }
         }
@@ -3728,6 +3728,7 @@ template <typename Derived>
  * @return Inverse (adjoint) qudit Quantum Fourier transform applied to the
  * part \a target of \a A
  */
+// TODO: use _diag
 template <typename Derived>
 [[qpp::critical]] void applyTFQ_inplace(const Eigen::MatrixBase<Derived>& A,
                                         const std::vector<idx>& target,
@@ -3794,7 +3795,7 @@ template <typename Derived>
                 cmat Rj(2, 2);
                 Rj << 1, 0, 0,
                     std::exp(static_cast<cplx::value_type>(-2.0 * pi) * 1_i /
-                             static_cast<cplx::value_type>(std::pow(2, j)));
+                             static_cast<cplx::value_type>(idx{1} << j));
                 applyCTRL_inplace(result, Rj, {target[i + j - 1]}, {target[i]});
             }
             // apply Hadamard on qubit i

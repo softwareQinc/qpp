@@ -11,8 +11,8 @@ dependencies = [
 ]
 
 [project.urls]
-homepage = "https://github.com/softwareqinc/qpp"
-repository = "https://github.com/softwareqinc/qpp.git"
+homepage = "https://github.com/softwareQinc/qpp"
+repository = "https://github.com/softwareQinc/qpp.git"
 
 [build-system]
 requires = [

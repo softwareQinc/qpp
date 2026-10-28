@@ -2,7 +2,7 @@
 
 ## Version 7.0.3 - 25 March 2026
 
-[![GitHub actions](https://github.com/softwareqinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
+[![GitHub actions](https://github.com/softwareQinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
 
 ---
 

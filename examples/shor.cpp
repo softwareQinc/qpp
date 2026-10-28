@@ -27,7 +27,7 @@ std::optional<qpp::bigint> get_candidate_period(qpp::realT x,
             static_cast<realT>(numerator) / static_cast<realT>(denominator);
 
         // check if the convergent is within the allowed heuristic threshold
-        if (std::abs(static_cast<long double>(x) - approximation) < threshold) {
+        if (std::abs(x - approximation) < threshold) {
             return denominator;
         }
     }
@@ -60,8 +60,12 @@ perform_measurement(const qpp::ket& psi, const std::vector<qpp::idx>& subsys,
 
     // attempt to recover the period 'r'
     if (auto r = get_candidate_period(x, threshold)) {
-        return MeasurementResult{bit_string, integer_value, probability,
-                                 r.value()};
+        return MeasurementResult{
+            bit_string,
+            integer_value,
+            probability,
+            r.value(),
+        };
     }
 
     return std::nullopt;

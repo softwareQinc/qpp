@@ -26,10 +26,10 @@ USER sq
 RUN python3 -m venv /home/sq/venv && \
     /home/sq/venv/bin/pip install --no-cache-dir --upgrade pip && \
     /home/sq/venv/bin/pip install --no-cache-dir -r requirements.txt && \
-    /home/sq/venv/bin/pip install --no-cache-dir git+https://github.com/softwareqinc/qpp
+    /home/sq/venv/bin/pip install --no-cache-dir git+https://github.com/softwareQinc/qpp
 
 # Clone Quantum++ source and build qpp_qasm example
-RUN git clone --depth 1 --branch main https://github.com/softwareqinc/qpp /home/sq/qpp && \
+RUN git clone --depth 1 --branch main https://github.com/softwareQinc/qpp /home/sq/qpp && \
     cmake -S /home/sq/qpp -B /home/sq/qpp/build && \
     cmake --build /home/sq/qpp/build --target qpp_qasm
 

@@ -649,12 +649,12 @@ apply_psi_kq_inplace(Eigen::MatrixBase<Derived1>& state,
  * @return Gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] qpp::expr_t<Derived1>
+[[qpp::critical, qpp::parallel]] expr_t<Derived1>
 apply_psi_kq(const Eigen::MatrixBase<Derived1>& state,
              const Eigen::MatrixBase<Derived2>& A,
              const std::vector<idx>& target, idx n) {
     // Create the output state vector as a copy of the input.
-    qpp::expr_t<Derived1> result = state;
+    expr_t<Derived1> result = state;
 
     // Delegate to in-place implementation
     apply_psi_kq_inplace(result, A, target, n);

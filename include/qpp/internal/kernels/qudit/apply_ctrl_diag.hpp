@@ -535,12 +535,12 @@ template <typename Derived1, typename Derived2>
  * @return Controlled gate \a A applied to the part \a target of \a state
  */
 template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] qpp::expr_t<Derived1> apply_ctrl_psi_kq_diag(
+[[qpp::critical, qpp::parallel]] expr_t<Derived1> apply_ctrl_psi_kq_diag(
     const Eigen::MatrixBase<Derived1>& state,
     const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
     const std::vector<idx>& target, const std::vector<idx>& shift, idx n) {
     // Functional deep copy
-    qpp::expr_t<Derived1> result = state;
+    expr_t<Derived1> result = state;
 
     // Delegate to in-place implementation
     apply_ctrl_psi_kq_diag_inplace(result, A, ctrl, target, shift, n);
