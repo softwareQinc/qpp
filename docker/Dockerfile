@@ -1,5 +1,5 @@
 # Base image with minimal Python 3.11 environment
-FROM python:3.11-slim-bookworm
+FROM python:3.13-slim-trixie
 
 # Install system dependencies required for building Quantum++ and Python packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
