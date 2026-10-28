@@ -1,6 +1,6 @@
 # Changelog
 
-## Upcoming release
+## Version 7.1.0 - 28 October 2026
 
 - Implemented a brickwork random circuit benchmark consisting of alternating
   layers of single-qubit Haar-random unitaries and adjacent two-qubit random
