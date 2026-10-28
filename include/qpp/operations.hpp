@@ -4144,7 +4144,7 @@ auto TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true) {
 /**
  * @brief Quantumly-accessible Random Access Memory (qRAM) over classical
  data,
- * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\mapsto}
+ * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\longrightarrow}
    \sum_j\alpha_j|j\rangle|m_j\rangle\f$
  *
  * @see
@@ -4208,7 +4208,7 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM) {
 /**
  * @brief Quantumly-accessible Random Access Memory (qRAM) over classical
  data,
- * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\mapsto}
+ * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\longrightarrow}
    \sum_j\alpha_j|j\rangle|m_j\rangle\f$
  *
  * @see
