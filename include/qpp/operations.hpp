@@ -2083,13 +2083,15 @@ template <typename Derived1, typename Derived2>
         return;
     }
 
-    // Helper lambda for ket-state logic
+    // helper lambda for ket-state logic
     auto applyCTRL_fan_ket =
         [d, D, &Ak, &ctrl, &target, &dims,
          &shift](const dyn_col_vect<typename Derived1::Scalar>& psi) {
             dyn_col_vect<typename Derived1::Scalar> result =
                 dyn_col_vect<typename Derived1::Scalar>::Zero(D);
 
+            using Scalar = typename Derived1::Scalar;
+            using RealScalar = typename Eigen::NumTraits<Scalar>::Real;
 #ifdef QPP_OPENMP
 #pragma omp parallel for
 #endif
@@ -2103,11 +2105,13 @@ template <typename Derived1, typename Derived2>
                     internal::project_ket_on_dits(psi, ctrl_shift, ctrl, dims,
                                                   D);
 
-                dyn_col_vect<typename Derived1::Scalar> chopped_psi_bar =
-                    (psi / static_cast<typename Derived1::Scalar>(d)) -
-                    chopped_psi;
+                // casting fixes MSVC warning C4244: 'argument': conversion
+                // from 'const qpp::idx' to 'const std::complex<double>::_Ty',
+                // possible loss of data
+                dyn_col_vect<Scalar> chopped_psi_bar =
+                    (psi / Scalar{static_cast<RealScalar>(d)}) - chopped_psi;
 
-                if (chopped_psi.norm() > 0) { // Small optimization check
+                if (chopped_psi.norm() > 0) { // small optimization check
                     for (idx elem : target) {
                         chopped_psi = apply(chopped_psi, Ak[r], {elem}, dims);
                     }
@@ -2126,10 +2130,10 @@ template <typename Derived1, typename Derived2>
     //************ Logic Execution ************//
 
     if (internal::check_cvector(rstate)) {
-        // Ket state: replace original data with computed ket
+        // ket state: replace original data with computed ket
         rstate = applyCTRL_fan_ket(rstate);
     } else {
-        // Density matrix: compute into temporary then move
+        // density matrix: compute into temporary then move
         dyn_mat<typename Derived1::Scalar> result =
             dyn_mat<typename Derived1::Scalar>::Zero(D, D);
 
