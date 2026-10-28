@@ -33,15 +33,15 @@
 #define QPP_INTERNAL_KERNELS_QUDIT_APPLY_CTRL_FAN_HPP_
 
 #include <cassert>
-#include <optional>
 #include <vector>
-#include "qpp/internal/util.hpp"
+
 #ifndef NDEBUG
 #include <set>
 #endif
 
 #include <Eigen/Dense>
 
+#include "qpp/internal/util.hpp"
 #include "qpp/types.hpp"
 
 namespace qpp::internal::kernels::qudit {
@@ -171,9 +171,11 @@ template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] void apply_ctrl_fan_rho_inplace(
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
     const std::vector<idx>& ctrl, const std::vector<idx>& target,
-    const std::vector<idx>& shift, idx n) {
+    const std::vector<idx>& shift, idx d, idx n) {
     const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
     {
+        const idx D = static_cast<idx>(state.rows());
+
         // Density matrix: compute into temporary then move
         dyn_mat<typename Derived1::Scalar> result =
             dyn_mat<typename Derived1::Scalar>::Zero(D, D);
@@ -187,7 +189,7 @@ template <typename Derived1, typename Derived2>
             psi_i(i) = 1;
 
             dyn_col_vect<typename Derived1::Scalar> phi_i_ket =
-                rstate.row(i).adjoint();
+                state.row(i).adjoint();
 
             psi_i = applyCTRL_fan_ket(psi_i);
             dyn_row_vect<typename Derived1::Scalar> phi_i_bra =
@@ -200,7 +202,7 @@ template <typename Derived1, typename Derived2>
                 result += psi_i * phi_i_bra;
             }
         }
-        rstate = std::move(result);
+        state = std::move(result);
     }
 }
 

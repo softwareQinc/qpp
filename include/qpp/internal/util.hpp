@@ -546,7 +546,6 @@ dirsum2(const Eigen::MatrixBase<Derived1>& A,
  * @brief Ends variadic argument extraction into a vector
  *
  * @tparam T Vector value type
- * @param v Vector to fill
  */
 template <typename T>
 void variadic_vector_emplace(std::vector<T>&) {} // ends the recursion

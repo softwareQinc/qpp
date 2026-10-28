@@ -286,7 +286,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
     /**
      * @brief Modular multiplication gate for qubits
-     * Implements \f$|x\rangle  \longrightarrow |ax \mathrm{ mod } N\rangle\f$
+     * Implements \f$|x\rangle  \mapsto |ax \mathrm{ mod } N\rangle\f$
      *
      * @note For the gate to be unitary, \a a and \a N should be co-prime. The
      * function does not check co-primality in release versions!

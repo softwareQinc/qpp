@@ -255,6 +255,7 @@ struct QCircuitGateStep : IDisplay {
      * @brief Constructs a gate step instance
      *
      * @param gate_type Gate type
+     * @param gate_kind Gate kind
      * @param gate_hash Hash of the quantum gate
      * @param ctrl Optional control qudit indexes
      * @param target Target qudit indexes

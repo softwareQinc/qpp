@@ -2952,8 +2952,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  * @param dims Dimensions of the multi-partite system
  * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a
  * target in a multi-partite system, as a dynamic matrix over the same
- * scalar field as
- * \a A
+ * scalar field as \a A
  */
 template <typename Derived>
 [[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
@@ -3173,8 +3172,7 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * @param d Subsystem dimensions
  * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a
  * target in a multi-partite system, as a dynamic matrix over the same
- * scalar field as
- * \a A
+ * scalar field as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
@@ -3428,8 +3426,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
  * @param perm Permutation
  * @param dims Dimensions of the multi-partite system
  * @return Permuted system, as a dynamic matrix over the same scalar field
- * as
- * \a A
+ * as \a A
  */
 template <typename Derived>
 [[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
@@ -3571,8 +3568,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * @param perm Permutation
  * @param d Subsystem dimensions
  * @return Permuted system, as a dynamic matrix over the same scalar field
- * as
- * \a A
+ * as \a A
  */
 template <typename Derived>
 dyn_mat<typename Derived::Scalar>
@@ -3608,8 +3604,6 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  * @param target Subsystem indexes where the QFT is applied
  * @param d Subsystem dimensions
  * @param swap Swaps the qubits/qudits at the end (true by default)
- * @return Qudit Quantum Fourier transform applied to the part \a target of
- * \a A
  */
 // TODO: use _diag
 template <typename Derived>
@@ -3725,8 +3719,6 @@ template <typename Derived>
  * @param target Subsystem indexes where the TFQ is applied
  * @param d Subsystem dimensions
  * @param swap Swaps the qubits/qudits at the end (true by default)
- * @return Inverse (adjoint) qudit Quantum Fourier transform applied to the
- * part \a target of \a A
  */
 // TODO: use _diag
 template <typename Derived>
@@ -3840,7 +3832,6 @@ template <typename Derived>
  * @param A Eigen expression
  * @param d Subsystem dimensions
  * @param swap Swaps the qubits/qudits at the end (true by default)
- * @return Qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
 void QFT_inplace(const Eigen::MatrixBase<Derived>& A, idx d = 2,
@@ -3891,7 +3882,6 @@ void QFT_inplace(const Eigen::MatrixBase<Derived>& A, idx d = 2,
  * @param A Eigen expression
  * @param d Subsystem dimensions
  * @param swap Swaps the qubits/qudits at the end (true by default)
- * @return Inverse (adjoint) qudit quantum Fourier transform applied on \a A
  */
 template <typename Derived>
 void TFQ_inplace(const Eigen::MatrixBase<Derived>& A, idx d = 2,
@@ -4154,7 +4144,7 @@ auto TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true) {
 /**
  * @brief Quantumly-accessible Random Access Memory (qRAM) over classical
  data,
- * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\longrightarrow}
+ * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\mapsto}
    \sum_j\alpha_j|j\rangle|m_j\rangle\f$
  *
  * @see
@@ -4218,7 +4208,7 @@ qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data, idx DqRAM) {
 /**
  * @brief Quantumly-accessible Random Access Memory (qRAM) over classical
  data,
- * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\longrightarrow}
+ * implements \f$\sum_j\alpha_j|j\rangle\stackrel{qRAM}{\mapsto}
    \sum_j\alpha_j|j\rangle|m_j\rangle\f$
  *
  * @see

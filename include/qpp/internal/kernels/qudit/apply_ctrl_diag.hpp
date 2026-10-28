@@ -938,7 +938,7 @@ apply_ctrl_rho_2q_diag(const Eigen::MatrixBase<Derived1>& state,
 /**
  * @brief Applies the multi-qudit controlled diagonal gate A^c to the part
  * \a target of the multi-partite density matrix \a state in-place.
- * The transformation is \rho -> U * \rho * U^\dagger.
+ * The transformation is \f$\rho \mapsto U \rho U^\dagger\f$.
  *
  * @param state Eigen expression (modified in-place, size d^n x d^n)
  * @param A Eigen expression (d^k x 1 vector of diagonal elements)
