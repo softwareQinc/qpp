@@ -2,10 +2,6 @@
 
 ## Version 7.1.0 - 28 October 2026
 
-- Implemented a brickwork random circuit benchmark consisting of alternating
-  layers of single-qubit Haar-random unitaries and adjacent two-qubit random
-  unitaries,
-  [`benchmarks/src/bricks_bench.cpp`](benchmarks/src/bricks_bench.cpp)
 - Implemented the in-place functions `qpp::apply_inplace()`,
   `qpp::applyCTRL_inplace()`, `qpp::applyCTRL_fan_inplace()` in
   [`qpp/operations.hpp`](include/qpp/operations.hpp), and their corresponding
@@ -29,6 +25,10 @@
   [#76](https://github.com/softwareQinc/qpp/issues/76); added
   [`examples/circuits/state_prep_circuit.cpp`](examples/circuits/state_prep_circuit.cpp)
   example
+- Implemented a brickwork random circuit benchmark consisting of alternating
+  layers of single-qubit Haar-random unitaries and adjacent two-qubit random
+  unitaries,
+  [`benchmarks/src/bricks_bench.cpp`](benchmarks/src/bricks_bench.cpp)
 
 ## Version 7.0.3 - 25 March 2026
 
