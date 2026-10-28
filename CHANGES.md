@@ -1,5 +1,9 @@
 # Changelog
 
+## Upcoming release
+
+- Updated Dockerfile to use Python 3.13 from Debian 13 trixie
+
 ## Version 7.1.0 - 28 October 2026
 
 - Implemented the in-place functions `qpp::apply_inplace()`,
