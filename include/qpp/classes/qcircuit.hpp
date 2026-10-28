@@ -33,11 +33,14 @@
 #define QPP_CLASSES_QCIRCUIT_HPP_
 
 #include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <deque>
 #include <initializer_list>
 #include <iomanip>
 #include <iterator>
+#include <limits>
+#include <numeric>
 #include <optional>
 #include <ostream>
 #include <sstream>
@@ -6922,6 +6925,363 @@ inline QCircuit qpe_circuit(cmat U, qpp::idx n, bool omit_measurements = true,
     // classical dit
     if (!omit_measurements) {
         qc.measure(counting_qubits);
+    }
+
+    return qc;
+}
+
+namespace internal {
+/**
+ * @brief Binary-reflected Gray code
+ *
+ * @param i Non-negative integer
+ * @return Gray code of \a i
+ */
+inline idx gray_code(idx i) noexcept { return i ^ (i >> 1); }
+
+/**
+ * @brief Converts the angles of a uniformly controlled qubit rotation into
+ * the angles of its Gray-code decomposition
+ *
+ * Computes \f$\theta_i = 2^{-k}\sum_j (-1)^{j\cdot g(i)}\alpha_j\f$, where
+ * \f$g(i)\f$ is the Gray code of \a i, using an in-place fast
+ * Walsh-Hadamard transform, in \f$O(k2^k)\f$ operations
+ *
+ * @param alpha Rotation angles, one per control pattern (size \f$2^k\f$)
+ * @return Angles of the single-qubit rotations in the Gray-code sequence
+ */
+inline std::vector<realT> ucr_gray_angles(std::vector<realT> alpha) {
+    auto L = static_cast<idx>(alpha.size());
+    // in-place fast Walsh-Hadamard transform
+    for (idx h = 1; h < L; h <<= 1) {
+        for (idx i = 0; i < L; i += 2 * h) {
+            for (idx j = i; j < i + h; ++j) {
+                realT a = alpha[j];
+                realT b = alpha[j + h];
+                alpha[j] = a + b;
+                alpha[j + h] = a - b;
+            }
+        }
+    }
+    std::vector<realT> theta(L);
+    for (idx i = 0; i < L; ++i) {
+        theta[i] = alpha[gray_code(i)] / static_cast<realT>(L);
+    }
+
+    return theta;
+}
+
+/**
+ * @brief Removes the controls a uniformly controlled rotation does not
+ * depend on
+ *
+ * A control is removed whenever, for every pair of control patterns that
+ * differ only on that control, the two angles are equal or at least one of
+ * them is a "don't care" (i.e., acts on a zero-amplitude subspace).
+ * Remaining "don't care" angles are set to zero.
+ *
+ * @param ctrl Control qubits, the first one being the most significant bit
+ * of the control pattern; modified in place
+ * @param alpha Rotation angles, one per control pattern; modified in place
+ * @param known Flags marking the angles that are not "don't care"
+ */
+inline void reduce_ucr(std::vector<idx>& ctrl, std::vector<realT>& alpha,
+                       std::vector<bool> known) {
+    for (idx c = static_cast<idx>(ctrl.size()); c-- > 0;) {
+        idx k = static_cast<idx>(ctrl.size());
+        idx L = static_cast<idx>(alpha.size());
+        idx b = k - 1 - c; // bit position of ctrl[c] in the control pattern
+        idx bit = idx{1} << b;
+        idx low = bit - 1;
+
+        bool removable = true;
+        for (idx j = 0; j < L && removable; ++j) {
+            if ((j & bit) == 0 && known[j] && known[j | bit] &&
+                std::abs(alpha[j] - alpha[j | bit]) > chop) {
+                removable = false;
+            }
+        }
+        if (!removable) {
+            continue;
+        }
+
+        std::vector<realT> new_alpha(L / 2, 0);
+        std::vector<bool> new_known(L / 2, false);
+        for (idx j = 0; j < L; ++j) {
+            if ((j & bit) == 0) {
+                idx jj = ((j >> (b + 1)) << b) | (j & low);
+                if (known[j]) {
+                    new_alpha[jj] = alpha[j];
+                    new_known[jj] = true;
+                } else if (known[j | bit]) {
+                    new_alpha[jj] = alpha[j | bit];
+                    new_known[jj] = true;
+                }
+            }
+        }
+        alpha = std::move(new_alpha);
+        known = std::move(new_known);
+        ctrl.erase(ctrl.begin() + static_cast<std::ptrdiff_t>(c));
+    }
+
+    for (idx j = 0; j < static_cast<idx>(alpha.size()); ++j) {
+        if (!known[j]) {
+            alpha[j] = 0;
+        }
+    }
+}
+
+/**
+ * @brief Appends a uniformly controlled qubit rotation to a quantum circuit
+ *
+ * Applies the rotation of angle \f$\alpha_j\f$ about \a axis on \a target
+ * whenever the control qubits \a ctrl are in the computational basis state
+ * \f$|j\rangle\f$ (\a ctrl[0] being the most significant bit). The rotation
+ * is decomposed into \f$2^k\f$ single-qubit rotations interleaved with
+ * \f$2^k\f$ CNOTs, \f$k\f$ being the number of controls (no CNOTs for
+ * \f$k = 0\f$). Does nothing if all angles vanish.
+ *
+ * @param qc Quantum circuit description
+ * @param axis Rotation axis, either 'Y' or 'Z'
+ * @param ctrl Control qubits
+ * @param target Target qubit
+ * @param alpha Rotation angles, one per control pattern (size \f$2^k\f$)
+ */
+inline void append_ucr(QCircuit& qc, char axis, const std::vector<idx>& ctrl,
+                       idx target, const std::vector<realT>& alpha) {
+    if (std::all_of(alpha.begin(), alpha.end(),
+                    [](realT a) { return std::abs(a) <= chop; })) {
+        return;
+    }
+
+    const auto& gates = Gates::get_no_thread_local_instance();
+    auto k = static_cast<idx>(ctrl.size());
+    idx L = idx{1} << k;
+    std::vector<realT> theta = ucr_gray_angles(alpha);
+    for (idx i = 0; i < L; ++i) {
+        if (std::abs(theta[i]) > chop) {
+            if (axis == 'Y') {
+                qc.gate(gates.RY(theta[i]), target, "RY");
+            } else {
+                qc.gate(gates.RZ(theta[i]), target, "RZ");
+            }
+        }
+        if (k == 0) {
+            break;
+        }
+        // the control is the bit flipped between consecutive Gray codes
+        idx diff = gray_code(i) ^ gray_code((i + 1) % L);
+        idx b = 0;
+        while ((diff >> b) != 1) {
+            ++b;
+        }
+        qc.gate(gates.CNOT, ctrl[k - 1 - b], target, "CNOT");
+    }
+}
+} /* namespace internal */
+
+/**
+ * @brief Constructs a quantum circuit that prepares the pure state \a psi
+ * from \f$|0\rangle^{\otimes n}\f$
+ * @see qpp::qpe_circuit(), qpp::adjoint()
+ *
+ * @note For qubits and \a decompose = true, the circuit consists of
+ * uniformly controlled RY and RZ rotations decomposed into single-qubit
+ * rotations and CNOTs, see M. Mottonen, J. J. Vartiainen, V. Bergholm, and
+ * M. M. Salomaa, Quantum Inf. Comput. 5, 467 (2005),
+ * https://arxiv.org/abs/quant-ph/0407010, followed by a single-qubit global
+ * phase gate, so the output state equals \a psi exactly (not only up to a
+ * global phase). It uses at most \f$2^{n+1}-4\f$ CNOTs, or at most
+ * \f$2^n-2\f$ CNOTs (and no RZ rotations) if \a psi is real. Controls that do
+ * not influence a rotation, e.g., due to zero amplitudes or product
+ * structure, are removed, so computational basis states and product states
+ * require no CNOTs.
+ *
+ * @note Otherwise (for \a d > 2, or for \a decompose = false), each
+ * uniformly controlled single-qudit unitary is added as one joint
+ * block-diagonal gate acting on the first \f$k+1\f$ qudits, for
+ * \f$k=0,\ldots,n-1\f$. The circuit is exact, but the last gate is a dense
+ * \f$d^n\times d^n\f$ matrix, hence this path is intended for small systems.
+ *
+ * @param psi Normalized column vector of dimension \f$d^n\f$, \f$n\geq 1\f$
+ * @param d Subsystem dimensions (default is qubit, i.e., \a d = 2)
+ * @param decompose Optional (true by default); for \a d = 2, decomposes the
+ * circuit into CNOTs and single-qubit gates; ignored for \a d > 2
+ * @param name Optional ("state_prep" by default) circuit name
+ * @return Quantum circuit description on \f$n\f$ qudits and no classical
+ * dits that maps \f$|0\rangle^{\otimes n}\f$ to \a psi
+ */
+inline QCircuit
+state_prep_circuit(const ket& psi, idx d = 2, bool decompose = true,
+                   std::optional<std::string> name = "state_prep") {
+    // EXCEPTION CHECKS
+    // check zero-size
+    if (!internal::check_nonzero_size(psi)) {
+        throw exception::ZeroSize("qpp::state_prep_circuit()", "psi");
+    }
+    // check valid dims
+    if (d < 2) {
+        throw exception::DimsInvalid("qpp::state_prep_circuit()", "d");
+    }
+    auto D = static_cast<idx>(psi.rows());
+    idx n = (D < d) ? 0 : internal::get_num_subsys(D, d);
+    if (n == 0 || internal::ipow_rounded(d, n) != D) {
+        throw exception::DimsMismatchCvector("qpp::state_prep_circuit()",
+                                             "psi/d");
+    }
+    // check normalization
+    if (std::abs(psi.norm() - 1) >
+        std::sqrt(std::numeric_limits<realT>::epsilon())) {
+        throw exception::CustomException("qpp::state_prep_circuit()",
+                                         "psi is not normalized");
+    }
+    // END EXCEPTION CHECKS
+
+    QCircuit qc{n, 0, d, name};
+
+    // norms[k][p] is the norm of the block of amplitudes whose leading k
+    // dits equal p (in base d), k = 0, ..., n
+    std::vector<std::vector<realT>> norms(n + 1);
+    norms[n].resize(D);
+    for (idx x = 0; x < D; ++x) {
+        norms[n][x] = std::abs(psi[x]);
+    }
+    for (idx k = n; k-- > 0;) {
+        idx Dk = internal::ipow_rounded(d, k);
+        norms[k].assign(Dk, 0);
+        for (idx p = 0; p < Dk; ++p) {
+            realT sum = 0;
+            for (idx c = 0; c < d; ++c) {
+                sum += norms[k + 1][p * d + c] * norms[k + 1][p * d + c];
+            }
+            norms[k][p] = std::sqrt(sum);
+        }
+    }
+
+    // joint (block-diagonal) gates, exact for any d
+    if (d > 2 || !decompose) {
+        cmat Id = cmat::Identity(d, d);
+        for (idx k = 0; k < n; ++k) {
+            idx Dk = internal::ipow_rounded(d, k);
+            std::vector<cmat> Us(Dk, Id);
+            bool is_identity = true;
+            for (idx p = 0; p < Dk; ++p) {
+                if (norms[k][p] <= chop) {
+                    continue; // "don't care", acts on a zero-amplitude block
+                }
+                // v is the normalized vector of child amplitudes; for k < n -
+                // 1 it is real and non-negative, for the last level it is
+                // complex, and absorbs all phases of psi
+                ket v(d);
+                for (idx c = 0; c < d; ++c) {
+                    v[c] = (k + 1 < n) ? cplx{norms[k + 1][p * d + c], 0}
+                                       : psi[p * d + c];
+                }
+                v /= norms[k][p];
+                // U_p|0> = v, U_p = e^{i arg v_0} (I - 2ww^\dagger/|w|^2),
+                // with w = e^{-i arg v_0} v - |0> (Householder reflection);
+                // w_0 = u_0 - 1 = -s^2 / (1 + u_0) avoids cancellations
+                cplx phase =
+                    std::abs(v[0]) > chop ? v[0] / std::abs(v[0]) : cplx{1, 0};
+                ket w = std::conj(phase) * v;
+                realT u0 = std::abs(v[0]);
+                realT s2 = w.tail(d - 1).squaredNorm();
+                w[0] = -s2 / (1 + u0);
+                realT w_norm2 = w.squaredNorm();
+                if (w_norm2 > 0) {
+                    Us[p] = phase * (Id - 2 * w * w.adjoint() / w_norm2);
+                } else {
+                    Us[p] = phase * Id;
+                }
+                if (!Us[p].isApprox(Id)) {
+                    is_identity = false;
+                }
+            }
+            if (is_identity) {
+                continue;
+            }
+            std::vector<idx> target(k + 1);
+            std::iota(target.begin(), target.end(), 0);
+            qc.gate(dirsum(Us), target, "Uprep");
+        }
+
+        return qc;
+    }
+
+    // qubits, Mottonen et al. decomposition
+    bool is_real = std::all_of(psi.data(), psi.data() + D, [](const cplx& z) {
+        return std::abs(z.imag()) <= chop;
+    });
+
+    // phases[k][p] is the average phase of the block of amplitudes whose
+    // leading k bits equal p; the phases of the amplitudes are unwrapped
+    // along the hypercube edges x -> x with its lowest set bit cleared, so
+    // that they are additive for product states (zero amplitudes inherit the
+    // phase of their parent)
+    std::vector<std::vector<realT>> phases;
+    if (!is_real) {
+        phases.resize(n + 1);
+        phases[n].resize(D);
+        for (idx x = 0; x < D; ++x) {
+            realT ref = (x == 0) ? 0 : phases[n][x & (x - 1)];
+            phases[n][x] = std::abs(psi[x]) > chop
+                               ? ref + std::arg(psi[x] * std::exp(-1_i * ref))
+                               : ref;
+        }
+        for (idx k = n; k-- > 0;) {
+            idx Dk = idx{1} << k;
+            phases[k].assign(Dk, 0);
+            for (idx p = 0; p < Dk; ++p) {
+                phases[k][p] =
+                    (phases[k + 1][2 * p] + phases[k + 1][2 * p + 1]) / 2;
+            }
+        }
+    }
+
+    for (idx k = 0; k < n; ++k) {
+        idx Dk = idx{1} << k;
+        std::vector<realT> alpha_y(Dk, 0);
+        std::vector<realT> alpha_z(Dk, 0);
+        std::vector<bool> known(Dk, false);
+        for (idx p = 0; p < Dk; ++p) {
+            if (norms[k][p] <= chop) {
+                continue; // "don't care", acts on a zero-amplitude block
+            }
+            known[p] = true;
+            if (is_real && k + 1 == n) {
+                // signed amplitudes, so that no phases are needed
+                alpha_y[p] = 2 * std::atan2(std::real(psi[2 * p + 1]),
+                                            std::real(psi[2 * p]));
+            } else {
+                alpha_y[p] = 2 * std::atan2(norms[k + 1][2 * p + 1],
+                                            norms[k + 1][2 * p]);
+            }
+            if (!is_real) {
+                alpha_z[p] = phases[k + 1][2 * p + 1] - phases[k + 1][2 * p];
+            }
+        }
+
+        // the RZ rotations on qubit k are diagonal, so they commute with all
+        // later rotations (in which qubit k is a control)
+        std::vector<idx> ctrl(k);
+        std::iota(ctrl.begin(), ctrl.end(), 0);
+        internal::reduce_ucr(ctrl, alpha_y, known);
+        internal::append_ucr(qc, 'Y', ctrl, k, alpha_y);
+        if (!is_real) {
+            ctrl.resize(k);
+            std::iota(ctrl.begin(), ctrl.end(), 0);
+            internal::reduce_ucr(ctrl, alpha_z, known);
+            internal::append_ucr(qc, 'Z', ctrl, k, alpha_z);
+        }
+    }
+
+    // global phase
+    if (!is_real) {
+        cplx global_phase = std::exp(1_i * phases[0][0]);
+        if (std::abs(global_phase - cplx{1, 0}) > chop) {
+            qc.gate(global_phase * Gates::get_no_thread_local_instance().Id2, 0,
+                    "GPhase");
+        }
     }
 
     return qc;

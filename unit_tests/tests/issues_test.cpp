@@ -22,3 +22,14 @@ TEST(qpp_PR, 113) {
     auto engine = QEngine{circuit};
     EXPECT_NO_THROW(engine.execute());
 }
+
+TEST(qpp_issue, 76) {
+    // https://github.com/softwareQinc/qpp/issues/76
+    ket psi(16);
+    psi << 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1;
+    psi /= std::sqrt(static_cast<realT>(6));
+
+    auto qc = state_prep_circuit(psi);
+    auto result = QEngine{qc}.execute().get_state();
+    EXPECT_NEAR(0, norm(result - psi), 1e-5);
+}

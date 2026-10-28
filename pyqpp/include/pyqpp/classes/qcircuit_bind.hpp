@@ -600,6 +600,10 @@ inline void init_classes_qcircuit(py::module_& m) {
           "Quantum phase estimation circuit with n bits of precision",
           py::arg("U"), py::arg("n"), py::arg("omit_measurements") = true,
           py::arg("d") = 2, py::arg("name") = "qpe");
+    m.def("state_prep_circuit", &qpp::state_prep_circuit,
+          "Quantum circuit that prepares the pure state psi from |0...0>",
+          py::arg("psi"), py::arg("d") = 2, py::arg("decompose") = true,
+          py::arg("name") = "state_prep");
     m.def("random_circuit_count", &qpp::random_circuit_count,
           "Random quantum circuit description generator for fixed gate count",
           py::arg("nq"), py::arg("d"), py::arg("gate_count"),
