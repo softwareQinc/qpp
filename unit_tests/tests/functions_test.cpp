@@ -116,6 +116,41 @@ TEST(qpp_evects, AllTests) {}
 ///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_expm, AllTests) {}
 
+/// BEGIN template <typename Derived1, typename Derived2> realT expect(
+///       const Eigen::MatrixBase<Derived1>& H,
+///       const Eigen::MatrixBase<Derived2>& state)
+TEST(qpp_expect, PureStates) {
+    ket psi = (st.z0 + st.z1).normalized();
+
+    EXPECT_NEAR(expect(gt.Z, st.z0), 1, 1e-12);
+    EXPECT_NEAR(expect(gt.Z, st.z1), -1, 1e-12);
+    EXPECT_NEAR(expect(gt.X, psi), 1, 1e-12);
+    EXPECT_NEAR(expect(gt.Y, psi), 0, 1e-12);
+    EXPECT_NEAR(expect(gt.Z, psi), 0, 1e-12);
+}
+
+TEST(qpp_expect, MixedStates) {
+    // pure state represented as a density matrix
+    ket psi = (st.z0 + st.z1).normalized();
+    cmat rho = psi * psi.adjoint();
+
+    EXPECT_NEAR(expect(gt.X, rho), 1, 1e-12);
+    EXPECT_NEAR(expect(gt.Y, rho), 0, 1e-12);
+    EXPECT_NEAR(expect(gt.Z, rho), 0, 1e-12);
+
+    // maximally mixed state
+    cmat rho_mixed = cmat::Identity(2, 2) / 2.;
+
+    EXPECT_NEAR(expect(gt.X, rho_mixed), 0, 1e-12);
+    EXPECT_NEAR(expect(gt.Y, rho_mixed), 0, 1e-12);
+    EXPECT_NEAR(expect(gt.Z, rho_mixed), 0, 1e-12);
+
+    // equivalence between state vector and density matrix
+    EXPECT_NEAR(expect(gt.X, psi), expect(gt.X, rho), 1e-12);
+    EXPECT_NEAR(expect(gt.Y, psi), expect(gt.Y, rho), 1e-12);
+    EXPECT_NEAR(expect(gt.Z, psi), expect(gt.Z, rho), 1e-12);
+}
+
 /// BEGIN template <typename Derived1, typename Derived2> realT fidelity(
 ///       const Eigen::MatrixBase<Derived1>& A,
 ///       const Eigen::MatrixBase<Derived2>& B)

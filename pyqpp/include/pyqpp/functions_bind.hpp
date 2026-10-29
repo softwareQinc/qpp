@@ -136,6 +136,11 @@ inline void init_functions(py::module_& m) {
         [](const cmat& A, cplx (*f)(const cplx&)) { return qpp::funm(A, f); },
         "Applies the scalar function f to the eigenvalues of matrix A",
         py::arg("A"), py::arg("f"));
+    m.def(
+        "expect",
+        [](const cmat& H, const cmat& state) { return qpp::expect(H, state); },
+        "Expectation value of a Hermitian observable for a pure or mixed state",
+        py::arg("H"), py::arg("state"));
 
     // --- Kronecker and Direct Sum ---
     m.def(

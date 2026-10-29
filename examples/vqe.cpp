@@ -26,7 +26,7 @@ int main() {
         engine.execute();
 
         const ket psi = engine.get_state();
-        return (psi.adjoint() * H * psi)(0, 0).real();
+        return expect(H, psi);
     };
 
     // classical part: gradient descent using the parameter-shift rule.

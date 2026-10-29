@@ -2469,6 +2469,57 @@ dirac_t<typename Derived::Scalar> dirac(const Eigen::MatrixBase<Derived>& A,
     return dirac(rA, dims_rows, dims_cols);
 }
 
+/**
+ * @brief Computes the expectation value of an observable
+ *
+ * @note H is assumed to be Hermitian but is not checked for Hermiticity. The
+ * imaginary part of the expectation value is discarded.
+ *
+ * @param H Observable
+ * @param state State vector or density matrix
+ * @return Expectation value \f$\langle\psi|H|\psi\rangle\f$ for
+ *         state vectors, or \f$\mathrm{Tr}(\rho H)\f$ for density matrices
+ */
+template <typename Derived1, typename Derived2>
+realT expect(const Eigen::MatrixBase<Derived1>& H,
+             const Eigen::MatrixBase<Derived2>& state) {
+    const auto& rH = H.derived();
+    const auto& rstate = state.derived();
+
+    // EXCEPTION CHECKS
+    // check zero size
+    if (!internal::check_nonzero_size(rH)) {
+        throw exception::ZeroSize("qpp::expect", "H");
+    }
+
+    if (!internal::check_nonzero_size(rstate)) {
+        throw exception::ZeroSize("qpp::expect", "state");
+    }
+
+    // check square matrix
+    if (!internal::check_square_mat(rH)) {
+        throw exception::MatrixNotSquare("qpp::expect", "H");
+    }
+
+    // check state vector or density matrix
+    if (!internal::check_cvector(rstate) &&
+        !internal::check_square_mat(rstate)) {
+        throw exception::MatrixNotSquareNorCvector("qpp::expect", "state");
+    }
+
+    // check dimensions
+    if (rH.rows() != rstate.rows()) {
+        throw exception::DimsMismatchMatrix("qpp::expect", "H/state");
+    }
+    // END EXCEPTION CHECKS
+
+    if (internal::check_cvector(rstate)) {
+        return rstate.col(0).dot(rH * rstate.col(0)).real();
+    }
+
+    return (rH * rstate).trace().real();
+}
+
 inline namespace literals {
 // Idea borrowed from https://techblog.altplus.co.jp/entry/2017/11/08/130921
 /**
@@ -2559,7 +2610,7 @@ cmat operator""_prj() {
     }
     // END EXCEPTION CHECKS
 
-    return kron(operator""_ket < Bits... > (), operator""_bra < Bits... > ());
+    return kron(operator""_ket < Bits...>(), operator""_bra < Bits...>());
 }
 } /* namespace literals */
 
