@@ -3,6 +3,7 @@
 ## Upcoming release
 
 - Updated Dockerfile to use Python 3.13 from Debian 13 trixie
+- Added VQE example in ['examples/vqe.cpp'](examples/vqe.cpp)
 
 ## Version 7.1.0 - 28 October 2026
 
