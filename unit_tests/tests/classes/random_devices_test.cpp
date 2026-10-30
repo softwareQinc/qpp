@@ -9,7 +9,23 @@ using namespace qpp;
 // Unit testing "qpp/classes/random_devices.hpp"
 
 /// BEGIN std::mt19937& RandomDevices::get_prng()
-TEST(qpp_RandomDevices_get_prng, AllTests) {}
+TEST(qpp_RandomDevices_get_prng, AllTests) {
+    // Verify that get_prng() returns a reference to the same generator
+    std::mt19937& gen = rdevs.get_prng();
+    EXPECT_EQ(&gen, &rdevs.get_prng());
+
+    // Save the generator state
+    std::mt19937 saved = gen;
+
+    // Verify that the generator produces the expected sequence
+    std::mt19937 copy = gen;
+    for (idx i = 0; i < 100; ++i) {
+        EXPECT_EQ(copy(), gen());
+    }
+
+    // Restore the original state
+    gen = saved;
+}
 
 /// BEGIN RandomDevices::load(std::istream& is)
 ///

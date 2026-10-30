@@ -72,9 +72,7 @@ class DynamicBitset : public IDisplay {
      * @param pos Bit location
      * @return Index of the \a pos bit in the storage space
      */
-    inline static idx index_(idx pos) {
-        return pos / (sizeof(value_type) * CHAR_BIT);
-    }
+    static idx index_(idx pos) { return pos / (sizeof(value_type) * CHAR_BIT); }
 
     /**
      * @brief Offset of the \a pos bit in the storage space relative to its
@@ -84,7 +82,7 @@ class DynamicBitset : public IDisplay {
      * @return Offset of the \a pos bit in the storage space relative to its
      * index
      */
-    inline static idx offset_(idx pos) {
+    static idx offset_(idx pos) {
         return pos % (sizeof(value_type) * CHAR_BIT);
     }
 
@@ -96,7 +94,7 @@ class DynamicBitset : public IDisplay {
      */
     explicit DynamicBitset(idx n)
         : storage_size_{
-              static_cast<idx>(n / (sizeof(value_type) * CHAR_BIT) + 1)},
+              static_cast<idx>((n / (sizeof(value_type) * CHAR_BIT)) + 1)},
           n_{n}, v_(storage_size_) {}
 
     /**
@@ -214,7 +212,7 @@ class DynamicBitset : public IDisplay {
      *
      * @return True if any of the bits is set
      */
-    bool any() const noexcept { return !(none()); }
+    bool any() const noexcept { return !none(); }
 
     /* setters */
     /**
@@ -324,7 +322,7 @@ class DynamicBitset : public IDisplay {
     DynamicBitset& flip(idx pos) {
         assert(pos < size());
 
-        v_[index_(pos)] ^= static_cast<value_type>(1) << (offset_(pos));
+        v_[index_(pos)] ^= static_cast<value_type>(1) << offset_(pos);
 
         return *this;
     }

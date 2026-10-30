@@ -1,5 +1,3 @@
-#include <algorithm>
-
 #include "gtest/gtest.h"
 
 #include "qpp/qpp.hpp"
@@ -9,7 +7,24 @@ using namespace qpp;
 // Unit testing "qpp/random.hpp"
 
 /// BEGIN inline bool bernoulli(realT p = 0.5)
-TEST(qpp_bernoulli, AllTests) {}
+TEST(qpp_bernoulli, AllTests) {
+    // Degenerate distributions are deterministic.
+    for (idx i = 0; i < 100; ++i) {
+        EXPECT_FALSE(bernoulli(0));
+        EXPECT_TRUE(bernoulli(1));
+    }
+
+    // Check that the empirical success frequency agrees with the bias.
+    constexpr idx N = 10000;
+    for (realT p : std::vector<realT>{0.2, 0.5, 0.8}) {
+        idx successes = 0;
+        for (idx i = 0; i < N; ++i) {
+            successes += bernoulli(p);
+        }
+        EXPECT_NEAR(p, static_cast<realT>(successes) / N,
+                    8 * std::sqrt(p * (1 - p) / N));
+    }
+}
 
 /// BEGIN template <typename T,
 ///       typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
@@ -32,15 +47,18 @@ TEST(qpp_rand, Integer) {
     N = 10000;
     a = -10, b = 10;
     realT average = 0;
+    realT second_moment = 0;
     for (idx i = 0; i < N; ++i) {
         bigint n = rand(a, b);
 
         EXPECT_GE(n, a);
         EXPECT_LE(n, b);
         average += n;
+        second_moment += n * n;
     }
     average /= N;
-    EXPECT_NEAR(0, average, 2e-1); // very likely
+    EXPECT_NEAR(0, average, 8 * std::sqrt((110. / 3) / N));
+    EXPECT_NEAR(110. / 3, second_moment / N, 8 * std::sqrt(1070. / N));
 }
 TEST(qpp_rand, Real) {
     // 1000 elements between 0 and 1
@@ -56,14 +74,17 @@ TEST(qpp_rand, Real) {
     N = 10000;
     a = -10, b = 10;
     realT average = 0;
+    realT second_moment = 0;
     for (idx i = 0; i < N; ++i) {
         realT n = rand(a, b);
         EXPECT_GE(n, a);
         EXPECT_LE(n, b);
         average += n;
+        second_moment += n * n;
     }
     average /= N;
-    EXPECT_NEAR(0, average, 2e-1); // very likely
+    EXPECT_NEAR(0, average, 8 * (b - a) / std::sqrt(12. * N));
+    EXPECT_NEAR(100. / 3, second_moment / N, 8 * std::sqrt((8000. / 9) / N));
 }
 
 /// BEGIN template<> inline cmat rand(idx rows, idx cols, realT a, realT b)
@@ -97,6 +118,7 @@ TEST(qpp_rand, ComplexMatrix) {
     a = -10, b = 10;
     A = rand<cmat>(NA, NB, a, b);
     cplx average = 0;
+    realT second_moment = 0;
     for (idx i = 0; i < NA * NB; ++i) {
         cplx elem = A.data()[i];
         EXPECT_GE(elem.real(), a);
@@ -104,10 +126,14 @@ TEST(qpp_rand, ComplexMatrix) {
         EXPECT_LT(elem.real(), b);
         EXPECT_LT(elem.imag(), b);
         average += elem;
+        second_moment += std::norm(elem) / 2.;
     }
     average /= static_cast<realT>(NA * NB);
-    EXPECT_NEAR(0, average.real(), 1); // very likely
-    EXPECT_NEAR(0, average.imag(), 1); // very likely
+    const realT tolerance = 8 * (b - a) / std::sqrt(12. * NA * NB);
+    EXPECT_NEAR(0, average.real(), tolerance);
+    EXPECT_NEAR(0, average.imag(), tolerance);
+    EXPECT_NEAR(100. / 3, second_moment / (NA * NB),
+                8 * std::sqrt((4000. / 9) / (NA * NB)));
 }
 
 /// BEGIN template<> inline rmat rand(idx rows, idx cols, realT a, realT b)
@@ -137,14 +163,18 @@ TEST(qpp_rand, RealMatrix) {
     a = -10, b = 10;
     A = rand<rmat>(NA, NB, a, b);
     realT average = 0;
+    realT second_moment = 0;
     for (idx i = 0; i < NA * NB; ++i) {
         realT elem = A.data()[i];
         EXPECT_GE(elem, a);
         EXPECT_LT(elem, b);
         average += elem;
+        second_moment += elem * elem;
     }
     average /= static_cast<realT>(NA * NB);
-    EXPECT_NEAR(0, average, 1); // very likely
+    EXPECT_NEAR(0, average, 8 * (b - a) / std::sqrt(12. * NA * NB));
+    EXPECT_NEAR(100. / 3, second_moment / (NA * NB),
+                8 * std::sqrt((8000. / 9) / (NA * NB)));
 }
 
 /// BEGIN inline cmat randH(idx D = 2)
@@ -185,14 +215,17 @@ TEST(qpp_randidx, AllTests) {
     N = 10000;
     a = 0, b = 10;
     realT average = 0;
+    realT second_moment = 0;
     for (idx i = 0; i < N; ++i) {
         idx n = randidx(a, b);
         EXPECT_GE(n, a);
         EXPECT_LE(n, b);
         average += n;
+        second_moment += n * n;
     }
     average /= N;
-    EXPECT_NEAR(5, average, 1e-1); // very likely
+    EXPECT_NEAR(5, average, 8 * std::sqrt(10. / N));
+    EXPECT_NEAR(35, second_moment / N, 8 * std::sqrt(1078. / N));
 }
 
 /// BEGIN inline ket randket(idx D = 2)
@@ -210,7 +243,7 @@ TEST(qpp_randket, AllTests) {
         avg_state += randket(D);
     }
     expected = ket::Zero(D);
-    EXPECT_NEAR(0, norm(expected - avg_state / N), 2e-2);
+    EXPECT_LT(norm(expected - avg_state / N), 8 / std::sqrt(N));
 
     // D = 5, 10000 randomly generated kets, should average to zero
     D = 5;
@@ -220,7 +253,7 @@ TEST(qpp_randket, AllTests) {
         avg_state += randket(D);
     }
     expected = ket::Zero(D);
-    EXPECT_NEAR(0, norm(expected - avg_state / N), 2e-2);
+    EXPECT_LT(norm(expected - avg_state / N), 8 / std::sqrt(N));
 }
 
 /// BEGIN inline std::vector<cmat> randkraus(idx N, idx Din = 2, idx Dout)
@@ -289,34 +322,46 @@ TEST(qpp_randn, Real) {
     realT mean = 0, sigma = 1;
     idx N = 10000;
     realT average = 0;
+    realT variance = 0;
     for (idx i = 0; i < N; ++i) {
         realT n = randn(mean, sigma);
         average += n;
+        variance += (n - mean) * (n - mean);
     }
     average /= N;
-    EXPECT_NEAR(mean, average, 2.58 * sigma); // very likely (99%)
+    EXPECT_NEAR(mean, average, 8 * sigma / std::sqrt(N));
+    EXPECT_NEAR(sigma * sigma, variance / N,
+                8 * sigma * sigma * std::sqrt(2. / N));
 
     // 10000 elements with mean = 1 and sigma = 2
     mean = 1, sigma = 2;
     N = 10000;
     average = 0;
+    variance = 0;
     for (idx i = 0; i < N; ++i) {
         realT n = randn(mean, sigma);
         average += n;
+        variance += (n - mean) * (n - mean);
     }
     average /= N;
-    EXPECT_NEAR(mean, average, 2.58 * sigma); // very likely (99%)
+    EXPECT_NEAR(mean, average, 8 * sigma / std::sqrt(N));
+    EXPECT_NEAR(sigma * sigma, variance / N,
+                8 * sigma * sigma * std::sqrt(2. / N));
 
     // 10000 elements with mean = -1 and sigma = 1e-5
-    mean = 1, sigma = 1e-5;
+    mean = -1, sigma = 1e-5;
     N = 10000;
     average = 0;
+    variance = 0;
     for (idx i = 0; i < N; ++i) {
         realT n = randn(mean, sigma);
         average += n;
+        variance += (n - mean) * (n - mean);
     }
     average /= N;
-    EXPECT_NEAR(mean, average, 2.58 * sigma); // very likely (99%)
+    EXPECT_NEAR(mean, average, 8 * sigma / std::sqrt(N));
+    EXPECT_NEAR(sigma * sigma, variance / N,
+                8 * sigma * sigma * std::sqrt(2. / N));
 }
 
 /// BEGIN template<> inline cmat randn(idx rows, idx cols, realT mean,
@@ -332,8 +377,8 @@ TEST(qpp_randn, ComplexMatrix) {
         average += elem;
     }
     average /= static_cast<realT>(NA * NB);
-    EXPECT_NEAR(mean, average.real(), 2.58 * sigma); // very likely (99%)
-    EXPECT_NEAR(mean, average.imag(), 2.58 * sigma); // very likely (99%)
+    EXPECT_NEAR(mean, average.real(), 8 * sigma / std::sqrt(NA * NB));
+    EXPECT_NEAR(mean, average.imag(), 8 * sigma / std::sqrt(NA * NB));
 
     // 1 x 10 matrix with elements of mean = -1 and sigma = 0.1
     NA = 1, NB = 10;
@@ -345,8 +390,8 @@ TEST(qpp_randn, ComplexMatrix) {
         average += elem;
     }
     average /= static_cast<realT>(NA * NB);
-    EXPECT_NEAR(mean, average.real(), 2.58 * sigma); // very likely (99%)
-    EXPECT_NEAR(mean, average.imag(), 2.58 * sigma); // very likely (99%)
+    EXPECT_NEAR(mean, average.real(), 8 * sigma / std::sqrt(NA * NB));
+    EXPECT_NEAR(mean, average.imag(), 8 * sigma / std::sqrt(NA * NB));
 
     // 25 x 15 matrix with elements of mean = 10 and sigma = 1e-5
     NA = 25, NB = 15;
@@ -358,8 +403,16 @@ TEST(qpp_randn, ComplexMatrix) {
         average += elem;
     }
     average /= static_cast<realT>(NA * NB);
-    EXPECT_NEAR(mean, average.real(), 2.58 * sigma); // very likely (99%)
-    EXPECT_NEAR(mean, average.imag(), 2.58 * sigma); // very likely (99%)
+    EXPECT_NEAR(mean, average.real(), 8 * sigma / std::sqrt(NA * NB));
+    EXPECT_NEAR(mean, average.imag(), 8 * sigma / std::sqrt(NA * NB));
+
+    realT variance = 0;
+    for (idx i = 0; i < NA * NB; ++i) {
+        variance += std::norm(A.data()[i] - cplx{mean, mean});
+    }
+    variance /= static_cast<realT>(2 * NA * NB);
+    EXPECT_NEAR(sigma * sigma, variance,
+                8 * sigma * sigma / std::sqrt(NA * NB));
 }
 
 /// BEGIN template<> inline rmat randn(idx rows, idx cols, realT mean,
@@ -375,7 +428,7 @@ TEST(qpp_randn, RealMatrix) {
         average += elem;
     }
     average /= static_cast<realT>(NA * NB);
-    EXPECT_NEAR(mean, average, 2.58 * sigma); // very likely (99%)
+    EXPECT_NEAR(mean, average, 8 * sigma / std::sqrt(NA * NB));
 
     // 1 x 10 matrix with elements of mean = -1 and sigma = 0.1
     NA = 1, NB = 10;
@@ -387,7 +440,7 @@ TEST(qpp_randn, RealMatrix) {
         average += elem;
     }
     average /= static_cast<realT>(NA * NB);
-    EXPECT_NEAR(mean, average, 2.58 * sigma); // very likely (99%)
+    EXPECT_NEAR(mean, average, 8 * sigma / std::sqrt(NA * NB));
 
     // 25 x 15 matrix with elements of mean = 10 and sigma = 1e-5
     NA = 25, NB = 15;
@@ -399,7 +452,16 @@ TEST(qpp_randn, RealMatrix) {
         average += elem;
     }
     average /= static_cast<realT>(NA * NB);
-    EXPECT_NEAR(mean, average, 2.58 * sigma); // very likely (99%)
+    EXPECT_NEAR(mean, average, 8 * sigma / std::sqrt(NA * NB));
+
+    realT variance = 0;
+    for (idx i = 0; i < NA * NB; ++i) {
+        const realT delta = A.data()[i] - mean;
+        variance += delta * delta;
+    }
+    variance /= static_cast<realT>(NA * NB);
+    EXPECT_NEAR(sigma * sigma, variance,
+                8 * sigma * sigma * std::sqrt(2. / (NA * NB)));
 }
 
 /// BEGIN inline std::vector<idx> randperm(idx N)
@@ -422,7 +484,6 @@ TEST(qpp_randperm, AllTests) {
     result = randperm(N);
     expected.resize(N);
     std::iota(std::begin(expected), std::end(expected), 0u);
-    EXPECT_FALSE(result == expected); // very very likely
     std::sort(std::begin(result), std::end(result));
     EXPECT_TRUE(result == expected);
 }
@@ -508,7 +569,7 @@ TEST(qpp_randU, AllTests) {
         avg_state += randU() * st.z0;
     }
     ket expected = ket::Zero(D);
-    EXPECT_NEAR(0, norm(expected - avg_state / N), 2e-2);
+    EXPECT_LT(norm(expected - avg_state / N), 8 / std::sqrt(N));
 
     // D = 10
     D = 10;

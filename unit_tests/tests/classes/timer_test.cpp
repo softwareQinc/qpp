@@ -53,7 +53,7 @@ TEST(qpp_Timer_tic_tics_toc, AllTests) {
     EXPECT_NEAR(t.tics(), 0, 0.05);                 // within 0.05s
 
     t.tic(); // reset
-    // sleep an additional 0.1s (without reseting the timer)
+    // sleep an additional 0.1s (without resetting the timer)
     std::this_thread::sleep_for(milliseconds(100));
     t.toc();                          // get current time snap
     EXPECT_NEAR(t.tics(), 0.1, 0.05); // within 0.05s

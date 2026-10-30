@@ -2,11 +2,15 @@
 
 ## Upcoming release
 
+- Finalized the comprehensive unit test suite, covering all Quantum++
+  functionality
 - Added `qpp::expect()` in [`qpp/functions.hpp`](include/qpp/functions.hpp) for
   computing the expectation value of a Hermitian operator for pure and mixed
   states
 - Added a VQE example in ['examples/vqe.cpp'](examples/vqe.cpp)
 - Updated Dockerfile to use Python 3.13 from Debian 13 trixie
+- Bugfix in `qpp::applyCTRL_fan_inplace()`
+- Bugfixes in `qpp::applyQFT_inplace()` and `qpp::applyTFQ_inplace()`
 
 ## Version 7.1.0 - 28 October 2026
 

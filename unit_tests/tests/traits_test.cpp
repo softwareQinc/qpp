@@ -41,3 +41,21 @@ TEST(qpp_is_matrix_expression, AllTests) {
 
     EXPECT_FALSE(is_matrix_expression<decltype(x + y * z)>::value);
 }
+
+/// BEGIN template <typename Derived> bool constexpr is_bra_v()
+TEST(qpp_is_bra_v, AllTests) {
+    EXPECT_TRUE(is_bra_v<bra>());
+
+    EXPECT_FALSE(is_bra_v<ket>());
+    EXPECT_FALSE(is_bra_v<rmat>());
+    EXPECT_FALSE(is_bra_v<cmat>());
+}
+
+/// BEGIN template <typename Derived> bool constexpr is_ket_v()
+TEST(qpp_is_ket_v, AllTests) {
+    EXPECT_TRUE(is_ket_v<ket>());
+
+    EXPECT_FALSE(is_ket_v<bra>());
+    EXPECT_FALSE(is_ket_v<rmat>());
+    EXPECT_FALSE(is_ket_v<cmat>());
+}

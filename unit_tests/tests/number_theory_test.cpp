@@ -53,11 +53,28 @@ TEST(qpp_contfrac2x, UserSpecifiedN) {
 
 /// BEGIN std::vector<std::pair<bigint, bigint>>
 ///       convergents(const std::vector<bigint>& cf)
-TEST(qpp_convergents, ContinuedFraction) {}
+TEST(qpp_convergents, ContinuedFraction) {
+    const std::vector<std::pair<bigint, bigint>> expected{
+        {3, 1}, {22, 7}, {333, 106}, {355, 113}};
+    EXPECT_EQ(expected, convergents(std::vector<bigint>{3, 7, 15, 1}));
+    EXPECT_EQ((std::vector<std::pair<bigint, bigint>>{{42, 1}}),
+              convergents(std::vector<bigint>{42}));
+    EXPECT_THROW(convergents(std::vector<bigint>{}), exception::ZeroSize);
+}
 
 /// BEGIN std::vector<std::pair<bigint, bigint>>
 ///       convergents(realT x, idx N)
-TEST(qpp_convergents, RealNumber) {}
+TEST(qpp_convergents, RealNumber) {
+    const std::vector<std::pair<bigint, bigint>> expected_pi{
+        {3, 1}, {22, 7}, {333, 106}};
+    EXPECT_EQ(expected_pi, convergents(pi, 3));
+
+    // Rational numbers have a finite continued-fraction expansion.
+    const std::vector<std::pair<bigint, bigint>> expected_rational{{3, 1},
+                                                                   {7, 2}};
+    EXPECT_EQ(expected_rational, convergents(3.5, 10));
+    EXPECT_THROW(convergents(pi, 0), exception::OutOfRange);
+}
 
 /// BEGIN std::tuple<bigint, bigint, bigint> egcd(bigint m, bigint n)
 TEST(qpp_egcd, NonNegativeNumbers) {

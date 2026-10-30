@@ -2069,6 +2069,7 @@ template <typename Derived1, typename Derived2>
             internal::kernels::qubit::apply_ctrl_fan_rho_inplace(
                 state, A, ctrl, target, shift.value(), n);
         }
+        return;
     }
 #endif // QPP_QUBIT_OPTIMIZATIONS
 
@@ -3611,10 +3612,10 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
  */
 // TODO: use _diag
 template <typename Derived>
-[[qpp::critical]] void applyQFT_inplace(const Eigen::MatrixBase<Derived>& A,
+[[qpp::critical]] void applyQFT_inplace(Eigen::MatrixBase<Derived>& A,
                                         const std::vector<idx>& target,
                                         idx d = 2, bool swap = true) {
-    const auto& rA = A.derived();
+    auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero sizes
@@ -3655,14 +3656,13 @@ template <typename Derived>
     }
     // END EXCEPTION CHECKS
 
-    auto result = rA;
     idx n_subsys = target.size();
 
     if (d == 2) // qubits
     {
         for (idx i = 0; i < n_subsys; ++i) {
             // apply Hadamard on qubit i
-            apply_inplace(result, Gates::get_no_thread_local_instance().H,
+            apply_inplace(rA, Gates::get_no_thread_local_instance().H,
                           {target[i]});
             // apply controlled rotations
             for (idx j = 2; j <= n_subsys - i; ++j) {
@@ -3671,14 +3671,13 @@ template <typename Derived>
                 Rj << 1, 0, 0,
                     std::exp(static_cast<cplx::value_type>(2.0 * pi) * 1_i /
                              static_cast<cplx::value_type>(idx{1} << j));
-                applyCTRL_inplace(result, Rj, {target[i + j - 1]}, {target[i]});
+                applyCTRL_inplace(rA, Rj, {target[i + j - 1]}, {target[i]});
             }
         }
         if (swap) {
             // we have the qubits in reversed order, we must swap them
             for (idx i = 0; i < n_subsys / 2; ++i) {
-                apply_inplace(result,
-                              Gates::get_no_thread_local_instance().SWAP,
+                apply_inplace(rA, Gates::get_no_thread_local_instance().SWAP,
                               {target[i], target[n_subsys - i - 1]});
             }
         }
@@ -3686,7 +3685,7 @@ template <typename Derived>
     } else { // qudits
         for (idx i = 0; i < n_subsys; ++i) {
             // apply qudit Fourier on qudit i
-            apply_inplace(result, Gates::get_no_thread_local_instance().Fd(d),
+            apply_inplace(rA, Gates::get_no_thread_local_instance().Fd(d),
                           {target[i]}, d);
             // apply controlled rotations
             for (idx j = 2; j <= n_subsys - i; ++j) {
@@ -3697,14 +3696,13 @@ template <typename Derived>
                         static_cast<cplx::value_type>(2.0 * pi * m) * 1_i /
                         static_cast<cplx::value_type>(std::pow(d, j)));
                 }
-                applyCTRL_inplace(result, Rj, {target[i + j - 1]}, {target[i]},
-                                  d);
+                applyCTRL_inplace(rA, Rj, {target[i + j - 1]}, {target[i]}, d);
             }
         }
         if (swap) {
             // we have the qudits in reversed order, we must swap them
             for (idx i = 0; i < n_subsys / 2; ++i) {
-                apply_inplace(result,
+                apply_inplace(rA,
                               Gates::get_no_thread_local_instance().SWAPd(d),
                               {target[i], target[n_subsys - i - 1]}, d);
             }
@@ -3726,10 +3724,10 @@ template <typename Derived>
  */
 // TODO: use _diag
 template <typename Derived>
-[[qpp::critical]] void applyTFQ_inplace(const Eigen::MatrixBase<Derived>& A,
+[[qpp::critical]] void applyTFQ_inplace(Eigen::MatrixBase<Derived>& A,
                                         const std::vector<idx>& target,
                                         idx d = 2, bool swap = true) {
-    const auto& rA = A.derived();
+    auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero sizes
@@ -3770,8 +3768,6 @@ template <typename Derived>
     }
     // END EXCEPTION CHECKS
 
-    auto result = rA;
-
     idx n_subsys = target.size();
 
     if (d == 2) // qubits
@@ -3779,8 +3775,7 @@ template <typename Derived>
         if (swap) {
             // we have the qubits in reversed order, we must swap them
             for (idx i = n_subsys / 2; i-- > 0;) {
-                apply_inplace(result,
-                              Gates::get_no_thread_local_instance().SWAP,
+                apply_inplace(rA, Gates::get_no_thread_local_instance().SWAP,
                               {target[i], target[n_subsys - i - 1]});
             }
         }
@@ -3792,17 +3787,17 @@ template <typename Derived>
                 Rj << 1, 0, 0,
                     std::exp(static_cast<cplx::value_type>(-2.0 * pi) * 1_i /
                              static_cast<cplx::value_type>(idx{1} << j));
-                applyCTRL_inplace(result, Rj, {target[i + j - 1]}, {target[i]});
+                applyCTRL_inplace(rA, Rj, {target[i + j - 1]}, {target[i]});
             }
             // apply Hadamard on qubit i
-            apply_inplace(result, Gates::get_no_thread_local_instance().H,
+            apply_inplace(rA, Gates::get_no_thread_local_instance().H,
                           {target[i]});
         }
     } else { // qudits
         if (swap) {
             // we have the qudits in reversed order, we must swap them
             for (idx i = n_subsys / 2; i-- > 0;) {
-                apply_inplace(result,
+                apply_inplace(rA,
                               Gates::get_no_thread_local_instance().SWAPd(d),
                               {target[i], target[n_subsys - i - 1]}, d);
             }
@@ -3817,11 +3812,10 @@ template <typename Derived>
                         static_cast<cplx::value_type>(-2.0 * pi * m) * 1_i /
                         static_cast<cplx::value_type>(std::pow(d, j)));
                 }
-                applyCTRL_inplace(result, Rj, {target[i + j - 1]}, {target[i]},
-                                  d);
+                applyCTRL_inplace(rA, Rj, {target[i + j - 1]}, {target[i]}, d);
             }
             // apply qudit Fourier on qudit i
-            apply_inplace(result,
+            apply_inplace(rA,
                           adjoint(Gates::get_no_thread_local_instance().Fd(d)),
                           {target[i]}, d);
         }
@@ -3838,9 +3832,8 @@ template <typename Derived>
  * @param swap Swaps the qubits/qudits at the end (true by default)
  */
 template <typename Derived>
-void QFT_inplace(const Eigen::MatrixBase<Derived>& A, idx d = 2,
-                 bool swap = true) {
-    const auto& rA = A.derived();
+void QFT_inplace(Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true) {
+    auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size
@@ -3888,9 +3881,8 @@ void QFT_inplace(const Eigen::MatrixBase<Derived>& A, idx d = 2,
  * @param swap Swaps the qubits/qudits at the end (true by default)
  */
 template <typename Derived>
-void TFQ_inplace(const Eigen::MatrixBase<Derived>& A, idx d = 2,
-                 bool swap = true) {
-    const auto& rA = A.derived();
+void TFQ_inplace(Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true) {
+    auto& rA = A.derived();
 
     // EXCEPTION CHECKS
     // check zero-size

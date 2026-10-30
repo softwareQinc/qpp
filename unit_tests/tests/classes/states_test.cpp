@@ -9,7 +9,23 @@ using namespace qpp;
 // Unit testing "qpp/classes/states.hpp"
 
 /// BEGIN ket States::j(idx j, idx D = 2) const
-TEST(qpp_States_j, AllTests) {}
+TEST(qpp_States_j, AllTests) {
+    // qubits
+    EXPECT_NEAR(0, norm(st.z0 - st.j(0)), 1e-5);
+    EXPECT_NEAR(0, norm(st.z1 - st.j(1)), 1e-5);
+
+    // qudits
+    for (idx d : std::vector<idx>{1, 3, 5, 10}) {
+        for (idx j = 0; j < d; ++j) {
+            EXPECT_NEAR(0, norm(mket({j}, d) - st.j(j, d)), 1e-5);
+        }
+    }
+
+    // exceptions
+    EXPECT_THROW(st.j(2), exception::SubsysMismatchDims);
+    EXPECT_THROW(st.j(3, 3), exception::SubsysMismatchDims);
+    EXPECT_THROW(st.j(0, 0), exception::SubsysMismatchDims);
+}
 
 /// BEGIN ket States::jn(idx j, idx n, idx d = 2) const
 TEST(qpp_States_jn, AllTests) {

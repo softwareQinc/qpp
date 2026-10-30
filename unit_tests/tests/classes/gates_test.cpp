@@ -206,8 +206,17 @@ TEST(qpp_Gates_GATE, Qubits) {
     EXPECT_NE(0, norm(res * psi - apply(psi, U, {1, 3})));
 }
 
-/// BEGIN std::optional<std::string> Gates::get_name(const cmat& U) const
-TEST(qpp_Gates_get_name, AllTests) {}
+/// BEGIN std::optionalstd::string Gates::get_name(const cmat& U) const
+TEST(qpp_Gates_get_name, AllTests) {
+    EXPECT_EQ("H", gt.get_name(gt.H));
+    EXPECT_EQ("X", gt.get_name(gt.X));
+    EXPECT_EQ("Y", gt.get_name(gt.Y));
+    EXPECT_EQ("Z", gt.get_name(gt.Z));
+    EXPECT_EQ("CNOT", gt.get_name(gt.CNOT));
+    EXPECT_FALSE(gt.get_name(cmat::Zero(2, 2)).has_value());
+    EXPECT_FALSE(gt.get_name(cmat::Zero(2, 3)).has_value());
+    EXPECT_THROW(gt.get_name(cmat{}), exception::ZeroSize);
+}
 
 /// BEGIN template <typename Derived = cmat>
 ///       Gates::Id(idx D = 2) const
@@ -219,7 +228,20 @@ TEST(qpp_Gates_Id, AllTests) {
 }
 
 /// BEGIN cmat Gates::MODMUL(idx a, idx N) const
-TEST(qpp_Gates_MODMUL, AllTests) {}
+TEST(qpp_Gates_MODMUL, AllTests) {
+    const cmat U = gt.MODMUL(2, 5, 3);
+    EXPECT_EQ(8, U.rows());
+    EXPECT_LT((U * adjoint(U) - gt.Id(8)).norm(), 1e-12);
+
+    for (idx j = 0; j < 5; ++j) {
+        EXPECT_LT((U * mket({j}, 8) - mket({(2 * j) % 5}, 8)).norm(), 1e-12);
+    }
+    for (idx j = 5; j < 8; ++j) {
+        EXPECT_LT((U * mket({j}, 8) - mket({j}, 8)).norm(), 1e-12);
+    }
+
+    EXPECT_THROW(gt.MODMUL(2, 5, 2), exception::OutOfRange);
+}
 
 /// BEGIN cmat Gates::Rn(realT theta, const std::vector<realT>& n) const
 TEST(qpp_Gates_Rn, AllTests) {
@@ -247,13 +269,29 @@ TEST(qpp_Gates_Rn, AllTests) {
 }
 
 /// BEGIN cmat Gates::RX(realT theta) const
-TEST(qpp_Gates_RX, AllTests) {}
+TEST(qpp_Gates_RX, AllTests) {
+    EXPECT_LT((gt.RX(0) - gt.Id2).norm(), 1e-12);
+    EXPECT_LT((gt.RX(pi) + 1_i * gt.X).norm(), 1e-12);
+    EXPECT_LT(
+        (gt.RX(pi / 2) * st.z0 - (st.z0 - 1_i * st.z1) / std::sqrt(2.)).norm(),
+        1e-12);
+}
 
 /// BEGIN cmat Gates::RY(realT theta) const
-TEST(qpp_Gates_RY, AllTests) {}
+TEST(qpp_Gates_RY, AllTests) {
+    EXPECT_LT((gt.RY(0) - gt.Id2).norm(), 1e-12);
+    EXPECT_LT((gt.RY(pi) + 1_i * gt.Y).norm(), 1e-12);
+    EXPECT_LT((gt.RY(pi / 2) * st.z0 - (st.z0 + st.z1) / std::sqrt(2.)).norm(),
+              1e-12);
+}
 
 /// BEGIN cmat Gates::RZ(realT theta) const
-TEST(qpp_Gates_RZ, AllTests) {}
+TEST(qpp_Gates_RZ, AllTests) {
+    EXPECT_LT((gt.RZ(0) - gt.Id2).norm(), 1e-12);
+    EXPECT_LT((gt.RZ(pi) + 1_i * gt.Z).norm(), 1e-12);
+    EXPECT_LT((gt.RZ(pi / 2) * st.z0 - std::exp(-1_i * pi / 4.) * st.z0).norm(),
+              1e-12);
+}
 
 /// BEGIN cmat SWAPd(idx D = 2) const
 TEST(qpp_Gates_SWAPd, AllTests) {
