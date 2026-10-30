@@ -101,6 +101,19 @@ add_custom_target(examples COMMENT "Builds and groups all Quantum++ examples")
 add_subdirectory(examples _examples EXCLUDE_FROM_ALL)
 
 # ----------------------------------------------------------------------------
+# Code coverage configuration, disabled by default
+# ----------------------------------------------------------------------------
+option(QPP_ENABLE_COVERAGE "Enable LLVM code coverage" OFF)
+if(QPP_ENABLE_COVERAGE)
+  set(QPP_ENABLE_TESTING
+      ON
+      CACHE BOOL "Enable Quantum++ unit tests" FORCE)
+  set(CMAKE_BUILD_TYPE
+      Debug
+      CACHE STRING "Build type" FORCE)
+endif()
+
+# ----------------------------------------------------------------------------
 # Unit tests, disabled by default
 # ----------------------------------------------------------------------------
 option(QPP_ENABLE_TESTING "Enable Quantum++ unit tests" OFF)
@@ -110,12 +123,85 @@ if(QPP_ENABLE_TESTING)
 endif()
 
 # ----------------------------------------------------------------------------
+# Code coverage
+# ----------------------------------------------------------------------------
+if(QPP_ENABLE_COVERAGE)
+  if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    message(FATAL_ERROR "LLVM coverage requires Clang")
+  endif()
+
+  # Enable LLVM coverage instrumentation and UBSan
+  target_compile_options(
+    unit_tests PRIVATE -O0 -g -fprofile-instr-generate -fcoverage-mapping
+                       -fsanitize=undefined -fno-omit-frame-pointer)
+
+  target_link_options(unit_tests PRIVATE -fprofile-instr-generate
+                      -fsanitize=undefined)
+
+  # Coverage output paths
+  set(COVERAGE_DIR "${CMAKE_BINARY_DIR}/coverage")
+  set(COVERAGE_RAW "${COVERAGE_DIR}/coverage.profraw")
+  set(COVERAGE_DATA "${COVERAGE_DIR}/coverage.profdata")
+
+  # Exclude third-party dependencies and unit tests
+  set(COVERAGE_EXCLUDE "(/Eigen/|/googletest/|/qasmtools/|/unit_tests/)")
+
+  # Additionally exclude Quantum++ internal implementations
+  set(COVERAGE_PUBLIC_EXCLUDE
+      "(/Eigen/|/googletest/|/qasmtools/|/unit_tests/|/qpp/internal/)")
+
+  add_custom_target(
+    coverage
+    # Create coverage directory
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${COVERAGE_DIR}"
+    # Remove previous profiling data
+    COMMAND ${CMAKE_COMMAND} -E rm -f "${COVERAGE_RAW}"
+    # Execute all unit tests
+    COMMAND ${CMAKE_COMMAND} -E env "LLVM_PROFILE_FILE=${COVERAGE_RAW}"
+            $<TARGET_FILE:unit_tests>
+    # Merge LLVM profiling data
+    COMMAND llvm-profdata merge -sparse "${COVERAGE_RAW}" -o "${COVERAGE_DATA}"
+    # Generate public API HTML report
+    COMMAND
+      llvm-cov show $<TARGET_FILE:unit_tests> -instr-profile=${COVERAGE_DATA}
+      -format=html -output-dir=${COVERAGE_DIR}/public
+      -show-line-counts-or-regions -show-branches=count
+      -ignore-filename-regex=${COVERAGE_PUBLIC_EXCLUDE}
+    # Generate full Quantum++ HTML report
+    COMMAND
+      llvm-cov show $<TARGET_FILE:unit_tests> -instr-profile=${COVERAGE_DATA}
+      -format=html -output-dir=${COVERAGE_DIR}/full -show-line-counts-or-regions
+      -show-branches=count -ignore-filename-regex=${COVERAGE_EXCLUDE}
+    # Print public API coverage summary
+    COMMAND ${CMAKE_COMMAND} -E echo ""
+    COMMAND ${CMAKE_COMMAND} -E echo "========== Public API Coverage =========="
+    COMMAND
+      llvm-cov report $<TARGET_FILE:unit_tests> -instr-profile=${COVERAGE_DATA}
+      -ignore-filename-regex=${COVERAGE_PUBLIC_EXCLUDE}
+    # Print full coverage summary
+    COMMAND ${CMAKE_COMMAND} -E echo ""
+    COMMAND ${CMAKE_COMMAND} -E echo
+            "========== Full Quantum++ Coverage =========="
+    COMMAND
+      llvm-cov report $<TARGET_FILE:unit_tests> -instr-profile=${COVERAGE_DATA}
+      -ignore-filename-regex=${COVERAGE_EXCLUDE}
+    DEPENDS unit_tests
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+    COMMENT "Generating Quantum++ coverage reports"
+    VERBATIM USES_TERMINAL)
+endif()
+
+# ----------------------------------------------------------------------------
 # pyqpp C++ development, disabled by default
 # ----------------------------------------------------------------------------
 option(QPP_ENABLE_PYQPP "Enable pyqpp development" OFF)
 if(QPP_ENABLE_PYQPP)
   add_subdirectory(pyqpp EXCLUDE_FROM_ALL)
 endif()
+
+# ----------------------------------------------------------------------------
+# Code coverage
+# ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 # pyqpp PACKAGE BUILD: Bypass EXCLUDE_FROM_ALL

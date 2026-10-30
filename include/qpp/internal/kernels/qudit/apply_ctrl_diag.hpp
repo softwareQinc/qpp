@@ -601,7 +601,6 @@ apply_ctrl_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
            "State must be a d^n x d^n matrix");
 
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
-        const idx c = ctrl[c_idx];
         assert(shift[c_idx] < d && "Shift must be less than d");
     }
 #endif

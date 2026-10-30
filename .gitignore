@@ -79,3 +79,10 @@ CMakeFiles/
 pyqpp.egg-info/
 __pycache__/
 /uv.lock
+
+# Code coverage
+/build-coverage/
+/coverage-public/
+/coverage-full/
+*.profraw
+*.profdata
