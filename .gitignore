@@ -82,7 +82,6 @@ __pycache__/
 
 # Code coverage
 /build-coverage/
-/coverage-public/
-/coverage-full/
+/coverage*
 *.profraw
 *.profdata

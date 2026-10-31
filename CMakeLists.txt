@@ -172,7 +172,19 @@ if(QPP_ENABLE_COVERAGE)
       llvm-cov show $<TARGET_FILE:unit_tests> -instr-profile=${COVERAGE_DATA}
       -format=html -output-dir=${COVERAGE_DIR}/full -show-line-counts-or-regions
       -show-branches=count -ignore-filename-regex=${COVERAGE_EXCLUDE}
-    # Print public API coverage summary
+      # Export public API coverage in LCOV format (for Codecov)
+    COMMAND
+      /bin/sh -c
+      "llvm-cov export \"$1\" -instr-profile=\"$2\" -format=lcov -ignore-filename-regex=\"$3\" > \"$4\""
+      _ "$<TARGET_FILE:unit_tests>" "${COVERAGE_DATA}"
+      "${COVERAGE_PUBLIC_EXCLUDE}" "${COVERAGE_DIR}/coverage-public.info"
+    # Export full Quantum++ coverage in LCOV format
+    COMMAND
+      /bin/sh -c
+      "llvm-cov export \"$1\" -instr-profile=\"$2\" -format=lcov -ignore-filename-regex=\"$3\" > \"$4\""
+      _ "$<TARGET_FILE:unit_tests>" "${COVERAGE_DATA}" "${COVERAGE_EXCLUDE}"
+      "${COVERAGE_DIR}/coverage-full.info"
+      # Print public API coverage summary
     COMMAND ${CMAKE_COMMAND} -E echo ""
     COMMAND ${CMAKE_COMMAND} -E echo "========== Public API Coverage =========="
     COMMAND
@@ -198,10 +210,6 @@ option(QPP_ENABLE_PYQPP "Enable pyqpp development" OFF)
 if(QPP_ENABLE_PYQPP)
   add_subdirectory(pyqpp EXCLUDE_FROM_ALL)
 endif()
-
-# ----------------------------------------------------------------------------
-# Code coverage
-# ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 # pyqpp PACKAGE BUILD: Bypass EXCLUDE_FROM_ALL
