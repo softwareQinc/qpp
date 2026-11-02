@@ -1,0 +1,42 @@
+name: Coverage
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang llvm libeigen3-dev ninja-build
+
+      - name: Configure
+        run: |
+          cmake -B build-coverage \
+            -DCMAKE_CXX_COMPILER=clang++ \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DQPP_ENABLE_COVERAGE=ON
+
+      - name: Generate coverage
+        run: cmake --build build-coverage --target coverage --parallel 2
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: build-coverage/coverage/coverage-public.info
+          disable_search: true
+          fail_ci_if_error: true
