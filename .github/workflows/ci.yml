@@ -1,4 +1,4 @@
-name: GitHub actions
+name: CI
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Configure Quantum++
-        run: cmake -B build -DQPP_ENABLE_TESTING=ON
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DQPP_ENABLE_TESTING=ON
 
       - name: Install Quantum++
         shell: bash

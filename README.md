@@ -2,7 +2,7 @@
 
 ## Version 7.1.0 - 28 October 2026
 
-[![GitHub actions](https://github.com/softwareQinc/qpp/actions/workflows/cmake.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions)
+[![CI](https://github.com/softwareQinc/qpp/actions/workflows/ci.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions/workflows/ci.yml)
 [![Coverage](https://codecov.io/gh/softwareQinc/qpp/branch/main/graph/badge.svg)](https://codecov.io/gh/softwareQinc/qpp/tree/main)
 
 ---
