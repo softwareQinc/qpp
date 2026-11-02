@@ -33,9 +33,7 @@ jobs:
             -DCMAKE_CXX_FLAGS="-stdlib=libc++" \
             -DCMAKE_BUILD_TYPE=Release \
             -DQPP_ENABLE_COVERAGE=ON \
-            -DQPP_ENABLE_SANITIZE=OFF \
-            -DQPP_ENABLE_MATLAB=OFF \
-            -DQPP_ENABLE_OPENMP=OFF
+            -DQPP_ENABLE_MATLAB=OFF
 
       - name: Generate coverage
         run: cmake --build build-coverage --target coverage --parallel 2
