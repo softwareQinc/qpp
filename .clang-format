@@ -9,7 +9,9 @@ PointerAlignment: Left
 IndentCaseLabels: true
 AlwaysBreakTemplateDeclarations: Yes
 InsertBraces: true
-SortIncludes: true
+SortIncludes:
+  Enabled: true
+  IgnoreCase: false
 # system headers come first
 IncludeCategories:
   - Regex: "^<.*>"
