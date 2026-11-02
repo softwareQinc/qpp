@@ -1,7 +1,7 @@
 #ifndef OPENMP_UTILS_HPP_
 #define OPENMP_UTILS_HPP_
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 
 #include <cstdlib>
 #include <iostream>
@@ -46,5 +46,5 @@ inline int set_openmp_threads(int requested = -1) {
     return threads;
 }
 
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
 #endif // OPENMP_UTILS_HPP_

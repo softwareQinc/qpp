@@ -4,6 +4,8 @@
 
 - Finalized the comprehensive unit test suite, covering all Quantum++
   functionality
+- Added code coverage reporting via the `QPP_ENABLE_COVERAGE` CMake option
+  (disabled by default); requires LLVM
 - Added `qpp::expect()` in [`qpp/functions.hpp`](include/qpp/functions.hpp) for
   computing the expectation value of a Hermitian operator for pure and mixed
   states
@@ -11,6 +13,13 @@
 - Updated Dockerfile to use Python 3.13 from Debian 13 trixie
 - Bugfix in `qpp::applyCTRL_fan_inplace()`
 - Bugfixes in `qpp::applyQFT_inplace()` and `qpp::applyTFQ_inplace()`
+- Made CMake option names consistent:
+  - `QPP_MATLAB` -> `QPP_ENABLE_MATLAB`
+  - `QPP_OPENMP` -> `QPP_ENABLE_OPENMP`
+  - `QPP_QUBIT_OPTIMIZATIONS` -> `QPP_ENABLE_QUBIT_OPTIMIZATIONS`
+  - `QPP_SANITIZE` -> `QPP_ENABLE_SANITIZE`
+  - `QPP_NO_THREAD_LOCAL` -> `QPP_ENABLE_THREAD_LOCAL` (inverted logic; default
+    changed from `OFF` to `ON`)
 
 ## Version 7.1.0 - 28 October 2026
 

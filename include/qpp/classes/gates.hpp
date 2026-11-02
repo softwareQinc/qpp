@@ -233,9 +233,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         cmat result = cmat::Zero(D * D, D * D);
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
        // column major order for speed
         for (idx j = 0; j < D; ++j) {
             for (idx i = 0; i < D; ++i) {
@@ -270,9 +270,9 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         cmat result(D, D);
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
        // column major order for speed
         for (idx j = 0; j < D; ++j) {
             for (idx i = 0; i < D; ++i) {
@@ -319,7 +319,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
 
         cmat result = cmat::Zero(D, D);
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif
         for (idx j = 0; j < N; ++j) {
@@ -329,7 +329,7 @@ class Gates final : public internal::Singleton<const Gates> // const Singleton
                    j) = 1;
         }
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif
         for (idx i = N; i < D; ++i) {

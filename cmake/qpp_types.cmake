@@ -1,5 +1,5 @@
 # ============================================================================
-# Quantum++ type configuration
+# Quantum++ numeric types configuration
 # ============================================================================
 # This file defines the fundamental type aliases used by Quantum++. Each type
 # can be customized via CMake cache options. If none is provided, defaults are
@@ -53,7 +53,7 @@ set_property(CACHE QPP_FP PROPERTY STRINGS "default" "float" "double"
 # ----------------------------------------------------------------------------
 # Print configuration summary
 # ----------------------------------------------------------------------------
-message(STATUS "Quantum++ type configuration")
+message(STATUS "Quantum++ numeric type configuration")
 message(STATUS "  Index type        : ${QPP_IDX}")
 message(STATUS "  Big integer type  : ${QPP_BIGINT}")
 message(STATUS "  Floating-point    : ${QPP_FP}")
@@ -123,7 +123,7 @@ target_compile_definitions(
 # ----------------------------------------------------------------------------
 # Final summary (for clarity in build logs)
 # ----------------------------------------------------------------------------
-message(STATUS "Quantum++ configured type compile-time definitions")
+message(STATUS "Quantum++ numeric type compile-time definitions")
 message(STATUS "  ${QPP_IDX_DEFINITION}")
 message(STATUS "  ${QPP_BIGINT_DEFINITION}")
 message(STATUS "  ${QPP_FP_DEFINITION}")

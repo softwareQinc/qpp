@@ -1,9 +1,9 @@
 # MATLAB support
 
-option(QPP_MATLAB "Enable MATLAB support" OFF)
-message(STATUS "MATLAB support - ${QPP_MATLAB}")
+option(QPP_ENABLE_MATLAB "Enable MATLAB support" OFF)
+message(STATUS "MATLAB support - ${QPP_ENABLE_MATLAB}")
 
-if(QPP_MATLAB)
+if(QPP_ENABLE_MATLAB)
   # Select the target
   include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
   qpp_select_target(QPP_TARGET "MATLAB")

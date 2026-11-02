@@ -132,9 +132,9 @@ ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
     // Execution Loop
     for (idx j = 0; j < Dsubsys_bar; ++j) {
         idx col_base = expand_bits(j);
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
         for (idx i = 0; i < Dsubsys_bar; ++i) {
             idx row_base = expand_bits(i);
             Scalar sm = 0;
@@ -236,9 +236,9 @@ ptrace_rho_kq(const Eigen::MatrixBase<Derived>& A,
     // Execution Loop
     for (idx j = 0; j < Dsubsys_bar; ++j) {
         idx col_base = expand_bits(j);
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
         for (idx i = 0; i < Dsubsys_bar; ++i) {
             idx row_base = expand_bits(i);
             Scalar sm = 0;

@@ -95,7 +95,7 @@ template <typename Derived1, typename Derived2>
     // baseline (psi / d) mathematical overhead from the loop.
     dyn_col_vect<typename Derived1::Scalar> result = rstate;
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif
     for (idx r = 0; r < d; ++r) {
@@ -119,7 +119,7 @@ template <typename Derived1, typename Derived2>
             dyn_col_vect<typename Derived1::Scalar> delta =
                 transformed_psi - chopped_psi;
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp critical
 #endif
             {
@@ -180,7 +180,7 @@ template <typename Derived1, typename Derived2>
         dyn_mat<typename Derived1::Scalar> result =
             dyn_mat<typename Derived1::Scalar>::Zero(D, D);
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif
         for (idx i = 0; i < D; ++i) {
@@ -195,7 +195,7 @@ template <typename Derived1, typename Derived2>
             dyn_row_vect<typename Derived1::Scalar> phi_i_bra =
                 applyCTRL_fan_ket(phi_i_ket).adjoint();
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp critical
 #endif
             {

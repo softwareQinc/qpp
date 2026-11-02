@@ -128,9 +128,9 @@ template <typename Derived1, typename Derived2>
             // ctrl_bit. Streaming over those runs avoids the bit-deposit index
             // reconstruction used by the fallback below and gives the compiler
             // a simple contiguous multiply loop.
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2) if (D >= 65536) // 16 qubits
-#endif                                               // QPP_OPENMP
+#endif                                               // QPP_ENABLE_OPENMP
             for (idx L = 0; L < D; L += jump) {
                 for (idx C = 0; C < step; C += 2 * ctrl_bit) {
                     const idx start = L + step + C + ctrl_bit;
@@ -153,9 +153,9 @@ template <typename Derived1, typename Derived2>
         const idx mid_mask = (hi >> 1) - lo;
         const idx keep_mask = low_mask | mid_mask;
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for if (D >= 65536) // 16 qubits
-#endif                                   // QPP_OPENMP
+#endif                                   // QPP_ENABLE_OPENMP
         for (idx r = 0; r < (D >> 2); ++r) {
             const idx base = (r & low_mask) | ((r & mid_mask) << 1) |
                              ((r & ~keep_mask) << 2);
@@ -164,9 +164,9 @@ template <typename Derived1, typename Derived2>
         return;
     }
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2) if (D >= 65536) // 16 qubits
-#endif                                               // QPP_OPENMP
+#endif                                               // QPP_ENABLE_OPENMP
     for (idx L = 0; L < D; L += jump) {
         for (idx R = 0; R < step; ++R) {
             const idx k0 = L + R;
@@ -277,9 +277,9 @@ apply_ctrl_psi_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     const Scalar a2 = A.coeff(2);
     const Scalar a3 = A.coeff(3);
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx k00 = 0; k00 < D; ++k00) {
         // Skip indices that do not have both target bits == 0
         if ((static_cast<std::size_t>(k00) & static_cast<std::size_t>(s_i)) ||
@@ -442,9 +442,9 @@ template <typename Derived1, typename Derived2>
         outer_idx[m] = i_base | expected_pattern_for_ones;
     }
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx m = 0; m < outer_dim; ++m) {
         const idx i_base = outer_idx[m];
 
@@ -558,11 +558,11 @@ template <typename Derived1, typename Derived2>
     const Scalar a1a0c = a1 * a0_conj;
     const Scalar a1a1c = a1 * a1_conj;
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 // Optimization: Simplified loop structure to improve cache locality
 // and reduce index arithmetic overhead.
 #pragma omp parallel for schedule(static)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx r = 0; r < D; ++r) {
         if (r & s_i) {
             continue; // Only process the '0' subspace for the target qubit
@@ -707,9 +707,9 @@ apply_ctrl_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
                ((static_cast<std::size_t>(k_base) & expected_zero_mask) == 0);
     };
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx r = 0; r < D_rest; ++r) {
         for (idx c = 0; c < D_rest; ++c) {
             idx r_base = 0;
@@ -879,9 +879,9 @@ template <typename Derived1, typename Derived2>
     };
 
     // 6. Execution Loop
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx r = 0; r < D_rest; ++r) {
         for (idx c = 0; c < D_rest; ++c) {
             const idx r_base = rest_patterns[r];

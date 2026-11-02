@@ -1,16 +1,16 @@
 # OpenMP support
 
-option(QPP_OPENMP "Enable OpenMP support" ON)
-message(STATUS "OpenMP support - ${QPP_OPENMP}")
+option(QPP_ENABLE_OPENMP "Enable OpenMP support" ON)
+message(STATUS "OpenMP support - ${QPP_ENABLE_OPENMP}")
 
-if(QPP_OPENMP)
+if(QPP_ENABLE_OPENMP)
   # Select the target
   include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
   qpp_select_target(QPP_TARGET "OpenMP")
 
   find_package(OpenMP 3.0 COMPONENTS CXX)
   if(OpenMP_CXX_FOUND)
-    target_compile_definitions(${QPP_TARGET} INTERFACE QPP_OPENMP)
+    target_compile_definitions(${QPP_TARGET} INTERFACE QPP_ENABLE_OPENMP)
     target_link_libraries(${QPP_TARGET} INTERFACE OpenMP::OpenMP_CXX)
     if(APPLE)
       execute_process(

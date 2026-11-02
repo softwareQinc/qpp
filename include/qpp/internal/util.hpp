@@ -481,9 +481,9 @@ kron2(const Eigen::MatrixBase<Derived1>& A,
     dyn_mat<typename Derived1::Scalar> result;
     result.resize(Arows * Brows, Acols * Bcols);
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     // column major order for speed
     for (idx j = 0; j < Acols; ++j) {
         for (idx i = 0; i < Arows; ++i) {
@@ -730,9 +730,9 @@ dyn_col_vect<Derived> project_ket_on_dits(dyn_col_vect<Derived> psi,
                                           const std::vector<idx>& dits,
                                           const std::vector<idx>& subsys,
                                           const std::vector<idx>& dims, idx D) {
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx i = 0; i < D; ++i) {
         if (!idx_contains_dits(i, dits, subsys, dims)) {
             psi(i) = 0;
@@ -778,9 +778,9 @@ inline std::vector<T> fast_complement(const std::vector<T>& target, idx n) {
     // Mark the indices that are present in the target set. O(M) time, where
     // M is target.size(). This loop is parallelized as there are no write
     // conflicts.
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx i = 0; i < target_size; ++i) {
         idx t = target[i];
         // Assuming 't' is validated to be between 0 and n-1

@@ -116,9 +116,9 @@ apply_ctrl_psi_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     const idx target_stride = d_pow[n - 1 - i];
 
     // Outer loop splits across all spectator and control combinations
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx m = 0; m < spectator_dim; ++m) {
         for (idx c_val = 0; c_val < ctrl_dim; ++c_val) {
 
@@ -276,9 +276,9 @@ apply_ctrl_psi_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     const idx stride_j = d_pow[n - 1 - j];
 
     // Outer loop splits across all spectator and control combinations
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx m = 0; m < spectator_dim; ++m) {
         for (idx c_val = 0; c_val < ctrl_dim; ++c_val) {
 
@@ -454,9 +454,9 @@ template <typename Derived1, typename Derived2>
     // same] ...
 
     // Outer loop splits across all spectator and control combinations
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx m = 0; m < spectator_dim; ++m) {
         for (idx c_val = 0; c_val < ctrl_dim; ++c_val) {
 
@@ -640,9 +640,9 @@ apply_ctrl_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // Loop over row configurations (m_row, c_row) and column configurations
     // (m_col, c_col)
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx m_row = 0; m_row < spectator_dim; ++m_row) {
         for (idx c_row = 0; c_row < ctrl_dim; ++c_row) {
 
@@ -831,9 +831,9 @@ apply_ctrl_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 
     // Loop over row configurations (m_row, c_row) and column configurations
     // (m_col, c_col)
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx m_row = 0; m_row < spectator_dim; ++m_row) {
         for (idx c_row = 0; c_row < ctrl_dim; ++c_row) {
 
@@ -1048,9 +1048,9 @@ template <typename Derived1, typename Derived2>
 
     // Loop over row configurations (m_row, c_row) and column configurations
     // (m_col, c_col)
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx m_row = 0; m_row < spectator_dim; ++m_row) {
         for (idx c_row = 0; c_row < ctrl_dim; ++c_row) {
 

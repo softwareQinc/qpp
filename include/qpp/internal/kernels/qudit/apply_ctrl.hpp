@@ -104,9 +104,9 @@ template <typename Derived1, typename Derived2>
     const Scalar a10 = A.coeff(1, 0);
     const Scalar a11 = A.coeff(1, 1);
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx L = 0; L < D; L += jump) {
         for (idx R = 0; R < step; ++R) {
             const idx k0 = L + R;
@@ -225,9 +225,9 @@ apply_ctrl_psi_2q_inplace(Eigen::MatrixBase<Derived1>& state,
     const Scalar a30 = A.coeff(3, 0), a31 = A.coeff(3, 1), a32 = A.coeff(3, 2),
                  a33 = A.coeff(3, 3);
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx k00 = 0; k00 < D; ++k00) {
         // Skip indices that do not have both target bits == 0
         if ((static_cast<std::size_t>(k00) & static_cast<std::size_t>(s_i)) ||
@@ -402,9 +402,9 @@ template <typename Derived1, typename Derived2>
     }
 
     // Parallel Execution
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx m = 0; m < outer_dim; ++m) {
         const idx i_base = outer_idx[m];
 
@@ -525,9 +525,9 @@ template <typename Derived1, typename Derived2>
     const Matrix2 A_dagger = A_block.adjoint();
     const idx total_iterations = D_spec * D_spec;
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx it = 0; it < total_iterations; ++it) {
         const idx s = it / D_spec;
         const idx s_prime = it % D_spec;
@@ -670,7 +670,7 @@ apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
         }
     }
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, P_i, P_j, U, U_adj, state, i_phys, j_phys,               \
                expected_pattern_for_ones, expected_zero_mask)
@@ -843,7 +843,7 @@ template <typename Derived1, typename Derived2>
         }
     }
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for default(none)                                         \
     shared(D_rest, n, k, rest_phys, P_gate_basis, state, U, U_adj, D_k,        \
                expected_pattern_for_ones, expected_zero_mask)

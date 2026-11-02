@@ -18,11 +18,11 @@ int main(int argc, char* argv[]) {
     auto cli = session.cli() |
                Catch::Clara::Opt(nq, "qubits")["--nq"]("Number of qubits") |
                Catch::Clara::Opt(nl, "layers")["--nl"]("Number of layers");
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
     cli |= Catch::Clara::Opt(cli_threads, "threads")["--threads"](
         "Number of OpenMP threads/cores (ignored if the environment variable "
         "OMP_NUM_THREADS is set)");
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     session.cli(cli);
 
     int returnCode = session.applyCommandLine(argc, argv);
@@ -34,9 +34,9 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
     set_openmp_threads();
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
 
     return session.run();
 }

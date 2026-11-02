@@ -79,9 +79,9 @@ apply_psi_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     const Scalar a11 = A.coeff(1);
 
     // Pair-wise Amplitude Transformation
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx L = 0; L < D; L += jump) {
         for (idx R = 0; R < step; ++R) {
             const idx k0 = L + R;
@@ -164,9 +164,9 @@ apply_psi_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     const Scalar a11 = A.coeff(3);
 
     // Amplitude Transformation
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx block_idx = 0; block_idx < D_rem; ++block_idx) {
         idx k00 = 0;
         idx current_block_bit = 0;
@@ -273,9 +273,9 @@ apply_psi_3q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     const Scalar a111 = A.coeff(7);
 
     // Amplitude Transformation
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx block_idx = 0; block_idx < D_rem; ++block_idx) {
         idx k000 = 0;
         idx current_block_bit = 0;
@@ -416,9 +416,9 @@ apply_psi_kq_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     }
 
     // Main Parallel Loop
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx m = 0; m < outer_dim; ++m) {
         const idx i_base = outer_idx[m];
 
@@ -501,9 +501,9 @@ apply_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     const Scalar g11 = a1 * a1_conj; // |1><1| scaling
 
     const idx total_iterations = D_spec * D_spec;
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx iter = 0; iter < total_iterations; ++iter) {
         const idx s = iter / D_spec;
         const idx s_prime = iter % D_spec;
@@ -606,9 +606,9 @@ apply_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     const idx D_rest = static_cast<idx>(std::size_t{1} << (n - 2));
 
     // Block Iteration (Parallelized over spectator rows and columns)
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx r = 0; r < D_rest; ++r) {
         for (idx c = 0; c < D_rest; ++c) {
             idx r_base_row = 0;
@@ -718,9 +718,9 @@ apply_rho_3q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 
     const idx D_rest = static_cast<idx>(std::size_t{1} << (n - 3));
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx r = 0; r < D_rest; ++r) {
         for (idx c = 0; c < D_rest; ++c) {
             idx r_base_row = 0;
@@ -866,9 +866,9 @@ apply_rho_kq_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     }
 
     // Block Iteration
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx r = 0; r < D_rest; ++r) {
         for (idx c = 0; c < D_rest; ++c) {
             idx r_base_row = 0;

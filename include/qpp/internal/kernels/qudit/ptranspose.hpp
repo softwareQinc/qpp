@@ -119,9 +119,9 @@ ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
         return conj(psi(i_T)) * psi(j_T);
     };
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx i = 0; i < D; ++i) {
         for (idx j = 0; j < D; ++j) {
             result(i, j) = worker(i, j);
@@ -204,9 +204,9 @@ ptranspose_rho_kq(const Eigen::MatrixBase<Derived>& A,
         return rA(j_T, i_T);
     }; /* end worker */
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for collapse(2)
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx i = 0; i < D; ++i) {
         for (idx j = 0; j < D; ++j) {
             result(i, j) = worker(i, j);

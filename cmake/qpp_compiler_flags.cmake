@@ -4,11 +4,11 @@
 include(${CMAKE_CURRENT_LIST_DIR}/qpp_select_target.cmake)
 qpp_select_target(QPP_TARGET "qpp_compiler_flags")
 
-option(QPP_QUBIT_OPTIMIZATIONS "Enable qubit-specific optimizations" ON)
-message(STATUS "Qubit optimizations - ${QPP_QUBIT_OPTIMIZATIONS}")
+option(QPP_ENABLE_QUBIT_OPTIMIZATIONS "Enable qubit-specific optimizations" ON)
+message(STATUS "Qubit optimizations - ${QPP_ENABLE_QUBIT_OPTIMIZATIONS}")
 
-option(QPP_NO_THREAD_LOCAL "Disable thread_local storage duration" OFF)
-if(QPP_NO_THREAD_LOCAL)
+option(QPP_ENABLE_THREAD_LOCAL "Enable thread_local storage duration" ON)
+if(NOT QPP_ENABLE_THREAD_LOCAL)
   message(STATUS "thread_local support - OFF")
 endif()
 
@@ -46,11 +46,11 @@ target_compile_definitions(
 # Qubit optimization macros
 target_compile_definitions(
   ${QPP_TARGET}
-  INTERFACE $<$<BOOL:${QPP_QUBIT_OPTIMIZATIONS}>:QPP_QUBIT_OPTIMIZATIONS>)
+  INTERFACE $<$<BOOL:${QPP_ENABLE_QUBIT_OPTIMIZATIONS}>:QPP_ENABLE_QUBIT_OPTIMIZATIONS>)
 
 # thread_local storage duration
 target_compile_definitions(
-  ${QPP_TARGET} INTERFACE $<$<BOOL:${QPP_NO_THREAD_LOCAL}>:QPP_NO_THREAD_LOCAL>)
+  ${QPP_TARGET} INTERFACE $<$<BOOL:${QPP_ENABLE_THREAD_LOCAL}>:QPP_ENABLE_THREAD_LOCAL>)
 
 # Default build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -77,7 +77,7 @@ if(TARGET libqpp_internal)
               # Non-Debug configurations
               $<$<NOT:$<CONFIG:Debug>>:EIGEN_NO_DEBUG>
               # Enable qubit-specific optimizations if requested
-              $<$<BOOL:${QPP_QUBIT_OPTIMIZATIONS}>:QPP_QUBIT_OPTIMIZATIONS>)
+              $<$<BOOL:${QPP_ENABLE_QUBIT_OPTIMIZATIONS}>:QPP_ENABLE_QUBIT_OPTIMIZATIONS>)
 
   target_compile_options(
     libqpp_internal

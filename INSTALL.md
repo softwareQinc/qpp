@@ -96,6 +96,26 @@ ctest --test-dir build
 
 ---
 
+## Code coverage
+
+Code coverage reporting requires Clang and the LLVM tools `llvm-profdata` and
+`llvm-cov`. Enable it with the `QPP_ENABLE_COVERAGE` CMake option, which
+automatically enables unit testing
+
+```shell
+cmake -B build-coverage \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DQPP_ENABLE_COVERAGE=ON
+cmake --build build-coverage --target coverage --parallel 8
+```
+
+The `coverage` target builds and runs the unit tests, then generates coverage
+reports in `build-coverage/coverage/`, including `coverage-public.info` for
+the public API and `coverage-full.info` for the full report.
+
+---
+
 ## Benchmarks
 
 See [`benchmarks/README.md`](benchmarks/README.md) for details on how to compile

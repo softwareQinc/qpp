@@ -99,9 +99,9 @@ template <typename Derived1, typename Derived2>
         idx num_t_active =
             static_cast<idx>(std::size_t{1} << (n - ctrl_size - 1));
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
         for (idx i = 0; i < num_t_active; ++i) {
             // Software PDEP bit-scattering to find indices that match the rest
             // bits
@@ -208,7 +208,7 @@ template <typename Derived1, typename Derived2>
 
         // Precalculate address pairs
         std::vector<std::pair<idx, idx>> active_pairs(num_t_active);
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif
         for (idx i = 0; i < num_t_active; ++i) {
@@ -228,7 +228,7 @@ template <typename Derived1, typename Derived2>
         }
 
         // 1. Row operations (Left application: A * rho)
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif
         for (idx c = 0; c < D; ++c) {
@@ -243,7 +243,7 @@ template <typename Derived1, typename Derived2>
         }
 
         // 2. Column operations (Right application: rho * A_dagger)
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif
         for (idx i = 0; i < num_t_active; ++i) {

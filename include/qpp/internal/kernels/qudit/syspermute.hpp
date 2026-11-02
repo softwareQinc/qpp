@@ -92,9 +92,9 @@ syspermute_psi_kq(const Eigen::MatrixBase<Derived>& A,
         return static_cast<idx>(new_index);
     };
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx i = 0; i < D; ++i) {
         // Assign the original element to the calculated permuted index
         result(permute_bits(i)) = rA.data()[i];
@@ -152,9 +152,9 @@ syspermute_rho_kq(const Eigen::MatrixBase<Derived>& A,
         return static_cast<idx>(new_index);
     };
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx i = 0; i < D * D; ++i) {
         idx permuted_linear_index;
 

@@ -171,9 +171,9 @@ ip(const Eigen::MatrixBase<Derived>& phi, const Eigen::MatrixBase<Derived>& psi,
     }; /* end worker */
 
     dyn_col_vect<typename Derived::Scalar> result(Dsubsys_bar);
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
     for (idx m = 0; m < Dsubsys_bar; ++m) {
         result(m) = worker(m);
     }
@@ -645,9 +645,9 @@ measure(const Eigen::MatrixBase<Derived>& A, const cmat& V,
         std::vector<realT> probs(M);               // probabilities
         std::vector<expr_t<Derived>> outstates(M); // resulting states
 
-#ifdef QPP_OPENMP
+#ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif // QPP_OPENMP
+#endif // QPP_ENABLE_OPENMP
         for (idx i = 0; i < M; ++i) {
             if (destructive) {
                 outstates[i] =

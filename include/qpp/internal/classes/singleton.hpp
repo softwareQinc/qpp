@@ -99,21 +99,21 @@ class Singleton {
         return instance;
     }
 
-#ifndef QPP_NO_THREAD_LOCAL
+#ifdef QPP_ENABLE_THREAD_LOCAL
     static T&
     get_thread_local_instance() noexcept(std::is_nothrow_constructible_v<T>) {
         // Per-thread instance, initialized on first use
         thread_local T instance{};
         return instance;
     }
-#endif // QPP_NO_THREAD_LOCAL
+#endif // QPP_ENABLE_THREAD_LOCAL
 
     static T& get_instance() noexcept(std::is_nothrow_constructible_v<T>) {
-#ifdef QPP_NO_THREAD_LOCAL
-        return get_no_thread_local_instance();
-#else
+#ifdef QPP_ENABLE_THREAD_LOCAL
         return get_thread_local_instance();
-#endif // QPP_NO_THREAD_LOCAL
+#else
+        return get_no_thread_local_instance();
+#endif // QPP_ENABLE_THREAD_LOCAL
     }
 }; /* class Singleton */
 
