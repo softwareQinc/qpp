@@ -6,8 +6,6 @@ using namespace qpp;
 
 // Unit testing "qpp/classes/qnoisy_engine.hpp"
 
-/// BEGIN QBaseEngine& QNoisyEngineT::execute(
-///       typename QCircuitTraits<QCT>::iterator_type& it)
 TEST(qpp_QNoisyEngineT_execute, Iterator) {
     // qubits
     QCircuit qc(1);
@@ -41,8 +39,6 @@ TEST(qpp_QNoisyEngineT_execute, Iterator) {
     EXPECT_NEAR(0, norm(engine3.get_state() - mket({2}, 3)), 1e-12);
 }
 
-/// BEGIN QNoisyEngineT& QNoisyEngineT::execute(
-///       const typename QCircuitTraits<QCircuit>::value_type& elem) override
 TEST(qpp_QNoisyEngineT_execute, ValueType) {
     // qubits
     QCircuit qc(1);
@@ -69,7 +65,6 @@ TEST(qpp_QNoisyEngineT_execute, ValueType) {
     EXPECT_NEAR(0, norm(density_engine3.get_state() - mprj({1}, 3)), 1e-12);
 }
 
-/// BEGIN QNoisyEngineT& QNoisyEngineT::execute(idx reps = 1) override
 TEST(qpp_QNoisyEngineT_execute, AllCircuitWithRepetitions) {
     // qubits
     QCircuit qc(2, 2);
@@ -93,8 +88,6 @@ TEST(qpp_QNoisyEngineT_execute, AllCircuitWithRepetitions) {
     EXPECT_EQ(4u, engine3.get_stats().get_num_reps());
 }
 
-/// BEGIN std::vector<std::vector<idx>>
-///       QNoisyEngineT::get_noise_results() const
 TEST(qpp_QNoisyEngineT_get_noise_results, AllTests) {
     // qubits: noise is applied before every non-measurement step
     QCircuit qc(2);
@@ -118,8 +111,6 @@ TEST(qpp_QNoisyEngineT_get_noise_results, AllTests) {
     EXPECT_EQ((std::vector<idx>{0, 0}), results3[0]);
 }
 
-/// BEGIN QEngineT& QNoisyEngineT::reset(std::optional<T> qstate = std::nullopt,
-///       bool reset_stats = true)
 TEST(qpp_QNoisyEngineT_reset, AllTests) {
     // qubits
     QCircuit qc(1, 1);
@@ -147,7 +138,6 @@ TEST(qpp_QNoisyEngineT_reset, AllTests) {
     EXPECT_TRUE(engine3.get_noise_results().empty());
 }
 
-/// BEGIN std::string QNoisyEngineT::traits_get_name() const override
 TEST(qpp_QNoisyEngineT_traits_get_name, AllTests) {
     QCircuit qc(1);
     QubitBitFlipNoise noise(0);
@@ -164,7 +154,6 @@ TEST(qpp_QNoisyEngineT_traits_get_name, AllTests) {
     EXPECT_EQ("QNoisyEngine", engine3.traits_get_name());
 }
 
-/// BEGIN bool QNoisyEngineT::traits_is_noisy() const override
 TEST(qpp_QNoisyEngineT_traits_is_noisy, AllTests) {
     QCircuit qc(1);
     QubitBitFlipNoise noise(0);
@@ -179,7 +168,6 @@ TEST(qpp_QNoisyEngineT_traits_is_noisy, AllTests) {
     EXPECT_TRUE(engine3.traits_is_noisy());
 }
 
-/// BEGIN bool QNoisyEngineT::traits_is_pure() const override
 TEST(qpp_QNoisyEngineT_traits_is_pure, AllTests) {
     QCircuit qc(1);
     QubitBitFlipNoise noise(0);

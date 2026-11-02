@@ -8,8 +8,6 @@ using namespace qpp;
 
 // Unit testing "qpp/entropies.hpp"
 
-/// BEGIN template <typename Derived> realT entropy(
-///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_entropy, Matrix) {
     // 1 x 1 case
     cmat A(1, 1);
@@ -49,7 +47,6 @@ TEST(qpp_entropy, Matrix) {
     EXPECT_NEAR(std::log2(3), entropy(A), 1e-5);
 }
 
-/// BEGIN inline realT entropy(const std::vector<realT>& prob)
 TEST(qpp_entropy, Vector) {
     // 1 value
     std::vector<realT> v = {1};
@@ -73,9 +70,6 @@ TEST(qpp_entropy, Vector) {
     EXPECT_NEAR(std::log2(D), entropy(v), 1e-5);
 }
 
-/// BEGIN template <typename Derived> realT qmutualinfo(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsysA,
-///       const std::vector<idx>& subsysB, const std::vector<idx>& dims)
 TEST(qpp_qmutualinfo, Qudits) {
     // 1 x 1 degenerate product state
     idx dA = 1, dB = 1;
@@ -118,9 +112,6 @@ TEST(qpp_qmutualinfo, Qudits) {
     EXPECT_NEAR(result, expected, 1e-5);
 }
 
-/// BEGIN template <typename Derived> realT qmutualinfo(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& subsysA,
-///       const std::vector<idx>& subsysB, idx d = 2)
 TEST(qpp_qmutualinfo, Qubits) {
     // 2 x 2 product state
     idx d = 2;
@@ -155,8 +146,6 @@ TEST(qpp_qmutualinfo, Qubits) {
     EXPECT_NEAR(result, expected, 1e-5);
 }
 
-/// BEGIN template <typename Derived> realT renyi(
-///       const Eigen::MatrixBase<Derived>& A, realT alpha)
 TEST(qpp_renyi, Matrix) {
     // 1 x 1 case
     cmat A(1, 1);
@@ -219,7 +208,6 @@ TEST(qpp_renyi, Matrix) {
     EXPECT_NEAR(std::log2(D), renyi(A, infty), 1e-5);
 }
 
-/// BEGIN inline realT renyi(const std::vector<realT>& prob, realT alpha)
 TEST(qpp_renyi, Vector) {
     // 1 value
     std::vector<realT> v = {1};
@@ -266,8 +254,6 @@ TEST(qpp_renyi, Vector) {
     EXPECT_NEAR(std::log2(D), renyi(v, infty), 1e-5);
 }
 
-/// BEGIN template <typename Derived> realT tsallis(
-///       const Eigen::MatrixBase<Derived>& A, realT q)
 TEST(qpp_tsallis, Matrix) {
     // 1 x 1 case
     cmat A(1, 1);
@@ -330,7 +316,6 @@ TEST(qpp_tsallis, Matrix) {
     EXPECT_NEAR(0, tsallis(A, infty), 1e-5);
 }
 
-/// BEGIN inline realT tsallis(const std::vector<realT>& prob, realT q)
 TEST(qpp_tsallis, Vector) {
     // 1 value
     std::vector<realT> v = {1};

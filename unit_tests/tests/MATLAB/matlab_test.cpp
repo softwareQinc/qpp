@@ -10,15 +10,6 @@ using namespace qpp;
 
 // Unit testing "qpp/MATLAB/matlab.hpp"
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       load_MATLAB(const std::string& mat_file,
-///                       const std::string& var_name)
-///
-///       template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       void save_MATLAB(const Eigen::MatrixBase <Derived>& A,
-///                        const std::string& mat_file,
-///                        const std::string& var_name,
-///                        const std::string& mode)
 TEST(qpp_MATLAB_load_save_MATLAB, Matrix) {
     namespace fs = std::filesystem;
     fs::path mat_bin = fs::temp_directory_path() / "qpp_matlab_matrix.mat";

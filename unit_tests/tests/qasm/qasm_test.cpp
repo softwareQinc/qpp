@@ -6,8 +6,6 @@ using namespace qpp;
 
 // Unit testing "qpp/qasm/qasm.hpp"
 
-/// BEGIN inline QCircuit qasm::read_from_file(const std::string& fname)
-
 TEST(qpp_qasm_read_from_file, StdCompliance) {
     // generic circuits
     EXPECT_NO_THROW(qasm::read_from_file(PROJECT_ROOT_DIR

@@ -9,10 +9,6 @@ using namespace qpp;
 
 // Unit testing "qpp/operations.hpp"
 
-/// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
-///       apply(const Eigen::MatrixBase<Derived1>& state,
-///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& target,
-///       const std::vector<idx>& dims)
 TEST(qpp_apply, Qudits) {
     // pure states
     idx d = 3;
@@ -37,10 +33,6 @@ TEST(qpp_apply, Qudits) {
     EXPECT_NEAR(0, norm(result_rho - expected_rho), 1e-5);
 }
 
-/// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
-///       apply(const Eigen::MatrixBase<Derived1>& state,
-///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& target,
-///       idx d = 2)
 TEST(qpp_apply, Qubits) {
     // pure states
     // 1 qubit
@@ -80,8 +72,6 @@ TEST(qpp_apply, Qubits) {
     EXPECT_EQ(0.8 * 0000_ket + 0.6 * 0111_ket, resultTOF);
 }
 
-/// BEGIN template <typename Derived> cmat apply(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks)
 TEST(qpp_apply, Channel) {
     const cmat rho = prj(st.x0);
     EXPECT_LT((qpp::apply(rho, std::vector<cmat>{gt.Id(2)}) - rho).norm(),
@@ -91,9 +81,6 @@ TEST(qpp_apply, Channel) {
         1e-12);
 }
 
-/// BEGIN template <typename Derived> cmat apply(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
-///       const std::vector<idx>& target, const std::vector<idx>& dims)
 TEST(qpp_apply, SubsysChannel) {
     const cmat rho = mprj({2, 1}, std::vector<idx>{3, 2});
     EXPECT_LT((apply(rho, std::vector<cmat>{gt.Xd(3)}, {0}, {3, 2}) -
@@ -102,20 +89,12 @@ TEST(qpp_apply, SubsysChannel) {
               1e-12);
 }
 
-/// BEGIN template <typename Derived> cmat apply(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<cmat>& Ks,
-///       const std::vector<idx>& target, idx d = 2)
 TEST(qpp_apply, SubsysChannelQubits) {
     const cmat rho = mprj({1, 0});
     EXPECT_LT((apply(rho, std::vector<cmat>{gt.X}, {1}) - mprj({1, 1})).norm(),
               1e-12);
 }
 
-/// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
-///       applyCTRL(const Eigen::MatrixBase<Derived1>& state,
-///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-///       const std::vector<idx>& target, const std::vector<idx>& dims,
-///       std::optional<std::vector<idx>> shift = std::nullopt)
 TEST(qpp_applyCTRL, Qudits) {
     idx d = 3;
     idx n = 4;
@@ -179,11 +158,6 @@ TEST(qpp_applyCTRL, Qudits) {
     EXPECT_NEAR(0, res, 1e-5);
 }
 
-/// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
-///       applyCTRL(const Eigen::MatrixBase<Derived1>& state,
-///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-///       const std::vector<idx>& target, idx d = 2,
-///       std::optional<std::vector<idx>> shift = std::nullopt)
 TEST(qpp_applyCTRL, Qubits) {
     EXPECT_LT((applyCTRL(mket({1, 0}), gt.X, {0}, {1}) - mket({1, 1})).norm(),
               1e-12);
@@ -193,11 +167,6 @@ TEST(qpp_applyCTRL, Qubits) {
               1e-12);
 }
 
-/// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
-///       applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
-///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-///       const std::vector<idx>& target, const std::vector<idx>& dims,
-///       std::optional<std::vector<idx>> shift = std::nullopt)
 TEST(qpp_applyCTRL_fan, Qudits) {
     idx d = 3;
     idx n = 4;
@@ -254,11 +223,6 @@ TEST(qpp_applyCTRL_fan, Qudits) {
     EXPECT_NEAR(0, res, 1e-5);
 }
 
-/// BEGIN template <typename Derived1, typename Derived2> expr_t<Derived1>
-///       applyCTRL_fan(const Eigen::MatrixBase<Derived1>& state,
-///       const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-///       const std::vector<idx>& target, idx d = 2,
-///       std::optional<std::vector<idx>> shift = std::nullopt)
 TEST(qpp_applyCTRL_fan, Qubits) {
     const idx n = 6; // total qubits
     const idx D = internal::ipow_rounded<idx>(2, n);
@@ -421,9 +385,6 @@ TEST(qpp_applyCTRL_fan, Qubits) {
     }
 }
 
-/// BEGIN template <typename Derived> expr_t<Derived>
-///       applyQFT(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& target, idx d = 2, bool swap = true)
 TEST(qpp_applyQFT, AllTests) {
     const ket psi = mket({0, 0});
     const ket expected = (mket({0, 0}) + mket({0, 1})) / std::sqrt(2.);
@@ -432,9 +393,6 @@ TEST(qpp_applyQFT, AllTests) {
     EXPECT_LT((applyTFQ(applyQFT(psi, {1}), {1}) - psi).norm(), 1e-10);
 }
 
-/// BEGIN template <typename Derived> expr_t<Derived>
-///       applyTFQ(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& target, idx d = 2, bool swap = true)
 TEST(qpp_applyTQF, AllTests) {
     const ket psi = mket({0, 1});
     const ket zero = mket({0, 0});
@@ -445,7 +403,6 @@ TEST(qpp_applyTQF, AllTests) {
               1e-10);
 }
 
-/// BEGIN inline std::vector<cmat> choi2kraus(const cmat& A, idx Din, idx Dout)
 TEST(qpp_choi2kraus, AllTests) {
     const std::vector<cmat> Ks{gt.X};
     const cmat choi = kraus2choi(Ks);
@@ -453,7 +410,6 @@ TEST(qpp_choi2kraus, AllTests) {
               1e-10);
 }
 
-/// BEGIN inline cmat choi2super(const cmat& A, idx Din, idx Dout)
 TEST(qpp_choi2super, AllTests) {
     const cmat choi = kraus2choi(std::vector<cmat>{gt.X});
     EXPECT_LT(
@@ -461,68 +417,47 @@ TEST(qpp_choi2super, AllTests) {
         1e-12);
 }
 
-/// BEGIN inline cmat kraus2choi(const std::vector<cmat>& Ks)
 TEST(qpp_kraus2choi, AllTests) {
     const cmat choi = kraus2choi(std::vector<cmat>{gt.Id(2)});
     const ket omega = mket({0, 0}) + mket({1, 1});
     EXPECT_LT((choi - omega * adjoint(omega)).norm(), 1e-12);
 }
 
-/// BEGIN inline cmat kraus2super(const std::vector<cmat>& Ks)
 TEST(qpp_kraus2super, AllTests) {
     EXPECT_LT((kraus2super(std::vector<cmat>{gt.Id(2)}) - cmat::Identity(4, 4))
                   .norm(),
               1e-12);
 }
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       ptrace(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& target, const std::vector<idx>& dims)
 TEST(qpp_ptrace, Qudits) {
     const ket psi = mket({2, 1}, std::vector<idx>{3, 2});
     EXPECT_LT((ptrace(psi, {0}, {3, 2}) - mprj({1})).norm(), 1e-12);
     EXPECT_LT((ptrace(prj(psi), {1}, {3, 2}) - mprj({2}, 3)).norm(), 1e-12);
 }
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       ptrace(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& target, idx d = 2)
 TEST(qpp_ptrace, Qubits) {
     EXPECT_LT((ptrace(st.b00, {0}) - cmat::Identity(2, 2) / 2.).norm(), 1e-12);
     EXPECT_LT((ptrace(mprj({1, 0}), {1}) - mprj({1})).norm(), 1e-12);
 }
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       ptrace1(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& dims)
 TEST(qpp_ptrace1, Qudits) {
     const ket psi = mket({2, 1}, std::vector<idx>{3, 2});
     EXPECT_LT((ptrace1(psi, {3, 2}) - mprj({1})).norm(), 1e-12);
 }
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       ptrace1(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_ptrace1, Qubits) {
     EXPECT_LT((ptrace1(mprj({1, 0})) - mprj({0})).norm(), 1e-12);
 }
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       ptrace2(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& dims)
 TEST(qpp_ptrace2, Qudits) {
     const ket psi = mket({2, 1}, std::vector<idx>{3, 2});
     EXPECT_LT((ptrace2(prj(psi), {3, 2}) - mprj({2}, 3)).norm(), 1e-12);
 }
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       ptrace2(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_ptrace2, Qubits) {
     EXPECT_LT((ptrace2(mprj({1, 0})) - mprj({1})).norm(), 1e-12);
 }
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       ptranspose(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& target, const std::vector<idx>& dims)
 TEST(qpp_ptranspose, Qudits) {
     const cmat rho = prj(st.mes(3));
     const cmat pt = ptranspose(rho, {0}, {3, 3});
@@ -530,9 +465,6 @@ TEST(qpp_ptranspose, Qudits) {
     EXPECT_NEAR(1, std::real(trace(pt)), 1e-12);
 }
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       ptranspose(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& target, idx d = 2)
 TEST(qpp_ptranspose, Qubits) {
     const cmat rho = prj(st.b00);
     const cmat pt = ptranspose(rho, {1});
@@ -540,8 +472,6 @@ TEST(qpp_ptranspose, Qubits) {
     EXPECT_GT((pt - rho).norm(), 0.1);
 }
 
-/// BEGIN template <typename Derived> expr_t<Derived>
-///       QFT(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true)
 TEST(qpp_QFT, AllTests) {
     const ket psi = mket({0, 0});
     const ket expected = ket::Ones(4) / 2.;
@@ -550,9 +480,6 @@ TEST(qpp_QFT, AllTests) {
     EXPECT_LT((TFQ(QFT(psi)) - psi).norm(), 1e-10);
 }
 
-/// BEGIN template <typename Derived> dyn_col_vect<typename Derived::Scalar>
-///       qRAM(const Eigen::MatrixBase<Derived>& psi, const qram& data,
-///       idx DqRAM)
 TEST(qpp_qRAM, AllTests) {
     const ket psi = st.x0;
     const qram data{1, 0};
@@ -561,22 +488,17 @@ TEST(qpp_qRAM, AllTests) {
     EXPECT_THROW(qRAM(psi, data, 1), exception::OutOfRange);
 }
 
-/// BEGIN inline cmat super2choi(const cmat& A)
 TEST(qpp_super2choi, AllTests) {
     const cmat super = kraus2super(std::vector<cmat>{gt.X});
     EXPECT_LT((super2choi(super) - kraus2choi(std::vector<cmat>{gt.X})).norm(),
               1e-12);
 }
 
-/// BEGIN inline cmat super2kraus(const cmat& A)
 TEST(qpp_super2kraus, AllTests) {
     const cmat super = kraus2super(std::vector<cmat>{gt.X});
     EXPECT_LT((kraus2super(super2kraus(super)) - super).norm(), 1e-10);
 }
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       syspermute(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& perm, const std::vector<idx>& dims)
 TEST(qpp_syspermute, Qudits) {
     const ket psi = mket({2, 1}, std::vector<idx>{3, 2});
     EXPECT_LT(
@@ -589,16 +511,11 @@ TEST(qpp_syspermute, Qudits) {
               1e-12);
 }
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       syspermute(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& perm, idx d = 2)
 TEST(qpp_syspermute, Qubits) {
     EXPECT_LT((syspermute(mket({1, 0, 1}), {2, 0, 1}) - mket({1, 1, 0})).norm(),
               1e-12);
 }
 
-/// BEGIN template <typename Derived> expr_t<Derived>
-///       TFQ(const Eigen::MatrixBase<Derived>& A, idx d = 2, bool swap = true)
 TEST(qpp_TFQ, AllTests) {
     const ket psi = mket({1, 0});
     const ket zero = mket({0, 0});

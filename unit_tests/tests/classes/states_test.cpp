@@ -8,7 +8,6 @@ using namespace qpp;
 
 // Unit testing "qpp/classes/states.hpp"
 
-/// BEGIN ket States::j(idx j, idx D = 2) const
 TEST(qpp_States_j, AllTests) {
     // qubits
     EXPECT_NEAR(0, norm(st.z0 - st.j(0)), 1e-5);
@@ -27,7 +26,6 @@ TEST(qpp_States_j, AllTests) {
     EXPECT_THROW(st.j(0, 0), exception::SubsysMismatchDims);
 }
 
-/// BEGIN ket States::jn(idx j, idx n, idx d = 2) const
 TEST(qpp_States_jn, AllTests) {
     // qubits
     idx n = 1;
@@ -56,7 +54,6 @@ TEST(qpp_States_jn, AllTests) {
     EXPECT_NEAR(0, norm(kronpow(mket({4}, d), n) - st.jn(4, n, d)), 1e-5);
 }
 
-/// BEGIN ket States::mes(idx d = 2) const
 TEST(qpp_States_mes, AllTests) {
     // d = 1 (number)
     ket ket_one(1);
@@ -85,7 +82,6 @@ TEST(qpp_States_mes, AllTests) {
     EXPECT_NEAR(0, norm(st.mes(d) - mes_ququad), 1e-5);
 }
 
-/// BEGIN ket States::minus(idx n) const
 TEST(qpp_States_minus, AllTests) {
     idx n = 1;
     EXPECT_NEAR(0, norm(st.x1 - st.minus(n)), 1e-5);
@@ -99,7 +95,6 @@ TEST(qpp_States_minus, AllTests) {
         1e-5);
 }
 
-/// BEGIN ket States::one(idx n, idx d = 2) const
 TEST(qpp_States_one, AllTests) {
     // qubits
 
@@ -122,7 +117,6 @@ TEST(qpp_States_one, AllTests) {
     EXPECT_NEAR(0, norm(kronpow(mket({1}, d), n) - st.one(n, d)), 1e-5);
 }
 
-/// BEGIN ket States::plus(idx n) const
 TEST(qpp_States_plus, AllTests) {
     idx n = 1;
     EXPECT_NEAR(0, norm(st.x0 - st.plus(n)), 1e-5);
@@ -136,7 +130,6 @@ TEST(qpp_States_plus, AllTests) {
         1e-5);
 }
 
-/// BEGIN ket States::zero(idx n, idx d = 2) const
 TEST(qpp_States_zero, AllTests) {
     // qubits
 

@@ -6,8 +6,6 @@ using namespace qpp;
 
 // Unit testing "qpp/classes/qdummy_engine.hpp"
 
-/// BEGIN QBaseEngine& QDummyEngineT::execute(
-///       typename QCircuitTraits<QCT>::iterator_type& it)
 TEST(qpp_QDummyEngine_execute, Iterator) {
     // qubits
     QCircuit qc(2);
@@ -28,8 +26,6 @@ TEST(qpp_QDummyEngine_execute, Iterator) {
     EXPECT_EQ(0, engine3.get_state().size());
 }
 
-/// BEGIN QBaseEngine& QDummyEngine::execute(
-///       const typename QCircuitTraits<QCircuit>::value_type& elem) override
 TEST(qpp_QDummyEngine_execute, ValueType) {
     // qubits
     QCircuit qc(1);
@@ -48,7 +44,6 @@ TEST(qpp_QDummyEngine_execute, ValueType) {
     EXPECT_EQ(0, engine3.get_state().size());
 }
 
-/// BEGIN QBaseEngine& QDummyEngine::execute(idx reps = 1) override
 TEST(qpp_QDummyEngine_execute, AllCircuitWithRepetitions) {
     // qubits
     QCircuit qc(1);
@@ -67,7 +62,6 @@ TEST(qpp_QDummyEngine_execute, AllCircuitWithRepetitions) {
     EXPECT_EQ(0, engine3.get_state().size());
 }
 
-/// BEGIN const QCT& QDummyEngine::get_circuit() const& noexcept
 TEST(qpp_QDummyEngine_get_circuit, Lvalue) {
     // qubits
     QCircuit qc(2);
@@ -84,7 +78,6 @@ TEST(qpp_QDummyEngine_get_circuit, Lvalue) {
     EXPECT_EQ(qc3, engine3.get_circuit());
 }
 
-/// BEGIN QCT QDummyEngine::get_circuit() const&& noexcept
 TEST(qpp_QDummyEngine_get_circuit, Rvalue) {
     // qubits
     QCircuit qc(2);
@@ -103,7 +96,6 @@ TEST(qpp_QDummyEngine_get_circuit, Rvalue) {
     EXPECT_NE(&qc3, &copy3);
 }
 
-/// BEGIN T QDummyEngine::get_state() const override
 TEST(qpp_QDummyEngine_get_state, AllTests) {
     // qubits
     QCircuit qc(2);
@@ -126,7 +118,6 @@ TEST(qpp_QDummyEngine_get_state, AllTests) {
     EXPECT_EQ(0, mixed3.get_state().size());
 }
 
-/// BEGIN QBaseEngine& QDummyEngine::set_state(const T& state) override
 TEST(qpp_QDummyEngine_set_state, AllTests) {
     // qubits
     QCircuit qc(1);
@@ -148,8 +139,6 @@ TEST(qpp_QDummyEngine_set_state, AllTests) {
     EXPECT_EQ(0, mixed3.get_state().size());
 }
 
-/// BEGIN std::string QDummyEngine::to_JSON(
-///       bool enclosed_in_curly_brackets = true) const override
 TEST(qpp_QDummyEngine_to_JSON, AllTests) {
     // qubits
     QCircuit qc(2, 1);
@@ -177,7 +166,6 @@ TEST(qpp_QDummyEngine_to_JSON, AllTests) {
     EXPECT_EQ(json3.substr(1, json3.size() - 2), mixed3.to_JSON(false));
 }
 
-/// BEGIN std::string QDummyEngine::traits_get_name() const override
 TEST(qpp_QDummyEngine_traits_get_name, AllTests) {
     // qubits
     QCircuit qc(1);
@@ -196,7 +184,6 @@ TEST(qpp_QDummyEngine_traits_get_name, AllTests) {
     EXPECT_EQ("QDensityDummyEngine", mixed3.traits_get_name());
 }
 
-/// BEGIN bool QDummyEngine::traits_is_noisy() const override
 TEST(qpp_QDummyEngine_traits_is_noisy, AllTests) {
     // qubits
     QCircuit qc(1);
@@ -215,7 +202,6 @@ TEST(qpp_QDummyEngine_traits_is_noisy, AllTests) {
     EXPECT_FALSE(mixed3.traits_is_noisy());
 }
 
-/// BEGIN bool QDummyEngine::traits_is_pure() const override
 TEST(qpp_QDummyEngine_traits_is_pure, AllTests) {
     // qubits
     QCircuit qc(1);

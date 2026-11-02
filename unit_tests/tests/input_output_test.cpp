@@ -9,11 +9,6 @@ using namespace qpp;
 
 // Unit testing "qpp/input_output.hpp"
 
-/// BEGIN template <typename Derived> dyn_mat<typename Derived::Scalar>
-///       load(std::istream& is)
-///
-///       template <typename Derived> void save(
-///       const Eigen::MatrixBase<Derived>& A, std::ostream& os)
 TEST(qpp_load_save, Matrix) {
     namespace fs = std::filesystem;
     fs::path filename = "mat.txt";

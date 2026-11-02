@@ -6,7 +6,6 @@ using namespace qpp;
 
 // Unit testing "qpp/random.hpp"
 
-/// BEGIN inline bool bernoulli(realT p = 0.5)
 TEST(qpp_bernoulli, AllTests) {
     // Degenerate distributions are deterministic.
     for (idx i = 0; i < 100; ++i) {
@@ -26,9 +25,6 @@ TEST(qpp_bernoulli, AllTests) {
     }
 }
 
-/// BEGIN template <typename T,
-///       typename std::enable_if_t<std::is_arithmetic_v<T>>* = nullptr>
-///       rand(T a, T b)
 TEST(qpp_rand, Integer) {
     // 1 element equal boundaries
     bigint a = 42, b = a;
@@ -87,7 +83,6 @@ TEST(qpp_rand, Real) {
     EXPECT_NEAR(100. / 3, second_moment / N, 8 * std::sqrt((8000. / 9) / N));
 }
 
-/// BEGIN template<> inline cmat rand(idx rows, idx cols, realT a, realT b)
 TEST(qpp_rand, ComplexMatrix) {
     // 1 x 1 matrix with elements between -1 and 1
     idx NA = 1, NB = 1;
@@ -136,7 +131,6 @@ TEST(qpp_rand, ComplexMatrix) {
                 8 * std::sqrt((4000. / 9) / (NA * NB)));
 }
 
-/// BEGIN template<> inline rmat rand(idx rows, idx cols, realT a, realT b)
 TEST(qpp_rand, RealMatrix) {
     // 1 x 1 matrix with elements between -1 and 1
     idx NA = 1, NB = 1;
@@ -177,7 +171,6 @@ TEST(qpp_rand, RealMatrix) {
                 8 * std::sqrt((8000. / 9) / (NA * NB)));
 }
 
-/// BEGIN inline cmat randH(idx D = 2)
 TEST(qpp_randH, AllTests) {
     // D = 1 degenerate case
     idx D = 1;
@@ -195,8 +188,6 @@ TEST(qpp_randH, AllTests) {
     EXPECT_NEAR(0, norm(A - adjoint(A)), 1e-5);
 }
 
-/// BEGIN inline idx randidx(idx a = std::numeric_limits<idx>::min(),
-///       idx b = std::numeric_limits<idx>::max())
 TEST(qpp_randidx, AllTests) {
     // 1 element equal boundaries
     idx a = 42, b = a;
@@ -228,7 +219,6 @@ TEST(qpp_randidx, AllTests) {
     EXPECT_NEAR(35, second_moment / N, 8 * std::sqrt(1078. / N));
 }
 
-/// BEGIN inline ket randket(idx D = 2)
 TEST(qpp_randket, AllTests) {
     // D = 1 degenerate case
     idx D = 1;
@@ -256,7 +246,6 @@ TEST(qpp_randket, AllTests) {
     EXPECT_LT(norm(expected - avg_state / N), 8 / std::sqrt(N));
 }
 
-/// BEGIN inline std::vector<cmat> randkraus(idx N, idx Din = 2, idx Dout)
 TEST(qpp_randkraus, AllTests) {
     // D = 1, N = 1 degenerate case
     idx D = 1, N = 1;
@@ -364,8 +353,6 @@ TEST(qpp_randn, Real) {
                 8 * sigma * sigma * std::sqrt(2. / N));
 }
 
-/// BEGIN template<> inline cmat randn(idx rows, idx cols, realT mean,
-///       realT sigma)
 TEST(qpp_randn, ComplexMatrix) {
     // 1 x 1 matrix with elements of mean = 0 and sigma = 0.1
     idx NA = 1, NB = 1;
@@ -415,8 +402,6 @@ TEST(qpp_randn, ComplexMatrix) {
                 8 * sigma * sigma / std::sqrt(NA * NB));
 }
 
-/// BEGIN template<> inline rmat randn(idx rows, idx cols, realT mean,
-///       realT sigma)
 TEST(qpp_randn, RealMatrix) {
     // 1 x 1 matrix with elements of mean = 0 and sigma = 0.1
     idx NA = 1, NB = 1;
@@ -464,7 +449,6 @@ TEST(qpp_randn, RealMatrix) {
                 8 * sigma * sigma * std::sqrt(2. / (NA * NB)));
 }
 
-/// BEGIN inline std::vector<idx> randperm(idx N)
 TEST(qpp_randperm, AllTests) {
     idx N = 1;
     std::vector<idx> result = randperm(N);
@@ -488,7 +472,6 @@ TEST(qpp_randperm, AllTests) {
     EXPECT_TRUE(result == expected);
 }
 
-/// BEGIN inline std::vector<realT> randprob(idx N)
 TEST(qpp_randprob, AllTests) {
     idx N = 1;
     std::vector<realT> result = randprob(N);
@@ -512,7 +495,6 @@ TEST(qpp_randprob, AllTests) {
     EXPECT_NEAR(1, sum(result), 1e-5);
 }
 
-/// BEGIN inline cmat randrho(idx D = 2)
 TEST(qpp_randrho, AllTests) {
     // D = 1 degenerate case
     idx D = 1;
@@ -551,7 +533,6 @@ TEST(qpp_randrho, AllTests) {
     EXPECT_NEAR(0, trace(rho).imag(), 1e-5);
 }
 
-/// BEGIN inline cmat randU(idx D = 2)
 TEST(qpp_randU, AllTests) {
     // D = 1 degenerate case
     idx D = 1;
@@ -577,7 +558,6 @@ TEST(qpp_randU, AllTests) {
     EXPECT_NEAR(0, norm(U * adjoint(U) - gt.Id(D)), 1e-5);
 }
 
-/// BEGIN inline cmat randV(idx Din, idx Dout)
 TEST(qpp_randV, AllTests) {
     // Din = 1, Dout = 1 degenerate case
     idx Din = 1, Dout = 1;

@@ -9,9 +9,6 @@ using namespace qpp;
 
 // Unit testing "qpp/internal/kernels/qubit/apply_test.hpp"
 
-/// BEGIN template <typename Derived1, typename Derived2> void
-/// apply_psi_1q_inplace(Eigen::MatrixBase<Derived1>& state, const
-/// Eigen::MatrixBase<Derived2>& A, idx i, idx n)
 TEST(qpp_apply_psi_1q_inplace, AllTests) {
     using namespace qpp;
 
@@ -63,9 +60,6 @@ TEST(qpp_apply_psi_1q_inplace, AllTests) {
     }
 }
 
-/// BEGIN template <typename Derived1, typename Derived2> void
-/// apply_psi_1q_inplace(Eigen::MatrixBase<Derived1>& state, const
-/// Eigen::MatrixBase<Derived2>& A, idx i, idx n)
 TEST(qpp_apply_psi_1q_inplace, TeleportationRandomKet) {
     using namespace qpp;
 
@@ -190,9 +184,6 @@ TEST(qpp_apply_psi_1q_inplace, TeleportationRandomKet) {
     }
 }
 
-/// BEGIN template <typename Derived1, typename Derived2> void
-/// apply_psi_1q_inplace(Eigen::MatrixBase<Derived1>& state, const
-/// Eigen::MatrixBase<Derived2>& A, idx i, idx n)
 TEST(qpp_apply_psi_1q_inplace, TeleportationStandardProtocol) {
     using namespace qpp;
 

@@ -8,7 +8,6 @@ using namespace qpp;
 
 // Unit testing "qpp/classes/random_devices.hpp"
 
-/// BEGIN std::mt19937& RandomDevices::get_prng()
 TEST(qpp_RandomDevices_get_prng, AllTests) {
     // Verify that get_prng() returns a reference to the same generator
     std::mt19937& gen = rdevs.get_prng();
@@ -27,9 +26,6 @@ TEST(qpp_RandomDevices_get_prng, AllTests) {
     gen = saved;
 }
 
-/// BEGIN RandomDevices::load(std::istream& is)
-///
-///       RandomDevices::save(std::ostream& os) const
 TEST(qpp_RandomDevices_load_save, AllTests) {
     // save the state of the PRNG
     std::stringstream ss;

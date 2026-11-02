@@ -10,7 +10,6 @@ using namespace qpp;
 
 // Unit testing "qpp/traits.hpp"
 
-/// BEGIN template<typename T> struct is_complex
 TEST(qpp_is_complex, AllTests) {
     EXPECT_TRUE(is_complex<std::complex<double>>::value);
     EXPECT_TRUE(is_complex<std::complex<int>>::value);
@@ -19,7 +18,6 @@ TEST(qpp_is_complex, AllTests) {
     EXPECT_FALSE(is_complex<cmat>::value);
 }
 
-/// BEGIN template<typename T> struct is_iterable
 TEST(qpp_is_iterable, AllTests) {
     EXPECT_TRUE(is_iterable<std::vector<int>>::value);
     EXPECT_TRUE(is_iterable<std::list<double>>::value);
@@ -29,7 +27,6 @@ TEST(qpp_is_iterable, AllTests) {
     EXPECT_FALSE(is_iterable<States>::value);
 }
 
-/// BEGIN template<typename Derived> struct is_matrix_expression
 TEST(qpp_is_matrix_expression, AllTests) {
     rmat A, B, C, D;
     int x{}, y{}, z{};
@@ -42,7 +39,6 @@ TEST(qpp_is_matrix_expression, AllTests) {
     EXPECT_FALSE(is_matrix_expression<decltype(x + y * z)>::value);
 }
 
-/// BEGIN template <typename Derived> bool constexpr is_bra_v()
 TEST(qpp_is_bra_v, AllTests) {
     EXPECT_TRUE(is_bra_v<bra>());
 
@@ -51,7 +47,6 @@ TEST(qpp_is_bra_v, AllTests) {
     EXPECT_FALSE(is_bra_v<cmat>());
 }
 
-/// BEGIN template <typename Derived> bool constexpr is_ket_v()
 TEST(qpp_is_ket_v, AllTests) {
     EXPECT_TRUE(is_ket_v<ket>());
 

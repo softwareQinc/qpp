@@ -9,8 +9,6 @@ using namespace qpp;
 
 // Unit testing "qpp/internal/kernels/qubit/apply_ctrl_test.hpp"
 
-/// BEGIN template <typename Derived1, typename Derived2> void
-/// apply_ctrl_psi_1q_inplace(...)
 TEST(qpp_apply_ctrl_psi_1q_inplace, AllTests) {
     using namespace qpp;
 

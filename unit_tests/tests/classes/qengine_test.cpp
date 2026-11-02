@@ -6,8 +6,6 @@ using namespace qpp;
 
 // Unit testing "qpp/classes/qengine.hpp"
 
-/// BEGIN QBaseEngine& QEngineT::execute(
-///       typename QCircuitTraits<QCT>::iterator_type& it)
 TEST(qpp_QEngineT_execute, Iterator) {
     // qubits
     QCircuit qc(1);
@@ -30,8 +28,6 @@ TEST(qpp_QEngineT_execute, Iterator) {
     EXPECT_NEAR(0, norm(engine3.get_state() - mket({2}, 3)), 1e-12);
 }
 
-/// BEGIN QEngineT& QEngineT::execute(
-///       const typename QCircuitTraits<QCircuit>::value_type& elem) override
 TEST(qpp_QEngineT_execute, ValueType) {
     // qubits
     QCircuit qc(1);
@@ -50,7 +46,6 @@ TEST(qpp_QEngineT_execute, ValueType) {
     EXPECT_NEAR(0, norm(engine3.get_state() - mket({1}, 3)), 1e-12);
 }
 
-/// BEGIN QEngineT& QEngineT::execute(idx reps = 1) override
 TEST(qpp_QEngineT_execute, AllCircuitWithRepetitions) {
     // qubits
     QCircuit qc(2, 2);
@@ -73,7 +68,6 @@ TEST(qpp_QEngineT_execute, AllCircuitWithRepetitions) {
     EXPECT_EQ(7u, engine3.get_stats().get_num_reps());
 }
 
-/// BEGIN const QCT& QBaseEngine::get_circuit() const& noexcept
 TEST(qpp_QEngineT_get_circuit, Lvalue) {
     // qubits
     QCircuit qc(1);
@@ -88,7 +82,6 @@ TEST(qpp_QEngineT_get_circuit, Lvalue) {
     EXPECT_EQ(qc3, engine3.get_circuit());
 }
 
-/// BEGIN QCT QBaseEngine::get_circuit() const&& noexcept
 TEST(qpp_QEngineT_get_circuit, Rvalue) {
     // qubits
     QCircuit qc(1);
@@ -103,7 +96,6 @@ TEST(qpp_QEngineT_get_circuit, Rvalue) {
     EXPECT_EQ(qc3, std::move(engine3).get_circuit());
 }
 
-/// BEGIN idx QEngineT::get_dit(idx i) const
 TEST(qpp_QEngineT_get_dit, AllTests) {
     // qubits
     QCircuit qc(1, 2);
@@ -121,7 +113,6 @@ TEST(qpp_QEngineT_get_dit, AllTests) {
     EXPECT_EQ(1u, engine3.get_dit(1));
 }
 
-/// BEGIN std::vector<idx> QEngineT::get_dits() const
 TEST(qpp_QEngineT_get_dits, AllTests) {
     // qubits
     QCircuit qc(1, 2);
@@ -137,7 +128,6 @@ TEST(qpp_QEngineT_get_dits, AllTests) {
     EXPECT_EQ((std::vector<idx>{2, 1}), engine3.get_dits());
 }
 
-/// BEGIN bool QEngineT::get_ensure_post_selection() const
 TEST(qpp_QEngineT_get_ensure_post_selection, AllTests) {
     QCircuit qc(1);
     QEngine engine{qc};
@@ -148,7 +138,6 @@ TEST(qpp_QEngineT_get_ensure_post_selection, AllTests) {
     EXPECT_FALSE(engine.get_ensure_post_selection());
 }
 
-/// BEGIN idx QEngineT::get_max_post_selection_reps() const
 TEST(qpp_QEngineT_get_max_post_selection_reps, AllTests) {
     QCircuit qc(1);
     QEngine engine{qc};
@@ -158,7 +147,6 @@ TEST(qpp_QEngineT_get_max_post_selection_reps, AllTests) {
     EXPECT_EQ(4u, engine.get_max_post_selection_reps());
 }
 
-/// BEGIN std::vector<idx> QEngineT::get_measured_d() const
 TEST(qpp_QEngineT_get_measured_d, AllTests) {
     // qubits
     QCircuit qc(3, 1);
@@ -175,7 +163,6 @@ TEST(qpp_QEngineT_get_measured_d, AllTests) {
     EXPECT_EQ((std::vector<idx>{2}), engine3.get_measured_d());
 }
 
-/// BEGIN std::vector<idx> QEngineT::get_non_measured_d() const
 TEST(qpp_QEngineT_get_non_measured_d, AllTests) {
     // qubits
     QCircuit qc(3, 1);
@@ -192,7 +179,6 @@ TEST(qpp_QEngineT_get_non_measured_d, AllTests) {
     EXPECT_EQ((std::vector<idx>{1, 2}), engine3.get_non_measured_d());
 }
 
-/// BEGIN std::vector<realT> QEngineT::get_probs() const
 TEST(qpp_QEngineT_get_probs, AllTests) {
     // qubits
     QCircuit qc(1, 1);
@@ -211,7 +197,6 @@ TEST(qpp_QEngineT_get_probs, AllTests) {
     EXPECT_NEAR(1, engine3.get_probs()[0], 1e-12);
 }
 
-/// BEGIN T QEngineT::get_state() const override
 TEST(qpp_QEngineT_get_state, AllTests) {
     // qubits
     QCircuit qc(2);
@@ -232,7 +217,6 @@ TEST(qpp_QEngineT_get_state, AllTests) {
     EXPECT_NEAR(0, norm(engine3.get_state() - mket({0, 2}, 3)), 1e-12);
 }
 
-/// BEGIN internal::QEngineStatistics QEngineT::get_stats() const
 TEST(qpp_QEngineT_get_stats, AllTests) {
     QCircuit qc(1, 1);
     qc.gate(gt.X, 0).measure(0, 0);
@@ -244,7 +228,6 @@ TEST(qpp_QEngineT_get_stats, AllTests) {
     EXPECT_EQ(10u, stats.data().at(std::vector<idx>{1}));
 }
 
-/// BEGIN bool QEngineT::post_select_ok() const
 TEST(qpp_QEngineT_post_select_ok, AllTests) {
     // qubits
     QCircuit qc(1, 1);
@@ -262,8 +245,6 @@ TEST(qpp_QEngineT_post_select_ok, AllTests) {
     EXPECT_TRUE(engine3.post_select_ok());
 }
 
-/// BEGIN QEngineT& QEngineT::reset(std::optional<T> qstate = std::nullopt,
-///       bool reset_stats = true)
 TEST(qpp_QEngineT_reset, AllTests) {
     auto circuit = qpp::QCircuit{2, 1};
     circuit.measure(0, 0);
@@ -275,7 +256,6 @@ TEST(qpp_QEngineT_reset, AllTests) {
     EXPECT_NO_THROW(engine.reset().set_state(psi).execute(2));
 }
 
-/// BEGIN QEngineT& QEngineT::reset_stats()
 TEST(qpp_QEngineT_reset_stats, AllTests) {
     QCircuit qc(1, 1);
     qc.measure(0, 0);
@@ -287,7 +267,6 @@ TEST(qpp_QEngineT_reset_stats, AllTests) {
     EXPECT_EQ(0u, engine.get_stats().get_num_outcomes());
 }
 
-/// BEGIN QEngineT& QEngineT::set_dit(idx i, idx value)
 TEST(qpp_QEngineT_set_dit, AllTests) {
     // qubits
     QCircuit qc(1, 2);
@@ -303,7 +282,6 @@ TEST(qpp_QEngineT_set_dit, AllTests) {
     EXPECT_EQ((std::vector<idx>{2, 0}), engine3.get_dits());
 }
 
-/// BEGIN QEngineT& QEngineT::set_dits(std::vector<idx> dits)
 TEST(qpp_QEngineT_set_dits, AllTests) {
     // qubits
     QCircuit qc(1, 2);
@@ -319,7 +297,6 @@ TEST(qpp_QEngineT_set_dits, AllTests) {
     EXPECT_EQ((std::vector<idx>{2, 1}), engine3.get_dits());
 }
 
-/// BEGIN QEngineT& QEngineT::set_ensure_post_selection(bool val)
 TEST(qpp_QEngineT_set_ensure_post_selection, AllTests) {
     QCircuit qc(1);
     QEngine engine{qc};
@@ -329,8 +306,6 @@ TEST(qpp_QEngineT_set_ensure_post_selection, AllTests) {
     EXPECT_FALSE(engine.get_ensure_post_selection());
 }
 
-/// BEGIN QEngineT& QEngineT::set_max_post_selection_reps(
-///       idx max_post_selection_reps)
 TEST(qpp_QEngineT_set_max_post_selection_reps, AllTests) {
     QCircuit qc(1);
     QEngine engine{qc};
@@ -338,7 +313,6 @@ TEST(qpp_QEngineT_set_max_post_selection_reps, AllTests) {
     EXPECT_EQ(23u, engine.get_max_post_selection_reps());
 }
 
-/// BEGIN QEngineT& QEngineT::set_state(const T& state) override
 TEST(qpp_QEngineT_set_state, AllTests) {
     // qubits
     QCircuit qc(2);
@@ -358,8 +332,6 @@ TEST(qpp_QEngineT_set_state, AllTests) {
     EXPECT_NEAR(0, norm(engine3.get_state() - mket({2, 1}, 3)), 1e-12);
 }
 
-/// BEGIN std::string QEngineT::to_JSON(
-///       bool enclosed_in_curly_brackets = true) const override
 TEST(qpp_QEngineT_to_JSON, AllTests) {
     QCircuit qc(1);
     QEngine engine{qc};
@@ -370,28 +342,24 @@ TEST(qpp_QEngineT_to_JSON, AllTests) {
     EXPECT_EQ(json.substr(1, json.size() - 2), engine.to_JSON(false));
 }
 
-/// BEGIN  std::string QEngineT::traits_get_name() const override
 TEST(qpp_QEngineT_traits_get_name, AllTests) {
     QCircuit qc(1);
     EXPECT_EQ("QEngine", QEngine{qc}.traits_get_name());
     EXPECT_EQ("QDensityEngine", QDensityEngine{qc}.traits_get_name());
 }
 
-/// BEGIN bool QEngineT::traits_is_noisy() const override
 TEST(qpp_QEngineT_traits_is_noisy, AllTests) {
     QCircuit qc(1);
     EXPECT_FALSE(QEngine{qc}.traits_is_noisy());
     EXPECT_FALSE(QDensityEngine{qc}.traits_is_noisy());
 }
 
-/// BEGIN bool QEngineT::traits_is_pure() const override
 TEST(qpp_QEngineT_traits_is_pure, AllTests) {
     QCircuit qc(1);
     EXPECT_TRUE(QEngine{qc}.traits_is_pure());
     EXPECT_FALSE(QDensityEngine{qc}.traits_is_pure());
 }
 
-/// BEGIN bool QEngineT::was_measured_d(idx i) const
 TEST(qpp_QEngineT_was_measured_d, AllTests) {
     // qubits
     QCircuit qc(2, 1);

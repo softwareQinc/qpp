@@ -9,7 +9,6 @@ using namespace qpp;
 
 // Unit testing "qpp/classes/qcircuit.hpp"
 
-/// BEGIN QCircuit& QCircuit::add_dit(idx n = 1, idx i)
 TEST(qpp_QCircuit_add_dit, SpecificPosition) {
     // qutrits
     QCircuit q3(2, 2, 3);
@@ -22,7 +21,6 @@ TEST(qpp_QCircuit_add_dit, SpecificPosition) {
     EXPECT_EQ((std::vector<idx>{0, 1, 2, 3}), qc.get_clean_dits());
 }
 
-/// BEGIN QCircuit& QCircuit::add_dit(idx n = 1)
 TEST(qpp_QCircuit_add_dit, LastPosition) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -34,7 +32,6 @@ TEST(qpp_QCircuit_add_dit, LastPosition) {
     EXPECT_EQ(3u, qc.get_nc());
 }
 
-/// BEGIN QCircuit& QCircuit::add_qudit(idx n = 1, idx i)
 TEST(qpp_QCircuit_add_qudit, SpecificPosition) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -47,7 +44,6 @@ TEST(qpp_QCircuit_add_qudit, SpecificPosition) {
     EXPECT_EQ((std::vector<idx>{0, 1, 2, 3}), qc.get_clean_qudits());
 }
 ///
-/// BEGIN QCircuit& QCircuit::add_qudit(idx n = 1)
 TEST(qpp_QCircuit_add_qudit, LastPosition) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -59,7 +55,6 @@ TEST(qpp_QCircuit_add_qudit, LastPosition) {
     EXPECT_EQ(5u, qc.get_nq());
 }
 
-/// BEGIN QCircuit& QCircuit::adjoint()
 TEST(qpp_QCircuit_adjoint, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -85,7 +80,6 @@ TEST(qpp_QCircuit_adjoint, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - st.z0), 1e-12);
 }
 
-/// BEGIN iterator QCircuit::begin()
 TEST(qpp_QCircuit_begin, Iterator) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -98,7 +92,6 @@ TEST(qpp_QCircuit_begin, Iterator) {
     EXPECT_NE(qc.begin(), qc.end());
 }
 
-/// BEGIN const_iterator QCircuit::begin() const noexcept
 TEST(qpp_QCircuit_begin, ConstIterator) {
     // qutrits
     QCircuit tmp3(1, 0, 3);
@@ -112,7 +105,6 @@ TEST(qpp_QCircuit_begin, ConstIterator) {
     EXPECT_NE(ref.begin(), ref.end());
 }
 
-/// BEGIN const_iterator QCircuit::cbegin() const noexcept
 TEST(qpp_QCircuit_cbegin, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -125,10 +117,6 @@ TEST(qpp_QCircuit_cbegin, AllTests) {
     EXPECT_NE(qc.cbegin(), qc.cend());
 }
 
-/// BEGIN QCircuit& QCircuit::cCTRL(const cmat& U,
-///       const std::vector<idx>& ctrl_dits, const std::vector<idx>& target,
-///       std::optional<std::vector<idx>> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_cCTRL, MultipleCtrlsMultipleTargets) {
     // qutrits
     QCircuit q3(3, 2, 3);
@@ -150,10 +138,6 @@ TEST(qpp_QCircuit_cCTRL, MultipleCtrlsMultipleTargets) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::cCTRL(const cmat& U,
-///       const std::vector<idx>& ctrl_dits, idx target,
-///       std::optional<std::vector<idx>> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_cCTRL, MultipleCtrlsSingleTarget) {
     // qutrits
     QCircuit q3(2, 2, 3);
@@ -177,10 +161,6 @@ TEST(qpp_QCircuit_cCTRL, MultipleCtrlsSingleTarget) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::cCTRL(const cmat& U, idx ctrl_dit,
-///       const std::vector<idx>& target,
-///       std::optional<idx> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_cCTRL, SingleCtrlMultipleTargets) {
     // qutrits
     QCircuit q3(3, 1, 3);
@@ -200,9 +180,6 @@ TEST(qpp_QCircuit_cCTRL, SingleCtrlMultipleTargets) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::cCTRL(const cmat& U, idx ctrl_dit, idx target,
-///       std::optional<idx> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_cCTRL, SingleCtrlSingleTarget) {
     // qutrits
     QCircuit q3(2, 1, 3);
@@ -223,10 +200,6 @@ TEST(qpp_QCircuit_cCTRL, SingleCtrlSingleTarget) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::cCTRL_fan(const cmat& U,
-///       const std::vector<idx>& ctrl_dits, const std::vector<idx>& target,
-///       std::optional<std::vector<idx>> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_cCTRL_fan, MultipleCtrlsMultipleTargets) {
     // qubits
     QCircuit qc(3, 2);
@@ -249,10 +222,6 @@ TEST(qpp_QCircuit_cCTRL_fan, MultipleCtrlsMultipleTargets) {
     EXPECT_NEAR(0, norm(engine3.get_state() - mket({2, 2, 2}, 3)), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::cCTRL_fan(const cmat& U, idx ctrl_dit,
-///       const std::vector<idx>& target,
-///       std::optional<idx> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_cCTRL_fan, SingleCtrlMultipleTargets) {
     // qubits
     QCircuit qc(3, 1);
@@ -274,7 +243,6 @@ TEST(qpp_QCircuit_cCTRL_fan, SingleCtrlMultipleTargets) {
     EXPECT_NEAR(0, norm(engine3.get_state() - mket({2, 2, 2}, 3)), 1e-12);
 }
 
-/// BEGIN const_iterator QCircuit::cend() const noexcept
 TEST(qpp_QCircuit_cend, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -288,8 +256,6 @@ TEST(qpp_QCircuit_cend, AllTests) {
     EXPECT_NE(qc.cbegin(), qc.cend());
 }
 
-/// BEGIN QCircuit& QCircuit::compose_circuit(QCircuit other, bigint pos_qudit,
-///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_QCircuit_compose_circuit, AllTests) {
     // qutrits
     QCircuit q3(2, 0, 3), o3(1, 0, 3);
@@ -309,10 +275,6 @@ TEST(qpp_QCircuit_compose_circuit, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({0, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& compose_CTRL_circuit(const std::vector<idx>& ctrl,
-///       QCircuit qc_target, bigint pos_qudit,
-///       std::optional<std::vector<idx>> shift = std::nullopt,
-///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_QCircuit_compose_CTRL_circuit, AllTests) {
     // qutrits
     QCircuit q3(2, 0, 3), o3(1, 0, 3);
@@ -334,7 +296,6 @@ TEST(qpp_QCircuit_compose_CTRL_circuit, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::compress()
 TEST(qpp_QCircuit_compress, AllTests) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -353,7 +314,6 @@ TEST(qpp_QCircuit_compress, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - st.z1), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::cond_if(cond_pred_t pred)
 TEST(qpp_QCircuit_cond_if, AllTests) {
     // qutrits
     QCircuit q3(2, 1, 3);
@@ -386,7 +346,6 @@ TEST(qpp_QCircuit_cond_if, AllTests) {
     EXPECT_NEAR(0, norm(true_engine.get_state() - mket({1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::cond_else()
 TEST(qpp_QCircuit_cond_else, AllTests) {
     // qutrits
     QCircuit q3(2, 1, 3);
@@ -423,7 +382,6 @@ TEST(qpp_QCircuit_cond_else, AllTests) {
     EXPECT_NEAR(0, norm(true_engine.get_state() - mket({1, 1, 0})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::cond_while(cond_pred_t pred)
 TEST(qpp_QCircuit_cond_while, AllTests) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -455,7 +413,6 @@ TEST(qpp_QCircuit_cond_while, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - st.z1), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::cond_end()
 TEST(qpp_QCircuit_cond_end, AllTests) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -468,9 +425,6 @@ TEST(qpp_QCircuit_cond_end, AllTests) {
     EXPECT_TRUE(qc.validate_conditionals());
 }
 
-/// BEGIN QCircuit& QCircuit::couple_circuit_left(QCircuit other,
-///       const std::vector<idx>& target,
-///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_QCircuit_couple_circuit_left, AllTests) {
     // qutrits
     QCircuit q3(2, 0, 3), o3(1, 0, 3);
@@ -490,9 +444,6 @@ TEST(qpp_QCircuit_couple_circuit_left, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({0, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::couple_circuit_right(QCircuit other,
-///       const std::vector<idx>& target,
-///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_QCircuit_couple_circuit_right, AllTests) {
     // qutrits
     QCircuit q3(2, 0, 3), o3(1, 0, 3);
@@ -512,10 +463,6 @@ TEST(qpp_QCircuit_couple_circuit_right, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({0, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::CTRL(const cmat& U,
-///       const std::vector<idx>& ctrl, const std::vector<idx>& target,
-///       std::optional<std::vector<idx>> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_CTRL, MultipleCtrlsMultipleTargets) {
     // qutrits
     QCircuit q3(4, 0, 3);
@@ -534,10 +481,6 @@ TEST(qpp_QCircuit_CTRL, MultipleCtrlsMultipleTargets) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1, 1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::CTRL(const cmat& U,
-///       const std::vector<idx>& ctrl, idx target,
-///       std::optional<std::vector<idx>> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_CTRL, MultipleCtrlsSingleTarget) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -556,10 +499,6 @@ TEST(qpp_QCircuit_CTRL, MultipleCtrlsSingleTarget) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::CTRL(const cmat& U, idx ctrl,
-///       const std::vector<idx>& target,
-///       std::optional<idx> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_CTRL, SingleCtrlMultipleTargets) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -578,9 +517,6 @@ TEST(qpp_QCircuit_CTRL, SingleCtrlMultipleTargets) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::CTRL(const cmat& U, idx ctrl, idx target,
-///       std::optional<idx> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_CTRL, SingleCtrlSingleTarget) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -597,10 +533,6 @@ TEST(qpp_QCircuit_CTRL, SingleCtrlSingleTarget) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::CTRL_fan(const cmat& U,
-///       const std::vector<idx>& ctrl, const std::vector<idx>& target,
-///       std::optional<std::vector<idx>> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_CTRL_fan, MultipleCtrlsMultipleTargets) {
     // qubits
     QCircuit qc(4);
@@ -622,10 +554,6 @@ TEST(qpp_QCircuit_CTRL_fan, MultipleCtrlsMultipleTargets) {
     EXPECT_NEAR(0, norm(engine3.get_state() - mket({2, 2, 2, 2}, 3)), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::CTRL_fan(const cmat& U, idx ctrl,
-///       const std::vector<idx>& target,
-///       std::optional<idx> shift = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_CTRL_fan, SingleCtrlMultipleTargets) {
     // qubits
     QCircuit qc(3);
@@ -645,8 +573,6 @@ TEST(qpp_QCircuit_CTRL_fan, SingleCtrlMultipleTargets) {
     EXPECT_NEAR(0, norm(engine3.get_state() - mket({2, 2, 2}, 3)), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::discard(const std::vector<idx>& target,
-///       std::optional<std::string> name = "discard")
 TEST(qpp_QCircuit_discard, MultipleTargets) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -661,8 +587,6 @@ TEST(qpp_QCircuit_discard, MultipleTargets) {
     EXPECT_EQ(1u, qc.get_step_count());
 }
 
-/// BEGIN QCircuit& QCircuit::discard(idx target,
-///       std::optional<std::string> name = "discard"")
 TEST(qpp_QCircuit_discard, SingleTarget) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -680,7 +604,6 @@ TEST(qpp_QCircuit_discard, SingleTarget) {
     EXPECT_NEAR(0, norm(engine.get_state() - st.z1), 1e-12);
 }
 
-/// BEGIN iterator QCircuit::end()
 TEST(qpp_QCircuit_end, Iterator) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -694,7 +617,6 @@ TEST(qpp_QCircuit_end, Iterator) {
     EXPECT_NE(qc.begin(), qc.end());
 }
 
-/// BEGIN const_iterator QCircuit::end() const noexcept
 TEST(qpp_QCircuit_end, ConstIterator) {
     // qutrits
     QCircuit m3(1, 0, 3);
@@ -708,8 +630,6 @@ TEST(qpp_QCircuit_end, ConstIterator) {
     EXPECT_NE(ref.begin(), ref.end());
 }
 
-/// BEGIN QCircuit& QCircuit::gate(const cmat& U, idx i, idx j, idx k,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_gate, ThreeQudits) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -726,8 +646,6 @@ TEST(qpp_QCircuit_gate, ThreeQudits) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({0, 0, 0})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::gate(const cmat& U, idx i, idx j,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_gate, TwoQudits) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -744,8 +662,6 @@ TEST(qpp_QCircuit_gate, TwoQudits) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::gate(const cmat& U, idx i,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_gate, SingleQudit) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -762,9 +678,6 @@ TEST(qpp_QCircuit_gate, SingleQudit) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({0, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::gate(const cmat& U,
-///       const std::vector<idx>& target,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_gate, JointQudits) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -781,9 +694,6 @@ TEST(qpp_QCircuit_gate, JointQudits) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 0, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::gate_fan(const cmat& U,
-///       const std::vector<idx>& target,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_gate_fan, SpecificQudits) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -800,8 +710,6 @@ TEST(qpp_QCircuit_gate_fan, SpecificQudits) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 0, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::gate_fan(const cmat& U,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_gate_fan, AllQudits) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -818,7 +726,6 @@ TEST(qpp_QCircuit_gate_fan, AllQudits) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1, 1})), 1e-12);
 }
 
-/// BEGIN std::vector<idx> QCircuit::get_clean_dits() const
 TEST(qpp_QCircuit_get_clean_dits, AllTests) {
     // qutrits
     QCircuit q3(1, 2, 3);
@@ -831,7 +738,6 @@ TEST(qpp_QCircuit_get_clean_dits, AllTests) {
     EXPECT_EQ((std::vector<idx>{0}), qc.get_clean_dits());
 }
 
-/// BEGIN std::vector<idx> QCircuit::get_clean_qudits() const
 TEST(qpp_QCircuit_get_clean_qudits, AllTests) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -844,8 +750,6 @@ TEST(qpp_QCircuit_get_clean_qudits, AllTests) {
     EXPECT_EQ((std::vector<idx>{0}), qc.get_clean_qudits());
 }
 
-/// BEGIN const std::unordered_map<std::size_t, cmat>&
-///       QCircuit::get_cmat_hash_tbl() const noexcept
 TEST(qpp_QCircuit_get_cmat_hash_tbl, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -858,7 +762,6 @@ TEST(qpp_QCircuit_get_cmat_hash_tbl, AllTests) {
     EXPECT_FALSE(qc.get_cmat_hash_tbl().empty());
 }
 
-/// BEGIN idx QCircuit::get_d() const noexcept
 TEST(qpp_QCircuit_get_d, AllTests) {
     // qutrits
     EXPECT_EQ(3u, QCircuit(2, 0, 3).get_d());
@@ -868,7 +771,6 @@ TEST(qpp_QCircuit_get_d, AllTests) {
     EXPECT_EQ(3u, QCircuit(2, 0, 3).get_d());
 }
 
-/// BEGIN idx QCircuit::get_depth() const
 TEST(qpp_QCircuit_get_depth, AllTests) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -881,7 +783,6 @@ TEST(qpp_QCircuit_get_depth, AllTests) {
     EXPECT_EQ(2u, qc.get_depth());
 }
 
-/// BEGIN std::vector<idx> QCircuit::get_dirty_dits() const
 TEST(qpp_QCircuit_get_dirty_dits, AllTests) {
     // qutrits
     QCircuit q3(1, 2, 3);
@@ -894,7 +795,6 @@ TEST(qpp_QCircuit_get_dirty_dits, AllTests) {
     EXPECT_EQ((std::vector<idx>{1}), qc.get_dirty_dits());
 }
 
-/// BEGIN std::vector<idx> QCircuit::get_dirty_qudits() const
 TEST(qpp_QCircuit_get_dirty_qudits, AllTests) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -907,8 +807,6 @@ TEST(qpp_QCircuit_get_dirty_qudits, AllTests) {
     EXPECT_EQ((std::vector<idx>{1}), qc.get_dirty_qudits());
 }
 
-/// BEGIN idx QCircuit::get_gate_count(std::optional<cmat> U = std::nullopt)
-///       const
 TEST(qpp_QCircuit_get_gate_count, TotalGateCount) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -939,8 +837,6 @@ TEST(qpp_QCircuit_get_gate_count, SpecificGateCount) {
     EXPECT_NEAR(0, norm(engine.get_state() + mket({1, 1})), 1e-12);
 }
 
-/// BEGIN idx QCircuit::get_gate_depth(std::optional<cmat> U = std::nullopt)
-///       const
 TEST(qpp_QCircuit_get_gate_depth, TotalGateDepth) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -963,7 +859,6 @@ TEST(qpp_QCircuit_get_gate_depth, SpecificGateDepth) {
     EXPECT_EQ(1u, qc.get_gate_depth(gt.Z));
 }
 
-/// BEGIN std::vector<idx> QCircuit::get_measured_d() const
 TEST(qpp_QCircuit_get_measured_d, AllTests) {
     // qutrits
     QCircuit q3(2, 1, 3);
@@ -975,7 +870,6 @@ TEST(qpp_QCircuit_get_measured_d, AllTests) {
     EXPECT_EQ((std::vector<idx>{0}), qc.get_measured_d());
 }
 
-/// BEGIN std::vector<idx> QCircuit::get_measured_nd() const
 TEST(qpp_QCircuit_get_measured_nd, AllTests) {
     // qutrits
     QCircuit q3(2, 1, 3);
@@ -987,8 +881,6 @@ TEST(qpp_QCircuit_get_measured_nd, AllTests) {
     EXPECT_EQ((std::vector<idx>{1}), qc.get_measured_nd());
 }
 
-/// BEGIN idx QCircuit::get_measurement_count(std::optional<cmat> V =
-///       std::nullopt) const
 TEST(qpp_QCircuit_get_measurement_count, TotalMeasurementCount) {
     // qutrits
     QCircuit q3(2, 2, 3);
@@ -1010,8 +902,6 @@ TEST(qpp_QCircuit_get_measurement_count, SpecificMeasurementCount) {
     EXPECT_EQ(1u, qc.get_measurement_count(gt.H));
 }
 
-/// BEGIN idx QCircuit::get_measurement_depth(std::optional<cmat> V =
-///       std::nullopt) const
 TEST(qpp_QCircuit_get_measurement_depth, TotalMeasurementDepth) {
     // qutrits
     QCircuit q3(2, 2, 3);
@@ -1033,7 +923,6 @@ TEST(qpp_QCircuit_get_measurement_depth, SpecificMeasurementDepth) {
     EXPECT_EQ(2u, qc.get_measurement_depth(gt.H));
 }
 
-/// BEGIN std::vector<idx> QCircuit::get_measurement_dits() const
 TEST(qpp_QCircuit_get_measurement_dits, AllTests) {
     // qutrits
     QCircuit q3(1, 2, 3);
@@ -1045,7 +934,6 @@ TEST(qpp_QCircuit_get_measurement_dits, AllTests) {
     EXPECT_EQ((std::vector<idx>{1}), qc.get_measurement_dits());
 }
 
-/// BEGIN std::optional<std::string> QCircuit::get_name() const
 TEST(qpp_QCircuit_get_name, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -1060,7 +948,6 @@ TEST(qpp_QCircuit_get_name, AllTests) {
     EXPECT_EQ("demo", *qc.get_name());
 }
 
-/// BEGIN idx QCircuit::get_nc() const noexcept
 TEST(qpp_QCircuit_get_nc, AllTests) {
     // qutrits
     EXPECT_EQ(3u, QCircuit(1, 3, 3).get_nc());
@@ -1069,7 +956,6 @@ TEST(qpp_QCircuit_get_nc, AllTests) {
     EXPECT_EQ(3u, QCircuit(2, 3).get_nc());
 }
 
-/// BEGIN std::vector<idx> QCircuit::get_non_measured_d() const
 TEST(qpp_QCircuit_get_non_measured_d, AllTests) {
     // qutrits
     QCircuit q3(2, 1, 3);
@@ -1081,7 +967,6 @@ TEST(qpp_QCircuit_get_non_measured_d, AllTests) {
     EXPECT_EQ((std::vector<idx>{1}), qc.get_non_measured_d());
 }
 
-/// BEGIN idx QCircuit::get_nop_count() const
 TEST(qpp_QCircuit_get_nop_count, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -1093,7 +978,6 @@ TEST(qpp_QCircuit_get_nop_count, AllTests) {
     EXPECT_EQ(2u, qc.get_nop_count());
 }
 
-/// BEGIN idx QCircuit::get_nq() const noexcept
 TEST(qpp_QCircuit_get_nq, AllTests) {
     // qutrits
     EXPECT_EQ(4u, QCircuit(4, 0, 3).get_nq());
@@ -1102,7 +986,6 @@ TEST(qpp_QCircuit_get_nq, AllTests) {
     EXPECT_EQ(4u, QCircuit(4).get_nq());
 }
 
-/// BEGIN QCircuit::Resources QCircuit::get_resources() const
 TEST(qpp_QCircuit_get_resources, AllTests) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -1118,7 +1001,6 @@ TEST(qpp_QCircuit_get_resources, AllTests) {
     EXPECT_EQ(1u, resources.measurement_count);
 }
 
-/// BEGIN idx QCircuit::get_step_count() const noexcept
 TEST(qpp_QCircuit_get_step_count, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -1131,7 +1013,6 @@ TEST(qpp_QCircuit_get_step_count, AllTests) {
     EXPECT_EQ(2u, qc.get_step_count());
 }
 
-/// BEGIN bool QCircuit::has_measurements() const noexcept
 TEST(qpp_QCircuit_has_measurements, AllTests) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -1145,7 +1026,6 @@ TEST(qpp_QCircuit_has_measurements, AllTests) {
     EXPECT_TRUE(qc.has_measurements());
 }
 
-/// BEGIN bool QCircuit::has_runtime_steps() const noexcept
 TEST(qpp_QCircuit_has_runtime_steps, AllTests) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -1158,7 +1038,6 @@ TEST(qpp_QCircuit_has_runtime_steps, AllTests) {
     EXPECT_TRUE(qc.has_runtime_steps());
 }
 
-/// BEGIN inline static bool QCircuit::is_cCTRL(const GateStep& gate_step)
 TEST(qpp_QCircuit_is_cCTRL, AllTests) {
     // qutrits
     QCircuit q3(2, 1, 3);
@@ -1180,7 +1059,6 @@ TEST(qpp_QCircuit_is_cCTRL, AllTests) {
     EXPECT_FALSE(is_quantum_control);
 }
 
-/// BEGIN bool QCircuit::is_clean_dit(idx i) const
 TEST(qpp_QCircuit_is_clean_dit, AllTests) {
     // qutrits
     QCircuit q3(1, 2, 3);
@@ -1195,7 +1073,6 @@ TEST(qpp_QCircuit_is_clean_dit, AllTests) {
     EXPECT_TRUE(qc.is_clean_dit(1));
 }
 
-/// BEGIN bool QCircuit::is_clean_qudit(idx i) const
 TEST(qpp_QCircuit_is_clean_qudit, AllTests) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -1210,7 +1087,6 @@ TEST(qpp_QCircuit_is_clean_qudit, AllTests) {
     EXPECT_TRUE(qc.is_clean_qudit(1));
 }
 
-/// BEGIN inline static bool QCircuit::is_CTRL(const GateStep& gate_step)
 TEST(qpp_QCircuit_is_CTRL, AllTests) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -1232,7 +1108,6 @@ TEST(qpp_QCircuit_is_CTRL, AllTests) {
     EXPECT_FALSE(internal::is_cCTRL(qc.begin()));
 }
 
-/// BEGIN bool QCircuit::is_measurement_dit(idx i) const
 TEST(qpp_QCircuit_is_measurement_dit, AllTests) {
     // qutrits
     QCircuit q3(1, 2, 3);
@@ -1245,7 +1120,6 @@ TEST(qpp_QCircuit_is_measurement_dit, AllTests) {
     EXPECT_TRUE(qc.is_measurement_dit(1));
 }
 
-/// BEGIN QCircuit& QCircuit::kron(QCircuit qc)
 TEST(qpp_QCircuit_kron, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3), o3(1, 0, 3);
@@ -1267,9 +1141,6 @@ TEST(qpp_QCircuit_kron, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 0, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::measureV(const cmat& V,
-///       const std::vector<idx>& target, idx c_reg, bool destructive = true,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_measureV, JointMultipleTargets) {
     // qutrits
     QCircuit q3(2, 2, 3);
@@ -1288,9 +1159,6 @@ TEST(qpp_QCircuit_measureV, JointMultipleTargets) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::measureV(const cmat& V, idx target, idx c_reg,
-///       bool destructive = true,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_measureV, SingleTarget) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -1309,9 +1177,6 @@ TEST(qpp_QCircuit_measureV, SingleTarget) {
     EXPECT_NEAR(0, norm(engine.get_state() - st.x0), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::measure(const std::vector<idx>& target,
-///       idx c_reg = 0, bool destructive = true,
-///       std::optional<std::string> name = "mZ")
 TEST(qpp_QCircuit_measure, MultipleTargets) {
     // qutrits
     QCircuit q3(2, 2, 3);
@@ -1331,8 +1196,6 @@ TEST(qpp_QCircuit_measure, MultipleTargets) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 0})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::measure(idx target, idx c_reg,
-///       bool destructive = true, std::optional<std::string> name = "mZ")
 TEST(qpp_QCircuit_measure, SingleTarget) {
     // qutrits
     QCircuit q3(2, 1, 3);
@@ -1350,8 +1213,6 @@ TEST(qpp_QCircuit_measure, SingleTarget) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({0, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::measure_all(idx c_reg = 0,
-///       bool destructive = true, std::optional<std::string> name = "mZ")
 TEST(qpp_QCircuit_measure_all, AllTests) {
     // qutrits
     QCircuit q3(2, 2, 3);
@@ -1373,7 +1234,6 @@ TEST(qpp_QCircuit_measure_all, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 0, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::nop()
 TEST(qpp_QCircuit_nop, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -1388,7 +1248,6 @@ TEST(qpp_QCircuit_nop, AllTests) {
     EXPECT_EQ(1u, qc.get_step_count());
 }
 
-/// BEGIN bool QCircuit::operator!=(const QCircuit& rhs) const noexcept
 TEST(qpp_QCircuit_operator_noneq, AllTests) {
     // qutrits
     QCircuit a3(1, 0, 3), b3(1, 0, 3);
@@ -1401,7 +1260,6 @@ TEST(qpp_QCircuit_operator_noneq, AllTests) {
     EXPECT_TRUE(a != b);
 }
 
-/// BEGIN bool QCircuit::operator==(const QCircuit& rhs) const noexcept
 TEST(qpp_QCircuit_operator_eq, AllTests) {
     // qutrits
     QCircuit a3(1, 0, 3), b3(1, 0, 3);
@@ -1417,9 +1275,6 @@ TEST(qpp_QCircuit_operator_eq, AllTests) {
     EXPECT_TRUE(a == b);
 }
 
-/// BEGIN QCircuit& QCircuit::post_select(const std::vector<idx>& target,
-///       const std::vector<idx>& ps_vals, idx c_reg, bool destructive = true,
-///       std::optional<std::string> name = "pZ")
 TEST(qpp_QCircuit_post_select, MultipleTargets) {
     // qutrits
     QCircuit q3(2, 2, 3);
@@ -1448,8 +1303,6 @@ TEST(qpp_QCircuit_post_select, MultipleTargets) {
     ASSERT_EQ(state, expected_state);
 }
 
-/// BEGIN QCircuit& QCircuit::post_select(idx target, idx ps_val, idx c_reg,
-///       bool destructive = true, std::optional<std::string> name = "pZ")
 TEST(qpp_QCircuit_post_select, SingleTarget) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -1478,10 +1331,6 @@ TEST(qpp_QCircuit_post_select, SingleTarget) {
     ASSERT_EQ(state, expected_state);
 }
 
-/// BEGIN QCircuit& QCircuit::post_selectV(const cmat& V,
-///       const std::vector<idx>& target, idx ps_val, idx c_reg,
-///       bool destructive = true,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_post_selectV, MultipleTargets) {
     // qutrits
     QCircuit q3(2, 2, 3);
@@ -1512,9 +1361,6 @@ TEST(qpp_QCircuit_post_selectV, MultipleTargets) {
     ASSERT_NEAR(0, norm(state - expected_state), 1e-5);
 }
 
-/// BEGIN QCircuit& QCircuit::post_selectV(const cmat& V, idx target,
-///       idx ps_val, idx c_reg, bool destructive = true,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_QCircuit_post_selectV, SingleTarget) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -1541,7 +1387,6 @@ TEST(qpp_QCircuit_post_selectV, SingleTarget) {
     ASSERT_NEAR(0, norm(state - expected_state), 1e-5);
 }
 
-/// BEGIN QCircuit& QCircuit::QFT(bool swap = true)
 TEST(qpp_QCircuit_QFT, AllQudits) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -1560,8 +1405,6 @@ TEST(qpp_QCircuit_QFT, AllQudits) {
     EXPECT_NEAR(0, norm(engine.get_state() - expected), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::QFT(const std::vector<idx>& target,
-///       bool swap = true)
 TEST(qpp_QCircuit_QFT, SpecificQudits) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -1584,7 +1427,6 @@ TEST(qpp_QCircuit_QFT, SpecificQudits) {
     EXPECT_NEAR(0, norm(engine.get_state() - expected), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::remove_clean_dit(idx target)
 TEST(qpp_QCircuit_remove_clean_dit, AllTests) {
     // qutrits
     QCircuit q3(1, 3, 3);
@@ -1596,7 +1438,6 @@ TEST(qpp_QCircuit_remove_clean_dit, AllTests) {
     EXPECT_EQ(2u, qc.get_nc());
 }
 
-/// BEGIN QCircuit& QCircuit::remove_clean_dits(std::vector<idx> target)
 TEST(qpp_QCircuit_remove_clean_dits, AllTests) {
     // qutrits
     QCircuit q3(1, 4, 3);
@@ -1608,7 +1449,6 @@ TEST(qpp_QCircuit_remove_clean_dits, AllTests) {
     EXPECT_EQ(2u, qc.get_nc());
 }
 
-/// BEGIN QCircuit& QCircuit::remove_clean_qudit(idx target)
 TEST(qpp_QCircuit_remove_clean_qudit, AllTests) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -1620,7 +1460,6 @@ TEST(qpp_QCircuit_remove_clean_qudit, AllTests) {
     EXPECT_EQ(2u, qc.get_nq());
 }
 
-/// BEGIN QCircuit& QCircuit::remove_clean_qudits(std::vector<idx> target)
 TEST(qpp_QCircuit_remove_clean_qudits, AllTests) {
     // qutrits
     QCircuit q3(4, 0, 3);
@@ -1632,7 +1471,6 @@ TEST(qpp_QCircuit_remove_clean_qudits, AllTests) {
     EXPECT_EQ(2u, qc.get_nq());
 }
 
-/// BEGIN bool QCircuit::removes_qudits() const noexcept
 TEST(qpp_QCircuit_removes_qudits, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -1645,7 +1483,6 @@ TEST(qpp_QCircuit_removes_qudits, AllTests) {
     qc.discard(0);
     EXPECT_TRUE(qc.removes_qudits());
 }
-/// BEGIN QCircuit& QCircuit::replicate(idx n)
 TEST(qpp_QCircuit_replicate, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -1662,8 +1499,6 @@ TEST(qpp_QCircuit_replicate, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - st.z1), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::reset(const std::vector<idx>& target,
-///       std::optional<std::string> name = "reset")
 TEST(qpp_QCircuit_reset, MultipleTargets) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -1680,8 +1515,6 @@ TEST(qpp_QCircuit_reset, MultipleTargets) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({0, 1, 0})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::reset(idx target,
-///       std::optional<std::string> name = "reset")
 TEST(qpp_QCircuit_reset, SingleTarget) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -1698,7 +1531,6 @@ TEST(qpp_QCircuit_reset, SingleTarget) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 0})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::set_dits_runtime(mutable_dits_functor_t functor)
 TEST(qpp_QCircuit_set_dits_runtime, AllTests) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -1712,7 +1544,6 @@ TEST(qpp_QCircuit_set_dits_runtime, AllTests) {
     EXPECT_TRUE(qc.has_runtime_steps());
 }
 
-/// BEGIN QCircuit& QCircuit::set_name(const std::string& name)
 TEST(qpp_QCircuit_set_name, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -1726,7 +1557,6 @@ TEST(qpp_QCircuit_set_name, AllTests) {
     EXPECT_EQ("example", *qc.get_name());
 }
 
-/// BEGIN QCircuit& QCircuit::TFQ(bool swap = true)
 TEST(qpp_QCircuit_TFQ, AllQudits) {
     // qutrits
     QCircuit q3(2, 0, 3);
@@ -1743,8 +1573,6 @@ TEST(qpp_QCircuit_TFQ, AllQudits) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& QCircuit::TFQ(const std::vector<idx>& target,
-///       bool swap = true)
 TEST(qpp_QCircuit_TFQ, SpecificQudits) {
     // qutrits
     QCircuit q3(3, 0, 3);
@@ -1762,9 +1590,6 @@ TEST(qpp_QCircuit_TFQ, SpecificQudits) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 0, 1})), 1e-12);
 }
 
-/// BEGIN std::string QCircuit::to_JSON(
-///       bool enclosed_in_curly_brackets = true)
-///       const override
 TEST(qpp_QCircuit_to_JSON, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -1779,7 +1604,6 @@ TEST(qpp_QCircuit_to_JSON, AllTests) {
     EXPECT_EQ('}', json.back());
 }
 
-/// BEGIN bool QCircuit::validate_conditionals() const
 TEST(qpp_QCircuit_validate_conditionals, AllTests) {
     // qutrits
     QCircuit q3(1, 1, 3);
@@ -1794,7 +1618,6 @@ TEST(qpp_QCircuit_validate_conditionals, AllTests) {
     EXPECT_TRUE(qc.validate_conditionals());
 }
 
-/// BEGIN bool QCircuit::was_measured_d(idx i) const
 TEST(qpp_QCircuit_was_measured_d, AllTests) {
     // qutrits
     QCircuit q3(2, 1, 3);
@@ -1807,7 +1630,6 @@ TEST(qpp_QCircuit_was_measured_d, AllTests) {
     EXPECT_TRUE(qc.was_measured_d(0));
 }
 
-/// BEGIN bool QCircuit::was_measured_nd(idx i) const
 TEST(qpp_QCircuit_was_measured_nd, AllTests) {
     // qutrits
     QCircuit q3(2, 1, 3);
@@ -1822,8 +1644,6 @@ TEST(qpp_QCircuit_was_measured_nd, AllTests) {
 
 // free functions
 
-/// BEGIN inline QCircuit adjoint(QCircuit qc,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_adjoint, QCircuitAllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -1835,9 +1655,6 @@ TEST(qpp_adjoint, QCircuitAllTests) {
     EXPECT_EQ(qc, qpp::adjoint(qpp::adjoint(qc)));
 }
 
-/// BEGIN inline QCircuit compose_circuit(QCircuit qc1, const QCircuit& qc2,
-///       bigint pos_qudit, std::optional<std::string> name = std::nullopt,
-///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_compose_circuit, AllTests) {
     // qutrits
     QCircuit a3(2, 0, 3), b3(1, 0, 3);
@@ -1857,12 +1674,6 @@ TEST(qpp_compose_circuit, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({0, 1})), 1e-12);
 }
 
-/// BEGIN QCircuit& compose_CTRL_circuit(QCircuit qc_ctrl,
-///       const std::vector<idx>& ctrl, const QCircuit& qc_target,
-///       bigint pos_qudit,
-///       std::optional<std::vector<idx>> shift = std::nullopt,
-///       bigint pos_qudit, std::optional<idx> pos_dit = std::nullopt,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_compose_CTRL_circuit, AllTests) {
     QCircuit qc_ctrl{5, 3, 2, "Control circuit"};
     qc_ctrl.gate_fan(gt.H);
@@ -1925,10 +1736,6 @@ TEST(qpp_compose_CTRL_circuit, AllTests) {
     EXPECT_EQ(expected_result2.get_nc(), 7);
 }
 
-/// BEGIN inline QCircuit couple_circuit_left(QCircuit qc1, const QCircuit& qc2,
-///       const std::vector<idx>& target,
-///       std::optional<std::string> name = std::nullopt,
-///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_couple_circuit_left, AllTests) {
     // qutrits
     QCircuit a3(1, 0, 3), b3(1, 0, 3);
@@ -1948,10 +1755,6 @@ TEST(qpp_couple_circuit_left, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - st.z1), 1e-12);
 }
 
-/// BEGIN inline QCircuit couple_circuit_right(QCircuit qc1,
-///       const QCircuit& qc2, const std::vector<idx>& target,
-///       std::optional<std::string> name = std::nullopt,
-///       std::optional<idx> pos_dit = std::nullopt)
 TEST(qpp_couple_circuit_right, AllTests) {
     // qutrits
     QCircuit a3(1, 0, 3), b3(1, 0, 3);
@@ -1971,8 +1774,6 @@ TEST(qpp_couple_circuit_right, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - st.z1), 1e-12);
 }
 
-/// BEGIN inline QCircuit kron(QCircuit qc1, const QCircuit& qc2,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_kron, QCircuitAllTests) {
     // qutrits
     QCircuit a3(1, 0, 3), b3(1, 0, 3);
@@ -1994,9 +1795,6 @@ TEST(qpp_kron, QCircuitAllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({1, 0, 1})), 1e-12);
 }
 
-/// BEGIN inline QCircuit qpe_circuit(cmat U, qpp::idx n,
-///       bool omit_measurements = true, idx d = 2,
-///       std::optional<std::string> name = "qpe")
 TEST(qpp_qpe_circuit, AllTests) {
     // qutrits
     auto q3 = qpe_circuit(gt.Zd(3), 2, true, 3);
@@ -2012,9 +1810,6 @@ TEST(qpp_qpe_circuit, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - mket({0, 0, 0})), 1e-12);
 }
 
-/// BEGIN inline QCircuit state_prep_circuit(const ket& psi, idx d = 2,
-///       bool decompose = true,
-///       std::optional<std::string> name = "state_prep")
 TEST(qpp_state_prep_circuit, Qubits) {
     for (idx n = 1; n <= 8; ++n) {
         idx D = idx{1} << n;
@@ -2185,8 +1980,6 @@ TEST(qpp_state_prep_circuit, Exceptions) {
     EXPECT_THROW(state_prep_circuit(psi), exception::CustomException);
 }
 
-/// BEGIN inline QCircuit replicate(QCircuit qc, idx n,
-///       std::optional<std::string> name = std::nullopt)
 TEST(qpp_replicate, AllTests) {
     // qutrits
     QCircuit q3(1, 0, 3);
@@ -2205,15 +1998,6 @@ TEST(qpp_replicate, AllTests) {
     EXPECT_NEAR(0, norm(engine.get_state() - st.z0), 1e-12);
 }
 
-/// BEGIN inline QCircuit random_circuit_count(idx nq, idx d, idx gate_count,
-///       std::optional<realT> p_two,
-///       std::optional<cmat> with_respect_to_gate = std::nullopt,
-///       std::optional<std::vector<cmat>> one_qudit_gate_set = std::nullopt,
-///       std::optional<std::vector<cmat>> two_qudit_gate_set = std::nullopt,
-///       std::optional<std::vector<std::string>> one_qudit_gate_names =
-///           std::nullopt,
-///       std::optional<std::vector<std::string>> two_qudit_gate_names =
-///           std::nullopt)
 TEST(qpp_random_circuit_count, AllTests) {
     // qutrits
     auto q3 = random_circuit_count(3, 3, 8, 0.5, std::nullopt,
@@ -2227,15 +2011,6 @@ TEST(qpp_random_circuit_count, AllTests) {
     EXPECT_EQ(12u, qc.get_gate_count());
 }
 
-/// BEGIN inline QCircuit random_circuit_depth(idx nq, idx d, idx gate_depth,
-///       std::optional<realT> p_two,
-///       std::optional<cmat> with_respect_to_gate = std::nullopt,
-///       std::optional<std::vector<cmat>> one_qudit_gate_set = std::nullopt,
-///       std::optional<std::vector<cmat>> two_qudit_gate_set = std::nullopt,
-///       std::optional<std::vector<std::string>> one_qudit_gate_names =
-///           std::nullopt,
-///       std::optional<std::vector<std::string>> two_qudit_gate_names =
-///           std::nullopt)
 TEST(qpp_random_circuit_depth, AllTests) {
     // qutrits
     auto q3 = random_circuit_depth(3, 3, 3, 0.5, std::nullopt,

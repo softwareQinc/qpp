@@ -7,10 +7,6 @@ using namespace qpp;
 
 // Unit testing "qpp/statistics.hpp"
 
-/// BEGIN template<typename Container> realT avg(
-///       const std::vector<realT>& prob, const Container& X,
-///       typename std::enable_if<is_iterable<Container>::value>::type*
-///       = nullptr)
 TEST(qpp_avg, AllTests) {
     // size 1
     std::vector<realT> prob{1};
@@ -33,10 +29,6 @@ TEST(qpp_avg, AllTests) {
     EXPECT_NEAR(11 / 2., avg(prob, X), 1e-5);
 }
 
-/// BEGIN template<typename Container> realT cor(const rmat& probXY,
-///       const Container& X, const Container& Y,
-///       typename std::enable_if<is_iterable<Container>::value>::type*
-///       = nullptr)
 TEST(qpp_cor, AllTests) {
     // decoupled size 2
     rmat probX(2, 1), probY(1, 2);
@@ -65,10 +57,6 @@ TEST(qpp_cor, AllTests) {
     EXPECT_NEAR(cor(probXY, X, Y), cor(transpose(probXY), Y, X), 1e-5);
 }
 
-/// BEGIN template<typename Container> realT cov(const rmat& probXY,
-///       const Container& X, const Container& Y,
-///       typename std::enable_if<is_iterable<Container>::value>::type*
-///       = nullptr)
 TEST(qpp_cov, AllTests) {
     // size 1
     rmat probXY(1, 1);
@@ -105,7 +93,6 @@ TEST(qpp_cov, AllTests) {
     EXPECT_NEAR(cov(probXY, X, Y), cov(transpose(probXY), Y, X), 1e-5);
 }
 
-/// BEGIN inline std::vector<realT> marginalX(const rmat& probXY)
 TEST(qpp_marginalX, AllTests) {
     // size 1
     rmat probXY(1, 1);
@@ -156,7 +143,6 @@ TEST(qpp_marginalX, AllTests) {
     }
 }
 
-/// BEGIN inline std::vector<realT> marginalY(const rmat& probXY)
 TEST(qpp_marginalY, AllTests) {
     // size 1
     rmat probXY(1, 1);
@@ -207,11 +193,6 @@ TEST(qpp_marginalY, AllTests) {
     }
 }
 
-/// BEGIN template<typename Container> realT sigma(
-///       const std::vector<realT>& prob,
-///       const Container& X,
-///       typename std::enable_if<is_iterable<Container>::value>::type*
-///       = nullptr)
 TEST(qpp_sigma, AllTests) {
     // size 1
     std::vector<realT> prob{1};
@@ -234,7 +215,6 @@ TEST(qpp_sigma, AllTests) {
     EXPECT_NEAR(2.872281323269013, sigma(prob, X), 1e-5);
 }
 
-/// BEGIN inline std::vector<realT> uniform(idx N)
 TEST(qpp_uniform, AllTests) {
     // size 1
     idx N = 1;
@@ -249,10 +229,6 @@ TEST(qpp_uniform, AllTests) {
     EXPECT_THAT(uniform(N), testing::Each(1. / N));
 }
 
-/// BEGIN template<typename Container> realT var(
-///       const std::vector<realT>& prob, const Container& X,
-///       typename std::enable_if<is_iterable<Container>::value>::type*
-///       = nullptr)
 TEST(qpp_var, AllTests) {
     // size 1
     std::vector<realT> prob{1};

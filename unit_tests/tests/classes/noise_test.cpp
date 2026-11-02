@@ -8,7 +8,6 @@ using namespace qpp;
 
 // Unit testing "qpp/classes/noise.hpp"
 
-/// BEGIN idx NoiseBase::get_d() const noexcept
 TEST(qpp_NoiseBase_get_d, AllTests) {
     const QubitBitFlipNoise qubit(0.25);
     const QuditDepolarizingNoise qutrit(0, 3);
@@ -16,7 +15,6 @@ TEST(qpp_NoiseBase_get_d, AllTests) {
     EXPECT_EQ(3u, qutrit.get_d());
 }
 
-/// BEGIN std::vector<cmat> NoiseBase::get_Ks() const
 TEST(qpp_NoiseBase_get_Ks, AllTests) {
     const QubitBitFlipNoise noise(0.25);
     const auto Ks = noise.get_Ks();
@@ -25,7 +23,6 @@ TEST(qpp_NoiseBase_get_Ks, AllTests) {
     EXPECT_LT((Ks[1] - gt.X).norm(), 1e-12);
 }
 
-/// BEGIN idx NoiseBase::get_last_idx() const
 TEST(qpp_NoiseBase_get_last_idx, AllTests) {
     QubitBitFlipNoise noise(1);
     EXPECT_THROW(noise.get_last_idx(), exception::CustomException);
@@ -33,7 +30,6 @@ TEST(qpp_NoiseBase_get_last_idx, AllTests) {
     EXPECT_EQ(1u, noise.get_last_idx());
 }
 
-/// BEGIN cmat NoiseBase::get_last_K() const
 TEST(qpp_NoiseBase_get_last_K, AllTests) {
     QubitPhaseFlipNoise noise(1);
     EXPECT_THROW(noise.get_last_K(), exception::CustomException);
@@ -41,7 +37,6 @@ TEST(qpp_NoiseBase_get_last_K, AllTests) {
     EXPECT_LT((noise.get_last_K() - gt.Z).norm(), 1e-12);
 }
 
-/// BEGIN realT NoiseBase::get_last_p() const
 TEST(qpp_NoiseBase_get_last_p, AllTests) {
     QubitBitFlipNoise noise(1);
     EXPECT_THROW(noise.get_last_p(), exception::CustomException);
@@ -49,7 +44,6 @@ TEST(qpp_NoiseBase_get_last_p, AllTests) {
     EXPECT_NEAR(1, noise.get_last_p(), 1e-12);
 }
 
-/// BEGIN std::vector<realT> NoiseBase::get_probs() const
 TEST(qpp_NoiseBase_get_probs, AllTests) {
     QubitBitFlipNoise independent(0.3);
     EXPECT_EQ((std::vector<realT>{0.7, 0.3}), independent.get_probs());
@@ -63,7 +57,6 @@ TEST(qpp_NoiseBase_get_probs, AllTests) {
     EXPECT_NEAR(0.64, probs[1], 1e-12);
 }
 
-/// BEGIN virtual cmat NoiseBase::operator()(const cmat& state) const
 TEST(qpp_NoiseBase_functor, AllQudits) {
     QubitBitFlipNoise noise(1);
     EXPECT_LT((noise(prj(st.z0)) - prj(st.z1)).norm(), 1e-12);
@@ -73,16 +66,12 @@ TEST(qpp_NoiseBase_functor, AllQudits) {
     EXPECT_LT((identity(prj(st.x0)) - prj(st.x0)).norm(), 1e-12);
 }
 
-/// BEGIN virtual cmat NoiseBase::operator()(const cmat& state, idx target)
-///       const
 TEST(qpp_NoiseBase_functor, SpecificQudit) {
     QubitBitFlipNoise noise(1);
     EXPECT_LT((noise(mprj({0, 0}), 0) - mprj({1, 0})).norm(), 1e-12);
     EXPECT_LT((noise(mprj({0, 0}), 1) - mprj({0, 1})).norm(), 1e-12);
 }
 
-/// BEGIN virtual cmat NoiseBase::operator()(const cmat& state,
-///       const std::vector<idx>& target) const
 TEST(qpp_NoiseBase_functor, CorrelatedNoise) {
     NoiseBase<NoiseType::StateIndependent> noise({gt.X}, {1});
     EXPECT_LT((noise(mprj({0, 0}), std::vector<idx>{1}) - mprj({0, 1})).norm(),
@@ -90,8 +79,6 @@ TEST(qpp_NoiseBase_functor, CorrelatedNoise) {
     EXPECT_EQ(0u, noise.get_last_idx());
 }
 
-/// BEGIN explicit QubitAmplitudeDampingNoise::QubitAmplitudeDampingNoise(
-///       realT gamma)
 TEST(qpp_QubitAmplitudeDampingNoise_QubitAmplitudeDampingNoise, AllTests) {
     QubitAmplitudeDampingNoise noise(0.36);
     const auto Ks = noise.get_Ks();
@@ -104,7 +91,6 @@ TEST(qpp_QubitAmplitudeDampingNoise_QubitAmplitudeDampingNoise, AllTests) {
     EXPECT_THROW(QubitAmplitudeDampingNoise(1.1), exception::OutOfRange);
 }
 
-/// BEGIN explicit QubitBitFlipNoise::QubitBitFlipNoise(realT p)
 TEST(qpp_QubitBitFlipNoise_QubitBitFlipNoise, AllTests) {
     QubitBitFlipNoise noise(1);
     EXPECT_EQ((std::vector<realT>{0, 1}), noise.get_probs());
@@ -113,7 +99,6 @@ TEST(qpp_QubitBitFlipNoise_QubitBitFlipNoise, AllTests) {
     EXPECT_THROW(QubitBitFlipNoise(1.1), exception::OutOfRange);
 }
 
-/// BEGIN explicit QubitBitPhaseFlipNoise::QubitBitPhaseFlipNoise(realT p)
 TEST(qpp_QubitBitPhaseFlipNoise_QubitBitPhaseFlipNoise, AllTests) {
     QubitBitPhaseFlipNoise noise(1);
     EXPECT_EQ((std::vector<realT>{0, 1}), noise.get_probs());
@@ -122,7 +107,6 @@ TEST(qpp_QubitBitPhaseFlipNoise_QubitBitPhaseFlipNoise, AllTests) {
     EXPECT_THROW(QubitBitPhaseFlipNoise(1.1), exception::OutOfRange);
 }
 
-/// BEGIN explicit QubitDepolarizingNoise::QubitDepolarizingNoise(realT p)
 TEST(qpp_QubitDepolarizingNoise_QubitDepolarizingNoise, AllTests) {
     QubitDepolarizingNoise noise(0.6);
     const auto probs = noise.get_probs();
@@ -138,7 +122,6 @@ TEST(qpp_QubitDepolarizingNoise_QubitDepolarizingNoise, AllTests) {
     EXPECT_THROW(QubitDepolarizingNoise(1.1), exception::OutOfRange);
 }
 
-/// BEGIN explicit QubitPhaseFlipNoise::QubitPhaseFlipNoise(realT p)
 TEST(qpp_QubitPhaseFlipNoise_QubitPhaseFlipNoise, AllTests) {
     QubitPhaseFlipNoise noise(1);
     EXPECT_EQ((std::vector<realT>{0, 1}), noise.get_probs());
@@ -147,8 +130,6 @@ TEST(qpp_QubitPhaseFlipNoise_QubitPhaseFlipNoise, AllTests) {
     EXPECT_THROW(QubitPhaseFlipNoise(1.1), exception::OutOfRange);
 }
 
-/// BEGIN explicit QuditDepolarizingNoise::QuditDepolarizingNoise(realT p,
-///       idx d)
 TEST(qpp_QuditDepolarizingNoise_QuditDepolarizingNoise, AllTests) {
     QuditDepolarizingNoise noise(0, 3);
     EXPECT_EQ(3u, noise.get_d());

@@ -9,8 +9,6 @@ using namespace qpp;
 
 // Unit testing "qpp/entanglement.hpp"
 
-/// BEGIN template <typename Derived> realT concurrence(
-///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_concurrence, AllTests) {
     // random qubit product state
     cmat rho1 = prj(kron(randU(), randU()) * mket({0, 0}));
@@ -26,8 +24,6 @@ TEST(qpp_concurrence, AllTests) {
     EXPECT_NEAR(2 * 0.8 * 0.6, concurrence(rho3), 1e-3);
 }
 
-/// BEGIN template <typename Derived> realT entanglement(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_entanglement, Qudits) {
     // random qutrit product state
     ket psi1 = kron(randU(3), randU(3)) * mket({0, 0}, 3);
@@ -46,8 +42,6 @@ TEST(qpp_entanglement, Qudits) {
     EXPECT_NEAR(std::log2(3), entanglement(psi3, {3, 3}), 1e-5);
 }
 
-/// BEGIN template <typename Derived> realT entanglement(
-///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_entanglement, Qubits) {
     // random qubit product state
     ket psi1 = kron(randU(), randU()) * mket({0, 0});
@@ -64,8 +58,6 @@ TEST(qpp_entanglement, Qubits) {
                 entanglement(psi3), 1e-5);
 }
 
-/// BEGIN template <typename Derived> realT gconcurrence(
-///       const Eigen::MatrixBase<Derived>& A)
 TEST(qpp_gconcurrence, AllTests) {
     // random qubit product state
     ket psi1 = kron(randU(), randU()) * mket({0, 0});
@@ -96,8 +88,6 @@ TEST(qpp_gconcurrence, AllTests) {
     EXPECT_NEAR(gconcurrence(psi6), concurrence(prj(psi6)), 1e-3);
 }
 
-/// BEGIN template <typename Derived> realT lognegativity(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_lognegativity, Qudits) {
     // zero on product states (2 qutrits)
     cmat rho = randrho(3);
@@ -127,8 +117,6 @@ TEST(qpp_lognegativity, Qudits) {
     EXPECT_NEAR(std::log2(d), lognegativity(rho, {d, d}), 1e-5);
 }
 
-/// BEGIN template <typename Derived> realT lognegativity(
-///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_lognegativity, Qubits) {
     // zero on product states (2 qubits)
     cmat rho = randrho();
@@ -147,8 +135,6 @@ TEST(qpp_lognegativity, Qubits) {
     EXPECT_NEAR(std::log2(d), lognegativity(rho), 1e-5);
 }
 
-/// BEGIN template <typename Derived> realT negativity(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_negativity, Qudits) {
     // Must be (d - 1)/2 on MES
 
@@ -187,8 +173,6 @@ TEST(qpp_negativity, Qudits) {
     EXPECT_NEAR((d - 1) / 2., negativity(rho, {d, d}), 1e-5);
 }
 
-/// BEGIN template <typename Derived> realT negativity(
-///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_negativity, Qubits) {
     // Must be (d - 1)/2 on MES
 
@@ -209,10 +193,6 @@ TEST(qpp_negativity, Qubits) {
     EXPECT_NEAR(0.5, negativity(rho), 1e-5);
 }
 
-/// BEGIN template <typename Derived>
-///       std::tuple<cmat, cmat, dyn_col_vect<realT>, dyn_col_vect<realT>>
-///       schmidt(const Eigen::MatrixBase<Derived>& A,
-///       const std::vector<idx>& dims)
 TEST(qpp_schmidt, Qudits) {
     // random 3 x 4 state
     idx dA = 3, dB = 4, D = dA * dB;
@@ -239,9 +219,6 @@ TEST(qpp_schmidt, Qudits) {
     EXPECT_NEAR(0, norm(probs - probs_ref), 1e-5);
 }
 
-/// BEGIN template <typename Derived>
-///       std::tuple<cmat, cmat, dyn_col_vect<realT>, dyn_col_vect<realT>>
-///       schmidt(const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_schmidt, Qubits) {
     // random 5 x 5 state
     idx d = 5, D = d * d;
@@ -268,8 +245,6 @@ TEST(qpp_schmidt, Qubits) {
     EXPECT_NEAR(0, norm(probs - probs_ref), 1e-5);
 }
 
-/// BEGIN template <typename Derived> cmat schmidtA/B(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_schmidtA_schmidtB, Qudits) {
     // random degenerate 1 x 1 product state
     idx dA = 1, dB = 1, D = dA * dB, minD = std::min(dA, dB);
@@ -342,8 +317,6 @@ TEST(qpp_schmidtA_schmidtB, Qudits) {
     EXPECT_NEAR(0, norm(expected - psi), 1e-5);
 }
 
-/// BEGIN template <typename Derived> cmat schmidtA/B(
-///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_schmidtA_schmidtB, Qubits) {
     // random 2 x 2 product state
     idx d = 2, D = d * d;
@@ -398,8 +371,6 @@ TEST(qpp_schmidtA_schmidtB, Qubits) {
     EXPECT_NEAR(0, norm(expected - psi), 1e-5);
 }
 
-/// BEGIN template <typename Derived> dyn_col_vect<realT> schmidtcoeffs(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_schmidtcoeffs, Qudits) {
     // random degenerate 1 x 1 product state
     idx dA = 1, dB = 1, minD = std::min(dA, dB);
@@ -458,8 +429,6 @@ TEST(qpp_schmidtcoeffs, Qudits) {
     EXPECT_NEAR(0, norm(result - expected), 1e-5);
 }
 
-/// BEGIN template <typename Derived> dyn_col_vect<realT> schmidtcoeffs(
-///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_schmidtcoeffs, Qubits) {
     // random 2 x 2 product state
     idx d = 2;
@@ -506,8 +475,6 @@ TEST(qpp_schmidtcoeffs, Qubits) {
     EXPECT_NEAR(0, norm(result - expected), 1e-5);
 }
 
-/// BEGIN template <typename Derived> std::vector<realT> schmidtprobs(
-///       const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& dims)
 TEST(qpp_schmidtprobs, Qudits) {
     // random degenerate 1 x 1 product state
     idx dA = 1, dB = 1, minD = std::min(dA, dB);
@@ -576,8 +543,6 @@ TEST(qpp_schmidtprobs, Qudits) {
     EXPECT_NEAR(0, norm(result - expected), 1e-5);
 }
 
-/// BEGIN template <typename Derived> std::vector<realT> schmidtprobs(
-///       const Eigen::MatrixBase<Derived>& A, idx d = 2)
 TEST(qpp_schmidtprobs, Qubits) {
     // random 2 x 2 product state
     idx d = 2;

@@ -10,8 +10,6 @@ using namespace qpp;
 
 // Unit testing "qpp/number_theory.hpp"
 
-/// BEGIN std::vector<idx> compperm(const std::vector<idx>& perm,
-///       const std::vector<idx>& sigma)
 TEST(qpp_compperm, AllTests) {
     std::vector<idx> sigma1{0};
     std::vector<idx> tau1{0};
@@ -29,7 +27,6 @@ TEST(qpp_compperm, AllTests) {
     EXPECT_EQ(result3, compperm(sigma3, tau3));
 }
 
-/// BEGIN realT contfrac2x(const std::vector<bigint>& cf, idx N = idx(-1))
 TEST(qpp_contfrac2x, DefaultN) {
     EXPECT_NEAR(0, contfrac2x({0}), 1e-5);
     EXPECT_NEAR(42, contfrac2x({42}), 1e-5);
@@ -51,8 +48,6 @@ TEST(qpp_contfrac2x, UserSpecifiedN) {
     EXPECT_NEAR(-0.4321, contfrac2x({0, -2, -3, -5, -2}, 4), 1e-3);
 }
 
-/// BEGIN std::vector<std::pair<bigint, bigint>>
-///       convergents(const std::vector<bigint>& cf)
 TEST(qpp_convergents, ContinuedFraction) {
     const std::vector<std::pair<bigint, bigint>> expected{
         {3, 1}, {22, 7}, {333, 106}, {355, 113}};
@@ -62,8 +57,6 @@ TEST(qpp_convergents, ContinuedFraction) {
     EXPECT_THROW(convergents(std::vector<bigint>{}), exception::ZeroSize);
 }
 
-/// BEGIN std::vector<std::pair<bigint, bigint>>
-///       convergents(realT x, idx N)
 TEST(qpp_convergents, RealNumber) {
     const std::vector<std::pair<bigint, bigint>> expected_pi{
         {3, 1}, {22, 7}, {333, 106}};
@@ -76,7 +69,6 @@ TEST(qpp_convergents, RealNumber) {
     EXPECT_THROW(convergents(pi, 0), exception::OutOfRange);
 }
 
-/// BEGIN std::tuple<bigint, bigint, bigint> egcd(bigint m, bigint n)
 TEST(qpp_egcd, NonNegativeNumbers) {
     EXPECT_EQ(std::make_tuple(1, 0, 10), egcd(10, 0));
     EXPECT_EQ(std::make_tuple(0, 1, 10), egcd(0, 10));
@@ -100,7 +92,6 @@ TEST(qpp_egcd, NegativeNumbers) {
     EXPECT_EQ(std::make_tuple(-54, 7, 1), egcd(-17, -131));
 }
 
-/// BEGIN std::vector<bigint> factors(bigint n)
 TEST(qpp_factors, AllTests) {
     bigint n1 = 2;
     std::vector<bigint> result1{2};
@@ -128,7 +119,6 @@ TEST(qpp_factors, AllTests) {
     EXPECT_EQ(result6, factors(n6));
 }
 
-/// BEGIN bigint gcd(bigint m, bigint n)
 TEST(qpp_gcd, NonNegativeNumbers) {
     EXPECT_EQ(10, gcd(10, 0));
     EXPECT_EQ(10, gcd(0, 10));
@@ -160,7 +150,6 @@ TEST(qpp_gcd, NegativeNumbers) {
     EXPECT_EQ(20, gcd(-170180, -13100));
 }
 
-/// BEGIN bigint gcd(const std::vector<bigint>& ns)
 TEST(qpp_gcd, ListMixedNumbers) {
     std::vector<bigint> v1{1, 0, -1, 0, 1};
     EXPECT_EQ(1, gcd(v1));
@@ -172,7 +161,6 @@ TEST(qpp_gcd, ListMixedNumbers) {
     EXPECT_EQ(4, gcd(v3));
 }
 
-/// BEGIN std::vector<idx> invperm(const std::vector<idx>& perm)
 TEST(qpp_invperm, AllTests) {
     std::vector<idx> perm1{0};
     std::vector<idx> result1{0};
@@ -191,7 +179,6 @@ TEST(qpp_invperm, AllTests) {
     EXPECT_EQ(result4, invperm(perm4));
 }
 
-/// BEGIN bool isprime(bigint n, idx k = 80)
 TEST(qpp_isprime, MixedPrimeNumbers) {
     EXPECT_TRUE(isprime(2));
     EXPECT_TRUE(isprime(-2));
@@ -220,7 +207,6 @@ TEST(qpp_isprime, MixedNonPrimeNumbers) {
     EXPECT_FALSE(isprime(41041));
 }
 
-/// BEGIN bigint lcm(bigint m, bigint n)
 TEST(qpp_lcm, NonNegativeNumbers) {
     EXPECT_EQ(0, lcm(10, 0));
     EXPECT_EQ(0, lcm(0, 10));
@@ -245,7 +231,6 @@ TEST(qpp_lcm, NegativeNumbers) {
     EXPECT_EQ(111467900, lcm(-170180, -13100));
 }
 
-/// BEGIN bigint lcm(const std::vector<bigint>& ns)
 TEST(qpp_lcm, ListMixedNumbers) {
     std::vector<bigint> v1{10, -10, 10, -10};
     EXPECT_EQ(10, lcm(v1));
@@ -257,14 +242,12 @@ TEST(qpp_lcm, ListMixedNumbers) {
     EXPECT_EQ(2480525000, lcm(v3));
 }
 
-/// BEGIN bigint modinv(bigint a, bigint p)
 TEST(qpp_modinv, AllTests) {
     EXPECT_EQ(1, modinv(1, 1));
     EXPECT_EQ(62, modinv(2, 123));
     EXPECT_EQ(21, modinv(1231, 22));
 }
 
-/// BEGIN bigint modmul(bigint a, bigint n, bigint p)
 TEST(qpp_modmul, NonNegativeNumbers) {
     EXPECT_EQ(0, modmul(0, 0, 1));
     EXPECT_EQ(0, modmul(0, 0, 2));
@@ -315,7 +298,6 @@ TEST(qpp_modmul, NegativeNumbers) {
     EXPECT_EQ(1799, modmul(minbigint + 1234, -maxbigint + 2345, 7891));
 }
 
-/// BEGIN bigint modpow(bigint a, bigint n, bigint p)
 TEST(qpp_modpow, PositiveNumbers) {
     bigint maxbigint = std::numeric_limits<bigint>::max();
 
@@ -344,14 +326,12 @@ TEST(qpp_modpow, ExceptionParameterOutOfRange) {
     EXPECT_THROW(modpow(0, 0, 2), exception::OutOfRange);
 }
 
-/// BEGIN bigint randprime(bigint a, bigint b, idx N = 1000)
 TEST(qpp_randprime, AllTests) {
     EXPECT_TRUE(isprime(randprime(0, 100)));
     EXPECT_TRUE(isprime(randprime(100, 1000)));
     EXPECT_TRUE(isprime(randprime(10000, 10100)));
 }
 
-/// BEGIN std::vector<bigint> x2contfrac(realT x, idx n, idx cut = 1e5)
 TEST(qpp_x2contfrac, AllTests) {
     EXPECT_EQ(std::vector<bigint>({0}), x2contfrac(0, 3));
     EXPECT_EQ(std::vector<bigint>({1}), x2contfrac(1, 3));
