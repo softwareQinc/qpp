@@ -21,7 +21,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang llvm libeigen3-dev ninja-build
+          sudo apt-get install -y \
+            clang llvm libc++-dev libc++abi-dev \
+            libeigen3-dev ninja-build
 
       - name: Configure
         run: |
