@@ -12,24 +12,49 @@ permissions:
 
 jobs:
   coverage:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+
+    env:
+      CC: clang-23
+      CXX: clang++-23
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install LLVM 23
         run: |
           sudo apt-get update
+          sudo apt-get install -y wget gnupg
+
+          wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key |
+            gpg --dearmor |
+            sudo tee /usr/share/keyrings/llvm-archive-keyring.gpg > /dev/null
+
+          echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] https://apt.llvm.org/noble/ llvm-toolchain-noble-23 main" |
+            sudo tee /etc/apt/sources.list.d/llvm.list
+
+          sudo apt-get update
           sudo apt-get install -y \
-            clang llvm libc++-dev libc++abi-dev \
-            libomp-dev libeigen3-dev ninja-build
+            clang-23 llvm-23 lld-23 \
+            libc++-23-dev libc++abi-23-dev \
+            libomp-23-dev libeigen3-dev ninja-build
+
+      - name: Configure LLVM tools
+        run: echo "/usr/lib/llvm-23/bin" >> "$GITHUB_PATH"
+
+      - name: Verify LLVM
+        run: |
+          clang++-23 --version
+          readlink -f "$(command -v clang++-23)"
+          llvm-cov-23 --version
+          llvm-profdata-23 --version
 
       - name: Configure
         run: |
           cmake --fresh -S . -B build-coverage -G Ninja \
-            -DCMAKE_C_COMPILER=clang \
-            -DCMAKE_CXX_COMPILER=clang++ \
+            -DCMAKE_C_COMPILER=clang-23 \
+            -DCMAKE_CXX_COMPILER=clang++-23 \
             -DCMAKE_CXX_FLAGS="-stdlib=libc++" \
             -DCMAKE_BUILD_TYPE=Release \
             -DQPP_ENABLE_COVERAGE=ON \
