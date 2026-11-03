@@ -141,7 +141,7 @@ void expect_rho(const cmat& actual, const cmat& original, const cmat& A,
 
 } // namespace
 
-TEST(qpp_apply_ctrl_fan_psi_inplace, ControlPatternsAndMultipleTargets) {
+TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, ControlPatternsAndMultipleTargets) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<Case> cases{
@@ -170,7 +170,7 @@ TEST(qpp_apply_ctrl_fan_psi_inplace, ControlPatternsAndMultipleTargets) {
     }
 }
 
-TEST(qpp_apply_ctrl_fan_psi_inplace, TwoControlsTwoTargets) {
+TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, TwoControlsTwoTargets) {
     // With both controls on, X must flip each target: |1100> -> |1111>.
     const idx n = 4;
     ket actual = ket::Zero(16);
@@ -184,7 +184,7 @@ TEST(qpp_apply_ctrl_fan_psi_inplace, TwoControlsTwoTargets) {
     expect_same(actual, expected);
 }
 
-TEST(qpp_apply_ctrl_fan_psi_inplace, ControlsNotSatisfied) {
+TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, ControlsNotSatisfied) {
     const idx n = 4;
     ket actual = ket::Zero(16);
     actual(8) = 1; // |1000>: controls {0,1} are not both |1>.
@@ -196,7 +196,7 @@ TEST(qpp_apply_ctrl_fan_psi_inplace, ControlsNotSatisfied) {
     expect_same(actual, original);
 }
 
-TEST(qpp_apply_ctrl_fan_psi_inplace, NegativeControls) {
+TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, NegativeControls) {
     const idx n = 4;
     ket actual = ket::Zero(16);
     actual(8) = 1; // |1000>: q0=1 and q1=0.
@@ -209,7 +209,7 @@ TEST(qpp_apply_ctrl_fan_psi_inplace, NegativeControls) {
     expect_same(actual, expected);
 }
 
-TEST(qpp_apply_ctrl_fan_psi_inplace, EmptyAndSingleQubitSystems) {
+TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, EmptyAndSingleQubitSystems) {
     const cmat A = complex_gate();
     for (idx n : {idx{0}, idx{1}}) {
         const ket original = make_state(n);
@@ -222,7 +222,7 @@ TEST(qpp_apply_ctrl_fan_psi_inplace, EmptyAndSingleQubitSystems) {
     }
 }
 
-TEST(qpp_apply_ctrl_fan_psi, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_fan_psi, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     ket original = make_state(n);
     const ket before = original;
@@ -243,7 +243,7 @@ TEST(qpp_apply_ctrl_fan_psi, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_fan_rho_inplace, MixedStateControlBranches) {
+TEST(qpp_qubit_apply_ctrl_fan_rho_inplace, MixedStateControlBranches) {
     const idx n = 5;
     const cmat original = make_density(n);
     const std::vector<Case> cases{
@@ -271,7 +271,7 @@ TEST(qpp_apply_ctrl_fan_rho_inplace, MixedStateControlBranches) {
     }
 }
 
-TEST(qpp_apply_ctrl_fan_rho_inplace, CoherenceAcrossControlBranches) {
+TEST(qpp_qubit_apply_ctrl_fan_rho_inplace, CoherenceAcrossControlBranches) {
     const idx n = 4;
     ket psi = ket::Zero(16);
     psi(0) = 1.0 / std::sqrt(2.0);
@@ -290,7 +290,7 @@ TEST(qpp_apply_ctrl_fan_rho_inplace, CoherenceAcrossControlBranches) {
     EXPECT_NEAR(std::abs(actual(0, 15)), 0.5, tolerance);
 }
 
-TEST(qpp_apply_ctrl_fan_rho_inplace, EmptyAndSingleQubitSystems) {
+TEST(qpp_qubit_apply_ctrl_fan_rho_inplace, EmptyAndSingleQubitSystems) {
     const cmat A = complex_gate();
     for (idx n : {idx{0}, idx{1}}) {
         const cmat original = make_density(n);
@@ -303,7 +303,7 @@ TEST(qpp_apply_ctrl_fan_rho_inplace, EmptyAndSingleQubitSystems) {
     }
 }
 
-TEST(qpp_apply_ctrl_fan_rho, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_fan_rho, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     cmat original = make_density(n);
     const cmat before = original;
@@ -324,7 +324,7 @@ TEST(qpp_apply_ctrl_fan_rho, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_fan_rho, PureStateConsistencyAndTrace) {
+TEST(qpp_qubit_apply_ctrl_fan_rho, PureStateConsistencyAndTrace) {
     const idx n = 5;
     const ket psi = make_state(n);
     const cmat rho = psi * psi.adjoint();

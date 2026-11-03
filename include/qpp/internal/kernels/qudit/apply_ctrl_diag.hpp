@@ -33,6 +33,9 @@
 #define QPP_INTERNAL_KERNELS_QUDIT_APPLY_CTRL_DIAG_HPP_
 
 #include <cassert>
+#include <algorithm>
+#include <cmath>
+#include <complex>
 #include <vector>
 #ifndef NDEBUG
 #include <set>
@@ -48,7 +51,7 @@ namespace qpp::internal::kernels::qudit {
  * the multi-partite state vector \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (2 x 1 vector of diagonal elements)
+ * @param A Eigen expression (d x 1 vector of diagonal elements)
  * @param ctrl Vector of control qudit indices
  * @param i Target subsystem index
  * @param shift Vector of control shifts added to each control qudit value
@@ -70,6 +73,7 @@ apply_ctrl_psi_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     }
 
     const idx ctrl_size = static_cast<idx>(ctrl.size());
+    assert(n >= 1 && ctrl_size <= n - 1);
     const idx spectator_count = n - 1 - ctrl_size; // k = 1
 
     // Total number of iterations for spectator configurations
@@ -88,7 +92,13 @@ apply_ctrl_psi_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 #ifndef NDEBUG
     const idx D = d_pow[n];
     assert(static_cast<idx>(state.size()) == D && "State size mismatch");
+    assert(i < n && "Target qudit index must be less than n");
+    std::set<idx> ctrl_set;
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
+        assert(ctrl[c_idx] < n && ctrl[c_idx] != i &&
+               "Control/Target overlap or invalid control");
+        assert(ctrl_set.insert(ctrl[c_idx]).second &&
+               "Control qudit indices must be distinct");
         assert(shift[c_idx] < d && "Shift must be less than d");
     }
 #endif
@@ -168,11 +178,12 @@ apply_ctrl_psi_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
  * the multi-partite state vector \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (2 x 1 vector of diagonal elements)
+ * @param A Eigen expression (d x 1 vector of diagonal elements)
  * @param i Target subsystem index
  * @param ctrl Vector of control qudit indices
  * @param shift Vector of control shifts added to each control qudit value
  * modulo d (e.g., shifts the activating control configuration)
+ * @param d Subsystem dimensions
  * @param n Number of qudits
  * @return Controlled gate \a A applied to the qudit \a i of \a state
  */
@@ -181,12 +192,12 @@ template <typename Derived1, typename Derived2>
 apply_ctrl_psi_1q_diag(const Eigen::MatrixBase<Derived1>& state,
                        const Eigen::MatrixBase<Derived2>& A,
                        const std::vector<idx>& ctrl, idx i,
-                       const std::vector<idx>& shift, idx n) {
+                       const std::vector<idx>& shift, idx d, idx n) {
     // Deep copy for functional return
     expr_t<Derived1> result = state;
 
     // Apply transformation in-place
-    apply_ctrl_psi_1q_diag_inplace(result, A, ctrl, i, shift, n);
+    apply_ctrl_psi_1q_diag_inplace(result, A, ctrl, i, shift, d, n);
 
     return result;
 }
@@ -196,7 +207,7 @@ apply_ctrl_psi_1q_diag(const Eigen::MatrixBase<Derived1>& state,
  * and \a j of the multi-partite state vector \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (4 x 1 vector of diagonal elements)
+ * @param A Eigen expression (d^2 x 1 vector of diagonal elements)
  * @param ctrl Vector of control qudit indices
  * @param i Target subsystem index
  * @param j Target subsystem index
@@ -219,6 +230,7 @@ apply_ctrl_psi_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 
     [[maybe_unused]] const idx dimA = d * d; // d^2 since k = 2
     const idx ctrl_size = static_cast<idx>(ctrl.size());
+    assert(n >= 2 && ctrl_size <= n - 2);
     const idx spectator_count = n - 2 - ctrl_size;
 
     // Total number of iterations for spectator configurations
@@ -241,10 +253,13 @@ apply_ctrl_psi_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     assert(static_cast<idx>(state.size()) == D && "State size mismatch");
 
     std::set<idx> target_set{i, j};
+    std::set<idx> ctrl_set;
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         assert(c < n && target_set.find(c) == target_set.end() &&
                "Control/Target overlap");
+        assert(ctrl_set.insert(c).second &&
+               "Control qudit indices must be distinct");
         assert(shift[c_idx] < d && "Shift must be less than d");
     }
 #endif
@@ -334,12 +349,13 @@ apply_ctrl_psi_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
  * and \a j of the multi-partite state vector \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (4 x 1 vector of diagonal elements)
+ * @param A Eigen expression (d^2 x 1 vector of diagonal elements)
  * @param ctrl Vector of control qudit indices
  * @param i Target subsystem index
  * @param j Target subsystem index
  * @param shift Vector of control shifts added to each control qudit value
  * modulo d (e.g., shifts the activating control configuration)
+ * @param d Subsystem dimensions
  * @param n Number of qudits
  * @return Controlled gate \a A applied to the qudits \a i and \a j of \a state
  */
@@ -348,12 +364,12 @@ template <typename Derived1, typename Derived2>
 apply_ctrl_psi_2q_diag(const Eigen::MatrixBase<Derived1>& state,
                        const Eigen::MatrixBase<Derived2>& A,
                        const std::vector<idx>& ctrl, idx i, idx j,
-                       const std::vector<idx>& shift, idx n) {
+                       const std::vector<idx>& shift, idx d, idx n) {
     // Functional deep copy
     expr_t<Derived1> result = state;
 
     // Apply transformation in-place on the copy
-    apply_ctrl_psi_2q_diag_inplace(result, A, ctrl, i, j, shift, n);
+    apply_ctrl_psi_2q_diag_inplace(result, A, ctrl, i, j, shift, d, n);
 
     return result;
 }
@@ -387,8 +403,9 @@ template <typename Derived1, typename Derived2>
         d_pow[i] = d_pow[i - 1] * d;
     }
 
-    const idx dimA = d_pow[k]; // d^k
     const idx ctrl_size = static_cast<idx>(ctrl.size());
+    assert(k <= n && ctrl_size <= n - k);
+    const idx dimA = d_pow[k]; // d^k
     const idx spectator_count = n - k - ctrl_size;
 
     // Total number of iterations for spectator configurations
@@ -420,10 +437,13 @@ template <typename Derived1, typename Derived2>
     }
 
     std::set<idx> target_set(target.begin(), target.end());
+    std::set<idx> ctrl_set;
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         assert(c < n && target_set.find(c) == target_set.end() &&
                "Control/Target overlap");
+        assert(ctrl_set.insert(c).second &&
+               "Control qudit indices must be distinct");
         assert(shift[c_idx] < d && "Shift must be less than d");
     }
 #endif
@@ -449,9 +469,6 @@ template <typename Derived1, typename Derived2>
     for (idx i = 0; i < ctrl_size; ++i) {
         ctrl_dim *= d;
     }
-
-    // ... [Keep the initial setup, validations, and spectator calculations the
-    // same] ...
 
     // Outer loop splits across all spectator and control combinations
 #ifdef QPP_ENABLE_OPENMP
@@ -526,11 +543,12 @@ template <typename Derived1, typename Derived2>
  * target of the multi-partite state vector \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (2^k x 1 vector of diagonal elements)
+ * @param A Eigen expression (d^k x 1 vector of diagonal elements)
  * @param ctrl Vector of control qudit indices
  * @param target Subsystem indexes where the gate \a A is applied
  * @param shift Vector of control shifts added to each control qudit value
  * modulo d (e.g., shifts the activating control configuration)
+ * @param d Subsystem dimensions
  * @param n Number of qudits
  * @return Controlled gate \a A applied to the part \a target of \a state
  */
@@ -538,12 +556,13 @@ template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1> apply_ctrl_psi_kq_diag(
     const Eigen::MatrixBase<Derived1>& state,
     const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-    const std::vector<idx>& target, const std::vector<idx>& shift, idx n) {
+    const std::vector<idx>& target, const std::vector<idx>& shift, idx d,
+    idx n) {
     // Functional deep copy
     expr_t<Derived1> result = state;
 
     // Delegate to in-place implementation
-    apply_ctrl_psi_kq_diag_inplace(result, A, ctrl, target, shift, n);
+    apply_ctrl_psi_kq_diag_inplace(result, A, ctrl, target, shift, d, n);
 
     return result;
 }
@@ -553,7 +572,7 @@ template <typename Derived1, typename Derived2>
  * the multi-partite density matrix \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (2 x 1 vector of diagonal elements)
+ * @param A Eigen expression (d x 1 vector of diagonal elements)
  * @param ctrl Vector of control qudit indices
  * @param i Target subsystem index
  * @param shift Vector of control shifts added to each control qudit value
@@ -575,6 +594,7 @@ apply_ctrl_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
     }
 
     const idx ctrl_size = static_cast<idx>(ctrl.size());
+    assert(n >= 1 && ctrl_size <= n - 1);
     const idx spectator_count = n - 1 - ctrl_size; // k = 1
 
     idx spectator_dim = 1;
@@ -600,7 +620,13 @@ apply_ctrl_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
            static_cast<idx>(state.cols()) == D &&
            "State must be a d^n x d^n matrix");
 
+    assert(i < n && "Target qudit index must be less than n");
+    std::set<idx> ctrl_set;
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
+        assert(ctrl[c_idx] < n && ctrl[c_idx] != i &&
+               "Control/Target overlap or invalid control");
+        assert(ctrl_set.insert(ctrl[c_idx]).second &&
+               "Control qudit indices must be distinct");
         assert(shift[c_idx] < d && "Shift must be less than d");
     }
 #endif
@@ -681,13 +707,12 @@ apply_ctrl_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
                     // final_col) *= U * conj(U) The dynamic nested loops over
                     // r_row and r_col are unrolled into flat stride offsets
                     for (idx r_row = 0; r_row < d; ++r_row) {
-                        const std::complex<double> u_row =
-                            A_powers(r_row, c_row);
+                        const auto u_row = A_powers(r_row, c_row);
                         const idx final_row =
                             row_base + (r_row * target_stride);
 
                         for (idx r_col = 0; r_col < d; ++r_col) {
-                            const std::complex<double> u_col_conj =
+                            const auto u_col_conj =
                                 std::conj(A_powers(r_col, c_col));
                             const idx final_col =
                                 col_base + (r_col * target_stride);
@@ -706,11 +731,12 @@ apply_ctrl_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
  * the multi-partite density matrix \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (2 x 1 vector of diagonal elements)
+ * @param A Eigen expression (d x 1 vector of diagonal elements)
  * @param i Target subsystem index
  * @param ctrl Vector of control qudit indices
  * @param shift Vector of control shifts added to each control qudit value
  * modulo d (e.g., shifts the activating control configuration)
+ * @param d Subsystem dimensions
  * @param n Number of qudits
  * @return Controlled gate \a A applied to the qudits \a i of \a state
  */
@@ -719,12 +745,12 @@ template <typename Derived1, typename Derived2>
 apply_ctrl_rho_1q_diag(const Eigen::MatrixBase<Derived1>& state,
                        const Eigen::MatrixBase<Derived2>& A,
                        const std::vector<idx>& ctrl, idx i,
-                       const std::vector<idx>& shift, idx n) {
+                       const std::vector<idx>& shift, idx d, idx n) {
     // Deep copy for functional interface
     expr_t<Derived1> result = state;
 
     // Apply transformation in-place
-    apply_ctrl_rho_1q_diag_inplace(result, A, ctrl, i, shift, n);
+    apply_ctrl_rho_1q_diag_inplace(result, A, ctrl, i, shift, d, n);
 
     return result;
 }
@@ -734,7 +760,7 @@ apply_ctrl_rho_1q_diag(const Eigen::MatrixBase<Derived1>& state,
  * and \a j of the multi-partite density matrix \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (4 x 1 vector of diagonal elements)
+ * @param A Eigen expression (d^2 x 1 vector of diagonal elements)
  * @param ctrl Vector of control qudit indices
  * @param i Target subsystem index
  * @param j Target subsystem index
@@ -757,6 +783,7 @@ apply_ctrl_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 
     const idx dimA = d * d; // d^2 since k = 2
     const idx ctrl_size = static_cast<idx>(ctrl.size());
+    assert(n >= 2 && ctrl_size <= n - 2);
     const idx spectator_count = n - 2 - ctrl_size;
 
     idx spectator_dim = 1;
@@ -785,10 +812,13 @@ apply_ctrl_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
            "State must be a d^n x d^n matrix");
 
     std::set<idx> target_set{i, j};
+    std::set<idx> ctrl_set;
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         assert(c < n && target_set.find(c) == target_set.end() &&
                "Control/Target overlap");
+        assert(ctrl_set.insert(c).second &&
+               "Control qudit indices must be distinct");
         assert(shift[c_idx] < d && "Shift must be less than d");
     }
 #endif
@@ -877,8 +907,7 @@ apply_ctrl_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 
                             const idx final_row =
                                 row_base + offset_row_i + (v_row_j * stride_j);
-                            const std::complex<double> u_row =
-                                A_powers(r_row, c_row);
+                            const auto u_row = A_powers(r_row, c_row);
 
                             idx r_col = 0;
                             for (idx v_col_i = 0; v_col_i < d; ++v_col_i) {
@@ -888,7 +917,7 @@ apply_ctrl_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
                                     const idx final_col = col_base +
                                                           offset_col_i +
                                                           (v_col_j * stride_j);
-                                    const std::complex<double> u_col_conj =
+                                    const auto u_col_conj =
                                         std::conj(A_powers(r_col, c_col));
 
                                     state(final_row, final_col) *=
@@ -910,12 +939,13 @@ apply_ctrl_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
  * and \a j of the multi-partite density matrix \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (4 x 1 vector of diagonal elements)
+ * @param A Eigen expression (d^2 x 1 vector of diagonal elements)
  * @param i Target subsystem index
  * @param j Target subsystem index
  * @param ctrl Vector of control qudit indices
  * @param shift Vector of control shifts added to each control qudit value
  * modulo d (e.g., shifts the activating control configuration)
+ * @param d Subsystem dimensions
  * @param n Number of qudits
  * @return Controlled gate \a A applied to the qudits \a i and \a j of \a state
  */
@@ -924,12 +954,12 @@ template <typename Derived1, typename Derived2>
 apply_ctrl_rho_2q_diag(const Eigen::MatrixBase<Derived1>& state,
                        const Eigen::MatrixBase<Derived2>& A,
                        const std::vector<idx>& ctrl, idx i, idx j,
-                       const std::vector<idx>& shift, idx n) {
+                       const std::vector<idx>& shift, idx d, idx n) {
     // Deep copy for the functional return
     expr_t<Derived1> result = state.derived();
 
     // Delegate to the in-place version
-    apply_ctrl_rho_2q_diag_inplace(result, A, ctrl, i, j, shift, n);
+    apply_ctrl_rho_2q_diag_inplace(result, A, ctrl, i, j, shift, d, n);
 
     return result;
 }
@@ -962,8 +992,9 @@ template <typename Derived1, typename Derived2>
         d_pow[i] = d_pow[i - 1] * d;
     }
 
-    const idx dimA = d_pow[k]; // d^k
     const idx ctrl_size = static_cast<idx>(ctrl.size());
+    assert(k <= n && ctrl_size <= n - k);
+    const idx dimA = d_pow[k]; // d^k
     const idx spectator_count = n - k - ctrl_size;
 
     idx spectator_dim = 1;
@@ -993,10 +1024,15 @@ template <typename Derived1, typename Derived2>
            "State must be a d^n x d^n matrix");
 
     std::set<idx> target_set(target.begin(), target.end());
+    assert(target_set.size() == target.size() &&
+           "Target qudit indices must be distinct");
+    std::set<idx> ctrl_set;
     for (idx c_idx = 0; c_idx < ctrl_size; ++c_idx) {
         const idx c = ctrl[c_idx];
         assert(c < n && target_set.find(c) == target_set.end() &&
                "Control/Target overlap");
+        assert(ctrl_set.insert(c).second &&
+               "Control qudit indices must be distinct");
         assert(shift[c_idx] < d && "Shift must be less than d");
     }
 #endif
@@ -1089,13 +1125,12 @@ template <typename Derived1, typename Derived2>
 
                     // 3. Apply the scaling: state(i, j) *= U(i) * conj(U(j))
                     for (idx r_row = 0; r_row < dimA; ++r_row) {
-                        const std::complex<double> u_row =
-                            A_powers(r_row, c_row);
+                        const auto u_row = A_powers(r_row, c_row);
                         const idx final_row =
                             row_base + target_displacements[r_row];
 
                         for (idx r_col = 0; r_col < dimA; ++r_col) {
-                            const std::complex<double> u_col_conj =
+                            const auto u_col_conj =
                                 std::conj(A_powers(r_col, c_col));
                             const idx final_col =
                                 col_base + target_displacements[r_col];
@@ -1114,11 +1149,12 @@ template <typename Derived1, typename Derived2>
  * target of the multi-partite density matrix \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (2^k x 1 vector of diagonal elements)
+ * @param A Eigen expression (d^k x 1 vector of diagonal elements)
  * @param target Subsystem indexes where the gate \a A is applied
  * @param ctrl Vector of control qudit indices
  * @param shift Vector of control shifts added to each control qudit value
  * modulo d (e.g., shifts the activating control configuration)
+ * @param d Subsystem dimensions
  * @param n Number of qudits
  * @return Controlled gate \a A applied to the part \a target of \a state
  */
@@ -1126,12 +1162,13 @@ template <typename Derived1, typename Derived2>
 [[qpp::critical, qpp::parallel]] expr_t<Derived1> apply_ctrl_rho_kq_diag(
     const Eigen::MatrixBase<Derived1>& state,
     const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-    const std::vector<idx>& target, const std::vector<idx>& shift, idx n) {
+    const std::vector<idx>& target, const std::vector<idx>& shift, idx d,
+    idx n) {
     // Functional deep copy
     expr_t<Derived1> result = state.derived();
 
     // Delegate to in-place implementation
-    apply_ctrl_rho_kq_diag_inplace(result, A, ctrl, target, shift, n);
+    apply_ctrl_rho_kq_diag_inplace(result, A, ctrl, target, shift, d, n);
 
     return result;
 }

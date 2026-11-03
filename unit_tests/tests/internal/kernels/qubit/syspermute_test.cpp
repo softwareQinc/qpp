@@ -115,7 +115,7 @@ void expect_same(const Eigen::MatrixBase<Derived1>& actual,
 
 } // namespace
 
-TEST(qpp_syspermute_psi_kq, IdentityPermutation) {
+TEST(qpp_qubit_syspermute_psi_kq, IdentityPermutation) {
     for (idx n : {idx{1}, idx{2}, idx{4}}) {
         const ket original = make_state(n);
         std::vector<idx> perm;
@@ -128,7 +128,7 @@ TEST(qpp_syspermute_psi_kq, IdentityPermutation) {
     }
 }
 
-TEST(qpp_syspermute_psi_kq, TwoQubitSwap) {
+TEST(qpp_qubit_syspermute_psi_kq, TwoQubitSwap) {
     ket original(4);
     original << 1, 2, 3, 4;
     ket expected(4);
@@ -138,7 +138,7 @@ TEST(qpp_syspermute_psi_kq, TwoQubitSwap) {
     expect_same(actual, expected);
 }
 
-TEST(qpp_syspermute_psi_kq, ThreeQubitAdjacentSwap) {
+TEST(qpp_qubit_syspermute_psi_kq, ThreeQubitAdjacentSwap) {
     // perm={0,2,1} maps |001> to |010> in big-endian order.
     ket original = ket::Zero(8);
     original(1) = 1;
@@ -149,7 +149,7 @@ TEST(qpp_syspermute_psi_kq, ThreeQubitAdjacentSwap) {
     expect_same(actual, expected);
 }
 
-TEST(qpp_syspermute_psi_kq, ArbitraryThreeAndFourQubitPermutations) {
+TEST(qpp_qubit_syspermute_psi_kq, ArbitraryThreeAndFourQubitPermutations) {
     for (idx n : {idx{3}, idx{4}}) {
         const ket original = make_state(n);
         std::vector<std::vector<idx>> permutations;
@@ -171,7 +171,7 @@ TEST(qpp_syspermute_psi_kq, ArbitraryThreeAndFourQubitPermutations) {
     }
 }
 
-TEST(qpp_syspermute_psi_kq, PermutationAndInverseRestoreState) {
+TEST(qpp_qubit_syspermute_psi_kq, PermutationAndInverseRestoreState) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<idx> perm{3, 0, 4, 1, 2};
@@ -183,7 +183,7 @@ TEST(qpp_syspermute_psi_kq, PermutationAndInverseRestoreState) {
     expect_same(once, reference_psi(original, perm, n));
 }
 
-TEST(qpp_syspermute_psi_kq, InputIsNotModified) {
+TEST(qpp_qubit_syspermute_psi_kq, InputIsNotModified) {
     const idx n = 4;
     ket original = make_state(n);
     const ket before = original;
@@ -194,7 +194,7 @@ TEST(qpp_syspermute_psi_kq, InputIsNotModified) {
     expect_same(original, before);
 }
 
-TEST(qpp_syspermute_psi_kq, ZeroQubitSystem) {
+TEST(qpp_qubit_syspermute_psi_kq, ZeroQubitSystem) {
     ket scalar(1);
     scalar(0) = cplx{1.5, -0.5};
     const ket actual =
@@ -202,7 +202,7 @@ TEST(qpp_syspermute_psi_kq, ZeroQubitSystem) {
     expect_same(actual, scalar);
 }
 
-TEST(qpp_syspermute_rho_kq, IdentityPermutation) {
+TEST(qpp_qubit_syspermute_rho_kq, IdentityPermutation) {
     for (idx n : {idx{1}, idx{2}, idx{4}}) {
         const cmat original = make_general_matrix(n);
         std::vector<idx> perm;
@@ -215,7 +215,7 @@ TEST(qpp_syspermute_rho_kq, IdentityPermutation) {
     }
 }
 
-TEST(qpp_syspermute_rho_kq, TwoQubitSwapKnownMatrix) {
+TEST(qpp_qubit_syspermute_rho_kq, TwoQubitSwapKnownMatrix) {
     cmat original(4, 4);
     original << 1, 2, 3, 4,
                 5, 6, 7, 8,
@@ -231,7 +231,7 @@ TEST(qpp_syspermute_rho_kq, TwoQubitSwapKnownMatrix) {
     expect_same(actual, expected);
 }
 
-TEST(qpp_syspermute_rho_kq, ThreeQubitAdjacentSwap) {
+TEST(qpp_qubit_syspermute_rho_kq, ThreeQubitAdjacentSwap) {
     cmat original = cmat::Zero(8, 8);
     original(1, 6) = cplx{0.7, 0.2};
     const cmat actual = internal::kernels::qubit::syspermute_rho_kq(
@@ -242,7 +242,7 @@ TEST(qpp_syspermute_rho_kq, ThreeQubitAdjacentSwap) {
     expect_same(actual, expected);
 }
 
-TEST(qpp_syspermute_rho_kq, MixedStateArbitraryPermutations) {
+TEST(qpp_qubit_syspermute_rho_kq, MixedStateArbitraryPermutations) {
     const idx n = 5;
     const cmat original = make_density(n);
     const cmat before = original;
@@ -260,7 +260,7 @@ TEST(qpp_syspermute_rho_kq, MixedStateArbitraryPermutations) {
     }
 }
 
-TEST(qpp_syspermute_rho_kq, GeneralNonHermitianMatrix) {
+TEST(qpp_qubit_syspermute_rho_kq, GeneralNonHermitianMatrix) {
     const idx n = 4;
     const cmat original = make_general_matrix(n);
     const std::vector<std::vector<idx>> permutations{
@@ -273,7 +273,7 @@ TEST(qpp_syspermute_rho_kq, GeneralNonHermitianMatrix) {
     }
 }
 
-TEST(qpp_syspermute_rho_kq, RowMajorMatrixInput) {
+TEST(qpp_qubit_syspermute_rho_kq, RowMajorMatrixInput) {
     const idx n = 3;
     const cmat original = make_general_matrix(n);
     const Eigen::Matrix<cplx, Eigen::Dynamic, Eigen::Dynamic,
@@ -286,7 +286,7 @@ TEST(qpp_syspermute_rho_kq, RowMajorMatrixInput) {
     expect_same(actual, reference_rho(original, perm, n));
 }
 
-TEST(qpp_syspermute_rho_kq, NoncontiguousBlockExpression) {
+TEST(qpp_qubit_syspermute_rho_kq, NoncontiguousBlockExpression) {
     const idx n = 2;
     const cmat original = make_general_matrix(n);
     cmat padded = cmat::Zero(6, 6);
@@ -298,7 +298,7 @@ TEST(qpp_syspermute_rho_kq, NoncontiguousBlockExpression) {
     expect_same(actual, reference_rho(original, perm, n));
 }
 
-TEST(qpp_syspermute_rho_kq, PermutationAndInverseRestoreMatrix) {
+TEST(qpp_qubit_syspermute_rho_kq, PermutationAndInverseRestoreMatrix) {
     const idx n = 4;
     const cmat original = make_general_matrix(n);
     const std::vector<idx> perm{2, 0, 3, 1};
@@ -310,7 +310,7 @@ TEST(qpp_syspermute_rho_kq, PermutationAndInverseRestoreMatrix) {
     expect_same(once, reference_rho(original, perm, n));
 }
 
-TEST(qpp_syspermute_rho_kq, PureStateConsistency) {
+TEST(qpp_qubit_syspermute_rho_kq, PureStateConsistency) {
     const idx n = 5;
     const ket psi = make_state(n);
     const cmat rho = psi * psi.adjoint();
@@ -324,7 +324,7 @@ TEST(qpp_syspermute_rho_kq, PureStateConsistency) {
     expect_same(permuted_rho, reference_rho(rho, perm, n));
 }
 
-TEST(qpp_syspermute_rho_kq, ZeroQubitSystem) {
+TEST(qpp_qubit_syspermute_rho_kq, ZeroQubitSystem) {
     cmat scalar(1, 1);
     scalar(0, 0) = cplx{0.7, -0.2};
     const cmat actual =

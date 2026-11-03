@@ -96,7 +96,7 @@ void expect_same(const Eigen::MatrixBase<Derived1>& actual,
 
 } // namespace
 
-TEST(qpp_ptranspose_psi_kq, EmptyTargetReturnsPureDensityMatrix) {
+TEST(qpp_qubit_ptranspose_psi_kq, EmptyTargetReturnsPureDensityMatrix) {
     for (idx n : {idx{1}, idx{2}, idx{4}}) {
         const ket psi = make_state(n);
         const cmat actual =
@@ -106,7 +106,7 @@ TEST(qpp_ptranspose_psi_kq, EmptyTargetReturnsPureDensityMatrix) {
     }
 }
 
-TEST(qpp_ptranspose_psi_kq, FullTargetReturnsOrdinaryTranspose) {
+TEST(qpp_qubit_ptranspose_psi_kq, FullTargetReturnsOrdinaryTranspose) {
     for (idx n : {idx{1}, idx{2}, idx{4}}) {
         const ket psi = make_state(n);
         const cmat rho = psi * psi.adjoint();
@@ -120,7 +120,7 @@ TEST(qpp_ptranspose_psi_kq, FullTargetReturnsOrdinaryTranspose) {
     }
 }
 
-TEST(qpp_ptranspose_psi_kq, BellStatePartialTranspose) {
+TEST(qpp_qubit_ptranspose_psi_kq, BellStatePartialTranspose) {
     ket psi = ket::Zero(4);
     psi(0) = 1.0 / std::sqrt(2.0);
     psi(3) = 1.0 / std::sqrt(2.0);
@@ -138,7 +138,7 @@ TEST(qpp_ptranspose_psi_kq, BellStatePartialTranspose) {
     }
 }
 
-TEST(qpp_ptranspose_psi_kq, ComplexBellStatePreservesPhase) {
+TEST(qpp_qubit_ptranspose_psi_kq, ComplexBellStatePreservesPhase) {
     ket psi = ket::Zero(4);
     psi(0) = 1.0 / std::sqrt(2.0);
     psi(3) = cplx{0, 1.0 / std::sqrt(2.0)};
@@ -152,7 +152,7 @@ TEST(qpp_ptranspose_psi_kq, ComplexBellStatePreservesPhase) {
     EXPECT_NEAR(std::abs(actual(2, 1) - cplx{0, 0.5}), 0.0, tolerance);
 }
 
-TEST(qpp_ptranspose_psi_kq, ArbitrarySubsetsAndTargetOrders) {
+TEST(qpp_qubit_ptranspose_psi_kq, ArbitrarySubsetsAndTargetOrders) {
     const idx n = 5;
     const ket psi = make_state(n);
     const ket before = psi;
@@ -171,7 +171,7 @@ TEST(qpp_ptranspose_psi_kq, ArbitrarySubsetsAndTargetOrders) {
     }
 }
 
-TEST(qpp_ptranspose_psi_kq, ProductStatePartialTranspose) {
+TEST(qpp_qubit_ptranspose_psi_kq, ProductStatePartialTranspose) {
     // |0> tensor (|0>+i|1>)/sqrt(2), transpose only the second qubit.
     ket psi = ket::Zero(4);
     psi(0) = 1.0 / std::sqrt(2.0);
@@ -182,7 +182,7 @@ TEST(qpp_ptranspose_psi_kq, ProductStatePartialTranspose) {
     expect_same(actual, reference_ptranspose(rho, {1}, 2));
 }
 
-TEST(qpp_ptranspose_rho_kq, EmptyTargetReturnsInput) {
+TEST(qpp_qubit_ptranspose_rho_kq, EmptyTargetReturnsInput) {
     for (idx n : {idx{1}, idx{2}, idx{4}}) {
         const cmat rho = make_general_matrix(n);
         const cmat actual =
@@ -191,7 +191,7 @@ TEST(qpp_ptranspose_rho_kq, EmptyTargetReturnsInput) {
     }
 }
 
-TEST(qpp_ptranspose_rho_kq, FullTargetReturnsOrdinaryTranspose) {
+TEST(qpp_qubit_ptranspose_rho_kq, FullTargetReturnsOrdinaryTranspose) {
     for (idx n : {idx{1}, idx{2}, idx{4}}) {
         const cmat rho = make_general_matrix(n);
         std::vector<idx> target;
@@ -204,7 +204,7 @@ TEST(qpp_ptranspose_rho_kq, FullTargetReturnsOrdinaryTranspose) {
     }
 }
 
-TEST(qpp_ptranspose_rho_kq, BellStateHasNegativeEigenvalue) {
+TEST(qpp_qubit_ptranspose_rho_kq, BellStateHasNegativeEigenvalue) {
     ket psi = ket::Zero(4);
     psi(0) = 1.0 / std::sqrt(2.0);
     psi(3) = 1.0 / std::sqrt(2.0);
@@ -222,7 +222,7 @@ TEST(qpp_ptranspose_rho_kq, BellStateHasNegativeEigenvalue) {
     EXPECT_NEAR(solver.eigenvalues()(3), 0.5, tolerance);
 }
 
-TEST(qpp_ptranspose_rho_kq, MixedStateArbitrarySubsets) {
+TEST(qpp_qubit_ptranspose_rho_kq, MixedStateArbitrarySubsets) {
     const idx n = 5;
     const cmat rho = make_density(n);
     const cmat before = rho;
@@ -240,7 +240,7 @@ TEST(qpp_ptranspose_rho_kq, MixedStateArbitrarySubsets) {
     }
 }
 
-TEST(qpp_ptranspose_rho_kq, GeneralNonHermitianMatrix) {
+TEST(qpp_qubit_ptranspose_rho_kq, GeneralNonHermitianMatrix) {
     const idx n = 4;
     const cmat original = make_general_matrix(n);
     for (const auto& target :
@@ -252,7 +252,7 @@ TEST(qpp_ptranspose_rho_kq, GeneralNonHermitianMatrix) {
     }
 }
 
-TEST(qpp_ptranspose_rho_kq, ApplyingTwiceRestoresOriginal) {
+TEST(qpp_qubit_ptranspose_rho_kq, ApplyingTwiceRestoresOriginal) {
     const idx n = 4;
     const cmat original = make_general_matrix(n);
     for (const auto& target :
@@ -266,7 +266,7 @@ TEST(qpp_ptranspose_rho_kq, ApplyingTwiceRestoresOriginal) {
     }
 }
 
-TEST(qpp_ptranspose_rho_kq, DisjointPartialTransposesCommute) {
+TEST(qpp_qubit_ptranspose_rho_kq, DisjointPartialTransposesCommute) {
     const idx n = 4;
     const cmat rho = make_general_matrix(n);
     const cmat t0 =
@@ -284,7 +284,7 @@ TEST(qpp_ptranspose_rho_kq, DisjointPartialTransposesCommute) {
     expect_same(first, reference_ptranspose(rho, {0, 2}, n));
 }
 
-TEST(qpp_ptranspose_rho_kq, Linearity) {
+TEST(qpp_qubit_ptranspose_rho_kq, Linearity) {
     const idx n = 3;
     const cmat A = make_density(n);
     const cmat B = make_general_matrix(n);
@@ -302,7 +302,7 @@ TEST(qpp_ptranspose_rho_kq, Linearity) {
     expect_same(actual, reference_ptranspose(combination, target, n));
 }
 
-TEST(qpp_ptranspose_rho_kq, PureStateConsistency) {
+TEST(qpp_qubit_ptranspose_rho_kq, PureStateConsistency) {
     const idx n = 5;
     const ket psi = make_state(n);
     const cmat rho = psi * psi.adjoint();

@@ -139,7 +139,7 @@ void expect_rho(const cmat& actual, const cmat& original, const ket& A,
 
 } // namespace
 
-TEST(qpp_apply_ctrl_psi_1q_diag_inplace, ControlPatternsAndDiagonalShapes) {
+TEST(qpp_qubit_apply_ctrl_psi_1q_diag_inplace, ControlPatternsAndDiagonalShapes) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<Case> cases{
@@ -166,7 +166,7 @@ TEST(qpp_apply_ctrl_psi_1q_diag_inplace, ControlPatternsAndDiagonalShapes) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_1q_diag_inplace, OptimizedPhasePathsLargeState) {
+TEST(qpp_qubit_apply_ctrl_psi_1q_diag_inplace, OptimizedPhasePathsLargeState) {
     const idx n = 16;
     const ket original = make_state(n);
     const ket A = diagonal_gate(2, 1);
@@ -184,7 +184,7 @@ TEST(qpp_apply_ctrl_psi_1q_diag_inplace, OptimizedPhasePathsLargeState) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_1q_diag_inplace, PositiveAndNegativeControlBasis) {
+TEST(qpp_qubit_apply_ctrl_psi_1q_diag_inplace, PositiveAndNegativeControlBasis) {
     const ket A = diagonal_gate(2, 1);
     for (idx shift : {idx{0}, idx{1}}) {
         const Case test_case{{0}, {1}, {shift}};
@@ -197,7 +197,7 @@ TEST(qpp_apply_ctrl_psi_1q_diag_inplace, PositiveAndNegativeControlBasis) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_1q_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_psi_1q_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     ket original = make_state(n);
     const ket before = original;
@@ -218,7 +218,7 @@ TEST(qpp_apply_ctrl_psi_1q_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_2q_diag_inplace, ReversedTargetsAndControls) {
+TEST(qpp_qubit_apply_ctrl_psi_2q_diag_inplace, ReversedTargetsAndControls) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<Case> cases{
@@ -242,7 +242,7 @@ TEST(qpp_apply_ctrl_psi_2q_diag_inplace, ReversedTargetsAndControls) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_2q_diag_inplace, NoControlsTwoQubits) {
+TEST(qpp_qubit_apply_ctrl_psi_2q_diag_inplace, NoControlsTwoQubits) {
     const ket original = make_state(2);
     const Case test_case{{}, {1, 0}, {}};
     const ket A = diagonal_gate(4, 2);
@@ -252,7 +252,7 @@ TEST(qpp_apply_ctrl_psi_2q_diag_inplace, NoControlsTwoQubits) {
     expect_psi(actual, original, A, test_case, 2);
 }
 
-TEST(qpp_apply_ctrl_psi_2q_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_psi_2q_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     ket original = make_state(n);
     const ket before = original;
@@ -271,7 +271,7 @@ TEST(qpp_apply_ctrl_psi_2q_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_kq_diag_inplace, ZeroToFiveTargets) {
+TEST(qpp_qubit_apply_ctrl_psi_kq_diag_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<Case> cases{
@@ -300,7 +300,7 @@ TEST(qpp_apply_ctrl_psi_kq_diag_inplace, ZeroToFiveTargets) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_kq_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_psi_kq_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     ket original = make_state(n);
     const ket before = original;
@@ -322,7 +322,7 @@ TEST(qpp_apply_ctrl_psi_kq_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_1q_diag_inplace, MixedStateControlBranches) {
+TEST(qpp_qubit_apply_ctrl_rho_1q_diag_inplace, MixedStateControlBranches) {
     const idx n = 4;
     const cmat original = make_density(n);
     const std::vector<Case> cases{
@@ -346,7 +346,7 @@ TEST(qpp_apply_ctrl_rho_1q_diag_inplace, MixedStateControlBranches) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_1q_diag_inplace, OffDiagonalCoherence) {
+TEST(qpp_qubit_apply_ctrl_rho_1q_diag_inplace, OffDiagonalCoherence) {
     const idx n = 2;
     ket psi = ket::Zero(4);
     psi(0) = 1.0 / std::sqrt(2.0);
@@ -366,7 +366,7 @@ TEST(qpp_apply_ctrl_rho_1q_diag_inplace, OffDiagonalCoherence) {
                 tolerance);
 }
 
-TEST(qpp_apply_ctrl_rho_1q_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_rho_1q_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     cmat original = make_density(n);
     const cmat before = original;
@@ -386,7 +386,7 @@ TEST(qpp_apply_ctrl_rho_1q_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_2q_diag_inplace, ReversedTargetsAndMixedControls) {
+TEST(qpp_qubit_apply_ctrl_rho_2q_diag_inplace, ReversedTargetsAndMixedControls) {
     const idx n = 5;
     const cmat original = make_density(n);
     const std::vector<Case> cases{
@@ -410,7 +410,7 @@ TEST(qpp_apply_ctrl_rho_2q_diag_inplace, ReversedTargetsAndMixedControls) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_2q_diag_inplace, NoControlsTwoQubits) {
+TEST(qpp_qubit_apply_ctrl_rho_2q_diag_inplace, NoControlsTwoQubits) {
     const cmat original = make_density(2);
     const Case test_case{{}, {1, 0}, {}};
     const ket A = diagonal_gate(4, 2);
@@ -420,7 +420,7 @@ TEST(qpp_apply_ctrl_rho_2q_diag_inplace, NoControlsTwoQubits) {
     expect_rho(actual, original, A, test_case, 2);
 }
 
-TEST(qpp_apply_ctrl_rho_2q_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_rho_2q_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     cmat original = make_density(n);
     const cmat before = original;
@@ -439,7 +439,7 @@ TEST(qpp_apply_ctrl_rho_2q_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_kq_diag_inplace, ZeroToFiveTargets) {
+TEST(qpp_qubit_apply_ctrl_rho_kq_diag_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const cmat original = make_density(n);
     const std::vector<Case> cases{
@@ -467,7 +467,7 @@ TEST(qpp_apply_ctrl_rho_kq_diag_inplace, ZeroToFiveTargets) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_kq_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_rho_kq_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     cmat original = make_density(n);
     const cmat before = original;
@@ -490,7 +490,7 @@ TEST(qpp_apply_ctrl_rho_kq_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_kq_diag, PureStateConsistencyAndTrace) {
+TEST(qpp_qubit_apply_ctrl_rho_kq_diag, PureStateConsistencyAndTrace) {
     const idx n = 5;
     const ket psi = make_state(n);
     const cmat rho = psi * psi.adjoint();

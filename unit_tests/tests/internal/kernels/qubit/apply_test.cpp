@@ -116,7 +116,7 @@ void expect_rho(const cmat& actual, const cmat& original, const cmat& gate,
 
 } // namespace
 
-TEST(qpp_apply_psi_1q_inplace, HadamardFastPath) {
+TEST(qpp_qubit_apply_psi_1q_inplace, HadamardFastPath) {
     for (idx n : {idx{1}, idx{2}, idx{5}}) {
         const ket original = make_state(n);
         for (idx i = 0; i < n; ++i) {
@@ -128,7 +128,7 @@ TEST(qpp_apply_psi_1q_inplace, HadamardFastPath) {
     }
 }
 
-TEST(qpp_apply_psi_1q_inplace, ComplexAndNonunitaryGates) {
+TEST(qpp_qubit_apply_psi_1q_inplace, ComplexAndNonunitaryGates) {
     for (idx n : {idx{1}, idx{4}}) {
         const ket original = make_state(n);
         for (const cmat& gate : {fourier_gate(2), dense_gate(2)}) {
@@ -143,7 +143,7 @@ TEST(qpp_apply_psi_1q_inplace, ComplexAndNonunitaryGates) {
     }
 }
 
-TEST(qpp_apply_psi_1q_inplace, BigEndianBasisState) {
+TEST(qpp_qubit_apply_psi_1q_inplace, BigEndianBasisState) {
     ket state = ket::Zero(8);
     state(0) = 1;
     internal::kernels::qubit::apply_psi_1q_inplace(state, gt.H, 0, 3);
@@ -154,7 +154,7 @@ TEST(qpp_apply_psi_1q_inplace, BigEndianBasisState) {
     expect_same(state, expected);
 }
 
-TEST(qpp_apply_psi_1q_inplace, LargeStateBothPaths) {
+TEST(qpp_qubit_apply_psi_1q_inplace, LargeStateBothPaths) {
     // Exercises the OpenMP threshold (2^16 amplitudes) when OpenMP is enabled.
     const idx n = 16;
     const ket original = make_state(n);
@@ -179,7 +179,7 @@ TEST(qpp_apply_psi_1q_inplace, LargeStateBothPaths) {
     }
 }
 
-TEST(qpp_apply_psi_1q, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_psi_1q, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     ket original = make_state(n);
     const ket before = original;
@@ -192,7 +192,7 @@ TEST(qpp_apply_psi_1q, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_psi_2q_inplace, AllTargetOrdersAndSpectators) {
+TEST(qpp_qubit_apply_psi_2q_inplace, AllTargetOrdersAndSpectators) {
     for (idx n : {idx{2}, idx{5}}) {
         const ket original = make_state(n);
         std::vector<std::vector<idx>> targets;
@@ -214,7 +214,7 @@ TEST(qpp_apply_psi_2q_inplace, AllTargetOrdersAndSpectators) {
     }
 }
 
-TEST(qpp_apply_psi_2q, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_psi_2q, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     ket original = make_state(n);
     const ket before = original;
@@ -228,7 +228,7 @@ TEST(qpp_apply_psi_2q, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_psi_3q_inplace, PermutationsAndSpectators) {
+TEST(qpp_qubit_apply_psi_3q_inplace, PermutationsAndSpectators) {
     for (idx n : {idx{3}, idx{5}}) {
         const ket original = make_state(n);
         std::vector<std::vector<idx>> targets;
@@ -250,7 +250,7 @@ TEST(qpp_apply_psi_3q_inplace, PermutationsAndSpectators) {
     }
 }
 
-TEST(qpp_apply_psi_3q, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_psi_3q, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     ket original = make_state(n);
     const ket before = original;
@@ -263,7 +263,7 @@ TEST(qpp_apply_psi_3q, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_psi_kq_inplace, ZeroToFourTargets) {
+TEST(qpp_qubit_apply_psi_kq_inplace, ZeroToFourTargets) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<std::vector<idx>> targets{
@@ -280,7 +280,7 @@ TEST(qpp_apply_psi_kq_inplace, ZeroToFourTargets) {
     }
 }
 
-TEST(qpp_apply_psi_kq_inplace, AllQubitsInArbitraryOrder) {
+TEST(qpp_qubit_apply_psi_kq_inplace, AllQubitsInArbitraryOrder) {
     const idx n = 4;
     const ket original = make_state(n);
     const std::vector<idx> targets{2, 0, 3, 1};
@@ -290,7 +290,7 @@ TEST(qpp_apply_psi_kq_inplace, AllQubitsInArbitraryOrder) {
     expect_psi(actual, original, gate, targets, n);
 }
 
-TEST(qpp_apply_psi_kq, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_psi_kq, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     ket original = make_state(n);
     const ket before = original;
@@ -304,7 +304,7 @@ TEST(qpp_apply_psi_kq, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_rho_1q_inplace, MixedStateAllPositions) {
+TEST(qpp_qubit_apply_rho_1q_inplace, MixedStateAllPositions) {
     for (idx n : {idx{1}, idx{4}}) {
         const cmat original = make_density(n);
         for (idx i = 0; i < n; ++i) {
@@ -320,7 +320,7 @@ TEST(qpp_apply_rho_1q_inplace, MixedStateAllPositions) {
     }
 }
 
-TEST(qpp_apply_rho_1q, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_rho_1q, ReturnsResultWithoutChangingInput) {
     const idx n = 3;
     cmat original = make_density(n);
     const cmat before = original;
@@ -333,7 +333,7 @@ TEST(qpp_apply_rho_1q, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_rho_2q_inplace, BothOrdersAndSpectators) {
+TEST(qpp_qubit_apply_rho_2q_inplace, BothOrdersAndSpectators) {
     for (idx n : {idx{2}, idx{4}}) {
         const cmat original = make_density(n);
         std::vector<std::vector<idx>> targets;
@@ -355,7 +355,7 @@ TEST(qpp_apply_rho_2q_inplace, BothOrdersAndSpectators) {
     }
 }
 
-TEST(qpp_apply_rho_2q, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_rho_2q, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     cmat original = make_density(n);
     const cmat before = original;
@@ -368,7 +368,7 @@ TEST(qpp_apply_rho_2q, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_rho_3q_inplace, PermutationsAndSpectators) {
+TEST(qpp_qubit_apply_rho_3q_inplace, PermutationsAndSpectators) {
     for (idx n : {idx{3}, idx{4}}) {
         const cmat original = make_density(n);
         std::vector<std::vector<idx>> targets;
@@ -390,7 +390,7 @@ TEST(qpp_apply_rho_3q_inplace, PermutationsAndSpectators) {
     }
 }
 
-TEST(qpp_apply_rho_3q, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_rho_3q, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     cmat original = make_density(n);
     const cmat before = original;
@@ -403,7 +403,7 @@ TEST(qpp_apply_rho_3q, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_rho_kq_inplace, ZeroToFourTargets) {
+TEST(qpp_qubit_apply_rho_kq_inplace, ZeroToFourTargets) {
     const idx n = 4;
     const cmat original = make_density(n);
     const std::vector<std::vector<idx>> targets{
@@ -419,7 +419,7 @@ TEST(qpp_apply_rho_kq_inplace, ZeroToFourTargets) {
     }
 }
 
-TEST(qpp_apply_rho_kq, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_rho_kq, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     cmat original = make_density(n);
     const cmat before = original;
@@ -433,7 +433,7 @@ TEST(qpp_apply_rho_kq, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_rho_kq, PureStateConsistency) {
+TEST(qpp_qubit_apply_rho_kq, PureStateConsistency) {
     const idx n = 4;
     const ket psi = make_state(n);
     const cmat rho = psi * psi.adjoint();

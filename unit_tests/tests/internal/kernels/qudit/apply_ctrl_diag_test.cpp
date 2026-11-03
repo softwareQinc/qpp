@@ -1,264 +1,311 @@
-#include <cmath>
-#include <vector>
-
 #include "gtest/gtest.h"
 
 #include "qpp/qpp.hpp"
 
 #include "qpp/internal/kernels/qudit/apply_ctrl_diag.hpp"
 
+#include <cmath>
+#include <complex>
+#include <sstream>
+#include <vector>
+
 using namespace qpp;
 
-TEST(QuditCtrlDiagTest, InPlaceApplication) {
-    using namespace qpp::internal::kernels::qudit;
+namespace {
 
-    // 1. Setup system parameters
-    const idx d = 3; // Qudit dimension (qutrits)
-    const idx n = 3; // Total number of qudits
+constexpr double tolerance = 1e-11;
 
-    // Total state vector dimension: 3^3 = 27
-    idx D = 1;
-    for (idx i = 0; i < n; ++i) {
-        D *= d;
+struct TestCase {
+    idx d;
+    idx n;
+    std::vector<idx> ctrl;
+    std::vector<idx> target;
+    std::vector<idx> shift;
+};
+
+idx power(idx d, idx n) {
+    idx result = 1;
+    for (idx k = 0; k < n; ++k) {
+        result *= d;
+    }
+    return result;
+}
+
+idx digit(idx basis, idx subsystem, idx d, idx n) {
+    return (basis / power(d, n - 1 - subsystem)) % d;
+}
+
+// Oracle: for each computational-basis state |x>, the diagonal entry is
+// A[target(x)] raised to the collective shifted control value.
+// This deliberately does not reconstruct spectator/control base offsets.
+cplx diagonal_factor(idx basis, const dyn_col_vect<cplx>& A,
+                     const TestCase& tc) {
+    idx control_value = 0;
+    for (idx j = 0; j < tc.ctrl.size(); ++j) {
+        control_value *= tc.d;
+        control_value +=
+            (digit(basis, tc.ctrl[j], tc.d, tc.n) + tc.shift[j]) % tc.d;
     }
 
-    // Initialize state vector to a uniform superposition
-    // |psi> = 1/sqrt(27) * sum_{i=0}^{26} |i>
-    ket state = ket::Constant(D, 1.0 / std::sqrt(static_cast<double>(D)));
-    ket original_state = state; // Keep a backup to verify changes
+    idx target_value = 0;
+    for (idx q : tc.target) {
+        target_value = target_value * tc.d + digit(basis, q, tc.d, tc.n);
+    }
+    return std::pow(A(target_value), control_value);
+}
 
-    // 2. Define the gate topology
-    // Let qudit 0 and qudit 1 be controls, qudit 2 be the target
-    std::vector<idx> ctrl = {0, 1};
-    std::vector<idx> target = {2};
+dyn_col_vect<cplx> make_diagonal(const TestCase& tc) {
+    const idx dim = power(tc.d, tc.target.size());
+    dyn_col_vect<cplx> A(dim);
+    for (idx i = 0; i < dim; ++i) {
+        A(i) = cplx{0.67 + 0.09 * static_cast<double>(i % 5),
+                    -0.22 + 0.05 * static_cast<double>((i * 3) % 7)};
+    }
+    return A;
+}
 
-    // Shifts: shift[0] = 1, shift[1] = 0
-    // Effective control value equation: c = ((q0 + 1) % 3) * 3 + ((q1 + 0) % 3)
-    std::vector<idx> shift = {1, 0};
+ket make_state(idx dim) {
+    ket result(dim);
+    for (idx i = 0; i < dim; ++i) {
+        result(i) = cplx{static_cast<double>((i * 7 + 3) % 17) - 8.,
+                         static_cast<double>((i * 5 + 1) % 13) - 6.};
+    }
+    result.normalize();
+    return result;
+}
 
-    // 3. Define the diagonal gate A for the target (dimension d^k = 3^1 = 3)
-    // Let's use phase shifts: A = diag(1, e^{i*pi/4}, e^{i*pi/2})
-    using namespace std::complex_literals;
-    Eigen::VectorXcd A(d);
-    A(0) = 1.0;
-    A(1) = std::exp(1i * pi / 4.0);
-    A(2) = std::exp(1i * pi / 2.0);
+cmat make_density(const ket& psi) {
+    const idx dim = static_cast<idx>(psi.size());
+    const ket other = make_state(dim).conjugate();
+    return 0.3 * (psi * psi.adjoint()) +
+           0.7 * (other * other.adjoint());
+}
 
-    // 4. Call your function
-    apply_ctrl_psi_kq_diag_inplace(state, A, ctrl, target, shift, d, n);
+ket reference_psi(const ket& original, const dyn_col_vect<cplx>& A,
+                  const TestCase& tc) {
+    ket expected = original;
+    for (idx basis = 0; basis < static_cast<idx>(original.size()); ++basis) {
+        expected(basis) *= diagonal_factor(basis, A, tc);
+    }
+    return expected;
+}
 
-    // 5. Verify the results analytically
-    // We iterate over every basis state |q0 q1 q2>
-    for (idx q0 = 0; q0 < d; ++q0) {
-        for (idx q1 = 0; q1 < d; ++q1) {
-            for (idx q2 = 0; q2 < d; ++q2) {
+cmat reference_rho(const cmat& original, const dyn_col_vect<cplx>& A,
+                  const TestCase& tc) {
+    cmat expected = original;
+    for (idx row = 0; row < static_cast<idx>(original.rows()); ++row) {
+        const cplx row_factor = diagonal_factor(row, A, tc);
+        for (idx col = 0; col < static_cast<idx>(original.cols()); ++col) {
+            expected(row, col) *=
+                row_factor * std::conj(diagonal_factor(col, A, tc));
+        }
+    }
+    return expected;
+}
 
-                // Map the multi-qudit coordinates to the global vector index
-                // Index structure: q0 * 3^2 + q1 * 3^1 + q2 * 3^0
-                idx global_idx = (q0 * 9) + (q1 * 3) + q2;
-
-                // Calculate the modular shift impact on the control power 'c'
-                idx eff_q0 = (q0 + shift[0]) % d;
-                idx eff_q1 = (q1 + shift[1]) % d;
-                idx joint_ctrl_power = (eff_q0 * d) + eff_q1;
-
-                // Target state element phase modification: A(q2)^c
-                std::complex<double> expected_phase =
-                    std::pow(A(q2), joint_ctrl_power);
-                std::complex<double> expected_value =
-                    original_state(global_idx) * expected_phase;
-
-                // Test with a floating-point tolerance threshold
-                EXPECT_NEAR(state(global_idx).real(), expected_value.real(),
-                            1e-12)
-                    << "Mismatch at basis state |" << q0 << q1 << q2
-                    << "> (Real part)";
-                EXPECT_NEAR(state(global_idx).imag(), expected_value.imag(),
-                            1e-12)
-                    << "Mismatch at basis state |" << q0 << q1 << q2
-                    << "> (Imag part)";
-            }
+template <typename Actual, typename Expected>
+void expect_same(const Eigen::MatrixBase<Actual>& actual,
+                 const Eigen::MatrixBase<Expected>& expected) {
+    ASSERT_EQ(actual.rows(), expected.rows());
+    ASSERT_EQ(actual.cols(), expected.cols());
+    for (Eigen::Index i = 0; i < actual.rows(); ++i) {
+        for (Eigen::Index j = 0; j < actual.cols(); ++j) {
+            EXPECT_LE(std::abs(actual(i, j) - expected(i, j)), tolerance)
+                << "Mismatch at (" << i << ", " << j << ")";
         }
     }
 }
 
-// Concrete sanity check on a specific shifted configuration
-TEST(QuditCtrlDiagTest, SpecificStateVerification) {
-    using namespace qpp::internal::kernels::qudit;
+std::vector<TestCase> cases_1q() {
+    return {
+        {2, 1, {}, {0}, {}},
+        {2, 3, {0}, {2}, {0}},
+        {2, 3, {2}, {0}, {1}},
+        {3, 2, {0}, {1}, {0}},
+        {3, 3, {2, 0}, {1}, {1, 2}},
+        {3, 4, {3, 1}, {0}, {2, 1}},
+        {3, 4, {0, 2, 3}, {1}, {1, 0, 2}},
+    };
+}
 
-    const idx d = 3;
-    const idx n = 3;
-    ket state = ket::Zero(27);
+std::vector<TestCase> cases_2q() {
+    return {
+        {2, 2, {}, {0, 1}, {}},
+        {2, 3, {0}, {1, 2}, {0}},
+        {2, 4, {3}, {2, 0}, {1}},
+        {3, 2, {}, {1, 0}, {}},
+        {3, 3, {2}, {1, 0}, {2}},
+        {3, 4, {0, 2}, {3, 1}, {1, 2}},
+    };
+}
 
-    // Set a pure computational basis state |0 2 1>
-    // index = 0 * 9 + 2 * 3 + 1 * 1 = 7
-    state(7) = 1.0;
+std::vector<TestCase> cases_kq() {
+    return {
+        {2, 2, {0}, {1}, {1}},
+        {2, 4, {0}, {3, 1, 2}, {0}},
+        {2, 4, {3, 0}, {2, 1}, {1, 0}},
+        {3, 3, {2}, {0, 1}, {1}},
+        {3, 4, {1}, {3, 0, 2}, {2}},
+        {3, 4, {}, {2, 0, 3, 1}, {}},
+    };
+}
 
-    std::vector<idx> ctrl = {0, 1};
-    std::vector<idx> target = {2};
-    std::vector<idx> shift = {1, 0}; // Shifts: q0 shifts by +1, q1 shifts by +0
+std::string describe(const TestCase& tc) {
+    std::ostringstream out;
+    out << "d=" << tc.d << " n=" << tc.n << " ctrl={";
+    for (idx q : tc.ctrl) out << q << ',';
+    out << "} target={";
+    for (idx q : tc.target) out << q << ',';
+    out << "} shift={";
+    for (idx q : tc.shift) out << q << ',';
+    out << '}';
+    return out.str();
+}
 
-    using namespace std::complex_literals;
-    Eigen::VectorXcd A(d);
-    A(0) = 1.0;
-    A(1) = 2.5; // Using real scale factors for easier debugging trace visual
-                // inspection
-    A(2) = 4.0;
+} // namespace
 
-    apply_ctrl_psi_kq_diag_inplace(state, A, ctrl, target, shift, d, n);
-
-    // Analytical expectation:
-    // q0 = 0 -> effective q0 = (0 + 1) % 3 = 1
-    // q1 = 2 -> effective q1 = (2 + 0) % 3 = 2
-    // Joint control power 'c' = 1 * 3 + 2 = 5
-    // Target state value: q2 = 1 -> A(1) = 2.5
-    // Expected scaling factor = (2.5)^5 = 97.65625
-
-    double expected_amplitude = std::pow(2.5, 5); // 97.65625
-    EXPECT_NEAR(state(7).real(), expected_amplitude, 1e-9);
-    EXPECT_NEAR(state(7).imag(), 0.0, 1e-9);
-
-    // Verify all other elements remain untouched (zero)
-    for (idx i = 0; i < 27; ++i) {
-        if (i != 7) {
-            EXPECT_DOUBLE_EQ(state(i).real(), 0.0);
-            EXPECT_DOUBLE_EQ(state(i).imag(), 0.0);
-        }
+TEST(qpp_qudit_apply_ctrl_psi_1q_diag_inplace, ControlPatternsAndShifts) {
+    for (const auto& tc : cases_1q()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const ket original = make_state(power(tc.d, tc.n));
+        ket actual = original;
+        internal::kernels::qudit::apply_ctrl_psi_1q_diag_inplace(
+            actual, A, tc.ctrl, tc.target[0], tc.shift, tc.d, tc.n);
+        expect_same(actual, reference_psi(original, A, tc));
     }
 }
 
-TEST(QuditCtrlDensityMatrixTest, SuperpositionDensityMatrix) {
-    using namespace qpp::internal::kernels::qudit;
-
-    // 1. Setup system parameters
-    const idx d = 3; // Qudit dimension (qutrits)
-    const idx n = 3; // Total number of qudits
-
-    // Total state vector dimension: 3^3 = 27 -> Density matrix: 27 x 27
-    idx D = 1;
-    for (idx i = 0; i < n; ++i) {
-        D *= d;
-    }
-
-    // Initialize state vector to a uniform superposition: |psi> = 1/sqrt(27) *
-    // sum |i>
-    ket psi = ket::Constant(D, 1.0 / std::sqrt(static_cast<double>(D)));
-
-    // Construct the initial density matrix: rho = |psi><psi|
-    cmat rho = psi * psi.adjoint();
-    cmat original_rho = rho; // Backup for verification
-
-    // 2. Define the gate topology
-    std::vector<idx> ctrl = {0, 1}; // Qudit 0 is MSD, Qudit 1 is LSD
-    std::vector<idx> target = {2};
-    std::vector<idx> shift = {1, 0}; // Shift Q0 by +1, Q1 by +0
-
-    // 3. Define the diagonal gate A for the target
-    using namespace std::complex_literals;
-    Eigen::VectorXcd A(d);
-    A(0) = 1.0;
-    A(1) = std::exp(1i * pi / 4.0);
-    A(2) = std::exp(1i * pi / 2.0);
-
-    // 4. Call your density matrix function
-    apply_ctrl_rho_kq_diag_inplace(rho, A, ctrl, target, shift, d, n);
-
-    // 5. Verify row-by-row and column-by-column
-    for (idx r0 = 0; r0 < d; ++r0) {
-        for (idx r1 = 0; r1 < d; ++r1) {
-            for (idx r2 = 0; r2 < d; ++r2) {
-                idx row_idx = (r0 * 9) + (r1 * 3) + r2;
-
-                // Calculate control power for the row
-                idx eff_r0 = (r0 + shift[0]) % d;
-                idx eff_r1 = (r1 + shift[1]) % d;
-                idx row_ctrl_power = (eff_r0 * d) + eff_r1;
-                std::complex<double> row_phase =
-                    std::pow(A(r2), row_ctrl_power);
-
-                for (idx c0 = 0; c0 < d; ++c0) {
-                    for (idx c1 = 0; c1 < d; ++c1) {
-                        for (idx c2 = 0; c2 < d; ++c2) {
-                            idx col_idx = (c0 * 9) + (c1 * 3) + c2;
-
-                            // Calculate control power for the column
-                            idx eff_c0 = (c0 + shift[0]) % d;
-                            idx eff_c1 = (c1 + shift[1]) % d;
-                            idx col_ctrl_power = (eff_c0 * d) + eff_c1;
-                            // Column gets complex conjugate (U^\dagger)
-                            std::complex<double> col_phase_conj =
-                                std::conj(std::pow(A(c2), col_ctrl_power));
-
-                            // Analytical expectation: rho(i,j) * U_row *
-                            // U_col^*
-                            std::complex<double> expected_value =
-                                original_rho(row_idx, col_idx) * row_phase *
-                                col_phase_conj;
-
-                            EXPECT_NEAR(rho(row_idx, col_idx).real(),
-                                        expected_value.real(), 1e-12)
-                                << "Mismatch at rho(|" << r0 << r1 << r2 << "><"
-                                << c0 << c1 << c2 << "|) [Real]";
-                            EXPECT_NEAR(rho(row_idx, col_idx).imag(),
-                                        expected_value.imag(), 1e-12)
-                                << "Mismatch at rho(|" << r0 << r1 << r2 << "><"
-                                << c0 << c1 << c2 << "|) [Imag]";
-                        }
-                    }
-                }
-            }
-        }
+TEST(qpp_qudit_apply_ctrl_psi_2q_diag_inplace, TargetOrderAndShifts) {
+    for (const auto& tc : cases_2q()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const ket original = make_state(power(tc.d, tc.n));
+        ket actual = original;
+        internal::kernels::qudit::apply_ctrl_psi_2q_diag_inplace(
+            actual, A, tc.ctrl, tc.target[0], tc.target[1], tc.shift,
+            tc.d, tc.n);
+        expect_same(actual, reference_psi(original, A, tc));
     }
 }
 
-TEST(QuditCtrlDensityMatrixTest, MixedStateSpecificElementVerification) {
-    using namespace qpp::internal::kernels::qudit;
+TEST(qpp_qudit_apply_ctrl_psi_kq_diag_inplace, MultipleTargetsAndControls) {
+    for (const auto& tc : cases_kq()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const ket original = make_state(power(tc.d, tc.n));
+        ket actual = original;
+        internal::kernels::qudit::apply_ctrl_psi_kq_diag_inplace(
+            actual, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
+        expect_same(actual, reference_psi(original, A, tc));
+    }
+}
 
-    const idx d = 3;
-    const idx n = 3;
-    cmat rho = cmat::Zero(27, 27);
+TEST(qpp_qudit_apply_ctrl_rho_1q_diag_inplace, ControlPatternsAndShifts) {
+    for (const auto& tc : cases_1q()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const cmat original = make_density(make_state(power(tc.d, tc.n)));
+        cmat actual = original;
+        internal::kernels::qudit::apply_ctrl_rho_1q_diag_inplace(
+            actual, A, tc.ctrl, tc.target[0], tc.shift, tc.d, tc.n);
+        expect_same(actual, reference_rho(original, A, tc));
+    }
+}
 
-    // Construct a specific off-diagonal mixed element coherence block
-    // Row state: |0 2 1> -> index = 0*9 + 2*3 + 1 = 7
-    // Col state: |1 0 2> -> index = 1*9 + 0*3 + 2 = 11
-    idx r_idx = 7;
-    idx c_idx = 11;
-    rho(r_idx, c_idx) = std::complex<double>(0.5, 0.5);
+TEST(qpp_qudit_apply_ctrl_rho_2q_diag_inplace, TargetOrderAndShifts) {
+    for (const auto& tc : cases_2q()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const cmat original = make_density(make_state(power(tc.d, tc.n)));
+        cmat actual = original;
+        internal::kernels::qudit::apply_ctrl_rho_2q_diag_inplace(
+            actual, A, tc.ctrl, tc.target[0], tc.target[1], tc.shift,
+            tc.d, tc.n);
+        expect_same(actual, reference_rho(original, A, tc));
+    }
+}
 
-    std::vector<idx> ctrl = {0, 1};
-    std::vector<idx> target = {2};
-    std::vector<idx> shift = {1, 0};
+TEST(qpp_qudit_apply_ctrl_rho_kq_diag_inplace, MultipleTargetsAndControls) {
+    for (const auto& tc : cases_kq()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const cmat original = make_density(make_state(power(tc.d, tc.n)));
+        cmat actual = original;
+        internal::kernels::qudit::apply_ctrl_rho_kq_diag_inplace(
+            actual, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
+        expect_same(actual, reference_rho(original, A, tc));
+    }
+}
 
-    using namespace std::complex_literals;
-    Eigen::VectorXcd A(d);
-    A(0) = 1.0;
-    A(1) = 2.0; // Scaled elements for transparent power validation
-    A(2) = 3.0;
+TEST(qpp_qudit_apply_ctrl_psi_diag, FunctionalWrappers) {
+    for (const auto& tc : cases_1q()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const ket original = make_state(power(tc.d, tc.n));
+        const auto actual = internal::kernels::qudit::apply_ctrl_psi_1q_diag(
+            original, A, tc.ctrl, tc.target[0], tc.shift, tc.d, tc.n);
+        expect_same(actual, reference_psi(original, A, tc));
+    }
+    for (const auto& tc : cases_2q()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const ket original = make_state(power(tc.d, tc.n));
+        const auto actual = internal::kernels::qudit::apply_ctrl_psi_2q_diag(
+            original, A, tc.ctrl, tc.target[0], tc.target[1], tc.shift,
+            tc.d, tc.n);
+        expect_same(actual, reference_psi(original, A, tc));
+    }
+    for (const auto& tc : cases_kq()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const ket original = make_state(power(tc.d, tc.n));
+        const auto actual = internal::kernels::qudit::apply_ctrl_psi_kq_diag(
+            original, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
+        expect_same(actual, reference_psi(original, A, tc));
+    }
+}
 
-    apply_ctrl_rho_kq_diag_inplace(rho, A, ctrl, target, shift, d, n);
+TEST(qpp_qudit_apply_ctrl_rho_diag, FunctionalWrappers) {
+    for (const auto& tc : cases_1q()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const cmat original = make_density(make_state(power(tc.d, tc.n)));
+        const auto actual = internal::kernels::qudit::apply_ctrl_rho_1q_diag(
+            original, A, tc.ctrl, tc.target[0], tc.shift, tc.d, tc.n);
+        expect_same(actual, reference_rho(original, A, tc));
+    }
+    for (const auto& tc : cases_2q()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const cmat original = make_density(make_state(power(tc.d, tc.n)));
+        const auto actual = internal::kernels::qudit::apply_ctrl_rho_2q_diag(
+            original, A, tc.ctrl, tc.target[0], tc.target[1], tc.shift,
+            tc.d, tc.n);
+        expect_same(actual, reference_rho(original, A, tc));
+    }
+    for (const auto& tc : cases_kq()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const cmat original = make_density(make_state(power(tc.d, tc.n)));
+        const auto actual = internal::kernels::qudit::apply_ctrl_rho_kq_diag(
+            original, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
+        expect_same(actual, reference_rho(original, A, tc));
+    }
+}
 
-    // Analytical expectation trace math:
-    // Row element |0 2 1>:
-    //   r0 = 0 -> eff_r0 = (0 + 1) % 3 = 1
-    //   r1 = 2 -> eff_r1 = (2 + 0) % 3 = 2
-    //   row_power = 1 * 3 + 2 = 5
-    //   r2 = 1 -> A(1) = 2.0 -> U_row = 2^5 = 32.0
-    //
-    // Col element |1 0 2>:
-    //   c0 = 1 -> eff_c0 = (1 + 1) % 3 = 2
-    //   c1 = 0 -> eff_c1 = (0 + 0) % 3 = 0
-    //   col_power = 2 * 3 + 0 = 6
-    //   c2 = 2 -> A(2) = 3.0 -> U_col = 3^6 = 729.0
-    //
-    // Total Scaling Factor = U_row * conj(U_col) = 32.0 * 729.0 = 23328.0
-
-    std::complex<double> expected_val =
-        std::complex<double>(0.5, 0.5) * 23328.0;
-
-    EXPECT_NEAR(rho(r_idx, c_idx).real(), expected_val.real(), 1e-9);
-    EXPECT_NEAR(rho(r_idx, c_idx).imag(), expected_val.imag(), 1e-9);
-
-    // Ensure unaffected components remain completely zero
-    rho(r_idx, c_idx) = 0.0;
-    EXPECT_TRUE(rho.isZero(1e-15));
+TEST(qpp_qudit_apply_ctrl_diag, PureAndDensityMatrixConsistency) {
+    for (const auto& tc : cases_kq()) {
+        SCOPED_TRACE(describe(tc));
+        const auto A = make_diagonal(tc);
+        const ket psi = make_state(power(tc.d, tc.n));
+        const cmat rho = psi * psi.adjoint();
+        ket psi_actual = psi;
+        cmat rho_actual = rho;
+        internal::kernels::qudit::apply_ctrl_psi_kq_diag_inplace(
+            psi_actual, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
+        internal::kernels::qudit::apply_ctrl_rho_kq_diag_inplace(
+            rho_actual, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
+        expect_same(rho_actual, psi_actual * psi_actual.adjoint());
+    }
 }

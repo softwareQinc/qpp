@@ -114,7 +114,7 @@ void expect_rho(const cmat& actual, const cmat& original, const ket& A,
 
 } // namespace
 
-TEST(qpp_apply_psi_1q_diag_inplace, AllPositionsAndDiagonalShapes) {
+TEST(qpp_qubit_apply_psi_1q_diag_inplace, AllPositionsAndDiagonalShapes) {
     for (idx n : {idx{1}, idx{2}, idx{5}}) {
         const ket original = make_state(n);
         for (idx i = 0; i < n; ++i) {
@@ -130,7 +130,7 @@ TEST(qpp_apply_psi_1q_diag_inplace, AllPositionsAndDiagonalShapes) {
     }
 }
 
-TEST(qpp_apply_psi_1q_diag_inplace, BigEndianBasisState) {
+TEST(qpp_qubit_apply_psi_1q_diag_inplace, BigEndianBasisState) {
     ket actual = ket::Zero(8);
     actual(0) = 1;
     actual(4) = 1;
@@ -144,7 +144,7 @@ TEST(qpp_apply_psi_1q_diag_inplace, BigEndianBasisState) {
     expect_same(actual, expected);
 }
 
-TEST(qpp_apply_psi_1q_diag_inplace, LargeStateOpenMPThreshold) {
+TEST(qpp_qubit_apply_psi_1q_diag_inplace, LargeStateOpenMPThreshold) {
     const idx n = 16;
     const ket original = make_state(n);
     const ket A = diagonal_gate(2, 2);
@@ -155,7 +155,7 @@ TEST(qpp_apply_psi_1q_diag_inplace, LargeStateOpenMPThreshold) {
     }
 }
 
-TEST(qpp_apply_psi_1q_diag_inplace, RowVectorDiagonal) {
+TEST(qpp_qubit_apply_psi_1q_diag_inplace, RowVectorDiagonal) {
     const idx n = 3;
     const ket original = make_state(n);
     const ket A = diagonal_gate(2, 2);
@@ -165,7 +165,7 @@ TEST(qpp_apply_psi_1q_diag_inplace, RowVectorDiagonal) {
     expect_psi(actual, original, A, {1}, n);
 }
 
-TEST(qpp_apply_psi_1q_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_psi_1q_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     ket original = make_state(n);
     const ket before = original;
@@ -178,7 +178,7 @@ TEST(qpp_apply_psi_1q_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_psi_2q_diag_inplace, TargetOrdersAndSpectators) {
+TEST(qpp_qubit_apply_psi_2q_diag_inplace, TargetOrdersAndSpectators) {
     for (idx n : {idx{2}, idx{5}}) {
         const ket original = make_state(n);
         std::vector<std::vector<idx>> targets;
@@ -200,7 +200,7 @@ TEST(qpp_apply_psi_2q_diag_inplace, TargetOrdersAndSpectators) {
     }
 }
 
-TEST(qpp_apply_psi_2q_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_psi_2q_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     ket original = make_state(n);
     const ket before = original;
@@ -214,7 +214,7 @@ TEST(qpp_apply_psi_2q_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_psi_3q_diag_inplace, PermutationsAndSpectators) {
+TEST(qpp_qubit_apply_psi_3q_diag_inplace, PermutationsAndSpectators) {
     for (idx n : {idx{3}, idx{5}}) {
         const ket original = make_state(n);
         std::vector<std::vector<idx>> targets;
@@ -237,7 +237,7 @@ TEST(qpp_apply_psi_3q_diag_inplace, PermutationsAndSpectators) {
     }
 }
 
-TEST(qpp_apply_psi_3q_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_psi_3q_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     ket original = make_state(n);
     const ket before = original;
@@ -251,7 +251,7 @@ TEST(qpp_apply_psi_3q_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_psi_kq_diag_inplace, ZeroToFiveTargets) {
+TEST(qpp_qubit_apply_psi_kq_diag_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<std::vector<idx>> targets{
@@ -270,7 +270,7 @@ TEST(qpp_apply_psi_kq_diag_inplace, ZeroToFiveTargets) {
     }
 }
 
-TEST(qpp_apply_psi_kq_diag_inplace, ZeroQubits) {
+TEST(qpp_qubit_apply_psi_kq_diag_inplace, ZeroQubits) {
     const ket original = make_state(0);
     const ket A = diagonal_gate(1, 2);
     ket actual = original;
@@ -278,7 +278,7 @@ TEST(qpp_apply_psi_kq_diag_inplace, ZeroQubits) {
     expect_psi(actual, original, A, {}, 0);
 }
 
-TEST(qpp_apply_psi_kq_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_psi_kq_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     ket original = make_state(n);
     const ket before = original;
@@ -294,7 +294,7 @@ TEST(qpp_apply_psi_kq_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_rho_1q_diag_inplace, MixedStateAllPositions) {
+TEST(qpp_qubit_apply_rho_1q_diag_inplace, MixedStateAllPositions) {
     for (idx n : {idx{1}, idx{4}}) {
         const cmat original = make_density(n);
         for (idx i = 0; i < n; ++i) {
@@ -310,7 +310,7 @@ TEST(qpp_apply_rho_1q_diag_inplace, MixedStateAllPositions) {
     }
 }
 
-TEST(qpp_apply_rho_1q_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_rho_1q_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     cmat original = make_density(n);
     const cmat before = original;
@@ -323,7 +323,7 @@ TEST(qpp_apply_rho_1q_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_rho_2q_diag_inplace, MixedStateTargetOrders) {
+TEST(qpp_qubit_apply_rho_2q_diag_inplace, MixedStateTargetOrders) {
     for (idx n : {idx{2}, idx{5}}) {
         const cmat original = make_density(n);
         std::vector<std::vector<idx>> targets;
@@ -345,7 +345,7 @@ TEST(qpp_apply_rho_2q_diag_inplace, MixedStateTargetOrders) {
     }
 }
 
-TEST(qpp_apply_rho_2q_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_rho_2q_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     cmat original = make_density(n);
     const cmat before = original;
@@ -359,7 +359,7 @@ TEST(qpp_apply_rho_2q_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_rho_3q_diag_inplace, MixedStatePermutations) {
+TEST(qpp_qubit_apply_rho_3q_diag_inplace, MixedStatePermutations) {
     for (idx n : {idx{3}, idx{5}}) {
         const cmat original = make_density(n);
         std::vector<std::vector<idx>> targets;
@@ -381,7 +381,7 @@ TEST(qpp_apply_rho_3q_diag_inplace, MixedStatePermutations) {
     }
 }
 
-TEST(qpp_apply_rho_3q_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_rho_3q_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     cmat original = make_density(n);
     const cmat before = original;
@@ -395,7 +395,7 @@ TEST(qpp_apply_rho_3q_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_rho_kq_diag_inplace, ZeroToFiveTargets) {
+TEST(qpp_qubit_apply_rho_kq_diag_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const cmat original = make_density(n);
     const std::vector<std::vector<idx>> targets{
@@ -414,7 +414,7 @@ TEST(qpp_apply_rho_kq_diag_inplace, ZeroToFiveTargets) {
     }
 }
 
-TEST(qpp_apply_rho_kq_diag_inplace, RowVectorDiagonal) {
+TEST(qpp_qubit_apply_rho_kq_diag_inplace, RowVectorDiagonal) {
     const idx n = 4;
     const cmat original = make_density(n);
     const std::vector<idx> targets{3, 0, 2};
@@ -426,7 +426,7 @@ TEST(qpp_apply_rho_kq_diag_inplace, RowVectorDiagonal) {
     expect_rho(actual, original, A, targets, n);
 }
 
-TEST(qpp_apply_rho_kq_diag, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_rho_kq_diag, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     cmat original = make_density(n);
     const cmat before = original;
@@ -442,7 +442,7 @@ TEST(qpp_apply_rho_kq_diag, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_rho_kq_diag, PureStateConsistencyAndUnitaryTrace) {
+TEST(qpp_qubit_apply_rho_kq_diag, PureStateConsistencyAndUnitaryTrace) {
     const idx n = 5;
     const ket psi = make_state(n);
     const cmat rho = psi * psi.adjoint();

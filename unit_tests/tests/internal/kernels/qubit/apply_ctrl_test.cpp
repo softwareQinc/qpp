@@ -154,7 +154,7 @@ void expect_rho(const cmat& actual, const cmat& original, const cmat& gate,
 
 } // namespace
 
-TEST(qpp_apply_ctrl_psi_1q_inplace, PositiveNegativeAndMixedControls) {
+TEST(qpp_qubit_apply_ctrl_psi_1q_inplace, PositiveNegativeAndMixedControls) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<Case> cases{
@@ -175,7 +175,7 @@ TEST(qpp_apply_ctrl_psi_1q_inplace, PositiveNegativeAndMixedControls) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_1q_inplace, PositiveControlCreatesBellState) {
+TEST(qpp_qubit_apply_ctrl_psi_1q_inplace, PositiveControlCreatesBellState) {
     ket state = ket::Zero(4);
     state(0) = 1.0 / std::sqrt(2.0);
     state(2) = 1.0 / std::sqrt(2.0);
@@ -189,7 +189,7 @@ TEST(qpp_apply_ctrl_psi_1q_inplace, PositiveControlCreatesBellState) {
     expect_same(state, expected);
 }
 
-TEST(qpp_apply_ctrl_psi_1q_inplace, NegativeControlOnZeroBranch) {
+TEST(qpp_qubit_apply_ctrl_psi_1q_inplace, NegativeControlOnZeroBranch) {
     ket state = ket::Zero(4);
     state(0) = 1;
     internal::kernels::qubit::apply_ctrl_psi_1q_inplace(state, gt.X, {0}, 1,
@@ -200,7 +200,7 @@ TEST(qpp_apply_ctrl_psi_1q_inplace, NegativeControlOnZeroBranch) {
     expect_same(state, expected);
 }
 
-TEST(qpp_apply_ctrl_psi_1q_inplace, NoControlsOnSingleQubit) {
+TEST(qpp_qubit_apply_ctrl_psi_1q_inplace, NoControlsOnSingleQubit) {
     const ket original = make_state(1);
     const Case test_case{{}, {0}, {}};
     const cmat gate = dense_gate(2);
@@ -210,7 +210,7 @@ TEST(qpp_apply_ctrl_psi_1q_inplace, NoControlsOnSingleQubit) {
     expect_psi(actual, original, gate, test_case, 1);
 }
 
-TEST(qpp_apply_ctrl_psi_1q, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_psi_1q, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     ket original = make_state(n);
     const ket before = original;
@@ -227,7 +227,7 @@ TEST(qpp_apply_ctrl_psi_1q, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_2q_inplace, ReversedTargetsAndMixedControls) {
+TEST(qpp_qubit_apply_ctrl_psi_2q_inplace, ReversedTargetsAndMixedControls) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<Case> cases{
@@ -248,7 +248,7 @@ TEST(qpp_apply_ctrl_psi_2q_inplace, ReversedTargetsAndMixedControls) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_2q_inplace, NoControlsOnTwoQubits) {
+TEST(qpp_qubit_apply_ctrl_psi_2q_inplace, NoControlsOnTwoQubits) {
     const idx n = 2;
     const ket original = make_state(n);
     const Case test_case{{}, {1, 0}, {}};
@@ -259,7 +259,7 @@ TEST(qpp_apply_ctrl_psi_2q_inplace, NoControlsOnTwoQubits) {
     expect_psi(actual, original, gate, test_case, n);
 }
 
-TEST(qpp_apply_ctrl_psi_2q, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_psi_2q, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     ket original = make_state(n);
     const ket before = original;
@@ -276,7 +276,7 @@ TEST(qpp_apply_ctrl_psi_2q, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_kq_inplace, ZeroToFiveTargets) {
+TEST(qpp_qubit_apply_ctrl_psi_kq_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<Case> cases{{{}, {}, {}},
@@ -303,7 +303,7 @@ TEST(qpp_apply_ctrl_psi_kq_inplace, ZeroToFiveTargets) {
     }
 }
 
-TEST(qpp_apply_ctrl_psi_kq, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_psi_kq, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     ket original = make_state(n);
     const ket before = original;
@@ -322,7 +322,7 @@ TEST(qpp_apply_ctrl_psi_kq, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_1q_inplace, MixedStateControlBranches) {
+TEST(qpp_qubit_apply_ctrl_rho_1q_inplace, MixedStateControlBranches) {
     const idx n = 4;
     const cmat original = make_density(n);
     const std::vector<Case> cases{{{}, {0}, {}},
@@ -344,7 +344,7 @@ TEST(qpp_apply_ctrl_rho_1q_inplace, MixedStateControlBranches) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_1q_inplace, CoherenceAcrossControlBranches) {
+TEST(qpp_qubit_apply_ctrl_rho_1q_inplace, CoherenceAcrossControlBranches) {
     const idx n = 2;
     ket psi = ket::Zero(4);
     psi(0) = 1.0 / std::sqrt(2.0);
@@ -363,7 +363,7 @@ TEST(qpp_apply_ctrl_rho_1q_inplace, CoherenceAcrossControlBranches) {
     EXPECT_NEAR(std::abs(actual(0, 3)), 0.5, tolerance);
 }
 
-TEST(qpp_apply_ctrl_rho_1q_inplace, NoControlsOnSingleQubit) {
+TEST(qpp_qubit_apply_ctrl_rho_1q_inplace, NoControlsOnSingleQubit) {
     const cmat original = make_density(1);
     const Case test_case{{}, {0}, {}};
     const cmat gate = dense_gate(2);
@@ -373,7 +373,7 @@ TEST(qpp_apply_ctrl_rho_1q_inplace, NoControlsOnSingleQubit) {
     expect_rho(actual, original, gate, test_case, 1);
 }
 
-TEST(qpp_apply_ctrl_rho_1q, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_rho_1q, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     cmat original = make_density(n);
     const cmat before = original;
@@ -390,7 +390,7 @@ TEST(qpp_apply_ctrl_rho_1q, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_2q_inplace, ReversedTargetsAndMixedControls) {
+TEST(qpp_qubit_apply_ctrl_rho_2q_inplace, ReversedTargetsAndMixedControls) {
     const idx n = 5;
     const cmat original = make_density(n);
     const std::vector<Case> cases{
@@ -410,7 +410,7 @@ TEST(qpp_apply_ctrl_rho_2q_inplace, ReversedTargetsAndMixedControls) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_2q_inplace, NoControlsOnTwoQubits) {
+TEST(qpp_qubit_apply_ctrl_rho_2q_inplace, NoControlsOnTwoQubits) {
     const idx n = 2;
     const cmat original = make_density(n);
     const Case test_case{{}, {1, 0}, {}};
@@ -421,7 +421,7 @@ TEST(qpp_apply_ctrl_rho_2q_inplace, NoControlsOnTwoQubits) {
     expect_rho(actual, original, gate, test_case, n);
 }
 
-TEST(qpp_apply_ctrl_rho_2q, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_rho_2q, ReturnsResultWithoutChangingInput) {
     const idx n = 4;
     cmat original = make_density(n);
     const cmat before = original;
@@ -438,7 +438,7 @@ TEST(qpp_apply_ctrl_rho_2q, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_kq_inplace, ZeroToFiveTargets) {
+TEST(qpp_qubit_apply_ctrl_rho_kq_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const cmat original = make_density(n);
     const std::vector<Case> cases{{{}, {}, {}},
@@ -464,7 +464,7 @@ TEST(qpp_apply_ctrl_rho_kq_inplace, ZeroToFiveTargets) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_kq, ReturnsResultWithoutChangingInput) {
+TEST(qpp_qubit_apply_ctrl_rho_kq, ReturnsResultWithoutChangingInput) {
     const idx n = 5;
     cmat original = make_density(n);
     const cmat before = original;
@@ -483,7 +483,7 @@ TEST(qpp_apply_ctrl_rho_kq, ReturnsResultWithoutChangingInput) {
     }
 }
 
-TEST(qpp_apply_ctrl_rho_kq, PureStateConsistencyAndTrace) {
+TEST(qpp_qubit_apply_ctrl_rho_kq, PureStateConsistencyAndTrace) {
     const idx n = 5;
     const ket psi = make_state(n);
     const cmat rho = psi * psi.adjoint();

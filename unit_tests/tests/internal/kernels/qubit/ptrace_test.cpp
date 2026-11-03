@@ -112,7 +112,7 @@ void expect_same(const Eigen::MatrixBase<Derived1>& actual,
 
 } // namespace
 
-TEST(qpp_ptrace_psi_kq, EmptyTraceProducesPureDensityMatrix) {
+TEST(qpp_qubit_ptrace_psi_kq, EmptyTraceProducesPureDensityMatrix) {
     for (idx n : {idx{1}, idx{3}, idx{5}}) {
         const ket psi = make_state(n);
         const cmat actual =
@@ -122,7 +122,7 @@ TEST(qpp_ptrace_psi_kq, EmptyTraceProducesPureDensityMatrix) {
     }
 }
 
-TEST(qpp_ptrace_psi_kq, FullTraceProducesNormSquared) {
+TEST(qpp_qubit_ptrace_psi_kq, FullTraceProducesNormSquared) {
     for (idx n : {idx{1}, idx{2}, idx{4}}) {
         ket psi = make_state(n);
         psi *= cplx{2.0, -0.5};
@@ -139,7 +139,7 @@ TEST(qpp_ptrace_psi_kq, FullTraceProducesNormSquared) {
     }
 }
 
-TEST(qpp_ptrace_psi_kq, BellStateEitherQubit) {
+TEST(qpp_qubit_ptrace_psi_kq, BellStateEitherQubit) {
     ket psi = ket::Zero(4);
     psi(0) = 1.0 / std::sqrt(2.0);
     psi(3) = 1.0 / std::sqrt(2.0);
@@ -152,7 +152,7 @@ TEST(qpp_ptrace_psi_kq, BellStateEitherQubit) {
     }
 }
 
-TEST(qpp_ptrace_psi_kq, GHZStateTwoQubitsTraced) {
+TEST(qpp_qubit_ptrace_psi_kq, GHZStateTwoQubitsTraced) {
     ket psi = ket::Zero(8);
     psi(0) = 1.0 / std::sqrt(2.0);
     psi(7) = 1.0 / std::sqrt(2.0);
@@ -166,7 +166,7 @@ TEST(qpp_ptrace_psi_kq, GHZStateTwoQubitsTraced) {
     }
 }
 
-TEST(qpp_ptrace_psi_kq, ProductStateTracesMiddleQubit) {
+TEST(qpp_qubit_ptrace_psi_kq, ProductStateTracesMiddleQubit) {
     // |0> tensor |+> tensor |1> -> |01><01| after tracing qubit 1.
     ket psi = ket::Zero(8);
     psi(1) = 1.0 / std::sqrt(2.0);
@@ -178,7 +178,7 @@ TEST(qpp_ptrace_psi_kq, ProductStateTracesMiddleQubit) {
     expect_same(actual, expected);
 }
 
-TEST(qpp_ptrace_psi_kq, BruteForceAllTargetConfigurations) {
+TEST(qpp_qubit_ptrace_psi_kq, BruteForceAllTargetConfigurations) {
     const idx n = 5;
     const ket psi = make_state(n);
     const ket before = psi;
@@ -197,7 +197,7 @@ TEST(qpp_ptrace_psi_kq, BruteForceAllTargetConfigurations) {
     }
 }
 
-TEST(qpp_ptrace_psi_kq, TracedTargetOrderDoesNotMatter) {
+TEST(qpp_qubit_ptrace_psi_kq, TracedTargetOrderDoesNotMatter) {
     const idx n = 4;
     const ket psi = make_state(n);
     const cmat first =
@@ -207,7 +207,7 @@ TEST(qpp_ptrace_psi_kq, TracedTargetOrderDoesNotMatter) {
     expect_same(first, second);
 }
 
-TEST(qpp_ptrace_psi_kq, ZeroStateAndZeroQubitSystem) {
+TEST(qpp_qubit_ptrace_psi_kq, ZeroStateAndZeroQubitSystem) {
     const ket zero = ket::Zero(8);
     const cmat actual =
         internal::kernels::qubit::ptrace_psi_kq(zero, {0, 2}, 3);
@@ -222,7 +222,7 @@ TEST(qpp_ptrace_psi_kq, ZeroStateAndZeroQubitSystem) {
     EXPECT_NEAR(scalar_trace(0, 0).imag(), 0.0, tolerance);
 }
 
-TEST(qpp_ptrace_rho_kq, EmptyTraceReturnsOriginalMatrix) {
+TEST(qpp_qubit_ptrace_rho_kq, EmptyTraceReturnsOriginalMatrix) {
     for (idx n : {idx{1}, idx{3}, idx{5}}) {
         const cmat rho = make_density(n);
         const cmat before = rho;
@@ -233,7 +233,7 @@ TEST(qpp_ptrace_rho_kq, EmptyTraceReturnsOriginalMatrix) {
     }
 }
 
-TEST(qpp_ptrace_rho_kq, FullTraceReturnsScalarTrace) {
+TEST(qpp_qubit_ptrace_rho_kq, FullTraceReturnsScalarTrace) {
     for (idx n : {idx{1}, idx{2}, idx{4}}) {
         const cmat rho = make_general_matrix(n);
         std::vector<idx> target;
@@ -248,7 +248,7 @@ TEST(qpp_ptrace_rho_kq, FullTraceReturnsScalarTrace) {
     }
 }
 
-TEST(qpp_ptrace_rho_kq, BellStatePartialTrace) {
+TEST(qpp_qubit_ptrace_rho_kq, BellStatePartialTrace) {
     ket psi = ket::Zero(4);
     psi(0) = 1.0 / std::sqrt(2.0);
     psi(3) = 1.0 / std::sqrt(2.0);
@@ -261,7 +261,7 @@ TEST(qpp_ptrace_rho_kq, BellStatePartialTrace) {
     }
 }
 
-TEST(qpp_ptrace_rho_kq, MixedStateAllTargetConfigurations) {
+TEST(qpp_qubit_ptrace_rho_kq, MixedStateAllTargetConfigurations) {
     const idx n = 5;
     const cmat rho = make_density(n);
     const cmat before = rho;
@@ -280,7 +280,7 @@ TEST(qpp_ptrace_rho_kq, MixedStateAllTargetConfigurations) {
     }
 }
 
-TEST(qpp_ptrace_rho_kq, ArbitraryNonHermitianMatrix) {
+TEST(qpp_qubit_ptrace_rho_kq, ArbitraryNonHermitianMatrix) {
     const idx n = 4;
     const cmat original = make_general_matrix(n);
     for (const auto& target :
@@ -292,7 +292,7 @@ TEST(qpp_ptrace_rho_kq, ArbitraryNonHermitianMatrix) {
     }
 }
 
-TEST(qpp_ptrace_rho_kq, Linearity) {
+TEST(qpp_qubit_ptrace_rho_kq, Linearity) {
     const idx n = 4;
     const cmat rho = make_density(n);
     const cmat M = make_general_matrix(n);
@@ -310,7 +310,7 @@ TEST(qpp_ptrace_rho_kq, Linearity) {
     expect_same(actual, reference_ptrace(combination, target, n));
 }
 
-TEST(qpp_ptrace_rho_kq, TracedTargetOrderDoesNotMatter) {
+TEST(qpp_qubit_ptrace_rho_kq, TracedTargetOrderDoesNotMatter) {
     const idx n = 4;
     const cmat rho = make_density(n);
     const cmat first =
@@ -320,7 +320,7 @@ TEST(qpp_ptrace_rho_kq, TracedTargetOrderDoesNotMatter) {
     expect_same(first, second);
 }
 
-TEST(qpp_ptrace_rho_kq, PureStateConsistency) {
+TEST(qpp_qubit_ptrace_rho_kq, PureStateConsistency) {
     const idx n = 5;
     const ket psi = make_state(n);
     const cmat rho = psi * psi.adjoint();
@@ -335,7 +335,7 @@ TEST(qpp_ptrace_rho_kq, PureStateConsistency) {
     }
 }
 
-TEST(qpp_ptrace_rho_kq, ZeroQubitSystem) {
+TEST(qpp_qubit_ptrace_rho_kq, ZeroQubitSystem) {
     cmat scalar(1, 1);
     scalar(0, 0) = cplx{0.7, -0.2};
     const cmat actual =
