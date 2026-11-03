@@ -42,9 +42,10 @@ int main() {
             0.5 * (energy(theta + (pi / 2)) - energy(theta - (pi / 2)));
 
         if (iteration % 5 == 0) {
-            std::cout << "    iteration = " << std::setw(3) << iteration
-                      << "  energy = " << E << "  theta = " << theta
-                      << std::endl;
+            std::cout << "   iteration = " << std::setw(2) << iteration
+                      << "  energy = " << std::fixed << std::setprecision(10)
+                      << std::setw(13) << E << "  theta = " << std::setw(13)
+                      << theta << '\n';
         }
 
         if (std::abs(gradient) < 1e-10) {

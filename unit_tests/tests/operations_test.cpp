@@ -476,7 +476,7 @@ TEST(qpp_ptranspose, FirstQubitThreeQubits) {
     cmat A(8, 8);
     for (idx i = 0; i < 8; ++i) {
         for (idx j = 0; j < 8; ++j) {
-            A(i, j) = (8 * i) + j + 1;
+            A(i, j) = static_cast<realT>((8 * i) + j + 1);
         }
     }
 

@@ -75,8 +75,8 @@ implemented using [GoogleTest](https://github.com/google/googletest).
 
 ### Building the unit tests
 
-**Quantum++** unit tests are disabled by default. To enable and build the unit
-tests, configure CMake with unit testing enabled
+**Quantum++** unit tests are disabled by default. To enable them, configure
+CMake with unit testing enabled
 
 ```shell
 cmake -B build -DQPP_ENABLE_TESTING=ON
@@ -85,14 +85,43 @@ cmake -B build -DQPP_ENABLE_TESTING=ON
 To build the unit tests, execute
 
 ```shell
-cmake --build build/unit_tests --target unit_tests --parallel 8
+cmake --build build/unit_tests --config Debug --target unit_tests --parallel 8
 ```
 
-Tu run the unit tests, execute
+### Running the unit tests
+
+To run all unit tests on Linux or macOS, execute
 
 ```shell
-ctest --test-dir build
+./build/unit_tests/unit_tests
 ```
+
+On Windows, execute
+
+```shell
+./build/unit_tests/unit_tests.exe
+```
+
+To run a specific test or group of tests, use the Google Test filter
+
+```shell
+./build/unit_tests/unit_tests --gtest_filter='qpp_Gates_*'
+```
+
+To exclude specific tests, use
+
+```shell
+./build/unit_tests/unit_tests --gtest_filter='-qpp_Timer.*'
+```
+
+Alternatively, the tests can be executed using CTest
+
+```shell
+ctest --test-dir build/unit_tests -C Debug --output-on-failure
+```
+
+Note that CTest may be slower than running the Google Test executable directly
+because it can launch a separate process for each registered test.
 
 ---
 
