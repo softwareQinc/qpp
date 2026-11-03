@@ -37,7 +37,7 @@ jobs:
           fi
 
       - name: Configure standalone example
-        run: cmake -S examples/standalone -B examples/standalone/build
+        run: cmake -S examples/standalone -B examples/standalone/build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
 
       - name: Build standalone example
         run: cmake --build examples/standalone/build --config ${{ env.BUILD_TYPE }} --target standalone
