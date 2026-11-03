@@ -768,35 +768,42 @@ bool all_dims_equal(const Container& c, idx d) {
  */
 template <typename T>
 inline std::vector<T> fast_complement(const std::vector<T>& target, idx n) {
-    idx target_size = target.size();
-    assert(target_size <= n);
+    assert(target.size() <= n);
 
-    // Initialize a marker array (equivalent to a bitset) for fast lookup.
-    // std::vector<bool> is highly optimized and space-efficient.
-    std::vector<bool> is_target(n, false);
+    std::vector<T> result;
+    result.reserve(n - target.size());
 
-    // Mark the indices that are present in the target set. O(M) time, where
-    // M is target.size(). This loop is parallelized as there are no write
-    // conflicts.
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for
-#endif // QPP_ENABLE_OPENMP
-    for (idx i = 0; i < target_size; ++i) {
-        idx t = target[i];
-        // Assuming 't' is validated to be between 0 and n-1
-        is_target[t] = true;
-    }
+    constexpr idx bits = std::numeric_limits<std::size_t>::digits;
 
-    std::vector<T> target_bar;
-    target_bar.reserve(n - target_size);
+    if (n <= bits) {
+        std::size_t mask = 0;
 
-    for (idx i = 0; i < n; ++i) {
-        if (!is_target[i]) {
-            target_bar.push_back(i);
+        for (T t : target) {
+            assert(static_cast<idx>(t) < n);
+            mask |= std::size_t{1} << t;
+        }
+
+        for (idx i = 0; i < n; ++i) {
+            if (!(mask & (std::size_t{1} << i))) {
+                result.push_back(static_cast<T>(i));
+            }
+        }
+    } else {
+        std::vector<std::uint8_t> marked(n, 0);
+
+        for (T t : target) {
+            assert(static_cast<idx>(t) < n);
+            marked[t] = 1;
+        }
+
+        for (idx i = 0; i < n; ++i) {
+            if (!marked[i]) {
+                result.push_back(static_cast<T>(i));
+            }
         }
     }
 
-    return target_bar;
+    return result;
 }
 
 } /* namespace internal */

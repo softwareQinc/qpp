@@ -9,7 +9,7 @@ using namespace qpp;
 // Unit testing "qpp/classes/layouts.hpp"
 
 TEST(qpp_Lattice_get_dims, AllTests) {
-    const Lattice lattice({2, 3, 4});
+    const Lattice lattice(2, 3, 4);
     EXPECT_EQ((std::vector<idx>{2, 3, 4}), lattice.get_dims());
 
     const Lattice line(5);
@@ -18,7 +18,7 @@ TEST(qpp_Lattice_get_dims, AllTests) {
 }
 
 TEST(qpp_Lattice_functor, Vector) {
-    const Lattice lattice({2, 3, 4});
+    const Lattice lattice(2, 3, 4);
     EXPECT_EQ(0u, lattice(std::vector<idx>{0, 0, 0}));
     EXPECT_EQ(6u, lattice(std::vector<idx>{0, 1, 2}));
     EXPECT_EQ(23u, lattice(std::vector<idx>{1, 2, 3}));
@@ -39,7 +39,7 @@ TEST(qpp_Lattice_functor, Variadic) {
 }
 
 TEST(qpp_Lattice_to_coordinates, AllTests) {
-    const Lattice lattice({2, 3, 4});
+    const Lattice lattice(2, 3, 4);
     EXPECT_EQ((std::vector<idx>{0, 0, 0}), lattice.to_coordinates(0));
     EXPECT_EQ((std::vector<idx>{0, 1, 2}), lattice.to_coordinates(6));
     EXPECT_EQ((std::vector<idx>{1, 2, 3}), lattice.to_coordinates(23));
@@ -51,7 +51,7 @@ TEST(qpp_Lattice_to_coordinates, AllTests) {
 }
 
 TEST(qpp_PeriodicBoundaryLattice_functor, AllTests) {
-    const PeriodicBoundaryLattice lattice({2, 3, 4});
+    const PeriodicBoundaryLattice lattice(2, 3, 4);
     EXPECT_EQ(23u, lattice(std::vector<idx>{1, 2, 3}));
     EXPECT_EQ(23u, lattice(std::vector<idx>{3, 8, 7}));
     EXPECT_EQ(0u, lattice(std::vector<idx>{2, 3, 4}));
