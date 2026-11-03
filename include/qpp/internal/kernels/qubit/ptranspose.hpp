@@ -40,6 +40,7 @@
 
 #include <Eigen/Dense>
 
+#include "qpp/internal/util.hpp"
 #include "qpp/types.hpp"
 
 namespace qpp::internal::kernels::qubit {
@@ -101,7 +102,7 @@ ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
     // build mask M: bit k set means subsystem k is transposed
     std::size_t M = 0;
     for (idx k : target) {
-        M |= (std::size_t{1} << k);
+        M |= (std::size_t{1} << (n - 1 - k));
     }
 
     dyn_mat<scalar_t> result(D, D);
@@ -116,7 +117,7 @@ ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
         std::size_t j_sz = static_cast<std::size_t>(j);
         idx i_T = static_cast<idx>((i_sz & (~M)) | (j_sz & M));
         idx j_T = static_cast<idx>((j_sz & (~M)) | (i_sz & M));
-        return conj(psi(i_T)) * psi(j_T);
+        return psi(i_T) * conj(psi(j_T));
     };
 
 #ifdef QPP_ENABLE_OPENMP
@@ -187,7 +188,7 @@ ptranspose_rho_kq(const Eigen::MatrixBase<Derived>& A,
     // in target. For qubits, the subsystem index is directly the bit position.
     std::size_t M = 0;
     for (idx k : target) {
-        M |= (std::size_t{1} << k);
+        M |= (std::size_t{1} << (n - 1 - k));
     }
 
     auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
@@ -201,7 +202,7 @@ ptranspose_rho_kq(const Eigen::MatrixBase<Derived>& A,
 
         // result(i, j) = A_j'i' (Partial transpose swaps row and column indices
         // of non-target blocks)
-        return rA(j_T, i_T);
+        return rA(i_T, j_T);
     }; /* end worker */
 
 #ifdef QPP_ENABLE_OPENMP

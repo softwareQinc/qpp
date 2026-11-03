@@ -49,7 +49,7 @@ namespace qpp::internal::kernels::qubit {
  * multi-partite state vector \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (2 x 1 vector of diagonal elements)
+ * @param A Eigen expression (2 x 2 matrix)
  * @param i Target subsystem index
  * @param ctrl Vector of control qubit indices
  * @param shift Vector of control values (0: positive/|1> control, 1:
@@ -133,7 +133,7 @@ template <typename Derived1, typename Derived2>
  * multi-partite state vector \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (2 x 1 vector of diagonal elements)
+ * @param A Eigen expression (2 x 2 matrix)
  * @param i Target subsystem index
  * @param ctrl Vector of control qubit indices
  * @param shift Vector of control values
@@ -160,7 +160,7 @@ apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
  * of the multi-partite state vector \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (4 x 1 vector of diagonal elements)
+ * @param A Eigen expression (4 x 4 matrix)
  * @param ctrl Vector of control qubit indices
  * @param i Target subsystem index
  * @param j Target subsystem index
@@ -271,7 +271,7 @@ apply_ctrl_psi_2q_inplace(Eigen::MatrixBase<Derived1>& state,
  * of the multi-partite state vector \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (4 x 1 vector of diagonal elements)
+ * @param A Eigen expression (4 x 4 matrix)
  * @param ctrl Vector of control qubit indices
  * @param i Target subsystem index
  * @param j Target subsystem index
@@ -299,7 +299,7 @@ apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
  * the multi-partite state vector \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (2^k x 1 vector of diagonal elements)
+ * @param A Eigen expression (2^k x 2^k matrix)
  * @param ctrl Vector of control qubit indices
  * @param target Subsystem indexes where the gate \a A is applied
  * @param shift Vector of control values (0: positive/|1> control, 1:
@@ -431,7 +431,7 @@ template <typename Derived1, typename Derived2>
  * the multi-partite state vector \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (2^k x 1 vector of diagonal elements)
+ * @param A Eigen expression (2^k x 2^k matrix)
  * @param ctrl Vector of control qubit indices
  * @param target Subsystem indexes where the gate \a A is applied
  * @param shift Vector of control values
@@ -458,7 +458,7 @@ apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
  * multi-partite density matrix \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (2x2 matrix)
+ * @param A Eigen expression (2 x 2 matrix)
  * @param i Target subsystem index
  * @param ctrl Vector of control qubit indices
  * @param shift Vector of control values (0: positive/|1> control, 1:
@@ -580,7 +580,7 @@ template <typename Derived1, typename Derived2>
  * multi-partite density matrix \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (2x2 matrix)
+ * @param A Eigen expression (2 x 2 matrix)
  * @param i Target subsystem index
  * @param ctrl Vector of control qubit indices
  * @param shift Vector of control values
@@ -607,7 +607,7 @@ apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
  * of the multi-partite density matrix \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (4x4 matrix)
+ * @param A Eigen expression (4 x 4 matrix)
  * @param i Target subsystem index
  * @param j Target subsystem index
  * @param ctrl Vector of control qubit indices
@@ -751,7 +751,7 @@ apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
  * of the multi-partite density matrix \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression (4x4 matrix)
+ * @param A Eigen expression (4 x 4 matrix)
  * @param i Target subsystem index
  * @param j Target subsystem index
  * @param ctrl Vector of control qubit indices
@@ -779,7 +779,7 @@ apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
  * the multi-partite density matrix \a state in-place
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (2^k x 1 vector of diagonal elements)
+ * @param A Eigen expression (2^k x 2^k matrix)
  * @param target Subsystem indexes where the gate \a A is applied
  * @param ctrl Vector of control qubit indices
  * @param shift Vector of control values (0: positive/|1> control, 1:
@@ -936,7 +936,7 @@ template <typename Derived1, typename Derived2>
  * the multi-partite density matrix \a state
  *
  * @param state Eigen expression
- * @param A Eigen expression
+ * @param A Eigen expression (2^k x 2^k matrix)
  * @param target Subsystem indexes where the gate \a A is applied
  * @param ctrl Vector of control qubit indices
  * @param shift Vector of control values

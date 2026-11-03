@@ -33,11 +33,7 @@
 #define QPP_INTERNAL_KERNELS_QUBIT_APPLY_CTRL_FAN_HPP_
 
 #include <cassert>
-#include <optional>
 #include <vector>
-#ifndef NDEBUG
-#include <set>
-#endif
 
 #include <Eigen/Dense>
 

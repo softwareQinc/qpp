@@ -354,7 +354,8 @@ template <typename Derived1, typename Derived2>
 
     const idx k = static_cast<idx>(target.size());
     const idx dim = static_cast<idx>(std::size_t{1} << k);
-    const idx outer_dim = static_cast<idx>(std::size_t{1} << (n - k));
+    const idx outer_dim =
+        static_cast<idx>(std::size_t{1} << (n - k - ctrl.size()));
 
     // Input Validation
     assert(static_cast<idx>(A.size()) == dim &&
