@@ -10,7 +10,9 @@
 - Added `qpp::expect()` in [`qpp/functions.hpp`](include/qpp/functions.hpp) for
   computing the expectation value of a Hermitian operator for pure and mixed
   states
-- Added a VQE example in ['examples/vqe.cpp'](examples/vqe.cpp)
+- Added a VQE example in ['examples/circuits/vqe.cpp'](examples/circuits/vqe.cpp)
+- Renamed `examples/circuits/state_prep_circuit.cpp` to
+  [`examples/circuits/state_prep.cpp`](examples/circuits/state_prep.cpp)
 - Made CMake option names consistent:
   - `QPP_MATLAB` -> `QPP_ENABLE_MATLAB`
   - `QPP_OPENMP` -> `QPP_ENABLE_OPENMP`
@@ -23,6 +25,7 @@
   - `qpp::applyQFT_inplace()`
   - `qpp::applyTFQ_inplace()`
   - `qpp::internal::fast_complement()`
+  - `qpp::QEngineT::execute()`
 
 ## Version 7.1.0 - 28 October 2026
 

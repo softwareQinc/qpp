@@ -465,9 +465,12 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             } else {
                 // extend sample_result to full support
                 std::vector<idx> sample_result = this->get_dits();
-                idx i = 0;
                 for (auto [dit, qudit_ps_val] : c_q) {
-                    sample_result[dit] = sample_result_restricted_support[i++];
+                    idx qudit = qudit_ps_val.first;
+                    auto it = std::lower_bound(sample_from.begin(),
+                                               sample_from.end(), qudit);
+                    idx i = std::distance(sample_from.begin(), it);
+                    sample_result[dit] = sample_result_restricted_support[i];
                 }
                 ++stats_.data()[sample_result];
             }

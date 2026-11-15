@@ -1,4 +1,4 @@
-// Source: ./examples/circuits/state_prep_circuit.cpp
+// Source: ./examples/circuits/state_prep.cpp
 //
 // Arbitrary state preparation quantum circuit simulator, see
 // https://github.com/softwareQinc/qpp/issues/76

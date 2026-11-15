@@ -1,4 +1,4 @@
-// Source: ./examples/vqe.cpp
+// Source: ./examples/circuits/vqe.cpp
 //
 // Variational Quantum Eigensolver (VQE)
 

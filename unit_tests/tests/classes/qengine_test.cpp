@@ -68,6 +68,35 @@ TEST(qpp_QEngineT_execute, AllCircuitWithRepetitions) {
     EXPECT_EQ(7u, engine3.get_stats().get_num_reps());
 }
 
+TEST(qpp_QEngineT_execute, SamplingPreservesClassicalRegisterOrder) {
+    QCircuit qc{4, 4};
+
+    qc.gate(gt.X, 0);
+    qc.gate(gt.X, 1);
+    qc.gate(gt.X, 2);
+
+    qc.measure(3, 0);
+    qc.measure(1, 2);
+    qc.measure(2, 1);
+    qc.measure(0, 3);
+
+    const std::vector<idx> expected{0, 1, 1, 1};
+
+    for (idx reps : {1, 2, 10, 100}) {
+        QEngine engine{qc};
+        engine.execute(reps);
+
+        SCOPED_TRACE("reps = " + std::to_string(reps));
+
+        EXPECT_EQ(engine.get_dits(), expected);
+
+        const auto stats = engine.get_stats();
+        EXPECT_EQ(stats.get_num_reps(), reps);
+        EXPECT_EQ(stats.get_num_outcomes(), 1);
+        EXPECT_EQ(stats.data().at(expected), reps);
+    }
+}
+
 TEST(qpp_QEngineT_get_circuit, Lvalue) {
     // qubits
     QCircuit qc(1);
