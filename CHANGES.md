@@ -10,7 +10,7 @@
 - Added `qpp::expect()` in [`qpp/functions.hpp`](include/qpp/functions.hpp) for
   computing the expectation value of a Hermitian operator for pure and mixed
   states
-- Added a VQE example in ['examples/circuits/vqe.cpp'](examples/circuits/vqe.cpp)
+- Added a VQE example in [`examples/circuits/vqe.cpp`](examples/circuits/vqe.cpp)
 - Renamed `examples/circuits/state_prep_circuit.cpp` to
   [`examples/circuits/state_prep.cpp`](examples/circuits/state_prep.cpp)
 - Made CMake option names consistent:
