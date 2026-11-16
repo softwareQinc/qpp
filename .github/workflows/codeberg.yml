@@ -1,0 +1,45 @@
+name: Codeberg mirror
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["**"]
+  delete:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeberg-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure SSH
+        env:
+          SSH_KEY: ${{ secrets.CODEBERG_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/codeberg
+          chmod 600 ~/.ssh/codeberg
+
+          ssh-keyscan -t ed25519 codeberg.org >> ~/.ssh/known_hosts
+
+      - name: Mirror to Codeberg
+        env:
+          GIT_SSH_COMMAND: ssh -i ~/.ssh/codeberg -o IdentitiesOnly=yes
+        run: |
+          git clone --bare \
+            https://github.com/softwareQinc/qpp.git
+
+          cd qpp.git
+
+          git push --mirror \
+            git@codeberg.org:softwareQinc/qpp.git
