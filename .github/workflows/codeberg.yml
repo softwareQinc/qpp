@@ -42,4 +42,4 @@ jobs:
           cd qpp.git
 
           git push --mirror \
-            git@codeberg.org:software/qpp.git
+            git@codeberg.org:softwareq/qpp.git
