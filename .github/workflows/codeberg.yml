@@ -29,25 +29,12 @@ jobs:
           chmod 700 ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/codeberg
           chmod 600 ~/.ssh/codeberg
-
           ssh-keyscan -t ed25519 codeberg.org >> ~/.ssh/known_hosts
-
-      - name: Test Codeberg SSH
-        run: |
-          ssh -vvv -o BatchMode=yes \
-            -o ConnectTimeout=15 \
-            -o IdentitiesOnly=yes \
-            -i "$HOME/.ssh/codeberg" \
-            -T git@codeberg.org
 
       - name: Mirror to Codeberg
         env:
           GIT_SSH_COMMAND: ssh -i ~/.ssh/codeberg -o IdentitiesOnly=yes
         run: |
-          git clone --bare \
-            https://github.com/softwareQinc/qpp.git
-
+          git clone --bare https://github.com/softwareQinc/qpp.git
           cd qpp.git
-
-          git push --mirror \
-            git@codeberg.org:softwareq/qpp.git
+          git push --mirror git@codeberg.org:softwareq/qpp.git
