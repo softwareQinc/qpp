@@ -402,6 +402,16 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
 
         std::vector<idx> sample_from(sample_from_set.begin(),
                                      sample_from_set.end());
+        std::vector<std::pair<idx, idx>> sample_to_dit;
+        sample_to_dit.reserve(c_q.size());
+        for (const auto& [dit, qudit_ps_val] : c_q) {
+            idx qudit = qudit_ps_val.first;
+            auto it =
+                std::lower_bound(sample_from.begin(), sample_from.end(), qudit);
+            assert(it != sample_from.end() && *it == qudit);
+            sample_to_dit.emplace_back(dit,
+                                       std::distance(sample_from.begin(), it));
+        }
 
         // save the engine state
         internal::QEngineState<T> engine_state_copy = qeng_st_;
@@ -465,12 +475,9 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             } else {
                 // extend sample_result to full support
                 std::vector<idx> sample_result = this->get_dits();
-                for (auto [dit, qudit_ps_val] : c_q) {
-                    idx qudit = qudit_ps_val.first;
-                    auto it = std::lower_bound(sample_from.begin(),
-                                               sample_from.end(), qudit);
-                    idx i = std::distance(sample_from.begin(), it);
-                    sample_result[dit] = sample_result_restricted_support[i];
+                for (auto [dit, sample_idx] : sample_to_dit) {
+                    sample_result[dit] =
+                        sample_result_restricted_support[sample_idx];
                 }
                 ++stats_.data()[sample_result];
             }
