@@ -37,4 +37,4 @@ jobs:
         run: |
           git clone --bare https://github.com/softwareQinc/qpp.git
           cd qpp.git
-          git push --mirror git@codeberg.org:softwareq/qpp.git
+          git push --mirror git@codeberg.org:softwareQinc/qpp.git
