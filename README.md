@@ -1,6 +1,6 @@
 # Quantum++
 
-## Version 7.1.0 - 28 October 2026
+## Version 7.1.1 - 16 November 2026
 
 [![CI](https://github.com/softwareQinc/qpp/actions/workflows/ci.yml/badge.svg)](https://github.com/softwareQinc/qpp/actions/workflows/ci.yml)
 [![Coverage](https://codecov.io/gh/softwareQinc/qpp/branch/main/graph/badge.svg)](https://codecov.io/gh/softwareQinc/qpp/tree/main)

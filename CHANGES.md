@@ -1,6 +1,6 @@
 # Changelog
 
-## Upcoming release
+## Version 7.1.1 - 16 November 2026
 
 - Finalized the comprehensive unit test suite, covering all Quantum++
   functionality

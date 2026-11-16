@@ -3,7 +3,7 @@ pyqpp: A Python wrapper for the Quantum++ library.
 """
 
 # Metadata and versioning logic
-__version__ = "7.1.0"
+__version__ = "7.1.1"
 
 
 def _version_to_number(version: str) -> int:
