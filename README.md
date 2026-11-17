@@ -60,7 +60,7 @@ Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
 
 ## Installation instructions and further documentation
 
-Please see the <a href="INSTALL.md">installation guide</a> and the
+Please see the [installation guide](./INSTALL.md) and the
 comprehensive [Wiki](https://github.com/softwareQinc/qpp/wiki) for further
 documentation and detailed examples.
 
@@ -95,5 +95,4 @@ the same dependencies as **Quantum++**, and can be installed using `pip`
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-For more details, please see the <a href="pyqpp/README.md"><b>pyqpp</b>
-documentation</a>.
+For more details, please see the [**pyqpp** documentation](./pyqpp/README.md).
