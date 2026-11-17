@@ -22,9 +22,8 @@ processes. The main design factors taken in consideration were the ease of use,
 high portability, and high performance. The library's simulation capabilities
 are only restricted by the amount of available physical memory.
 
-Explore the [examples](https://github.com/softwareQinc/qpp/tree/main/examples)
-for a comprehensive look at **Quantum++** in action. You can also
-find community-contributed examples in
+Explore the [examples](examples) for a comprehensive look at **Quantum++** in
+action. You can also find community-contributed examples in
 [antoine-bussy's GitHub repository](https://github.com/antoine-bussy/qpp-examples).
 
 To report any bugs or ask for additional features/enhancements, please
@@ -60,7 +59,7 @@ Copyright (c) 2017 - 2026 softwareQ Inc. All rights reserved.
 
 ## Installation instructions and further documentation
 
-Please see the [installation guide](./INSTALL.md) and the
+Please see the [installation guide](INSTALL.md) and the
 comprehensive [Wiki](https://github.com/softwareQinc/qpp/wiki) for further
 documentation and detailed examples.
 
@@ -95,4 +94,4 @@ the same dependencies as **Quantum++**, and can be installed using `pip`
 pip install git+https://github.com/softwareQinc/qpp
 ```
 
-For more details, please see the [**pyqpp** documentation](./pyqpp/README.md).
+For more details, please see the [**pyqpp** documentation](pyqpp/README.md).

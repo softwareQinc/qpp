@@ -123,9 +123,8 @@
 - Added HHL examples:
   - [`examples/hhl.cpp`](examples/hhl.cpp) - raw API
   - [`examples/circuits/hhl_circuit.cpp`](examples/circuits/hhl_circuit.cpp) - `qpp::QCircuit` API
-- Added a benchmarking suite using
-  [Catch2](https://github.com/catchorg/Catch2) in
-  [`benchmarks`](benchmarks)
+- Added a benchmarking suite using [Catch2](https://github.com/catchorg/Catch2)
+  in [`benchmarks`](benchmarks)
 - Removed the `stress_tests` suite, as the new benchmarking suite supersedes it
 - Modernized the CMake configuration files
 - Bumped the minimum required Eigen version to **5.0.0**
@@ -306,7 +305,7 @@
 - Implemented `qpp/classes/circuits/circuits.hpp` control on another
   quantum circuit,
   - `qpp::QCircuit::compose_CTRL_circuit()`
-    see [GitHub Issue \#165](https://github.com/softwareQinc/qpp/issues/165),
+    see [#165](https://github.com/softwareQinc/qpp/issues/165),
     and the corresponding standalone versions
   - `qpp::compose_CTRL_circuit()`
 - `qpp::measure_seq()` now returns results in the same order as the order in
@@ -532,8 +531,8 @@
   - `qpp::prod(const std::initializer_list<T>&)`
   - `qpp::sum(const std::initializer_list<T>&)`
 - Enhanced `qpp::prod()` and `qpp::sum()` to allow list of matrices
-- Bugfix in `qpp::measure()` [https://github.com/softwareQinc/qpp/issues/132]
-- Bugfix in `QCircuit::CTRL` [https://github.com/softwareQinc/qpp/issues/130]
+- Bugfix in `qpp::measure()` [#132](https://github.com/softwareQinc/qpp/issues/132)
+- Bugfix in `QCircuit::CTRL()` [#130](https://github.com/softwareQinc/qpp/issues/130)
 - Bumped
   [GoogleTest version to 1.12.1](https://github.com/google/googletest/commit/58d77fa8070e8cec2dc1ed015d66b454c8d78850)
 
@@ -567,9 +566,8 @@
 
 - Major release, bumped up C++ standard to C++17
 - Decoupled the OpenQASM parser from the main codebase. A hard copy of
-  qasmtools
-  ([https://github.com/softwareQinc/qasmtools](https://github.com/softwareQinc/qasmtools))
-  is now common to both **staq** and **Quantum++**, and by default uses
+  [qasmtools](https://github.com/softwareQinc/qasmtools) is now common to
+  both **staq** and **Quantum++**, and by default uses
   standard OpenQASM 2.0 gate definitions. To switch to Qiskit definitions
   (which are also the usual ones used in QC textbooks), configure the project
   with
@@ -581,8 +579,8 @@
   - `qpp::internal::Singleton::get_no_thread_local_instance()`
   - `qpp::internal::Singleton::get_thread_local_instance()`
 - Added `qpp::schmidt()` `entanglement.hpp` and improved the performance
-  of singular value decomposition, thanks @antoine-bussy
-  ([https://github.com/antoine-bussy](https://github.com/antoine-bussy))
+  of singular value decomposition, thanks
+  [@antoine-bussy](https://github.com/antoine-bussy)
 
 ## Version 2.7 - 1 August 2021
 
@@ -602,7 +600,7 @@
   `GTEST_COLOR=1 ARGS="-V" make test` or `GTEST_COLOR=1 ctest -V` for
   coloured verbose testing output.
 - Fixed minor inadvertence in OpenQASM `crz` implementation, see
-  [GitHub Issue \#99](https://github.com/softwareQinc/qpp/issues/99)
+  [#99](https://github.com/softwareQinc/qpp/issues/99)
 - Changed the signature of `qpp::cwise()` `functions.hpp` so it takes the
   scalar argument by value (and not constant reference as before). This
   avoids an internal compiler error (ICE) triggered when compiling
@@ -645,12 +643,10 @@
 
 - Added Quantum Phase Estimation low-level API example in
   `examples/qpe.cpp`, courtesy of [@ryanhill1](https://github.com/ryanhill1),
-  see
-  [GitHub Pull Request \#91](https://github.com/softwareQinc/qpp/pull/91)
+  see [PR #91](https://github.com/softwareQinc/qpp/pull/91)
 - Added Quantum Phase Estimation high-level API example in
   `examples/circuits/quantum_phase_estimation.cpp`, thanks @DevelopDaily for
-  the suggestion,
-  [GitHub Issue \#96](https://github.com/softwareQinc/qpp/issues/96)
+  the suggestion, see [#96](https://github.com/softwareQinc/qpp/issues/96)
 - `qpp::load()` and `qpp::save()` `input_output.hpp` now use C++ I/O streams
   instead of file names, and load/save in text format (instead of
   binary format), while preserving the required precision. The old load/save
@@ -745,7 +741,7 @@
   - `qpp::qRAM()` - quantumly-accessible Random Access Memory over
     classical data (qRAM) `operations.h`
 - Added the new type `qpp::qram` for representing qRAM data `types.h`
-- Thanks to @DevelopDaily (https://github.com/softwareQinc/qpp/issues/72),
+- Thanks to @DevelopDaily [#72](https://github.com/softwareQinc/qpp/issues/72),
   implemented `qpp::QCircuit`::
   - `is_clean()` - true if the qudit is clean (not used), false
     otherwise
@@ -771,10 +767,8 @@
 - Migrated the repository to
   [https://github.com/softwareQinc/qpp](https://github.com/softwareQinc/qpp)
 - Changed gate definitions in `qasm/preprocessor.h` so they agree with
-  Qiskit, see
-  [https://github.com/softwareQinc/qpp/issues/65](https://github.com/softwareQinc/qpp/issues/65)
-  and
-  [https://github.com/softwareQinc/qpp/issues/70](https://github.com/softwareQinc/qpp/issues/70)
+  Qiskit, see [#65](https://github.com/softwareQinc/qpp/issues/65)
+  and [#70](https://github.com/softwareQinc/qpp/issues/70)
 - Minor API change in the `QEngine::execute()`, `reset()`, `reset_stats()`, now
   they all return a reference to `*this`
 - Added `BitCircuit::display()` and `BitCircuit::to_JSON()` in

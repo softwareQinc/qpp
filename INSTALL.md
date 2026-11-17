@@ -44,8 +44,7 @@ cmake -B build
 
 ## Examples
 
-To build the
-[examples](https://github.com/softwareQinc/qpp/tree/main/examples), execute
+To build the [examples](examples), execute
 
 ```shell
 cmake --build build --target examples --parallel 8
@@ -62,16 +61,15 @@ cmake --build build --target bb84
 ```
 
 The command above builds only the example
-[`examples/bb84.cpp`](https://github.com/softwareQinc/qpp/tree/main/examples/bb84.cpp)
+[`examples/bb84.cpp`](examples/bb84.cpp)
 and outputs the executable `./build/examples/bb84[.exe]`.
 
 ---
 
 ## Unit tests
 
-**Quantum++** provides a set of
-[unit tests](https://github.com/softwareQinc/qpp/tree/main/unit_tests)
-implemented using [GoogleTest](https://github.com/google/googletest).
+**Quantum++** provides a set of [unit tests](unit_tests) implemented using
+[GoogleTest](https://github.com/google/googletest).
 
 ### Building the unit tests
 
