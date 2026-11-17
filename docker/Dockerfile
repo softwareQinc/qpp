@@ -1,4 +1,4 @@
-# Base image with minimal Python 3.11 environment
+# Base image with minimal Python 3.13 environment
 FROM python:3.13-slim-trixie
 
 # Install system dependencies required for building Quantum++ and Python packages
