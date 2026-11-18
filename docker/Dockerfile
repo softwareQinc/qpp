@@ -26,6 +26,7 @@ USER sq
 RUN python3 -m venv /home/sq/venv && \
     /home/sq/venv/bin/pip install --no-cache-dir --upgrade pip && \
     /home/sq/venv/bin/pip install --no-cache-dir -r requirements.txt && \
+    /home/sq/venv/bin/pip install --no-cache-dir jupyterlab-lsp "python-lsp-server[all]" && \
     /home/sq/venv/bin/pip install --no-cache-dir git+https://github.com/softwareQinc/qpp
 
 # Clone Quantum++ source and build qpp_qasm example
