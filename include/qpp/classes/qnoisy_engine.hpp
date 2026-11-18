@@ -134,6 +134,12 @@ class QNoisyEngineT : public QEngineT<T> {
         }
         // END EXCEPTION CHECKS
         auto steps = internal::circuit_as_iterators(*this->qc_ptr_);
+
+        // nothing to execute for an empty circuit
+        if (steps.empty()) {
+            return *this;
+        }
+
         this->execute_steps_with_postselection_retries_(steps, 0, reps);
 
         return *this;
@@ -152,7 +158,9 @@ class QNoisyEngineT : public QEngineT<T> {
     QNoisyEngineT& reset(std::optional<T> qstate = std::nullopt,
                          bool reset_stats = true) override {
         QEngineT<T>::reset(qstate, reset_stats);
-        noise_results_ = {};
+
+        noise_results_.clear();
+        noise_results_.resize(this->qc_ptr_->get_step_count());
 
         return *this;
     }

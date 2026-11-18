@@ -1355,6 +1355,15 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
         }
         // END EXCEPTION CHECKS
 
+        auto steps_as_iterators =
+            reps > 1 ? internal::canonical_form(*this->qc_ptr_)
+                     : internal::circuit_as_iterators(*this->qc_ptr_);
+
+        // nothing to execute for an empty circuit
+        if (steps_as_iterators.empty()) {
+            return *this;
+        }
+
         // save the initial engine's state
         auto engine_state_copy = qeng_st_;
 
@@ -1364,13 +1373,6 @@ class QEngineT : public QBaseEngine<T, QCircuit> {
             engine_state_copy.ensure_post_selection_);
         this->set_max_post_selection_reps(
             engine_state_copy.max_post_selection_reps_);
-
-        auto steps_as_iterators =
-            reps > 1 ? internal::canonical_form(*this->qc_ptr_)
-                     : internal::circuit_as_iterators(*this->qc_ptr_);
-        if (steps_as_iterators.empty()) {
-            return *this;
-        }
 
         auto [can_sample, optimize_up_to_pos] =
             can_sample_from_(steps_as_iterators);

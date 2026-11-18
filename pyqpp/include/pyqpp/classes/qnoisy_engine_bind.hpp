@@ -1,3 +1,4 @@
+
 /*
  * This file is part of pyqpp.
  *
@@ -34,7 +35,7 @@
 
 #include "pyqpp/pyqpp_common.hpp"
 
-/** Noise models instantiators */
+/* Noise models instantiators */
 template <typename NoiseModel, typename... CtorTypeList>
 void declare_noise_model(py::module& m, const std::string& type) {
     using namespace qpp;
@@ -69,10 +70,12 @@ void declare_QNoisyEngineT(py::module& m, const std::string& type) {
     } else {
         pyname = "_QDensityNoisyEngine_" + type;
     }
+
     auto pyQNoisyEngineT =
         py::class_<QNoisyEngineT<T, NoiseModel>, QEngineT<T>>(m,
                                                               pyname.c_str());
 
+    // keep the circuit alive for the lifetime of the engine
     pyQNoisyEngineT.def(py::init<const QCircuit&, const NoiseModel&>(),
                         py::keep_alive<1, 2>());
 
@@ -80,33 +83,50 @@ void declare_QNoisyEngineT(py::module& m, const std::string& type) {
         "get_noise_results", &QNoisyEngineT<T, NoiseModel>::get_noise_results,
         "Vector of noise results obtained before every step in the circuit");
 
-    pyQNoisyEngineT.def("__copy__",
-                        [](const QNoisyEngineT<T, NoiseModel>& self) {
-                            return QNoisyEngineT<T, NoiseModel>(self);
-                        });
-    pyQNoisyEngineT.def("__deepcopy__",
-                        [](const QNoisyEngineT<T, NoiseModel>& self, py::dict) {
-                            return QNoisyEngineT<T, NoiseModel>(self);
-                        });
-    ;
+    // copies retain the original engine, which keeps the circuit alive
+    pyQNoisyEngineT.def(
+        "__copy__",
+        [](const QNoisyEngineT<T, NoiseModel>& self) {
+            return std::make_unique<QNoisyEngineT<T, NoiseModel>>(self);
+        },
+        py::keep_alive<0, 1>());
 
-    if constexpr (std::is_same_v<T, ket>) {
-        m.def(
-            "QKetNoisyEngine",
-            [](const QCircuit& qc, const NoiseModel& nm) {
-                return QNoisyEngineT<T, NoiseModel>(qc, nm);
-            },
-            py::keep_alive<0, 1>());
-        // backwards compatibility
-        m.attr("QNoisyEngine") = m.attr("QKetNoisyEngine");
-    } else {
-        m.def(
-            "QDensityNoisyEngine",
-            [](const QCircuit& qc, const NoiseModel& nm) {
-                return QNoisyEngineT<T, NoiseModel>(qc, nm);
-            },
-            py::keep_alive<0, 1>());
+    pyQNoisyEngineT.def(
+        "__deepcopy__",
+        [](const QNoisyEngineT<T, NoiseModel>& self, py::dict) {
+            return std::make_unique<QNoisyEngineT<T, NoiseModel>>(self);
+        },
+        py::keep_alive<0, 1>());
+}
+
+/* Noisy engine factory */
+inline void declare_noisy_engine_factory(py::module& m, const std::string& name,
+                                         const std::string& prefix) {
+    // map each noise model type to its registered engine class
+    py::dict classes;
+
+    for (const char* type :
+         {"QubitBitFlipNoise", "QubitPhaseFlipNoise", "QubitBitPhaseFlipNoise",
+          "QubitDepolarizingNoise", "QubitAmplitudeDampingNoise",
+          "QubitPhaseDampingNoise", "QuditDepolarizingNoise"}) {
+        classes[m.attr(type)] = m.attr((prefix + type).c_str());
     }
+
+    // construct through the bound class to preserve keep_alive
+    m.def(
+        name.c_str(),
+        [classes](py::object qc, py::object noise) {
+            py::object type = py::type::of(noise);
+
+            if (!classes.contains(type)) {
+                throw py::type_error("Unsupported noise model");
+            }
+
+            py::object cls = py::reinterpret_borrow<py::object>(classes[type]);
+
+            return cls(qc, noise);
+        },
+        py::arg("qc"), py::arg("noise"));
 }
 
 /* qpp::QNoisyEngine */
@@ -154,6 +174,14 @@ inline void init_classes_qnoisy_engine(py::module_& m) {
         m, "QubitPhaseDampingNoise");
     declare_QNoisyEngineT<cmat, QuditDepolarizingNoise>(
         m, "QuditDepolarizingNoise");
+
+    /* Public factory functions */
+    declare_noisy_engine_factory(m, "QKetNoisyEngine", "_QKetNoisyEngine_");
+    declare_noisy_engine_factory(m, "QDensityNoisyEngine",
+                                 "_QDensityNoisyEngine_");
+
+    // backwards compatibility
+    m.attr("QNoisyEngine") = m.attr("QKetNoisyEngine");
 }
 
 #endif /* PYQPP_CLASSES_QNOISY_ENGINE_BIND_HPP_ */

@@ -2,6 +2,11 @@
 
 ## Upcoming release
 
+- Fixed lifetime management issues in **pyqpp** quantum engines, including
+  noisy engines and their copies
+- Fixed execution of empty quantum circuits in noisy engines
+- Improved engine reset and repeated execution handling
+
 ## Version 7.1.1 - 16 November 2026
 
 - Finalized the comprehensive unit test suite, covering all Quantum++

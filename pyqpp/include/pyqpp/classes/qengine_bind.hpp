@@ -1,3 +1,4 @@
+
 /*
  * This file is part of pyqpp.
  *
@@ -49,6 +50,8 @@ void declare_QEngineT(py::module& m) {
     }
 
     auto pyQEngineT = py::class_<QEngineT<T>>(m, pyname.c_str());
+
+    // keep the circuit alive for the lifetime of the engine
     pyQEngineT.def(py::init<const QCircuit&>(), py::keep_alive<1, 2>());
 
     pyQEngineT.def("execute", py::overload_cast<idx>(&QEngineT<T>::execute),
@@ -65,11 +68,10 @@ void declare_QEngineT(py::module& m) {
                    &QEngineT<T>::get_ensure_post_selection,
                    "True if post-selection is enforced (must succeed), false "
                    "otherwise");
-    pyQEngineT.def(
-        "get_max_post_selection_reps",
-        &QEngineT<T>::get_max_post_selection_reps,
-        "Maximum number of repetitions of a cirucit post-selection step "
-        "until success");
+    pyQEngineT.def("get_max_post_selection_reps",
+                   &QEngineT<T>::get_max_post_selection_reps,
+                   "Maximum number of repetitions of a circuit post-selection "
+                   "step until success");
     pyQEngineT.def("get_measured_d", &QEngineT<T>::get_measured_d,
                    "Vector of already destructively measured qudit indexes");
     pyQEngineT.def(
@@ -143,25 +145,18 @@ void declare_QEngineT(py::module& m) {
         oss << self;
         return oss.str();
     });
-    pyQEngineT.def("__copy__",
-                   [](const QEngineT<T>& self) { return QEngineT<T>(self); });
-    pyQEngineT.def("__deepcopy__", [](const QEngineT<T>& self, py::dict) {
-        return QEngineT<T>(self);
-    });
 
-    if constexpr (std::is_same_v<T, ket>) {
-        m.def(
-            "QKetEngine", [](const QCircuit& qc) { return QEngineT<T>(qc); },
-            py::keep_alive<0, 1>());
-        // backwards compatibility
-        m.attr("QEngine") = m.attr("QKetEngine");
-    } else {
-        m.def(
-            "QDensityEngine",
-            [](const QCircuit& qc) { return QEngineT<T>(qc); },
-            py::keep_alive<0, 1>());
-    }
+    // copies retain the original engine, which keeps the circuit alive
+    pyQEngineT.def(
+        "__copy__", [](const QEngineT<T>& self) { return QEngineT<T>(self); },
+        py::keep_alive<0, 1>());
+
+    pyQEngineT.def(
+        "__deepcopy__",
+        [](const QEngineT<T>& self, py::dict) { return QEngineT<T>(self); },
+        py::keep_alive<0, 1>());
 }
+
 /* qpp::QEngine */
 inline void init_classes_qengine(py::module_& m) {
     using namespace qpp;
@@ -170,6 +165,13 @@ inline void init_classes_qengine(py::module_& m) {
     declare_QEngineT<ket>(m);
     /* qpp::QEngineT instantiation, mixed */
     declare_QEngineT<cmat>(m);
+
+    // public aliases to the registered engine classes
+    m.attr("QKetEngine") = m.attr("_QKetEngine");
+    m.attr("QDensityEngine") = m.attr("_QDensityEngine");
+
+    // backwards compatibility
+    m.attr("QEngine") = m.attr("QKetEngine");
 }
 
 #endif /* PYQPP_CLASSES_QENGINE_BIND_HPP_ */
