@@ -1,19 +1,20 @@
 # pyqpp regression tests
 
-This directory contains regression tests for the **pyqpp** Python bindings of Quantum++.
+This directory contains regression tests for **pyqpp**.
 
 ## Running the tests
 
-From the root of the repository, run:
+From the root of the repository, run
 
 ```bash
 python3 -m pytest pyqpp/tests/
 ```
 
-For verbose output:
+For verbose output
 
 ```bash
 python3 -m pytest -v pyqpp/tests/
 ```
 
-Make sure **pyqpp** and **pytest** are installed in the active Python environment before running the tests.
+Make sure **pyqpp** and **pytest** are installed in the active Python
+environment before running the tests.
