@@ -1,4 +1,4 @@
-# pyqpp Regression Tests
+# pyqpp regression tests
 
 This directory contains regression tests for the **pyqpp** Python bindings of Quantum++.
 
