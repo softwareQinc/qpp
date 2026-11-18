@@ -4,6 +4,8 @@
 
 - Fixed lifetime management issues in **pyqpp** quantum engines, including
   noisy engines and their copies
+- Added **pyqpp** regression tests in [pyqpp/tests](pyqpp/tests). Run them from
+  the repository root using `python3 -m pytest pyqpp/tests/`.
 - Fixed execution of empty quantum circuits in noisy engines
 - Improved engine reset and repeated execution handling
 

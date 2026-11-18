@@ -1644,7 +1644,7 @@ TEST(qpp_QCircuit_was_measured_nd, AllTests) {
 
 // free functions
 
-TEST(qpp_adjoint, QCircuitAllTests) {
+TEST(qpp_adjoint, QCircuit) {
     // qutrits
     QCircuit q3(1, 0, 3);
     q3.gate(gt.Xd(3), 0);

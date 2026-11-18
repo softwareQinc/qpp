@@ -111,19 +111,25 @@ TEST(qpp_QNoisyEngineT_get_noise_results, AllTests) {
     EXPECT_EQ((std::vector<idx>{0, 0}), results3[0]);
 }
 
-TEST(qpp_QNoisyEngineT_reset, AllTests) {
+TEST(qpp_QNoisyEngineT_reset, ResetsStateAndStatistics) {
     // qubits
     QCircuit qc(1, 1);
     qc.gate(gt.X, 0).measure(0, 0, false);
     QubitBitFlipNoise noise(0);
     QNoisyEngine engine{qc, noise};
+
     engine.execute(3);
     EXPECT_EQ(3u, engine.get_stats().get_num_reps());
+
     engine.reset();
     EXPECT_NEAR(0, norm(engine.get_state() - st.z0), 1e-12);
     EXPECT_EQ((std::vector<idx>{0}), engine.get_dits());
     EXPECT_EQ(0u, engine.get_stats().get_num_reps());
-    EXPECT_TRUE(engine.get_noise_results().empty());
+    EXPECT_EQ(qc.get_step_count(), engine.get_noise_results().size());
+    for (const auto& results : engine.get_noise_results()) {
+        EXPECT_TRUE(results.empty());
+    }
+
     engine.reset(st.z1, false);
     EXPECT_NEAR(0, norm(engine.get_state() - st.z1), 1e-12);
 
@@ -132,10 +138,29 @@ TEST(qpp_QNoisyEngineT_reset, AllTests) {
     qc3.gate(gt.Xd(3), 0);
     QuditDepolarizingNoise noise3(0, 3);
     QNoisyEngine engine3{qc3, noise3};
+
     engine3.execute();
     engine3.reset(mket({2}, 3));
+
     EXPECT_NEAR(0, norm(engine3.get_state() - mket({2}, 3)), 1e-12);
-    EXPECT_TRUE(engine3.get_noise_results().empty());
+    EXPECT_EQ(qc3.get_step_count(), engine3.get_noise_results().size());
+    for (const auto& results : engine3.get_noise_results()) {
+        EXPECT_TRUE(results.empty());
+    }
+}
+
+TEST(qpp_QNoisyEngineT_reset, ExecutionAfterReset) {
+    QCircuit qc(1, 1);
+    qc.gate(gt.X, 0).measure(0, 0, false);
+
+    QubitBitFlipNoise noise(0);
+    QNoisyEngine engine{qc, noise};
+
+    engine.execute(3);
+    engine.reset();
+
+    EXPECT_NO_THROW(engine.execute(3));
+    EXPECT_EQ(3u, engine.get_stats().get_num_reps());
 }
 
 TEST(qpp_QNoisyEngineT_traits_get_name, AllTests) {

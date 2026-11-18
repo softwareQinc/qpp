@@ -53,7 +53,7 @@ TEST(qpp_abssq, Iterator) {
     EXPECT_EQ((std::vector<realT>{9, 16}), abssq(a.begin(), a.end()));
 }
 
-TEST(qpp_adjoint, AllTests) {
+TEST(qpp_adjoint, EigenExpression) {
     cmat A(2, 2);
     A << 1., 2_i, 3., 4.;
     EXPECT_LT((adjoint(A) - A.adjoint()).norm(), 1e-12);
