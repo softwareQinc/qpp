@@ -40,8 +40,9 @@
 
 #include <Eigen/Dense>
 
-#include "qpp/internal/util.hpp"
 #include "qpp/types.hpp"
+
+#include "qpp/internal/util.hpp"
 
 namespace qpp::internal::kernels::qubit {
 /**
@@ -126,33 +127,6 @@ template <typename Derived1, typename Derived2>
             }
         }
     }
-}
-
-/**
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
- * multi-partite state vector \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (2 x 2 matrix)
- * @param i Target subsystem index
- * @param ctrl Vector of control qubit indices
- * @param shift Vector of control values
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the qubit \a i of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_psi_1q(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, idx i,
-                  const std::vector<idx>& shift, idx n) {
-    // Deep copy for functional return
-    expr_t<Derived1> result = state;
-
-    // Apply transformation in-place
-    apply_ctrl_psi_1q_inplace(result, A, ctrl, i, shift, n);
-
-    return result;
 }
 
 /**
@@ -264,34 +238,6 @@ apply_ctrl_psi_2q_inplace(Eigen::MatrixBase<Derived1>& state,
         state.coeffRef(k11) =
             (a30 * psi00) + (a31 * psi01) + (a32 * psi10) + (a33 * psi11);
     }
-}
-
-/**
- * @brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
- * of the multi-partite state vector \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (4 x 4 matrix)
- * @param ctrl Vector of control qubit indices
- * @param i Target subsystem index
- * @param j Target subsystem index
- * @param shift Vector of control values
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the qubits \a i and \a j of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_psi_2q(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, idx i, idx j,
-                  const std::vector<idx>& shift, idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state;
-
-    // Apply transformation in-place on the copy
-    apply_ctrl_psi_2q_inplace(result, A, ctrl, i, j, shift, n);
-
-    return result;
 }
 
 /**
@@ -427,33 +373,6 @@ template <typename Derived1, typename Derived2>
 }
 
 /**
- * @brief Applies the multi-qubit controlled gate \a A to the part \a target of
- * the multi-partite state vector \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (2^k x 2^k matrix)
- * @param ctrl Vector of control qubit indices
- * @param target Subsystem indexes where the gate \a A is applied
- * @param shift Vector of control values
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the part \a target of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_psi_kq(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                  const std::vector<idx>& shift, idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state;
-
-    // Delegate to in-place implementation
-    apply_ctrl_psi_kq_inplace(result, A, ctrl, target, shift, n);
-
-    return result;
-}
-
-/**
  * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
  * multi-partite density matrix \a state in-place
  *
@@ -573,33 +492,6 @@ template <typename Derived1, typename Derived2>
         state.coeffRef(r1, c0) = result_block(1, 0);
         state.coeffRef(r1, c1) = result_block(1, 1);
     }
-}
-
-/**
- * @brief Applies the controlled 1-qubit gate \a A to the qubit \a i of the
- * multi-partite density matrix \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (2 x 2 matrix)
- * @param i Target subsystem index
- * @param ctrl Vector of control qubit indices
- * @param shift Vector of control values
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the qubits \a i of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_rho_1q(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, idx i,
-                  const std::vector<idx>& shift, idx n) {
-    // Deep copy for functional interface
-    expr_t<Derived1> result = state;
-
-    // Apply transformation in-place
-    apply_ctrl_rho_1q_inplace(result, A, ctrl, i, shift, n);
-
-    return result;
 }
 
 /**
@@ -744,34 +636,6 @@ apply_ctrl_rho_2q_inplace(Eigen::MatrixBase<Derived1>& state,
             }
         }
     }
-}
-
-/**
- * @brief Applies the controlled 2-qubit gate \a A to the qubits \a i and \a j
- * of the multi-partite density matrix \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (4 x 4 matrix)
- * @param i Target subsystem index
- * @param j Target subsystem index
- * @param ctrl Vector of control qubit indices
- * @param shift Vector of control values
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the qubits \a i and \a j of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_rho_2q(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, idx i, idx j,
-                  const std::vector<idx>& shift, idx n) {
-    // Deep copy for the functional return
-    expr_t<Derived1> result = state.derived();
-
-    // Delegate to the in-place version
-    apply_ctrl_rho_2q_inplace(result, A, ctrl, i, j, shift, n);
-
-    return result;
 }
 
 /**
@@ -929,33 +793,6 @@ template <typename Derived1, typename Derived2>
             }
         }
     }
-}
-
-/**
- * @brief Applies the controlled multi-qubit gate \a A to the part \a target of
- * the multi-partite density matrix \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (2^k x 2^k matrix)
- * @param target Subsystem indexes where the gate \a A is applied
- * @param ctrl Vector of control qubit indices
- * @param shift Vector of control values
- * @param n Number of qubits
- * @return Controlled gate \a A applied to the part \a target of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_rho_kq(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                  const std::vector<idx>& shift, idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state.derived();
-
-    // Delegate to in-place implementation
-    apply_ctrl_rho_kq_inplace(result, A, ctrl, target, shift, n);
-
-    return result;
 }
 } // namespace qpp::internal::kernels::qubit
 

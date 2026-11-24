@@ -36,13 +36,13 @@
 #include <string>
 #include <type_traits>
 
+#include "mat.h"
+#include "mex.h"
+
 #include "qpp/constants.hpp"
 #include "qpp/types.hpp"
 
 #include "qpp/internal/util.hpp"
-
-#include "mat.h"
-#include "mex.h"
 
 namespace qpp {
 /**

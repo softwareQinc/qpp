@@ -67,8 +67,7 @@ cmat complex_gate() {
 
 cmat dense_gate() {
     cmat A(2, 2);
-    A << cplx{0.8, 0.2}, cplx{0.3, -0.1}, cplx{-0.2, 0.4},
-        cplx{0.7, -0.3};
+    A << cplx{0.8, 0.2}, cplx{0.3, -0.1}, cplx{-0.2, 0.4}, cplx{0.7, -0.3};
     return A;
 }
 
@@ -144,27 +143,26 @@ void expect_rho(const cmat& actual, const cmat& original, const cmat& A,
 TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, ControlPatternsAndMultipleTargets) {
     const idx n = 5;
     const ket original = make_state(n);
-    const std::vector<Case> cases{
-        {{}, {}, {}},
-        {{0}, {}, {0}},
-        {{}, {0}, {}},
-        {{}, {4, 1, 3}, {}},
-        {{0}, {1, 3, 4}, {0}},
-        {{0}, {1, 3, 4}, {1}},
-        {{1, 4}, {0, 2, 3}, {0, 1}},
-        {{1, 4}, {3, 2, 0}, {1, 0}},
-        {{0, 2, 4}, {1, 3}, {1, 0, 1}},
-        {{0, 1, 2, 3}, {4}, {0, 0, 0, 0}},
-        {{}, {4, 3, 2, 1, 0}, {}}};
+    const std::vector<Case> cases{{{}, {}, {}},
+                                  {{0}, {}, {0}},
+                                  {{}, {0}, {}},
+                                  {{}, {4, 1, 3}, {}},
+                                  {{0}, {1, 3, 4}, {0}},
+                                  {{0}, {1, 3, 4}, {1}},
+                                  {{1, 4}, {0, 2, 3}, {0, 1}},
+                                  {{1, 4}, {3, 2, 0}, {1, 0}},
+                                  {{0, 2, 4}, {1, 3}, {1, 0, 1}},
+                                  {{0, 1, 2, 3}, {4}, {0, 0, 0, 0}},
+                                  {{}, {4, 3, 2, 1, 0}, {}}};
 
     for (const auto& test_case : cases) {
         SCOPED_TRACE(describe(test_case));
-        for (const cmat& A : {cmat(gt.X), cmat(gt.H), complex_gate(),
-                              dense_gate()}) {
+        for (const cmat& A :
+             {cmat(gt.X), cmat(gt.H), complex_gate(), dense_gate()}) {
             ket actual = original;
             internal::kernels::qubit::apply_ctrl_fan_psi_inplace(
-                actual, A, test_case.ctrl, test_case.target,
-                test_case.shift, n);
+                actual, A, test_case.ctrl, test_case.target, test_case.shift,
+                n);
             expect_psi(actual, original, A, test_case, n);
         }
     }
@@ -176,8 +174,8 @@ TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, TwoControlsTwoTargets) {
     ket actual = ket::Zero(16);
     actual(12) = 1;
 
-    internal::kernels::qubit::apply_ctrl_fan_psi_inplace(
-        actual, gt.X, {0, 1}, {2, 3}, {0, 0}, n);
+    internal::kernels::qubit::apply_ctrl_fan_psi_inplace(actual, gt.X, {0, 1},
+                                                         {2, 3}, {0, 0}, n);
 
     ket expected = ket::Zero(16);
     expected(15) = 1;
@@ -190,8 +188,8 @@ TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, ControlsNotSatisfied) {
     actual(8) = 1; // |1000>: controls {0,1} are not both |1>.
     const ket original = actual;
 
-    internal::kernels::qubit::apply_ctrl_fan_psi_inplace(
-        actual, gt.X, {0, 1}, {2, 3}, {0, 0}, n);
+    internal::kernels::qubit::apply_ctrl_fan_psi_inplace(actual, gt.X, {0, 1},
+                                                         {2, 3}, {0, 0}, n);
 
     expect_same(actual, original);
 }
@@ -201,8 +199,8 @@ TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, NegativeControls) {
     ket actual = ket::Zero(16);
     actual(8) = 1; // |1000>: q0=1 and q1=0.
 
-    internal::kernels::qubit::apply_ctrl_fan_psi_inplace(
-        actual, gt.X, {0, 1}, {2, 3}, {0, 1}, n);
+    internal::kernels::qubit::apply_ctrl_fan_psi_inplace(actual, gt.X, {0, 1},
+                                                         {2, 3}, {0, 1}, n);
 
     ket expected = ket::Zero(16);
     expected(11) = 1; // |1011>
@@ -213,8 +211,7 @@ TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, EmptyAndSingleQubitSystems) {
     const cmat A = complex_gate();
     for (idx n : {idx{0}, idx{1}}) {
         const ket original = make_state(n);
-        const Case test_case =
-            (n == 0) ? Case{{}, {}, {}} : Case{{}, {0}, {}};
+        const Case test_case = (n == 0) ? Case{{}, {}, {}} : Case{{}, {0}, {}};
         ket actual = original;
         internal::kernels::qubit::apply_ctrl_fan_psi_inplace(
             actual, A, test_case.ctrl, test_case.target, test_case.shift, n);
@@ -222,50 +219,28 @@ TEST(qpp_qubit_apply_ctrl_fan_psi_inplace, EmptyAndSingleQubitSystems) {
     }
 }
 
-TEST(qpp_qubit_apply_ctrl_fan_psi, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    ket original = make_state(n);
-    const ket before = original;
-    const cmat A = complex_gate();
-    const std::vector<Case> cases{
-        {{}, {}, {}},
-        {{0}, {2, 4}, {0}},
-        {{0}, {4, 2}, {1}},
-        {{0, 3}, {1, 2, 4}, {0, 1}},
-        {{1, 4}, {3, 0, 2}, {1, 0}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const ket actual = internal::kernels::qubit::apply_ctrl_fan_psi(
-            original, A, test_case.ctrl, test_case.target,
-            test_case.shift, n);
-        expect_psi(actual, before, A, test_case, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_ctrl_fan_rho_inplace, MixedStateControlBranches) {
     const idx n = 5;
     const cmat original = make_density(n);
-    const std::vector<Case> cases{
-        {{}, {}, {}},
-        {{0}, {}, {0}},
-        {{}, {0}, {}},
-        {{}, {4, 1, 3}, {}},
-        {{0}, {1, 3, 4}, {0}},
-        {{0}, {1, 3, 4}, {1}},
-        {{1, 4}, {0, 2, 3}, {0, 1}},
-        {{1, 4}, {3, 2, 0}, {1, 0}},
-        {{0, 2, 4}, {1, 3}, {1, 0, 1}},
-        {{0, 1, 2, 3}, {4}, {0, 0, 0, 0}},
-        {{}, {4, 3, 2, 1, 0}, {}}};
+    const std::vector<Case> cases{{{}, {}, {}},
+                                  {{0}, {}, {0}},
+                                  {{}, {0}, {}},
+                                  {{}, {4, 1, 3}, {}},
+                                  {{0}, {1, 3, 4}, {0}},
+                                  {{0}, {1, 3, 4}, {1}},
+                                  {{1, 4}, {0, 2, 3}, {0, 1}},
+                                  {{1, 4}, {3, 2, 0}, {1, 0}},
+                                  {{0, 2, 4}, {1, 3}, {1, 0, 1}},
+                                  {{0, 1, 2, 3}, {4}, {0, 0, 0, 0}},
+                                  {{}, {4, 3, 2, 1, 0}, {}}};
 
     for (const auto& test_case : cases) {
         SCOPED_TRACE(describe(test_case));
         for (const cmat& A : {cmat(gt.X), complex_gate(), dense_gate()}) {
             cmat actual = original;
             internal::kernels::qubit::apply_ctrl_fan_rho_inplace(
-                actual, A, test_case.ctrl, test_case.target,
-                test_case.shift, n);
+                actual, A, test_case.ctrl, test_case.target, test_case.shift,
+                n);
             expect_rho(actual, original, A, test_case, n);
         }
     }
@@ -278,8 +253,8 @@ TEST(qpp_qubit_apply_ctrl_fan_rho_inplace, CoherenceAcrossControlBranches) {
     psi(12) = 1.0 / std::sqrt(2.0);
     cmat actual = psi * psi.adjoint();
 
-    internal::kernels::qubit::apply_ctrl_fan_rho_inplace(
-        actual, gt.X, {0, 1}, {2, 3}, {0, 0}, n);
+    internal::kernels::qubit::apply_ctrl_fan_rho_inplace(actual, gt.X, {0, 1},
+                                                         {2, 3}, {0, 0}, n);
 
     ket expected_psi = ket::Zero(16);
     expected_psi(0) = 1.0 / std::sqrt(2.0);
@@ -294,33 +269,11 @@ TEST(qpp_qubit_apply_ctrl_fan_rho_inplace, EmptyAndSingleQubitSystems) {
     const cmat A = complex_gate();
     for (idx n : {idx{0}, idx{1}}) {
         const cmat original = make_density(n);
-        const Case test_case =
-            (n == 0) ? Case{{}, {}, {}} : Case{{}, {0}, {}};
+        const Case test_case = (n == 0) ? Case{{}, {}, {}} : Case{{}, {0}, {}};
         cmat actual = original;
         internal::kernels::qubit::apply_ctrl_fan_rho_inplace(
             actual, A, test_case.ctrl, test_case.target, test_case.shift, n);
         expect_rho(actual, original, A, test_case, n);
-    }
-}
-
-TEST(qpp_qubit_apply_ctrl_fan_rho, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const cmat A = complex_gate();
-    const std::vector<Case> cases{
-        {{}, {}, {}},
-        {{0}, {2, 4}, {0}},
-        {{0}, {4, 2}, {1}},
-        {{0, 3}, {1, 2, 4}, {0, 1}},
-        {{1, 4}, {3, 0, 2}, {1, 0}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const cmat actual = internal::kernels::qubit::apply_ctrl_fan_rho(
-            original, A, test_case.ctrl, test_case.target,
-            test_case.shift, n);
-        expect_rho(actual, before, A, test_case, n);
-        expect_same(original, before);
     }
 }
 
@@ -331,10 +284,14 @@ TEST(qpp_qubit_apply_ctrl_fan_rho, PureStateConsistencyAndTrace) {
     const Case test_case{{1, 4}, {3, 0, 2}, {0, 1}};
     const cmat A = complex_gate();
 
-    const ket evolved_psi = internal::kernels::qubit::apply_ctrl_fan_psi(
-        psi, A, test_case.ctrl, test_case.target, test_case.shift, n);
-    const cmat evolved_rho = internal::kernels::qubit::apply_ctrl_fan_rho(
-        rho, A, test_case.ctrl, test_case.target, test_case.shift, n);
+    ket evolved_psi = psi;
+    internal::kernels::qubit::apply_ctrl_fan_psi_inplace(
+        evolved_psi, A, test_case.ctrl, test_case.target, test_case.shift, n);
+
+    cmat evolved_rho = rho;
+    internal::kernels::qubit::apply_ctrl_fan_rho_inplace(
+        evolved_rho, A, test_case.ctrl, test_case.target, test_case.shift, n);
+
     const cmat expected = evolved_psi * evolved_psi.adjoint();
 
     expect_same(evolved_rho, expected);

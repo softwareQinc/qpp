@@ -38,6 +38,7 @@
 #include "qpp/types.hpp"
 
 #include "qpp/classes/exception.hpp"
+
 #include "qpp/internal/classes/singleton.hpp"
 
 namespace qpp {

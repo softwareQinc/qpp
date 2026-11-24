@@ -43,6 +43,7 @@
 #include "qpp/types.hpp"
 
 #include "qpp/classes/idisplay.hpp"
+
 #include "qpp/internal/util.hpp"
 
 namespace qpp::internal {

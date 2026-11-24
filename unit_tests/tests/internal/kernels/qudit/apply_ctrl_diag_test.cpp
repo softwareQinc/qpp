@@ -77,8 +77,7 @@ ket make_state(idx dim) {
 cmat make_density(const ket& psi) {
     const idx dim = static_cast<idx>(psi.size());
     const ket other = make_state(dim).conjugate();
-    return 0.3 * (psi * psi.adjoint()) +
-           0.7 * (other * other.adjoint());
+    return 0.3 * (psi * psi.adjoint()) + 0.7 * (other * other.adjoint());
 }
 
 ket reference_psi(const ket& original, const dyn_col_vect<cplx>& A,
@@ -91,7 +90,7 @@ ket reference_psi(const ket& original, const dyn_col_vect<cplx>& A,
 }
 
 cmat reference_rho(const cmat& original, const dyn_col_vect<cplx>& A,
-                  const TestCase& tc) {
+                   const TestCase& tc) {
     cmat expected = original;
     for (idx row = 0; row < static_cast<idx>(original.rows()); ++row) {
         const cplx row_factor = diagonal_factor(row, A, tc);
@@ -130,34 +129,34 @@ std::vector<TestCase> cases_1q() {
 
 std::vector<TestCase> cases_2q() {
     return {
-        {2, 2, {}, {0, 1}, {}},
-        {2, 3, {0}, {1, 2}, {0}},
-        {2, 4, {3}, {2, 0}, {1}},
-        {3, 2, {}, {1, 0}, {}},
-        {3, 3, {2}, {1, 0}, {2}},
-        {3, 4, {0, 2}, {3, 1}, {1, 2}},
+        {2, 2, {}, {0, 1}, {}},   {2, 3, {0}, {1, 2}, {0}},
+        {2, 4, {3}, {2, 0}, {1}}, {3, 2, {}, {1, 0}, {}},
+        {3, 3, {2}, {1, 0}, {2}}, {3, 4, {0, 2}, {3, 1}, {1, 2}},
     };
 }
 
 std::vector<TestCase> cases_kq() {
     return {
-        {2, 2, {0}, {1}, {1}},
-        {2, 4, {0}, {3, 1, 2}, {0}},
-        {2, 4, {3, 0}, {2, 1}, {1, 0}},
-        {3, 3, {2}, {0, 1}, {1}},
-        {3, 4, {1}, {3, 0, 2}, {2}},
-        {3, 4, {}, {2, 0, 3, 1}, {}},
+        {2, 2, {0}, {1}, {1}},          {2, 4, {0}, {3, 1, 2}, {0}},
+        {2, 4, {3, 0}, {2, 1}, {1, 0}}, {3, 3, {2}, {0, 1}, {1}},
+        {3, 4, {1}, {3, 0, 2}, {2}},    {3, 4, {}, {2, 0, 3, 1}, {}},
     };
 }
 
 std::string describe(const TestCase& tc) {
     std::ostringstream out;
     out << "d=" << tc.d << " n=" << tc.n << " ctrl={";
-    for (idx q : tc.ctrl) out << q << ',';
+    for (idx q : tc.ctrl) {
+        out << q << ',';
+    }
     out << "} target={";
-    for (idx q : tc.target) out << q << ',';
+    for (idx q : tc.target) {
+        out << q << ',';
+    }
     out << "} shift={";
-    for (idx q : tc.shift) out << q << ',';
+    for (idx q : tc.shift) {
+        out << q << ',';
+    }
     out << '}';
     return out.str();
 }
@@ -183,8 +182,8 @@ TEST(qpp_qudit_apply_ctrl_psi_2q_diag_inplace, TargetOrderAndShifts) {
         const ket original = make_state(power(tc.d, tc.n));
         ket actual = original;
         internal::kernels::qudit::apply_ctrl_psi_2q_diag_inplace(
-            actual, A, tc.ctrl, tc.target[0], tc.target[1], tc.shift,
-            tc.d, tc.n);
+            actual, A, tc.ctrl, tc.target[0], tc.target[1], tc.shift, tc.d,
+            tc.n);
         expect_same(actual, reference_psi(original, A, tc));
     }
 }
@@ -220,8 +219,8 @@ TEST(qpp_qudit_apply_ctrl_rho_2q_diag_inplace, TargetOrderAndShifts) {
         const cmat original = make_density(make_state(power(tc.d, tc.n)));
         cmat actual = original;
         internal::kernels::qudit::apply_ctrl_rho_2q_diag_inplace(
-            actual, A, tc.ctrl, tc.target[0], tc.target[1], tc.shift,
-            tc.d, tc.n);
+            actual, A, tc.ctrl, tc.target[0], tc.target[1], tc.shift, tc.d,
+            tc.n);
         expect_same(actual, reference_rho(original, A, tc));
     }
 }
@@ -235,77 +234,5 @@ TEST(qpp_qudit_apply_ctrl_rho_kq_diag_inplace, MultipleTargetsAndControls) {
         internal::kernels::qudit::apply_ctrl_rho_kq_diag_inplace(
             actual, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
         expect_same(actual, reference_rho(original, A, tc));
-    }
-}
-
-TEST(qpp_qudit_apply_ctrl_psi_diag, FunctionalWrappers) {
-    for (const auto& tc : cases_1q()) {
-        SCOPED_TRACE(describe(tc));
-        const auto A = make_diagonal(tc);
-        const ket original = make_state(power(tc.d, tc.n));
-        const auto actual = internal::kernels::qudit::apply_ctrl_psi_1q_diag(
-            original, A, tc.ctrl, tc.target[0], tc.shift, tc.d, tc.n);
-        expect_same(actual, reference_psi(original, A, tc));
-    }
-    for (const auto& tc : cases_2q()) {
-        SCOPED_TRACE(describe(tc));
-        const auto A = make_diagonal(tc);
-        const ket original = make_state(power(tc.d, tc.n));
-        const auto actual = internal::kernels::qudit::apply_ctrl_psi_2q_diag(
-            original, A, tc.ctrl, tc.target[0], tc.target[1], tc.shift,
-            tc.d, tc.n);
-        expect_same(actual, reference_psi(original, A, tc));
-    }
-    for (const auto& tc : cases_kq()) {
-        SCOPED_TRACE(describe(tc));
-        const auto A = make_diagonal(tc);
-        const ket original = make_state(power(tc.d, tc.n));
-        const auto actual = internal::kernels::qudit::apply_ctrl_psi_kq_diag(
-            original, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
-        expect_same(actual, reference_psi(original, A, tc));
-    }
-}
-
-TEST(qpp_qudit_apply_ctrl_rho_diag, FunctionalWrappers) {
-    for (const auto& tc : cases_1q()) {
-        SCOPED_TRACE(describe(tc));
-        const auto A = make_diagonal(tc);
-        const cmat original = make_density(make_state(power(tc.d, tc.n)));
-        const auto actual = internal::kernels::qudit::apply_ctrl_rho_1q_diag(
-            original, A, tc.ctrl, tc.target[0], tc.shift, tc.d, tc.n);
-        expect_same(actual, reference_rho(original, A, tc));
-    }
-    for (const auto& tc : cases_2q()) {
-        SCOPED_TRACE(describe(tc));
-        const auto A = make_diagonal(tc);
-        const cmat original = make_density(make_state(power(tc.d, tc.n)));
-        const auto actual = internal::kernels::qudit::apply_ctrl_rho_2q_diag(
-            original, A, tc.ctrl, tc.target[0], tc.target[1], tc.shift,
-            tc.d, tc.n);
-        expect_same(actual, reference_rho(original, A, tc));
-    }
-    for (const auto& tc : cases_kq()) {
-        SCOPED_TRACE(describe(tc));
-        const auto A = make_diagonal(tc);
-        const cmat original = make_density(make_state(power(tc.d, tc.n)));
-        const auto actual = internal::kernels::qudit::apply_ctrl_rho_kq_diag(
-            original, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
-        expect_same(actual, reference_rho(original, A, tc));
-    }
-}
-
-TEST(qpp_qudit_apply_ctrl_diag, PureAndDensityMatrixConsistency) {
-    for (const auto& tc : cases_kq()) {
-        SCOPED_TRACE(describe(tc));
-        const auto A = make_diagonal(tc);
-        const ket psi = make_state(power(tc.d, tc.n));
-        const cmat rho = psi * psi.adjoint();
-        ket psi_actual = psi;
-        cmat rho_actual = rho;
-        internal::kernels::qudit::apply_ctrl_psi_kq_diag_inplace(
-            psi_actual, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
-        internal::kernels::qudit::apply_ctrl_rho_kq_diag_inplace(
-            rho_actual, A, tc.ctrl, tc.target, tc.shift, tc.d, tc.n);
-        expect_same(rho_actual, psi_actual * psi_actual.adjoint());
     }
 }

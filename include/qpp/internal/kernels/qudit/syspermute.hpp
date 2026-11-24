@@ -34,13 +34,13 @@
 
 #include <cassert>
 #include <vector>
-#ifndef NDEBUG
-#include <set>
-#endif
 
 #include <Eigen/Dense>
 
+#include "qpp/options.hpp"
 #include "qpp/types.hpp"
+
+#include "qpp/internal/util.hpp"
 
 namespace qpp::internal::kernels::qudit {
 /**
@@ -58,46 +58,39 @@ namespace qpp::internal::kernels::qudit {
 template <typename Derived>
 [[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
 syspermute_psi_kq(const Eigen::MatrixBase<Derived>& A,
-                  const std::vector<idx>& perm, idx n) {
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+                  const std::vector<idx>& perm, const std::vector<idx>& dims) {
+    using Scalar = typename Derived::Scalar;
+    const auto& rA = A.derived();
 
-    idx D = static_cast<idx>(rA.rows());
+    const idx n = dims.size();
+    const idx D = static_cast<idx>(rA.rows());
 
-    dyn_mat<typename Derived::Scalar> result(D, 1);
+    idx Cdims[internal::maxn];
+    idx Cperm[internal::maxn];
 
-    // Calculate the **inverse permutation** (new_pos -> old_pos).
-    // This allows us to construct the new index bit by bit.
-    std::vector<idx> inv_perm(n);
-    for (idx k = 0; k < n; ++k) {
-        inv_perm[perm[k]] = k;
-    }
+    std::copy(dims.begin(), dims.end(), Cdims);
+    std::copy(perm.begin(), perm.end(), Cperm);
 
-    // Define the bit-permutation logic directly in a block to be used inside
-    // the loop to avoid lambda overhead.
-    auto permute_bits = [&inv_perm, n](idx old_index) noexcept -> idx {
-        std::size_t new_index = 0;
-        const std::size_t old_index_sz = static_cast<std::size_t>(old_index);
-        for (idx k = 0; k < n; ++k) {
-            // k is the new qudit position (new bit position, 0 to n-1)
-            // inv_perm[k] is the old qudit position (old bit position, 0 to
-            // n-1)
-            idx old_pos = inv_perm[k];
-
-            // 1. Extract the bit at old_pos in the old_index
-            std::size_t bit = (old_index_sz >> old_pos) & std::size_t{1};
-
-            // 2. Set this bit at the new_pos (k) in the new_index
-            new_index |= (bit << k);
-        }
-        return static_cast<idx>(new_index);
-    };
+    dyn_mat<Scalar> result(D, 1);
 
 #ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif // QPP_ENABLE_OPENMP
     for (idx i = 0; i < D; ++i) {
-        // Assign the original element to the calculated permuted index
-        result(permute_bits(i)) = rA.data()[i];
+        idx midx[internal::maxn];
+        idx midxtmp[internal::maxn];
+        idx permdims[internal::maxn];
+
+        internal::n2multiidx(i, n, Cdims, midx);
+
+        for (idx k = 0; k < n; ++k) {
+            permdims[k] = Cdims[Cperm[k]];
+            midxtmp[k] = midx[Cperm[k]];
+        }
+
+        const idx pos = internal::multiidx2n(midxtmp, n, permdims);
+
+        result(pos) = rA.data()[i];
     }
 
     return result;
@@ -106,8 +99,8 @@ syspermute_psi_kq(const Eigen::MatrixBase<Derived>& A,
 /**
  * @brief Qudit density matrix subsystem permutation
  *
- * Permutes the subsystems of a qudit density matrix. The qudit \a perm[\a i] is
- * permuted to the location \a i.
+ * Permutes the subsystems of a qudit density matrix. The qudit \a perm[\a i]
+ * is permuted to the location \a i.
  *
  * @param A Eigen expression
  * @param perm Permutation
@@ -118,61 +111,49 @@ syspermute_psi_kq(const Eigen::MatrixBase<Derived>& A,
 template <typename Derived>
 [[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
 syspermute_rho_kq(const Eigen::MatrixBase<Derived>& A,
-                  const std::vector<idx>& perm, idx n) {
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+                  const std::vector<idx>& perm, const std::vector<idx>& dims) {
+    using Scalar = typename Derived::Scalar;
+    const auto& rA = A.derived();
 
-    idx D = static_cast<idx>(rA.rows());
+    const idx n = dims.size();
+    const idx D = static_cast<idx>(rA.rows());
+    const idx total_systems = 2 * n;
+    const idx total_elements = D * D;
 
-    dyn_mat<typename Derived::Scalar> result(D, D);
+    idx Cdims[2 * internal::maxn];
+    idx Cperm[2 * internal::maxn];
 
-    // Calculate the **inverse permutation** (new_pos -> old_pos).
-    // This allows us to construct the new index bit by bit.
-    std::vector<idx> inv_perm(n);
-    for (idx k = 0; k < n; ++k) {
-        inv_perm[perm[k]] = k;
+    for (idx i = 0; i < n; ++i) {
+        Cdims[i] = dims[i];
+        Cperm[i] = perm[i];
+
+        Cdims[i + n] = dims[i];
+        Cperm[i + n] = perm[i] + n;
     }
 
-    // Define the bit-permutation logic directly in a block to be used inside
-    // the loop to avoid lambda overhead.
-    auto permute_bits = [&inv_perm, n](idx old_index) noexcept -> idx {
-        std::size_t new_index = 0;
-        const std::size_t old_index_sz = static_cast<std::size_t>(old_index);
-        for (idx k = 0; k < n; ++k) {
-            // k is the new qudit position (new bit position, 0 to n-1)
-            // inv_perm[k] is the old qudit position (old bit position, 0 to
-            // n-1)
-            idx old_pos = inv_perm[k];
-
-            // 1. Extract the bit at old_pos in the old_index
-            std::size_t bit = (old_index_sz >> old_pos) & std::size_t{1};
-
-            // 2. Set this bit at the new_pos (k) in the new_index
-            new_index |= (bit << k);
-        }
-        return static_cast<idx>(new_index);
-    };
+    dyn_mat<Scalar> result(total_elements, 1);
 
 #ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif // QPP_ENABLE_OPENMP
-    for (idx i = 0; i < D * D; ++i) {
-        idx permuted_linear_index;
+    for (idx i = 0; i < total_elements; ++i) {
+        idx midx[2 * internal::maxn];
+        idx midxtmp[2 * internal::maxn];
+        idx permdims[2 * internal::maxn];
 
-        // Density matrix: i = row * D + col
-        // Row index is i / D. Col index is i % D.
-        idx row_index = i / D;
-        idx col_index = i % D;
+        internal::n2multiidx(i, total_systems, Cdims, midx);
 
-        // Permute row and column indices separately
-        idx new_row_index = permute_bits(row_index);
-        idx new_col_index = permute_bits(col_index);
+        for (idx k = 0; k < total_systems; ++k) {
+            permdims[k] = Cdims[Cperm[k]];
+            midxtmp[k] = midx[Cperm[k]];
+        }
 
-        // The linear index in the permuted system is new_row * D + new_col
-        permuted_linear_index = (new_row_index * D) + new_col_index;
+        const idx pos = internal::multiidx2n(midxtmp, total_systems, permdims);
 
-        // Assign the original element to the calculated permuted index
-        result(permuted_linear_index) = rA.data()[i];
+        result(pos) = rA.data()[i];
     }
+
+    result.resize(D, D);
 
     return result;
 }

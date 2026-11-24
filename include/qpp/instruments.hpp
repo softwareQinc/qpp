@@ -42,6 +42,7 @@
 
 #include "qpp/classes/exception.hpp"
 #include "qpp/classes/gates.hpp"
+
 #include "qpp/internal/util.hpp"
 
 #ifndef QPP_INSTRUMENTS_HPP_

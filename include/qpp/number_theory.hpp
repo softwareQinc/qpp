@@ -40,6 +40,7 @@
 #include "qpp/types.hpp"
 
 #include "qpp/classes/exception.hpp"
+
 #include "qpp/internal/util.hpp"
 
 namespace qpp {

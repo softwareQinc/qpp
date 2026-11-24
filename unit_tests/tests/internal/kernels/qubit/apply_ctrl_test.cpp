@@ -210,23 +210,6 @@ TEST(qpp_qubit_apply_ctrl_psi_1q_inplace, NoControlsOnSingleQubit) {
     expect_psi(actual, original, gate, test_case, 1);
 }
 
-TEST(qpp_qubit_apply_ctrl_psi_1q, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    ket original = make_state(n);
-    const ket before = original;
-    const cmat gate = fourier_gate(2);
-    const std::vector<Case> cases{
-        {{}, {0}, {}}, {{0}, {3}, {0}}, {{0}, {3}, {1}}, {{1, 2}, {0}, {0, 1}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const ket actual = internal::kernels::qubit::apply_ctrl_psi_1q(
-            original, gate, test_case.ctrl, test_case.target[0],
-            test_case.shift, n);
-        expect_psi(actual, before, gate, test_case, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_ctrl_psi_2q_inplace, ReversedTargetsAndMixedControls) {
     const idx n = 5;
     const ket original = make_state(n);
@@ -259,23 +242,6 @@ TEST(qpp_qubit_apply_ctrl_psi_2q_inplace, NoControlsOnTwoQubits) {
     expect_psi(actual, original, gate, test_case, n);
 }
 
-TEST(qpp_qubit_apply_ctrl_psi_2q, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    ket original = make_state(n);
-    const ket before = original;
-    const cmat gate = fourier_gate(4);
-    const std::vector<Case> cases{
-        {{}, {0, 3}, {}}, {{1}, {3, 0}, {0}}, {{1, 2}, {3, 0}, {1, 0}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const ket actual = internal::kernels::qubit::apply_ctrl_psi_2q(
-            original, gate, test_case.ctrl, test_case.target[0],
-            test_case.target[1], test_case.shift, n);
-        expect_psi(actual, before, gate, test_case, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_ctrl_psi_kq_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const ket original = make_state(n);
@@ -300,25 +266,6 @@ TEST(qpp_qubit_apply_ctrl_psi_kq_inplace, ZeroToFiveTargets) {
                 n);
             expect_psi(actual, original, gate, test_case, n);
         }
-    }
-}
-
-TEST(qpp_qubit_apply_ctrl_psi_kq, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    ket original = make_state(n);
-    const ket before = original;
-    const std::vector<Case> cases{
-        {{0}, {}, {0}},           {{0}, {3}, {1}},
-        {{4, 1}, {0, 3}, {0, 1}}, {{2}, {4, 0, 1}, {1}},
-        {{3}, {4, 2, 0, 1}, {0}}, {{}, {2, 4, 1, 3, 0}, {}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const cmat gate = fourier_gate(idx{1} << test_case.target.size());
-        const ket actual = internal::kernels::qubit::apply_ctrl_psi_kq(
-            original, gate, test_case.ctrl, test_case.target, test_case.shift,
-            n);
-        expect_psi(actual, before, gate, test_case, n);
-        expect_same(original, before);
     }
 }
 
@@ -373,23 +320,6 @@ TEST(qpp_qubit_apply_ctrl_rho_1q_inplace, NoControlsOnSingleQubit) {
     expect_rho(actual, original, gate, test_case, 1);
 }
 
-TEST(qpp_qubit_apply_ctrl_rho_1q, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const cmat gate = fourier_gate(2);
-    const std::vector<Case> cases{
-        {{}, {0}, {}}, {{0}, {3}, {0}}, {{0}, {3}, {1}}, {{1, 2}, {0}, {0, 1}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const cmat actual = internal::kernels::qubit::apply_ctrl_rho_1q(
-            original, gate, test_case.ctrl, test_case.target[0],
-            test_case.shift, n);
-        expect_rho(actual, before, gate, test_case, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_ctrl_rho_2q_inplace, ReversedTargetsAndMixedControls) {
     const idx n = 5;
     const cmat original = make_density(n);
@@ -421,23 +351,6 @@ TEST(qpp_qubit_apply_ctrl_rho_2q_inplace, NoControlsOnTwoQubits) {
     expect_rho(actual, original, gate, test_case, n);
 }
 
-TEST(qpp_qubit_apply_ctrl_rho_2q, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const cmat gate = fourier_gate(4);
-    const std::vector<Case> cases{
-        {{}, {0, 3}, {}}, {{1}, {3, 0}, {0}}, {{1, 2}, {3, 0}, {1, 0}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const cmat actual = internal::kernels::qubit::apply_ctrl_rho_2q(
-            original, gate, test_case.ctrl, test_case.target[0],
-            test_case.target[1], test_case.shift, n);
-        expect_rho(actual, before, gate, test_case, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_ctrl_rho_kq_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const cmat original = make_density(n);
@@ -464,25 +377,6 @@ TEST(qpp_qubit_apply_ctrl_rho_kq_inplace, ZeroToFiveTargets) {
     }
 }
 
-TEST(qpp_qubit_apply_ctrl_rho_kq, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const std::vector<Case> cases{
-        {{0}, {}, {0}},           {{0}, {3}, {1}},
-        {{4, 1}, {0, 3}, {0, 1}}, {{2}, {4, 0, 1}, {1}},
-        {{3}, {4, 2, 0, 1}, {0}}, {{}, {2, 4, 1, 3, 0}, {}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const cmat gate = fourier_gate(idx{1} << test_case.target.size());
-        const cmat actual = internal::kernels::qubit::apply_ctrl_rho_kq(
-            original, gate, test_case.ctrl, test_case.target, test_case.shift,
-            n);
-        expect_rho(actual, before, gate, test_case, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_ctrl_rho_kq, PureStateConsistencyAndTrace) {
     const idx n = 5;
     const ket psi = make_state(n);
@@ -490,10 +384,16 @@ TEST(qpp_qubit_apply_ctrl_rho_kq, PureStateConsistencyAndTrace) {
     const Case test_case{{1, 4}, {3, 0, 2}, {0, 1}};
     const cmat gate = fourier_gate(8);
 
-    const ket transformed_psi = internal::kernels::qubit::apply_ctrl_psi_kq(
-        psi, gate, test_case.ctrl, test_case.target, test_case.shift, n);
-    const cmat transformed_rho = internal::kernels::qubit::apply_ctrl_rho_kq(
-        rho, gate, test_case.ctrl, test_case.target, test_case.shift, n);
+    ket transformed_psi = psi;
+    internal::kernels::qubit::apply_ctrl_psi_kq_inplace(
+        transformed_psi, gate, test_case.ctrl, test_case.target,
+        test_case.shift, n);
+
+    cmat transformed_rho = rho;
+    internal::kernels::qubit::apply_ctrl_rho_kq_inplace(
+        transformed_rho, gate, test_case.ctrl, test_case.target,
+        test_case.shift, n);
+
     const cmat expected = transformed_psi * transformed_psi.adjoint();
 
     expect_same(transformed_rho, expected);

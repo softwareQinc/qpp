@@ -41,6 +41,7 @@
 #include <vector>
 
 #include "qpp/classes/idisplay.hpp"
+
 #include "qpp/internal/classes/labelled_vector_proxy.hpp"
 
 namespace qpp {

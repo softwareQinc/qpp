@@ -32,8 +32,8 @@
 #ifndef QPP_INTERNAL_KERNELS_QUDIT_APPLY_CTRL_DIAG_HPP_
 #define QPP_INTERNAL_KERNELS_QUDIT_APPLY_CTRL_DIAG_HPP_
 
-#include <cassert>
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <complex>
 #include <vector>
@@ -171,35 +171,6 @@ apply_ctrl_psi_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
             }
         }
     }
-}
-
-/**
- * @brief Applies the controlled 1-qudit diagonal gate \a A to the qudit \a i of
- * the multi-partite state vector \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (d x 1 vector of diagonal elements)
- * @param i Target subsystem index
- * @param ctrl Vector of control qudit indices
- * @param shift Vector of control shifts added to each control qudit value
- * modulo d (e.g., shifts the activating control configuration)
- * @param d Subsystem dimensions
- * @param n Number of qudits
- * @return Controlled gate \a A applied to the qudit \a i of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_psi_1q_diag(const Eigen::MatrixBase<Derived1>& state,
-                       const Eigen::MatrixBase<Derived2>& A,
-                       const std::vector<idx>& ctrl, idx i,
-                       const std::vector<idx>& shift, idx d, idx n) {
-    // Deep copy for functional return
-    expr_t<Derived1> result = state;
-
-    // Apply transformation in-place
-    apply_ctrl_psi_1q_diag_inplace(result, A, ctrl, i, shift, d, n);
-
-    return result;
 }
 
 /**
@@ -342,36 +313,6 @@ apply_ctrl_psi_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
             }
         }
     }
-}
-
-/**
- * @brief Applies the controlled 2-qudit diagonal gate \a A to the qudits \a i
- * and \a j of the multi-partite state vector \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (d^2 x 1 vector of diagonal elements)
- * @param ctrl Vector of control qudit indices
- * @param i Target subsystem index
- * @param j Target subsystem index
- * @param shift Vector of control shifts added to each control qudit value
- * modulo d (e.g., shifts the activating control configuration)
- * @param d Subsystem dimensions
- * @param n Number of qudits
- * @return Controlled gate \a A applied to the qudits \a i and \a j of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_psi_2q_diag(const Eigen::MatrixBase<Derived1>& state,
-                       const Eigen::MatrixBase<Derived2>& A,
-                       const std::vector<idx>& ctrl, idx i, idx j,
-                       const std::vector<idx>& shift, idx d, idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state;
-
-    // Apply transformation in-place on the copy
-    apply_ctrl_psi_2q_diag_inplace(result, A, ctrl, i, j, shift, d, n);
-
-    return result;
 }
 
 /**
@@ -539,35 +480,6 @@ template <typename Derived1, typename Derived2>
 }
 
 /**
- * @brief Applies the multi-qudit controlled diagonal gate \a A to the part \a
- * target of the multi-partite state vector \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (d^k x 1 vector of diagonal elements)
- * @param ctrl Vector of control qudit indices
- * @param target Subsystem indexes where the gate \a A is applied
- * @param shift Vector of control shifts added to each control qudit value
- * modulo d (e.g., shifts the activating control configuration)
- * @param d Subsystem dimensions
- * @param n Number of qudits
- * @return Controlled gate \a A applied to the part \a target of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1> apply_ctrl_psi_kq_diag(
-    const Eigen::MatrixBase<Derived1>& state,
-    const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-    const std::vector<idx>& target, const std::vector<idx>& shift, idx d,
-    idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state;
-
-    // Delegate to in-place implementation
-    apply_ctrl_psi_kq_diag_inplace(result, A, ctrl, target, shift, d, n);
-
-    return result;
-}
-
-/**
  * @brief Applies the controlled 1-qudit diagonal gate \a A to the qudit \a i of
  * the multi-partite density matrix \a state in-place
  *
@@ -724,35 +636,6 @@ apply_ctrl_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
             }
         }
     }
-}
-
-/**
- * @brief Applies the controlled 1-qudit diagonal gate \a A to the qudit \a i of
- * the multi-partite density matrix \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (d x 1 vector of diagonal elements)
- * @param i Target subsystem index
- * @param ctrl Vector of control qudit indices
- * @param shift Vector of control shifts added to each control qudit value
- * modulo d (e.g., shifts the activating control configuration)
- * @param d Subsystem dimensions
- * @param n Number of qudits
- * @return Controlled gate \a A applied to the qudits \a i of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_rho_1q_diag(const Eigen::MatrixBase<Derived1>& state,
-                       const Eigen::MatrixBase<Derived2>& A,
-                       const std::vector<idx>& ctrl, idx i,
-                       const std::vector<idx>& shift, idx d, idx n) {
-    // Deep copy for functional interface
-    expr_t<Derived1> result = state;
-
-    // Apply transformation in-place
-    apply_ctrl_rho_1q_diag_inplace(result, A, ctrl, i, shift, d, n);
-
-    return result;
 }
 
 /**
@@ -935,36 +818,6 @@ apply_ctrl_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the controlled 2-qudit diagonal gate \a A to the qudits \a i
- * and \a j of the multi-partite density matrix \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (d^2 x 1 vector of diagonal elements)
- * @param i Target subsystem index
- * @param j Target subsystem index
- * @param ctrl Vector of control qudit indices
- * @param shift Vector of control shifts added to each control qudit value
- * modulo d (e.g., shifts the activating control configuration)
- * @param d Subsystem dimensions
- * @param n Number of qudits
- * @return Controlled gate \a A applied to the qudits \a i and \a j of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_rho_2q_diag(const Eigen::MatrixBase<Derived1>& state,
-                       const Eigen::MatrixBase<Derived2>& A,
-                       const std::vector<idx>& ctrl, idx i, idx j,
-                       const std::vector<idx>& shift, idx d, idx n) {
-    // Deep copy for the functional return
-    expr_t<Derived1> result = state.derived();
-
-    // Delegate to the in-place version
-    apply_ctrl_rho_2q_diag_inplace(result, A, ctrl, i, j, shift, d, n);
-
-    return result;
-}
-
-/**
  * @brief Applies the multi-qudit controlled diagonal gate A^c to the part
  * \a target of the multi-partite density matrix \a state in-place.
  * The transformation is \f$\rho \mapsto U \rho U^\dagger\f$.
@@ -1142,35 +995,6 @@ template <typename Derived1, typename Derived2>
             }
         }
     }
-}
-
-/**
- * @brief Applies the controlled multi-qudit diagonal gate \a A to the part \a
- * target of the multi-partite density matrix \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (d^k x 1 vector of diagonal elements)
- * @param target Subsystem indexes where the gate \a A is applied
- * @param ctrl Vector of control qudit indices
- * @param shift Vector of control shifts added to each control qudit value
- * modulo d (e.g., shifts the activating control configuration)
- * @param d Subsystem dimensions
- * @param n Number of qudits
- * @return Controlled gate \a A applied to the part \a target of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1> apply_ctrl_rho_kq_diag(
-    const Eigen::MatrixBase<Derived1>& state,
-    const Eigen::MatrixBase<Derived2>& A, const std::vector<idx>& ctrl,
-    const std::vector<idx>& target, const std::vector<idx>& shift, idx d,
-    idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state.derived();
-
-    // Delegate to in-place implementation
-    apply_ctrl_rho_kq_diag_inplace(result, A, ctrl, target, shift, d, n);
-
-    return result;
 }
 } // namespace qpp::internal::kernels::qudit
 

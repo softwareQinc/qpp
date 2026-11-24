@@ -40,14 +40,12 @@
 #include <Eigen/Dense>
 #include <Eigen/SVD>
 
-#include "qpp/constants.hpp"
-#include "qpp/options.hpp"
-#include "qpp/types.hpp"
-
-#include "qpp/functions.hpp"
-
 #include "qpp/classes/exception.hpp"
 #include "qpp/classes/gates.hpp"
+#include "qpp/constants.hpp"
+#include "qpp/functions.hpp"
+#include "qpp/types.hpp"
+
 #include "qpp/internal/kernels/qubit/apply.hpp"
 #include "qpp/internal/kernels/qubit/apply_ctrl.hpp"
 #include "qpp/internal/kernels/qubit/apply_ctrl_diag.hpp"
@@ -56,7 +54,14 @@
 #include "qpp/internal/kernels/qubit/ptrace.hpp"
 #include "qpp/internal/kernels/qubit/ptranspose.hpp"
 #include "qpp/internal/kernels/qubit/syspermute.hpp"
+#include "qpp/internal/kernels/qudit/apply.hpp"
+#include "qpp/internal/kernels/qudit/apply_ctrl.hpp"
 #include "qpp/internal/kernels/qudit/apply_ctrl_diag.hpp"
+#include "qpp/internal/kernels/qudit/apply_ctrl_fan.hpp"
+#include "qpp/internal/kernels/qudit/apply_diag.hpp"
+#include "qpp/internal/kernels/qudit/ptrace.hpp"
+#include "qpp/internal/kernels/qudit/ptranspose.hpp"
+#include "qpp/internal/kernels/qudit/syspermute.hpp"
 #include "qpp/internal/util.hpp"
 
 namespace qpp {
@@ -196,194 +201,11 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
     }
 #endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
-    idx D = static_cast<idx>(rstate.rows()); // total dimension
-    idx DA = static_cast<idx>(rA.rows());    // dimension of gate subsystem
-
-    idx Cdims[internal::maxn];      // local dimensions total
-    idx CdimsA[internal::maxn];     // local dimensions gate
-    idx CdimsA_bar[internal::maxn]; // local dimensions complement
-
-    // compute the complementary subsystem of gate w.r.t. dims
-    std::vector<idx> gate_bar = complement(target, n);
-    // number of subsystems that are complementary to the gate
-    idx gate_bar_size = gate_bar.size();
-
-    idx DA_bar = 1; // dimension of the complement
-    for (idx i = 0; i < gate_bar_size; ++i) {
-        DA_bar *= dims[gate_bar[i]];
-    }
-
-    for (idx k = 0; k < n; ++k) {
-        Cdims[k] = dims[k];
-    }
-    for (idx k = 0; k < gate_size; ++k) {
-        CdimsA[k] = dims[target[k]];
-    }
-    for (idx k = 0; k < gate_bar_size; ++k) {
-        CdimsA_bar[k] = dims[gate_bar[k]];
-    }
-
-    // worker, computes the coefficient and the index for the ket case, used in
-    // #pragma omp parallel for collapse
-    auto coeff_idx_ket =
-        [&](idx m_,
-            idx r_) noexcept -> std::pair<typename Derived1::Scalar, idx> {
-        idx indx = 0;
-        typename Derived1::Scalar coeff = 0;
-
-        idx Cmidx[internal::maxn];      // the total multi-index
-        idx CmidxA[internal::maxn];     // the gate multi-index
-        idx CmidxA_bar[internal::maxn]; // the complement multi-index
-
-        // compute the index
-
-        // set the complement multi-index
-        internal::n2multiidx(r_, gate_bar_size, CdimsA_bar, CmidxA_bar);
-        for (idx k = 0; k < gate_bar_size; ++k) {
-            Cmidx[gate_bar[k]] = CmidxA_bar[k];
-        }
-
-        // set the gate multi-index
-        internal::n2multiidx(m_, gate_size, CdimsA, CmidxA);
-        for (idx k = 0; k < gate_size; ++k) {
-            Cmidx[target[k]] = CmidxA[k];
-        }
-
-        // we now got the total index
-        indx = internal::multiidx2n(Cmidx, n, Cdims);
-
-        // compute the coefficient
-        // reads from the original unmodified rstate
-        for (idx n_ = 0; n_ < DA; ++n_) {
-            internal::n2multiidx(n_, gate_size, CdimsA, CmidxA);
-            for (idx k = 0; k < gate_size; ++k) {
-                Cmidx[target[k]] = CmidxA[k];
-            }
-            coeff += rA(m_, n_) * rstate(internal::multiidx2n(Cmidx, n, Cdims));
-        }
-
-        return std::make_pair(coeff, indx);
-    }; /* end coeff_idx_ket */
-
-    // worker, computes the coefficient and the index for the density matrix
-    // case, used in #pragma omp parallel for collapse
-    auto coeff_idx_rho = [&](idx m1_, idx r1_, idx m2_, idx r2_) noexcept
-        -> std::tuple<typename Derived1::Scalar, idx, idx> {
-        idx idxrow = 0;
-        idx idxcol = 0;
-        typename Derived1::Scalar coeff = 0, lhs = 1, rhs = 1;
-
-        idx Cmidxrow[internal::maxn];      // the total row multi-index
-        idx Cmidxcol[internal::maxn];      // the total col multi-index
-        idx CmidxArow[internal::maxn];     // the gate row multi-index
-        idx CmidxAcol[internal::maxn];     // the gate col multi-index
-        idx CmidxA_barrow[internal::maxn]; // the complement row multi-index
-        idx CmidxA_barcol[internal::maxn]; // the complement col multi-index
-
-        // compute the ket/bra indexes
-
-        // set the complement multi-index
-        internal::n2multiidx(r1_, gate_bar_size, CdimsA_bar, CmidxA_barrow);
-        internal::n2multiidx(r2_, gate_bar_size, CdimsA_bar, CmidxA_barcol);
-        for (idx k = 0; k < gate_bar_size; ++k) {
-            Cmidxrow[gate_bar[k]] = CmidxA_barrow[k];
-            Cmidxcol[gate_bar[k]] = CmidxA_barcol[k];
-        }
-
-        // set the gate multi-index
-        internal::n2multiidx(m1_, gate_size, CdimsA, CmidxArow);
-        internal::n2multiidx(m2_, gate_size, CdimsA, CmidxAcol);
-        for (idx k = 0; k < gate_size; ++k) {
-            Cmidxrow[target[k]] = CmidxArow[k];
-            Cmidxcol[target[k]] = CmidxAcol[k];
-        }
-
-        // we now got the total row/col indexes
-        idxrow = internal::multiidx2n(Cmidxrow, n, Cdims);
-        idxcol = internal::multiidx2n(Cmidxcol, n, Cdims);
-
-        // compute the coefficient
-        // reads from the original unmodified rstate
-        for (idx n1_ = 0; n1_ < DA; ++n1_) {
-            internal::n2multiidx(n1_, gate_size, CdimsA, CmidxArow);
-            for (idx k = 0; k < gate_size; ++k) {
-                Cmidxrow[target[k]] = CmidxArow[k];
-            }
-            idx idxrowtmp = internal::multiidx2n(Cmidxrow, n, Cdims);
-
-            lhs = rA(m1_, n1_);
-
-            for (idx n2_ = 0; n2_ < DA; ++n2_) {
-                internal::n2multiidx(n2_, gate_size, CdimsA, CmidxAcol);
-                for (idx k = 0; k < gate_size; ++k) {
-                    Cmidxcol[target[k]] = CmidxAcol[k];
-                }
-
-                rhs = adjoint(rA)(n2_, m2_);
-
-                idx idxcoltmp = internal::multiidx2n(Cmidxcol, n, Cdims);
-
-                coeff += lhs * rstate(idxrowtmp, idxcoltmp) * rhs;
-            }
-        }
-
-        return std::make_tuple(coeff, idxrow, idxcol);
-    }; /* end coeff_idx_rho */
-
-    //************ ket ************//
-    if (internal::check_cvector(rstate)) // we have a ket
-    {
-        if (D == 1) {
-            return;
-        }
-
-        // Must write to a separate result matrix first to avoid aliasing
-        // corruption
-        auto result = rstate;
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for collapse(2)
-#endif // QPP_ENABLE_OPENMP
-        for (idx m = 0; m < DA; ++m) {
-            for (idx r = 0; r < DA_bar; ++r) {
-                result(coeff_idx_ket(m, r).second) = coeff_idx_ket(m, r).first;
-            }
-        }
-
-        // Apply back to the referenced state matrix
-        rstate = std::move(result);
-        return;
-    }
-    //************ density matrix ************//
-    else // we have a density operator
-    {
-        if (D == 1) {
-            return;
-        }
-
-        // Must write to a separate result matrix first to avoid aliasing
-        // corruption
-        auto result = rstate;
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for collapse(4)
-#endif // QPP_ENABLE_OPENMP
-        for (idx m1 = 0; m1 < DA; ++m1) {
-            for (idx r1 = 0; r1 < DA_bar; ++r1) {
-                for (idx m2 = 0; m2 < DA; ++m2) {
-                    for (idx r2 = 0; r2 < DA_bar; ++r2) {
-                        auto coeff_idxes = coeff_idx_rho(m1, r1, m2, r2);
-                        result(std::get<1>(coeff_idxes),
-                               std::get<2>(coeff_idxes)) =
-                            std::get<0>(coeff_idxes);
-                    }
-                }
-            }
-        }
-
-        // Apply back to the referenced state matrix
-        rstate = std::move(result);
-        return;
+    // qudit kernels
+    if (internal::check_cvector(rstate)) {
+        internal::kernels::qudit::apply_psi_kq_inplace(state, A, target, dims);
+    } else {
+        internal::kernels::qudit::apply_rho_kq_inplace(state, A, target, dims);
     }
 }
 
@@ -562,112 +384,13 @@ template <typename Derived1, typename Derived2>
     }
 #endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
-    idx D = static_cast<idx>(rstate.rows()); // total dimension
-    idx DA = static_cast<idx>(rA.rows());    // dimension of gate subsystem
-
-    idx Cdims[internal::maxn];      // local dimensions total
-    idx CdimsA[internal::maxn];     // local dimensions gate
-    idx CdimsA_bar[internal::maxn]; // local dimensions complement
-
-    // compute the complementary subsystem of gate w.r.t. dims
-    std::vector<idx> gate_bar = complement(target, n);
-    idx gate_bar_size = gate_bar.size();
-
-    idx DA_bar = D / DA; // dimension of the complement
-
-    for (idx k = 0; k < n; ++k) {
-        Cdims[k] = dims[k];
-    }
-    for (idx k = 0; k < gate_size; ++k) {
-        CdimsA[k] = dims[target[k]];
-    }
-    for (idx k = 0; k < gate_bar_size; ++k) {
-        CdimsA_bar[k] = dims[gate_bar[k]];
-    }
-
-    //************ ket ************//
-    if (internal::check_cvector(rstate)) // we have a ket
-    {
-        if (D == 1) {
-            rstate(0) *= rA(0);
-            return;
-        }
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for collapse(2)
-#endif // QPP_ENABLE_OPENMP
-        for (idx m = 0; m < DA; ++m) {
-            for (idx r = 0; r < DA_bar; ++r) {
-                idx Cmidx[internal::maxn];
-                idx CmidxA[internal::maxn];
-                idx CmidxA_bar[internal::maxn];
-
-                // set the complement multi-index
-                internal::n2multiidx(r, gate_bar_size, CdimsA_bar, CmidxA_bar);
-                for (idx k = 0; k < gate_bar_size; ++k) {
-                    Cmidx[gate_bar[k]] = CmidxA_bar[k];
-                }
-
-                // set the gate multi-index
-                internal::n2multiidx(m, gate_size, CdimsA, CmidxA);
-                for (idx k = 0; k < gate_size; ++k) {
-                    Cmidx[target[k]] = CmidxA[k];
-                }
-
-                // apply the diagonal element
-                rstate(internal::multiidx2n(Cmidx, n, Cdims)) *= rA(m);
-            }
-        }
-    }
-    //************ density matrix ************//
-    else // we have a density operator
-    {
-        if (D == 1) {
-            rstate(0, 0) *= rA(0) * std::conj(rA(0));
-            return;
-        }
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for collapse(4)
-#endif // QPP_ENABLE_OPENMP
-        for (idx m1 = 0; m1 < DA; ++m1) {
-            for (idx r1 = 0; r1 < DA_bar; ++r1) {
-                for (idx m2 = 0; m2 < DA; ++m2) {
-                    for (idx r2 = 0; r2 < DA_bar; ++r2) {
-                        idx Cmidxrow[internal::maxn];
-                        idx Cmidxcol[internal::maxn];
-                        idx CmidxArow[internal::maxn];
-                        idx CmidxAcol[internal::maxn];
-                        idx CmidxA_barrow[internal::maxn];
-                        idx CmidxA_barcol[internal::maxn];
-
-                        // complement indices
-                        internal::n2multiidx(r1, gate_bar_size, CdimsA_bar,
-                                             CmidxA_barrow);
-                        internal::n2multiidx(r2, gate_bar_size, CdimsA_bar,
-                                             CmidxA_barcol);
-                        for (idx k = 0; k < gate_bar_size; ++k) {
-                            Cmidxrow[gate_bar[k]] = CmidxA_barrow[k];
-                            Cmidxcol[gate_bar[k]] = CmidxA_barcol[k];
-                        }
-
-                        // gate indices
-                        internal::n2multiidx(m1, gate_size, CdimsA, CmidxArow);
-                        internal::n2multiidx(m2, gate_size, CdimsA, CmidxAcol);
-                        for (idx k = 0; k < gate_size; ++k) {
-                            Cmidxrow[target[k]] = CmidxArow[k];
-                            Cmidxcol[target[k]] = CmidxAcol[k];
-                        }
-
-                        idx row = internal::multiidx2n(Cmidxrow, n, Cdims);
-                        idx col = internal::multiidx2n(Cmidxcol, n, Cdims);
-
-                        // apply A on left and A^\dagger on right
-                        rstate(row, col) *= rA(m1) * std::conj(rA(m2));
-                    }
-                }
-            }
-        }
+    // qudit kernels
+    if (internal::check_cvector(rstate)) {
+        internal::kernels::qudit::apply_psi_kq_diag_inplace(state, A, target,
+                                                            dims);
+    } else {
+        internal::kernels::qudit::apply_rho_kq_diag_inplace(state, A, target,
+                                                            dims);
     }
 }
 
@@ -1324,63 +1047,13 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
     }
 #endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
-    // Generic fallback
-    idx D = static_cast<idx>(rstate.rows());
-    std::vector<dyn_mat<typename Derived1::Scalar>> Ak;
-    for (idx k = 0; k < d; ++k) {
-        Ak.emplace_back(powm(rA, k));
-    }
-
-    auto applyCTRL_ket_worker =
-        [&](const dyn_col_vect<typename Derived1::Scalar>& v) {
-            dyn_col_vect<typename Derived1::Scalar> res =
-                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-            for (idx r = 0; r < d; ++r) {
-                std::vector<idx> ctrl_shift = internal_shift;
-                std::transform(ctrl_shift.begin(), ctrl_shift.end(),
-                               ctrl_shift.begin(),
-                               [r, d](idx e) { return (e + r) % d; });
-
-                dyn_col_vect<typename Derived1::Scalar> chopped =
-                    internal::project_ket_on_dits(v, ctrl_shift, ctrl, dims, D);
-
-                if (!chopped.isZero()) {
-                    apply_inplace(chopped, Ak[r], target, dims);
-                }
-                res +=
-                    (chopped + ((v / d) - internal::project_ket_on_dits(
-                                              v, ctrl_shift, ctrl, dims, D)));
-            }
-            return res;
-        };
-
+    // qudit kernels
     if (internal::check_cvector(rstate)) {
-        rstate = applyCTRL_ket_worker(rstate);
+        internal::kernels::qudit::apply_ctrl_psi_kq_inplace(
+            state, A, ctrl, target, dims, internal_shift);
     } else {
-        dyn_mat<typename Derived1::Scalar> result =
-            dyn_mat<typename Derived1::Scalar>::Zero(D, D);
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for
-#endif
-        for (idx i = 0; i < D; ++i) {
-            dyn_col_vect<typename Derived1::Scalar> psi_i =
-                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-            psi_i(i) = 1;
-            dyn_col_vect<typename Derived1::Scalar> phi_i_ket =
-                rstate.row(i).adjoint();
-
-            psi_i = applyCTRL_ket_worker(psi_i);
-            dyn_row_vect<typename Derived1::Scalar> phi_i_bra =
-                applyCTRL_ket_worker(phi_i_ket).adjoint();
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp critical
-#endif
-            {
-                result += psi_i * phi_i_bra;
-            }
-        }
-        rstate = std::move(result);
+        internal::kernels::qudit::apply_ctrl_rho_kq_inplace(
+            state, A, ctrl, target, dims, internal_shift);
     }
 }
 
@@ -1613,9 +1286,8 @@ template <typename Derived1, typename Derived2>
     }
 #endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
-    // qudits
-    const bool is_ket = internal::check_cvector(rstate);
-    if (is_ket) {
+    // qudit kernels
+    if (internal::check_cvector(rstate)) {
         switch (gate_size) {
             case 1:
                 internal::kernels::qudit::apply_ctrl_psi_1q_diag_inplace(
@@ -1888,8 +1560,8 @@ applyCTRL_diag(const Eigen::MatrixBase<Derived1>& state,
  * @brief Applies the single qudit controlled-gate \a A with multiple
  * control qudits listed in \a ctrl to the part \a target of the
  * multi-partite state vector or density matrix \a state in-place, i.e.,
- * CTRL-\a A-\a A-...-\a
- * A
+ * CTRL-\a A-\a A-...-\a A
+ *
  * @see qpp::applyCTRL_fan()
  *
  * @note The dimension of the gate \a A must match the dimension of every
@@ -2073,94 +1745,13 @@ template <typename Derived1, typename Derived2>
     }
 #endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
-    // construct the table of A^k
-    std::vector<dyn_mat<typename Derived1::Scalar>> Ak;
-    for (idx k = 0; k < d; ++k) {
-        Ak.emplace_back(powm(rA, k));
-    }
-
-    idx D = static_cast<idx>(rstate.rows());
-    if (D == 1) {
-        return;
-    }
-
-    // helper lambda for ket-state logic
-    auto applyCTRL_fan_ket =
-        [d, D, &Ak, &ctrl, &target, &dims,
-         &shift](const dyn_col_vect<typename Derived1::Scalar>& psi) {
-            dyn_col_vect<typename Derived1::Scalar> result =
-                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-
-            using Scalar = typename Derived1::Scalar;
-            using RealScalar = typename Eigen::NumTraits<Scalar>::Real;
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for
-#endif
-            for (idx r = 0; r < d; ++r) {
-                std::vector<idx> ctrl_shift = shift.value();
-                std::transform(ctrl_shift.begin(), ctrl_shift.end(),
-                               ctrl_shift.begin(),
-                               [r, d](idx elem) { return (elem + r) % d; });
-
-                dyn_col_vect<typename Derived1::Scalar> chopped_psi =
-                    internal::project_ket_on_dits(psi, ctrl_shift, ctrl, dims,
-                                                  D);
-
-                // casting fixes MSVC warning C4244: 'argument': conversion
-                // from 'const qpp::idx' to 'const std::complex<double>::_Ty',
-                // possible loss of data
-                dyn_col_vect<Scalar> chopped_psi_bar =
-                    (psi / Scalar{static_cast<RealScalar>(d)}) - chopped_psi;
-
-                if (chopped_psi.norm() > 0) { // small optimization check
-                    for (idx elem : target) {
-                        chopped_psi = apply(chopped_psi, Ak[r], {elem}, dims);
-                    }
-                }
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp critical
-#endif
-                {
-                    result += (chopped_psi + chopped_psi_bar);
-                }
-            }
-            return result;
-        };
-
-    //************ Logic Execution ************//
-
+    // qudit kernels
     if (internal::check_cvector(rstate)) {
-        // ket state: replace original data with computed ket
-        rstate = applyCTRL_fan_ket(rstate);
+        internal::kernels::qudit::apply_ctrl_fan_psi_kq_inplace(
+            state, A, ctrl, target, dims, shift.value());
     } else {
-        // density matrix: compute into temporary then move
-        dyn_mat<typename Derived1::Scalar> result =
-            dyn_mat<typename Derived1::Scalar>::Zero(D, D);
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for
-#endif
-        for (idx i = 0; i < D; ++i) {
-            dyn_col_vect<typename Derived1::Scalar> psi_i =
-                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-            psi_i(i) = 1;
-
-            dyn_col_vect<typename Derived1::Scalar> phi_i_ket =
-                rstate.row(i).adjoint();
-
-            psi_i = applyCTRL_fan_ket(psi_i);
-            dyn_row_vect<typename Derived1::Scalar> phi_i_bra =
-                applyCTRL_fan_ket(phi_i_ket).adjoint();
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp critical
-#endif
-            {
-                result += psi_i * phi_i_bra;
-            }
-        }
-        rstate = std::move(result);
+        internal::kernels::qudit::apply_ctrl_fan_rho_kq_inplace(
+            state, A, ctrl, target, dims, shift.value());
     }
 }
 
@@ -2168,8 +1759,8 @@ template <typename Derived1, typename Derived2>
  * @brief Applies the single qudit controlled-gate \a A with multiple
  * control qudits listed in \a ctrl to the part \a target of the
  * multi-partite state vector or density matrix \a state in-place, i.e.,
- * CTRL-\a A-\a A-...-\a
- * A
+ * CTRL-\a A-\a A-...-\a A
+ *
  * @see qpp::applyCTRL_fan()
  *
  * @param state Eigen expression (modified in-place)
@@ -2949,7 +2540,7 @@ dyn_mat<typename Derived::Scalar> ptrace2(const Eigen::MatrixBase<Derived>& A,
  * @brief Partial trace
  * @see qpp::ptrace1(), qpp::ptrace2()
  *
- * Partial trace of the multi-partite state vector or density matrix over
+ * Partial trace of the multi-partite state vector or density matrix \a A over
  * the list \a target of subsystems
  *
  * @param A Eigen expression
@@ -3011,165 +2602,18 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
     }
 #endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
-    idx D = static_cast<idx>(rA.rows());
-    idx n_subsys = target.size();
-    idx n_subsys_bar = n - n_subsys;
-    idx Dsubsys = 1;
-    for (idx i = 0; i < n_subsys; ++i) {
-        Dsubsys *= dims[target[i]];
+    // qudit kernels
+    if (internal::check_cvector(rA)) {
+        return internal::kernels::qudit::ptrace_psi_kq(A, target, dims);
     }
-    idx Dsubsys_bar = D / Dsubsys;
-
-    idx Cdims[internal::maxn];
-    idx Csubsys[internal::maxn];
-    idx Cdimssubsys[internal::maxn];
-    idx Csubsys_bar[internal::maxn];
-    idx Cdimssubsys_bar[internal::maxn];
-
-    idx Cmidxcolsubsys_bar[internal::maxn];
-
-    std::vector<idx> subsys_bar = complement(target, n);
-    std::copy(subsys_bar.begin(), subsys_bar.end(), std::begin(Csubsys_bar));
-
-    for (idx i = 0; i < n; ++i) {
-        Cdims[i] = dims[i];
-    }
-    for (idx i = 0; i < n_subsys; ++i) {
-        Csubsys[i] = target[i];
-        Cdimssubsys[i] = dims[target[i]];
-    }
-    for (idx i = 0; i < n_subsys_bar; ++i) {
-        Cdimssubsys_bar[i] = dims[subsys_bar[i]];
-    }
-
-    dyn_mat<typename Derived::Scalar> result =
-        dyn_mat<typename Derived::Scalar>(Dsubsys_bar, Dsubsys_bar);
-
-    //************ ket ************//
-    if (internal::check_cvector(rA)) // we have a ket
-    {
-        if (target.size() == dims.size()) {
-            result(0, 0) = (adjoint(rA) * rA).value();
-            return result;
-        }
-
-        if (target.empty()) {
-            return rA * adjoint(rA);
-        }
-
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
-            // use static allocation for speed!
-            idx Cmidxrow[internal::maxn];
-            idx Cmidxcol[internal::maxn];
-            idx Cmidxrowsubsys_bar[internal::maxn];
-            idx Cmidxsubsys[internal::maxn];
-
-            /* get the row multi-indexes of the complement */
-            internal::n2multiidx(i, n_subsys_bar, Cdimssubsys_bar,
-                                 Cmidxrowsubsys_bar);
-            /* write them in the global row/col multi-indexes */
-            for (idx k = 0; k < n_subsys_bar; ++k) {
-                Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
-                Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
-            }
-            typename Derived::Scalar sm = 0;
-            for (idx a = 0; a < Dsubsys; ++a) {
-                // get the multi-index over which we do the summation
-                internal::n2multiidx(a, n_subsys, Cdimssubsys, Cmidxsubsys);
-                // write it into the global row/col multi-indexes
-                for (idx k = 0; k < n_subsys; ++k) {
-                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] =
-                        Cmidxsubsys[k];
-                }
-
-                // now do the sum
-                sm += rA(internal::multiidx2n(Cmidxrow, n, Cdims)) *
-                      std::conj(rA(internal::multiidx2n(Cmidxcol, n, Cdims)));
-            }
-
-            return sm;
-        }; /* end worker */
-
-        for (idx j = 0; j < Dsubsys_bar; ++j) // column major order for speed
-        {
-            // compute the column multi-indexes of the complement
-            internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
-                                 Cmidxcolsubsys_bar);
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for
-#endif // QPP_ENABLE_OPENMP
-            for (idx i = 0; i < Dsubsys_bar; ++i) {
-                result(i, j) = worker(i);
-            }
-        }
-    }
-    //************ density matrix ************//
-    else // we have a density operator
-    {
-        if (target.size() == dims.size()) {
-            result(0, 0) = rA.trace();
-            return result;
-        }
-
-        if (target.empty()) {
-            return rA;
-        }
-
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
-            // use static allocation for speed!
-            idx Cmidxrow[internal::maxn];
-            idx Cmidxcol[internal::maxn];
-            idx Cmidxrowsubsys_bar[internal::maxn];
-            idx Cmidxsubsys[internal::maxn];
-
-            /* get the row/col multi-indexes of the complement */
-            internal::n2multiidx(i, n_subsys_bar, Cdimssubsys_bar,
-                                 Cmidxrowsubsys_bar);
-            /* write them in the global row/col multi-indexes */
-            for (idx k = 0; k < n_subsys_bar; ++k) {
-                Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
-                Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
-            }
-            typename Derived::Scalar sm = 0;
-            for (idx a = 0; a < Dsubsys; ++a) {
-                // get the multi-index over which we do the summation
-                internal::n2multiidx(a, n_subsys, Cdimssubsys, Cmidxsubsys);
-                // write it into the global row/col multi-indexes
-                for (idx k = 0; k < n_subsys; ++k) {
-                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] =
-                        Cmidxsubsys[k];
-                }
-
-                // now do the sum
-                sm += rA(internal::multiidx2n(Cmidxrow, n, Cdims),
-                         internal::multiidx2n(Cmidxcol, n, Cdims));
-            }
-
-            return sm;
-        }; /* end worker */
-
-        for (idx j = 0; j < Dsubsys_bar; ++j) // column major order for speed
-        {
-            // compute the column multi-indexes of the complement
-            internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
-                                 Cmidxcolsubsys_bar);
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for
-#endif // QPP_ENABLE_OPENMP
-            for (idx i = 0; i < Dsubsys_bar; ++i) {
-                result(i, j) = worker(i);
-            }
-        }
-    }
-
-    return result;
+    return internal::kernels::qudit::ptrace_rho_kq(A, target, dims);
 }
 
 /**
  * @brief Partial trace
  * @see qpp::ptrace1(), qpp::ptrace2()
  *
- * Partial trace of the multi-partite state vector or density matrix over
+ * Partial trace of the multi-partite state vector or density matrix \a A over
  * the list \a target of subsystems
  *
  * @param A Eigen expression
@@ -3206,7 +2650,7 @@ dyn_mat<typename Derived::Scalar> ptrace(const Eigen::MatrixBase<Derived>& A,
 /**
  * @brief Partial transpose
  *
- * Partial transpose of the multi-partite state vector or density matrix
+ * Partial transpose of the multi-partite state vector or density matrix \a A
  * over the list \a target of subsystems
  *
  * @param A Eigen expression
@@ -3268,126 +2712,17 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
     }
 #endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
-    idx D = static_cast<idx>(rA.rows());
-    idx n_subsys = target.size();
-    idx Cdims[internal::maxn];
-    idx Cmidxcol[internal::maxn];
-    idx Csubsys[internal::maxn];
-
-    // copy dims in Cdims and target in Csubsys
-    for (idx i = 0; i < n; ++i) {
-        Cdims[i] = dims[i];
+    // qudit kernels
+    if (internal::check_cvector(rA)) {
+        return internal::kernels::qudit::ptranspose_psi_kq(A, target, dims);
     }
-    for (idx i = 0; i < n_subsys; ++i) {
-        Csubsys[i] = target[i];
-    }
-
-    dyn_mat<typename Derived::Scalar> result(D, D);
-
-    //************ ket ************//
-    if (internal::check_cvector(rA)) // we have a ket
-    {
-        if (target.size() == dims.size()) {
-            return (rA * adjoint(rA)).transpose();
-        }
-
-        if (target.empty()) {
-            return rA * adjoint(rA);
-        }
-
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
-            // use static allocation for speed!
-            idx midxcoltmp[internal::maxn];
-            idx midxrow[internal::maxn];
-
-            for (idx k = 0; k < n; ++k) {
-                midxcoltmp[k] = Cmidxcol[k];
-            }
-
-            /* compute the row multi-index */
-            internal::n2multiidx(i, n, Cdims, midxrow);
-
-            for (idx k = 0; k < n_subsys; ++k) {
-                std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
-            }
-
-            /* writes the result */
-            return rA(internal::multiidx2n(midxrow, n, Cdims)) *
-                   std::conj(rA(internal::multiidx2n(midxcoltmp, n, Cdims)));
-        }; /* end worker */
-
-        for (idx j = 0; j < D; ++j) {
-            // compute the column multi-index
-            internal::n2multiidx(j, n, Cdims, Cmidxcol);
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for
-#endif // QPP_ENABLE_OPENMP
-            for (idx i = 0; i < D; ++i) {
-                result(i, j) = worker(i);
-            }
-        }
-    }
-    //************ density matrix ************//
-    else // we have a density operator
-    {
-        if (target.size() == dims.size()) {
-            return rA.transpose();
-        }
-
-        if (target.empty()) {
-            return rA;
-        }
-
-        auto worker = [&](idx i) noexcept -> typename Derived::Scalar {
-            // use static allocation for speed!
-            idx midxcoltmp[internal::maxn];
-            idx midxrow[internal::maxn];
-
-            for (idx k = 0; k < n; ++k) {
-                midxcoltmp[k] = Cmidxcol[k];
-            }
-
-            /* compute the row multi-index */
-            internal::n2multiidx(i, n, Cdims, midxrow);
-
-            for (idx k = 0; k < n_subsys; ++k) {
-                std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
-            }
-
-// silence g++12 bogus warning -Wmaybe-uninitialized in qpp::multiidx2n()
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#endif
-            /* writes the result */
-            return rA(internal::multiidx2n(midxrow, n, Cdims),
-                      internal::multiidx2n(midxcoltmp, n, Cdims));
-#if defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER)
-#pragma GCC diagnostic pop
-#endif
-        }; /* end worker */
-
-        for (idx j = 0; j < D; ++j) {
-            // compute the column multi-index
-            internal::n2multiidx(j, n, Cdims, Cmidxcol);
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for
-#endif // QPP_ENABLE_OPENMP
-            for (idx i = 0; i < D; ++i) {
-                result(i, j) = worker(i);
-            }
-        }
-    }
-
-    return result;
+    return internal::kernels::qudit::ptranspose_rho_kq(A, target, dims);
 }
 
 /**
  * @brief Partial transpose
  *
- * Partial transpose of the multi-partite state vector or density matrix
+ * Partial transpose of the multi-partite state vector or density matrix \a A
  * over the list \a target of subsystems
  *
  * @param A Eigen expression
@@ -3424,7 +2759,7 @@ ptranspose(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 /**
  * @brief Subsystem permutation
  *
- * Permutes the subsystems of a state vector or density matrix. The qubit
+ * Permutes the subsystems of a state vector or density matrix. The qudit
  * \a perm[\a i] is permuted to the location \a i.
  *
  * @param A Eigen expression
@@ -3463,15 +2798,12 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
         throw exception::PermMismatchDims(func_name, "dims/perm");
     }
 
-    const bool is_cvector = internal::check_cvector(rA);
-    const bool is_square_mat = internal::check_square_mat(rA);
-
     // check valid state and matching dimensions
-    if (is_cvector) {
+    if (internal::check_cvector(rA)) {
         if (!internal::check_dims_match_cvect(dims, rA)) {
             throw exception::DimsMismatchCvector(func_name, "A/dims");
         }
-    } else if (is_square_mat) {
+    } else if (internal::check_square_mat(rA)) {
         if (!internal::check_dims_match_mat(dims, rA)) {
             throw exception::DimsMismatchMatrix(func_name, "A/dims");
         }
@@ -3486,7 +2818,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 #ifdef QPP_ENABLE_QUBIT_OPTIMIZATIONS
     if (internal::all_dims_equal(dims, 2)) {
         // ket
-        if (is_cvector) {
+        if (internal::check_cvector(rA)) {
             return internal::kernels::qubit::syspermute_psi_kq(A, perm, n);
         }
         // density matrix
@@ -3496,77 +2828,17 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
     }
 #endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
-    idx D = static_cast<idx>(rA.rows());
-
-    // Multiplier is 1 for a column vector (ket), 2 for a square matrix
-    // (density matrix).
-    const idx multiplier = is_cvector ? 1 : 2;
-    const idx total_systems = n * multiplier;
-    const idx total_elements = D * (is_cvector ? 1 : D);
-
-    dyn_mat<typename Derived::Scalar> result;
-    result.resize(total_elements, 1);
-
-    // Static arrays for performance, sized to maximum possible: 2 *
-    // internal::maxn
-    idx Cdims[2 * internal::maxn];
-    idx Cperm[2 * internal::maxn];
-
-    // Populate Cdims and Cperm based on whether it's a ket or a density
-    // matrix.
-    for (idx i = 0; i < n; ++i) {
-        // First half (ket/rows)
-        Cdims[i] = dims[i];
-        Cperm[i] = perm[i];
-
-        // Second half for density matrix (columns)
-        if (multiplier == 2) {
-            Cdims[i + n] = dims[i];
-            Cperm[i + n] = perm[i] + n;
-        }
+    // qudit kernels
+    if (internal::check_cvector(rA)) {
+        return internal::kernels::qudit::syspermute_psi_kq(A, perm, dims);
     }
-
-    // We use a lambda to calculate the permuted index for a given linear
-    // index i.
-    auto worker = [&Cdims, &Cperm, total_systems](idx i) noexcept -> idx {
-        // Use static allocation for speed
-        idx midx[2 * internal::maxn];
-        idx midxtmp[2 * internal::maxn];
-        idx permdims[2 * internal::maxn];
-
-        /* compute the multi-index */
-        internal::n2multiidx(i, total_systems, Cdims, midx);
-
-        for (idx k = 0; k < total_systems; ++k) {
-            permdims[k] = Cdims[Cperm[k]]; // permuted dimensions
-            midxtmp[k] = midx[Cperm[k]];   // permuted multi-indexes
-        }
-
-        return internal::multiidx2n(midxtmp, total_systems, permdims);
-    }; /* end worker */
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for
-#endif // QPP_ENABLE_OPENMP
-    for (idx i = 0; i < total_elements; ++i) {
-        // rA.data()[i] accesses the element at linear index i (column-major
-        // order) and assigns it to the calculated permuted index in the
-        // result vector.
-        result(worker(i)) = rA.data()[i];
-    }
-
-    if (!is_cvector) {
-        // Reshape only for the density matrix case (from D*D x 1 to D x D)
-        result.resize(D, D);
-    }
-
-    return result;
+    return internal::kernels::qudit::syspermute_rho_kq(A, perm, dims);
 }
 
 /**
  * @brief Subsystem permutation
  *
- * Permutes the subsystems of a state vector or density matrix. The qubit
+ * Permutes the subsystems of a state vector or density matrix. The qudit
  * \a perm[\a i] is permuted to the location \a i.
  *
  * @param A Eigen expression

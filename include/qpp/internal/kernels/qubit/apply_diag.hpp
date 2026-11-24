@@ -34,14 +34,12 @@
 
 #include <cassert>
 #include <vector>
-#ifndef NDEBUG
-#include <set>
-#endif
 
 #include <Eigen/Dense>
 
-#include "qpp/internal/util.hpp"
 #include "qpp/types.hpp"
+
+#include "qpp/internal/util.hpp"
 
 namespace qpp::internal::kernels::qubit {
 /**
@@ -94,29 +92,6 @@ apply_psi_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
             state.coeffRef(k1) *= a11;
         }
     }
-}
-
-/**
- * @brief Applies the 1-qubit diagonal gate \a A to the qubit \a i of the
- * multi-partite state vector \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (2 x 1 vector of diagonal elements)
- * @param i Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @return Gate \a A applied to the qubit \a i of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_psi_1q_diag(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A, idx i, idx n) {
-    // A deep copy of the input state is required
-    expr_t<Derived1> result = state;
-
-    // Apply the gate in-place on the result copy
-    apply_psi_1q_diag_inplace(result, A, i, n);
-
-    return result;
 }
 
 /**
@@ -194,30 +169,6 @@ apply_psi_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
         state.coeffRef(k10) *= a10;
         state.coeffRef(k11) *= a11;
     }
-}
-
-/**
- * @brief Applies the 2-qubit diagonal gate \a A to the qubits \a i and \a j of
- * the multi-partite state vector \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (4 x 1 vector of diagonal elements)
- * @param i Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @return Gate \a A applied to the qubit \a i and \a j of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_psi_2q_diag(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx n) {
-    // A deep copy of the input state is required.
-    expr_t<Derived1> result = state;
-
-    // Delegate to in-place implementation
-    apply_psi_2q_diag_inplace(result, A, i, j, n);
-
-    return result;
 }
 
 /**
@@ -314,32 +265,6 @@ apply_psi_3q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the 3-qubit diagonal gate \a A to the qubit \a i, \a j, and \a
- * k of the multi-partite state vector \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (8 x 1 vector of diagonal elements)
- * @param i Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param k Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @return Gate \a A applied to the qubit \a i, \a j, and \a k of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_psi_3q_diag(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx k,
-                  idx n) {
-    // A deep copy of the input state is required.
-    expr_t<Derived1> result = state;
-
-    // Delegate to in-place implementation
-    apply_psi_3q_diag_inplace(result, A, i, j, k, n);
-
-    return result;
-}
-
-/**
  * @brief Applies the multi-qubit diagonal gate \a A to the part \a target of
  * the multi-partite state vector \a state in-place
  *
@@ -433,30 +358,6 @@ apply_psi_kq_diag_inplace(Eigen::MatrixBase<Derived1>& state,
 }
 
 /**
- * @brief Applies the multi-qubit diagonal gate \a A to the part \a target of
- * the multi-partite state vector \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (2^k x 1 vector of diagonal elements)
- * @param target Subsystem indexes where the gate \a A is applied
- * @param n Number of qubits
- * @return Gate \a A applied to the part \a target of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_psi_kq_diag(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& target, idx n) {
-    // Create the output state vector as a copy of the input.
-    expr_t<Derived1> result = state;
-
-    // Delegate to in-place implementation
-    apply_psi_kq_diag_inplace(result, A, target, n);
-
-    return result;
-}
-
-/**
  * @brief Applies the 1-qubit diagonal gate \a A to the qubit \a i of the
  * multi-partite density matrix \a state in-place
  *
@@ -535,29 +436,6 @@ apply_rho_1q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
         state.coeffRef(r1, c0) *= g10;
         state.coeffRef(r1, c1) *= g11;
     }
-}
-
-/**
- * @brief Applies the 1-qubit diagonal gate \a A to the qubit \a i of the
- * multi-partite density matrix \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (2 x 1 vector of diagonal elements)
- * @param i Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @return Gate \a A applied to the qubit \a i of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_rho_1q_diag(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A, idx i, idx n) {
-    // A deep copy of the input state is required.
-    expr_t<Derived1> result = state;
-
-    // Delegate to in-place implementation
-    apply_rho_1q_diag_inplace(result, A, i, n);
-
-    return result;
 }
 
 /**
@@ -643,30 +521,6 @@ apply_rho_2q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
             }
         }
     }
-}
-
-/**
- * @brief Applies the 2-qubit diagonal gate \a A to the qubits \a i and \a j of
- * the multi-partite density matrix \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (4 x 1 vector of diagonal elements)
- * @param i Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @return Gate \a A applied to the qubits \a i and \a j of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_rho_2q_diag(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx n) {
-    // Deep copy required for functional interface
-    expr_t<Derived1> result = state;
-
-    // Delegate to the in-place version
-    apply_rho_2q_diag_inplace(result, A, i, j, n);
-
-    return result;
 }
 
 /**
@@ -767,32 +621,6 @@ apply_rho_3q_diag_inplace(Eigen::MatrixBase<Derived1>& state,
             }
         }
     }
-}
-
-/**
- * @brief Applies the 3-qubit diagonal gate \a A to the qubit \a i, \a j, and \a
- * k of the multi-partite density matrix \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (8 x 1 vector of diagonal elements)
- * @param i Subsystem index where the gate \a A is applied
- * @param j Subsystem index where the gate \a A is applied
- * @param k Subsystem index where the gate \a A is applied
- * @param n Number of qubits
- * @return Gate \a A applied to the qubit \a i, \a j, and \a k of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_rho_3q_diag(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A, idx i, idx j, idx k,
-                  idx n) {
-    // Create copy for functional behavior
-    expr_t<Derived1> result = state;
-
-    // Perform the operation in-place on the copy
-    apply_rho_3q_diag_inplace(result, A, i, j, k, n);
-
-    return result;
 }
 
 /**
@@ -898,30 +726,6 @@ apply_rho_kq_diag_inplace(Eigen::MatrixBase<Derived1>& state,
             }
         }
     }
-}
-
-/**
- * @brief Applies the multi-qubit diagonal gate \a A to the part \a target of
- * the multi-partite density matrix \a state
- *
- * @param state Eigen expression
- * @param A Eigen expression (2^k x 1 vector of diagonal elements)
- * @param target Subsystem indexes where the gate \a A is applied
- * @param n Number of qubits
- * @return Gate \a A applied to the part \a target of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_rho_kq_diag(const Eigen::MatrixBase<Derived1>& state,
-                  const Eigen::MatrixBase<Derived2>& A,
-                  const std::vector<idx>& target, idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state;
-
-    // Apply transformation in-place on the copy
-    apply_rho_kq_diag_inplace(result, A, target, n);
-
-    return result;
 }
 } // namespace qpp::internal::kernels::qubit
 

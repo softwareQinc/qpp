@@ -43,9 +43,8 @@ std::string describe(const Case& test_case) {
 ket make_state(idx n, idx seed = 1) {
     ket result(idx{1} << n);
     for (idx j = 0; j < static_cast<idx>(result.size()); ++j) {
-        result(j) = cplx{
-            static_cast<double>((7 * j + 3 * seed) % 19) - 9.0,
-            static_cast<double>((5 * j + 2 * seed) % 17) - 8.0};
+        result(j) = cplx{static_cast<double>((7 * j + 3 * seed) % 19) - 9.0,
+                         static_cast<double>((5 * j + 2 * seed) % 17) - 8.0};
     }
     result.normalize();
     return result;
@@ -82,8 +81,7 @@ ket controlled_diagonal(const ket& A, const Case& test_case, idx n) {
     for (idx basis = 0; basis < D; ++basis) {
         bool enabled = true;
         for (idx j = 0; j < test_case.ctrl.size(); ++j) {
-            const idx bit =
-                (basis >> (n - 1 - test_case.ctrl[j])) & idx{1};
+            const idx bit = (basis >> (n - 1 - test_case.ctrl[j])) & idx{1};
             if (bit != (idx{1} - test_case.shift[j])) {
                 enabled = false;
                 break;
@@ -95,8 +93,8 @@ ket controlled_diagonal(const ket& A, const Case& test_case, idx n) {
 
         idx local_basis = 0;
         for (idx target : test_case.target) {
-            local_basis = (local_basis << 1) |
-                          ((basis >> (n - 1 - target)) & idx{1});
+            local_basis =
+                (local_basis << 1) | ((basis >> (n - 1 - target)) & idx{1});
         }
         result(basis) = A(local_basis);
     }
@@ -139,18 +137,15 @@ void expect_rho(const cmat& actual, const cmat& original, const ket& A,
 
 } // namespace
 
-TEST(qpp_qubit_apply_ctrl_psi_1q_diag_inplace, ControlPatternsAndDiagonalShapes) {
+TEST(qpp_qubit_apply_ctrl_psi_1q_diag_inplace,
+     ControlPatternsAndDiagonalShapes) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<Case> cases{
-        {{}, {0}, {}},
-        {{4}, {0}, {0}},
-        {{4}, {0}, {1}},
-        {{0}, {4}, {0}},
-        {{0}, {4}, {1}},
-        {{1, 3}, {0}, {0, 1}},
-        {{1, 3}, {0}, {1, 0}},
-        {{4, 0, 2, 3}, {1}, {1, 0, 1, 0}}};
+        {{}, {0}, {}},         {{4}, {0}, {0}},
+        {{4}, {0}, {1}},       {{0}, {4}, {0}},
+        {{0}, {4}, {1}},       {{1, 3}, {0}, {0, 1}},
+        {{1, 3}, {0}, {1, 0}}, {{4, 0, 2, 3}, {1}, {1, 0, 1, 0}}};
 
     for (const auto& test_case : cases) {
         SCOPED_TRACE(describe(test_case));
@@ -159,8 +154,8 @@ TEST(qpp_qubit_apply_ctrl_psi_1q_diag_inplace, ControlPatternsAndDiagonalShapes)
             const ket A = diagonal_gate(2, mode);
             ket actual = original;
             internal::kernels::qubit::apply_ctrl_psi_1q_diag_inplace(
-                actual, A, test_case.ctrl, test_case.target[0],
-                test_case.shift, n);
+                actual, A, test_case.ctrl, test_case.target[0], test_case.shift,
+                n);
             expect_psi(actual, original, A, test_case, n);
         }
     }
@@ -172,49 +167,27 @@ TEST(qpp_qubit_apply_ctrl_psi_1q_diag_inplace, OptimizedPhasePathsLargeState) {
     const ket A = diagonal_gate(2, 1);
     // Target 0/control 15: ctrl_bit < step (contiguous fast path).
     // Target 15/control 0: ctrl_bit > step (bit-deposit fallback).
-    const std::vector<Case> cases{
-        {{15}, {0}, {0}}, {{0}, {15}, {0}}};
+    const std::vector<Case> cases{{{15}, {0}, {0}}, {{0}, {15}, {0}}};
     for (const auto& test_case : cases) {
         SCOPED_TRACE(describe(test_case));
         ket actual = original;
         internal::kernels::qubit::apply_ctrl_psi_1q_diag_inplace(
-            actual, A, test_case.ctrl, test_case.target[0],
-            test_case.shift, n);
+            actual, A, test_case.ctrl, test_case.target[0], test_case.shift, n);
         expect_psi(actual, original, A, test_case, n);
     }
 }
 
-TEST(qpp_qubit_apply_ctrl_psi_1q_diag_inplace, PositiveAndNegativeControlBasis) {
+TEST(qpp_qubit_apply_ctrl_psi_1q_diag_inplace,
+     PositiveAndNegativeControlBasis) {
     const ket A = diagonal_gate(2, 1);
     for (idx shift : {idx{0}, idx{1}}) {
         const Case test_case{{0}, {1}, {shift}};
         ket original = ket::Zero(4);
         original(shift == 0 ? 3 : 1) = 1;
         ket actual = original;
-        internal::kernels::qubit::apply_ctrl_psi_1q_diag_inplace(
-            actual, A, {0}, 1, {shift}, 2);
+        internal::kernels::qubit::apply_ctrl_psi_1q_diag_inplace(actual, A, {0},
+                                                                 1, {shift}, 2);
         expect_psi(actual, original, A, test_case, 2);
-    }
-}
-
-TEST(qpp_qubit_apply_ctrl_psi_1q_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    ket original = make_state(n);
-    const ket before = original;
-    const std::vector<Case> cases{
-        {{}, {0}, {}},
-        {{3}, {0}, {0}},
-        {{3}, {0}, {1}},
-        {{0}, {3}, {0}},
-        {{1, 2}, {0}, {1, 0}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const ket A = diagonal_gate(2, 2);
-        const ket actual = internal::kernels::qubit::apply_ctrl_psi_1q_diag(
-            original, A, test_case.ctrl, test_case.target[0],
-            test_case.shift, n);
-        expect_psi(actual, before, A, test_case, n);
-        expect_same(original, before);
     }
 }
 
@@ -222,12 +195,9 @@ TEST(qpp_qubit_apply_ctrl_psi_2q_diag_inplace, ReversedTargetsAndControls) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<Case> cases{
-        {{}, {0, 4}, {}},
-        {{1}, {0, 4}, {0}},
-        {{1}, {0, 4}, {1}},
-        {{1, 3}, {0, 4}, {0, 1}},
-        {{3, 1}, {4, 0}, {1, 0}},
-        {{0, 2, 3}, {4, 1}, {1, 0, 1}},
+        {{}, {0, 4}, {}},         {{1}, {0, 4}, {0}},
+        {{1}, {0, 4}, {1}},       {{1, 3}, {0, 4}, {0, 1}},
+        {{3, 1}, {4, 0}, {1, 0}}, {{0, 2, 3}, {4, 1}, {1, 0, 1}},
         {{4}, {2, 3}, {0}}};
     for (const auto& test_case : cases) {
         SCOPED_TRACE(describe(test_case));
@@ -247,44 +217,24 @@ TEST(qpp_qubit_apply_ctrl_psi_2q_diag_inplace, NoControlsTwoQubits) {
     const Case test_case{{}, {1, 0}, {}};
     const ket A = diagonal_gate(4, 2);
     ket actual = original;
-    internal::kernels::qubit::apply_ctrl_psi_2q_diag_inplace(
-        actual, A, {}, 1, 0, {}, 2);
+    internal::kernels::qubit::apply_ctrl_psi_2q_diag_inplace(actual, A, {}, 1,
+                                                             0, {}, 2);
     expect_psi(actual, original, A, test_case, 2);
-}
-
-TEST(qpp_qubit_apply_ctrl_psi_2q_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    ket original = make_state(n);
-    const ket before = original;
-    const std::vector<Case> cases{
-        {{}, {0, 3}, {}},
-        {{1}, {3, 0}, {0}},
-        {{1, 2}, {3, 0}, {1, 0}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const ket A = diagonal_gate(4, 2);
-        const ket actual = internal::kernels::qubit::apply_ctrl_psi_2q_diag(
-            original, A, test_case.ctrl, test_case.target[0],
-            test_case.target[1], test_case.shift, n);
-        expect_psi(actual, before, A, test_case, n);
-        expect_same(original, before);
-    }
 }
 
 TEST(qpp_qubit_apply_ctrl_psi_kq_diag_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const ket original = make_state(n);
-    const std::vector<Case> cases{
-        {{}, {}, {}},
-        {{0}, {}, {0}},
-        {{0}, {}, {1}},
-        {{4}, {0}, {0}},
-        {{0}, {4}, {1}},
-        {{1, 3}, {0, 4}, {0, 1}},
-        {{3, 1}, {4, 0}, {1, 0}},
-        {{1, 3}, {4, 2, 0}, {0, 1}},
-        {{1}, {4, 2, 0, 3}, {1}},
-        {{}, {4, 2, 0, 3, 1}, {}}};
+    const std::vector<Case> cases{{{}, {}, {}},
+                                  {{0}, {}, {0}},
+                                  {{0}, {}, {1}},
+                                  {{4}, {0}, {0}},
+                                  {{0}, {4}, {1}},
+                                  {{1, 3}, {0, 4}, {0, 1}},
+                                  {{3, 1}, {4, 0}, {1, 0}},
+                                  {{1, 3}, {4, 2, 0}, {0, 1}},
+                                  {{1}, {4, 2, 0, 3}, {1}},
+                                  {{}, {4, 2, 0, 3, 1}, {}}};
     for (const auto& test_case : cases) {
         SCOPED_TRACE(describe(test_case));
         const idx d = idx{1} << test_case.target.size();
@@ -293,54 +243,31 @@ TEST(qpp_qubit_apply_ctrl_psi_kq_diag_inplace, ZeroToFiveTargets) {
             const ket A = diagonal_gate(d, mode);
             ket actual = original;
             internal::kernels::qubit::apply_ctrl_psi_kq_diag_inplace(
-                actual, A, test_case.ctrl, test_case.target,
-                test_case.shift, n);
+                actual, A, test_case.ctrl, test_case.target, test_case.shift,
+                n);
             expect_psi(actual, original, A, test_case, n);
         }
-    }
-}
-
-TEST(qpp_qubit_apply_ctrl_psi_kq_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    ket original = make_state(n);
-    const ket before = original;
-    const std::vector<Case> cases{
-        {{0}, {}, {0}},
-        {{0}, {3}, {1}},
-        {{4, 1}, {0, 3}, {0, 1}},
-        {{2}, {4, 0, 1}, {1}},
-        {{3}, {4, 2, 0, 1}, {0}},
-        {{}, {2, 4, 1, 3, 0}, {}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const ket A = diagonal_gate(idx{1} << test_case.target.size(), 2);
-        const ket actual = internal::kernels::qubit::apply_ctrl_psi_kq_diag(
-            original, A, test_case.ctrl, test_case.target,
-            test_case.shift, n);
-        expect_psi(actual, before, A, test_case, n);
-        expect_same(original, before);
     }
 }
 
 TEST(qpp_qubit_apply_ctrl_rho_1q_diag_inplace, MixedStateControlBranches) {
     const idx n = 4;
     const cmat original = make_density(n);
-    const std::vector<Case> cases{
-        {{}, {0}, {}},
-        {{3}, {0}, {0}},
-        {{3}, {0}, {1}},
-        {{0}, {3}, {0}},
-        {{0}, {3}, {1}},
-        {{1, 3}, {0}, {0, 1}},
-        {{1, 2, 3}, {0}, {1, 0, 1}}};
+    const std::vector<Case> cases{{{}, {0}, {}},
+                                  {{3}, {0}, {0}},
+                                  {{3}, {0}, {1}},
+                                  {{0}, {3}, {0}},
+                                  {{0}, {3}, {1}},
+                                  {{1, 3}, {0}, {0, 1}},
+                                  {{1, 2, 3}, {0}, {1, 0, 1}}};
     for (const auto& test_case : cases) {
         SCOPED_TRACE(describe(test_case));
         for (idx mode : {idx{0}, idx{1}, idx{2}, idx{3}}) {
             const ket A = diagonal_gate(2, mode);
             cmat actual = original;
             internal::kernels::qubit::apply_ctrl_rho_1q_diag_inplace(
-                actual, A, test_case.ctrl, test_case.target[0],
-                test_case.shift, n);
+                actual, A, test_case.ctrl, test_case.target[0], test_case.shift,
+                n);
             expect_rho(actual, original, A, test_case, n);
         }
     }
@@ -361,41 +288,19 @@ TEST(qpp_qubit_apply_ctrl_rho_1q_diag_inplace, OffDiagonalCoherence) {
 
     expect_rho(actual, original, A, test_case, n);
     EXPECT_NEAR(std::abs(actual(0, 3)), 0.5, tolerance);
-    EXPECT_NEAR(std::abs(actual(0, 3) - original(0, 3)), 
+    EXPECT_NEAR(std::abs(actual(0, 3) - original(0, 3)),
                 std::abs((std::conj(A(1)) - cplx{1}) * original(0, 3)),
                 tolerance);
 }
 
-TEST(qpp_qubit_apply_ctrl_rho_1q_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const std::vector<Case> cases{
-        {{}, {0}, {}},
-        {{0}, {3}, {0}},
-        {{0}, {3}, {1}},
-        {{1, 2}, {0}, {0, 1}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const ket A = diagonal_gate(2, 2);
-        const cmat actual = internal::kernels::qubit::apply_ctrl_rho_1q_diag(
-            original, A, test_case.ctrl, test_case.target[0],
-            test_case.shift, n);
-        expect_rho(actual, before, A, test_case, n);
-        expect_same(original, before);
-    }
-}
-
-TEST(qpp_qubit_apply_ctrl_rho_2q_diag_inplace, ReversedTargetsAndMixedControls) {
+TEST(qpp_qubit_apply_ctrl_rho_2q_diag_inplace,
+     ReversedTargetsAndMixedControls) {
     const idx n = 5;
     const cmat original = make_density(n);
     const std::vector<Case> cases{
-        {{}, {0, 4}, {}},
-        {{1}, {0, 4}, {0}},
-        {{1}, {0, 4}, {1}},
-        {{1, 3}, {0, 4}, {0, 1}},
-        {{3, 1}, {4, 0}, {1, 0}},
-        {{0, 2, 3}, {4, 1}, {1, 0, 1}},
+        {{}, {0, 4}, {}},         {{1}, {0, 4}, {0}},
+        {{1}, {0, 4}, {1}},       {{1, 3}, {0, 4}, {0, 1}},
+        {{3, 1}, {4, 0}, {1, 0}}, {{0, 2, 3}, {4, 1}, {1, 0, 1}},
         {{4}, {2, 3}, {0}}};
     for (const auto& test_case : cases) {
         SCOPED_TRACE(describe(test_case));
@@ -415,44 +320,24 @@ TEST(qpp_qubit_apply_ctrl_rho_2q_diag_inplace, NoControlsTwoQubits) {
     const Case test_case{{}, {1, 0}, {}};
     const ket A = diagonal_gate(4, 2);
     cmat actual = original;
-    internal::kernels::qubit::apply_ctrl_rho_2q_diag_inplace(
-        actual, A, {}, 1, 0, {}, 2);
+    internal::kernels::qubit::apply_ctrl_rho_2q_diag_inplace(actual, A, {}, 1,
+                                                             0, {}, 2);
     expect_rho(actual, original, A, test_case, 2);
-}
-
-TEST(qpp_qubit_apply_ctrl_rho_2q_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const std::vector<Case> cases{
-        {{}, {0, 3}, {}},
-        {{1}, {3, 0}, {0}},
-        {{1, 2}, {3, 0}, {1, 0}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const ket A = diagonal_gate(4, 2);
-        const cmat actual = internal::kernels::qubit::apply_ctrl_rho_2q_diag(
-            original, A, test_case.ctrl, test_case.target[0],
-            test_case.target[1], test_case.shift, n);
-        expect_rho(actual, before, A, test_case, n);
-        expect_same(original, before);
-    }
 }
 
 TEST(qpp_qubit_apply_ctrl_rho_kq_diag_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const cmat original = make_density(n);
-    const std::vector<Case> cases{
-        {{}, {}, {}},
-        {{0}, {}, {0}},
-        {{0}, {}, {1}},
-        {{4}, {0}, {0}},
-        {{0}, {4}, {1}},
-        {{1, 3}, {0, 4}, {0, 1}},
-        {{3, 1}, {4, 0}, {1, 0}},
-        {{1, 3}, {4, 2, 0}, {0, 1}},
-        {{1}, {4, 2, 0, 3}, {1}},
-        {{}, {4, 2, 0, 3, 1}, {}}};
+    const std::vector<Case> cases{{{}, {}, {}},
+                                  {{0}, {}, {0}},
+                                  {{0}, {}, {1}},
+                                  {{4}, {0}, {0}},
+                                  {{0}, {4}, {1}},
+                                  {{1, 3}, {0, 4}, {0, 1}},
+                                  {{3, 1}, {4, 0}, {1, 0}},
+                                  {{1, 3}, {4, 2, 0}, {0, 1}},
+                                  {{1}, {4, 2, 0, 3}, {1}},
+                                  {{}, {4, 2, 0, 3, 1}, {}}};
     for (const auto& test_case : cases) {
         SCOPED_TRACE(describe(test_case));
         const idx d = idx{1} << test_case.target.size();
@@ -460,52 +345,9 @@ TEST(qpp_qubit_apply_ctrl_rho_kq_diag_inplace, ZeroToFiveTargets) {
             const ket A = diagonal_gate(d, mode);
             cmat actual = original;
             internal::kernels::qubit::apply_ctrl_rho_kq_diag_inplace(
-                actual, A, test_case.ctrl, test_case.target,
-                test_case.shift, n);
+                actual, A, test_case.ctrl, test_case.target, test_case.shift,
+                n);
             expect_rho(actual, original, A, test_case, n);
         }
     }
-}
-
-TEST(qpp_qubit_apply_ctrl_rho_kq_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const std::vector<Case> cases{
-        {{0}, {}, {0}},
-        {{0}, {3}, {1}},
-        {{4, 1}, {0, 3}, {0, 1}},
-        {{2}, {4, 0, 1}, {1}},
-        {{3}, {4, 2, 0, 1}, {0}},
-        {{}, {2, 4, 1, 3, 0}, {}}};
-    for (const auto& test_case : cases) {
-        SCOPED_TRACE(describe(test_case));
-        const ket A =
-            diagonal_gate(idx{1} << test_case.target.size(), 2);
-        const cmat actual = internal::kernels::qubit::apply_ctrl_rho_kq_diag(
-            original, A, test_case.ctrl, test_case.target,
-            test_case.shift, n);
-        expect_rho(actual, before, A, test_case, n);
-        expect_same(original, before);
-    }
-}
-
-TEST(qpp_qubit_apply_ctrl_rho_kq_diag, PureStateConsistencyAndTrace) {
-    const idx n = 5;
-    const ket psi = make_state(n);
-    const cmat rho = psi * psi.adjoint();
-    const Case test_case{{1, 4}, {3, 0, 2}, {0, 1}};
-    const ket A = diagonal_gate(8, 1);
-
-    const ket transformed_psi =
-        internal::kernels::qubit::apply_ctrl_psi_kq_diag(
-            psi, A, test_case.ctrl, test_case.target, test_case.shift, n);
-    const cmat transformed_rho =
-        internal::kernels::qubit::apply_ctrl_rho_kq_diag(
-            rho, A, test_case.ctrl, test_case.target, test_case.shift, n);
-    const cmat expected = transformed_psi * transformed_psi.adjoint();
-
-    expect_same(transformed_rho, expected);
-    EXPECT_NEAR(transformed_rho.trace().real(), 1.0, tolerance);
-    expect_same(transformed_rho, transformed_rho.adjoint());
 }

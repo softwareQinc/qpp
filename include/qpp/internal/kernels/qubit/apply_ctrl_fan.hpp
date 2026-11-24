@@ -127,27 +127,6 @@ template <typename Derived1, typename Derived2>
 /**
  * @brief Applies the single qubit controlled-gate \a A with multiple
  * control qubits listed in \a ctrl to the part \a target of the multi-partite
- * state vector \a state
- *
- * @return Controlled gate \a A applied to the targets of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
-                   const Eigen::MatrixBase<Derived2>& A,
-                   const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                   const std::vector<idx>& shift, idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state.derived();
-
-    // Delegate to in-place implementation
-    apply_ctrl_fan_psi_inplace(result, A, ctrl, target, shift, n);
-
-    return result;
-}
-/**
- * @brief Applies the single qubit controlled-gate \a A with multiple
- * control qubits listed in \a ctrl to the part \a target of the multi-partite
  * density matrix \a state in-place, i.e., CTRL-A-A-...-A
  *
  * @param state Eigen expression (modified in-place)
@@ -253,28 +232,6 @@ template <typename Derived1, typename Derived2>
             }
         }
     }
-}
-
-/**
- * @brief Applies the single qubit controlled-gate \a A with multiple
- * control qubits listed in \a ctrl to the part \a target of the multi-partite
- * density matrix \a state
- *
- * @return Controlled gate \a A applied to the targets of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
-                   const Eigen::MatrixBase<Derived2>& A,
-                   const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                   const std::vector<idx>& shift, idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state.derived();
-
-    // Delegate to in-place implementation
-    apply_ctrl_fan_rho_inplace(result, A, ctrl, target, shift, n);
-
-    return result;
 }
 } // namespace qpp::internal::kernels::qubit
 

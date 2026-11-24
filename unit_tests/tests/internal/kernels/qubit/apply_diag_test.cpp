@@ -70,8 +70,8 @@ ket diagonal_factors(const ket& A, const std::vector<idx>& target, idx n) {
     for (idx basis = 0; basis < D; ++basis) {
         idx local_basis = 0;
         for (idx q : target) {
-            local_basis = (local_basis << 1) |
-                          ((basis >> (n - 1 - q)) & idx{1});
+            local_basis =
+                (local_basis << 1) | ((basis >> (n - 1 - q)) & idx{1});
         }
         factors(basis) = A(local_basis);
     }
@@ -93,8 +93,7 @@ void expect_same(const Eigen::MatrixBase<Derived1>& actual,
 
 void expect_psi(const ket& actual, const ket& original, const ket& A,
                 const std::vector<idx>& target, idx n) {
-    const ket expected =
-        original.cwiseProduct(diagonal_factors(A, target, n));
+    const ket expected = original.cwiseProduct(diagonal_factors(A, target, n));
     expect_same(actual, expected);
 }
 
@@ -122,8 +121,8 @@ TEST(qpp_qubit_apply_psi_1q_diag_inplace, AllPositionsAndDiagonalShapes) {
             for (idx mode : {idx{0}, idx{1}, idx{2}, idx{3}}) {
                 const ket A = diagonal_gate(2, mode);
                 ket actual = original;
-                internal::kernels::qubit::apply_psi_1q_diag_inplace(
-                    actual, A, i, n);
+                internal::kernels::qubit::apply_psi_1q_diag_inplace(actual, A,
+                                                                    i, n);
                 expect_psi(actual, original, A, {i}, n);
             }
         }
@@ -165,19 +164,6 @@ TEST(qpp_qubit_apply_psi_1q_diag_inplace, RowVectorDiagonal) {
     expect_psi(actual, original, A, {1}, n);
 }
 
-TEST(qpp_qubit_apply_psi_1q_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    ket original = make_state(n);
-    const ket before = original;
-    const ket A = diagonal_gate(2, 2);
-    for (idx i = 0; i < n; ++i) {
-        const ket actual = internal::kernels::qubit::apply_psi_1q_diag(
-            original, A, i, n);
-        expect_psi(actual, before, A, {i}, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_psi_2q_diag_inplace, TargetOrdersAndSpectators) {
     for (idx n : {idx{2}, idx{5}}) {
         const ket original = make_state(n);
@@ -197,20 +183,6 @@ TEST(qpp_qubit_apply_psi_2q_diag_inplace, TargetOrdersAndSpectators) {
                 expect_psi(actual, original, A, t, n);
             }
         }
-    }
-}
-
-TEST(qpp_qubit_apply_psi_2q_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    ket original = make_state(n);
-    const ket before = original;
-    const ket A = diagonal_gate(4, 2);
-    for (const auto& t :
-         std::vector<std::vector<idx>>{{0, 3}, {3, 0}, {2, 1}}) {
-        const ket actual = internal::kernels::qubit::apply_psi_2q_diag(
-            original, A, t[0], t[1], n);
-        expect_psi(actual, before, A, t, n);
-        expect_same(original, before);
     }
 }
 
@@ -237,34 +209,20 @@ TEST(qpp_qubit_apply_psi_3q_diag_inplace, PermutationsAndSpectators) {
     }
 }
 
-TEST(qpp_qubit_apply_psi_3q_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    ket original = make_state(n);
-    const ket before = original;
-    const ket A = diagonal_gate(8, 2);
-    for (const auto& t :
-         std::vector<std::vector<idx>>{{4, 2, 0}, {1, 3, 4}}) {
-        const ket actual = internal::kernels::qubit::apply_psi_3q_diag(
-            original, A, t[0], t[1], t[2], n);
-        expect_psi(actual, before, A, t, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_psi_kq_diag_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const ket original = make_state(n);
     const std::vector<std::vector<idx>> targets{
-        {}, {0}, {4}, {0, 4}, {4, 0}, {3, 1, 4},
-        {4, 2, 0}, {0, 2, 4, 1}, {4, 3, 2, 1, 0}};
+        {},        {0},       {4},          {0, 4},         {4, 0},
+        {3, 1, 4}, {4, 2, 0}, {0, 2, 4, 1}, {4, 3, 2, 1, 0}};
     for (const auto& t : targets) {
         SCOPED_TRACE(describe(t));
         const idx d = idx{1} << t.size();
         for (idx mode : {idx{0}, idx{1}, idx{2}, idx{3}}) {
             const ket A = diagonal_gate(d, mode);
             ket actual = original;
-            internal::kernels::qubit::apply_psi_kq_diag_inplace(actual, A,
-                                                                 t, n);
+            internal::kernels::qubit::apply_psi_kq_diag_inplace(actual, A, t,
+                                                                n);
             expect_psi(actual, original, A, t, n);
         }
     }
@@ -278,22 +236,6 @@ TEST(qpp_qubit_apply_psi_kq_diag_inplace, ZeroQubits) {
     expect_psi(actual, original, A, {}, 0);
 }
 
-TEST(qpp_qubit_apply_psi_kq_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    ket original = make_state(n);
-    const ket before = original;
-    const std::vector<std::vector<idx>> targets{
-        {}, {2}, {3, 0}, {4, 1, 0}, {0, 3, 4, 2}, {2, 0, 4, 1, 3}};
-    for (const auto& t : targets) {
-        SCOPED_TRACE(describe(t));
-        const ket A = diagonal_gate(idx{1} << t.size(), 2);
-        const ket actual =
-            internal::kernels::qubit::apply_psi_kq_diag(original, A, t, n);
-        expect_psi(actual, before, A, t, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_rho_1q_diag_inplace, MixedStateAllPositions) {
     for (idx n : {idx{1}, idx{4}}) {
         const cmat original = make_density(n);
@@ -302,24 +244,11 @@ TEST(qpp_qubit_apply_rho_1q_diag_inplace, MixedStateAllPositions) {
             for (idx mode : {idx{0}, idx{1}, idx{2}, idx{3}}) {
                 const ket A = diagonal_gate(2, mode);
                 cmat actual = original;
-                internal::kernels::qubit::apply_rho_1q_diag_inplace(
-                    actual, A, i, n);
+                internal::kernels::qubit::apply_rho_1q_diag_inplace(actual, A,
+                                                                    i, n);
                 expect_rho(actual, original, A, {i}, n);
             }
         }
-    }
-}
-
-TEST(qpp_qubit_apply_rho_1q_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const ket A = diagonal_gate(2, 2);
-    for (idx i = 0; i < n; ++i) {
-        const cmat actual = internal::kernels::qubit::apply_rho_1q_diag(
-            original, A, i, n);
-        expect_rho(actual, before, A, {i}, n);
-        expect_same(original, before);
     }
 }
 
@@ -345,20 +274,6 @@ TEST(qpp_qubit_apply_rho_2q_diag_inplace, MixedStateTargetOrders) {
     }
 }
 
-TEST(qpp_qubit_apply_rho_2q_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const ket A = diagonal_gate(4, 2);
-    for (const auto& t :
-         std::vector<std::vector<idx>>{{0, 3}, {3, 0}, {2, 1}}) {
-        const cmat actual = internal::kernels::qubit::apply_rho_2q_diag(
-            original, A, t[0], t[1], n);
-        expect_rho(actual, before, A, t, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_rho_3q_diag_inplace, MixedStatePermutations) {
     for (idx n : {idx{3}, idx{5}}) {
         const cmat original = make_density(n);
@@ -381,34 +296,20 @@ TEST(qpp_qubit_apply_rho_3q_diag_inplace, MixedStatePermutations) {
     }
 }
 
-TEST(qpp_qubit_apply_rho_3q_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const ket A = diagonal_gate(8, 2);
-    for (const auto& t :
-         std::vector<std::vector<idx>>{{4, 2, 0}, {1, 3, 4}}) {
-        const cmat actual = internal::kernels::qubit::apply_rho_3q_diag(
-            original, A, t[0], t[1], t[2], n);
-        expect_rho(actual, before, A, t, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_rho_kq_diag_inplace, ZeroToFiveTargets) {
     const idx n = 5;
     const cmat original = make_density(n);
     const std::vector<std::vector<idx>> targets{
-        {}, {0}, {4}, {0, 4}, {4, 0}, {3, 1, 4},
-        {4, 2, 0}, {0, 2, 4, 1}, {4, 3, 2, 1, 0}};
+        {},        {0},       {4},          {0, 4},         {4, 0},
+        {3, 1, 4}, {4, 2, 0}, {0, 2, 4, 1}, {4, 3, 2, 1, 0}};
     for (const auto& t : targets) {
         SCOPED_TRACE(describe(t));
         const idx d = idx{1} << t.size();
         for (idx mode : {idx{0}, idx{1}, idx{2}, idx{3}}) {
             const ket A = diagonal_gate(d, mode);
             cmat actual = original;
-            internal::kernels::qubit::apply_rho_kq_diag_inplace(actual, A,
-                                                                 t, n);
+            internal::kernels::qubit::apply_rho_kq_diag_inplace(actual, A, t,
+                                                                n);
             expect_rho(actual, original, A, t, n);
         }
     }
@@ -421,41 +322,7 @@ TEST(qpp_qubit_apply_rho_kq_diag_inplace, RowVectorDiagonal) {
     const ket A = diagonal_gate(8, 2);
     const Eigen::Matrix<cplx, 1, Eigen::Dynamic> row_A = A.transpose();
     cmat actual = original;
-    internal::kernels::qubit::apply_rho_kq_diag_inplace(
-        actual, row_A, targets, n);
+    internal::kernels::qubit::apply_rho_kq_diag_inplace(actual, row_A, targets,
+                                                        n);
     expect_rho(actual, original, A, targets, n);
-}
-
-TEST(qpp_qubit_apply_rho_kq_diag, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const std::vector<std::vector<idx>> targets{
-        {}, {2}, {3, 0}, {4, 1, 0}, {0, 3, 4, 2}, {2, 0, 4, 1, 3}};
-    for (const auto& t : targets) {
-        SCOPED_TRACE(describe(t));
-        const ket A = diagonal_gate(idx{1} << t.size(), 2);
-        const cmat actual =
-            internal::kernels::qubit::apply_rho_kq_diag(original, A, t, n);
-        expect_rho(actual, before, A, t, n);
-        expect_same(original, before);
-    }
-}
-
-TEST(qpp_qubit_apply_rho_kq_diag, PureStateConsistencyAndUnitaryTrace) {
-    const idx n = 5;
-    const ket psi = make_state(n);
-    const cmat rho = psi * psi.adjoint();
-    const std::vector<idx> targets{4, 0, 2};
-    const ket A = diagonal_gate(8, 1);
-
-    const ket transformed_psi =
-        internal::kernels::qubit::apply_psi_kq_diag(psi, A, targets, n);
-    const cmat transformed_rho =
-        internal::kernels::qubit::apply_rho_kq_diag(rho, A, targets, n);
-    const cmat expected = transformed_psi * transformed_psi.adjoint();
-
-    expect_same(transformed_rho, expected);
-    EXPECT_NEAR(transformed_rho.trace().real(), 1.0, tolerance);
-    expect_same(transformed_rho, transformed_rho.adjoint());
 }

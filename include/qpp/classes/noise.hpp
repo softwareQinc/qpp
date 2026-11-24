@@ -47,6 +47,7 @@
 #include "qpp/classes/exception.hpp"
 #include "qpp/classes/gates.hpp"
 #include "qpp/classes/random_devices.hpp"
+
 #include "qpp/internal/util.hpp"
 
 namespace qpp {

@@ -34,115 +34,115 @@
 
 #include <cassert>
 #include <vector>
-#ifndef NDEBUG
-#include <set>
-#endif
 
 #include <Eigen/Dense>
 
-#include "qpp/internal/util.hpp"
 #include "qpp/types.hpp"
+
+#include "qpp/internal/util.hpp"
 
 namespace qpp::internal::kernels::qudit {
 /**
- * @brief Qudit state vector partial trace
- * @see qpp::ptrace1(), qpp::ptrace2()
+ * @brief Partial trace
  *
- * Partial trace of the multi-partite qudit state vector over the subsystems
- * \a target
+ * Partial trace of the multi-partite state vector \a A over the list \a target
+ * of subsystems
  *
  * @param A Eigen expression
  * @param target Subsystem indexes
- * @param n Number of qudits
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a target
- * in a multi-partite system, as a dynamic matrix over the same scalar field as
- * \a A
+ * @param dims Dimensions of the multi-partite system
+ * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a
+ * target in a multi-partite system, as a dynamic matrix over the same
+ * scalar field as \a A
  */
 template <typename Derived>
 [[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
 ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
-              const std::vector<idx>& target, idx n) {
+              const std::vector<idx>& target, const std::vector<idx>& dims) {
     using Scalar = typename Derived::Scalar;
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+    const auto& rA = A.derived();
 
-    idx D = static_cast<idx>(rA.rows());
-    idx n_subsys = target.size();
+    const idx n = dims.size();
+    const idx n_subsys = target.size();
+    const idx n_subsys_bar = n - n_subsys;
 
-    // Fast return for full trace
-    if (n_subsys == n) {
+    if (target.size() == dims.size()) {
         dyn_mat<Scalar> result(1, 1);
-        result(0, 0) = (adjoint(rA) * rA).value();
+        result(0, 0) = (rA.adjoint() * rA).value();
         return result;
     }
 
-    // Fast return for empty trace
-    if (n_subsys == 0) {
-        return rA * adjoint(rA);
+    if (target.empty()) {
+        return rA * rA.adjoint();
     }
 
-    // --- Optimization Setup ---
-    std::vector<idx> subsys_bar = fast_complement(target, n);
-    idx n_subsys_bar = subsys_bar.size();
+    const idx D = static_cast<idx>(rA.rows());
 
-    idx Dsubsys = internal::ipow_rounded<idx>(2, target.size());
-    idx Dsubsys_bar = D / Dsubsys;
+    idx Dsubsys = 1;
+    for (idx i = 0; i < n_subsys; ++i) {
+        Dsubsys *= dims[target[i]];
+    }
+    const idx Dsubsys_bar = D / Dsubsys;
+
+    idx Cdims[internal::maxn];
+    idx Csubsys[internal::maxn];
+    idx Cdimssubsys[internal::maxn];
+    idx Csubsys_bar[internal::maxn];
+    idx Cdimssubsys_bar[internal::maxn];
+
+    const std::vector<idx> subsys_bar = fast_complement(target, n);
+
+    std::copy(dims.begin(), dims.end(), Cdims);
+    std::copy(target.begin(), target.end(), Csubsys);
+    std::copy(subsys_bar.begin(), subsys_bar.end(), Csubsys_bar);
+
+    for (idx i = 0; i < n_subsys; ++i) {
+        Cdimssubsys[i] = dims[target[i]];
+    }
+    for (idx i = 0; i < n_subsys_bar; ++i) {
+        Cdimssubsys_bar[i] = dims[subsys_bar[i]];
+    }
 
     dyn_mat<Scalar> result(Dsubsys_bar, Dsubsys_bar);
 
-    // Precompute global strides: 2^(n - 1 - k)
-    std::vector<idx> global_strides(n);
-    for (idx k = 0; k < n; ++k) {
-        global_strides[k] = static_cast<idx>(std::size_t{1} << (n - 1 - k));
-    }
-
-    // Extract strides for Bar (kept) subsystems
-    std::vector<idx> bar_strides(n_subsys_bar);
-    for (idx k = 0; k < n_subsys_bar; ++k) {
-        bar_strides[k] = global_strides[subsys_bar[k]];
-    }
-
-    // Pre-calculate Trace Offsets (Sum of strides for target bits)
-    std::vector<idx> trace_offsets(Dsubsys);
-    for (idx a = 0; a < Dsubsys; ++a) {
-        idx offset = 0;
-        for (idx k = 0; k < n_subsys; ++k) {
-            if ((static_cast<std::size_t>(a) >> (n_subsys - 1 - k)) &
-                std::size_t{1}) {
-                offset += global_strides[target[k]];
-            }
-        }
-        trace_offsets[a] = offset;
-    }
-    const idx* trace_offsets_ptr = trace_offsets.data();
-
-    // Lambda: Expand compressed index (0..Dbar-1) to global base offset
-    // using bitmasks
-    auto expand_bits = [&](idx idx_compressed) -> idx {
-        idx expanded = 0;
-        for (idx k = 0; k < n_subsys_bar; ++k) {
-            if ((static_cast<std::size_t>(idx_compressed) >>
-                 (n_subsys_bar - 1 - k)) &
-                std::size_t{1}) {
-                expanded += bar_strides[k];
-            }
-        }
-        return expanded;
-    };
-
-    // Execution Loop
     for (idx j = 0; j < Dsubsys_bar; ++j) {
-        idx col_base = expand_bits(j);
+        idx Cmidxcolsubsys_bar[internal::maxn];
+
+        internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
+                             Cmidxcolsubsys_bar);
+
 #ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif // QPP_ENABLE_OPENMP
         for (idx i = 0; i < Dsubsys_bar; ++i) {
-            idx row_base = expand_bits(i);
-            Scalar sm = 0;
-            // Tight inner loop: iterating over pre-computed offsets
-            for (idx k = 0; k < Dsubsys; ++k) {
-                idx offset = trace_offsets_ptr[k];
-                sm += rA(row_base + offset) * std::conj(rA(col_base + offset));
+            idx Cmidxrow[internal::maxn];
+            idx Cmidxcol[internal::maxn];
+            idx Cmidxrowsubsys_bar[internal::maxn];
+            idx Cmidxsubsys[internal::maxn];
+
+            internal::n2multiidx(i, n_subsys_bar, Cdimssubsys_bar,
+                                 Cmidxrowsubsys_bar);
+
+            for (idx k = 0; k < n_subsys_bar; ++k) {
+                Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
+                Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
             }
+
+            Scalar sm = 0;
+
+            for (idx a = 0; a < Dsubsys; ++a) {
+                internal::n2multiidx(a, n_subsys, Cdimssubsys, Cmidxsubsys);
+
+                for (idx k = 0; k < n_subsys; ++k) {
+                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] =
+                        Cmidxsubsys[k];
+                }
+
+                sm += rA(internal::multiidx2n(Cmidxrow, n, Cdims)) *
+                      Eigen::numext::conj(
+                          rA(internal::multiidx2n(Cmidxcol, n, Cdims)));
+            }
+
             result(i, j) = sm;
         }
     }
@@ -151,102 +151,105 @@ ptrace_psi_kq(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * @brief Qudit density matrix partial trace
- * @see qpp::ptrace1(), qpp::ptrace2()
+ * @brief Partial trace
  *
- * Partial trace of the multi-partite density matrix over the subsystems
- * \a target
+ * Partial trace of the multi-partite density matrix \a A over the list
+ * \a target of subsystems
  *
  * @param A Eigen expression
  * @param target Subsystem indexes
- * @param n Number of qudits
- * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a target
- * in a multi-partite system, as a dynamic matrix over the same scalar field as
- * \a A
+ * @param dims Dimensions of the multi-partite system
+ * @return Partial trace \f$Tr_{subsys}(\cdot)\f$ over the subsystems \a
+ * target in a multi-partite system, as a dynamic matrix over the same
+ * scalar field as \a A
  */
 template <typename Derived>
 [[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
 ptrace_rho_kq(const Eigen::MatrixBase<Derived>& A,
-              const std::vector<idx>& target, idx n) {
+              const std::vector<idx>& target, const std::vector<idx>& dims) {
     using Scalar = typename Derived::Scalar;
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+    const auto& rA = A.derived();
 
-    idx D = static_cast<idx>(rA.rows());
-    idx n_subsys = target.size();
+    const idx n = dims.size();
+    const idx n_subsys = target.size();
+    const idx n_subsys_bar = n - n_subsys;
 
-    // Fast return for full trace
-    if (n_subsys == n) {
+    if (target.size() == dims.size()) {
         dyn_mat<Scalar> result(1, 1);
         result(0, 0) = rA.trace();
         return result;
     }
 
-    // Fast return for empty trace
-    if (n_subsys == 0) {
+    if (target.empty()) {
         return rA;
     }
 
-    // --- Optimization Setup ---
-    std::vector<idx> subsys_bar = fast_complement(target, n);
-    idx n_subsys_bar = subsys_bar.size();
+    const idx D = static_cast<idx>(rA.rows());
 
-    idx Dsubsys = internal::ipow_rounded<idx>(2, target.size());
-    idx Dsubsys_bar = D / Dsubsys;
+    idx Dsubsys = 1;
+    for (idx i = 0; i < n_subsys; ++i) {
+        Dsubsys *= dims[target[i]];
+    }
+    const idx Dsubsys_bar = D / Dsubsys;
+
+    idx Cdims[internal::maxn];
+    idx Csubsys[internal::maxn];
+    idx Cdimssubsys[internal::maxn];
+    idx Csubsys_bar[internal::maxn];
+    idx Cdimssubsys_bar[internal::maxn];
+
+    const std::vector<idx> subsys_bar = fast_complement(target, n);
+
+    std::copy(dims.begin(), dims.end(), Cdims);
+    std::copy(target.begin(), target.end(), Csubsys);
+    std::copy(subsys_bar.begin(), subsys_bar.end(), Csubsys_bar);
+
+    for (idx i = 0; i < n_subsys; ++i) {
+        Cdimssubsys[i] = dims[target[i]];
+    }
+    for (idx i = 0; i < n_subsys_bar; ++i) {
+        Cdimssubsys_bar[i] = dims[subsys_bar[i]];
+    }
 
     dyn_mat<Scalar> result(Dsubsys_bar, Dsubsys_bar);
 
-    // Precompute global strides: 2^(n - 1 - k)
-    std::vector<idx> global_strides(n);
-    for (idx k = 0; k < n; ++k) {
-        global_strides[k] = static_cast<idx>(std::size_t{1} << (n - 1 - k));
-    }
-
-    // Extract strides for Bar (kept) subsystems
-    std::vector<idx> bar_strides(n_subsys_bar);
-    for (idx k = 0; k < n_subsys_bar; ++k) {
-        bar_strides[k] = global_strides[subsys_bar[k]];
-    }
-
-    // Pre-calculate Trace Offsets
-    std::vector<idx> trace_offsets(Dsubsys);
-    for (idx a = 0; a < Dsubsys; ++a) {
-        idx offset = 0;
-        for (idx k = 0; k < n_subsys; ++k) {
-            if ((static_cast<std::size_t>(a) >> (n_subsys - 1 - k)) &
-                std::size_t{1}) {
-                offset += global_strides[target[k]];
-            }
-        }
-        trace_offsets[a] = offset;
-    }
-    const idx* trace_offsets_ptr = trace_offsets.data();
-
-    auto expand_bits = [&](idx idx_compressed) -> idx {
-        idx expanded = 0;
-        for (idx k = 0; k < n_subsys_bar; ++k) {
-            if ((static_cast<std::size_t>(idx_compressed) >>
-                 (n_subsys_bar - 1 - k)) &
-                std::size_t{1}) {
-                expanded += bar_strides[k];
-            }
-        }
-        return expanded;
-    };
-
-    // Execution Loop
     for (idx j = 0; j < Dsubsys_bar; ++j) {
-        idx col_base = expand_bits(j);
+        idx Cmidxcolsubsys_bar[internal::maxn];
+
+        internal::n2multiidx(j, n_subsys_bar, Cdimssubsys_bar,
+                             Cmidxcolsubsys_bar);
+
 #ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
 #endif // QPP_ENABLE_OPENMP
         for (idx i = 0; i < Dsubsys_bar; ++i) {
-            idx row_base = expand_bits(i);
-            Scalar sm = 0;
-            // Tight inner loop: iterating over pre-computed offsets
-            for (idx k = 0; k < Dsubsys; ++k) {
-                idx offset = trace_offsets_ptr[k];
-                sm += rA(row_base + offset, col_base + offset);
+            idx Cmidxrow[internal::maxn];
+            idx Cmidxcol[internal::maxn];
+            idx Cmidxrowsubsys_bar[internal::maxn];
+            idx Cmidxsubsys[internal::maxn];
+
+            internal::n2multiidx(i, n_subsys_bar, Cdimssubsys_bar,
+                                 Cmidxrowsubsys_bar);
+
+            for (idx k = 0; k < n_subsys_bar; ++k) {
+                Cmidxrow[Csubsys_bar[k]] = Cmidxrowsubsys_bar[k];
+                Cmidxcol[Csubsys_bar[k]] = Cmidxcolsubsys_bar[k];
             }
+
+            Scalar sm = 0;
+
+            for (idx a = 0; a < Dsubsys; ++a) {
+                internal::n2multiidx(a, n_subsys, Cdimssubsys, Cmidxsubsys);
+
+                for (idx k = 0; k < n_subsys; ++k) {
+                    Cmidxrow[Csubsys[k]] = Cmidxcol[Csubsys[k]] =
+                        Cmidxsubsys[k];
+                }
+
+                sm += rA(internal::multiidx2n(Cmidxrow, n, Cdims),
+                         internal::multiidx2n(Cmidxcol, n, Cdims));
+            }
+
             result(i, j) = sm;
         }
     }

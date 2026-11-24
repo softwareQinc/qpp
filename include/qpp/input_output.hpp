@@ -45,6 +45,7 @@
 #include "qpp/types.hpp"
 
 #include "qpp/classes/exception.hpp"
+
 #include "qpp/internal/classes/iomanip.hpp"
 #include "qpp/internal/util.hpp"
 

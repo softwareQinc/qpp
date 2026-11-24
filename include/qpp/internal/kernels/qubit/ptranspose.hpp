@@ -34,14 +34,12 @@
 
 #include <cassert>
 #include <vector>
-#ifndef NDEBUG
-#include <set>
-#endif
 
 #include <Eigen/Dense>
 
-#include "qpp/internal/util.hpp"
 #include "qpp/types.hpp"
+
+#include "qpp/internal/util.hpp"
 
 namespace qpp::internal::kernels::qubit {
 /**

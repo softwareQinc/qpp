@@ -35,197 +35,173 @@
 #include <cassert>
 #include <vector>
 
-#ifndef NDEBUG
-#include <set>
-#endif
-
 #include <Eigen/Dense>
 
-#include "qpp/internal/util.hpp"
 #include "qpp/types.hpp"
+
+#include "qpp/internal/kernels/qudit/apply.hpp"
+#include "qpp/internal/util.hpp"
 
 namespace qpp::internal::kernels::qudit {
 /**
+ * @brief Applies a controlled-fan gate to a multi-partite state vector
+ *
+ * @param psi Input state vector
+ * @param Ak Precomputed powers of the gate
+ * @param ctrl Control subsystem indexes
+ * @param target Target subsystem indexes
+ * @param dims Dimensions of the multi-partite system
+ * @param shift Inverted control shifts
+ * @return Transformed state vector
+ */
+template <typename Scalar>
+[[qpp::critical, qpp::parallel]]
+dyn_col_vect<Scalar> apply_ctrl_fan_psi_worker(
+    const dyn_col_vect<Scalar>& psi, const std::vector<dyn_mat<Scalar>>& Ak,
+    const std::vector<idx>& ctrl, const std::vector<idx>& target,
+    const std::vector<idx>& dims, const std::vector<idx>& shift) {
+    using RealScalar = typename Eigen::NumTraits<Scalar>::Real;
+
+    const idx D = static_cast<idx>(psi.rows());
+    const idx d = dims[ctrl[0]];
+
+    dyn_col_vect<Scalar> result = dyn_col_vect<Scalar>::Zero(D);
+
+#ifdef QPP_ENABLE_OPENMP
+#pragma omp parallel for
+#endif // QPP_ENABLE_OPENMP
+    for (idx r = 0; r < d; ++r) {
+        std::vector<idx> ctrl_shift = shift;
+        std::transform(ctrl_shift.begin(), ctrl_shift.end(), ctrl_shift.begin(),
+                       [r, d](idx elem) { return (elem + r) % d; });
+
+        dyn_col_vect<Scalar> chopped_psi =
+            internal::project_ket_on_dits(psi, ctrl_shift, ctrl, dims, D);
+
+        // Explicit conversion avoids MSVC C4244
+        dyn_col_vect<Scalar> chopped_psi_bar =
+            (psi / Scalar{static_cast<RealScalar>(d)}) - chopped_psi;
+
+        if (!chopped_psi.isZero()) {
+            for (idx elem : target) {
+                internal::kernels::qudit::apply_psi_kq_inplace(
+                    chopped_psi, Ak[r], {elem}, dims);
+            }
+        }
+
+#ifdef QPP_ENABLE_OPENMP
+#pragma omp critical
+#endif // QPP_ENABLE_OPENMP
+        {
+            result += chopped_psi + chopped_psi_bar;
+        }
+    }
+
+    return result;
+}
+
+/**
  * @brief Applies the single qudit controlled-gate \a A with multiple
- * control qudits listed in \a ctrl to the part \a target of the multi-partite
- * state vector \a state in-place, i.e., CTRL-A-A-...-A
+ * control qudits listed in \a ctrl to the part \a target of the
+ * multi-partite state vector \a state in-place, i.e., CTRL-\a A-\a A-...-\a A
  *
  * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (2x2 matrix)
- * @param ctrl Vector of control qudit indexes
- * @param target Vector of target subsystem indexes
- * @param shift Vector of control shifts added to each control qudit value
- * modulo d (e.g., shifts the activating control configuration)
- * @param d Subsystem dimensions
- * @param n Number of qudits
+ * @param A Eigen expression, single qudit quantum gate
+ * @param ctrl Control subsystem indexes
+ * @param target Target qudit indexes; the gate \a A is applied on every
+ * one of them depending on the values of the control qudits
+ * @param dims Dimensions of the multi-partite system
+ * @param shift Optional, performs the control as if the \a ctrl qudits were
+ * \f$X\f$-incremented component-wise by \a shift
  */
 template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] void apply_ctrl_fan_psi_inplace(
+[[qpp::critical, qpp::parallel]] void apply_ctrl_fan_psi_kq_inplace(
     Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
     const std::vector<idx>& ctrl, const std::vector<idx>& target,
-    const std::vector<idx>& shift, idx d, idx n) {
+    const std::vector<idx>& dims, const std::vector<idx>& shift) {
+    auto& rstate = state.derived();
+    const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
 
-    expr_t<Derived1>& rstate = state.derived();
     const idx D = static_cast<idx>(rstate.rows());
-
-    // Early exit condition
-    if (d <= 1 || D <= 1 || target.empty()) {
+    if (D == 1) {
         return;
     }
 
-    // Assertions
-    assert(static_cast<idx>(A.rows()) == d && static_cast<idx>(A.cols()) == 1 &&
-           "Gate A must be a d x 1 vector of diagonal elements");
-    assert(static_cast<idx>(rstate.cols()) == 1 && "State must be d^n x 1");
-    assert(shift.size() == ctrl.size() && "Shift size must match ctrl size");
-    assert(target.size() == 1 && "Target must contain exactly 1 qudit index");
-    assert(target[0] < n && "Target qudit index must be less than n");
+    const idx d = dims[ctrl[0]];
 
-    const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
-    std::vector<idx> dims(n, d);
-
-    // Precompute the table of A^k matrix powers
+    // construct the table of A^k
     std::vector<dyn_mat<typename Derived1::Scalar>> Ak;
-    Ak.reserve(d);
     for (idx k = 0; k < d; ++k) {
         Ak.emplace_back(powm(rA, k));
     }
 
-    // Seed the result vector with the original state to optimize away the
-    // baseline (psi / d) mathematical overhead from the loop.
-    dyn_col_vect<typename Derived1::Scalar> result = rstate;
+    rstate = apply_ctrl_fan_psi_worker(
+        dyn_col_vect<typename Derived1::Scalar>(rstate), Ak, ctrl, target, dims,
+        shift);
+}
+
+/**
+ * @brief Applies the single qudit controlled-gate \a A with multiple
+ * control qudits listed in \a ctrl to the part \a target of the
+ * multi-partite density matrix \a state in-place, i.e., CTRL-\a A-\a A-...-\a A
+ *
+ * @param state Eigen expression (modified in-place)
+ * @param A Eigen expression, single qudit quantum gate
+ * @param ctrl Control subsystem indexes
+ * @param target Target qudit indexes
+ * @param d Subsystem dimensions
+ * @param shift Optional, performs the control as if the \a ctrl qudits were
+ * \f$X\f$-incremented component-wise by \a shift
+ */
+template <typename Derived1, typename Derived2>
+[[qpp::critical, qpp::parallel]] void apply_ctrl_fan_rho_kq_inplace(
+    Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
+    const std::vector<idx>& ctrl, const std::vector<idx>& target,
+    const std::vector<idx>& dims, const std::vector<idx>& shift) {
+    auto& rstate = state.derived();
+    const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
+
+    using Scalar = typename Derived1::Scalar;
+
+    const idx D = static_cast<idx>(rstate.rows());
+    if (D == 1) {
+        return;
+    }
+
+    const idx d = dims[ctrl[0]];
+
+    // construct the table of A^k
+    std::vector<dyn_mat<Scalar>> Ak;
+    for (idx k = 0; k < d; ++k) {
+        Ak.emplace_back(powm(rA, k));
+    }
+
+    dyn_mat<Scalar> result = dyn_mat<Scalar>::Zero(D, D);
 
 #ifdef QPP_ENABLE_OPENMP
 #pragma omp parallel for
-#endif
-    for (idx r = 0; r < d; ++r) {
-        std::vector<idx> local_shift = shift;
-        std::transform(local_shift.begin(), local_shift.end(),
-                       local_shift.begin(),
-                       [r, d](idx elem) { return (elem + r) % d; });
+#endif // QPP_ENABLE_OPENMP
+    for (idx i = 0; i < D; ++i) {
+        dyn_col_vect<Scalar> psi_i = dyn_col_vect<Scalar>::Zero(D);
+        psi_i(i) = 1;
 
-        // Project the original state vector onto the control configurations
-        dyn_col_vect<typename Derived1::Scalar> chopped_psi =
-            internal::project_ket_on_dits(rstate, local_shift, ctrl, dims, D);
+        dyn_col_vect<Scalar> phi_i_ket = rstate.row(i).adjoint();
 
-        if (chopped_psi.norm() > 0) {
-            dyn_col_vect<typename Derived1::Scalar> transformed_psi =
-                chopped_psi;
-            for (idx elem : target) {
-                transformed_psi = apply(transformed_psi, Ak[r], {elem}, dims);
-            }
+        psi_i = apply_ctrl_fan_psi_worker(psi_i, Ak, ctrl, target, dims, shift);
 
-            // Difference vector: modified sub-state minus original sub-state
-            dyn_col_vect<typename Derived1::Scalar> delta =
-                transformed_psi - chopped_psi;
+        dyn_row_vect<Scalar> phi_i_bra =
+            apply_ctrl_fan_psi_worker(phi_i_ket, Ak, ctrl, target, dims, shift)
+                .adjoint();
 
 #ifdef QPP_ENABLE_OPENMP
 #pragma omp critical
-#endif
-            {
-                result += delta;
-            }
+#endif // QPP_ENABLE_OPENMP
+        {
+            result += psi_i * phi_i_bra;
         }
     }
 
     rstate = std::move(result);
-}
-
-/**
- * @brief Applies the single qudit controlled-gate \a A with multiple
- * control qudits listed in \a ctrl to the part \a target of the multi-partite
- * state vector \a state
- *
- * @return Controlled gate \a A applied to the targets of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_fan_psi(const Eigen::MatrixBase<Derived1>& state,
-                   const Eigen::MatrixBase<Derived2>& A,
-                   const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                   const std::vector<idx>& shift, idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state.derived();
-
-    // Delegate to in-place implementation
-    apply_ctrl_fan_psi_inplace(result, A, ctrl, target, shift, n);
-
-    return result;
-}
-
-/**
- * @brief Applies the single qudit controlled-gate \a A with multiple
- * control qudits listed in \a ctrl to the part \a target of the multi-partite
- * density matrix \a state in-place, i.e., CTRL-A-A-...-A
- *
- * @param state Eigen expression (modified in-place)
- * @param A Eigen expression (2x2 matrix)
- * @param ctrl Vector of control qudit indexes
- * @param target Vector of target subsystem indexes
- * @param shift Vector of control shifts added to each control qudit value
- * modulo d (e.g., shifts the activating control configuration)
- * @param d Subsystem dimensions
- * @param n Number of qudits
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] void apply_ctrl_fan_rho_inplace(
-    Eigen::MatrixBase<Derived1>& state, const Eigen::MatrixBase<Derived2>& A,
-    const std::vector<idx>& ctrl, const std::vector<idx>& target,
-    const std::vector<idx>& shift, idx d, idx n) {
-    const dyn_mat<typename Derived2::Scalar>& rA = A.derived();
-    {
-        const idx D = static_cast<idx>(state.rows());
-
-        // Density matrix: compute into temporary then move
-        dyn_mat<typename Derived1::Scalar> result =
-            dyn_mat<typename Derived1::Scalar>::Zero(D, D);
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for
-#endif
-        for (idx i = 0; i < D; ++i) {
-            dyn_col_vect<typename Derived1::Scalar> psi_i =
-                dyn_col_vect<typename Derived1::Scalar>::Zero(D);
-            psi_i(i) = 1;
-
-            dyn_col_vect<typename Derived1::Scalar> phi_i_ket =
-                state.row(i).adjoint();
-
-            psi_i = applyCTRL_fan_ket(psi_i);
-            dyn_row_vect<typename Derived1::Scalar> phi_i_bra =
-                applyCTRL_fan_ket(phi_i_ket).adjoint();
-
-#ifdef QPP_ENABLE_OPENMP
-#pragma omp critical
-#endif
-            {
-                result += psi_i * phi_i_bra;
-            }
-        }
-        state = std::move(result);
-    }
-}
-
-/**
- * @brief Applies the single qudit controlled-gate \a A with multiple
- * control qudits listed in \a ctrl to the part \a target of the multi-partite
- * density matrix \a state
- *
- * @return Controlled gate \a A applied to the targets of \a state
- */
-template <typename Derived1, typename Derived2>
-[[qpp::critical, qpp::parallel]] expr_t<Derived1>
-apply_ctrl_fan_rho(const Eigen::MatrixBase<Derived1>& state,
-                   const Eigen::MatrixBase<Derived2>& A,
-                   const std::vector<idx>& ctrl, const std::vector<idx>& target,
-                   const std::vector<idx>& shift, idx n) {
-    // Functional deep copy
-    expr_t<Derived1> result = state.derived();
-
-    // Delegate to in-place implementation
-    apply_ctrl_fan_rho_inplace(result, A, ctrl, target, shift, n);
-
-    return result;
 }
 } // namespace qpp::internal::kernels::qudit
 

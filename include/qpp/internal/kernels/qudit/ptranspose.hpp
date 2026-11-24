@@ -34,97 +34,79 @@
 
 #include <cassert>
 #include <vector>
-#ifndef NDEBUG
-#include <set>
-#endif
 
 #include <Eigen/Dense>
 
+#include "qpp/options.hpp"
 #include "qpp/types.hpp"
+
+#include "qpp/internal/util.hpp"
 
 namespace qpp::internal::kernels::qudit {
 /**
- * @brief Qudit state vector partial transpose
+ * @brief Partial transpose
  *
- * Partial transpose of the multi-partite qudit state vector over the list
- * \a target of subsystems
+ * Partial transpose of the multi-partite state vector \a A
+ * over the list \a target of subsystems
  *
  * @param A Eigen expression
  * @param target Subsystem indexes
- * @param n Number of qudits
- * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
- * \a target in a qudit multi-partite system, as a dynamic matrix over the same
+ * @param dims Dimensions of the multi-partite system
+ * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsystems
+ * \a target in a multi-partite system, as a dynamic matrix over the same
  * scalar field as \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]]
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
 ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
-                  const std::vector<idx>& target, idx n) {
-    using scalar_t = typename Derived::Scalar;
+                  const std::vector<idx>& target,
+                  const std::vector<idx>& dims) {
+    using Scalar = typename Derived::Scalar;
     const auto& rA = A.derived();
 
-    // Input Validation
-    assert(internal::check_nonzero_size(rA) && "A"); // Zero-size
-    assert(internal::check_cvector(rA) && "A must be a column vector (ket)");
-    assert(n > 0 && "n must be > 0");
-
-    // target must be valid w.r.t. n and contain unique indices
-#ifndef NDEBUG
-    for (idx k : target) {
-        assert(k < n && "target must be valid w.r.t. n");
-    }
-
-    auto tmp = target;
-    std::sort(tmp.begin(), tmp.end());
-    auto it = std::adjacent_find(tmp.begin(), tmp.end());
-    assert(it == tmp.end() && "target contains duplicate subsystem indices");
-
-    // D must equal 2^n for qudits
-    idx D_expected = static_cast<idx>(std::size_t{1} << n);
-    assert(static_cast<idx>(rA.rows()) == D_expected && "A/n size mismatch");
-#endif
-
-    idx D = static_cast<idx>(rA.rows());
-    idx n_subsys = target.size();
-
-    // Trivial cases
-    if (n_subsys == 0) {
-        // no partial transpose requested
+    if (target.empty()) {
         return rA * rA.adjoint();
     }
-    if (n_subsys == n) {
-        // partial transpose over all subsystems == full transpose of density
-        // matrix
+
+    if (target.size() == dims.size()) {
         return (rA * rA.adjoint()).transpose();
     }
 
-    // build mask M: bit k set means subsystem k is transposed
-    std::size_t M = 0;
-    for (idx k : target) {
-        M |= (std::size_t{1} << k);
-    }
+    const idx n = dims.size();
+    const idx D = static_cast<idx>(rA.rows());
+    const idx n_subsys = target.size();
 
-    dyn_mat<scalar_t> result(D, D);
-    result.setZero(); // ensure initialized
+    idx Cdims[internal::maxn];
+    idx Csubsys[internal::maxn];
 
-    // alias psi accessor
-    auto psi = [&](idx t) -> scalar_t const& { return rA(t); };
+    std::copy(dims.begin(), dims.end(), Cdims);
+    std::copy(target.begin(), target.end(), Csubsys);
 
-    // worker lambda computes rho_PT(i,j) = psi[i_T] * conj(psi[j_T])
-    auto worker = [&](idx i, idx j) noexcept -> scalar_t {
-        std::size_t i_sz = static_cast<std::size_t>(i);
-        std::size_t j_sz = static_cast<std::size_t>(j);
-        idx i_T = static_cast<idx>((i_sz & (~M)) | (j_sz & M));
-        idx j_T = static_cast<idx>((j_sz & (~M)) | (i_sz & M));
-        return conj(psi(i_T)) * psi(j_T);
-    };
+    dyn_mat<Scalar> result(D, D);
+
+    for (idx j = 0; j < D; ++j) {
+        idx Cmidxcol[internal::maxn];
+
+        internal::n2multiidx(j, n, Cdims, Cmidxcol);
 
 #ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for
 #endif // QPP_ENABLE_OPENMP
-    for (idx i = 0; i < D; ++i) {
-        for (idx j = 0; j < D; ++j) {
-            result(i, j) = worker(i, j);
+        for (idx i = 0; i < D; ++i) {
+            idx midxcoltmp[internal::maxn];
+            idx midxrow[internal::maxn];
+
+            std::copy_n(Cmidxcol, n, midxcoltmp);
+
+            internal::n2multiidx(i, n, Cdims, midxrow);
+
+            for (idx k = 0; k < n_subsys; ++k) {
+                std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
+            }
+
+            result(i, j) = rA(internal::multiidx2n(midxrow, n, Cdims)) *
+                           Eigen::numext::conj(
+                               rA(internal::multiidx2n(midxcoltmp, n, Cdims)));
         }
     }
 
@@ -132,89 +114,76 @@ ptranspose_psi_kq(const Eigen::MatrixBase<Derived>& A,
 }
 
 /**
- * @brief Qudit density matrix partial transpose
+ * @brief Partial transpose
  *
- * Partial transpose of the multi-partite qudit density matrix over the list
- * \a target of subsystems
+ * Partial transpose of the multi-partite density matrix \a A
+ * over the list \a target of subsystems
  *
  * @param A Eigen expression
  * @param target Subsystem indexes
- * @param n Number of qudits
- * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsytems
- * \a target in a qudit multi-partite system, as a dynamic matrix over the same
+ * @param dims Dimensions of the multi-partite system
+ * @return Partial transpose \f$(\cdot)^{T_{subsys}}\f$ over the subsystems
+ * \a target in a multi-partite system, as a dynamic matrix over the same
  * scalar field as \a A
  */
 template <typename Derived>
-dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]]
+[[qpp::critical, qpp::parallel]] dyn_mat<typename Derived::Scalar>
 ptranspose_rho_kq(const Eigen::MatrixBase<Derived>& A,
-                  const std::vector<idx>& target, idx n) {
-    const typename Eigen::MatrixBase<Derived>::EvalReturnType& rA = A.derived();
+                  const std::vector<idx>& target,
+                  const std::vector<idx>& dims) {
+    using Scalar = typename Derived::Scalar;
+    const auto& rA = A.derived();
 
-    // Input Validation
-    assert(internal::check_nonzero_size(rA) &&
-           "A"); // Corresponds to exception::ZeroSize
-    // check_dims(dims) removed, replaced by n > 0 check if necessary, but D
-    // implies this check_subsys_match_dims simplified to check target is valid
-    // w.r.t. n
-    assert(std::all_of(target.cbegin(), target.cend(),
-                       [&](idx k) { return k < n; }) &&
-           "target must be valid w.r.t. n");
-    assert(internal::check_square_mat(rA) &&
-           "A must be a square matrix (density "
-           "matrix)"); // Corresponds to
-                       // check_square_mat/MatrixNotSquareNorCvector
-    // check_dims_match_mat replaced by check that D = 2^n
-#ifndef NDEBUG
-    idx D_expected = static_cast<idx>(std::size_t{1} << n);
-    assert(static_cast<idx>(rA.rows()) == D_expected && "A/n size mismatch");
-#endif
-
-    idx D = static_cast<idx>(rA.rows());
-    idx n_subsys = target.size();
-
-    // Trivial cases
-    if (n_subsys == n) { // Use n instead of dims.size()
-        return rA.transpose();
-    }
     if (target.empty()) {
         return rA;
     }
 
-    dyn_mat<typename Derived::Scalar> result(D, D);
-
-    // OPTIMIZATION: Precompute the partial transpose mask (M)
-    // The mask M has a '1' at the bit positions (subsystem indices) specified
-    // in target. For qudits, the subsystem index is directly the bit position.
-    std::size_t M = 0;
-    for (idx k : target) {
-        M |= (std::size_t{1} << k);
+    if (target.size() == dims.size()) {
+        return rA.transpose();
     }
 
-    auto worker = [&](idx i, idx j) noexcept -> typename Derived::Scalar {
-        // i' = (i & ~M) | (j & M)
-        std::size_t i_sz = static_cast<std::size_t>(i);
-        std::size_t j_sz = static_cast<std::size_t>(j);
-        idx i_T = static_cast<idx>((i_sz & (~M)) | (j_sz & M));
+    const idx n = dims.size();
+    const idx D = static_cast<idx>(rA.rows());
+    const idx n_subsys = target.size();
 
-        // j' = (j & ~M) | (i & M)
-        idx j_T = static_cast<idx>((j_sz & (~M)) | (i_sz & M));
+    idx Cdims[internal::maxn];
+    idx Csubsys[internal::maxn];
 
-        // result(i, j) = A_j'i' (Partial transpose swaps row and column indices
-        // of non-target blocks)
-        return rA(j_T, i_T);
-    }; /* end worker */
+    std::copy(dims.begin(), dims.end(), Cdims);
+    std::copy(target.begin(), target.end(), Csubsys);
+
+    dyn_mat<Scalar> result(D, D);
+
+    for (idx j = 0; j < D; ++j) {
+        idx Cmidxcol[internal::maxn];
+
+        internal::n2multiidx(j, n, Cdims, Cmidxcol);
 
 #ifdef QPP_ENABLE_OPENMP
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for
 #endif // QPP_ENABLE_OPENMP
-    for (idx i = 0; i < D; ++i) {
-        for (idx j = 0; j < D; ++j) {
-            result(i, j) = worker(i, j);
+        for (idx i = 0; i < D; ++i) {
+            idx midxcoltmp[internal::maxn];
+            idx midxrow[internal::maxn];
+
+            std::copy_n(Cmidxcol, n, midxcoltmp);
+
+            internal::n2multiidx(i, n, Cdims, midxrow);
+
+            for (idx k = 0; k < n_subsys; ++k) {
+                std::swap(midxcoltmp[Csubsys[k]], midxrow[Csubsys[k]]);
+            }
+
+            const idx row = internal::multiidx2n(midxrow, n, Cdims);
+            const idx col = internal::multiidx2n(midxcoltmp, n, Cdims);
+
+            result(i, j) = rA(row, col);
         }
     }
 
     return result;
 }
+
 } // namespace qpp::internal::kernels::qudit
 
 #endif /* QPP_INTERNAL_KERNELS_QUDIT_PTRANSPOSE_HPP_ */

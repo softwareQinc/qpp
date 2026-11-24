@@ -179,19 +179,6 @@ TEST(qpp_qubit_apply_psi_1q_inplace, LargeStateBothPaths) {
     }
 }
 
-TEST(qpp_qubit_apply_psi_1q, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    ket original = make_state(n);
-    const ket before = original;
-    for (idx i = 0; i < n; ++i) {
-        const cmat gate = fourier_gate(2);
-        const ket actual =
-            internal::kernels::qubit::apply_psi_1q(original, gate, i, n);
-        expect_psi(actual, before, gate, {i}, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_psi_2q_inplace, AllTargetOrdersAndSpectators) {
     for (idx n : {idx{2}, idx{5}}) {
         const ket original = make_state(n);
@@ -214,20 +201,6 @@ TEST(qpp_qubit_apply_psi_2q_inplace, AllTargetOrdersAndSpectators) {
     }
 }
 
-TEST(qpp_qubit_apply_psi_2q, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    ket original = make_state(n);
-    const ket before = original;
-    const cmat gate = fourier_gate(4);
-    for (const auto& t :
-         std::vector<std::vector<idx>>{{0, 3}, {3, 0}, {2, 1}}) {
-        const ket actual = internal::kernels::qubit::apply_psi_2q(
-            original, gate, t[0], t[1], n);
-        expect_psi(actual, before, gate, t, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_psi_3q_inplace, PermutationsAndSpectators) {
     for (idx n : {idx{3}, idx{5}}) {
         const ket original = make_state(n);
@@ -247,19 +220,6 @@ TEST(qpp_qubit_apply_psi_3q_inplace, PermutationsAndSpectators) {
                 expect_psi(actual, original, gate, t, n);
             }
         }
-    }
-}
-
-TEST(qpp_qubit_apply_psi_3q, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    ket original = make_state(n);
-    const ket before = original;
-    const cmat gate = fourier_gate(8);
-    for (const auto& t : std::vector<std::vector<idx>>{{4, 2, 0}, {1, 3, 4}}) {
-        const ket actual = internal::kernels::qubit::apply_psi_3q(
-            original, gate, t[0], t[1], t[2], n);
-        expect_psi(actual, before, gate, t, n);
-        expect_same(original, before);
     }
 }
 
@@ -290,20 +250,6 @@ TEST(qpp_qubit_apply_psi_kq_inplace, AllQubitsInArbitraryOrder) {
     expect_psi(actual, original, gate, targets, n);
 }
 
-TEST(qpp_qubit_apply_psi_kq, ReturnsResultWithoutChangingInput) {
-    const idx n = 5;
-    ket original = make_state(n);
-    const ket before = original;
-    for (const auto& t : std::vector<std::vector<idx>>{
-             {}, {2}, {3, 0}, {4, 1, 0}, {0, 3, 4, 2}}) {
-        const cmat gate = fourier_gate(idx{1} << t.size());
-        const ket actual =
-            internal::kernels::qubit::apply_psi_kq(original, gate, t, n);
-        expect_psi(actual, before, gate, t, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_rho_1q_inplace, MixedStateAllPositions) {
     for (idx n : {idx{1}, idx{4}}) {
         const cmat original = make_density(n);
@@ -317,19 +263,6 @@ TEST(qpp_qubit_apply_rho_1q_inplace, MixedStateAllPositions) {
                 expect_rho(actual, original, gate, {i}, n);
             }
         }
-    }
-}
-
-TEST(qpp_qubit_apply_rho_1q, ReturnsResultWithoutChangingInput) {
-    const idx n = 3;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const cmat gate = fourier_gate(2);
-    for (idx i = 0; i < n; ++i) {
-        const cmat actual =
-            internal::kernels::qubit::apply_rho_1q(original, gate, i, n);
-        expect_rho(actual, before, gate, {i}, n);
-        expect_same(original, before);
     }
 }
 
@@ -355,19 +288,6 @@ TEST(qpp_qubit_apply_rho_2q_inplace, BothOrdersAndSpectators) {
     }
 }
 
-TEST(qpp_qubit_apply_rho_2q, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const cmat gate = fourier_gate(4);
-    for (const auto& t : std::vector<std::vector<idx>>{{0, 3}, {3, 1}}) {
-        const cmat actual = internal::kernels::qubit::apply_rho_2q(
-            original, gate, t[0], t[1], n);
-        expect_rho(actual, before, gate, t, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_rho_3q_inplace, PermutationsAndSpectators) {
     for (idx n : {idx{3}, idx{4}}) {
         const cmat original = make_density(n);
@@ -390,19 +310,6 @@ TEST(qpp_qubit_apply_rho_3q_inplace, PermutationsAndSpectators) {
     }
 }
 
-TEST(qpp_qubit_apply_rho_3q, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    cmat original = make_density(n);
-    const cmat before = original;
-    const cmat gate = fourier_gate(8);
-    for (const auto& t : std::vector<std::vector<idx>>{{3, 2, 0}, {1, 0, 2}}) {
-        const cmat actual = internal::kernels::qubit::apply_rho_3q(
-            original, gate, t[0], t[1], t[2], n);
-        expect_rho(actual, before, gate, t, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_rho_kq_inplace, ZeroToFourTargets) {
     const idx n = 4;
     const cmat original = make_density(n);
@@ -419,20 +326,6 @@ TEST(qpp_qubit_apply_rho_kq_inplace, ZeroToFourTargets) {
     }
 }
 
-TEST(qpp_qubit_apply_rho_kq, ReturnsResultWithoutChangingInput) {
-    const idx n = 4;
-    cmat original = make_density(n);
-    const cmat before = original;
-    for (const auto& t : std::vector<std::vector<idx>>{
-             {}, {1}, {3, 0}, {2, 0, 1}, {3, 1, 0, 2}}) {
-        const cmat gate = fourier_gate(idx{1} << t.size());
-        const cmat actual =
-            internal::kernels::qubit::apply_rho_kq(original, gate, t, n);
-        expect_rho(actual, before, gate, t, n);
-        expect_same(original, before);
-    }
-}
-
 TEST(qpp_qubit_apply_rho_kq, PureStateConsistency) {
     const idx n = 4;
     const ket psi = make_state(n);
@@ -440,10 +333,14 @@ TEST(qpp_qubit_apply_rho_kq, PureStateConsistency) {
     const std::vector<idx> target{3, 0, 2};
     const cmat gate = fourier_gate(8);
 
-    const ket transformed_psi =
-        internal::kernels::qubit::apply_psi_kq(psi, gate, target, n);
-    const cmat transformed_rho =
-        internal::kernels::qubit::apply_rho_kq(rho, gate, target, n);
+    ket transformed_psi = psi;
+    internal::kernels::qubit::apply_psi_kq_inplace(transformed_psi, gate,
+                                                   target, n);
+
+    cmat transformed_rho = rho;
+    internal::kernels::qubit::apply_rho_kq_inplace(transformed_rho, gate,
+                                                   target, n);
+
     const cmat expected = transformed_psi * transformed_psi.adjoint();
 
     expect_same(transformed_rho, expected);

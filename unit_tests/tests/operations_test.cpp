@@ -226,6 +226,7 @@ TEST(qpp_applyCTRL_fan, Qudits) {
 TEST(qpp_applyCTRL_fan, Qubits) {
     const idx n = 6; // total qubits
     const idx D = internal::ipow_rounded<idx>(2, n);
+    const std::vector<idx> dims(n, 2);
 
     // worst-ish case: half controls, half targets (disjoint)
     const idx m = n / 2;
@@ -250,8 +251,7 @@ TEST(qpp_applyCTRL_fan, Qubits) {
 
         // signature expects shift, so pass the "no shift" vector
         const std::vector<idx> shift(m, 0);
-        ket out = qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
-            psi, gt.X, ctrl, target, shift, n);
+        ket out = applyCTRL_fan(psi, gt.X, ctrl, target, dims, shift);
 
         std::vector<idx> exp_midx = midx;
         for (idx i = 0; i < m; ++i) {
@@ -278,8 +278,7 @@ TEST(qpp_applyCTRL_fan, Qubits) {
         midx[ctrl[2]] = 0;
         ket psi = mket(midx, 2);
 
-        ket out = qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
-            psi, gt.X, ctrl, target, shift, n);
+        ket out = applyCTRL_fan(psi, gt.X, ctrl, target, dims, shift);
 
         std::vector<idx> exp_midx = midx;
         for (idx i = 0; i < m; ++i) {
@@ -306,8 +305,7 @@ TEST(qpp_applyCTRL_fan, Qubits) {
         midx[ctrl[1]] = 0; // break (non-negated) control condition
 
         ket psi = mket(midx, 2);
-        ket out = qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
-            psi, gt.X, ctrl, target, shift, n);
+        ket out = applyCTRL_fan(psi, gt.X, ctrl, target, dims, shift);
 
         EXPECT_NEAR(0.0, norm(out - psi), 1e-12);
     }
@@ -323,8 +321,7 @@ TEST(qpp_applyCTRL_fan, Qubits) {
         ket psi = mket(midx, 2);
 
         const std::vector<idx> shift(m, 0);
-        cmat rho = qpp::internal::kernels::qubit::apply_ctrl_fan_rho(
-            prj(psi), gt.X, ctrl, target, shift, n);
+        cmat rho = applyCTRL_fan(prj(psi), gt.X, ctrl, target, dims, shift);
 
         std::vector<idx> exp_midx = midx;
         for (idx i = 0; i < m; ++i) {
@@ -349,8 +346,7 @@ TEST(qpp_applyCTRL_fan, Qubits) {
         midx[ctrl[2]] = 0;
         ket psi = mket(midx, 2);
 
-        cmat rho = qpp::internal::kernels::qubit::apply_ctrl_fan_rho(
-            prj(psi), gt.X, ctrl, target, shift, n);
+        cmat rho = applyCTRL_fan(prj(psi), gt.X, ctrl, target, dims, shift);
 
         std::vector<idx> exp_midx = midx;
         for (idx i = 0; i < m; ++i) {
@@ -371,10 +367,8 @@ TEST(qpp_applyCTRL_fan, Qubits) {
         const std::vector<idx> shift(m, 0);
         const cmat U = randU(2);
 
-        ket A = qpp::internal::kernels::qubit::apply_ctrl_fan_psi(
-            psi, U, ctrl, target, shift, n);
-        cmat B = qpp::internal::kernels::qubit::apply_ctrl_fan_rho(
-            rho, U, ctrl, target, shift, n);
+        ket A = applyCTRL_fan(psi, U, ctrl, target, dims, shift);
+        cmat B = applyCTRL_fan(rho, U, ctrl, target, dims, shift);
 
         const cmat result_psi = A * adjoint(A);
         const realT res = norm(result_psi - B);
