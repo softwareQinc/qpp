@@ -98,49 +98,37 @@ TEST_CASE("qpp::applyCTRL() state vector benchmark",
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("applyCTRL/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/ctrls=1/targets=1") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_ctrl_rho_1q(
+        qpp::internal::kernels::qubit::apply_ctrl_rho_1q_inplace(
             rho, U1, {nq - 1}, nq - 2, {0}, nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("applyCTRL/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/ctrls=1/targets=2") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_ctrl_rho_2q(
+        qpp::internal::kernels::qubit::apply_ctrl_rho_2q_inplace(
             rho, U1, {nq - 1}, nq - 2, nq - 3, {0}, nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("applyCTRL/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/ctrls=1/targets=3") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_ctrl_rho_kq(
+        qpp::internal::kernels::qubit::apply_ctrl_rho_kq_inplace(
             rho, U1, {nq - 1}, {nq - 2, nq - 3, nq - 4}, {0}, nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("applyCTRL/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/ctrls=2/targets=1") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_ctrl_rho_1q(
+        qpp::internal::kernels::qubit::apply_ctrl_rho_1q_inplace(
             rho, U1, {nq - 1, nq - 2}, nq - 3, {0, 0}, nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("applyCTRL/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/ctrls=2/targets=2") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_ctrl_rho_2q(
+        qpp::internal::kernels::qubit::apply_ctrl_rho_2q_inplace(
             rho, U1, {nq - 1, nq - 2}, nq - 3, nq - 4, {0, 0}, nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("applyCTRL/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/ctrls=2/targets=3") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_ctrl_rho_kq(
+        qpp::internal::kernels::qubit::apply_ctrl_rho_kq_inplace(
             rho, U1, {nq - 1, nq - 2}, {nq - 3, nq - 4, nq - 5}, {0, 0}, nq);
     };
 }

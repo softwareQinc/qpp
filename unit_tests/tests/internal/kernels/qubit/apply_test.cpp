@@ -1,12 +1,12 @@
+#include <cmath>
+#include <complex>
+#include <vector>
+
 #include "gtest/gtest.h"
 
 #include "qpp/qpp.hpp"
 
 #include "qpp/internal/kernels/qubit/apply.hpp"
-
-#include <cmath>
-#include <complex>
-#include <vector>
 
 using namespace qpp;
 

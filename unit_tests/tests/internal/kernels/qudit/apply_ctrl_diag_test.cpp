@@ -1,13 +1,13 @@
+#include <cmath>
+#include <complex>
+#include <sstream>
+#include <vector>
+
 #include "gtest/gtest.h"
 
 #include "qpp/qpp.hpp"
 
 #include "qpp/internal/kernels/qudit/apply_ctrl_diag.hpp"
-
-#include <cmath>
-#include <complex>
-#include <sstream>
-#include <vector>
 
 using namespace qpp;
 

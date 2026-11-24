@@ -1,14 +1,14 @@
-#include "gtest/gtest.h"
-
-#include "qpp/qpp.hpp"
-
-#include "qpp/internal/kernels/qubit/apply_ctrl.hpp"
-
 #include <cmath>
 #include <complex>
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include "gtest/gtest.h"
+
+#include "qpp/qpp.hpp"
+
+#include "qpp/internal/kernels/qubit/apply_ctrl.hpp"
 
 using namespace qpp;
 

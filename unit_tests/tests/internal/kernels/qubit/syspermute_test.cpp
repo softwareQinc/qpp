@@ -1,13 +1,13 @@
+#include <complex>
+#include <sstream>
+#include <string>
+#include <vector>
+
 #include "gtest/gtest.h"
 
 #include "qpp/qpp.hpp"
 
 #include "qpp/internal/kernels/qubit/syspermute.hpp"
-
-#include <complex>
-#include <sstream>
-#include <string>
-#include <vector>
 
 using namespace qpp;
 
@@ -50,8 +50,7 @@ cmat make_general_matrix(idx n) {
     for (idx r = 0; r < D; ++r) {
         for (idx c = 0; c < D; ++c) {
             result(r, c) =
-                cplx{0.07 * (r + 1) - 0.04 * (c + 1),
-                     0.02 * (2 * r + c + 1)};
+                cplx{0.07 * (r + 1) - 0.04 * (c + 1), 0.02 * (2 * r + c + 1)};
         }
     }
     return result;
@@ -63,8 +62,7 @@ idx permuted_index(idx old_index, const std::vector<idx>& perm, idx n) {
     idx new_index = 0;
     for (idx new_qubit = 0; new_qubit < n; ++new_qubit) {
         const idx old_qubit = perm[new_qubit];
-        const idx old_bit =
-            (old_index >> (n - 1 - old_qubit)) & idx{1};
+        const idx old_bit = (old_index >> (n - 1 - old_qubit)) & idx{1};
         new_index |= old_bit << (n - 1 - new_qubit);
     }
     return new_index;
@@ -85,8 +83,7 @@ cmat reference_rho(const cmat& rho, const std::vector<idx>& perm, idx n) {
     for (idx old_row = 0; old_row < D; ++old_row) {
         for (idx old_col = 0; old_col < D; ++old_col) {
             result(permuted_index(old_row, perm, n),
-                   permuted_index(old_col, perm, n)) =
-                rho(old_row, old_col);
+                   permuted_index(old_col, perm, n)) = rho(old_row, old_col);
         }
     }
     return result;
@@ -163,8 +160,7 @@ TEST(qpp_qubit_syspermute_psi_kq, ArbitraryThreeAndFourQubitPermutations) {
         for (const auto& perm : permutations) {
             SCOPED_TRACE(describe(perm));
             const ket actual =
-                internal::kernels::qubit::syspermute_psi_kq(original, perm,
-                                                              n);
+                internal::kernels::qubit::syspermute_psi_kq(original, perm, n);
             expect_same(actual, reference_psi(original, perm, n));
             EXPECT_NEAR(actual.norm(), original.norm(), tolerance);
         }
@@ -217,15 +213,9 @@ TEST(qpp_qubit_syspermute_rho_kq, IdentityPermutation) {
 
 TEST(qpp_qubit_syspermute_rho_kq, TwoQubitSwapKnownMatrix) {
     cmat original(4, 4);
-    original << 1, 2, 3, 4,
-                5, 6, 7, 8,
-                9, 10, 11, 12,
-                13, 14, 15, 16;
+    original << 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16;
     cmat expected(4, 4);
-    expected << 1, 3, 2, 4,
-                9, 11, 10, 12,
-                5, 7, 6, 8,
-                13, 15, 14, 16;
+    expected << 1, 3, 2, 4, 9, 11, 10, 12, 5, 7, 6, 8, 13, 15, 14, 16;
     const cmat actual =
         internal::kernels::qubit::syspermute_rho_kq(original, {1, 0}, 2);
     expect_same(actual, expected);
@@ -234,8 +224,8 @@ TEST(qpp_qubit_syspermute_rho_kq, TwoQubitSwapKnownMatrix) {
 TEST(qpp_qubit_syspermute_rho_kq, ThreeQubitAdjacentSwap) {
     cmat original = cmat::Zero(8, 8);
     original(1, 6) = cplx{0.7, 0.2};
-    const cmat actual = internal::kernels::qubit::syspermute_rho_kq(
-        original, {0, 2, 1}, 3);
+    const cmat actual =
+        internal::kernels::qubit::syspermute_rho_kq(original, {0, 2, 1}, 3);
     cmat expected = cmat::Zero(8, 8);
     // |001><110| becomes |010><101|.
     expected(2, 5) = cplx{0.7, 0.2};
@@ -246,9 +236,11 @@ TEST(qpp_qubit_syspermute_rho_kq, MixedStateArbitraryPermutations) {
     const idx n = 5;
     const cmat original = make_density(n);
     const cmat before = original;
-    const std::vector<std::vector<idx>> permutations{
-        {0, 1, 2, 3, 4}, {0, 2, 1, 3, 4}, {4, 1, 2, 3, 0},
-        {3, 0, 4, 1, 2}, {2, 4, 1, 0, 3}};
+    const std::vector<std::vector<idx>> permutations{{0, 1, 2, 3, 4},
+                                                     {0, 2, 1, 3, 4},
+                                                     {4, 1, 2, 3, 0},
+                                                     {3, 0, 4, 1, 2},
+                                                     {2, 4, 1, 0, 3}};
     for (const auto& perm : permutations) {
         SCOPED_TRACE(describe(perm));
         const cmat actual =
@@ -276,8 +268,7 @@ TEST(qpp_qubit_syspermute_rho_kq, GeneralNonHermitianMatrix) {
 TEST(qpp_qubit_syspermute_rho_kq, RowMajorMatrixInput) {
     const idx n = 3;
     const cmat original = make_general_matrix(n);
-    const Eigen::Matrix<cplx, Eigen::Dynamic, Eigen::Dynamic,
-                        Eigen::RowMajor>
+    const Eigen::Matrix<cplx, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
         row_major = original;
     const std::vector<idx> perm{0, 2, 1};
 

@@ -1,13 +1,13 @@
+#include <cmath>
+#include <sstream>
+#include <string>
+#include <vector>
+
 #include "gtest/gtest.h"
 
 #include "qpp/qpp.hpp"
 
 #include "qpp/internal/kernels/qubit/ptrace.hpp"
-
-#include <cmath>
-#include <sstream>
-#include <string>
-#include <vector>
 
 using namespace qpp;
 
@@ -37,8 +37,7 @@ cmat make_general_matrix(idx n) {
     for (idx r = 0; r < D; ++r) {
         for (idx c = 0; c < D; ++c) {
             result(r, c) =
-                cplx{0.03 * (r + 1) - 0.02 * (c + 1),
-                     0.01 * (2 * r + c + 1)};
+                cplx{0.03 * (r + 1) - 0.02 * (c + 1), 0.01 * (2 * r + c + 1)};
         }
     }
     return result;
@@ -81,8 +80,7 @@ cmat reference_ptrace(const cmat& rho, const std::vector<idx>& target, idx n) {
     auto compress = [&](idx basis) {
         idx compressed = 0;
         for (idx q : kept) {
-            compressed = (compressed << 1) |
-                         ((basis >> (n - 1 - q)) & idx{1});
+            compressed = (compressed << 1) | ((basis >> (n - 1 - q)) & idx{1});
         }
         return compressed;
     };
@@ -115,8 +113,7 @@ void expect_same(const Eigen::MatrixBase<Derived1>& actual,
 TEST(qpp_qubit_ptrace_psi_kq, EmptyTraceProducesPureDensityMatrix) {
     for (idx n : {idx{1}, idx{3}, idx{5}}) {
         const ket psi = make_state(n);
-        const cmat actual =
-            internal::kernels::qubit::ptrace_psi_kq(psi, {}, n);
+        const cmat actual = internal::kernels::qubit::ptrace_psi_kq(psi, {}, n);
         const cmat expected = psi * psi.adjoint();
         expect_same(actual, expected);
     }
@@ -173,8 +170,7 @@ TEST(qpp_qubit_ptrace_psi_kq, ProductStateTracesMiddleQubit) {
     psi(3) = 1.0 / std::sqrt(2.0);
     cmat expected = cmat::Zero(4, 4);
     expected(1, 1) = 1;
-    const cmat actual =
-        internal::kernels::qubit::ptrace_psi_kq(psi, {1}, 3);
+    const cmat actual = internal::kernels::qubit::ptrace_psi_kq(psi, {1}, 3);
     expect_same(actual, expected);
 }
 
@@ -184,8 +180,8 @@ TEST(qpp_qubit_ptrace_psi_kq, BruteForceAllTargetConfigurations) {
     const ket before = psi;
     const cmat rho = psi * psi.adjoint();
     const std::vector<std::vector<idx>> targets{
-        {}, {0}, {4}, {1, 3}, {3, 1}, {0, 2, 4},
-        {4, 0, 2}, {4, 1, 3, 0}, {0, 1, 2, 3, 4}};
+        {},        {0},       {4},          {1, 3},         {3, 1},
+        {0, 2, 4}, {4, 0, 2}, {4, 1, 3, 0}, {0, 1, 2, 3, 4}};
     for (const auto& target : targets) {
         SCOPED_TRACE(describe(target));
         const cmat actual =
@@ -200,10 +196,8 @@ TEST(qpp_qubit_ptrace_psi_kq, BruteForceAllTargetConfigurations) {
 TEST(qpp_qubit_ptrace_psi_kq, TracedTargetOrderDoesNotMatter) {
     const idx n = 4;
     const ket psi = make_state(n);
-    const cmat first =
-        internal::kernels::qubit::ptrace_psi_kq(psi, {0, 2}, n);
-    const cmat second =
-        internal::kernels::qubit::ptrace_psi_kq(psi, {2, 0}, n);
+    const cmat first = internal::kernels::qubit::ptrace_psi_kq(psi, {0, 2}, n);
+    const cmat second = internal::kernels::qubit::ptrace_psi_kq(psi, {2, 0}, n);
     expect_same(first, second);
 }
 
@@ -226,8 +220,7 @@ TEST(qpp_qubit_ptrace_rho_kq, EmptyTraceReturnsOriginalMatrix) {
     for (idx n : {idx{1}, idx{3}, idx{5}}) {
         const cmat rho = make_density(n);
         const cmat before = rho;
-        const cmat actual =
-            internal::kernels::qubit::ptrace_rho_kq(rho, {}, n);
+        const cmat actual = internal::kernels::qubit::ptrace_rho_kq(rho, {}, n);
         expect_same(actual, before);
         expect_same(rho, before);
     }
@@ -266,8 +259,8 @@ TEST(qpp_qubit_ptrace_rho_kq, MixedStateAllTargetConfigurations) {
     const cmat rho = make_density(n);
     const cmat before = rho;
     const std::vector<std::vector<idx>> targets{
-        {}, {0}, {4}, {1, 3}, {3, 1}, {0, 2, 4},
-        {4, 0, 2}, {4, 1, 3, 0}, {0, 1, 2, 3, 4}};
+        {},        {0},       {4},          {1, 3},         {3, 1},
+        {0, 2, 4}, {4, 0, 2}, {4, 1, 3, 0}, {0, 1, 2, 3, 4}};
     for (const auto& target : targets) {
         SCOPED_TRACE(describe(target));
         const cmat actual =
@@ -313,10 +306,8 @@ TEST(qpp_qubit_ptrace_rho_kq, Linearity) {
 TEST(qpp_qubit_ptrace_rho_kq, TracedTargetOrderDoesNotMatter) {
     const idx n = 4;
     const cmat rho = make_density(n);
-    const cmat first =
-        internal::kernels::qubit::ptrace_rho_kq(rho, {0, 2}, n);
-    const cmat second =
-        internal::kernels::qubit::ptrace_rho_kq(rho, {2, 0}, n);
+    const cmat first = internal::kernels::qubit::ptrace_rho_kq(rho, {0, 2}, n);
+    const cmat second = internal::kernels::qubit::ptrace_rho_kq(rho, {2, 0}, n);
     expect_same(first, second);
 }
 
@@ -338,7 +329,6 @@ TEST(qpp_qubit_ptrace_rho_kq, PureStateConsistency) {
 TEST(qpp_qubit_ptrace_rho_kq, ZeroQubitSystem) {
     cmat scalar(1, 1);
     scalar(0, 0) = cplx{0.7, -0.2};
-    const cmat actual =
-        internal::kernels::qubit::ptrace_rho_kq(scalar, {}, 0);
+    const cmat actual = internal::kernels::qubit::ptrace_rho_kq(scalar, {}, 0);
     expect_same(actual, scalar);
 }

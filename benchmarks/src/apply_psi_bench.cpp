@@ -80,32 +80,25 @@ TEST_CASE("qpp::apply() state vector benchmark",
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("apply/qubit-kernel/psi/nq=" + std::to_string(nq) +
               "/targets=1") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_psi_1q(psi, U1, nq - 1, nq);
+        qpp::internal::kernels::qubit::apply_psi_1q_inplace(psi, U1, nq - 1,
+                                                            nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("apply/qubit-kernel/psi/nq=" + std::to_string(nq) +
               "/targets=2") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_psi_2q(psi, U2, nq - 2,
-                                                           nq - 1, nq);
+        qpp::internal::kernels::qubit::apply_psi_2q_inplace(psi, U2, nq - 2,
+                                                            nq - 1, nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("apply/qubit-kernel/psi/nq=" + std::to_string(nq) +
               "/targets=3") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_psi_3q(psi, U3, nq - 3,
-                                                           nq - 2, nq - 1, nq);
+        qpp::internal::kernels::qubit::apply_psi_3q_inplace(psi, U3, nq - 3,
+                                                            nq - 2, nq - 1, nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("apply/qubit-kernel/psi/nq=" + std::to_string(nq) +
               "/targets=4") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_psi_kq(
+        qpp::internal::kernels::qubit::apply_psi_kq_inplace(
             psi, U4, {nq - 4, nq - 3, nq - 2, nq - 1}, nq);
     };
 }

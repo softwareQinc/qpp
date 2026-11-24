@@ -80,32 +80,25 @@ TEST_CASE("qpp::apply() density matrix benchmark",
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("apply/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/targets=1") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_rho_1q(rho, U1, nq - 1, nq);
+        qpp::internal::kernels::qubit::apply_rho_1q_inplace(rho, U1, nq - 1,
+                                                            nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("apply/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/targets=2") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_rho_2q(rho, U2, nq - 2,
-                                                           nq - 1, nq);
+        qpp::internal::kernels::qubit::apply_rho_2q_inplace(rho, U2, nq - 2,
+                                                            nq - 1, nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("apply/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/targets=3") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_rho_3q(rho, U3, nq - 3,
-                                                           nq - 2, nq - 1, nq);
+        qpp::internal::kernels::qubit::apply_rho_3q_inplace(rho, U3, nq - 3,
+                                                            nq - 2, nq - 1, nq);
     };
     // Benchmarked portion (executed repeatedly)
     BENCHMARK("apply/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/targets=4") {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_rho_kq(
+        qpp::internal::kernels::qubit::apply_rho_kq_inplace(
             rho, U4, {nq - 4, nq - 3, nq - 2, nq - 1}, nq);
     };
 }

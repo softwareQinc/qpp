@@ -1,14 +1,14 @@
-#include "gtest/gtest.h"
-
-#include "qpp/qpp.hpp"
-
-#include "qpp/internal/kernels/qubit/ptranspose.hpp"
-
 #include <cmath>
 #include <complex>
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include "gtest/gtest.h"
+
+#include "qpp/qpp.hpp"
+
+#include "qpp/internal/kernels/qubit/ptranspose.hpp"
 
 using namespace qpp;
 
@@ -38,8 +38,7 @@ cmat make_general_matrix(idx n) {
     for (idx r = 0; r < D; ++r) {
         for (idx c = 0; c < D; ++c) {
             result(r, c) =
-                cplx{0.05 * (r + 1) - 0.03 * (c + 1),
-                     0.02 * (2 * r + c + 1)};
+                cplx{0.05 * (r + 1) - 0.03 * (c + 1), 0.02 * (2 * r + c + 1)};
         }
     }
     return result;
@@ -60,8 +59,8 @@ std::string describe(const std::vector<idx>& target) {
 
 // Independent reference for partial transpose: interchange the row and
 // column bit belonging to each selected big-endian qubit.
-cmat reference_ptranspose(const cmat& rho,
-                          const std::vector<idx>& target, idx n) {
+cmat reference_ptranspose(const cmat& rho, const std::vector<idx>& target,
+                          idx n) {
     const idx D = idx{1} << n;
     cmat result(D, D);
     for (idx r = 0; r < D; ++r) {
@@ -158,8 +157,8 @@ TEST(qpp_qubit_ptranspose_psi_kq, ArbitrarySubsetsAndTargetOrders) {
     const ket before = psi;
     const cmat rho = psi * psi.adjoint();
     const std::vector<std::vector<idx>> targets{
-        {}, {0}, {4}, {1, 3}, {3, 1}, {0, 2, 4},
-        {4, 0, 2}, {3, 0, 4, 1}, {0, 1, 2, 3, 4}};
+        {},        {0},       {4},          {1, 3},         {3, 1},
+        {0, 2, 4}, {4, 0, 2}, {3, 0, 4, 1}, {0, 1, 2, 3, 4}};
     for (const auto& target : targets) {
         SCOPED_TRACE(describe(target));
         const cmat actual =
@@ -227,8 +226,8 @@ TEST(qpp_qubit_ptranspose_rho_kq, MixedStateArbitrarySubsets) {
     const cmat rho = make_density(n);
     const cmat before = rho;
     const std::vector<std::vector<idx>> targets{
-        {}, {0}, {4}, {1, 3}, {3, 1}, {0, 2, 4},
-        {4, 0, 2}, {3, 0, 4, 1}, {0, 1, 2, 3, 4}};
+        {},        {0},       {4},          {1, 3},         {3, 1},
+        {0, 2, 4}, {4, 0, 2}, {3, 0, 4, 1}, {0, 1, 2, 3, 4}};
     for (const auto& target : targets) {
         SCOPED_TRACE(describe(target));
         const cmat actual =
@@ -269,14 +268,10 @@ TEST(qpp_qubit_ptranspose_rho_kq, ApplyingTwiceRestoresOriginal) {
 TEST(qpp_qubit_ptranspose_rho_kq, DisjointPartialTransposesCommute) {
     const idx n = 4;
     const cmat rho = make_general_matrix(n);
-    const cmat t0 =
-        internal::kernels::qubit::ptranspose_rho_kq(rho, {0}, n);
-    const cmat t2 =
-        internal::kernels::qubit::ptranspose_rho_kq(rho, {2}, n);
-    const cmat first =
-        internal::kernels::qubit::ptranspose_rho_kq(t0, {2}, n);
-    const cmat second =
-        internal::kernels::qubit::ptranspose_rho_kq(t2, {0}, n);
+    const cmat t0 = internal::kernels::qubit::ptranspose_rho_kq(rho, {0}, n);
+    const cmat t2 = internal::kernels::qubit::ptranspose_rho_kq(rho, {2}, n);
+    const cmat first = internal::kernels::qubit::ptranspose_rho_kq(t0, {2}, n);
+    const cmat second = internal::kernels::qubit::ptranspose_rho_kq(t2, {0}, n);
     const cmat both =
         internal::kernels::qubit::ptranspose_rho_kq(rho, {0, 2}, n);
     expect_same(first, second);

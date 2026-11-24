@@ -71,9 +71,7 @@ TEST_CASE("qpp::applyCTRL_fan() density matrix benchmark",
     BENCHMARK("applyCTRL_fan/qubit-kernel/rho/nq=" + std::to_string(nq) +
               "/ctrls=" + std::to_string(ctrl.size()) +
               "/targets=" + std::to_string(target.size())) {
-        // CRITICAL: Return the result so the compiler doesn't optimize the
-        // calculation away.
-        return qpp::internal::kernels::qubit::apply_ctrl_fan_rho(
+        qpp::internal::kernels::qubit::apply_ctrl_fan_rho_inplace(
             rho, U, ctrl, target, shift, nq);
     };
 }
