@@ -82,7 +82,7 @@ dyn_col_vect<Scalar> apply_ctrl_fan_psi_worker(
         dyn_col_vect<Scalar> chopped_psi_bar =
             (psi / Scalar{static_cast<RealScalar>(d)}) - chopped_psi;
 
-        if (!chopped_psi.isZero()) {
+        if (!chopped_psi.isZero(RealScalar{0})) {
             for (idx elem : target) {
                 internal::kernels::qudit::apply_psi_kq_inplace(
                     chopped_psi, Ak[r], {elem}, dims);
@@ -149,7 +149,7 @@ template <typename Derived1, typename Derived2>
  * @param A Eigen expression, single qudit quantum gate
  * @param ctrl Control subsystem indexes
  * @param target Target qudit indexes
- * @param d Subsystem dimensions
+ * @param dims Dimensions of the multi-partite system
  * @param shift Optional, performs the control as if the \a ctrl qudits were
  * \f$X\f$-incremented component-wise by \a shift
  */

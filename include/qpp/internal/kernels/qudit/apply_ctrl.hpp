@@ -67,6 +67,7 @@ template <typename Derived1, typename Derived2>
     const idx d = dims[ctrl[0]];
 
     using Scalar = typename Derived1::Scalar;
+    using RealScalar = typename Derived1::RealScalar;
     using Ket = dyn_col_vect<Scalar>;
     using Mat = dyn_mat<Scalar>;
 
@@ -87,7 +88,7 @@ template <typename Derived1, typename Derived2>
         Ket projected =
             internal::project_ket_on_dits(original, ctrl_shift, ctrl, dims, D);
 
-        if (projected.isZero()) {
+        if (projected.isZero(RealScalar{0})) {
             continue;
         }
 
@@ -125,6 +126,7 @@ template <typename Derived1, typename Derived2>
     const idx d = dims[ctrl[0]];
 
     using Scalar = typename Derived1::Scalar;
+    using RealScalar = typename Derived1::RealScalar;
     using Ket = dyn_col_vect<Scalar>;
     using Mat = dyn_mat<Scalar>;
 
@@ -149,7 +151,7 @@ template <typename Derived1, typename Derived2>
             Ket projected =
                 internal::project_ket_on_dits(v, ctrl_shifts[r], ctrl, dims, D);
 
-            if (projected.isZero()) {
+            if (projected.isZero(RealScalar{0})) {
                 continue;
             }
 

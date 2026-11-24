@@ -25,7 +25,7 @@ and high-performance Pythonic experience while preserving the power and
 efficiency of the underlying C++ implementation.
 
 The bindings are easy to extend; see the
-[Custom Bindings](#custom-bindings) section for guidance.
+<a href="#custom-bindings">Custom bindings</a> section for guidance.
 
 Illustrative examples are provided in [`examples`](examples).
 

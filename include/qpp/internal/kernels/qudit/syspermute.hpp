@@ -51,7 +51,7 @@ namespace qpp::internal::kernels::qudit {
  *
  * @param A Eigen expression
  * @param perm Permutation
- * @param n Number of qudits
+ * @param dims Dimensions of the multi-partite system
  * @return Permuted qudit system, as a dynamic matrix over the same scalar field
  * as \a A
  */
@@ -104,7 +104,7 @@ syspermute_psi_kq(const Eigen::MatrixBase<Derived>& A,
  *
  * @param A Eigen expression
  * @param perm Permutation
- * @param n Number of qudits
+ * @param dims Dimensions of the multi-partite system
  * @return Permuted qudit system, as a dynamic matrix over the same scalar field
  * as \a A
  */

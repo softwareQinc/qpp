@@ -8,6 +8,8 @@
   the repository root using `python3 -m pytest pyqpp/tests/`.
 - Fixed execution of empty quantum circuits in noisy engines
 - Improved engine reset and repeated execution handling
+- Removed the QPP_ENABLE_QUBIT_OPTIMIZATIONS CMake flag; qubit optimizations
+  are now always enabled
 
 ## Version 7.1.1 - 16 November 2026
 

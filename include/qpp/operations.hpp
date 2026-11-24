@@ -152,8 +152,7 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
 
     idx n = dims.size(); // total number of subsystems
 
-    // qubit optimizations
-#ifdef QPP_ENABLE_QUBIT_OPTIMIZATIONS
+    // qubit kernels
     if (internal::all_dims_equal(dims, 2)) {
         // ket
         if (internal::check_cvector(rstate)) {
@@ -199,7 +198,6 @@ apply_inplace(Eigen::MatrixBase<Derived1>& state,
         }
         return;
     }
-#endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
     // qudit kernels
     if (internal::check_cvector(rstate)) {
@@ -335,8 +333,7 @@ template <typename Derived1, typename Derived2>
 
     idx n = dims.size();
 
-    // qubit optimizations
-#ifdef QPP_ENABLE_QUBIT_OPTIMIZATIONS
+    // qubit kernels
     if (internal::all_dims_equal(dims, 2)) {
         // ket
         if (internal::check_cvector(rstate)) {
@@ -382,7 +379,6 @@ template <typename Derived1, typename Derived2>
         }
         return;
     }
-#endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
     // qudit kernels
     if (internal::check_cvector(rstate)) {
@@ -1003,8 +999,7 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
     }
     // END EXCEPTION CHECKS
 
-    // qubit optimizations
-#ifdef QPP_ENABLE_QUBIT_OPTIMIZATIONS
+    // qubit kernels
     if (internal::all_dims_equal(dims, 2)) {
         idx n = dims.size();
         // ket
@@ -1045,7 +1040,6 @@ applyCTRL_inplace(Eigen::MatrixBase<Derived1>& state,
         }
         return;
     }
-#endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
     // qudit kernels
     if (internal::check_cvector(rstate)) {
@@ -1243,8 +1237,7 @@ template <typename Derived1, typename Derived2>
 
     idx n = dims.size();
 
-    // qubit optimizations
-#ifdef QPP_ENABLE_QUBIT_OPTIMIZATIONS
+    // qubit kernels
     if (internal::all_dims_equal(dims, 2)) {
         // ket
         if (internal::check_cvector(rstate)) {
@@ -1284,7 +1277,6 @@ template <typename Derived1, typename Derived2>
         }
         return;
     }
-#endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
     // qudit kernels
     if (internal::check_cvector(rstate)) {
@@ -1716,8 +1708,7 @@ template <typename Derived1, typename Derived2>
         shift = std::vector<idx>(ctrl.size(), 0);
     }
 
-    // qubit optimizations
-#ifdef QPP_ENABLE_QUBIT_OPTIMIZATIONS
+    // qubit kernels
     if (internal::all_dims_equal(dims, 2)) {
         idx n = dims.size();
         // ket
@@ -1743,7 +1734,6 @@ template <typename Derived1, typename Derived2>
         }
         return;
     }
-#endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
     // qudit kernels
     if (internal::check_cvector(rstate)) {
@@ -2588,8 +2578,7 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
 
     idx n = dims.size();
 
-    // qubit optimizations
-#ifdef QPP_ENABLE_QUBIT_OPTIMIZATIONS
+    // qubit kernels
     if (internal::all_dims_equal(dims, 2)) {
         // ket
         if (internal::check_cvector(rA)) {
@@ -2600,7 +2589,6 @@ ptrace(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& target,
             return internal::kernels::qubit::ptrace_rho_kq(A, target, n);
         }
     }
-#endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
     // qudit kernels
     if (internal::check_cvector(rA)) {
@@ -2698,8 +2686,7 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
 
     idx n = dims.size(); // total number of subsystems
 
-    // qubit optimizations
-#ifdef QPP_ENABLE_QUBIT_OPTIMIZATIONS
+    // qubit kernels
     if (internal::all_dims_equal(dims, 2)) {
         // ket
         if (internal::check_cvector(rA)) {
@@ -2710,7 +2697,6 @@ dyn_mat<typename Derived::Scalar> [[qpp::critical, qpp::parallel]] ptranspose(
             return internal::kernels::qubit::ptranspose_rho_kq(A, target, n);
         }
     }
-#endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
     // qudit kernels
     if (internal::check_cvector(rA)) {
@@ -2814,8 +2800,7 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
 
     idx n = dims.size();
 
-    // qubit optimizations
-#ifdef QPP_ENABLE_QUBIT_OPTIMIZATIONS
+    // qubit kernels
     if (internal::all_dims_equal(dims, 2)) {
         // ket
         if (internal::check_cvector(rA)) {
@@ -2826,7 +2811,6 @@ syspermute(const Eigen::MatrixBase<Derived>& A, const std::vector<idx>& perm,
             return internal::kernels::qubit::syspermute_rho_kq(A, perm, n);
         }
     }
-#endif // QPP_ENABLE_QUBIT_OPTIMIZATIONS
 
     // qudit kernels
     if (internal::check_cvector(rA)) {
