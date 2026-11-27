@@ -59,6 +59,8 @@ PYBIND11_MODULE(_pyqpp, m) {
     m.doc() =
         "Python 3 bindings for Quantum++ (https://github.com/softwareQinc/qpp)";
 
+    init_types(m);
+
     init_constants(m);
     init_entanglement(m);
     init_entropies(m);
@@ -69,7 +71,6 @@ PYBIND11_MODULE(_pyqpp, m) {
     init_operations(m);
     init_random(m);
     init_statistics(m);
-    init_types(m);
 
     init_classes_codes(m);
     init_classes_gates(m);

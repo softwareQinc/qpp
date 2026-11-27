@@ -1800,7 +1800,7 @@ TEST(qpp_qpe_circuit, AllTests) {
     auto q3 = qpe_circuit(gt.Zd(3), 2, true, 3);
     QEngine e3{q3};
     e3.execute();
-    EXPECT_NEAR(0, norm(e3.get_state() - mket({0, 0, 0}, 3)), 1e-10);
+    EXPECT_NEAR(0, norm(e3.get_state() - mket({0, 0, 0}, 3)), 1e-12);
     // qubits
     const auto qc = qpe_circuit(gt.Z, 2);
     EXPECT_EQ(3u, qc.get_nq());

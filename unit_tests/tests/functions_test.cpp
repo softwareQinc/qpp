@@ -140,7 +140,7 @@ TEST(qpp_dirsumpow, AllTests) {
 
 TEST(qpp_eig, AllTests) {
     auto [values, vectors] = eig(gt.Z);
-    EXPECT_LT((gt.Z * vectors - vectors * values.asDiagonal()).norm(), 1e-10);
+    EXPECT_LT((gt.Z * vectors - vectors * values.asDiagonal()).norm(), 1e-12);
 }
 
 TEST(qpp_evals, AllTests) {
@@ -151,7 +151,7 @@ TEST(qpp_evals, AllTests) {
 
 TEST(qpp_evects, AllTests) {
     cmat V = evects(gt.Z);
-    EXPECT_LT((V.adjoint() * V - cmat::Identity(2, 2)).norm(), 1e-10);
+    EXPECT_LT((V.adjoint() * V - cmat::Identity(2, 2)).norm(), 1e-12);
 }
 
 TEST(qpp_expm, AllTests) {
@@ -263,30 +263,63 @@ TEST(qpp_fidelity, Exceptions) {
     EXPECT_THROW(fidelity(randrho(2), randrho(3)), exception::DimsNotEqual);
 }
 
-TEST(qpp_funm, AllTests) {
+TEST(qpp_funm, FunctionPointer) {
     auto square = +[](const cplx& z) -> cplx { return z * z; };
-    EXPECT_LT((funm(gt.Z, square) - cmat::Identity(2, 2)).norm(), 1e-10);
+
+    EXPECT_LT((funm(gt.Z, square) - cmat::Identity(2, 2)).norm(), 1e-12);
+}
+
+TEST(qpp_funm, Lambda) {
+    const cmat A = randH(4);
+    auto square = [](const cplx& z) { return z * z; };
+    EXPECT_LT((funm(A, square) - A * A).norm(), 1e-12);
+}
+
+TEST(qpp_funm, CapturingLambda) {
+    const cmat A = randH(4);
+    const cplx factor{2, 3};
+    auto f = [factor](const cplx& z) { return factor * z; };
+    EXPECT_LT((funm(A, f) - factor * A).norm(), 1e-12);
+}
+
+TEST(qpp_funm, OverloadedFunctionPointer) {
+    const cmat A = 4.0 * cmat::Identity(3, 3);
+    EXPECT_LT((funm(A, &std::sqrt) - 2.0 * cmat::Identity(3, 3)).norm(), 1e-12);
+}
+
+TEST(qpp_funm, NonHermitianMatrix) {
+    cmat A(2, 2);
+    A << cplx{1, 2}, 3, 0, cplx{2, -1};
+    auto square = [](const cplx& z) { return z * z; };
+    EXPECT_LT((funm(A, square) - A * A).norm(), 1e-12);
+}
+
+TEST(qpp_funm, RealMatrix) {
+    dyn_mat<double> A(2, 2);
+    A << 1, 2, 2, 3;
+    auto square = [](const cplx& z) { return z * z; };
+    EXPECT_LT((funm(A, square) - (A * A).cast<cplx>()).norm(), 1e-12);
 }
 
 TEST(qpp_grams, InitList) {
     ket a = st.z0;
     ket b = (st.z0 + st.z1).eval();
     cmat Q = grams({a, b});
-    EXPECT_LT((Q.adjoint() * Q - cmat::Identity(2, 2)).norm(), 1e-10);
+    EXPECT_LT((Q.adjoint() * Q - cmat::Identity(2, 2)).norm(), 1e-12);
 }
 
 TEST(qpp_grams, Matrix) {
     cmat A(2, 2);
     A << 1., 1., 0., 1.;
     cmat Q = grams(A);
-    EXPECT_LT((Q.adjoint() * Q - cmat::Identity(2, 2)).norm(), 1e-10);
+    EXPECT_LT((Q.adjoint() * Q - cmat::Identity(2, 2)).norm(), 1e-12);
 }
 
 TEST(qpp_grams, Vector) {
     ket a = st.z0;
     ket b = (st.z0 + st.z1).eval();
     cmat Q = grams(std::vector<ket>{a, b});
-    EXPECT_LT((Q.adjoint() * Q - cmat::Identity(2, 2)).norm(), 1e-10);
+    EXPECT_LT((Q.adjoint() * Q - cmat::Identity(2, 2)).norm(), 1e-12);
 }
 
 TEST(qpp_hash_eigen, AllTests) {
@@ -298,7 +331,7 @@ TEST(qpp_heig, AllTests) {
     auto [values, vectors] = heig(gt.Z);
     EXPECT_LT(
         (gt.Z * vectors - vectors * values.cast<cplx>().asDiagonal()).norm(),
-        1e-10);
+        1e-12);
 }
 
 TEST(qpp_hevals, AllTests) {
@@ -309,13 +342,13 @@ TEST(qpp_hevals, AllTests) {
 
 TEST(qpp_hevects, AllTests) {
     cmat V = hevects(gt.X);
-    EXPECT_LT((V.adjoint() * V - cmat::Identity(2, 2)).norm(), 1e-10);
+    EXPECT_LT((V.adjoint() * V - cmat::Identity(2, 2)).norm(), 1e-12);
 }
 
 TEST(qpp_inverse, AllTests) {
     cmat A(2, 2);
     A << 1., 2., 3., 5.;
-    EXPECT_LT((A * inverse(A) - cmat::Identity(2, 2)).norm(), 1e-10);
+    EXPECT_LT((A * inverse(A) - cmat::Identity(2, 2)).norm(), 1e-12);
 }
 
 TEST(qpp_kron, InitList) {
@@ -343,7 +376,7 @@ TEST(qpp_logdet, AllTests) {
 }
 
 TEST(qpp_logm, AllTests) {
-    EXPECT_LT(logm(cmat::Identity(2, 2)).norm(), 1e-10);
+    EXPECT_LT(logm(cmat::Identity(2, 2)).norm(), 1e-12);
 }
 
 TEST(qpp_mket, Qudits) {
@@ -443,7 +476,7 @@ TEST(qpp_rho2bloch, AllTests) {
 
 TEST(qpp_rho2pure, AllTests) {
     ket psi = rho2pure(prj(st.x0));
-    EXPECT_NEAR(1, std::abs(st.x0.dot(psi)), 1e-10);
+    EXPECT_NEAR(1, std::abs(st.x0.dot(psi)), 1e-12);
 }
 
 TEST(qpp_schatten, AllTests) {
@@ -457,13 +490,13 @@ TEST(qpp_spectralpowm, AllTests) {
     EXPECT_LT((spectralpowm(2 * cmat::Identity(2, 2), cplx{0.5}) -
                std::sqrt(2.) * cmat::Identity(2, 2))
                   .norm(),
-              1e-10);
+              1e-12);
 }
 
 TEST(qpp_sqrtm, AllTests) {
     EXPECT_LT(
         (sqrtm(4 * cmat::Identity(2, 2)) - 2 * cmat::Identity(2, 2)).norm(),
-        1e-10);
+        1e-12);
 }
 
 TEST(qpp_sum, Container) { EXPECT_EQ(10, sum(std::vector<int>{1, 2, 3, 4})); }
@@ -490,17 +523,17 @@ TEST(qpp_svd, AllTests) {
     cmat A = gt.X;
     auto [U, s, V] = svd(A);
     EXPECT_LT((A - U * s.cast<cplx>().asDiagonal() * V.adjoint()).norm(),
-              1e-10);
+              1e-12);
 }
 
 TEST(qpp_svdU, AllTests) {
     cmat U = svdU(gt.X);
-    EXPECT_LT((U.adjoint() * U - cmat::Identity(2, 2)).norm(), 1e-10);
+    EXPECT_LT((U.adjoint() * U - cmat::Identity(2, 2)).norm(), 1e-12);
 }
 
 TEST(qpp_svdV, AllTests) {
     cmat V = svdV(gt.X);
-    EXPECT_LT((V.adjoint() * V - cmat::Identity(2, 2)).norm(), 1e-10);
+    EXPECT_LT((V.adjoint() * V - cmat::Identity(2, 2)).norm(), 1e-12);
 }
 
 TEST(qpp_trace, AllTests) {

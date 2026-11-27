@@ -121,8 +121,7 @@ if(PYQPP_ENABLE_STUBGEN)
       ${CMAKE_COMMAND} -E env
       "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}${PYTHONPATH_SEP}$ENV{PYTHONPATH}"
       ${Python3_EXECUTABLE} -m pybind11_stubgen pyqpp --output-dir
-      "${STUBGEN_OUTPUT_PATH}" --ignore-all-errors
-      --print-invalid-expressions-as-is
+      "${STUBGEN_OUTPUT_PATH}"
     # Copy main package stubs
     COMMAND
       ${CMAKE_COMMAND} -E copy_if_different

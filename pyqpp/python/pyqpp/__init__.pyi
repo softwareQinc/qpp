@@ -8,13 +8,10 @@ from pyqpp._pyqpp import CondWhile
 from pyqpp._pyqpp import DynamicBitset
 from pyqpp._pyqpp import QCircuit
 from pyqpp._pyqpp import QDensityDummyEngine
-from pyqpp._pyqpp import QDensityEngine
 from pyqpp._pyqpp import QDensityNoisyEngine
 from pyqpp._pyqpp import QFT
 from pyqpp._pyqpp import QFT_inplace
 from pyqpp._pyqpp import QKetDummyEngine
-from pyqpp._pyqpp import QKetEngine
-from pyqpp._pyqpp import QKetEngine as QEngine
 from pyqpp._pyqpp import QKetNoisyEngine as QNoisyEngine
 from pyqpp._pyqpp import QKetNoisyEngine
 from pyqpp._pyqpp import QubitAmplitudeDampingNoise
@@ -26,6 +23,9 @@ from pyqpp._pyqpp import QubitPhaseFlipNoise
 from pyqpp._pyqpp import QuditDepolarizingNoise
 from pyqpp._pyqpp import TFQ
 from pyqpp._pyqpp import TFQ_inplace
+from pyqpp._pyqpp import _QDensityEngine as QDensityEngine
+from pyqpp._pyqpp import _QKetEngine as QEngine
+from pyqpp._pyqpp import _QKetEngine as QKetEngine
 from pyqpp._pyqpp import absm
 from pyqpp._pyqpp import abssq
 from pyqpp._pyqpp import adjoint

@@ -133,7 +133,9 @@ inline void init_functions(py::module_& m) {
         "Purity of a ket or density matrix", py::arg("A"));
     m.def(
         "funm",
-        [](const cmat& A, cplx (*f)(const cplx&)) { return qpp::funm(A, f); },
+        [](const cmat& A, const std::function<cplx(const cplx&)>& f) {
+            return qpp::funm(A, f);
+        },
         "Applies the scalar function f to the eigenvalues of matrix A",
         py::arg("A"), py::arg("f"));
     m.def(

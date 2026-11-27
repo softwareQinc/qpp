@@ -54,16 +54,27 @@ void declare_QDummyEngine(py::module& m) {
     auto pyQDummyEngine = py::class_<DummyEngineType>(m, pyname.c_str());
     pyQDummyEngine.def(py::init<const QCircuit&>(), py::keep_alive<1, 2>());
     pyQDummyEngine.def(
-        "execute", py::overload_cast<idx>(&DummyEngineType::execute),
-        "Executes the entire quantum circuit description", py::arg("reps") = 1);
+        "execute",
+        [](DummyEngineType& self, idx reps) -> DummyEngineType& {
+            self.execute(reps);
+            return self;
+        },
+        "Executes the entire quantum circuit description", py::arg("reps") = 1,
+        py::return_value_policy::reference_internal);
     pyQDummyEngine.def(
         "get_circuit",
         [](const DummyEngineType& qe) { return qe.get_circuit(); },
         "Underlying quantum circuit description");
     pyQDummyEngine.def("get_state", &DummyEngineType::get_state,
                        "Underlying quantum state");
-    pyQDummyEngine.def("set_state", &DummyEngineType::set_state,
-                       "Sets the underlying quantum state", py::arg("state"));
+    pyQDummyEngine.def(
+        "set_state",
+        [](DummyEngineType& self, const T& state) -> DummyEngineType& {
+            self.set_state(state);
+            return self;
+        },
+        "Sets the underlying quantum state", py::arg("state"),
+        py::return_value_policy::reference_internal);
     pyQDummyEngine.def("to_JSON", &DummyEngineType::to_JSON,
                        "State of the engine in JSON format",
                        py::arg("enclosed_in_curly_brackets") = true);

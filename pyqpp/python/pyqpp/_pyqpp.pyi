@@ -177,6 +177,12 @@ class DynamicBitset:
         String representation
         """
 class QCircuit:
+    class GateStep:
+        pass
+    class MeasurementStep:
+        pass
+    class NOPStep:
+        pass
     class Resources:
         def __repr__(self) -> str:
             ...
@@ -210,14 +216,16 @@ class QCircuit:
         @property
         def total_depth(self) -> int:
             ...
+    class RuntimeStep:
+        pass
     __hash__: typing.ClassVar[None] = None
     @staticmethod
-    def is_CTRL(gate_step: qpp::internal::QCircuitGateStep) -> bool:
+    def is_CTRL(gate_step: QCircuit.GateStep) -> bool:
         """
         True if the gate step is a controlled gate, false otherwise
         """
     @staticmethod
-    def is_cCTRL(gate_step: qpp::internal::QCircuitGateStep) -> bool:
+    def is_cCTRL(gate_step: QCircuit.GateStep) -> bool:
         """
         True if the gate step is a classically-controlled gate, false otherwise
         """
@@ -493,7 +501,7 @@ class QCircuit:
         """
         Number of qudits
         """
-    def get_resources(self) -> qpp::internal::QCircuitResources:
+    def get_resources(self) -> QCircuit.Resources:
         """
         Quantum circuit resources
         """
@@ -829,7 +837,7 @@ class _QDensityDummyEngine:
         ...
     def __repr__(self) -> str:
         ...
-    def execute(self, reps: typing.SupportsInt | typing.SupportsIndex = 1) -> qpp::QBaseEngine<Eigen::Matrix<std::__1::complex<double>, -1, -1, 0, -1, -1>, qpp::QCircuit>:
+    def execute(self, reps: typing.SupportsInt | typing.SupportsIndex = 1) -> _QDensityDummyEngine:
         """
         Executes the entire quantum circuit description
         """
@@ -841,7 +849,7 @@ class _QDensityDummyEngine:
         """
         Underlying quantum state
         """
-    def set_state(self, state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"]) -> qpp::QBaseEngine<Eigen::Matrix<std::__1::complex<double>, -1, -1, 0, -1, -1>, qpp::QCircuit>:
+    def set_state(self, state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"]) -> _QDensityDummyEngine:
         """
         Sets the underlying quantum state
         """
@@ -892,7 +900,7 @@ class _QDensityEngine:
         """
     def get_max_post_selection_reps(self) -> int:
         """
-        Maximum number of repetitions of a cirucit post-selection step until success
+        Maximum number of repetitions of a circuit post-selection step until success
         """
     def get_measured_d(self) -> list[int]:
         """
@@ -1056,7 +1064,7 @@ class _QKetDummyEngine:
         ...
     def __repr__(self) -> str:
         ...
-    def execute(self, reps: typing.SupportsInt | typing.SupportsIndex = 1) -> qpp::QBaseEngine<Eigen::Matrix<std::__1::complex<double>, -1, 1, 0, -1, 1>, qpp::QCircuit>:
+    def execute(self, reps: typing.SupportsInt | typing.SupportsIndex = 1) -> _QKetDummyEngine:
         """
         Executes the entire quantum circuit description
         """
@@ -1068,7 +1076,7 @@ class _QKetDummyEngine:
         """
         Underlying quantum state
         """
-    def set_state(self, state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"]) -> qpp::QBaseEngine<Eigen::Matrix<std::__1::complex<double>, -1, 1, 0, -1, 1>, qpp::QCircuit>:
+    def set_state(self, state: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 1]"]) -> _QKetDummyEngine:
         """
         Sets the underlying quantum state
         """
@@ -1119,7 +1127,7 @@ class _QKetEngine:
         """
     def get_max_post_selection_reps(self) -> int:
         """
-        Maximum number of repetitions of a cirucit post-selection step until success
+        Maximum number of repetitions of a circuit post-selection step until success
         """
     def get_measured_d(self) -> list[int]:
         """
@@ -1296,28 +1304,7 @@ class proxy_to_engine_dits:
         ...
 def QDensityDummyEngine(arg0: QCircuit) -> _QDensityDummyEngine:
     ...
-def QDensityEngine(arg0: QCircuit) -> _QDensityEngine:
-    ...
-@typing.overload
-def QDensityNoisyEngine(arg0: QCircuit, arg1: QubitBitFlipNoise) -> _QDensityNoisyEngine_QubitBitFlipNoise:
-    ...
-@typing.overload
-def QDensityNoisyEngine(arg0: QCircuit, arg1: QubitBitPhaseFlipNoise) -> _QDensityNoisyEngine_QubitBitPhaseFlipNoise:
-    ...
-@typing.overload
-def QDensityNoisyEngine(arg0: QCircuit, arg1: QubitDepolarizingNoise) -> _QDensityNoisyEngine_QubitDepolarizingNoise:
-    ...
-@typing.overload
-def QDensityNoisyEngine(arg0: QCircuit, arg1: QubitPhaseFlipNoise) -> _QDensityNoisyEngine_QubitPhaseFlipNoise:
-    ...
-@typing.overload
-def QDensityNoisyEngine(arg0: QCircuit, arg1: QubitAmplitudeDampingNoise) -> _QDensityNoisyEngine_QubitAmplitudeDampingNoise:
-    ...
-@typing.overload
-def QDensityNoisyEngine(arg0: QCircuit, arg1: QubitPhaseDampingNoise) -> _QDensityNoisyEngine_QubitPhaseDampingNoise:
-    ...
-@typing.overload
-def QDensityNoisyEngine(arg0: QCircuit, arg1: QuditDepolarizingNoise) -> _QDensityNoisyEngine_QuditDepolarizingNoise:
+def QDensityNoisyEngine(qc: typing.Any, noise: typing.Any) -> typing.Any:
     ...
 def QFT(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], d: typing.SupportsInt | typing.SupportsIndex = 2, swap: bool = True) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """
@@ -1329,28 +1316,7 @@ def QFT_inplace(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128], d
     """
 def QKetDummyEngine(arg0: QCircuit) -> _QKetDummyEngine:
     ...
-def QKetEngine(arg0: QCircuit) -> _QKetEngine:
-    ...
-@typing.overload
-def QKetNoisyEngine(arg0: QCircuit, arg1: QubitBitFlipNoise) -> _QKetNoisyEngine_QubitBitFlipNoise:
-    ...
-@typing.overload
-def QKetNoisyEngine(arg0: QCircuit, arg1: QubitBitPhaseFlipNoise) -> _QKetNoisyEngine_QubitBitPhaseFlipNoise:
-    ...
-@typing.overload
-def QKetNoisyEngine(arg0: QCircuit, arg1: QubitDepolarizingNoise) -> _QKetNoisyEngine_QubitDepolarizingNoise:
-    ...
-@typing.overload
-def QKetNoisyEngine(arg0: QCircuit, arg1: QubitPhaseFlipNoise) -> _QKetNoisyEngine_QubitPhaseFlipNoise:
-    ...
-@typing.overload
-def QKetNoisyEngine(arg0: QCircuit, arg1: QubitAmplitudeDampingNoise) -> _QKetNoisyEngine_QubitAmplitudeDampingNoise:
-    ...
-@typing.overload
-def QKetNoisyEngine(arg0: QCircuit, arg1: QubitPhaseDampingNoise) -> _QKetNoisyEngine_QubitPhaseDampingNoise:
-    ...
-@typing.overload
-def QKetNoisyEngine(arg0: QCircuit, arg1: QuditDepolarizingNoise) -> _QKetNoisyEngine_QuditDepolarizingNoise:
+def QKetNoisyEngine(qc: typing.Any, noise: typing.Any) -> typing.Any:
     ...
 def TFQ(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], d: typing.SupportsInt | typing.SupportsIndex = 2, swap: bool = True) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """
@@ -1622,12 +1588,12 @@ def det(arg0: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]
     Determinant
     """
 @typing.overload
-def dirac(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], dims_rows: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], dims_cols: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex]) -> qpp::dirac_t<std::__1::complex<double>>:
+def dirac(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], dims_rows: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex], dims_cols: collections.abc.Sequence[typing.SupportsInt | typing.SupportsIndex]) -> dirac_t:
     """
     Dirac notation
     """
 @typing.overload
-def dirac(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], d: typing.SupportsInt | typing.SupportsIndex = 2) -> qpp::dirac_t<std::__1::complex<double>>:
+def dirac(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], d: typing.SupportsInt | typing.SupportsIndex = 2) -> dirac_t:
     """
     Dirac notation
     """
@@ -1695,7 +1661,7 @@ def fidelity(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, 
     """
     Quantum fidelity (not squared) between kets or density matrices
     """
-def funm(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], f: std::__1::complex<double> (std::__1::complex<double> const&)) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
+def funm(A: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[m, n]"], f: collections.abc.Callable[[complex], complex | typing.SupportsComplex | typing.SupportsFloat | typing.SupportsIndex]) -> typing.Annotated[numpy.typing.NDArray[numpy.complex128], "[m, n]"]:
     """
     Applies the scalar function f to the eigenvalues of matrix A
     """
@@ -2296,5 +2262,7 @@ def zket2dits(psi: typing.Annotated[numpy.typing.ArrayLike, numpy.complex128, "[
 ee: float = 2.718281828459045
 infty: float  # value = inf
 pi: float = 3.141592653589793
-QEngine = QKetEngine
+QDensityEngine = _QDensityEngine
+QEngine = _QKetEngine
+QKetEngine = _QKetEngine
 QNoisyEngine = QKetNoisyEngine

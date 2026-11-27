@@ -593,17 +593,23 @@ template <typename Derived>
 // Matrix functional calculus
 
 /**
- * @brief Functional calculus f(A)
+ * @brief Functional calculus \f$f(A)\f$
  *
- * @note Does not take into account issues such as numerical stability etc.
+ * Computes the matrix function \f$f(A)\f$ by applying the scalar function
+ * \a f to the eigenvalues of the diagonalizable matrix \a A
  *
+ * @note Does not take into account numerical stability issues
+ * @note Supports function pointers, lambda expressions, function objects,
+ * and other compatible callables
+ *
+ * @tparam Derived Eigen expression type
+ * @tparam Callable Callable type mapping complex numbers to complex numbers
  * @param A Diagonalizable Eigen expression
- * @param f Pointer-to-function from complex to complex
- * @return \a \f$f(A)\f$
+ * @param f Callable mapping complex numbers to complex numbers
+ * @return \f$f(A)\f$
  */
-template <typename Derived>
-[[qpp::critical]] cmat funm(const Eigen::MatrixBase<Derived>& A,
-                            cplx (*f)(const cplx&)) {
+template <typename Derived, typename Callable>
+[[qpp::critical]] cmat funm(const Eigen::MatrixBase<Derived>& A, Callable&& f) {
     const dyn_mat<typename Derived::Scalar>& rA = A.derived();
 
     // EXCEPTION CHECKS
@@ -620,14 +626,31 @@ template <typename Derived>
 
     Eigen::ComplexEigenSolver<cmat> es(rA.template cast<cplx>());
     const cmat& evects = es.eigenvectors();
-    cmat evals = es.eigenvalues();
-    for (idx i = 0; i < static_cast<idx>(evals.rows()); ++i) {
-        evals(i) = (*f)(evals(i)); // apply f(x) to each eigenvalue
+    dyn_col_vect<cplx> evals = es.eigenvalues();
+
+    for (idx i = 0; i < static_cast<idx>(evals.size()); ++i) {
+        evals(i) = std::invoke(f, evals(i));
     }
 
-    cmat evalsdiag = evals.asDiagonal();
+    return evects * evals.asDiagonal() * evects.inverse();
+}
 
-    return evects * evalsdiag * evects.inverse();
+/**
+ * @brief Functional calculus \f$f(A)\f$ using a function pointer
+ * @see qpp::funm()
+ *
+ * @note Facilitates template argument deduction when passing overloaded
+ * functions, such as standard library mathematical functions
+ *
+ * @tparam Derived Eigen expression type
+ * @param A Diagonalizable Eigen expression
+ * @param f Pointer to a function mapping complex numbers to complex numbers
+ * @return \f$f(A)\f$
+ */
+template <typename Derived>
+[[qpp::critical]] cmat funm(const Eigen::MatrixBase<Derived>& A,
+                            cplx (*f)(const cplx&)) {
+    return funm<Derived, decltype(f)>(A, std::move(f));
 }
 
 /**

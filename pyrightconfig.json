@@ -1,3 +1,4 @@
 {
-  "extraPaths": ["pyqpp/python"]
+  "extraPaths": ["pyqpp/python"],
+  "reportUnusedCallResult": "none"
 }

@@ -87,6 +87,14 @@ inline void init_classes_qcircuit(py::module_& m) {
     using namespace qpp;
 
     auto pyQCircuit = py::class_<QCircuit>(m, "QCircuit");
+    auto pyQCircuitResources =
+        py::class_<internal::QCircuitResources>(pyQCircuit, "Resources");
+    py::class_<qpp::internal::QCircuitGateStep>(pyQCircuit, "GateStep");
+    py::class_<qpp::internal::QCircuitMeasurementStep>(pyQCircuit,
+                                                       "MeasurementStep");
+    py::class_<qpp::internal::QCircuitRuntimeStep>(pyQCircuit, "RuntimeStep");
+    py::class_<qpp::internal::QCircuitNOPStep>(pyQCircuit, "NOPStep");
+
     pyQCircuit.def(py::init<idx, idx, idx, std::optional<std::string>>(),
                    py::arg("nq") = 1, py::arg("nc") = 0, py::arg("d") = 2,
                    py::arg("name") = std::nullopt);
@@ -538,8 +546,6 @@ inline void init_classes_qcircuit(py::module_& m) {
     });
 
     /* qpp::internal::QCircuitResources */
-    auto pyQCircuitResources =
-        py::class_<internal::QCircuitResources>(pyQCircuit, "Resources");
     pyQCircuitResources.def_readonly("nq", &internal::QCircuitResources::nq);
     pyQCircuitResources.def_readonly("nc", &internal::QCircuitResources::nc);
     pyQCircuitResources.def_readonly("d", &internal::QCircuitResources::d);

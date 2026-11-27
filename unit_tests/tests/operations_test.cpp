@@ -373,9 +373,9 @@ TEST(qpp_applyCTRL_fan, Qubits) {
         const cmat result_psi = A * adjoint(A);
         const realT res = norm(result_psi - B);
 
-        EXPECT_NEAR(0.0, norm(result_psi - adjoint(result_psi)), 1e-10);
-        EXPECT_NEAR(0.0, norm(B - adjoint(B)), 1e-10);
-        EXPECT_NEAR(0.0, res, 1e-10);
+        EXPECT_NEAR(0.0, norm(result_psi - adjoint(result_psi)), 1e-12);
+        EXPECT_NEAR(0.0, norm(B - adjoint(B)), 1e-12);
+        EXPECT_NEAR(0.0, res, 1e-12);
     }
 }
 
@@ -384,7 +384,7 @@ TEST(qpp_applyQFT, AllTests) {
     const ket expected = (mket({0, 0}) + mket({0, 1})) / std::sqrt(2.);
     EXPECT_LT((applyQFT(psi, {1}) - expected).norm(), 1e-12);
     EXPECT_LT((applyQFT(prj(psi), {1}) - prj(expected)).norm(), 1e-12);
-    EXPECT_LT((applyTFQ(applyQFT(psi, {1}), {1}) - psi).norm(), 1e-10);
+    EXPECT_LT((applyTFQ(applyQFT(psi, {1}), {1}) - psi).norm(), 1e-12);
 }
 
 TEST(qpp_applyTQF, AllTests) {
@@ -392,16 +392,16 @@ TEST(qpp_applyTQF, AllTests) {
     const ket zero = mket({0, 0});
     const ket expected = (mket({0, 0}) + mket({0, 1})) / std::sqrt(2.);
     EXPECT_LT((applyTFQ(zero, {1}) - expected).norm(), 1e-12);
-    EXPECT_LT((applyQFT(applyTFQ(psi, {0, 1}), {0, 1}) - psi).norm(), 1e-10);
+    EXPECT_LT((applyQFT(applyTFQ(psi, {0, 1}), {0, 1}) - psi).norm(), 1e-12);
     EXPECT_LT((applyTFQ(applyQFT(prj(psi), {0, 1}), {0, 1}) - prj(psi)).norm(),
-              1e-10);
+              1e-12);
 }
 
 TEST(qpp_choi2kraus, AllTests) {
     const std::vector<cmat> Ks{gt.X};
     const cmat choi = kraus2choi(Ks);
     EXPECT_LT((kraus2super(choi2kraus(choi, 2, 2)) - kraus2super(Ks)).norm(),
-              1e-10);
+              1e-12);
 }
 
 TEST(qpp_choi2super, AllTests) {
@@ -490,7 +490,7 @@ TEST(qpp_QFT, AllTests) {
     const ket expected = ket::Ones(4) / 2.;
     EXPECT_LT((QFT(psi) - expected).norm(), 1e-12);
     EXPECT_LT((QFT(prj(psi)) - prj(expected)).norm(), 1e-12);
-    EXPECT_LT((TFQ(QFT(psi)) - psi).norm(), 1e-10);
+    EXPECT_LT((TFQ(QFT(psi)) - psi).norm(), 1e-12);
 }
 
 TEST(qpp_qRAM, AllTests) {
@@ -509,7 +509,7 @@ TEST(qpp_super2choi, AllTests) {
 
 TEST(qpp_super2kraus, AllTests) {
     const cmat super = kraus2super(std::vector<cmat>{gt.X});
-    EXPECT_LT((kraus2super(super2kraus(super)) - super).norm(), 1e-10);
+    EXPECT_LT((kraus2super(super2kraus(super)) - super).norm(), 1e-12);
 }
 
 TEST(qpp_syspermute, Qudits) {
@@ -534,6 +534,6 @@ TEST(qpp_TFQ, AllTests) {
     const ket zero = mket({0, 0});
     const ket expected = ket::Ones(4) / 2.;
     EXPECT_LT((TFQ(zero) - expected).norm(), 1e-12);
-    EXPECT_LT((QFT(TFQ(psi)) - psi).norm(), 1e-10);
-    EXPECT_LT((TFQ(QFT(prj(psi))) - prj(psi)).norm(), 1e-10);
+    EXPECT_LT((QFT(TFQ(psi)) - psi).norm(), 1e-12);
+    EXPECT_LT((TFQ(QFT(prj(psi))) - prj(psi)).norm(), 1e-12);
 }
